@@ -1,5 +1,6 @@
 #include "global.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/frame_interpolation.h"
 
 s16 Top_LM_Margin = 0;
 s16 Left_LM_Margin = 0;
@@ -412,6 +413,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -449,6 +452,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < totalHeartCount; i++) {
+        FrameInterpolation_RecordOpenChild("HealthMeter Heart", epoch + i * 25);
+        
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
             if (i < fullHeartCount) {
                 if (curColorSet != 0) {
@@ -624,6 +629,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
                 offsetX = PosX_original;
             }
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(gfxCtx);

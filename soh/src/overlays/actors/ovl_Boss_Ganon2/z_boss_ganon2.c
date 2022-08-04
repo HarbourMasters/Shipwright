@@ -5,6 +5,7 @@
 #include "objects/object_ganon2/object_ganon2.h"
 #include "objects/object_ganon_anime3/object_ganon_anime3.h"
 #include "objects/object_geff/object_geff.h"
+#include "soh/frame_interpolation.h"
 
 #include <string.h>
 
@@ -2463,6 +2464,8 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
     f32 angle;
     f32 sin;
     f32 cos;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Push();
@@ -2485,6 +2488,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
         rand = BossGanon2_RandZeroOne();
 
         for (i = 0; i < 5; i++) {
+            FrameInterpolation_RecordOpenChild("Ganon 80904340", epoch + i * 25);
             angle = (i * (2 * M_PI / 5)) + (rand * M_PI);
             sin = 5000.0f * sinf(angle);
             cos = 5000.0f * cosf(angle);
@@ -2500,6 +2504,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00D798));
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2632,6 +2637,8 @@ void BossGanon2_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2647,6 +2654,8 @@ void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B308);
 
         for (i = 0; i < 15; i++) {
+            FrameInterpolation_RecordOpenChild("Ganon 80904D88", epoch + i * 25);
+
             Matrix_Translate(this->unk_234[i].x, this->unk_234[i].y, this->unk_234[i].z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(this->unk_30C, this->unk_30C, this->unk_30C, MTXMODE_APPLY);
@@ -2654,6 +2663,8 @@ void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B378);
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2690,6 +2701,8 @@ void func_80904FC8(BossGanon2* this, GlobalContext* globalCtx) {
 void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
     Player* player;
     f32 phi_f20;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2703,6 +2716,8 @@ void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B308);
 
         for (i = 0; i < 11; i++) {
+            FrameInterpolation_RecordOpenChild("Ganon 8090523C", epoch + i * 25);
+
             Matrix_Mult(&player->mf_9E0, MTXMODE_NEW);
             Matrix_Translate((i * 250.0f) + 900.0f, 350.0f, 0.0f, MTXMODE_APPLY);
 
@@ -2718,6 +2733,8 @@ void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00B378));
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2916,6 +2933,8 @@ void func_809060E8(GlobalContext* globalCtx) {
     BossGanon2Effect* effect;
     s16 i;
     BossGanon2Effect* effects;
+    static s32 epoch = 0;
+    epoch++;
 
     effects = effect = globalCtx->specialEffects;
 
@@ -2925,6 +2944,8 @@ void func_809060E8(GlobalContext* globalCtx) {
 
     for (i = 0; i < 1; i++) {
         if (effect->type == 1) {
+            FrameInterpolation_RecordOpenChild("Ganon 809060E8 0", epoch + i * 25);
+
             Vec3f spA0;
             f32 temp_f0;
             f32 angle;
@@ -2958,6 +2979,8 @@ void func_809060E8(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00F188);
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2965,6 +2988,8 @@ void func_809060E8(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sBossGanon2Particles); i++, effect++) {
         if (effect->type == 2) {
+            FrameInterpolation_RecordOpenChild("Ganon 809060E8 1", epoch + i * 25);
+
             if (!usingObjectGEff) {
                 BossGanon2_SetObjectSegment(NULL, globalCtx, OBJECT_GEFF, true);
                 usingObjectGEff++;
@@ -2977,6 +3002,8 @@ void func_809060E8(GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gGanonRubbleDL);
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
 

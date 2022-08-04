@@ -89,6 +89,7 @@ void EffectSpark_Init(void* thisx, void* initParamsx) {
             elem->unkPosition.x = Rand_ZeroOne() * 65534.0f;
             elem->unkPosition.y = Rand_ZeroOne() * 65534.0f;
             elem->unkPosition.z = Rand_ZeroOne() * 65534.0f;
+            elem->epoch++;
         }
 
         this->timer = 0;
@@ -210,6 +211,8 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
             Mtx* mtx;
             f32 temp;
 
+            FrameInterpolation_RecordOpenChild(elem, elem->epoch);
+
             SkinMatrix_SetTranslate(&spEC, elem->position.x, elem->position.y, elem->position.z);
             temp = ((Rand_ZeroOne() * 2.5f) + 1.5f) / 64.0f;
             SkinMatrix_SetScale(&spAC, temp, temp, 1.0f);
@@ -264,6 +267,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
 
             mtx = SkinMatrix_MtxFToNewMtx(gfxCtx, &sp12C);
             if (mtx == NULL) {
+                FrameInterpolation_RecordCloseChild();
                 goto end;
             }
 
@@ -273,6 +277,8 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
         }
 
         gDPPipeSync(POLY_XLU_DISP++);
+
+        FrameInterpolation_RecordCloseChild();
     }
 
 end:

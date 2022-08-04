@@ -1,5 +1,6 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
 
@@ -756,6 +757,7 @@ void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* 
             iceSmoke->xyScale = xyScale / 1000.0f;
             iceSmoke->primAlpha = 0;
             iceSmoke->timer = 0;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -780,6 +782,7 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
             iceSmoke->primAlpha = primAlpha;
             iceSmoke->timer = 0;
             iceSmoke->isTimerMod8 = isTimerMod8;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -864,6 +867,8 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
+        FrameInterpolation_RecordOpenChild(iceSmoke, iceSmoke->epoch);
+
         if (iceSmoke->type > 0) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -883,6 +888,8 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamDL));
         }
+
+        FrameInterpolation_RecordCloseChild();
 
         iceSmoke++;
     }
