@@ -3676,6 +3676,12 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
                                         CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
 
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
