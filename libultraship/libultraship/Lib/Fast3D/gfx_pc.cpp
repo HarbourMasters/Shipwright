@@ -2699,7 +2699,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
         //gfx_lookup_or_create_shader_program(precomp_shaders[i]);
     }
 
-    ModInternal::ExecuteHooks<ModInternal::GfxInit>();
+    Ship::ExecuteHooks<Ship::GfxInit>();
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {

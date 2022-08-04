@@ -1,11 +1,9 @@
 #include "Cvar.h"
 #include <map>
-#include <string>
+#include <string.h>
 #include <functional>
 #include <memory>
 #include <utility>
-#include <PR/ultra64/gbi.h>
-#include "imgui_internal.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
@@ -96,7 +94,7 @@ extern "C" void CVar_SetS32(const char* name, int32_t value) {
     cvar->value.valueS32 = value;
 }
 
-void CVar_SetFloat(const char* name, float value) {
+extern "C" void CVar_SetFloat(const char* name, float value) {
     auto& cvar = cvars[name];
     if (!cvar) {
         cvar = std::make_unique<CVar>();
@@ -111,7 +109,11 @@ extern "C" void CVar_SetString(const char* name, const char* value) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVarType::String;
-    cvar->value.valueStr = ImStrdup(value);
+#ifdef _MSC_VER
+    cvar->value.valueStr = _strdup(value);
+#else
+    cvar->value.valueStr = strdup(value);
+#endif
 }
 
 extern "C" void CVar_RegisterRGBA(const char* name, Color_RGBA8 defaultValue) {

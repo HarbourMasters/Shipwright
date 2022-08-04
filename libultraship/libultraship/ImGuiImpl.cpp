@@ -15,7 +15,6 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
-#include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
 #include "GameOverlay.h"
@@ -24,7 +23,7 @@
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
-#include "Utils/StringHelper.h"
+#include "UltraController.h"
 
 #if __APPLE__
 #include <SDL_hints.h>
@@ -385,7 +384,7 @@ namespace SohImGui {
         ImGui::GetStyle().ScaleAllSizes(2);
     #endif
 
-        ModInternal::RegisterHook<ModInternal::GfxInit>([] {
+        Ship::RegisterHook<Ship::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
                 ShowCursor(CVar_GetS32("gOpenMenuBar", 0), Dialogues::dLoadSettings);
 
@@ -402,7 +401,7 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         });
 
-        ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
+        Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
         });
 

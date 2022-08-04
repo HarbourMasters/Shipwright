@@ -7,7 +7,6 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/sohconsole_sink.h"
-#include "ModManager.h"
 #ifdef __APPLE__
 #include "OSXFolderManager.h"
 #elif defined(__SWITCH__)
@@ -16,7 +15,6 @@
 
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
-    ModManager* INSTANCE;
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
         return Context.lock();
     }
@@ -56,7 +54,6 @@ namespace Ship {
 
     GlobalCtx2::~GlobalCtx2() {
         SPDLOG_INFO("destruct GlobalCtx2");
-        INSTANCE->Exit();
     }
 
     void GlobalCtx2::InitWindow() {
@@ -84,8 +81,6 @@ namespace Ship {
     #ifdef __SWITCH__
         Ship::Switch::Init(PostInitPhase);
     #endif
-        INSTANCE = new ModManager(ResMan);
-        INSTANCE->Init();
     }
 
     void GlobalCtx2::InitLogging() {

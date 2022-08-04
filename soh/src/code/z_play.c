@@ -203,7 +203,8 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
         GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetTreasure(globalCtx, 0x1F);
+        player->pendingFlag.flagID = 0x1F;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 

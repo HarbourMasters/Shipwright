@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -1133,11 +1134,9 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->actionFunc == EnGo_CurledUp) {
         EnGo_DrawCurledUp(this, globalCtx);
-        return; // needed for match?
     } else if (this->actionFunc == EnGo_GoronLinkRolling || this->actionFunc == func_80A3FEB4 ||
                this->actionFunc == EnGo_StopRolling || this->actionFunc == func_80A3FEB4) {
         EnGo_DrawRolling(this, globalCtx);
-        return; // needed for match?
     } else {
         func_800943C8(globalCtx->state.gfxCtx);
 
@@ -1146,9 +1145,9 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
         EnGo_DrawDust(this, globalCtx);
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGo_AddDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale, f32 scaleStep) {
@@ -1158,6 +1157,7 @@ void EnGo_AddDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 init
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
+            dustEffect->epoch++;
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
             timer = initialTimer;
@@ -1218,6 +1218,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
                 firstDone = true;
             }
 
+            FrameInterpolation_RecordOpenChild(dustEffect, dustEffect->epoch);
             alpha = dustEffect->timer * (255.0f / dustEffect->initialTimer);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 130, 90, alpha);
             gDPPipeSync(POLY_XLU_DISP++);
@@ -1230,6 +1231,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            FrameInterpolation_RecordCloseChild();
         }
     }
     CLOSE_DISPS(globalCtx->state.gfxCtx);

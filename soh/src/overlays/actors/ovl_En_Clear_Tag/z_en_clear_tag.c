@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx);
@@ -278,6 +280,7 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             globalCtx->specialEffects = &sClearTagEffects[0];
             for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++) {
                 sClearTagEffects[i].type = CLEAR_TAG_EFFECT_AVAILABLE;
+                sClearTagEffects[i].epoch++;
             }
             this->drawMode = CLEAR_TAG_DRAW_MODE_ALL;
         }
@@ -902,6 +905,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
+        FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
         if (effect->type == CLEAR_TAG_EFFECT_DEBRIS) {
             // Apply the debris effect material if it has not already been applied.
             if (!isMaterialApplied) {
@@ -918,6 +923,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDebrisEffectDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     // Draw all ground flash effects.
@@ -925,6 +932,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the flash ground effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -941,6 +950,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectGroundDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -949,6 +960,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_SMOKE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the smoke effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -970,6 +983,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+        
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -978,6 +993,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FIRE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the fire effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -996,6 +1013,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1004,6 +1023,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the flash billboard effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -1019,6 +1040,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 

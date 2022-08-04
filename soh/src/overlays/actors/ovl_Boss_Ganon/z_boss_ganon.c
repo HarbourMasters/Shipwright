@@ -3356,6 +3356,8 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
     s32 pad;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -3369,6 +3371,8 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
             Player* player = GET_PLAYER(globalCtx);
 
             for (i = 0; i < ARRAY_COUNT(player->bodyPartsPos); i++) {
+                FrameInterpolation_RecordOpenChild("Ganondorf Shock 0", epoch + i * 25);
+
                 Matrix_Translate(player->bodyPartsPos[i].x, player->bodyPartsPos[i].y, player->bodyPartsPos[i].z,
                                  MTXMODE_NEW);
                 Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
@@ -3377,9 +3381,13 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+                
+                FrameInterpolation_RecordCloseChild();
             }
         } else {
             for (i = 1; i < 15; i++) {
+                FrameInterpolation_RecordOpenChild("Ganondorf Shock 1", epoch + i * 25);
+
                 Matrix_Translate(this->unk_2EC[i].x, this->unk_2EC[i].y, this->unk_2EC[i].z, MTXMODE_NEW);
                 Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
                 Matrix_Scale(this->unk_49C[i], this->unk_49C[i], this->unk_49C[i], MTXMODE_APPLY);
@@ -3401,6 +3409,8 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
                 } else {
                     gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
                 }
+
+                FrameInterpolation_RecordCloseChild();
             }
         }
     }
@@ -3443,9 +3453,9 @@ void BossGanon_DrawHandLightBall(BossGanon* this, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gDorfLightCoreDL);
-
-        CLOSE_DISPS(gfxCtx);
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
@@ -3453,6 +3463,8 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
     f32 yRot;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -3513,6 +3525,8 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
         yRot = BINANG_TO_RAD(this->actor.yawTowardsPlayer);
 
         for (i = 0; i < this->unk_1AC; i++) {
+            FrameInterpolation_RecordOpenChild("Ganondorf Big Magic", epoch + i * 25);
+
             f32 xzRot = (BossGanon_RandZeroOne() - 0.5f) * M_PI * 1.5f;
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->unk_294[i]);
@@ -3527,10 +3541,12 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gDorfLightRayTriDL);
 
             Matrix_Pop();
-        }
 
-        CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
+        }
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossGanon_DrawTriforce(BossGanon* this, GlobalContext* globalCtx) {
@@ -4142,6 +4158,8 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     f32 alpha;
     s32 pad;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -4166,6 +4184,8 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->unk_1A8 == 1) {
         for (i = 0; i < 8; i++) {
+            FrameInterpolation_RecordOpenChild("Ganondorf Light Ball 0", epoch + i * 25);
+
             Matrix_Push();
             Matrix_RotateY(i * (M_PI / 8), MTXMODE_APPLY);
             Matrix_RotateZ(this->fwork[GDF_FWORK_0], MTXMODE_APPLY);
@@ -4174,6 +4194,8 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
             Matrix_Pop();
+
+            FrameInterpolation_RecordCloseChild();
         }
     } else if (this->unk_1A8 == 0) {
         Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
