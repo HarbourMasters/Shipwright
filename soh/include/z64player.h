@@ -5,6 +5,16 @@
 
 struct Player;
 
+typedef struct {
+    /* 0x00 */ u8 itemId;
+    /* 0x01 */ u8 field; // various bit-packed data
+    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
+    /* 0x03 */ u8 textId;
+    /* 0x04 */ u16 objectId;
+} GetItemEntry; // size = 0x06
+
+extern GetItemEntry sGetItemTable[160];
+
 typedef enum {
     /* 0 */ PLAYER_SWORD_NONE,
     /* 1 */ PLAYER_SWORD_KOKIRI,
@@ -625,7 +635,8 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-    /* 0x0A94 */ PendingFlag pendingFlag;
-} Player; // size = 0xAA0
+    /* 0x0A89 */ bool       pendingIceTrap;
+    /* 0x0A95 */ PendingFlag pendingFlag;
+} Player; // size = 0xAA1
 
 #endif

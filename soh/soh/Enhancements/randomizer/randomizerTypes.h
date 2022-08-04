@@ -952,6 +952,7 @@ typedef enum {
 
 typedef enum {
     RSK_NONE,
+    RSK_LOGIC_RULES,
     RSK_FOREST,
     RSK_KAK_GATE,
     RSK_DOOR_OF_TIME,
@@ -973,6 +974,7 @@ typedef enum {
     RSK_STARTING_MAPS_COMPASSES, //RANDOTODO more options for this, rn it's just start with or own dungeon
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
+    RSK_SHUFFLE_TOKENS,
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
     RSK_ITEM_POOL,
@@ -1002,4 +1004,5 @@ typedef enum {
     RSK_SHUFFLE_OVERWORLD_ENTRANCES,
     RSK_SHUFFLE_INTERIORS_ENTRANCES,
     RSK_SHUFFLE_GROTTOS_ENTRANCES
+    RSK_SKULLS_SUNS_SONG
 } RandomizerSettingKey;

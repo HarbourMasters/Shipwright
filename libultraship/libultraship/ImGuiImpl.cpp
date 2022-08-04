@@ -1529,19 +1529,43 @@ namespace SohImGui {
 
             for (const auto& category : windowCategories) {
                 ImGui::SetCursorPosY(0.0f);
-                if (ImGui::BeginMenu(category.first.c_str())) {
-                    for (const std::string& name : category.second) {
-                        std::string varName(name);
-                        varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
-                        std::string toggleName = "g" + varName + "Enabled";
+                if (category.first != "Randomizer") {
+                    if (ImGui::BeginMenu(category.first.c_str())) {
+                        for (const std::string& name : category.second) {
+                            std::string varName(name);
+                            varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
+                            std::string toggleName = "g" + varName + "Enabled";
 
-                        EnhancementCheckbox(name.c_str(), toggleName.c_str());
-                        customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
+                            EnhancementCheckbox(name.c_str(), toggleName.c_str());
+                            customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
+                        }
+                        ImGui::EndMenu();
                     }
-                    ImGui::EndMenu();
                 }
             }
 
+            // Randomizer Menu
+            ImGui::SetCursorPosY(0.0f);
+            if (ImGui::BeginMenu("Randomizer"))
+            {
+                EnhancementCheckbox("Randomizer Settings", "gRandomizerSettingsEnabled");
+                customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                EnhancementCheckbox("Item Tracker", "gItemTrackerEnabled");
+                customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+
+                ImGui::Separator();
+                if (ImGui::BeginMenu("Rando Enhancements"))
+                {
+                    EnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
+                    Tooltip(
+                        "Play unique fanfares when obtaining quest items\n"
+                        "(medallions/stones/songs). Note that these fanfares\n"
+                        "are longer than usual."
+                    );
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenu();
+            }
             ImGui::EndMenuBar();
         }
 
