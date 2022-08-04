@@ -16,11 +16,11 @@ namespace Ship {
 }
 
 #if !_MSC_VER  && !__APPLE__
-#include "SDLAudioPlayer.h"
 #endif
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include "WasapiAudioPlayer.h"
-#endif
-#ifdef __APPLE__
+#elif defined(__linux)
 #include "PulseAudioPlayer.h"
+#else
+#include "SDLAudioPlayer.h"
 #endif
