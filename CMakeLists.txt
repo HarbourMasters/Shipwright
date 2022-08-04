@@ -133,28 +133,15 @@ file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PE
 
 find_package(Python3 COMPONENTS Interpreter)
 
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/assets_created
+add_custom_target(
+    ExtractAssets
     COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
     COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
-    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/assets_created
+    COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_SOURCE_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
 )
-add_custom_target(ExtractAssets DEPENDS ${CMAKE_BINARY_DIR}/assets_created)
-
-file(GLOB_RECURSE asset_h ${CMAKE_SOURCE_DIR}/soh/assets/*.h)
-list(LENGTH asset_h asset_h_length)
-if (${asset_h_length} EQUAL 0)
-    file(REMOVE  ${CMAKE_BINARY_DIR}/assets_created)
-else()
-    file(TOUCH ${CMAKE_BINARY_DIR}/assets_created)
-endif()
-
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
-add_dependencies(soh ExtractAssets)
-endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)
