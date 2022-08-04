@@ -128,6 +128,7 @@ endif()
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py filedata)
 string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out" filedata "${filedata}")
 string(REGEX REPLACE "x64" "..\\\\\\\\x64" filedata "${filedata}")
+string(REGEX REPLACE "Release" "${CMAKE_BUILD_TYPE}" filedata "${filedata}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" "${filedata}")
 file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
@@ -141,6 +142,7 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
+
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
