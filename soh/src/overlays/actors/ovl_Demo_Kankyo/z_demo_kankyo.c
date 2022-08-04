@@ -522,7 +522,7 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateY;
     f32 translateZ;
     s16 j;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -663,7 +663,7 @@ void DemoKankyo_DrawClouds(Actor* thisx, GlobalContext* globalCtx) {
     f32 dx;
     f32 dy;
     f32 dz;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -784,7 +784,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateZ;
     PosRot posRot;
     u8 linkAge = gSaveContext.linkAge;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -933,7 +933,7 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 scale;
     s16 i;
     PosRot posRot;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);

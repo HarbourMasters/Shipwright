@@ -3973,7 +3973,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     f32 chainsTranslateX;
     f32 chainsTranslateY;
     f32 rotZStep;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     entry = &sDoorLocksInfo[type];
