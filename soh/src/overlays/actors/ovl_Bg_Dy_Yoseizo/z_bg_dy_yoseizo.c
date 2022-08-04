@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
@@ -960,6 +961,7 @@ void BgDyYoseizo_ParticleInit(BgDyYoseizo* this, Vec3f* initPos, Vec3f* initVelo
             particle->pitch = 0.0f;
             particle->yaw = Rand_CenteredFloat(30000.0f);
             particle->roll = 0.0f;
+            particle->epoch++;
             return;
         }
     }
@@ -1039,6 +1041,8 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, particle++) {
+        FrameInterpolation_RecordOpenChild(particle, particle->epoch);
+        
         if (particle->alive == 1) {
             if (phi_s3 == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAppearDL));
@@ -1060,6 +1064,8 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAliveDL));
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(gfxCtx);
