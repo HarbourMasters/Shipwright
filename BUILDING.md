@@ -42,6 +42,8 @@ cd Shipwright
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
 cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
+# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
+cmake --build build-cmake --target ExtractAssets
 # Compile the project
 cmake --build build-cmake
 
@@ -75,6 +77,8 @@ cd ShipWright
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
 cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
+# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
+cmake --build build-cmake --target ExtractAssets
 # Compile the project
 cmake --build build-cmake
 
@@ -101,7 +105,7 @@ cpack
 cd Shipwright
 # Setup cmake project for your host machine
 cmake -H. -Bbuild-cmake -GNinja
-# Extract necessary assets
+# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Switch
 cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
