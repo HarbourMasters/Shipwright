@@ -288,14 +288,16 @@ void func_80B3CA38(EnXc* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, RandomizerCheck check, int sheikType, GetItemID ogSongId) {
-    if (sheik->actor.parent != NULL && sheik->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+    Player* player = GET_PLAYER(globalCtx);
+    if (sheik->actor.parent != NULL && sheik->actor.parent->id == player->actor.id &&
         !(gSaveContext.eventChkInf[5] & sheikType)) {
         gSaveContext.eventChkInf[5] |= sheikType;
     } else if (!(gSaveContext.eventChkInf[5] & sheikType)) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, ogSongId);
         if (check == RC_SHEIK_AT_TEMPLE && !Flags_GetTreasure(globalCtx, 0x1F)) {
             if (func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f)) {
-                Flags_SetTreasure(globalCtx, 0x1F);
+                player->pendingFlag.flagID = 0x1F;
+                player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
             }
         } else if (check != RC_SHEIK_AT_TEMPLE) {
             func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f);

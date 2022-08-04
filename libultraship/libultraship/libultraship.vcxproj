@@ -258,7 +258,6 @@
     <ClCompile Include="Blob.cpp" />
     <ClCompile Include="ControlDeck.cpp" />
     <ClCompile Include="Cvar.cpp" />
-    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Factories\AudioFactory.cpp" />
     <ClCompile Include="InputEditor.cpp" />
     <ClCompile Include="GameOverlay.cpp" />
@@ -268,7 +267,6 @@
     <ClCompile Include="Lib\Mercury\Mercury.cpp" />
     <ClCompile Include="luslog.cpp" />
     <ClCompile Include="mixer.c" />
-    <ClCompile Include="ModManager.cpp" />
     <ClCompile Include="SDLAudioPlayer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Factories\AnimationFactory.cpp" />
@@ -283,7 +281,6 @@
     <ClCompile Include="Factories\VtxFactory.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="ImGuiImpl.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Factories\CollisionHeaderFactory.cpp" />
@@ -334,7 +331,6 @@
     <ClCompile Include="SkeletonLimb.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureMod.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WasapiAudioPlayer.cpp" />
@@ -354,7 +350,6 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="ControlDeck.h" />
     <ClInclude Include="Cvar.h" />
-    <ClInclude Include="Environment.h" />
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="InputEditor.h" />
     <ClInclude Include="GameOverlay.h" />
@@ -367,8 +362,6 @@
     <ClInclude Include="Lib\stb\stb_image_write.h" />
     <ClInclude Include="luslog.h" />
     <ClInclude Include="mixer.h" />
-    <ClInclude Include="ModManager.h" />
-    <ClInclude Include="ModModule.h" />
     <ClInclude Include="SDLAudioPlayer.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Factories\ArrayFactory.h" />
@@ -407,7 +400,6 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="TextureMod.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="stox.h" />

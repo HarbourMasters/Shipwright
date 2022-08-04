@@ -29,7 +29,6 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers \
 	-Wno-error=multichar \
-	-Wno-unused-command-line-argument \
 	-Wno-delete-non-abstract-non-virtual-dtor \
 	-Wno-unused-private-field \
 	-Wno-deprecated-copy-with-user-provided-copy \
@@ -47,7 +46,7 @@ endif
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
-CPPFLAGS := -MMD
+CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
 MMFLAGS := -Wno-deprecated-declarations -ObjC++
 
