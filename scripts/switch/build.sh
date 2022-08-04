@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmake -H. -Bbuild-linux -GNinja
+cmake --no-warn-unused-cli -H. -Bbuild-linux -GNinja
 cmake --build build-linux --target ExtractAssets
 
 cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake

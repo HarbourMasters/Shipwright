@@ -46,11 +46,11 @@ cd Shipwright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
+cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Compile the project
-cmake --build build-cmake
+cmake --build build-cmake # --config Release (if you're packaging)
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
@@ -84,11 +84,11 @@ cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
+cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Compile the project
-cmake --build build-cmake
+cmake --build build-cmake # --config Release (if you're packaging)
 
 # Now you can run the executable in ./build-cmake/soh/soh-macos
 # To develop the project open the repository in VSCode (or your preferred editor)
