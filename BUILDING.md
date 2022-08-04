@@ -17,7 +17,10 @@ cd Shipwright
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
 
 # Now you can run the executable in .\build\x64
-# To develop the project you can open the generated Ship.sln (or use VSCode or another editor)
+
+# To develop the project you can open the generated Ship.sln (.\build\x64) - or use VSCode or another editor
+# If you want to generate the solution in the root folder run:
+& 'C:\Program Files\CMake\bin\cmake' -S . -G "Visual Studio 17 2022" -T v142 -A x64
 
 # If you need to clean the project you can run
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target clean
