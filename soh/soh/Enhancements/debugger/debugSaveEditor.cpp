@@ -1001,7 +1001,7 @@ void DrawFlagsTab() {
 
 // Draws a combo that lets you choose and upgrade value from a drop-down of text values
 void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std::vector<std::string>& names) {
-    ImGui::Text(categoryName.c_str());
+    ImGui::Text("%s", categoryName.c_str());
     ImGui::SameLine();
     ImGui::PushID(categoryName.c_str());
     if (ImGui::BeginCombo("##upgrade", names[CUR_UPG_VALUE(categoryId)].c_str())) {
@@ -1435,7 +1435,7 @@ void DrawPlayerTab() {
         InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
 
         ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->wallHeight);
-        InsertHelpHoverText("\"height used to determine whether link can climb or grab a ledge at the top\"");
+        InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
 
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
         InsertHelpHoverText("Can't take damage while this is nonzero");
