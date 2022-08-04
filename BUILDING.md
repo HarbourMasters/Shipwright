@@ -11,11 +11,16 @@ _Note: Instructions assume using powershell_
 cd Shipwright
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
+# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets
 # Compile project
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
 
 # Now you can run the executable in .\build\x64
 # To develop the project you can open the generated Ship.sln (or use VSCode or another editor)
+
+# If you need to clean the project you can run
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target clean
 ```
 
 ### Generating the distributable
@@ -49,6 +54,9 @@ cmake --build build-cmake
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
+
+# If you need to clean the project you can run
+cmake --build build-cmake --target clean
 ```
 
 ### Generating a distributable
@@ -84,6 +92,9 @@ cmake --build build-cmake
 
 # Now you can run the executable in ./build-cmake/soh/soh-macos
 # To develop the project open the repository in VSCode (or your preferred editor)
+
+# If you need to clean the project you can run
+cmake --build build-cmake --target clean
 ```
 
 ### Generating a distributable
