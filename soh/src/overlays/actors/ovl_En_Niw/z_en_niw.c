@@ -8,6 +8,7 @@
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
 
@@ -1145,6 +1146,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 0) {
+            feather->epoch++;
             feather->type = 1;
             feather->pos = *pos;
             feather->vel = *vel;
@@ -1202,6 +1204,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 1) {
+            FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             if (!flag) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;
@@ -1214,6 +1217,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 

@@ -2,6 +2,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tw/object_tw.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/frame_interpolation.h"
 
 #include <string.h>
 
@@ -467,6 +468,7 @@ void BossTw_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
         for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
             sTwEffects[i].type = TWEFF_NONE;
+            sTwEffects[i].epoch++;
         }
     }
 
@@ -3327,6 +3329,8 @@ void func_80942180(BossTw* this, GlobalContext* globalCtx) {
 void func_809426F0(BossTw* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -3360,6 +3364,8 @@ void func_809426F0(BossTw* this, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 8; i++) {
+        FrameInterpolation_RecordOpenChild("Twinrova 809426F0", epoch + i * 25);
+
         Matrix_Push();
         Matrix_Translate(0.0f, 0.0f, 5000.0f, MTXMODE_APPLY);
         Matrix_RotateZ(((i * M_PI) * 2.0f * 0.125f) + this->flameRotation, MTXMODE_APPLY);
@@ -3373,6 +3379,8 @@ void func_809426F0(BossTw* this, GlobalContext* globalCtx) {
                   G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_NOPUSH);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A430));
         Matrix_Pop();
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -4410,6 +4418,8 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 scaleFactor;
     s16 tailIdx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -4420,6 +4430,8 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 20, 0, (s8)this->workf[TAIL_ALPHA]);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
             for (i = 9; i >= 0; i--) {
+                FrameInterpolation_RecordOpenChild("Twinrova Fire Blast", epoch + i * 25);
+
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
                                globalCtx->state.gfxCtx, 0, ((this->work[CS_TIMER_1] * 3) + (i * 10)) & 0x7F,
@@ -4434,6 +4446,8 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A430));
+                
+                FrameInterpolation_RecordCloseChild();
             }
             break;
 
@@ -4444,6 +4458,8 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, (s8)this->workf[TAIL_ALPHA]);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
             for (i = 9; i >= 0; i--) {
+                FrameInterpolation_RecordOpenChild("Twinrova Ice Blast", epoch + i * 25);
+
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
                                globalCtx->state.gfxCtx, 0, ((this->work[CS_TIMER_1] * 3) + (i * 0xA)) & 0x7F,
@@ -4458,6 +4474,8 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AB00));
+
+                FrameInterpolation_RecordCloseChild();
             }
             break;
 
@@ -4474,6 +4492,8 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
     f32 scaleFactor;
     s16 tailIdx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -4484,6 +4504,8 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
 
         for (i = 9; i >= 0; i--) {
+            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 0", epoch + i * 25);
+
             gSPSegment(POLY_XLU_DISP++, 8,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (((this->work[CS_TIMER_1] * 3) + (i * 0xA))) & 0x7F,
                                         (u8)((-this->work[CS_TIMER_1] * 0xF) + (i * 50)), 0x20, 0x40, 1, 0, 0, 0x20,
@@ -4498,12 +4520,16 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A430));
+
+            FrameInterpolation_RecordCloseChild();
         }
     } else {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, (s8)this->workf[TAIL_ALPHA]);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
 
         for (i = 9; i >= 0; i--) {
+            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 1", epoch + i * 25);
+
             gSPSegment(POLY_XLU_DISP++, 8,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (((this->work[CS_TIMER_1] * 3) + (i * 0xA))) & 0x7F,
                                         (u8)((-this->work[CS_TIMER_1] * 0xF) + (i * 50)), 0x20, 0x40, 1, 0, 0, 0x20,
@@ -4518,6 +4544,8 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AB00));
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4883,6 +4911,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
         if (currentEffect->type == 1) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (sp18F == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, object_tw_DL_01A528);
                 sp18F++;
@@ -4896,8 +4926,9 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_tw_DL_01A5A8);
-        }
 
+            FrameInterpolation_RecordCloseChild();
+        }
         currentEffect++;
     }
 
@@ -4906,6 +4937,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
         if (currentEffect->type == 3) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (sp18F == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
                 sp18F++;
@@ -4921,6 +4954,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AB00));
+            
+            FrameInterpolation_RecordCloseChild();
         }
         currentEffect++;
     }
@@ -4930,6 +4965,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
         if (currentEffect->type == 2) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (sp18F == 0) {
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
@@ -4946,6 +4983,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A430));
+            
+            FrameInterpolation_RecordCloseChild();
         }
 
         currentEffect++;
@@ -4956,6 +4995,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
         if (currentEffect->type == 4) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (sp18F == 0) {
                 sp18F++;
             }
@@ -4991,6 +5032,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
             gDPSetRenderMode(POLY_XLU_DISP++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
             gSPClearGeometryMode(POLY_XLU_DISP++, G_CULL_BACK | G_FOG);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A790));
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         currentEffect++;
@@ -5004,6 +5047,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
         Vec3f off;
 
         if (currentEffect->type == TWEFF_PLYR_FRZ) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (sp18F == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AA50));
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, 255);
@@ -5037,6 +5082,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AB00));
             }
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         currentEffect++;
@@ -5047,6 +5094,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
         if (currentEffect->type >= 6) {
+            FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
+
             if (currentEffect->work[EFF_ARGS] == 0) {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, currentEffect->alpha);
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
@@ -5070,6 +5119,8 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
             } else {
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A430));
             }
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         currentEffect++;

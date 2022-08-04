@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Fire_Rock/z_en_fire_rock.h"
 #include "vt.h"
 #include "objects/object_efc_star_field/object_efc_star_field.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -303,6 +304,7 @@ void EnEncount2_ParticleInit(EnEncount2* this, Vec3f* particlePos, f32 scale) {
             particle->moveDirection.y = -20.0f;
             particle->moveDirection.z = Rand_CenteredFloat(20.0f);
             particle->isAlive = 1;
+            particle->epoch++;
             break;
         }
     }
@@ -354,6 +356,8 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[objBankIndex].segment);
 
         for (i = 0; i < ARRAY_COUNT(this->particles); particle++, i++) {
+            FrameInterpolation_RecordOpenChild(particle, particle->epoch);
+
             if (particle->isAlive) {
                 Matrix_Translate(particle->pos.x, particle->pos.y, particle->pos.z, MTXMODE_NEW);
                 Matrix_RotateX(particle->rot.x * (M_PI / 180.0f), MTXMODE_APPLY);
@@ -366,6 +370,8 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
             }
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
