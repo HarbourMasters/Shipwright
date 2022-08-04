@@ -8,7 +8,9 @@
 
 _Note: Instructions assume using powershell_
 ```powershell
+# Navigate to the Shipwright repo within powershell. ie: cd "C:\yourpath\Shipwright"
 cd Shipwright
+
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
