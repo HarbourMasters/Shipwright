@@ -1,7 +1,6 @@
 #include "Window.h"
 #include "spdlog/spdlog.h"
 #include "KeyboardController.h"
-#include "SDLController.h"
 #include "GlobalCtx2.h"
 #include "DisplayList.h"
 #include "Vertex.h"
@@ -11,22 +10,18 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "AudioPlayer.h"
-#include "WasapiAudioPlayer.h"
-#include "PulseAudioPlayer.h"
-#include "SDLAudioPlayer.h"
+#include "Hooks.h"
+#include "UltraController.h"
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
-#include "stox.h"
 #if __APPLE__
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #endif
-#include <map>
 #include <string>
 #include <chrono>
-#include "Hooks.h"
 #include "Console.h"
 #include "Cvar.h"
 
@@ -57,7 +52,7 @@ extern "C" {
         }
     #endif
 
-        Ship::Window::ControllerApi->Init(controllerBits);
+        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->Init(controllerBits);
 
         return 0;
     }
@@ -77,10 +72,10 @@ extern "C" {
         pad->gyro_y = 0;
 
         if (!CVar_GetS32("gOpenMenuBar", 0)) {
-            Ship::Window::ControllerApi->WriteToPad(pad);
+            Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
         }
 
-        ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
+        Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
 
     const char* ResourceMgr_GetNameByCRC(uint64_t crc) {
@@ -126,7 +121,7 @@ extern "C" {
 
         if (hashStr != nullptr)  {
             const auto res = LOAD_TEX(hashStr->c_str());
-            ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
+            Ship::ExecuteHooks<Ship::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
         } else {
@@ -153,7 +148,7 @@ extern "C" {
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
         const auto res = LOAD_TEX(texPath);
-        ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
+        Ship::ExecuteHooks<Ship::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
@@ -221,7 +216,7 @@ namespace Ship {
 
     int32_t Window::lastScancode;
 
-    Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr) {
+    Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr), ControllerApi(nullptr) {
         WmApi = nullptr;
         RenderingApi = nullptr;
         bIsFullscreen = false;
@@ -259,8 +254,9 @@ namespace Ship {
         std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
         CreateDefaults();
+        InitializeAudioPlayer();
+        InitializeControlDeck();
 
-        SetAudioPlayer();
         bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
 
         if (bIsFullscreen) {
@@ -279,7 +275,7 @@ namespace Ship {
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
 
-        ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
+        Ship::RegisterHook<Ship::ExitGame>([this]() {
             ControllerApi->SaveControllerSettings();
         });
     }
@@ -347,7 +343,8 @@ namespace Ship {
         lastScancode = -1;
 
         bool bIsProcessed = false;
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->ReleaseButton(dwScancode)) {
                 bIsProcessed = true;
@@ -359,8 +356,8 @@ namespace Ship {
 
     bool Window::KeyDown(int32_t dwScancode) {
         bool bIsProcessed = false;
-
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->PressButton(dwScancode)) {
                 bIsProcessed = true;
@@ -374,7 +371,8 @@ namespace Ship {
 
 
     void Window::AllKeysUp(void) {
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             pad->ReleaseAllButtons();
         }
@@ -400,7 +398,7 @@ namespace Ship {
         return dwHeight;
     }
 
-    void Window::SetAudioPlayer() {
+    void Window::InitializeAudioPlayer() {
 #ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
 #elif defined(__linux)
@@ -408,5 +406,9 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
+    }
+
+    void Window::InitializeControlDeck() {
+        ControllerApi = std::make_shared<ControlDeck>();
     }
 }

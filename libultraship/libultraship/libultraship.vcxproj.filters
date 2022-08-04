@@ -67,26 +67,14 @@
     <Filter Include="Source Files\Audio">
       <UniqueIdentifier>{ccd6359f-e357-41ca-9b89-5f509dd30649}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CustomImpl\Environment">
-      <UniqueIdentifier>{94ca4b98-cee2-48e6-a88b-68b8d2fed287}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\CustomImpl\Utils">
       <UniqueIdentifier>{0dca2d94-45ba-4916-b03a-1dd5f949114c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ModManager">
-      <UniqueIdentifier>{8e970531-d0cd-4c29-9800-a7e6edc92036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ModManager\ModModule">
-      <UniqueIdentifier>{05f273a3-f147-430e-9853-aeef59e6288d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\CustomImpl\Hooks">
       <UniqueIdentifier>{cc8de11b-7305-4482-853f-7f0f843eef28}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Logging">
       <UniqueIdentifier>{bd6557f1-9480-413b-b0cd-843f8efc1939}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl\Overlay">
-      <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Lib\dr_libs">
       <UniqueIdentifier>{db6e02cc-fc4c-4138-8219-1d281ad93ec2}</UniqueIdentifier>
@@ -99,6 +87,9 @@
     </Filter>
     <Filter Include="Source Files\Controller\InputEditor">
       <UniqueIdentifier>{010dc29b-d1f6-4793-a4e7-4156aa4fcdd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{5d68254f-662d-4e8c-a57f-de0d8e1d4a58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -303,12 +294,6 @@
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiImpl.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
@@ -321,9 +306,6 @@
     <ClCompile Include="SDLAudioPlayer.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Environment.cpp">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
-    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\CustomImpl\Utils</Filter>
     </ClCompile>
@@ -333,23 +315,11 @@
     <ClCompile Include="Cvar.cpp">
       <Filter>Source Files\Globals</Filter>
     </ClCompile>
-    <ClCompile Include="TextureMod.cpp">
-      <Filter>Source Files\ModManager\ModModule</Filter>
-    </ClCompile>
-    <ClCompile Include="ModManager.cpp">
-      <Filter>Source Files\ModManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Hooks.cpp">
-      <Filter>Source Files\CustomImpl\Hooks</Filter>
-    </ClCompile>
     <ClCompile Include="luslog.cpp">
       <Filter>Source Files\Logging</Filter>
     </ClCompile>
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverlay.cpp">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Resources\Files</Filter>
@@ -365,6 +335,15 @@
     </ClCompile>
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverlay.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiImpl.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,20 +572,11 @@
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiImpl.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h">
       <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Environment.h">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Source Files\CustomImpl\Utils</Filter>
@@ -632,15 +602,6 @@
     <ClInclude Include="Lib\stb\stb_image_write.h">
       <Filter>Source Files\Lib\stb</Filter>
     </ClInclude>
-    <ClInclude Include="TextureMod.h">
-      <Filter>Source Files\ModManager\ModModule</Filter>
-    </ClInclude>
-    <ClInclude Include="ModManager.h">
-      <Filter>Source Files\ModManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ModModule.h">
-      <Filter>Source Files\ModManager\ModModule</Filter>
-    </ClInclude>
     <ClInclude Include="Hooks.h">
       <Filter>Source Files\CustomImpl\Hooks</Filter>
     </ClInclude>
@@ -655,9 +616,6 @@
     </ClInclude>
     <ClInclude Include="color.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverlay.h">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Header Files\Resources\Files</Filter>
@@ -685,6 +643,15 @@
     </ClInclude>
     <ClInclude Include="VirtualController.h">
       <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverlay.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiImpl.h">
+      <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

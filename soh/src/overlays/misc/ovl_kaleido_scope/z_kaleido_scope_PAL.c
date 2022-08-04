@@ -12,7 +12,6 @@
 #include "textures/map_name_static/map_name_static.h"
 #include "textures/map_48x85_static/map_48x85_static.h"
 #include "vt.h"
-#include "Hooks.h"
 
 #include "soh/frame_interpolation.h"
 
@@ -3228,10 +3227,9 @@ void KaleidoScope_LoadDungeonMap(GlobalContext* globalCtx) {
 
     char* firstTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX];
     char* secondTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    uint32_t firstTextureSize = ResourceMgr_LoadTexSizeByName(firstTextureName);
 
     memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(firstTextureName), ResourceMgr_LoadTexSizeByName(firstTextureName));
-    memcpy(interfaceCtx->mapSegment + (firstTextureSize / 2), ResourceMgr_LoadTexByName(secondTextureName), ResourceMgr_LoadTexSizeByName(secondTextureName));
+    memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(secondTextureName), ResourceMgr_LoadTexSizeByName(secondTextureName));
 }
 
 void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx) {
