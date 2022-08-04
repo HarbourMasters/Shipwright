@@ -1,6 +1,6 @@
 #include "Cvar.h"
 #include <map>
-#include <string>
+#include <string.h>
 #include <functional>
 #include <memory>
 #include <utility>
