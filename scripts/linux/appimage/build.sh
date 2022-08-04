@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cmake -H. -Bbuild-cmake -GNinja
-(cd build-cmake && ninja)
+cmake --build build-cmake -- -j$(nproc)
 
 (cd build-cmake && cpack -G External)
