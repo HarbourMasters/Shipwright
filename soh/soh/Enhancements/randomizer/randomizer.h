@@ -24,6 +24,7 @@ class Randomizer {
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseRequiredTrialsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
+    void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
 
 
