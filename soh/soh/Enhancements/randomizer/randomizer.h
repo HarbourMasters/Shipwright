@@ -20,6 +20,7 @@ class Randomizer {
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
+    void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
 
   public:
     Randomizer();
