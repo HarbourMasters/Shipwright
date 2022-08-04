@@ -1384,6 +1384,12 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.infTable[29] &= ~1;
+        }
+
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
@@ -1444,6 +1450,12 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
+        // When becoming child, set swordless flag if player doesn't have kokiri sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+            gSaveContext.infTable[29] |= 1;
+        }
+
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
 
@@ -3352,8 +3364,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     const s16 C_Right_BTN_Pos_ori[] = { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR };
     const s16 C_Up_BTN_Pos_ori[]    = { C_UP_BUTTON_X+X_Margins_CU, C_UP_BUTTON_Y+Y_Margins_CU };
     const s16 C_Down_BTN_Pos_ori[]  = { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD };
-    s16 LabelX_Navi=8;
-    s16 LabelY_Navi=4 - !!CVar_GetS32("gNaviTextFix", 0);
+    s16 LabelX_Navi=7 + !!CVar_GetS32("gNaviTextFix", 0);
+    s16 LabelY_Navi=4;
     s16 C_Left_BTN_Pos[2]; //(X,Y)
     s16 C_Right_BTN_Pos[2];
     s16 C_Up_BTN_Pos[2];

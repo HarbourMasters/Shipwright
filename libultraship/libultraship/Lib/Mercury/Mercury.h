@@ -4,6 +4,8 @@
 #include <string>
 #include "../nlohmann/json.hpp"
 
+static const std::string mercuryRGBAObjectType = "RGBA";
+
 class Mercury {
 protected:
     std::string path_;

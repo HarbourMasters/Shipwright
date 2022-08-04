@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "Archive.h"
-#include "Environment.h"
 #include "GameSettings.h"
 #include "Console.h"
 #include "Hooks.h"
@@ -16,7 +15,6 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
-#include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
 #include "GameOverlay.h"
@@ -25,7 +23,7 @@
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
-#include "Utils/StringHelper.h"
+#include "UltraController.h"
 
 #if __APPLE__
 #include <SDL_hints.h>
@@ -386,7 +384,7 @@ namespace SohImGui {
         ImGui::GetStyle().ScaleAllSizes(2);
     #endif
 
-        ModInternal::RegisterHook<ModInternal::GfxInit>([] {
+        Ship::RegisterHook<Ship::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
                 ShowCursor(CVar_GetS32("gOpenMenuBar", 0), Dialogues::dLoadSettings);
 
@@ -403,7 +401,7 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         });
 
-        ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
+        Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
         });
 
@@ -792,7 +790,7 @@ namespace SohImGui {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
-            GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
+            GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
             GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
             if (CVar_GetS32("gControlNav", 0)) {
@@ -1014,6 +1012,9 @@ namespace SohImGui {
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
                         Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
+                        EnhancementCheckbox("Remember Save Location", "gRememberSaveLocation");
+                        Tooltip("When loading a save, places Link at the last entrance he went through.\n"
+                                "This doesn't work if the save was made in a grotto.");
                         ImGui::EndMenu();
                     }
 
@@ -1414,6 +1415,9 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                EnhancementCheckbox("Time Sync", "gTimeSync");
+                Tooltip("This syncs the ingame time with the real world time");
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
@@ -1650,12 +1654,10 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
-        std::string fb_str = SohUtils::getEnvironmentVar("framebuffer");
-        if (!fb_str.empty()) {
-            uintptr_t fbuf = (uintptr_t)std::stoull(fb_str);
-            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);
+        if (gfxFramebuffer) {
+            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(gfxFramebuffer), pos, size);
             ImGui::SetCursorPos(pos);
-            ImGui::Image(reinterpret_cast<ImTextureID>(fbuf), size);
+            ImGui::Image(reinterpret_cast<ImTextureID>(gfxFramebuffer), size);
         }
 
         ImGui::End();

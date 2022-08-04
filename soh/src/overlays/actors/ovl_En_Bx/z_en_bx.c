@@ -6,6 +6,7 @@
 
 #include "z_en_bx.h"
 #include "objects/object_bxa/object_bxa.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -103,6 +104,7 @@ void EnBx_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     }
     thisx->params &= 0xFF;
+    this->epoch++;
 }
 
 void EnBx_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -235,10 +237,14 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 4; i++, mtx++) {
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
+
         Matrix_Translate(this->unk_154[i].x, this->unk_154[i].y, this->unk_154[i].z, MTXMODE_NEW);
         Matrix_RotateZYX(this->unk_1B4[i].x, this->unk_1B4[i].y, this->unk_1B4[i].z, MTXMODE_APPLY);
         Matrix_Scale(this->unk_184[i].x, this->unk_184[i].y, this->unk_184[i].z, MTXMODE_APPLY);
         MATRIX_TOMTX(mtx);
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_0022F0);
