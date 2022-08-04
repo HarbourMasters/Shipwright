@@ -116,7 +116,6 @@ set(Source_Files__CustomImpl
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
 set(Source_Files__CustomImpl__Hooks
-    "Hooks.cpp"
     "Hooks.h"
 )
 source_group("Source Files\\CustomImpl\\Hooks" FILES ${Source_Files__CustomImpl__Hooks})
@@ -242,19 +241,6 @@ set(Source_Files__Logging
 )
 source_group("Source Files\\Logging" FILES ${Source_Files__Logging})
 
-set(Source_Files__ModManager
-    "ModManager.cpp"
-    "ModManager.h"
-)
-source_group("Source Files\\ModManager" FILES ${Source_Files__ModManager})
-
-set(Source_Files__ModManager__ModModule
-    "ModModule.h"
-    "TextureMod.cpp"
-    "TextureMod.h"
-)
-source_group("Source Files\\ModManager\\ModModule" FILES ${Source_Files__ModManager__ModModule})
-
 set(Source_Files__Resources
     "GameVersions.h"
     "Resource.cpp"
@@ -353,8 +339,6 @@ set(ALL_FILES
     ${Source_Files__Lib__dr_libs}
     ${Source_Files__Lib__tinyxml2}
     ${Source_Files__Logging}
-    ${Source_Files__ModManager}
-    ${Source_Files__ModManager__ModModule}
     ${Source_Files__Resources}
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
