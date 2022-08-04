@@ -89,7 +89,7 @@ void EffectSpark_Init(void* thisx, void* initParamsx) {
             elem->unkPosition.x = Rand_ZeroOne() * 65534.0f;
             elem->unkPosition.y = Rand_ZeroOne() * 65534.0f;
             elem->unkPosition.z = Rand_ZeroOne() * 65534.0f;
-            elem->epoch = 0;
+            elem->epoch++;
         }
 
         this->timer = 0;
@@ -119,7 +119,6 @@ s32 EffectSpark_Update(void* thisx) {
         elem->unkPosition.x += elem->unkVelocity.x;
         elem->unkPosition.y += elem->unkVelocity.y;
         elem->unkPosition.z += elem->unkVelocity.z;
-        elem->epoch++;
     }
 
     this->timer++;

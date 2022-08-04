@@ -348,7 +348,7 @@ void BossMo_Init(Actor* thisx, GlobalContext* globalCtx2) {
         globalCtx->specialEffects = sEffects;
         for (i = 0; i < ARRAY_COUNT(sEffects); i++) {
             sEffects[i].type = MO_FX_NONE;
-            sEffects[i].epoch = 0;
+            sEffects[i].epoch++;
         }
         this->actor.world.pos.x = 200.0f;
         this->actor.world.pos.y = MO_WATER_LEVEL(globalCtx) + 50.0f;
@@ -2767,7 +2767,6 @@ void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx) {
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type != MO_FX_NONE) {
             effect->timer++;
-            effect->epoch++;
             if (effect->stopTimer == 0) {
                 effect->pos.x += effect->vel.x;
                 effect->pos.y += effect->vel.y;

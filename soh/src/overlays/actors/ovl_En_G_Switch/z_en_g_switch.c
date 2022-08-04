@@ -534,7 +534,7 @@ void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx
             f32 pitch;
             f32 yaw;
 
-            effect->epoch = 0;
+            effect->epoch++;
             effect->pos = *pos;
             effect->scale = scale;
             effect->colorIdx = colorIdx;
@@ -560,7 +560,6 @@ void EnGSwitch_UpdateEffects(EnGSwitch* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
-            effect->epoch++;
             effect->rot.x += Rand_ZeroOne() * 10.0f + 15.0f;
             effect->rot.y += Rand_ZeroOne() * 10.0f + 15.0f;
             effect->rot.z += Rand_ZeroOne() * 10.0f + 15.0f;

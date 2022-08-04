@@ -55,7 +55,7 @@ u32 EffectSsBomb2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     this->rEnvColorR = 0;
     this->rEnvColorG = 0;
     this->rEnvColorB = 200;
-    this->epoch = 0;
+    this->epoch++;
 
     return 1;
 }
@@ -193,5 +193,4 @@ void EffectSsBomb2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         this->rEnvColorG = func_80027DD4(this->rEnvColorG, 10, divisor);
         this->rEnvColorB = func_80027DD4(this->rEnvColorB, 10, divisor);
     }
-    this->epoch++;
 }

@@ -104,7 +104,7 @@ void EnBx_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     }
     thisx->params &= 0xFF;
-    this->epoch = 0;
+    this->epoch++;
 }
 
 void EnBx_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -137,7 +137,6 @@ void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
     s16 tmp32;
     s32 tmp33;
 
-    this->epoch++;
     if ((thisx->xzDistToPlayer <= 70.0f) || (this->collider.base.atFlags & AT_HIT) ||
         (this->collider.base.acFlags & AC_HIT) || (this->colliderQuad.base.atFlags & AT_HIT)) {
         if ((thisx->xzDistToPlayer <= 70.0f) || (&player->actor == this->collider.base.at) ||

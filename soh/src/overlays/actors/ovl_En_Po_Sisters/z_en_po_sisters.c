@@ -180,7 +180,7 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 pad;
 
-    this->epoch = 0;
+    this->epoch++;
 
     // Skip Poe Intro Cutscene
     if (gSaveContext.n64ddFlag && thisx->params == 4124) {
@@ -1189,9 +1189,7 @@ void EnPoSisters_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnPoSisters* this = (EnPoSisters*)thisx;
     s16 temp;
-
-    this->epoch++;
-
+    
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
         func_80AD9568(this);

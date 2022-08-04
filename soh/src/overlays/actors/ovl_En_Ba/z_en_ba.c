@@ -108,7 +108,7 @@ void EnBa_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 4;
     this->upperParams = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
-    this->epoch = 0;
+    this->epoch++;
 
     if (this->actor.params < EN_BA_DEAD_BLOB) {
         if (Flags_GetSwitch(globalCtx, this->upperParams)) {
@@ -466,7 +466,6 @@ void EnBa_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->unk14C >= 2) {
         CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
     }
-    this->epoch++;
 }
 
 static void* D_809B8118[] = {

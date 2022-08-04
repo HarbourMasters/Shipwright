@@ -813,7 +813,7 @@ void EnFd_AddEffect(EnFd* this, u8 type, Vec3f* pos, Vec3f* velocity, Vec3f* acc
             eff->color.a = 255;
             eff->timer = (s16)(Rand_ZeroOne() * 10.0f);
         }
-        eff->epoch = 0;
+        eff->epoch++;
         return;
     }
 }
@@ -837,7 +837,6 @@ void EnFd_UpdateFlames(EnFd* this) {
             eff->velocity.y += eff->accel.y;
             eff->velocity.z += eff->accel.z;
             eff->scale += eff->scaleStep;
-            eff->epoch++;
         }
     }
 }
@@ -871,7 +870,6 @@ void EnFd_UpdateDots(EnFd* this) {
                 eff->color.a = 0;
                 eff->type = FD_EFFECT_NONE;
             }
-            eff->epoch++;
         }
     }
 }

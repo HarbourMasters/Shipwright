@@ -766,7 +766,7 @@ void Fishing_InitPondProps(Fishing* this, GlobalContext* globalCtx) {
             break;
         }
 
-        prop->epoch = 0;
+        prop->epoch++;
         prop->type = sPondPropInits[i].type;
         prop->pos.x = sPondPropInits[i].pos.x;
         prop->pos.y = sPondPropInits[i].pos.y;
@@ -932,7 +932,7 @@ void Fishing_Init(Actor* thisx, GlobalContext* globalCtx2) {
         for (i = 0; i < GROUP_FISH_COUNT; i++) {
             FishingGroupFish* fish = &sGroupFishes[i];
 
-            fish->epoch = 0;
+            fish->epoch++;
 
             fish->type = FS_GROUP_FISH_NORMAL;
 
@@ -4390,7 +4390,6 @@ void Fishing_UpdatePondProps(GlobalContext* globalCtx) {
 
     for (i = 0; i < POND_PROP_COUNT; i++) {
         if (prop->type != FS_PROP_NONE) {
-            prop->epoch++;
             prop->shouldDraw = false;
             prop->timer++;
 
@@ -4648,7 +4647,6 @@ void Fishing_UpdateGroupFishes(GlobalContext* globalCtx) {
 
     for (i = 0; i < GROUP_FISH_COUNT; i++) {
         if (fish->type != FS_GROUP_FISH_NONE) {
-            fish->epoch++;
             fish->timer++;
 
             SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &fish->pos, &fish->projectedPos, &sProjectedW);

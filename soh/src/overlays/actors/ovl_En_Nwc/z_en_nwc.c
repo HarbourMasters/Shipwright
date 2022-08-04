@@ -120,7 +120,6 @@ void EnNwc_UpdateChicks(EnNwc* this, GlobalContext* globalCtx) {
 
     prevChickPos.y = 99999.9f;
     for (i = 0; i < this->count; i++, prevChickPos = chick->pos, chick++, element++) {
-        chick->epoch++;
         Math_Vec3f_Copy(&chick->lastPos, &chick->pos);
 
         chickActionFuncs[chick->type](chick, this, globalCtx);
@@ -226,7 +225,7 @@ void EnNwc_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->count = 16;
     chick = this->chicks;
     for (i = 0; i < this->count; i++, chick++) {
-        chick->epoch = 0;
+        chick->epoch++;
         chick->type = CHICK_NORMAL;
         chick->pos.x = thisx->world.pos.x + ((Rand_ZeroOne() * 100.0f) - 50.0f);
         chick->pos.y = thisx->world.pos.y + 20.0f;

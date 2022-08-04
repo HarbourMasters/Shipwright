@@ -280,7 +280,7 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             globalCtx->specialEffects = &sClearTagEffects[0];
             for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++) {
                 sClearTagEffects[i].type = CLEAR_TAG_EFFECT_AVAILABLE;
-                sClearTagEffects[i].epoch = 0;
+                sClearTagEffects[i].epoch++;
             }
             this->drawMode = CLEAR_TAG_DRAW_MODE_ALL;
         }
@@ -884,7 +884,6 @@ void EnClearTag_UpdateEffects(GlobalContext* globalCtx) {
                 effect->timer--;
             }
         }
-        effect->epoch++;
     }
 }
 
