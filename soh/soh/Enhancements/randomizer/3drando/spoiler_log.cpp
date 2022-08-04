@@ -603,7 +603,7 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   bool needsAutomaicNewlines = true;
   if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
       textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
-      textStr == "What about Zelda makes you think she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
+      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
       textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
       textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
       textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||

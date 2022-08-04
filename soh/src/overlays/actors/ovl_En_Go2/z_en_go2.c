@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -140,8 +141,6 @@ typedef enum {
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
-    /* 13 */ ENGO2_ANIM_13, // Fixed Goron Wakeup Animation
-    /* 14 */ ENGO2_ANIM_14 // Fixed Biggoron Wakeup Animation
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -151,8 +150,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01, 0.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -179,6 +177,7 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
+            dustEffect->epoch++;
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
             timer = initialTimer;
@@ -239,6 +238,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
                 firstDone = true;
             }
 
+            FrameInterpolation_RecordOpenChild(dustEffect, dustEffect->epoch);
             alpha = dustEffect->timer * (255.0f / dustEffect->initialTimer);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 130, 90, alpha);
             gDPPipeSync(POLY_XLU_DISP++);
@@ -250,6 +250,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1344,10 +1345,10 @@ void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(globalCtx, 4200, -99, &this->actor, MAIN_CAM);
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ((CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_10 : ENGO2_ANIM_14));
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ((CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_1 : ENGO2_ANIM_13));
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;

@@ -12,6 +12,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
 #include "objects/object_gi_rupy/object_gi_rupy.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -533,6 +534,7 @@ void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx
             f32 pitch;
             f32 yaw;
 
+            effect->epoch++;
             effect->pos = *pos;
             effect->scale = scale;
             effect->colorIdx = colorIdx;
@@ -590,6 +592,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
     func_80093D18(globalCtx->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             scale = effect->scale / 10000.0f;
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -600,6 +603,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
     CLOSE_DISPS(gfxCtx);

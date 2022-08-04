@@ -1,6 +1,6 @@
 #include "global.h"
-#include "Hooks.h"
 #include <string.h>
+#include "soh/OTRGlobals.h"
 
 void func_800C3C80(AudioMgr* audioMgr) {
     AudioTask* task;
@@ -108,7 +108,7 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
         AudioLoad_SetDmaHandler(DmaMgr_DmaHandler);
         Audio_InitSound();
         osSendMesgPtr(&audioMgr->unk_C8, NULL, OS_MESG_BLOCK);
-        ModInternal_ExecuteAudioInitHooks();
+        Hooks_ExecuteAudioInit();
         // Removed due to crash
         //IrqMgr_AddClient(audioMgr->irqMgr, &irqClient, &audioMgr->unk_74);
         hasInitialized = true;

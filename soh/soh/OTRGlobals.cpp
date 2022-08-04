@@ -4,9 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <locale>
-#include <codecvt>
 #include "GlobalCtx2.h"
-#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -22,11 +20,9 @@
 #else
 #include <time.h>
 #endif
-#include <Vertex.h>
 #include <CollisionHeader.h>
 #include <Array.h>
 #include <Cutscene.h>
-#include <Texture.h>
 #include "Lib/stb/stb_image.h"
 #define DRMP3_IMPLEMENTATION
 #include "Lib/dr_libs/mp3.h"
@@ -40,10 +36,10 @@
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
-#include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include "Hooks.h"
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -451,6 +447,12 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 }
 
 extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
+
+extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
@@ -1300,10 +1302,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    for (int i = 0; i < controllers.size(); ++i) {
-        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        physicalDevice->WriteToSource(i, controller);
     }
 }
 
@@ -1357,16 +1360,20 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
-
-    for (const auto virtual_entry : controllers) {
-        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        if (physicalDevice->CanRumble()) {
             return 1;
         }
     }
 
     return 0;
+}
+
+extern "C" void Hooks_ExecuteAudioInit() {
+    Ship::ExecuteHooks<Ship::AudioInit>();
 }
 
 extern "C" void* getN64WeirdFrame(s32 i) {
@@ -1507,4 +1514,13 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+}
+
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
+         Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
+
+extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
