@@ -1835,7 +1835,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     s16 i;
     f32 temp_float;
     Mtx* tempMat = Graph_Alloc(globalCtx->state.gfxCtx, 18 * sizeof(Mtx));
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
