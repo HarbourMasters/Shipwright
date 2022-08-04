@@ -18,7 +18,7 @@ namespace Ship
 			uint32_t w1 = reader->ReadUInt32();
 
 			if (sizeof(uintptr_t) < 8){
-				dl->instructions.push_back(((uint64_t) w0 << 32) | w1);
+				dl->instructions.push_back(((uint64_t) w1 << 32) | w0);
 
 				uint8_t opcode = w0 >> 24;
 
@@ -27,7 +27,7 @@ namespace Ship
 					w0 = reader->ReadUInt32();
 					w1 = reader->ReadUInt32();
 
-					dl->instructions.push_back(((uint64_t) w0 << 32) | w1);
+					dl->instructions.push_back(((uint64_t) w1 << 32) | w0);
 				}
 
 				if (opcode == G_ENDDL)

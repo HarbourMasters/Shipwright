@@ -33,11 +33,5 @@ void OTRExporter_Vtx::Save(ZResource* res, const fs::path& outPath, BinaryWriter
 	ZVtx* vtx = (ZVtx*)res;
 
 	WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Rachael, writeFullHeader);
-
 	WriteVtx(vtx, writer);
-
-	//std::vector<ZResource*> vec;
-	//vec.push_back(vtx);
-
-	//SaveArr(res, outPath, vec, writer, writeHeader);
 }

@@ -813,6 +813,9 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							}
 						}
 
+						OTRExporter_Array arrTest;
+						arrTest.Save(arr, outPath, &vtxWriter, writeFullHeader);
+
 						AddFile(fName, vtxStream->ToVector());
 					}
 				}

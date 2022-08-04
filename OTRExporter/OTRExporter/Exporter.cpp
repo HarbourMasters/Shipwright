@@ -5,7 +5,7 @@ void OTRExporter::WriteHeader(ZResource* res, BinaryWriter* writer, Ship::Resour
 {
 	if (writeFullHeader)
 	{
-		writer->Write((uint8_t)Endianess::Little); // 0x00
+		writer->Write((uint8_t)Endianness::Little); // 0x00
 		writer->Write((uint8_t)0); // 0x01
 		writer->Write((uint8_t)0); // 0x02
 		writer->Write((uint8_t)0); // 0x03

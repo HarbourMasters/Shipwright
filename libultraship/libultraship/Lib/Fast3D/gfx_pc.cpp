@@ -2121,7 +2121,7 @@ static void gfx_run_dl(Gfx* cmd) {
 
 #if _DEBUG
             //uint64_t hash = ((uint64_t)cmd->words.w0 << 32) + cmd->words.w1;
-            //ResourceMgr_GetNameByCRC(hash, dlName);
+            //printf("G_MARKER: %s\n", ResourceMgr_GetNameByCRC(hash));
             //lusprintf(__FILE__, __LINE__, 6, "G_MARKER: %s\n", dlName);
 #endif
 
@@ -2240,10 +2240,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uint64_t hash = ((uint64_t)cmd->words.w0 << 32) + cmd->words.w1;
 
 #if _DEBUG
-                //char fileName[4096];
-                //ResourceMgr_GetNameByCRC(hash, fileName);
-
-                //printf("G_VTX_OTR: %s, 0x%08X\n", fileName, hash);
+                //printf("G_VTX_OTR: %s, 0x%08X\n", ResourceMgr_GetNameByCRC(hash), hash);
 #endif
                 if (offset > 0xFFFFF)
                 {
