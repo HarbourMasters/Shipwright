@@ -308,25 +308,41 @@ static void WriteLocation(
 
 //Writes a shuffled entrance to the specified node
 static void WriteShuffledEntrance(
-  tinyxml2::XMLElement* parentNode,
-  Entrance* entrance,
-  const bool withPadding = false
-) {
-  auto node = parentNode->InsertNewChildElement("entrance");
-  node->SetAttribute("name", entrance->GetName().c_str());
-  auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
-  node->SetText(text.c_str());
-
-  if (withPadding) {
-    constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
-
-    //Insert padding so we get a kind of table in the XML document
-    int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
-    if (requiredPadding > 0) {
-      std::string padding(requiredPadding, ' ');
-      node->SetAttribute("_", padding.c_str());
+    Entrance* entrance, const bool withPadding = false) {
+    // Entrance* entrance = Entrances(EntranceKey);
+    int16_t originalIndex = entrance->GetIndex();
+    int16_t destinationIndex = entrance->GetReverse()->GetIndex();
+    int16_t originalBlueWarp = entrance->GetBlueWarp();
+    int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+    int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+  // auto node = parentNode->InsertNewChildElement("location");
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        default:
+            jsonData["playthrough"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
+            break;
+        case LANGUAGE_FRA:
+            jsonData["playthrough"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
     }
-  }
+//   tinyxml2::XMLElement* parentNode,
+//   Entrance* entrance,
+//   const bool withPadding = false
+// ) {
+//   auto node = parentNode->InsertNewChildElement("entrance");
+//   node->SetAttribute("name", entrance->GetName().c_str());
+//   auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+//   node->SetText(text.c_str());
+
+//   if (withPadding) {
+//     constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
+
+//     //Insert padding so we get a kind of table in the XML document
+//     int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
+//     if (requiredPadding > 0) {
+//       std::string padding(requiredPadding, ' ');
+//       node->SetAttribute("_", padding.c_str());
+//     }
+//   }
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
@@ -540,23 +556,31 @@ static void WritePlaythrough() {
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
-static void WriteShuffledEntrances(tinyxml2::XMLDocument& spoilerLog) {
-    if (!Settings::ShuffleEntrances || noRandomEntrances) {
-        return;
+static void WriteShuffledEntrances() {
+    // // if (!Settings::ShuffleEntrances || noRandomEntrances) {
+    // //     return;
+    // // }
+
+    //auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
+
+    // for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    //     auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
+    //     sphereNode->SetAttribute("level", i + 1);
+
+    //     for (Entrance* entrance : playthroughEntrances[i]) {
+    //         WriteShuffledEntrance(sphereNode, entrance, true);
+    //     }
+    // }
+  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    // auto sphereNode = std::to_string(i);
+    // std::string sphereString =  "sphere ";
+    // if (sphereNode.length() == 1) sphereString += "0";
+    // sphereString += sphereNode;
+    for (Entrance* entrance : playthroughEntrances[i]) {
+      WriteShuffledEntrance(entrance, true);
     }
-
-    auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
-
-    for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-        auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-        sphereNode->SetAttribute("level", i + 1);
-
-        for (Entrance* entrance : playthroughEntrances[i]) {
-            WriteShuffledEntrance(sphereNode, entrance, true);
-        }
-    }
-
-    spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+    //spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+}
 }
 
 // Writes the WOTH locations to the spoiler log, if there are any.
@@ -721,9 +745,8 @@ const char* SpoilerLog_Write(int language) {
     playthroughLocations.clear();
     playthroughBeatable = false;
     wothLocations.clear();
-
     WriteHints(language);
-    //WriteShuffledEntrances(spoilerLog);
+    WriteShuffledEntrances();
     WriteAllLocations(language);
 
     if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {

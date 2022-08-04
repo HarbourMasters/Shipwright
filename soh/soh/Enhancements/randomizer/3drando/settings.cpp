@@ -2491,6 +2491,15 @@ namespace Settings {
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
 
+    //entrance rando
+    ShuffleEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ENTRANCES]);
+    ShuffleDungeonEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES]);
+    ShuffleOverworldEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
+    ShuffleInteriorEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES]);
+    ShuffleGrottoEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES]);
+
+
+
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
     if(cvarSettings[RSK_SKIP_CHILD_ZELDA]) {

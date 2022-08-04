@@ -3255,6 +3255,13 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
@@ -3705,13 +3712,13 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
 
-                    // COLUMN 2 - WORLD SETTINGS
-                    // ImGui::NewLine();
-                    // SohImGui::EnhancementCheckbox("Randomize All World Settings", "gRandomizeAllWorldSettings");
-                    // InsertHelpHoverText("Randomize all World Settings");
-                    // ImGui::Separator();
+                    //COLUMN 2 - WORLD SETTINGS
+                    ImGui::NewLine();
+                    SohImGui::EnhancementCheckbox("Randomize All World Settings", "gRandomizeAllWorldSettings");
+                    InsertHelpHoverText("Randomize all World Settings");
+                    ImGui::Separator();
 
-                    // if (CVar_GetS32("gRandomizeAllWorldSettings", 0) != 1) {
+                    if (CVar_GetS32("gRandomizeAllWorldSettings", 0) != 1) {
                         // todo implement starting age
                         // Starting Age
                         // ImGui::Text("Starting Age");
@@ -3724,49 +3731,102 @@ void DrawRandoEditor(bool& open) {
 
                         // todo implement entrance shuffle
                         // Shuffle Entrances
-                        // ImGui::Text("Shuffle Entrances");
-                        // InsertHelpHoverText("Shuffle where the entrances between areas lead to.\n"
-                        //                     "If turned on, select which kinds of entrances you\n"
-                        //                     "want shuffled in the options below. Note that some\n"
-                        //                     "types of entrances can have widly varying\ngeneration times.");
-                        // SohImGui::EnhancementCombobox("gRandomizeShuffleEntrances", randoShuffleEntrances, 2, 0);
-                        // if (CVar_GetS32("gRandomizeShuffleEntrances", 0) == 1) {
-                        //     ImGui::Indent();
-                        //     ImGui::Text("Shuffle Dungeons Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of dungeon entrances, including\nBottom of the Well, Ice caven and "
-                        //         "Gerudo\n"
-                        //         "Training Grounds However, Ganon's Caslte is not\nshuffled.\n\nAdditionally, the "
-                        //         "entrance "
-                        //         "of "
-                        //         "Deku Tree, Fire\nTemple and Bottom of the Well are opened for both\nadult and child.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances",
-                        //                                   randoShuffleDungeonsEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Overworld Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of Overworld entrances, which\ncorresponds to almost all loading "
-                        //         "zones "
-                        //         "between\nOverworld areas.\n\nSome entrances are unshuffled to avoid issues:\n- Hyrule "
-                        //         "Castle "
-                        //         "Courtyard and Garden entrance\n- Both Market Back Alley entrances\n- Gerudo Valley to "
-                        //         "Lake "
-                        //         "Hylia (unless entrances\nare decoupled).");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleOverworldEntrances",
-                        //                                   randoShuffleOverworldEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Interiors Entrances");
-                        //     InsertHelpHoverText("Interior entrances will not be shuffled.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances",
-                        //                                   randoShuffleInteriorsEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Grottos Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of grotto entrances, including\nall graves, small Fairy "
-                        //         "fountains and the Lost\nWoods Stage.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleGrottosEntrances",
-                        //                                   randoShuffleGrottosEntrances, 2, 0);
-                        //     ImGui::Unindent();
-                        // }
-                        // ImGui::Separator();
-
+                        ImGui::Text("Shuffle Entrances");
+                        InsertHelpHoverText("Shuffle where the entrances between areas lead to.\n"
+                                            "If turned on, select which kinds of entrances you\n"
+                                            "want shuffled in the options below. Note that some\n"
+                                            "types of entrances can have widly varying\ngeneration times.");
+                        SohImGui::EnhancementCombobox("gRandomizeShuffleEntrances", randoShuffleEntrances, 2, 0);
+                        switch (CVar_GetS32("gRandomizeShuffleEntrances", 0)) {
+                            case 0:
+                                InsertHelpHoverText(
+                                    "off");
+                                break;
+                            case 1:
+                                InsertHelpHoverText(
+                                    "on");
+                                break;
+                        }
+                        if (CVar_GetS32("gRandomizeShuffleEntrances", 0) == 1) {
+                            ImGui::Indent();
+                            ImGui::Text("Shuffle Dungeons Entrances");
+                            InsertHelpHoverText(
+                                "Shuffle the pool of dungeon entrances, including\nBottom of the Well, Ice caven and "
+                                "Gerudo\n"
+                                "Training Grounds However, Ganon's Caslte is not\nshuffled.\n\nAdditionally, the "
+                                "entrance "
+                                "of "
+                                "Deku Tree, Fire\nTemple and Bottom of the Well are opened for both\nadult and child.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances",
+                                                          randoShuffleDungeonsEntrances, 2, 0);
+                            switch (CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0)) {
+                                case 0:
+                                    InsertHelpHoverText("off");
+                                    break;
+                                case 1:
+                                    InsertHelpHoverText("on");
+                                    break;
+                                case 2:
+                                    InsertHelpHoverText("on + ganon");
+                                    break;
+                            }
+                        
+                            ImGui::Text("Shuffle Overworld Entrances");
+                            InsertHelpHoverText(
+                                "Shuffle the pool of Overworld entrances, which\ncorresponds to almost all loading "
+                                "zones "
+                                "between\nOverworld areas.\n\nSome entrances are unshuffled to avoid issues:\n- Hyrule "
+                                "Castle "
+                                "Courtyard and Garden entrance\n- Both Market Back Alley entrances\n- Gerudo Valley to "
+                                "Lake "
+                                "Hylia (unless entrances\nare decoupled).");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleOverworldEntrances",
+                                                          randoShuffleOverworldEntrances, 2, 0);
+                            switch (CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0)) {
+                                case 0:
+                                    InsertHelpHoverText(
+                                        "off");
+                                    break;
+                                case 1:
+                                    InsertHelpHoverText(
+                                        "on");
+                                    break;
+                            }
+                            ImGui::Text("Shuffle Interiors Entrances");
+                            InsertHelpHoverText("Interior entrances will not be shuffled.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances",
+                                                          randoShuffleInteriorsEntrances, 2, 0);
+                            switch (CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0)) {
+                                case 0:
+                                    InsertHelpHoverText("off");
+                                    break;
+                                case 1:
+                                    InsertHelpHoverText("simple");
+                                    break;
+                                case 2:
+                                    InsertHelpHoverText("all");
+                                    break;
+                            }
+                            ImGui::Text("Shuffle Grottos Entrances");
+                            InsertHelpHoverText(
+                                "Shuffle the pool of grotto entrances, including\nall graves, small Fairy "
+                                "fountains and the Lost\nWoods Stage.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleGrottosEntrances",
+                                                          randoShuffleGrottosEntrances, 2, 0);
+                            switch (CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0)) {
+                                case 0:
+                                    InsertHelpHoverText(
+                                        "off");
+                                    break;
+                                case 1:
+                                    InsertHelpHoverText(
+                                        "on");
+                                    break;
+                            }
+                            ImGui::Unindent();
+                        }
+                        ImGui::Separator();
+                    }
                         // todo can't do this until bowling is unlocked by chus
                         // Bombchus in Logic
                         // ImGui::Text("Bombchus in Logic");

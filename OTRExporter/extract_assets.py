@@ -6,6 +6,9 @@ from rom_info import Z64Rom
 import rom_chooser
 import struct
 import subprocess
+from os import chdir
+
+chdir ("C:\\Users\\ryan\\Documents\\GitHub\\Shipwrighttest\\OTRExporter")
 
 def BuildOTR(xmlPath, rom):
     shutil.copytree("assets", "Extract/assets")
