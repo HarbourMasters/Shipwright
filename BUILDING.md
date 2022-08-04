@@ -28,6 +28,10 @@ cd "build/x64"
 ```
 
 ## Linux
+1. Requires `gcc, x11, curl, python3, sdl2, libpng, glew, ninja, cmake`
+
+
+_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
 # Clone the repo
@@ -57,6 +61,9 @@ cpack -G External (creates appimage)
 
 ## macOS
 1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
+
+_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
