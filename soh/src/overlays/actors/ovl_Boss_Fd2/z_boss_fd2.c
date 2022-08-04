@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_Boss_Fd/z_boss_fd.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -1146,6 +1147,8 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     }
 
     for (i = 0; i < 9; i++) {
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
+
         Matrix_Translate((pos + i)->x, (pos + i)->y, (pos + i)->z, MTXMODE_NEW);
         Matrix_RotateY((rot + i)->y, MTXMODE_APPLY);
         Matrix_RotateX((rot + i)->x, MTXMODE_APPLY);
@@ -1155,6 +1158,8 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gHoleVolvagiaManeModelDL);
+
+        FrameInterpolation_RecordCloseChild();
     }
     Matrix_Pop();
     CLOSE_DISPS(globalCtx->state.gfxCtx);
