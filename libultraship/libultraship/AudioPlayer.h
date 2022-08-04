@@ -1,14 +1,5 @@
 #pragma once
 #include "stdint.h"
-#ifndef _MSC_VER
-#include "SDLAudioPlayer.h"
-#endif
-#ifdef _MSC_VER
-#include "WasapiAudioPlayer.h"
-#endif
-#ifdef __APPLE__
-#include "PulseAudioPlayer.h"
-#endif
 
 namespace Ship {
 	class AudioPlayer {
@@ -23,3 +14,13 @@ namespace Ship {
 		constexpr int GetSampleRate() const { return 44100; }
 	};
 }
+
+#if !_MSC_VER  && !__APPLE__
+#include "SDLAudioPlayer.h"
+#endif
+#ifdef _MSC_VER
+#include "WasapiAudioPlayer.h"
+#endif
+#ifdef __APPLE__
+#include "PulseAudioPlayer.h"
+#endif
