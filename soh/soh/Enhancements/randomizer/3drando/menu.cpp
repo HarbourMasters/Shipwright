@@ -14,7 +14,7 @@
 #include "location_access.hpp"
 #include "debug.hpp"
 #include <Lib/spdlog/include/spdlog/spdlog.h>
-#include "randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 namespace {
 bool seedChanged;

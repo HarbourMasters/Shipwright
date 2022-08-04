@@ -167,6 +167,7 @@ void func_8083CA20(GlobalContext* globalCtx, Player* this);
 void func_8083CA54(GlobalContext* globalCtx, Player* this);
 void func_8083CA9C(GlobalContext* globalCtx, Player* this);
 s32 func_8083E0FC(Player* this, GlobalContext* globalCtx);
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx);
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx);
 s32 func_8083EB44(Player* this, GlobalContext* globalCtx);
 s32 func_8083F7BC(Player* this, GlobalContext* globalCtx);
@@ -620,7 +621,7 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS, GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x3C, 0x80, CHEST_ANIM_LONG), // Ice Traps
+    GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x3C, 0x80, CHEST_ANIM_SHORT), // Ice Traps
     GET_ITEM_NONE,
 
     GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
@@ -6231,6 +6232,30 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
     func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
+// Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
+// and which flag is specified in player->pendingFlag.flagID.
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
+    switch (this->pendingFlag.flagType) {
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_SWITCH:
+            Flags_SetSwitch(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_TREASURE:
+            Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_NONE:
+        default:
+            break;
+    }
+    this->pendingFlag.flagType = FLAG_NONE;
+    this->pendingFlag.flagID = 0;
+}
+
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
 
@@ -6254,6 +6279,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                    Player_SetPendingFlag(this, globalCtx);
                     return;
                 }
 
@@ -12700,6 +12726,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
+        
+        Player_SetPendingFlag(this, globalCtx);
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||

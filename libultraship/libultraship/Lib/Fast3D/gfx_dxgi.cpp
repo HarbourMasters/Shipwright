@@ -229,9 +229,8 @@ static void onkeyup(WPARAM w_param, LPARAM l_param) {
     }
 }
 
-char fileName[256];
-
 static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_param, LPARAM l_param) {
+    char fileName[256];
     SohImGui::EventImpl event_impl;
     event_impl.win32 = { h_wnd, static_cast<int>(message), static_cast<int>(w_param), static_cast<int>(l_param) };
     SohImGui::Update(event_impl);

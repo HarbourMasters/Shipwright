@@ -2,6 +2,7 @@
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -150,6 +151,7 @@ void func_808C17C8(GlobalContext* globalCtx, Vec3f* arg1, Vec3f* arg2, Vec3f* ar
 
     for (i = 0; i < arg5; i++, eff++) {
         if (eff->unk_24 == 0) {
+            eff->epoch++;
             eff->unk_24 = 1;
             eff->unk_00 = *arg1;
             eff->unk_0C = *arg2;
@@ -1700,6 +1702,7 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
 
     for (i = 0; i < 80; i++, eff++) {
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
         if (eff->unk_24 == 1) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -1716,6 +1719,7 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_009DD0);
         }
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(gfxCtx);

@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -139,7 +140,7 @@ typedef enum {
     /*  9 */ ENGO2_ANIM_9,
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
-    /* 12 */ ENGO2_ANIM_12
+    /* 12 */ ENGO2_ANIM_12,
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -176,6 +177,7 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
+            dustEffect->epoch++;
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
             timer = initialTimer;
@@ -236,6 +238,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
                 firstDone = true;
             }
 
+            FrameInterpolation_RecordOpenChild(dustEffect, dustEffect->epoch);
             alpha = dustEffect->timer * (255.0f / dustEffect->initialTimer);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 130, 90, alpha);
             gDPPipeSync(POLY_XLU_DISP++);
@@ -247,6 +250,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -342,7 +346,7 @@ s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
                     if(!gSaveContext.n64ddFlag) {
                         bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;    
                     } else {
-                        bombBagUpgrade = GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
+                        bombBagUpgrade = Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
                     }
                     EnGo2_GetItem(this, globalCtx, bombBagUpgrade);
                     Message_CloseTextbox(globalCtx);
@@ -538,7 +542,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
                 }
                 
                 gSaveContext.infTable[16] |= 0x200;
-                EnGo2_GetItem(this, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
                 this->actionFunc = EnGo2_SetupGetItem;
                 Flags_SetTreasure(globalCtx, 0x1F);
                 return 2;
@@ -617,7 +621,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
                         return 0;
                     }
 
-                    EnGo2_GetItem(this, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
                     Flags_SetTreasure(globalCtx, 0x1F);
                 } else {
                     EnGo2_GetItem(this, globalCtx, GI_SWORD_BGS);

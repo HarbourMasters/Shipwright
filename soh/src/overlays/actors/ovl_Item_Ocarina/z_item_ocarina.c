@@ -168,7 +168,8 @@ void ItemOcarina_DoNothing(ItemOcarina* this, GlobalContext* globalCtx) {
 }
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, GlobalContext* globalCtx) {
-    if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+    if (Actor_TextboxIsClosing(&this->actor, globalCtx) ||
+        Randomizer_ObtainedFreestandingIceTrap(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT, &this->actor)) {
         if (!gSaveContext.n64ddFlag) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
@@ -191,7 +192,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, GlobalContext* globalCtx) {
     } else {
         func_8002F434(&this->actor, globalCtx,
                       gSaveContext.n64ddFlag
-                          ? GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT)
+                          ? Randomizer_GetItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT)
                           : GI_OCARINA_OOT,
                       30.0f, 50.0f);
 
@@ -214,11 +215,11 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_8002ED80(thisx, globalCtx, 0);
 
     if (gSaveContext.n64ddFlag) {
-        s32 randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        s32 randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
-        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
         return;
     }
 

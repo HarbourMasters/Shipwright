@@ -344,7 +344,7 @@ void EnKz_Init(Actor* thisx, GlobalContext* globalCtx) {
             EnKz_SetMovedPos(this, globalCtx);
         }
     } else {
-        int zorasFountain = GetRandoSettingValue(RSK_ZORAS_FOUNTAIN);
+        int zorasFountain = Randomizer_GetSettingValue(RSK_ZORAS_FOUNTAIN);
         switch (zorasFountain) {
             case 0:
                 if (gSaveContext.eventChkInf[3] & 8) {
@@ -464,10 +464,10 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
     } else {
         if (gSaveContext.n64ddFlag) {
             if (this->isTrading) {
-                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
                 Flags_SetTreasure(globalCtx, 0x1F);
             } else {
-                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
             }
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;

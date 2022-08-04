@@ -431,9 +431,9 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         CVar_SetString("gDroppedFile", "");
         fileSelectSpoilerFileLoaded = false;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
-        LoadRandomizerSettings(fileLoc);
-        LoadHintLocations(fileLoc);
-        LoadItemLocations(fileLoc, silent);
+        Randomizer_LoadSettings(fileLoc);
+        Randomizer_LoadHintLocations(fileLoc);
+        Randomizer_LoadItemLocations(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1740,9 +1740,9 @@ void FileChoose_LoadGame(GameState* thisx) {
         this->state.running = false;
     }
 
-    LoadRandomizerSettings("");
-    LoadHintLocations("");
-    LoadItemLocations("", true);
+    Randomizer_LoadSettings("");
+    Randomizer_LoadHintLocations("");
+    Randomizer_LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

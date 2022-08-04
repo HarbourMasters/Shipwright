@@ -6,6 +6,7 @@
 
 #include "z_en_gb.h"
 #include "objects/object_ps/object_ps.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -184,6 +185,7 @@ void EnGb_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionTimer = (s16)Rand_ZeroFloat(100.0f) + 100;
 
     for (i = 0; i < ARRAY_COUNT(sCagedSoulPositions); i++) {
+        this->cagedSouls[i].epoch++;
         this->cagedSouls[i].infoIdx = (s32)Rand_ZeroFloat(30.0f) % 3;
         this->cagedSouls[i].unk_14.x = this->cagedSouls[i].translation.x =
             sCagedSoulPositions[i].x + this->dyna.actor.world.pos.x;
@@ -351,7 +353,7 @@ void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
 
 void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
+        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
         this->actionFunc = func_80A2FBB0;
     }
 }
@@ -361,7 +363,7 @@ void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
+        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
     }
 }
 
@@ -524,6 +526,7 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     for (i = 0; i < 4; i++) {
         s32 idx = this->cagedSouls[i].infoIdx;
 
+        FrameInterpolation_RecordOpenChild(&this->cagedSouls[i], this->cagedSouls[i].epoch);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128));
@@ -548,6 +551,7 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

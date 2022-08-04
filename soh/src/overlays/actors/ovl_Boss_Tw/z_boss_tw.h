@@ -43,6 +43,7 @@ typedef struct {
     /* 0x002E */ s16 work[EFF_WORK_MAX];
     /* 0x0034 */ f32 workf[EFF_FWORK_MAX];
     /* 0x0044 */ Actor* target;
+                 u32 epoch;
 } BossTwEffect;
 
 typedef enum {

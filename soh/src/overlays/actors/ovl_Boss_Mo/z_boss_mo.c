@@ -53,6 +53,7 @@ void BossMo_UpdateCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_UpdateTent(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx);
+void BossMo_Reset(void);
 
 void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx);
 void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx);
@@ -131,7 +132,7 @@ const ActorInit Boss_Mo_InitVars = {
     (ActorFunc)BossMo_Destroy,
     (ActorFunc)BossMo_UpdateTent,
     (ActorFunc)BossMo_DrawTent,
-    NULL,
+    (ActorResetFunc)BossMo_Reset,
 };
 
 static BossMo* sMorphaCore = NULL;
@@ -347,6 +348,7 @@ void BossMo_Init(Actor* thisx, GlobalContext* globalCtx2) {
         globalCtx->specialEffects = sEffects;
         for (i = 0; i < ARRAY_COUNT(sEffects); i++) {
             sEffects[i].type = MO_FX_NONE;
+            sEffects[i].epoch++;
         }
         this->actor.world.pos.x = 200.0f;
         this->actor.world.pos.y = MO_WATER_LEVEL(globalCtx) + 50.0f;
@@ -929,7 +931,7 @@ void BossMo_Tentacle(BossMo* this, GlobalContext* globalCtx) {
                 this->actor.flags &= ~ACTOR_FLAG_0;
                 Math_ApproachF(&this->baseAlpha, 0.0, 1.0f, 5.0f);
                 for (indS1 = 0; indS1 < 40; indS1++) {
-                    if (sMorphaTent2->tentSpawnPos) {}
+                    if (sMorphaTent2 && sMorphaTent2->tentSpawnPos) {}
                     indT5 = Rand_ZeroFloat(20.9f);
                     indS0 = sTentSpawnIndex[indT5];
                     spFC.x = 0;
@@ -2441,6 +2443,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     f32 phi_f20;
     f32 phi_f22;
     Vec3f sp110;
+    static u32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2461,6 +2465,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     BossMo_InitRand(1, 29100, 9786);
 
     for (i = 0; i < 41; i++, matrix++) {
+        FrameInterpolation_RecordOpenChild("Morpha Tentacle", epoch + i * 25);
+
         s32 pad;
         s32 pad2;
 
@@ -2558,6 +2564,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
         if ((i < 38) && ((i & 1) == 1)) {
             BossMo_UpdateTentColliders(this, i / 2, &this->tentCollider, &this->tentPos[i]);
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
     Matrix_Pop();

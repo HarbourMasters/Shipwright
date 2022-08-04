@@ -17,7 +17,8 @@ typedef struct {
     /* 0x26 */ Color_RGB8 color;
     /* 0x2A */ s16 alpha;
     /* 0x2C */ f32 unk_2C;
-} BossDodongoEffect; // Size = 0x30
+    /* 0x30 */ u32 epoch;
+} BossDodongoEffect; // Size = 0x34
 
 typedef struct BossDodongo {
     /* 0x0000 */ Actor actor;

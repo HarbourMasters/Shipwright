@@ -17,6 +17,7 @@ typedef struct EnTkEff {
     /* 0x0014 */ Vec3f      pos;
     /* 0x0020 */ Vec3f      speed;
     /* 0x002C */ Vec3f      accel;
+    u32 epoch;
 } EnTkEff; // size = 0x0038
 
 struct EnTk;

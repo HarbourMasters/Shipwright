@@ -29,6 +29,7 @@ typedef struct EnPoSisters {
     /* 0x029C */ LightInfo lightInfo;
     /* 0x02AC */ ColliderCylinder collider;
     /* 0x02F8 */ MtxF unk_2F8;
+    u32 epoch;
 } EnPoSisters; // size = 0x0338
 
 #endif

@@ -3973,6 +3973,8 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     f32 chainsTranslateX;
     f32 chainsTranslateY;
     f32 rotZStep;
+    static u32 epoch = 0;
+    epoch++;
 
     entry = &sDoorLocksInfo[type];
     chainRotZ = entry->chainsRotZInit;
@@ -3986,6 +3988,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     chainsTranslateY = cosf(entry->chainAngle - chainRotZ) * (10 - frame) * 0.1f * entry->chainLength;
 
     for (i = 0; i < 4; i++) {
+        FrameInterpolation_RecordOpenChild(entry, epoch + i * 25);
         Matrix_Put(&baseMtxF);
         Matrix_RotateZ(chainRotZ, MTXMODE_APPLY);
         Matrix_Translate(chainsTranslateX, chainsTranslateY, 0.0f, MTXMODE_APPLY);
@@ -4005,6 +4008,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
         }
 
         chainRotZ += rotZStep;
+        FrameInterpolation_RecordCloseChild();
     }
 
     Matrix_Put(&baseMtxF);
@@ -5983,7 +5987,7 @@ s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* ar
 }
 
 s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
-    if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
         // RANDOTODO update this logic when we implement keysanity
         // because 3drando replaces the keys not the rupees
         if (ogDrawId == GID_RUPEE_GREEN ||
@@ -5993,27 +5997,27 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
             switch(room) {
                 case 1:
                     if(!Flags_GetCollectible(globalCtx, 0x1B)) {
-                        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
                     }
                     break;
                 case 2:
                     if(!Flags_GetCollectible(globalCtx, 0x1C)) {
-                        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
                     }
                     break;
                 case 3:
                     if(!Flags_GetCollectible(globalCtx, 0x1D)) {
-                        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
                     }
                     break;
                 case 4:
                     if(!Flags_GetCollectible(globalCtx, 0x1E)) {
-                        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
                     }
                     break;
                 case 5:
                     if(!Flags_GetCollectible(globalCtx, 0x1F)) {
-                        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
+                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
                     }
                     break;
             }
@@ -6021,7 +6025,7 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
     }
 
     if(ogDrawId == GID_HEART_PIECE) {
-        return GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
+        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
     }
 
     return GI_NONE;
@@ -6031,7 +6035,7 @@ s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
     s32 randoGetItemId = GetChestGameRandoGetItemId(room, ogDrawId, globalCtx);
 
     if(randoGetItemId != GI_NONE) {
-        return GetItemModelFromId(randoGetItemId);
+        return Randomizer_GetItemModelFromId(randoGetItemId);
     }
 
     return ogDrawId;

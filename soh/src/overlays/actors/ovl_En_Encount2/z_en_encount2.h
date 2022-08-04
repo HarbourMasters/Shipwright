@@ -14,7 +14,8 @@ typedef struct {
     /* 0x0010 */ u8 isAlive;
     /* 0x0014 */ Vec3f moveDirection;
     /* 0x0020 */ Vec3f rot;
-} EnEncount2Particle; // size = 0x2C
+    /* 0x002C */ u32 epoch;
+} EnEncount2Particle; // size = 0x30
 
 typedef struct EnEncount2 {
     /* 0x0000 */ Actor actor;
