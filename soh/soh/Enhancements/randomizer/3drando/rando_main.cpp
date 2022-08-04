@@ -5,8 +5,7 @@
 #include "location_access.hpp"
 #include "rando_main.hpp"
 // #include <soh/Enhancements/randomizer.h>
-#include <Cvar.h>
-#include <GameSettings.h>
+#include <CVar.h>
 #define NOGDI
 #define WIN32_LEAN_AND_MEAN
 #include <GlobalCtx2.h>
@@ -25,7 +24,7 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     std::string fileName = Ship::GlobalCtx2::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings).c_str());
     CVar_SetString("gSpoilerLog", fileName.c_str());
 
-    Game::SaveSettings();
-    Game::LoadSettings();
+    CVar_Save();
+    CVar_Load();
     CVar_SetS32("gNewSeedGenerated", 1);
 }

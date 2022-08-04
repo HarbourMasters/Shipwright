@@ -318,9 +318,6 @@
     <ClCompile Include="luslog.cpp">
       <Filter>Source Files\Logging</Filter>
     </ClCompile>
-    <ClCompile Include="GameSettings.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Resources\Files</Filter>
     </ClCompile>
@@ -607,9 +604,6 @@
     </ClInclude>
     <ClInclude Include="luslog.h">
       <Filter>Source Files\Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSettings.h">
-      <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
     <ClInclude Include="GameVersions.h">
       <Filter>Source Files\Resources</Filter>

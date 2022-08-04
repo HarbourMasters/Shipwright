@@ -3192,7 +3192,7 @@ std::thread randoThread;
 
 void GenerateRandomizerImgui() {
     CVar_SetS32("gRandoGenerating", 1);
-    Game::SaveSettings();
+    CVar_Save();
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 1);
@@ -3258,9 +3258,8 @@ void GenerateRandomizerImgui() {
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
-    Game::SaveSettings();
-
-    Game::LoadSettings();
+    CVar_Save();
+    CVar_Load();
 
     generated = 1;
 }

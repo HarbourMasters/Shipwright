@@ -261,7 +261,6 @@
     <ClCompile Include="Factories\AudioFactory.cpp" />
     <ClCompile Include="InputEditor.cpp" />
     <ClCompile Include="GameOverlay.cpp" />
-    <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Lib\Mercury\Mercury.cpp" />
@@ -353,7 +352,6 @@
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="InputEditor.h" />
     <ClInclude Include="GameOverlay.h" />
-    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameVersions.h" />
     <ClInclude Include="Lib\dr_libs\mp3.h" />
     <ClInclude Include="Lib\dr_libs\wav.h" />
