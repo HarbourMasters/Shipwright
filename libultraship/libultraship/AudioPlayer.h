@@ -15,8 +15,6 @@ namespace Ship {
 	};
 }
 
-#if !_MSC_VER  && !__APPLE__
-#endif
 #ifdef _WIN32
 #include "WasapiAudioPlayer.h"
 #elif defined(__linux)
