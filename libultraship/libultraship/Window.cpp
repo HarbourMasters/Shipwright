@@ -12,8 +12,6 @@
 #include "AudioPlayer.h"
 #include "Hooks.h"
 #include "UltraController.h"
-#include "WasapiAudioPlayer.h"
-#include "PulseAudioPlayer.h"
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"

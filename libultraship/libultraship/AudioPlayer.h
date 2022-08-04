@@ -1,5 +1,14 @@
 #pragma once
 #include "stdint.h"
+#ifndef _MSC_VER
+#include "SDLAudioPlayer.h"
+#endif
+#ifdef _MSC_VER
+#include "WasapiAudioPlayer.h"
+#endif
+#ifdef __APPLE__
+#include "PulseAudioPlayer.h"
+#endif
 
 namespace Ship {
 	class AudioPlayer {
