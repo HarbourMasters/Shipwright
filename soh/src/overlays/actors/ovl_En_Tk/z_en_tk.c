@@ -44,7 +44,7 @@ void EnTkEff_Create(EnTk* this, Vec3f* pos, Vec3f* speed, Vec3f* accel, u8 durat
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 1) {
-            eff->epoch = 0;
+            eff->epoch++;
             eff->size = size;
             eff->growth = growth;
             eff->timeTotal = eff->timeLeft = duration;
@@ -65,7 +65,6 @@ void EnTkEff_Update(EnTk* this) {
     eff = this->eff;
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
-            eff->epoch++;
             eff->timeLeft--;
             if (eff->timeLeft == 0) {
                 eff->active = 0;

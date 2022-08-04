@@ -422,7 +422,7 @@ void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* acc
             eff->pos = *initialPos;
             eff->accel = *accel;
             eff->velocity = *initialSpeed;
-            eff->epoch = 0;
+            eff->epoch++;
             return;
         }
     }
@@ -446,7 +446,6 @@ void EnFw_UpdateDust(EnFw* this) {
             eff->velocity.y += eff->accel.y;
             eff->velocity.z += eff->accel.z;
             eff->scale += eff->scaleStep;
-            eff->epoch++;
         }
     }
 }

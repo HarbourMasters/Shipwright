@@ -468,7 +468,7 @@ void BossTw_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
         for (i = 0; i < ARRAY_COUNT(sTwEffects); i++) {
             sTwEffects[i].type = TWEFF_NONE;
-            sTwEffects[i].epoch = 0;
+            sTwEffects[i].epoch++;
         }
     }
 
@@ -4586,7 +4586,6 @@ void BossTw_UpdateEffects(GlobalContext* globalCtx) {
             eff->curSpeed.x += eff->accel.x;
             eff->curSpeed.y += eff->accel.y;
             eff->curSpeed.z += eff->accel.z;
-            eff->epoch++;
 
             if (eff->type == 1) {
                 colorIdx = eff->frame % 4;
@@ -5048,7 +5047,6 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
         Vec3f off;
 
         if (currentEffect->type == TWEFF_PLYR_FRZ) {
-            // todo: epoch
             FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch);
 
             if (sp18F == 0) {
@@ -5059,15 +5057,11 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
                 sp18F++;
                 BossTw_InitRand(1, 0x71AC, 0x263A);
             }
-            
-            FrameInterpolation_RecordCloseChild();
 
             actor = currentEffect->target;
             phi_s4 = actor == NULL ? 70 : 20;
 
             for (j = 0; j < phi_s4; j++) {
-                FrameInterpolation_RecordOpenChild(currentEffect, currentEffect->epoch * (j + 1) * 25);
-
                 off.x = (BossTw_RandZeroOne() - 0.5f) * 30.0f;
                 off.y = currentEffect->workf[EFF_DIST] * j;
                 off.z = (BossTw_RandZeroOne() - 0.5f) * 30.0f;
@@ -5087,9 +5081,9 @@ void BossTw_DrawEffects(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01AB00));
-
-                FrameInterpolation_RecordCloseChild();
             }
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         currentEffect++;

@@ -180,7 +180,7 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
-            dustEffect->epoch = 0;
+            dustEffect->epoch++;
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
             timer = initialTimer;
@@ -202,7 +202,6 @@ void EnGo2_UpdateDust(EnGo2* this) {
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
-            dustEffect->epoch++;
             dustEffect->timer--;
             if (dustEffect->timer == 0) {
                 dustEffect->type = 0;

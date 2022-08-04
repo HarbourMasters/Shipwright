@@ -2963,7 +2963,7 @@ void BossSst_SpawnHeadShadow(BossSst* this) {
         shadow->alpha = 254;
         shadow->status = 65;
 
-        shadow->epoch = 0;
+        shadow->epoch++;
     }
 
     this->effects[3].status = -1;
@@ -2977,7 +2977,7 @@ void BossSst_SpawnHandShadow(BossSst* this) {
     this->effects[0].scale = 2300;
     this->effects[0].alpha = 254;
     this->effects[0].status = 5;
-    this->effects[0].epoch - 0;
+    this->effects[0].epoch++;
     this->effects[1].status = -1;
 }
 
@@ -2991,7 +2991,7 @@ void BossSst_SpawnShockwave(BossSst* this) {
 
     for (i = 0; i < 3; i++) {
         BossSstEffect* shockwave = &this->effects[i];
-        shockwave->epoch = 0;
+        shockwave->epoch++;
 
         Math_Vec3f_Copy(&shockwave->pos, &this->actor.world.pos);
         shockwave->move = (i + 9) * 2;
@@ -3047,7 +3047,7 @@ void BossSst_SpawnIceCrystal(BossSst* this, s32 index) {
         Audio_PlayActorSound2(&this->actor, NA_SE_PL_FREEZE_S);
     }
 
-    ice->epoch = 0;
+    ice->epoch++;
 }
 
 void BossSst_SpawnIceShard(BossSst* this) {
@@ -3063,7 +3063,7 @@ void BossSst_SpawnIceShard(BossSst* this) {
 
     for (i = 0; i < 18; i++) {
         BossSstEffect* ice = &this->effects[i];
-        ice->epoch = 0;
+        ice->epoch++;
 
         Math_Vec3f_Copy(&ice->pos, &spawnPos);
         ice->status = 1;
@@ -3109,7 +3109,6 @@ void BossSst_UpdateEffect(Actor* thisx, GlobalContext* globalCtx) {
             if (this->effects[0].status) {
                 for (i = 0; i < 18; i++) {
                     effect = &this->effects[i];
-                    effect->epoch++;
 
                     if (effect->move) {
                         effect->pos.x += effect->vel.x;
@@ -3135,7 +3134,6 @@ void BossSst_UpdateEffect(Actor* thisx, GlobalContext* globalCtx) {
                 if (effect2->move != 0) {
                     effect2->move--;
                 }
-                effect2->epoch++;
             }
 
             if (this->effects[0].move == 0) {

@@ -714,7 +714,7 @@ void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f3
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 0) {
-            ptr->epoch = 0;
+            ptr->epoch++;
             ptr->unk_00 = 1;
             ptr->unk_04 = *arg1;
             ptr->unk_10 = *arg2;
@@ -734,7 +734,6 @@ void func_80B132A8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 != 0) {
-            ptr->epoch++;
             ptr->unk_04.x += ptr->unk_10.x;
             ptr->unk_04.y += ptr->unk_10.y;
             ptr->unk_04.z += ptr->unk_10.z;

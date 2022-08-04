@@ -108,7 +108,7 @@ static InitChainEntry sInitChain[] = {
 void EnNy_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnNy* this = (EnNy*)thisx;
 
-    this->epoch = 0;
+    this->epoch++;
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.colChkInfo.damageTable = &sDamageTable;
     this->actor.colChkInfo.health = 2;
@@ -372,7 +372,6 @@ void EnNy_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 temp_f22;
     s32 i;
 
-    this->epoch++;
     this->timer++;
     temp_f20 = this->unk_1E0 - 0.25f;
     if (this->unk_1CA != 0) {

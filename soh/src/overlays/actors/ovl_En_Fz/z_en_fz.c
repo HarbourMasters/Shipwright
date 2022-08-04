@@ -757,7 +757,7 @@ void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* 
             iceSmoke->xyScale = xyScale / 1000.0f;
             iceSmoke->primAlpha = 0;
             iceSmoke->timer = 0;
-            iceSmoke->epoch = 0;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -782,7 +782,7 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
             iceSmoke->primAlpha = primAlpha;
             iceSmoke->timer = 0;
             iceSmoke->isTimerMod8 = isTimerMod8;
-            iceSmoke->epoch = 0;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -804,7 +804,6 @@ void EnFz_UpdateIceSmoke(EnFz* this, GlobalContext* globalCtx) {
             iceSmoke->velocity.x += iceSmoke->accel.x;
             iceSmoke->velocity.y += iceSmoke->accel.y;
             iceSmoke->velocity.z += iceSmoke->accel.z;
-            iceSmoke->epoch++;
             if (iceSmoke->type == 1) {
                 if (iceSmoke->primAlphaState == 0) { // Becoming more opaque
                     iceSmoke->primAlpha += 10;

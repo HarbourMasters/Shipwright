@@ -967,7 +967,6 @@ void BossFd2_Update(Actor* thisx, GlobalContext* globalCtx2) {
     this->actor.flags &= ~ACTOR_FLAG_10;
     this->work[FD2_VAR_TIMER]++;
     this->work[FD2_UNK_TIMER]++;
-    this->epoch++;
 
     this->actionFunc(this, globalCtx);
 

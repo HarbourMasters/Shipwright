@@ -304,7 +304,7 @@ void EnEncount2_ParticleInit(EnEncount2* this, Vec3f* particlePos, f32 scale) {
             particle->moveDirection.y = -20.0f;
             particle->moveDirection.z = Rand_CenteredFloat(20.0f);
             particle->isAlive = 1;
-            particle->epoch = 0;
+            particle->epoch++;
             break;
         }
     }
@@ -337,7 +337,6 @@ void EnEncount2_ParticleUpdate(EnEncount2* this, GlobalContext* globalCtx) {
                 particle->isAlive = 0;
             }
         }
-        particle->epoch++;
     }
 }
 

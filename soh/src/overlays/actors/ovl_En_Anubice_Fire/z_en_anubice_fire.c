@@ -63,7 +63,7 @@ void EnAnubiceFire_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_15A = 30;
     this->unk_154 = 2.0f;
     this->scale = 0.0f;
-    this->epoch = 0;
+    this->epoch++;
 
     for (i = 0; i < 6; i++) {
         this->unk_160[i] = this->actor.world.pos;
@@ -181,7 +181,6 @@ void EnAnubiceFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc(this, globalCtx);
     func_8002D7EC(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
-    this->epoch++;
 
     for (i = 4; i >= 0; i--) {
         this->unk_160[i + 1] = this->unk_160[i];

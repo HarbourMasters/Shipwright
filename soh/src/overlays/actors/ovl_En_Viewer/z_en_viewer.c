@@ -794,7 +794,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
-        eff->epoch = 0;
+        eff->epoch++;
     } else {
         eff = &this->fireEffects[i];
         eff->startPos.x = -100.0f;
@@ -804,7 +804,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
-        eff->epoch = 0;
+        eff->epoch++;
     }
     if (this) {}
 }
@@ -823,7 +823,6 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                 this->fireEffects[i].state++;
                 break;
             case 1:
-                this->fireEffects[i].epoch++;
                 Math_SmoothStepToF(&this->fireEffects[i].lerpFactor, 1.0f, 1.0f, this->fireEffects[i].lerpFactorSpeed,
                                    this->fireEffects[i].lerpFactorSpeed);
                 this->fireEffects[i].pos.x =

@@ -1146,7 +1146,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 0) {
-            feather->epoch = 0;
+            feather->epoch++;
             feather->type = 1;
             feather->pos = *pos;
             feather->vel = *vel;
@@ -1166,7 +1166,6 @@ void EnNiw_FeatherUpdate(EnNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type != 0) {
-            feather->epoch++;
             feather->timer++;
             feather->pos.x += feather->vel.x;
             feather->pos.y += feather->vel.y;
@@ -1205,7 +1204,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 1) {
-            FrameInterpolation_RecordOpenChild(feather, 0);
+            FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             if (!flag) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;

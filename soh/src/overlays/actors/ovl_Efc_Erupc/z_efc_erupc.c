@@ -229,7 +229,6 @@ void EfcErupc_UpdateParticles(EfcErupc* this, GlobalContext* globalCtx) {
                 cur->alpha = 0;
                 cur->isActive = false;
             }
-            cur->epoch++;
         }
     }
 }
@@ -256,6 +255,6 @@ void EfcErupc_InitParticles(EfcErupcParticles* particles) {
 
     for (i = 0; i < EFC_ERUPC_NUM_PARTICLES; i++, particles++) {
         particles->isActive = false;
-        particles->epoch = 0;
+        particles->epoch++;
     }
 }
