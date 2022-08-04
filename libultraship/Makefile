@@ -65,7 +65,7 @@ endif
 ifeq ($(UNAME), Darwin) #APPLE
 	CXXFLAGS += -DENABLE_METAL
 	CFLAGS += -DENABLE_METAL
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation -framework Metal -framework QuartzCore
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew)
 endif
 
 ifneq ($(DEBUG),0)
