@@ -3502,7 +3502,7 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-// Randomizer settings
+// Randomizer settingss
     // Logic Settings
     const char* randoLogicRules[2] = { "Glitchless", "No logic"};
 
