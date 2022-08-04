@@ -1578,70 +1578,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if (item == ITEM_SINGLE_MAGIC) {
-        gSaveContext.magicAcquired = true;
-        gSaveContext.unk_13F6 = 0x30;
-        Magic_Fill(globalCtx);
-        return ITEM_NONE;
-    } else if (item == ITEM_DOUBLE_MAGIC) {
-        if (!gSaveContext.magicAcquired) {
-            gSaveContext.magicAcquired = true;
-        }
-        gSaveContext.doubleMagic = true;
-        gSaveContext.unk_13F6 = 0x60;
-        gSaveContext.magicLevel = 0;
-        Magic_Fill(globalCtx);
-        return ITEM_NONE;
-    }
-
-    if (item == ITEM_DOUBLE_DEFENSE) {
-        gSaveContext.doubleDefense = true;
-        gSaveContext.inventory.defenseHearts = 20;
-        gSaveContext.healthAccumulator = 0x140;
-        return ITEM_NONE;
-    }
-
-    if (item >= ITEM_BOTTLE_WITH_RED_POTION &&
-        item <= ITEM_BOTTLE_WITH_BIG_POE) {
-        temp = SLOT(ITEM_BOTTLE);
-        for (i = 0; i < 4; i++) {
-            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
-                switch (item) {
-                    case ITEM_BOTTLE_WITH_RED_POTION:
-                        item = ITEM_POTION_RED;
-                        break;
-                    case ITEM_BOTTLE_WITH_GREEN_POTION:
-                        item = ITEM_POTION_GREEN;
-                        break;
-                    case ITEM_BOTTLE_WITH_BLUE_POTION:
-                        item = ITEM_POTION_BLUE;
-                        break;
-                    case ITEM_BOTTLE_WITH_FAIRY:
-                        item = ITEM_FAIRY;
-                        break;
-                    case ITEM_BOTTLE_WITH_FISH:
-                        item = ITEM_FISH;
-                        break;
-                    case ITEM_BOTTLE_WITH_BLUE_FIRE:
-                        item = ITEM_BLUE_FIRE;
-                        break;
-                    case ITEM_BOTTLE_WITH_BUGS:
-                        item = ITEM_BUG;
-                        break;
-                    case ITEM_BOTTLE_WITH_POE:
-                        item = ITEM_POE;
-                        break;
-                    case ITEM_BOTTLE_WITH_BIG_POE:
-                        item = ITEM_BIG_POE;
-                        break;
-                }
-
-                gSaveContext.inventory.items[temp + i] = item;
-                return ITEM_NONE;
-            }
-        }
-    }
-
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
 
@@ -2178,6 +2114,84 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
     return temp;
 }
+
+u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
+    uint16_t item = giEntry.itemId;
+    uint16_t temp;
+    uint16_t i;
+    uint16_t slot;
+
+    slot = SLOT(item);
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.magicAcquired = true;
+        gSaveContext.unk_13F6 = 0x30;
+        Magic_Fill(globalCtx);
+        return RG_NONE;
+    } else if (item == RG_MAGIC_DOUBLE) {
+        if (!gSaveContext.magicAcquired) {
+            gSaveContext.magicAcquired = true;
+        }
+        gSaveContext.doubleMagic = true;
+        gSaveContext.unk_13F6 = 0x60;
+        gSaveContext.magicLevel = 0;
+        Magic_Fill(globalCtx);
+        return RG_NONE;
+    }
+
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.doubleDefense = true;
+        gSaveContext.inventory.defenseHearts = 20;
+        gSaveContext.healthAccumulator = 0x140;
+        return RG_NONE;
+    }
+
+    if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
+        temp = SLOT(ITEM_BOTTLE);
+        for (i = 0; i < 4; i++) {
+            if (gSaveContext.inventory.items[temp + i] == RG_NONE) {
+                switch (item) {
+                    case RG_BOTTLE_WITH_RED_POTION:
+                        item = ITEM_POTION_RED;
+                        break;
+                    case RG_BOTTLE_WITH_GREEN_POTION:
+                        item = ITEM_POTION_GREEN;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_POTION:
+                        item = ITEM_POTION_BLUE;
+                        break;
+                    case RG_BOTTLE_WITH_FAIRY:
+                        item = ITEM_FAIRY;
+                        break;
+                    case RG_BOTTLE_WITH_FISH:
+                        item = ITEM_FISH;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_FIRE:
+                        item = ITEM_BLUE_FIRE;
+                        break;
+                    case RG_BOTTLE_WITH_BUGS:
+                        item = ITEM_BUG;
+                        break;
+                    case RG_BOTTLE_WITH_POE:
+                        item = ITEM_POE;
+                        break;
+                    case RG_BOTTLE_WITH_BIG_POE:
+                        item = ITEM_BIG_POE;
+                        break;
+                }
+
+                gSaveContext.inventory.items[temp + i] = item;
+                return RG_NONE;
+            }
+        }
+    }
+
+    temp = gSaveContext.inventory.items[slot];
+    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
+    INV_CONTENT(item) = item;
+
+    return temp;
+}
+
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;

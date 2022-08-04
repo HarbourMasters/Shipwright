@@ -367,43 +367,43 @@ void GiveLinkSong(GetItemID getItemId) {
     gSaveContext.inventory.questItems |= bitMask;
 }
 
-void GiveLinkDungeonReward(GetItemID getItemId) {
+void GiveLinkDungeonReward(uint16_t getItemId) {
     s16 item;
 
     u8 medallion = 0;
 
     switch (getItemId) {
-        case GI_MEDALLION_FOREST:
+        case RG_FOREST_MEDALLION:
             item = ITEM_MEDALLION_FOREST;
             medallion = 1;
             break;
-        case GI_MEDALLION_FIRE:
+        case RG_FIRE_MEDALLION:
             item = ITEM_MEDALLION_FIRE;
             medallion = 1;
             break;
-        case GI_MEDALLION_WATER:
+        case RG_WATER_MEDALLION:
             item = ITEM_MEDALLION_WATER;
             medallion = 1;
             break;
-        case GI_MEDALLION_SHADOW:
+        case RG_SHADOW_MEDALLION:
             item = ITEM_MEDALLION_SHADOW;
             medallion = 1;
             break;
-        case GI_MEDALLION_SPIRIT:
+        case RG_SPIRIT_MEDALLION:
             item = ITEM_MEDALLION_SPIRIT;
             medallion = 1;
             break;
-        case GI_MEDALLION_LIGHT:
+        case RG_LIGHT_MEDALLION:
             item = ITEM_MEDALLION_LIGHT;
             medallion = 1;
             break;
-        case GI_STONE_KOKIRI:
+        case RG_KOKIRI_EMERALD:
             item = ITEM_KOKIRI_EMERALD;
             break;
-        case GI_STONE_GORON:
+        case RG_GORON_RUBY:
             item = ITEM_GORON_RUBY;
             break;
-        case GI_STONE_ZORA:
+        case RG_ZORA_SAPPHIRE:
             item = ITEM_ZORA_SAPPHIRE;
             break;
     }

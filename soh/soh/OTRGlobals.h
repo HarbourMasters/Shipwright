@@ -5,7 +5,7 @@
 
 #include "GlobalCtx2.h"
 #include "SaveManager.h"
-#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
@@ -19,6 +19,7 @@ public:
     std::shared_ptr<Ship::GlobalCtx2> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
+    uint16_t getItemModIndex;
 
     OTRGlobals();
     ~OTRGlobals();

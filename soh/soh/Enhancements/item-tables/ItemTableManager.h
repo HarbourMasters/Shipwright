@@ -1,30 +1,16 @@
 #pragma once
-
-#include <ultra64/gbi.h>
+#include "ItemTableTypes.h"
 
 #define CHEST_ANIM_SHORT 0
 #define CHEST_ANIM_LONG 1
-
-typedef struct {
-    /* 0x00 */ uint8_t itemId;
-    /* 0x01 */ uint8_t field; // various bit-packed data
-    /* 0x02 */ int8_t gi;    // defines the draw id and chest opening animation
-    /* 0x03 */ uint8_t textId;
-    /* 0x04 */ uint16_t objectId;
-    /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
-} GetItemEntry; // size = 0x06
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
     { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
 
 #define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, OBJECT_INVALID }
-
-#ifdef __cplusplus
+    { 0, 0, 0, 0, 0 }
 
 #include <unordered_map>
-#include "z64item.h"
-#include "z64object.h"
 
 typedef std::unordered_map<uint8_t, GetItemEntry> ItemTable;
 
@@ -44,5 +30,3 @@ class ItemTableManager {
 
       ItemTable* RetrieveItemTable(std::string tableID);
 };
-
-#endif

@@ -1648,10 +1648,20 @@ extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer,
 }
 
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+        OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
+    } else {
+        OTRGlobals::Instance->getItemModIndex = MOD_VANILLA;
+    }
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
+        OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
+    } else {
+        OTRGlobals::Instance->getItemModIndex = MOD_VANILLA;
+    }
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
 
@@ -1660,5 +1670,14 @@ extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetIte
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    return ItemTableManager::Instance->RetrieveItemEntry("Vanilla", getItemID);
+    std::string itemTableID;
+    
+    if (OTRGlobals::Instance->getItemModIndex == MOD_VANILLA) {
+        itemTableID = "Vanilla";
+    } else {
+        itemTableID = "Randomizer";
+        getItemID++; // counteracts the - 1 offset used for vanilla table
+    }
+
+    return ItemTableManager::Instance->RetrieveItemEntry(itemTableID, getItemID);
 }

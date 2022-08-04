@@ -4086,7 +4086,10 @@
       <Filter>Header Files\soh\Enhancements\randomizer</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\item-tables\ItemTableManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\soh\Enhancements\item-tables</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\item-tables\ItemTableTypes.h">
+      <Filter>Header Files\soh\Enhancements\item-tables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -949,6 +949,7 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h" />
     <ClInclude Include="soh\Enhancements\gfx.h" />
     <ClInclude Include="soh\Enhancements\item-tables\ItemTableManager.h" />
+    <ClInclude Include="soh\Enhancements\item-tables\ItemTableTypes.h" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\category.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\cosmetics.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\custom_messages.hpp" />

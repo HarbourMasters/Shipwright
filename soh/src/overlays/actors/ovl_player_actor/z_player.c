@@ -12715,9 +12715,13 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             gSaveContext.swordHealth = 8;       
         }
 
-        Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
-        Item_Give(globalCtx, giEntry->itemId);
-        
+        Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
+        if (giEntry.modIndex == 0) {
+            Item_Give(globalCtx, giEntry.itemId);
+        }
+        else {
+            Randomizer_Item_Give(globalCtx, giEntry);
+        }
         Player_SetPendingFlag(this, globalCtx);
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||

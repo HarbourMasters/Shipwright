@@ -2030,8 +2030,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MAGIC_BEAN_PACK:
             return GI_BEAN; //todo make it 10 of them
 
-        case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
+        /*case RG_DOUBLE_DEFENSE:
+            return GI_DOUBLE_DEFENSE;*/
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
@@ -2160,9 +2160,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
-                    return GI_SINGLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                    return GI_DOUBLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_DOUBLE;
             }
             return GI_RUPEE_BLUE;
 
@@ -2182,7 +2182,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-        case RG_BOTTLE_WITH_RED_POTION:
+        /*case RG_BOTTLE_WITH_RED_POTION:
             return GI_BOTTLE_WITH_RED_POTION;
         case RG_BOTTLE_WITH_GREEN_POTION:
             return GI_BOTTLE_WITH_GREEN_POTION;
@@ -2227,7 +2227,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_NOCTURNE_OF_SHADOW:
             return GI_NOCTURNE_OF_SHADOW;
         case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;
+            return GI_PRELUDE_OF_LIGHT;*/
 
         // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
@@ -2290,7 +2290,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_GANONS_CASTLE_KEY_RING:
             return GI_RUPEE_BLUE;
 
-        case RG_KOKIRI_EMERALD:
+        /*case RG_KOKIRI_EMERALD:
             return GI_STONE_KOKIRI;
         case RG_GORON_RUBY:
             return GI_STONE_GORON;
@@ -2308,7 +2308,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_SHADOW_MEDALLION:
             return GI_MEDALLION_SHADOW;
         case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;
+            return GI_MEDALLION_LIGHT;*/
 
         case RG_RECOVERY_HEART:
             return GI_HEART;
@@ -2387,9 +2387,58 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HINT:
             return GI_RUPEE_BLUE; //todo
 
-        default:
+        default: {
+            if (IsGetItemRandoExclusive(randoGet)) {
+                return (GetItemID)randoGet;
+            }
             return ogItemId;
+        }
     }
+}
+
+bool Randomizer::IsGetItemRandoExclusive(RandomizerGet randoGet) {
+    switch (randoGet) {
+        case RG_LIGHT_MEDALLION:
+        case RG_FOREST_MEDALLION:
+        case RG_FIRE_MEDALLION:
+        case RG_WATER_MEDALLION:
+        case RG_SHADOW_MEDALLION:
+        case RG_SPIRIT_MEDALLION:
+        case RG_KOKIRI_EMERALD:
+        case RG_GORON_RUBY:
+        case RG_ZORA_SAPPHIRE:
+        case RG_ZELDAS_LULLABY:
+        case RG_SUNS_SONG:
+        case RG_EPONAS_SONG:
+        case RG_SONG_OF_STORMS:
+        case RG_SONG_OF_TIME:
+        case RG_SARIAS_SONG:
+        case RG_MINUET_OF_FOREST:
+        case RG_BOLERO_OF_FIRE:
+        case RG_SERENADE_OF_WATER:
+        case RG_NOCTURNE_OF_SHADOW:
+        case RG_REQUIEM_OF_SPIRIT:
+        case RG_PRELUDE_OF_LIGHT:
+        case RG_PROGRESSIVE_MAGIC_METER:
+        case RG_DOUBLE_DEFENSE:
+        case RG_BOTTLE_WITH_RED_POTION:
+        case RG_BOTTLE_WITH_GREEN_POTION:
+        case RG_BOTTLE_WITH_BLUE_POTION:
+        case RG_BOTTLE_WITH_FAIRY:
+        case RG_BOTTLE_WITH_FISH:
+        case RG_BOTTLE_WITH_BLUE_FIRE:
+        case RG_BOTTLE_WITH_BUGS:
+        case RG_BOTTLE_WITH_POE:
+        case RG_BOTTLE_WITH_BIG_POE:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Randomizer::CheckContainsRandoItem(RandomizerCheck randoCheck) {
+    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    return IsGetItemRandoExclusive(randoGet);
 }
 
 std::string Randomizer::GetAdultAltarText() const {
@@ -4732,31 +4781,34 @@ void DrawRandoEditor(bool& open) {
 
 void InitRandoItemTable() {
     GetItemEntry getItemTable[] = {
-        GET_ITEM(RG_LIGHT_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_FOREST_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_FIRE_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_WATER_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SHADOW_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SPIRIT_MEDALLION, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG),
+        // The first several entries have ItemIDs from vanilla, but not GetItemIDs or entries in sGetItemTable
+        GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG),
 
-        GET_ITEM(RG_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG),
 
-        GET_ITEM(RG_ZELDAS_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SUNS_SONG, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_EPONAS_SONG, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SONG_OF_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SONG_OF_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SARIAS_SONG, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_SARIA, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG),
 
-        GET_ITEM(RG_MINUET_OF_FOREST, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_BOLERO_OF_FIRE, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_SERENADE_OF_WATER, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_NOCTURNE_OF_SHADOW, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_REQUIEM_OF_SPIRIT, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG),
-        GET_ITEM(RG_PRELUDE_OF_LIGHT, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_MINUET, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_BOLERO, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG),
+        GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG),
 
+        // Starting here, these do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
+        // RandomizerGet enum values for both.
         GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG),
@@ -4773,14 +4825,92 @@ void InitRandoItemTable() {
     };
     ItemTableManager::Instance->AddItemTable("Randomizer");
     for (int i = 0; i < ARRAY_SIZE(getItemTable); i++) {
-        getItemTable[i].modIndex = MOD_RANDOMIZER;
-        ItemTableManager::Instance->AddItemEntry("Randomizer", getItemTable[i].itemId, getItemTable[i]);
+        if (i < 21) {
+            // We want to use vanilla Give_Item code for indices 0-20 since
+            // vanilla already handles that.
+            getItemTable[i].modIndex = MOD_VANILLA;
+        } else {
+            // Mark these as randomizer items so we use the rando exclusive
+            // Give_Item_Randomizer for these.
+            getItemTable[i].modIndex = MOD_RANDOMIZER;
+        }
+        uint8_t getItemID;
+        switch (getItemTable[i].itemId) {
+            case ITEM_MEDALLION_LIGHT:
+                getItemID = RG_LIGHT_MEDALLION;
+                break;
+            case ITEM_MEDALLION_FOREST:
+                getItemID = RG_FOREST_MEDALLION;
+                break;
+            case ITEM_MEDALLION_FIRE:
+                getItemID = RG_FIRE_MEDALLION;
+                break;
+            case ITEM_MEDALLION_WATER:
+                getItemID = RG_WATER_MEDALLION;
+                break;
+            case ITEM_MEDALLION_SHADOW:
+                getItemID = RG_SHADOW_MEDALLION;
+                break;
+            case ITEM_MEDALLION_SPIRIT:
+                getItemID = RG_SPIRIT_MEDALLION;
+                break;
+            case ITEM_KOKIRI_EMERALD:
+                getItemID = RG_KOKIRI_EMERALD;
+                break;
+            case ITEM_GORON_RUBY:
+                getItemID = RG_GORON_RUBY;
+                break;
+            case ITEM_ZORA_SAPPHIRE:
+                getItemID = RG_ZORA_SAPPHIRE;
+                break;
+            case ITEM_SONG_LULLABY:
+                getItemID = RG_ZELDAS_LULLABY;
+                break;
+            case ITEM_SONG_SUN:
+                getItemID = RG_SUNS_SONG;
+                break;
+            case ITEM_SONG_EPONA:
+                getItemID = RG_EPONAS_SONG;
+                break;
+            case ITEM_SONG_STORMS:
+                getItemID = RG_SONG_OF_STORMS;
+                break;
+            case ITEM_SONG_TIME:
+                getItemID = RG_SONG_OF_TIME;
+                break;
+            case ITEM_SONG_SARIA:
+                getItemID = RG_SARIAS_SONG;
+                break;
+            case ITEM_SONG_MINUET:
+                getItemID = RG_MINUET_OF_FOREST;
+                break;
+            case ITEM_SONG_BOLERO:
+                getItemID = RG_BOLERO_OF_FIRE;
+                break;
+            case ITEM_SONG_SERENADE:
+                getItemID = RG_SERENADE_OF_WATER;
+                break;
+            case ITEM_SONG_NOCTURNE:
+                getItemID = RG_NOCTURNE_OF_SHADOW;
+                break;
+            case ITEM_SONG_REQUIEM:
+                getItemID = RG_REQUIEM_OF_SPIRIT;
+                break;
+            case ITEM_SONG_PRELUDE:
+                getItemID = RG_PRELUDE_OF_LIGHT;
+                break;
+            default:
+                getItemID = getItemTable[i].itemId;
+                break;
+        }
+        ItemTableManager::Instance->AddItemEntry("Randomizer", getItemID, getItemTable[i]);
     }
 }
 
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    InitRandoItemTable();
 }
 
 extern "C" {
