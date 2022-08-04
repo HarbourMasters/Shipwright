@@ -47,6 +47,7 @@ void EffectShieldParticle_Init(void* thisx, void* initParamsx) {
             elem->endXChange = elem->initialSpeed;
             elem->yaw = Rand_ZeroOne() * 65534.0f;
             elem->pitch = Rand_ZeroOne() * 65534.0f;
+            elem->epoch++;
         }
 
         this->lightDecay = initParams->lightDecay;
@@ -156,7 +157,6 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
 
-    FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx);
 
     if (this != NULL) {
@@ -182,6 +182,8 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
 
         for (elem = &this->elements[0]; elem < &this->elements[this->numElements]; elem++) {
+            FrameInterpolation_RecordOpenChild(elem, elem->epoch);
+
             Mtx* mtx;
             MtxF sp104;
             MtxF spC4;
@@ -212,9 +214,10 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPVertex(POLY_XLU_DISP++, sVertices, 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 3, 1, 0);
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
     CLOSE_DISPS(gfxCtx);
-    FrameInterpolation_RecordCloseChild();
 }

@@ -7,6 +7,7 @@
 #include "z_en_anubice_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_anubice/object_anubice.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -62,6 +63,7 @@ void EnAnubiceFire_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_15A = 30;
     this->unk_154 = 2.0f;
     this->scale = 0.0f;
+    this->epoch++;
 
     for (i = 0; i < 6; i++) {
         this->unk_160[i] = this->actor.world.pos;
@@ -230,6 +232,8 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Matrix_Push();
     for (i = this->unk_15E; i < 6; ++i) {
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
+
         f32 scale = this->actor.scale.x - (i * 0.2f);
 
         if (scale < 0.0f) {
@@ -247,6 +251,8 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
 
         if (this->scale < 0.1f) {
             break;
