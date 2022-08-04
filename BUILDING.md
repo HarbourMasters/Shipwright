@@ -38,7 +38,7 @@ cp <path to your ROM> OTRExporter
 # Generate Ninja project
 cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
 # Compile the project
-cmake --build build-cmake -- -j$(nproc)
+(cd build-cmake && ninja)
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
@@ -66,7 +66,7 @@ cp <path to your ROM> OTRExporter
 # Generate Ninja project
 cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE=Release (if you're packaging)
 # Compile the project
-cmake --build build-cmake -- -j$(sysctl -n hw.ncpu)
+(cd build-cmake && ninja)
 
 # Now you can run the executable in ./build-cmake/soh/soh-macos
 # To develop the project open the repository in VSCode (or your preferred editor)
@@ -90,13 +90,13 @@ cpack
 ```bash
 cd Shipwright
 # Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja -- -j$(sysctl -n hw.ncpu) # Linux: -j$(nproc)
+cmake -H. -Bbuild-cmake -GNinja
 # Extract necessary assets
-cmake --build build-cmake --target ExtractAssets
+(cd build-cmake && ninja ExtractAssets)
 # Setup cmake project for building for Switch
 cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
 # Build project and generate nro
-cmake --build build-switch --target soh_nro -- -j$(sysctl -n hw.ncpu) # Linux: -j$(nproc)
+(cd build-switch && ninja soh_nro)
 
 # Now you can run the executable in ./build-switch/soh/soh.nro
 # To develop the project open the repository in VSCode (or your preferred editor)
