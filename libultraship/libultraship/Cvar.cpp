@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <Utils/File.h>
+#include "GlobalCtx2.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
@@ -170,7 +171,11 @@ void CVar_LoadLegacy() {
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
                 value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
-                CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
+#ifdef _MSC_VER
+                CVar_SetString(cfg[0].c_str(), _strdup(value.c_str()));
+#else
+                CVar_SetString(cfg[0].c_str(), strdup(value.c_str()));
+#endif
             }
             if (is_number<float>(cfg[1])) {
                 CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));

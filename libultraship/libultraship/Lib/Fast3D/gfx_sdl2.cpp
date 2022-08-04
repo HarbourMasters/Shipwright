@@ -35,8 +35,6 @@
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
-#include <time.h>
-#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 

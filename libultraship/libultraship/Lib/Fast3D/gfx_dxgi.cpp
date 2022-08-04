@@ -32,7 +32,6 @@
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
-#include "../../GameSettings.h"
 
 #define WINCLASS_NAME L"N64GAME"
 #define GFX_API_NAME "DirectX"
