@@ -491,7 +491,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 0)) {
             if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
-                if ((cursorItem >= ITEM_BULLET_BAG_30) && (cursorItem <= ITEM_BULLET_BAG_50)) {
+                if (((cursorItem >= ITEM_BULLET_BAG_30) && (cursorItem <= ITEM_BULLET_BAG_50)) && (!CVar_GetS32("gNoRestrictAge", 0))) {
                     pauseCtx->nameColorSet = 1;
                 } else {
                     pauseCtx->nameColorSet = 0;
@@ -679,14 +679,27 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                                                    gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);
             }
         } else {
-            if ((i == 0) && (CUR_UPG_VALUE(sAdultUpgrades[i]) == 0)) {
+            if ((i == 0) && (CUR_UPG_VALUE(sAdultUpgrades[i]) == 0)) { //If there's no Adult Equipment, Load the Child Equipment for that slot instead. Only applies to Bullet Bags/Quivers.
+                if (!CVar_GetS32("gNoRestrictAge", 0)) //Dont do this if Age Restrictions are Disabled.
+                {
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                }
                 KaleidoScope_DrawQuadTextureRGBA32(
                     globalCtx->state.gfxCtx,
                     gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
+                gsSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
+                if ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
+                        !(gSaveContext.n64ddFlag || (CVar_GetS32("gNoRestrictAge", 0)))) 
+                { // Grey Out the Goron Bracelet when Not Randomized or when Age Restrictions are removed
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                }
                 KaleidoScope_DrawQuadTextureRGBA32(
                     globalCtx->state.gfxCtx,
                     gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1], 32, 32, 0);
+                gsSPGrayscale(POLY_KAL_DISP++, false);
             }
         }
         // Draw inventory screen icons
