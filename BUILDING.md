@@ -30,6 +30,7 @@ cd "build/x64"
 ## Linux
 1. Requires `gcc, x11, curl, python3, sdl2, libpng, glew, ninja, cmake`
 
+**Important: For maximum performance make sure you have ninja build tools installed!**
 
 _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
@@ -61,6 +62,8 @@ cpack -G External (creates appimage)
 
 ## macOS
 1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
+
+**Important: For maximum performance make sure you have ninja build tools installed!**
 
 _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
