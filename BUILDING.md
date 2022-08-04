@@ -18,13 +18,25 @@ cd Shipwright
 
 # Now you can run the executable in .\build\x64
 
-# To develop the project you can open the generated Ship.sln (.\build\x64) - or use VSCode or another editor
-# If you want to generate the solution in the root folder run:
-& 'C:\Program Files\CMake\bin\cmake' -S . -G "Visual Studio 17 2022" -T v142 -A x64
-
 # If you need to clean the project you can run
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target clean
 ```
+
+### Developing SoH
+With the cmake build system you have two options for woriking on the project:
+
+#### Visual Studio
+To develop using Visual Studio you only need to use cmake to generate the solution file:
+```powershell
+# Generates Ship.sln at the root directory
+& 'C:\Program Files\CMake\bin\cmake' -S . -G "Visual Studio 17 2022" -T v142 -A x64
+```
+
+#### Visual Studio Code or another editor
+To develop using Visual Studio Code or another editor you only need to open the repository in it.
+To build you'll need to follow the instructions from the building section.
+_Experimental: You can also use another build system entirely rathen than MSVC like [Ninja](https://ninja-build.org/) for better performance and compatibility with Visual Studio Code and its CMake plugin._
+
 
 ### Generating the distributable
 After compiling the project you can generate the distributable by running:
