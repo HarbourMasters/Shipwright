@@ -37,7 +37,10 @@ To develop using Visual Studio you only need to use cmake to generate the soluti
 #### Visual Studio Code or another editor
 To develop using Visual Studio Code or another editor you only need to open the repository in it.
 To build you'll need to follow the instructions from the building section.
-_Experimental: You can also use another build system entirely rathen than MSVC like [Ninja](https://ninja-build.org/) for better performance and compatibility with Visual Studio Code and its CMake plugin._
+
+_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+
+_Experimental: You can also use another build system entirely rathen than MSVC like [Ninja](https://ninja-build.org/) for possibly better performance._
 
 
 ### Generating the distributable
