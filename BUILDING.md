@@ -56,7 +56,7 @@ cpack -G External (creates appimage)
 ```
 
 ## macOS
-1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake, pkgconfig, dylibbundler` (can be installed via homebrew, macports, etc)
+1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
