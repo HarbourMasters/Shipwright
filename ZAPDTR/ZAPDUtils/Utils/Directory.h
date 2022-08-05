@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include "StringHelper.h"
+#include <iostream>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -18,8 +20,8 @@ class Directory
 {
 public:
 	#ifndef PATH_HACK
-	static std::string GetCurrentDirectory() { return fs::current_path().generic_string(); }
-	#endif
+	static std::string GetCurrentDirectory() { return fs::current_path().u8string().c_str(); }
+#endif
 
 	static bool Exists(const fs::path& path) { return fs::exists(path); }
 
