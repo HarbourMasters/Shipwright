@@ -319,10 +319,10 @@ static void WriteShuffledEntrance(
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         default:
-            jsonData["playthrough"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
+            jsonData["Entrances"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
             break;
         case LANGUAGE_FRA:
-            jsonData["playthrough"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
+            jsonData["Entrances"][std::to_string(originalIndex)] = std::to_string(replacementIndex);
     }
 //   tinyxml2::XMLElement* parentNode,
 //   Entrance* entrance,
