@@ -43,6 +43,7 @@ void EnFr_OcarinaMistake(EnFr* this, GlobalContext* globalCtx);
 void EnFr_SetupReward(EnFr* this, GlobalContext* globalCtx, u8 unkCondition);
 void EnFr_PrintTextBox(EnFr* this, GlobalContext* globalCtx);
 void EnFr_TalkBeforeReward(EnFr* this, GlobalContext* globalCtx);
+RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex);
 void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx);
 
 // Deactivate
@@ -920,6 +921,23 @@ void EnFr_TalkBeforeReward(EnFr* this, GlobalContext* globalCtx) {
     }
 }
 
+RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
+    switch (songIndex) {
+        case FROG_ZL:
+            return RC_ZR_FROGS_ZELDAS_LULLABY;
+        case FROG_EPONA:
+            return RC_ZR_FROGS_EPONAS_SONG;
+        case FROG_SARIA:
+            return RC_ZR_FROGS_SARIAS_SONG;
+        case FROG_SUNS:
+            return RC_ZR_FROGS_SUNS_SONG;
+        case FROG_SOT:
+            return RC_ZR_FROGS_SONG_OF_TIME;
+        default:
+            return RC_UNKNOWN_CHECK;
+    }
+}
+
 void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     u16 songIndex;
 
@@ -930,7 +948,11 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_RUPEE_PURPLE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_RUPEE_PURPLE;
+            } else {
+                this->reward = Randomizer_GetItemIdFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
+            }
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
