@@ -2542,6 +2542,9 @@ namespace Settings {
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
 
+    Keysanity.SetSelectedIndex(cvarSettings[RSK_KEYSANITY]);
+    GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
+    BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
     NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);

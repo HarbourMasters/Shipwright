@@ -3450,6 +3450,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 0);
+    cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
+    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 0);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
@@ -3540,11 +3543,9 @@ void DrawRandoEditor(bool& open) {
     // Shuffle Dungeon Items Settings
     const char* randoShuffleMapsAndCompasses[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
                                                     "Anywhere",    "Start with",  "Vanilla" };
-    const char* randoShuffleSmallKeys[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
-                                             "Anywhere",    "Start with",  "Vanilla" };
+    const char* randoShuffleSmallKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleBossKeys[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
-                                            "Anywhere",    "Start with",  "Vanilla" };
+    const char* randoShuffleBossKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     // const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
     //                                               "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
     //                                               "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
@@ -4040,6 +4041,46 @@ void DrawRandoEditor(bool& open) {
                         "Anywhere - Spiritual stones and medallions can appear anywhere."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
+                    PaddedSeparator();
+
+                    // Keysanity
+                    ImGui::Text(Settings::Keysanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
+                        "\n"
+                        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Small Keys can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Small Keys can appear anywhere in the world."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 0);
+                    PaddedSeparator();
+
+                    // Gerudo Keys
+                    ImGui::Text(Settings::GerudoKeys.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Small Keys can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Small Keys can appear anywhere in the world."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, 0);
+                    PaddedSeparator();
+
+                    // Boss Keysanity
+                    ImGui::Text(Settings::BossKeysanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                        "\n"
+                        "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Boss Keys can appear anywhere in the world."
+                    );  
+                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 0);
                     PaddedSeparator();
 
                     // RANDOTODO implement ganon's boss key outside of ganon's castle
