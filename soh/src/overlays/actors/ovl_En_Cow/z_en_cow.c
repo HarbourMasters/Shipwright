@@ -18,7 +18,7 @@ void func_809E0070(Actor* thisx, GlobalContext* globalCtx);
 
 void func_809DF494(EnCow* this, GlobalContext* globalCtx);
 void func_809DF6BC(EnCow* this, GlobalContext* globalCtx);
-int EnCow_GetCowId(EnCow* this, GlobalContext* globalCtx);
+struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx);
 void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx);
 GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag);
 void func_809DF778(EnCow* this, GlobalContext* globalCtx);
@@ -216,8 +216,14 @@ void func_809DF730(EnCow* this, GlobalContext* globalCtx) {
     }
 }
 
-int EnCow_GetCowId(EnCow* this, GlobalContext* globalCtx) {
+struct CowInfo {
+    int cowId;
+    RandomizerCheck randomizerCheck;
+};
+
+struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx) {
     s32 uniqueCoords = this->actor.world.pos.x + this->actor.world.pos.z;
+    struct CowInfo cowInfo;
 
     switch (globalCtx->sceneNum) {
         case SCENE_SOUKO: // Lon Lon Tower
@@ -225,59 +231,90 @@ int EnCow_GetCowId(EnCow* this, GlobalContext* globalCtx) {
                 // Two cases here cause this cow is moved in randomizer
                 case -173:
                 case -72:
-                    return 0;
+                    cowInfo.cowId = 0;
+                    cowInfo.randomizerCheck = RC_LLR_TOWER_LEFT_COW;
+                    break;
                 default:
-                    return 1;
+                    cowInfo.cowId = 1;
+                    cowInfo.randomizerCheck = RC_LLR_TOWER_RIGHT_COW;
+                    break;
             }
+            break;
         case SCENE_MALON_STABLE:
             switch (uniqueCoords) {
                 // Two cases here cause this cow is moved in randomizer
                 case -257:
                 case -138:
-                    return 2;
+                    cowInfo.cowId = 2;
+                    cowInfo.randomizerCheck = RC_LLR_STABLES_RIGHT_COW;
+                    break;
                 default:
-                    return 3;
+                    cowInfo.cowId = 3;
+                    cowInfo.randomizerCheck = RC_LLR_STABLES_LEFT_COW;
+                    break;
             }
+            break;
         case SCENE_KAKUSIANA: // Grotto
             switch (uniqueCoords) {
                 case 1973:
-                    return 4;
+                    cowInfo.cowId = 4;
+                    cowInfo.randomizerCheck = RC_DMT_COW_GROTTO_COW;
+                    break;
                 default:
-                    return 5;
+                    cowInfo.cowId = 5;
+                    cowInfo.randomizerCheck = RC_HF_COW_GROTTO_COW;
+                    break;
             }
+            break;
         case SCENE_LINK_HOME:
-            return 6;
+            cowInfo.cowId = 6;
+            cowInfo.randomizerCheck = RC_KF_LINKS_HOUSE_COW;
+            break;
         case SCENE_LABO: // Impa's house
-            return 7;
+            cowInfo.cowId = 7;
+            cowInfo.randomizerCheck = RC_KAK_IMPAS_HOUSE_COW;
+            break;
         case SCENE_SPOT09: // Gerudo Valley
-            return 8;
-        // TODO: Handle Jabu MQ Cow
+            cowInfo.cowId = 8;
+            cowInfo.randomizerCheck = RC_GV_COW;
+            break;
+        case SCENE_SPOT08: // Jabu's Belly
+            cowInfo.cowId = 9;
+            cowInfo.randomizerCheck = RC_JABU_JABUS_BELLY_MQ_COW;
+            break;
     }
+
+    return cowInfo;
 }
 
 void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx) {
-    int cowId = EnCow_GetCowId(this, globalCtx);
+    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
+
+    // Only move the cow body (the tail will be moved with the body)
+    if (this->actor.params != 0) {
+        return;
+    }
 
     // Move left cow in lon lon tower
-    if (cowId == 0) {
+    if (cowInfo.cowId == 0) {
         this->actor.world.pos.x = -229.0f;
         this->actor.world.pos.z = 157.0f;
         this->actor.shape.rot.y = 15783.0f;
     // Move right cow in lon lon stable
-    } else if (cowId == 2) {
+    } else if (cowInfo.cowId == 2) {
         this->actor.world.pos.x += 119.0f;
     }
 }
 
 GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag) {
     GetItemID itemId = ITEM_NONE;
-    int cowId = EnCow_GetCowId(this, globalCtx);
+    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
 
-    if (!gSaveContext.cowsMilked[cowId]) {
-        itemId = Randomizer_GetRandomizedItemId(GI_MILK, this->actor.id, 4540 + cowId, globalCtx->sceneNum);
+    if (!gSaveContext.cowsMilked[cowInfo.cowId]) {
+        itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
 
         if (setFlag) {
-            gSaveContext.cowsMilked[cowId] = 1;
+            gSaveContext.cowsMilked[cowInfo.cowId] = 1;
         }
     } else if (Inventory_HasEmptyBottle()) {
         itemId = GI_MILK;
