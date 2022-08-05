@@ -206,6 +206,7 @@ extern "C" void CVar_Load() {
                 clr.g = value["G"].get<uint8_t>();
                 clr.b = value["B"].get<uint8_t>();
                 clr.a = value["A"].get<uint8_t>();
+                CVar_SetRGBA(item.key().c_str(), clr);
             }
 
             break;
