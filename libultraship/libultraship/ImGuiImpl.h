@@ -111,6 +111,7 @@ namespace SohImGui {
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
     void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true);
     void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
+    std::string GetWindowButtonText(const char* text, bool menuOpen);
 }
 
 #endif

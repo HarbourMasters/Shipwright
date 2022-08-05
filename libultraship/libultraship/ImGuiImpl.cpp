@@ -567,31 +567,43 @@ namespace SohImGui {
         else
             ImGui::Text(text, static_cast<int>(100 * val));
 
+        InsertPadding();
+
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
             if (ImGui::Button(MinusBTNName.c_str())) {
-                val -= 0.1f;
+                if (!isPercentage)
+                    val -= 0.1f;
+                else
+                    val -= 0.01f;
                 CVar_SetFloat(cvarName, val);
                 needs_save = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
-
+        if (PlusMinusButton) {
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+        }
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
             CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
-
+        if (PlusMinusButton) {
+            ImGui::PopItemWidth();
+        }
         if(PlusMinusButton) {
             std::string PlusBTNName = " + ##";
             PlusBTNName += cvarName;
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                val += 0.1f;
+                if (!isPercentage)
+                    val += 0.1f;
+                else
+                    val += 0.01f;
                 CVar_SetFloat(cvarName, val);
                 needs_save = true;
             }
@@ -872,21 +884,28 @@ namespace SohImGui {
                 InsertPadding();
 
                 if (ImGui::BeginMenu("Controller")) {
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (20.0f, 5.0f));
-                    if (ImGui::Button("Controller Configuration"))
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                    if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVar_GetS32("gControllerConfigurationEnabled", 0)).c_str()))
                     {
-                        CVar_SetS32("gControllerConfigurationEnabled", 1);
+                        bool currentValue = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                        CVar_SetS32("gControllerConfigurationEnabled", !currentValue);
                         needs_save = true;
                         controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
                     }
-                    ImGui::PopStyleVar(1);
+                    ImGui::PopStyleColor(1);
+                    ImGui::PopStyleVar(3);
                     PaddedEnhancementCheckbox("Use Controller Navigation", "gControlNav", true, false);
                     Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
                     PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
                     Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                     InsertPadding();
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
                     EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                     Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+                    ImGui::PopItemWidth();
 
                     ImGui::EndMenu();
                 }
@@ -894,7 +913,7 @@ namespace SohImGui {
                 InsertPadding();
 
                 if (ImGui::BeginMenu("Graphics")) {
-                    EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
+                    EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true, true);
                     Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
                     gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
                     PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, false, true, false);
@@ -928,7 +947,7 @@ namespace SohImGui {
                         }
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 78.0f);
+                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
                         if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                         {
                             CVar_SetS32(cvar, val);
@@ -1317,14 +1336,20 @@ namespace SohImGui {
 
                 InsertPadding();
 
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(8.0f, 5.0f));
-                if (ImGui::Button("Cosmetics Editor"))
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                static ImVec2 buttonSize(200.0f, 0.0f);
+                if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gCosmeticsEditorEnabled", 1);
+                    bool currentValue = CVar_GetS32("gCosmeticsEditorEnabled", 0);
+                    CVar_SetS32("gCosmeticsEditorEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Cosmetics Editor"].enabled = CVar_GetS32("gCosmeticsEditorEnabled", 0);
                 }
-                ImGui::PopStyleVar(1);
+                ImGui::PopStyleVar(3);
+                ImGui::PopStyleColor(1);
 
                 EXPERIMENTAL();
 
@@ -1360,7 +1385,7 @@ namespace SohImGui {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 78.0f);
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
                     if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         if (val > 360)
@@ -1581,46 +1606,54 @@ namespace SohImGui {
                     Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
                 };
                 PaddedSeparator();
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
-                static ImVec2 buttonSize(170.0f, 0.0f);
-                if (ImGui::Button("Stats", buttonSize))
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                static ImVec2 buttonSize(180.0f, 0.0f);
+                if (ImGui::Button(GetWindowButtonText("Stats", CVar_GetS32("gStatsEnabled", 0)).c_str(), buttonSize))
                 {
+                    bool currentValue = CVar_GetS32("gStatsEnabled", 0);
+                    CVar_SetS32("gStatsEnabled", !currentValue);
                     statsWindowOpen = true;
-                    CVar_SetS32("gStatsEnabled", 1);
                     needs_save = true;
                 }
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 InsertPadding();
-                if (ImGui::Button("Console", buttonSize))
+                if (ImGui::Button(GetWindowButtonText("Console", CVar_GetS32("gConsoleEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gConsoleEnabled", 1);
+                    bool currentValue = CVar_GetS32("gConsoleEnabled", 0);
+                    CVar_SetS32("gConsoleEnabled", !currentValue);
                     needs_save = true;
                     console->opened = CVar_GetS32("gConsoleEnabled", 0);
                 }
                 Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 InsertPadding();
-                if (ImGui::Button("Save Editor", buttonSize))
+                if (ImGui::Button(GetWindowButtonText("Save Editor", CVar_GetS32("gSaveEditorEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gSaveEditorEnabled", 1);
+                    bool currentValue = CVar_GetS32("gSaveEditorEnabled", 0);
+                    CVar_SetS32("gSaveEditorEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Save Editor"].enabled = CVar_GetS32("gSaveEditorEnabled", 0);
                 }
                 InsertPadding();
-                if (ImGui::Button("Collision Viewer", buttonSize))
+                if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVar_GetS32("gCollisionViewerEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gCollisionViewerEnabled", 1);
+                    bool currentValue = CVar_GetS32("gCollisionViewerEnabled", 0);
+                    CVar_SetS32("gCollisionViewerEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Collision Viewer"].enabled = CVar_GetS32("gCollisionViewerEnabled", 0);
                 }
                 InsertPadding();
-                if (ImGui::Button("Actor Viewer", buttonSize))
+                if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVar_GetS32("gActorViewerEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gActorViewerEnabled", 1);
+                    bool currentValue = CVar_GetS32("gActorViewerEnabled", 0);
+                    CVar_SetS32("gActorViewerEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Actor Viewer"].enabled = CVar_GetS32("gActorViewerEnabled", 0);
                 }
-                ImGui::PopStyleVar(2);
+                ImGui::PopStyleVar(3);
+                ImGui::PopStyleColor(1);
 
                 ImGui::EndMenu();
             }
@@ -1629,23 +1662,28 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Randomizer"))
             {
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-                static ImVec2 buttonSize(150.0f, 0.0f);
-                if (ImGui::Button("Randomizer Settings", buttonSize))
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                static ImVec2 buttonSize(200.0f, 0.0f);
+                if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gRandomizerSettingsEnabled", 1);
+                    bool currentValue = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                    CVar_SetS32("gRandomizerSettingsEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
                 }
                 InsertPadding();
-                if (ImGui::Button("Item Tracker", buttonSize))
+                if (ImGui::Button(GetWindowButtonText("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0)).c_str(), buttonSize))
                 {
-                    CVar_SetS32("gItemTrackerEnabled", 1);
+                    bool currentValue = CVar_GetS32("gItemTrackerEnabled", 0);
+                    CVar_SetS32("gItemTrackerEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
                 }
-                ImGui::PopStyleVar(2);
+                ImGui::PopStyleVar(3);
+                ImGui::PopStyleColor(1);
 
                 ImGui::EndMenu();
             }
@@ -1673,7 +1711,7 @@ namespace SohImGui {
             }
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", &statsWindowOpen);
+            ImGui::Begin("Debug Stats", &statsWindowOpen, ImGuiWindowFlags_NoFocusOnAppearing);
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
@@ -2049,5 +2087,13 @@ namespace SohImGui {
         if (padBottom) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
+    }
+
+    std::string GetWindowButtonText(const char* text, bool menuOpen) {
+        char buttonText[100] = "";
+        strcat(buttonText, menuOpen ? "Close " : "Open ");
+        strcat(buttonText, text);
+        if (!menuOpen) { strcat(buttonText, " "); }
+        return buttonText;
     }
 }
