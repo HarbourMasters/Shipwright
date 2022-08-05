@@ -20,8 +20,8 @@ class Directory
 {
 public:
 	#ifndef PATH_HACK
-	static std::string GetCurrentDirectory() { return fs::current_path().u8string().c_str(); }
-#endif
+	static std::string GetCurrentDirectory() { return fs::current_path().string(); }
+	#endif
 
 	static bool Exists(const fs::path& path) { return fs::exists(path); }
 
