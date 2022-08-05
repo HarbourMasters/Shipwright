@@ -1650,7 +1650,7 @@ namespace SohImGui {
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                static ImVec2 buttonSize(180.0f, 0.0f);
+                static ImVec2 buttonSize(160.0f, 0.0f);
                 if (ImGui::Button(GetWindowButtonText("Stats", CVar_GetS32("gStatsEnabled", 0)).c_str(), buttonSize))
                 {
                     bool currentValue = CVar_GetS32("gStatsEnabled", 0);
@@ -2131,9 +2131,9 @@ namespace SohImGui {
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
         char buttonText[100] = "";
-        strcat(buttonText, menuOpen ? "> " : "");
+        if(menuOpen) { strcat(buttonText,"> "); }
         strcat(buttonText, text);
-        if (!menuOpen) { strcat(buttonText, " "); }
+        if (!menuOpen) { strcat(buttonText, "  "); }
         return buttonText;
     }
 }
