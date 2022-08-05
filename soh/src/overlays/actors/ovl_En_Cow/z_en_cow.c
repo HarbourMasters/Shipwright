@@ -20,7 +20,7 @@ void func_809DF494(EnCow* this, GlobalContext* globalCtx);
 void func_809DF6BC(EnCow* this, GlobalContext* globalCtx);
 struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx);
 void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx);
-GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag);
+GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx);
 void func_809DF778(EnCow* this, GlobalContext* globalCtx);
 void func_809DF7D8(EnCow* this, GlobalContext* globalCtx);
 void func_809DF870(EnCow* this, GlobalContext* globalCtx);
@@ -306,16 +306,17 @@ void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx) {
     }
 }
 
-GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag) {
+void EnCow_SetCowMilked(EnCow* this, GlobalContext* globalCtx) {
+    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
+    gSaveContext.cowsMilked[cowInfo.cowId] = 1;
+}
+
+GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx) {
     GetItemID itemId = ITEM_NONE;
     struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
 
     if (!gSaveContext.cowsMilked[cowInfo.cowId]) {
         itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
-
-        if (setFlag) {
-            gSaveContext.cowsMilked[cowInfo.cowId] = 1;
-        }
     } else if (Inventory_HasEmptyBottle()) {
         itemId = GI_MILK;
     }
@@ -328,7 +329,16 @@ void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_809DF730;
     } else {
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? EnCow_GetRandomizerItemFromCow(this, globalCtx, true) : GI_MILK, 10000.0f, 100.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemID itemId = EnCow_GetRandomizerItemFromCow(this, globalCtx);
+            func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+            if (itemId == GI_ICE_TRAP) {
+                Message_StartTextbox(globalCtx, 0xF8, &this->actor);
+                EnCow_SetCowMilked(this, globalCtx);
+            }
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
+        }
     }
 }
 
@@ -337,13 +347,21 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
         this->actor.flags &= ~ACTOR_FLAG_16;
         Message_CloseTextbox(globalCtx);
         this->actionFunc = func_809DF778;
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? EnCow_GetRandomizerItemFromCow(this, globalCtx, true) : GI_MILK, 10000.0f, 100.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemID itemId = EnCow_GetRandomizerItemFromCow(this, globalCtx);
+            if (itemId != GI_ICE_TRAP) {
+                func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+                EnCow_SetCowMilked(this, globalCtx);
+            }
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
+        }
     }
 }
 
 void func_809DF870(EnCow* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        if (Inventory_HasEmptyBottle() || (gSaveContext.n64ddFlag && EnCow_GetRandomizerItemFromCow(this, globalCtx, false) != ITEM_NONE)) {
+        if (Inventory_HasEmptyBottle() || (gSaveContext.n64ddFlag && EnCow_GetRandomizerItemFromCow(this, globalCtx) != ITEM_NONE)) {
             Message_ContinueTextbox(globalCtx, 0x2007);
             this->actionFunc = func_809DF7D8;
         } else {
