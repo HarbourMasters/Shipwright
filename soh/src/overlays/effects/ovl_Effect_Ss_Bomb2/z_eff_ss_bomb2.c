@@ -6,6 +6,7 @@
 
 #include "z_eff_ss_bomb2.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define rScale regs[0]
 #define rTexIdx regs[1]
@@ -54,6 +55,7 @@ u32 EffectSsBomb2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     this->rEnvColorR = 0;
     this->rEnvColorG = 0;
     this->rEnvColorB = 200;
+    this->epoch++;
 
     return 1;
 }
@@ -144,6 +146,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
             Matrix_Put(&mtx2F);
 
             for (i = 1; i >= 0; i--) {
+                FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
                 Matrix_Translate(0.0f, 0.0f, depth, MTXMODE_APPLY);
                 Matrix_RotateZ((this->life * 0.02f) + 180.0f, MTXMODE_APPLY);
                 Matrix_Scale(layer2Scale, layer2Scale, layer2Scale, MTXMODE_APPLY);
@@ -151,6 +154,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffBombExplosion3DL);
                 layer2Scale -= 0.15f;
+                FrameInterpolation_RecordCloseChild();
             }
         }
     }

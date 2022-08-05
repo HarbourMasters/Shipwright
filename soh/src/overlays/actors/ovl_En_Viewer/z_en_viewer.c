@@ -14,6 +14,7 @@
 #include "objects/object_gndd/object_gndd.h"
 #include "objects/object_ganon/object_ganon.h"
 #include "objects/object_opening_demo1/object_opening_demo1.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -793,6 +794,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
+        eff->epoch++;
     } else {
         eff = &this->fireEffects[i];
         eff->startPos.x = -100.0f;
@@ -802,6 +804,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
+        eff->epoch++;
     }
     if (this) {}
 }
@@ -843,6 +846,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                 break;
         }
 
+        FrameInterpolation_RecordOpenChild(&this->fireEffects[i], this->fireEffects[i].epoch);
         func_80093D84(globalCtx->state.gfxCtx);
         Matrix_Translate(this->fireEffects[i].pos.x, this->fireEffects[i].pos.y, this->fireEffects[i].pos.z,
                          MTXMODE_NEW);
@@ -856,6 +860,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
+        FrameInterpolation_RecordCloseChild();
     }
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
