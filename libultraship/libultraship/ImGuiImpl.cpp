@@ -1094,34 +1094,40 @@ namespace SohImGui {
                     {
                         ImGui::Text("Damage Multiplier");
                         EnhancementCombobox("gDamageMul", powers, 9, 0);
-                        Tooltip("Modifies all sources of damage not affected by other sliders\n\
-2x: Can survive all common attacks from the start of the game\n\
-4x: Dies in 1 hit to any substantial attack from the start of the game\n\
-8x: Can only survive trivial damage from the start of the game\n\
-16x: Can survive all common attacks with max health without double defense\n\
-32x: Can survive all common attacks with max health and double defense\n\
-64x: Can survive trivial damage with max health without double defense\n\
-128x: Can survive trivial damage with max health and double defense\n\
-256x: Cannot survive damage");
+                        Tooltip(
+                            "Modifies all sources of damage not affected by other sliders\n\
+                            2x: Can survive all common attacks from the start of the game\n\
+                            4x: Dies in 1 hit to any substantial attack from the start of the game\n\
+                            8x: Can only survive trivial damage from the start of the game\n\
+                            16x: Can survive all common attacks with max health without double defense\n\
+                            32x: Can survive all common attacks with max health and double defense\n\
+                            64x: Can survive trivial damage with max health without double defense\n\
+                            128x: Can survive trivial damage with max health and double defense\n\
+                            256x: Cannot survive damage"
+                        );
                         PaddedText("Fall Damage Multiplier", true, false);
                         EnhancementCombobox("gFallDamageMul", powers, 8, 0);
-                        Tooltip("Modifies all fall damage\n\
-2x: Can survive all fall damage from the start of the game\n\
-4x: Can only survive short fall damage from the start of the game\n\
-8x: Cannot survive any fall damage from the start of the game\n\
-16x: Can survive all fall damage with max health without double defense\n\
-32x: Can survive all fall damage with max health and double defense\n\
-64x: Can survive short fall damage with double defense\n\
-128x: Cannot survive fall damage");
+                        Tooltip(
+                            "Modifies all fall damage\n\
+                            2x: Can survive all fall damage from the start of the game\n\
+                            4x: Can only survive short fall damage from the start of the game\n\
+                            8x: Cannot survive any fall damage from the start of the game\n\
+                            16x: Can survive all fall damage with max health without double defense\n\
+                            32x: Can survive all fall damage with max health and double defense\n\
+                            64x: Can survive short fall damage with double defense\n\
+                            128x: Cannot survive fall damage"
+                        );
                         PaddedText("Void Damage Multiplier", true, false);
                         EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
-                        Tooltip("Modifies damage taken after falling into a void\n\
-2x: Can survive void damage from the start of the game\n\
-4x: Cannot survive void damage from the start of the game\n\
-8x: Can survive void damage twice with max health without double defense\n\
-16x: Can survive void damage with max health without double defense\n\
-32x: Can survive void damage with max health and double defense\n\
-64x: Cannot survive void damage");
+                        Tooltip(
+                            "Modifies damage taken after falling into a void\n\
+                            2x: Can survive void damage from the start of the game\n\
+                            4x: Cannot survive void damage from the start of the game\n\
+                            8x: Can survive void damage twice with max health without double defense\n\
+                            16x: Can survive void damage with max health without double defense\n\
+                            32x: Can survive void damage with max health and double defense\n\
+                            64x: Cannot survive void damage"
+                        );
                         PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
