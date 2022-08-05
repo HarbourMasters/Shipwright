@@ -7,12 +7,12 @@ ItemTableManager::~ItemTableManager() {
     this->itemTables.clear();
 }
 
-bool ItemTableManager::AddItemTable(std::string tableID) {
+bool ItemTableManager::AddItemTable(uint16_t tableID) {
     ItemTable newItemTable;
     return itemTables.emplace(tableID, newItemTable).second;
 }
 
-bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID, int8_t drawID, uint8_t textID, uint8_t field, bool chestAnim) {
+bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, uint16_t itemID, uint16_t objectID, int16_t drawID, uint16_t textID, uint16_t field, bool chestAnim) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable == NULL) {
         return false;
@@ -21,7 +21,7 @@ bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, uint
     return itemTable->emplace(getItemID, getItemEntry).second;
 }
 
-bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, GetItemEntry getItemEntry) {
+bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable == NULL) {
         return false;
@@ -29,7 +29,7 @@ bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, GetI
     return itemTable->emplace(getItemID, getItemEntry).second;
 }
 
-GetItemEntry ItemTableManager::RetrieveItemEntry(std::string tableID, uint8_t itemID) {
+GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t itemID) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable != NULL) {
         auto foundItemEntry = itemTable->find(itemID);
@@ -40,7 +40,7 @@ GetItemEntry ItemTableManager::RetrieveItemEntry(std::string tableID, uint8_t it
     return GET_ITEM_NONE;
 }
 
-bool ItemTableManager::ClearItemTable(std::string tableID) {
+bool ItemTableManager::ClearItemTable(uint16_t tableID) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable != NULL) {
         itemTable->clear();
@@ -49,7 +49,7 @@ bool ItemTableManager::ClearItemTable(std::string tableID) {
     return false;
 }
 
-ItemTable* ItemTableManager::RetrieveItemTable(std::string tableID) {
+ItemTable* ItemTableManager::RetrieveItemTable(uint16_t tableID) {
     auto foundItemTable = itemTables.find(tableID);
     if (foundItemTable == itemTables.end()) {
         return nullptr;

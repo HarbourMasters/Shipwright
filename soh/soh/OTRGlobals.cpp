@@ -220,10 +220,10 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM_NONE,
         GET_ITEM_NONE,
     };
-    ItemTableManager::Instance->AddItemTable("Vanilla");
+    ItemTableManager::Instance->AddItemTable(MOD_VANILLA);
     for (uint8_t i = 0; i < ARRAY_SIZE(getItemTable); i++) {
         getItemTable[i].modIndex = MOD_VANILLA;
-        ItemTableManager::Instance->AddItemEntry("Vanilla", i, getItemTable[i]);
+        ItemTableManager::Instance->AddItemEntry(MOD_VANILLA, i, getItemTable[i]);
     }
 }
 
@@ -1669,15 +1669,10 @@ extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetIte
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
 
-extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    std::string itemTableID;
-    
-    if (OTRGlobals::Instance->getItemModIndex == MOD_VANILLA) {
-        itemTableID = "Vanilla";
-    } else {
-        itemTableID = "Randomizer";
+extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {    
+    if (OTRGlobals::Instance->getItemModIndex != MOD_VANILLA) {
         getItemID++; // counteracts the - 1 offset used for vanilla table
     }
 
-    return ItemTableManager::Instance->RetrieveItemEntry(itemTableID, getItemID);
+    return ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
 }

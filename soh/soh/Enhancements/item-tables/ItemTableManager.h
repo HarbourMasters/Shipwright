@@ -12,21 +12,21 @@
 
 #include <unordered_map>
 
-typedef std::unordered_map<uint8_t, GetItemEntry> ItemTable;
+typedef std::unordered_map<uint16_t, GetItemEntry> ItemTable;
 
 class ItemTableManager {
   public:
       static ItemTableManager* Instance;
       ItemTableManager();
       ~ItemTableManager();
-      bool AddItemTable(std::string tableID);
-      bool AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID, int8_t drawID, uint8_t textID, uint8_t field, bool chestAnim);
-      bool AddItemEntry(std::string tableID, uint8_t getItemID, GetItemEntry getItemEntry);
-      GetItemEntry RetrieveItemEntry(std::string tableID, uint8_t itemID);
-      bool ClearItemTable(std::string tableID);
+      bool AddItemTable(uint16_t tableID);
+      bool AddItemEntry(uint16_t tableID, uint16_t getItemID, uint16_t itemID, uint16_t objectID, int16_t drawID, uint16_t textID, uint16_t field, bool chestAnim);
+      bool AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry);
+      GetItemEntry RetrieveItemEntry(uint16_t tableID, uint16_t itemID);
+      bool ClearItemTable(uint16_t tableID);
 
   private:
-      std::unordered_map<std::string, ItemTable> itemTables;
+      std::unordered_map<uint16_t, ItemTable> itemTables;
 
-      ItemTable* RetrieveItemTable(std::string tableID);
+      ItemTable* RetrieveItemTable(uint16_t tableID);
 };

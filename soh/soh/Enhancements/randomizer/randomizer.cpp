@@ -4823,7 +4823,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
     };
-    ItemTableManager::Instance->AddItemTable("Randomizer");
+    ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_SIZE(getItemTable); i++) {
         if (i < 21) {
             // We want to use vanilla Give_Item code for indices 0-20 since
@@ -4903,7 +4903,7 @@ void InitRandoItemTable() {
                 getItemID = getItemTable[i].itemId;
                 break;
         }
-        ItemTableManager::Instance->AddItemEntry("Randomizer", getItemID, getItemTable[i]);
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, getItemID, getItemTable[i]);
     }
 }
 
