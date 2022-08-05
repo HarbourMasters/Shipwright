@@ -6,6 +6,7 @@
 
 #include "z_eff_dust.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -268,6 +269,8 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     f32* distanceTraveled;
     s32 i;
     f32 aux;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -283,6 +286,8 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
 
     for (i = 0; i < 64; i++) {
+        FrameInterpolation_RecordOpenChild("Dust 8099E4F4", epoch + i * 25);
+
         if (*distanceTraveled < 1.0f) {
             aux = 1.0f - (*distanceTraveled * *distanceTraveled);
             Matrix_Translate(this->actor.world.pos.x + (initialPositions->x * ((this->dx * aux) + (1.0f - this->dx))),
@@ -297,6 +302,8 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
+
+        FrameInterpolation_RecordCloseChild();
 
         initialPositions++;
         distanceTraveled++;
@@ -314,6 +321,8 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
     f32 aux;
     Player* player = GET_PLAYER(globalCtx);
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -333,6 +342,8 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
 
     for (i = 0; i < 64; i++) {
+        FrameInterpolation_RecordOpenChild("Dust 8099E784", epoch + i * 25);
+
         if (*distanceTraveled < 1.0f) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, *distanceTraveled * 255);
 
@@ -356,6 +367,8 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
+
+        FrameInterpolation_RecordCloseChild();
 
         initialPositions++;
         distanceTraveled++;
