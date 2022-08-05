@@ -106,8 +106,6 @@ source_group("Source Files\\Controller\\Attachment" FILES ${Source_Files__Contro
 set(Source_Files__CustomImpl
     "GameOverlay.cpp"
     "GameOverlay.h"
-    "GameSettings.cpp"
-    "GameSettings.h"
     "Console.cpp"
     "Console.h"
     "ImGuiImpl.cpp"

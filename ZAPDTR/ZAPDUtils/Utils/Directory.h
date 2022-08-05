@@ -1,8 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
+#include "StringHelper.h"
+#include <iostream>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -11,8 +12,6 @@ namespace fs = std::filesystem;
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
-
-#include "StringHelper.h"
 
 #undef GetCurrentDirectory
 #undef CreateDirectory

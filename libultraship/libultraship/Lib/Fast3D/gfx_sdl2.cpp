@@ -35,8 +35,6 @@
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
-#include <time.h>
-#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
@@ -306,7 +304,7 @@ static void gfx_sdl_handle_events(void) {
             case SDL_DROPFILE:
                 CVar_SetString("gDroppedFile", event.drop.file);
                 CVar_SetS32("gNewFileDropped", 1);
-                Game::SaveSettings();
+                CVar_Save();
                 break;
             case SDL_QUIT:
                 Ship::ExecuteHooks<Ship::ExitGame>();
