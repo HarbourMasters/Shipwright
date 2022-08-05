@@ -1,11 +1,6 @@
 #include "CosmeticsEditor.h"
-#include "../../util.h"
 #include "../libultraship/ImGuiImpl.h"
-#include "GameSettings.h"
 
-#include <array>
-#include <bit>
-#include <map>
 #include <string>
 #include <Cvar.h>
 #include <random>
