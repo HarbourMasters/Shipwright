@@ -5,7 +5,7 @@
 #include "location_access.hpp"
 #include "rando_main.hpp"
 // #include <soh/Enhancements/randomizer.h>
-#include <CVar.h>
+#include <Cvar.h>
 #define NOGDI
 #define WIN32_LEAN_AND_MEAN
 #include <GlobalCtx2.h>
