@@ -18,9 +18,9 @@ void func_809E0070(Actor* thisx, GlobalContext* globalCtx);
 
 void func_809DF494(EnCow* this, GlobalContext* globalCtx);
 void func_809DF6BC(EnCow* this, GlobalContext* globalCtx);
-struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx);
-void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx);
-GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx);
+struct CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx);
+void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx);
+GetItemID EnCow_GetRandomizerItem(EnCow* this, GlobalContext* globalCtx);
 void func_809DF778(EnCow* this, GlobalContext* globalCtx);
 void func_809DF7D8(EnCow* this, GlobalContext* globalCtx);
 void func_809DF870(EnCow* this, GlobalContext* globalCtx);
@@ -110,7 +110,7 @@ void EnCow_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
-        EnCow_MoveCowsForRandomizer(thisx, globalCtx);
+        EnCow_MoveForRandomizer(thisx, globalCtx);
     }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 72.0f);
@@ -221,7 +221,7 @@ struct CowInfo {
     RandomizerCheck randomizerCheck;
 };
 
-struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx) {
+struct CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
     struct CowInfo cowInfo;
 
     switch (globalCtx->sceneNum) {
@@ -273,13 +273,13 @@ struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx) {
     return cowInfo;
 }
 
-void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx) {
-    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
-
+void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx) {
     // Only move the cow body (the tail will be moved with the body)
     if (this->actor.params != 0) {
         return;
     }
+
+    struct CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
 
     // Move left cow in lon lon tower
     if (globalCtx->sceneNum == SCENE_SOUKO && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
@@ -293,13 +293,13 @@ void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx) {
 }
 
 void EnCow_SetCowMilked(EnCow* this, GlobalContext* globalCtx) {
-    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
+    struct CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
     gSaveContext.cowsMilked[cowInfo.cowId] = 1;
 }
 
-GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx) {
+GetItemID EnCow_GetRandomizerItem(EnCow* this, GlobalContext* globalCtx) {
     GetItemID itemId = ITEM_NONE;
-    struct CowInfo cowInfo = EnCow_GetCowInfo(this, globalCtx);
+    struct CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
 
     if (!gSaveContext.cowsMilked[cowInfo.cowId]) {
         itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
@@ -316,7 +316,7 @@ void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
         this->actionFunc = func_809DF730;
     } else {
         if (gSaveContext.n64ddFlag) {
-            GetItemID itemId = EnCow_GetRandomizerItemFromCow(this, globalCtx);
+            GetItemID itemId = EnCow_GetRandomizerItem(this, globalCtx);
             func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
             EnCow_SetCowMilked(this, globalCtx);
             if (itemId == GI_ICE_TRAP) {
@@ -341,7 +341,7 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
 
 void func_809DF870(EnCow* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        if (Inventory_HasEmptyBottle() || (gSaveContext.n64ddFlag && EnCow_GetRandomizerItemFromCow(this, globalCtx) != ITEM_NONE)) {
+        if (Inventory_HasEmptyBottle() || (gSaveContext.n64ddFlag && EnCow_GetRandomizerItem(this, globalCtx) != ITEM_NONE)) {
             Message_ContinueTextbox(globalCtx, 0x2007);
             this->actionFunc = func_809DF7D8;
         } else {

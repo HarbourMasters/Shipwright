@@ -3962,8 +3962,8 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Cows
                         ImGui::Text(Settings::ShuffleCows.GetName().c_str());
                         InsertHelpHoverText(
-                            "Enabling this will let cows give you items upon performing Epona's Song in "
-                            "front of them.");
+                            "Cows give a randomized item from the pool upon performing Epona's\n"
+                            "Song in front of them.");
                         SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
                         PaddedSeparator();
 
