@@ -223,13 +223,16 @@ struct CowInfo {
 
 struct CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
     struct CowInfo cowInfo;
+    
+    cowInfo.cowId = -1;
+    cowInfo.randomizerCheck = RC_UNKNOWN_CHECK;
 
     switch (globalCtx->sceneNum) {
         case SCENE_SOUKO: // Lon Lon Tower
             if (this->actor.world.pos.x == -229 && this->actor.world.pos.z == 157) {
                 cowInfo.cowId = 0;
                 cowInfo.randomizerCheck = RC_LLR_TOWER_LEFT_COW;
-            } else {
+            } else if (this->actor.world.pos.x == -142 && this->actor.world.pos.z == -140) {
                 cowInfo.cowId = 1;
                 cowInfo.randomizerCheck = RC_LLR_TOWER_RIGHT_COW;
             }
@@ -238,7 +241,7 @@ struct CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
             if (this->actor.world.pos.x == 116 && this->actor.world.pos.z == -254) {
                 cowInfo.cowId = 2;
                 cowInfo.randomizerCheck = RC_LLR_STABLES_RIGHT_COW;
-            } else {
+            } else if (this->actor.world.pos.x == -122 && this->actor.world.pos.z == -254) {
                 cowInfo.cowId = 3;
                 cowInfo.randomizerCheck = RC_LLR_STABLES_LEFT_COW;
             }
@@ -247,7 +250,7 @@ struct CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
             if (this->actor.world.pos.x == 2444 && this->actor.world.pos.z == -471) {
                 cowInfo.cowId = 4;
                 cowInfo.randomizerCheck = RC_DMT_COW_GROTTO_COW;
-            } else {
+            } else if (this->actor.world.pos.x == 3485 && this->actor.world.pos.z == -291) {
                 cowInfo.cowId = 5;
                 cowInfo.randomizerCheck = RC_HF_COW_GROTTO_COW;
             }
@@ -278,8 +281,6 @@ void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx) {
     if (this->actor.params != 0) {
         return;
     }
-
-    struct CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
 
     // Move left cow in lon lon tower
     if (globalCtx->sceneNum == SCENE_SOUKO && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
