@@ -2131,7 +2131,7 @@ namespace SohImGui {
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
         char buttonText[100] = "";
-        strcat(buttonText, menuOpen ? "Close " : "Open ");
+        strcat(buttonText, menuOpen ? "> " : "");
         strcat(buttonText, text);
         if (!menuOpen) { strcat(buttonText, " "); }
         return buttonText;
