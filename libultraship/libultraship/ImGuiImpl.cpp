@@ -7,8 +7,13 @@
 #include <algorithm>
 #include <vector>
 
+#include <cstddef>
+#include <PR/ultra64/types.h>
+#include <PR/ultra64/sptask.h>
+#include <PR/ultra64/pi.h>
+#include <PR/ultra64/message.h>
+#include "../../soh/include/z64audio.h"
 #include "Archive.h"
-#include "GameSettings.h"
 #include "Console.h"
 #include "Hooks.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -68,6 +73,14 @@ std::vector<std::string> emptyArgs;
 
 bool isBetaQuestEnabled = false;
 
+enum SeqPlayers {
+    /* 0 */ SEQ_BGM_MAIN,
+    /* 1 */ SEQ_FANFARE,
+    /* 2 */ SEQ_SFX,
+    /* 3 */ SEQ_BGM_SUB,
+    /* 4 */ SEQ_MAX
+};
+
 extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
     void disableBetaQuest() { isBetaQuestEnabled = false; }
@@ -114,6 +127,23 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
+
+    void UpdateAudio() {
+        Audio_SetGameVolume(SEQ_BGM_MAIN, CVar_GetFloat("gMainMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_BGM_SUB, CVar_GetFloat("gSubMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_FANFARE, CVar_GetFloat("gSFXMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
+    }
+
+    void InitSettings() {
+        Ship::RegisterHook<Ship::AudioInit>(UpdateAudio);
+        Ship::RegisterHook<Ship::GfxInit>([] {
+            gfx_get_current_rendering_api()->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
+            SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
+            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+            UpdateAudio();
+        });
+    }
 
     int GetBackendID(std::shared_ptr<Mercury> cfg) {
         std::string backend = cfg->getString("Window.GfxBackend");
@@ -347,7 +377,7 @@ namespace SohImGui {
     }
 
     void Init(WindowImpl window_impl) {
-        Game::LoadSettings();
+        CVar_Load();
         impl = window_impl;
         ImGuiContext* ctx = ImGui::CreateContext();
         ImGui::SetCurrentContext(ctx);
@@ -405,7 +435,7 @@ namespace SohImGui {
             pads = cont_pad;
         });
 
-        Game::InitSettings();
+        InitSettings();
 
         CVar_SetS32("gRandoGenerating", 0);
         CVar_SetS32("gNewSeedGenerated", 0);
@@ -419,7 +449,7 @@ namespace SohImGui {
 
     void Update(EventImpl event) {
         if (needs_save) {
-            Game::SaveSettings();
+            CVar_Save();
             needs_save = false;
         }
         ImGuiProcessEvent(event);
@@ -436,10 +466,9 @@ namespace SohImGui {
             const float volume = floorf(value * 100) / 100;
             CVar_SetFloat(key, volume);
             needs_save = true;
-            Game::SetSeqPlayerVolume(playerId, volume);
+            Audio_SetGameVolume(playerId, volume);
         }
     }
-
 
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
         if (FirstTimeValue <= 0) {

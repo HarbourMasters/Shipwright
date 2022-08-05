@@ -9,7 +9,6 @@
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/details/synchronous_factory.h>
 #include "ImGuiImpl.h"
-#include "GameSettings.h"
 #include "Cvar.h"
 #include <chrono>
 #include <mutex>
