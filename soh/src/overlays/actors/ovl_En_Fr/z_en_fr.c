@@ -1038,7 +1038,7 @@ void EnFr_GiveReward(EnFr* this, GlobalContext* globalCtx) {
 }
 
 void EnFr_SetIdle(EnFr* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && this->reward == GI_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }

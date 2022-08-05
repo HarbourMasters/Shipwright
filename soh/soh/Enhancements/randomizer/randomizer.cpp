@@ -4029,8 +4029,8 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Frog Song Rupees
                         SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
                         InsertHelpHoverText(
-                            "Shuffles 5 Purple Rupees into to the item pool, and allows you\n"
-                            "to earn items by playing songs at the Frog Choir.\n"
+                            "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                            "you to earn items by playing songs at the Frog Choir.\n"
                             "\n"
                             "This setting does not effect the item earned from playing\n"
                             "the Song of Storms and the frog song minigame."
