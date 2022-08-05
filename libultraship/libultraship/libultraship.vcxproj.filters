@@ -342,6 +342,15 @@
     <ClCompile Include="Factories\ScalarFactory.cpp">
       <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -646,6 +655,18 @@
     </ClInclude>
     <ClInclude Include="Factories\ScalarFactory.h">
       <Filter>Header Files\Resources\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiImpl.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -83,7 +83,7 @@ namespace SohImGui {
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false);
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton = false);
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue);
-    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha = false, bool TitleSameLine = false);
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue = 0);
 
     void DrawMainMenuAndCalculateGameSize(void);
@@ -93,16 +93,16 @@ namespace SohImGui {
     void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
-    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha = false);
     int ClampFloatToInt(float value, int min, int max);
     void RandomizeColor(const char* cvarName, ImVec4* colors);
     void RainbowColor(const char* cvarName, ImVec4* colors);
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
-    void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
+    void BeginGroupPanel(const char* name, const ImVec2& size = ImVec2(0.0f, 0.0f));
     void EndGroupPanel(float minHeight = 0.0f);
     std::string BreakTooltip(const char* text, int lineLength = 60);
     std::string BreakTooltip(const std::string& text, int lineLength = 60);

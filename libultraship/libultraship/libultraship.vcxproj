@@ -268,7 +268,6 @@
     <ClCompile Include="Lib\Mercury\Mercury.cpp" />
     <ClCompile Include="luslog.cpp" />
     <ClCompile Include="mixer.c" />
-    <ClCompile Include="ModManager.cpp" />
     <ClCompile Include="Scalar.cpp" />
     <ClCompile Include="SDLAudioPlayer.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -366,7 +365,6 @@
     <ClInclude Include="Lib\stb\stb_image_write.h" />
     <ClInclude Include="luslog.h" />
     <ClInclude Include="mixer.h" />
-    <ClInclude Include="ModManager.h" />
     <ClInclude Include="ModModule.h" />
     <ClInclude Include="Scalar.h" />
     <ClInclude Include="SDLAudioPlayer.h" />
