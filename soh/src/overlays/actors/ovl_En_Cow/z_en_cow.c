@@ -109,7 +109,7 @@ void EnCow_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
 
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
         EnCow_MoveCowsForRandomizer(thisx, globalCtx);
     }
 
@@ -222,48 +222,34 @@ struct CowInfo {
 };
 
 struct CowInfo EnCow_GetCowInfo(EnCow* this, GlobalContext* globalCtx) {
-    s32 uniqueCoords = this->actor.world.pos.x + this->actor.world.pos.z;
     struct CowInfo cowInfo;
 
     switch (globalCtx->sceneNum) {
         case SCENE_SOUKO: // Lon Lon Tower
-            switch (uniqueCoords) {
-                // Two cases here cause this cow is moved in randomizer
-                case -173:
-                case -72:
-                    cowInfo.cowId = 0;
-                    cowInfo.randomizerCheck = RC_LLR_TOWER_LEFT_COW;
-                    break;
-                default:
-                    cowInfo.cowId = 1;
-                    cowInfo.randomizerCheck = RC_LLR_TOWER_RIGHT_COW;
-                    break;
+            if (this->actor.world.pos.x == -229 && this->actor.world.pos.z == 157) {
+                cowInfo.cowId = 0;
+                cowInfo.randomizerCheck = RC_LLR_TOWER_LEFT_COW;
+            } else {
+                cowInfo.cowId = 1;
+                cowInfo.randomizerCheck = RC_LLR_TOWER_RIGHT_COW;
             }
             break;
         case SCENE_MALON_STABLE:
-            switch (uniqueCoords) {
-                // Two cases here cause this cow is moved in randomizer
-                case -257:
-                case -138:
-                    cowInfo.cowId = 2;
-                    cowInfo.randomizerCheck = RC_LLR_STABLES_RIGHT_COW;
-                    break;
-                default:
-                    cowInfo.cowId = 3;
-                    cowInfo.randomizerCheck = RC_LLR_STABLES_LEFT_COW;
-                    break;
+            if (this->actor.world.pos.x == 116 && this->actor.world.pos.z == -254) {
+                cowInfo.cowId = 2;
+                cowInfo.randomizerCheck = RC_LLR_STABLES_RIGHT_COW;
+            } else {
+                cowInfo.cowId = 3;
+                cowInfo.randomizerCheck = RC_LLR_STABLES_LEFT_COW;
             }
             break;
         case SCENE_KAKUSIANA: // Grotto
-            switch (uniqueCoords) {
-                case 1973:
-                    cowInfo.cowId = 4;
-                    cowInfo.randomizerCheck = RC_DMT_COW_GROTTO_COW;
-                    break;
-                default:
-                    cowInfo.cowId = 5;
-                    cowInfo.randomizerCheck = RC_HF_COW_GROTTO_COW;
-                    break;
+            if (this->actor.world.pos.x == 2444 && this->actor.world.pos.z == -471) {
+                cowInfo.cowId = 4;
+                cowInfo.randomizerCheck = RC_DMT_COW_GROTTO_COW;
+            } else {
+                cowInfo.cowId = 5;
+                cowInfo.randomizerCheck = RC_HF_COW_GROTTO_COW;
             }
             break;
         case SCENE_LINK_HOME:
@@ -296,12 +282,12 @@ void EnCow_MoveCowsForRandomizer(EnCow* this, GlobalContext* globalCtx) {
     }
 
     // Move left cow in lon lon tower
-    if (cowInfo.cowId == 0) {
+    if (globalCtx->sceneNum == SCENE_SOUKO && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
         this->actor.world.pos.x = -229.0f;
         this->actor.world.pos.z = 157.0f;
         this->actor.shape.rot.y = 15783.0f;
     // Move right cow in lon lon stable
-    } else if (cowInfo.cowId == 2) {
+    } else if (globalCtx->sceneNum == SCENE_MALON_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
         this->actor.world.pos.x += 119.0f;
     }
 }
@@ -332,9 +318,9 @@ void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             GetItemID itemId = EnCow_GetRandomizerItemFromCow(this, globalCtx);
             func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+            EnCow_SetCowMilked(this, globalCtx);
             if (itemId == GI_ICE_TRAP) {
                 Message_StartTextbox(globalCtx, 0xF8, &this->actor);
-                EnCow_SetCowMilked(this, globalCtx);
             }
         } else {
             func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
@@ -347,13 +333,7 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
         this->actor.flags &= ~ACTOR_FLAG_16;
         Message_CloseTextbox(globalCtx);
         this->actionFunc = func_809DF778;
-        if (gSaveContext.n64ddFlag) {
-            GetItemID itemId = EnCow_GetRandomizerItemFromCow(this, globalCtx);
-            if (itemId != GI_ICE_TRAP) {
-                func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
-                EnCow_SetCowMilked(this, globalCtx);
-            }
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
         }
     }

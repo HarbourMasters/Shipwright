@@ -1394,6 +1394,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
+    { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -1602,6 +1603,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
+                    case RSK_SHUFFLE_COWS:
                     case RSK_RANDOM_TRIALS:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
