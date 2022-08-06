@@ -319,9 +319,9 @@ void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             GetItemID itemId = EnCow_GetRandomizerItem(this, globalCtx);
             func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
-            EnCow_SetCowMilked(this, globalCtx);
             if (itemId == GI_ICE_TRAP) {
                 Message_StartTextbox(globalCtx, 0xF8, &this->actor);
+                EnCow_SetCowMilked(this, globalCtx);
             }
         } else {
             func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
@@ -334,7 +334,13 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
         this->actor.flags &= ~ACTOR_FLAG_16;
         Message_CloseTextbox(globalCtx);
         this->actionFunc = func_809DF778;
-        if (!gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag) {
+            GetItemID itemId = EnCow_GetRandomizerItem(this, globalCtx);
+            if (itemId != GI_ICE_TRAP) {
+                func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+                EnCow_SetCowMilked(this, globalCtx);
+            }
+        } else {
             func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
         }
     }
