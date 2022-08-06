@@ -1,5 +1,4 @@
 #include "ItemTableManager.h"
-#include "stddef.h"
 
 ItemTableManager::ItemTableManager() {
 }
@@ -15,7 +14,7 @@ bool ItemTableManager::AddItemTable(uint16_t tableID) {
 
 bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, uint16_t itemID, uint16_t objectID, int16_t drawID, uint16_t textID, uint16_t field, bool chestAnim) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable == NULL) {
+    if (itemTable == nullptr) {
         return false;
     }
     GetItemEntry getItemEntry = GET_ITEM(itemID, objectID, drawID, textID, field, chestAnim);
@@ -24,7 +23,7 @@ bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, uint16
 
 bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable == NULL) {
+    if (itemTable == nullptr) {
         return false;
     }
     return itemTable->emplace(getItemID, getItemEntry).second;
@@ -32,7 +31,7 @@ bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetIte
 
 GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t itemID) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable != NULL) {
+    if (itemTable != nullptr) {
         auto foundItemEntry = itemTable->find(itemID);
         if (foundItemEntry != itemTable->end()) {
             return foundItemEntry->second;
@@ -43,7 +42,7 @@ GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t item
 
 bool ItemTableManager::ClearItemTable(uint16_t tableID) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable != NULL) {
+    if (itemTable != nullptr) {
         itemTable->clear();
         return true;
     }
