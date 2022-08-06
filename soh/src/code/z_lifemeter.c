@@ -424,14 +424,14 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
     s16 PosY_original = 0.0f+Y_Margins;
     if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-        offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins;
+        offsetY = CVar_GetS32("gHeartsCountPosY", 0)+Y_Margins;
         if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
             X_Margins = Right_LM_Margin;
-            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-            offsetX = CVar_GetS32("gHeartsPosX", 0);
+            offsetX = CVar_GetS32("gHeartsCountPosX", 0);
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
             offsetX = -9999;
         }
@@ -602,14 +602,14 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
             PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
             PosY_original = 10.0f+Y_Margins;
             if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-                offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins+10.0f;
+                offsetY = CVar_GetS32("gHeartsCountPosY", 0)+Y_Margins+10.0f;
                 if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
                     X_Margins = Right_LM_Margin;
-                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-                    offsetX = CVar_GetS32("gHeartsPosX", 0);
+                    offsetX = CVar_GetS32("gHeartsCountPosX", 0);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
                     offsetX = -9999;
                 }

@@ -3303,6 +3303,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     s16 PosY_BtnB_ori = R_ITEM_BTN_Y(0)+Y_Margins_BtnB;
     s16 PosX_BtnB;
     s16 PosY_BtnB;
+    s16 BBtn_Size = 32;
+    int BBtnScaled = BBtn_Size * CVar_GetFloat("gBBtnScale", 0.91f);
+    int BBtn_factor = (1 << 10) * BBtn_Size / BBtnScaled;
     if (CVar_GetS32("gBBtnPosType", 0) != 0) {
         PosY_BtnB = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB;
         if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
@@ -3334,8 +3337,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     }
     s16 StartBtn_Icon_H = 32;
     s16 StartBtn_Icon_W = 32;
-    int StartBTN_H_Scaled = StartBtn_Icon_H * 0.75f;
-    int StartBTN_W_Scaled = StartBtn_Icon_W * 0.75f;
+    int StartBTN_H_Scaled = StartBtn_Icon_H * CVar_GetFloat("gStartBtnScale", 0.75f);
+    int StartBTN_W_Scaled = StartBtn_Icon_W * CVar_GetFloat("gStartBtnScale", 0.75f);
     int StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
     int StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
     const s16 rStartLabelX_ori = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+X_Margins_StartBtn);
@@ -3344,8 +3347,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
     s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH();
     s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
-    int StartBTN_Label_H_Scaled = StartBTN_Label_H * 1.0f;
-    int StartBTN_Label_W_Scaled = StartBTN_Label_W * 1.0f;
+    int StartBTN_Label_H_Scaled = StartBTN_Label_H * CVar_GetFloat("gStartBtnScale", 0.75f) + (CVar_GetFloat("gStartBtnScale", 0.75f)/3);
+    int StartBTN_Label_W_Scaled = StartBTN_Label_W * CVar_GetFloat("gStartBtnScale", 0.75f) + (CVar_GetFloat("gStartBtnScale", 0.75f)/3);
     int StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
     int StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
     const s16 StartBtn_Label_W_ori = StartBTN_Label_W / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
@@ -3426,6 +3429,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     s16 C_Up_BTN_Pos[2];
     s16 C_Down_BTN_Pos[2];
     //C button Left
+    s16 C_Left_BTN_Size = 32;
+    int CLeftScaled = C_Left_BTN_Size * CVar_GetFloat("gCBtnLScale", 0.75f);
+    int CLeft_factor = (1 << 10) * C_Left_BTN_Size / CLeftScaled;
     if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
         C_Left_BTN_Pos[1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
         if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
@@ -3444,6 +3450,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         C_Left_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos_ori[0]);
     }
     //C button Right
+    s16 C_Right_BTN_Size = 32;
+    int CRightScaled = C_Right_BTN_Size * CVar_GetFloat("gCBtnRScale", 0.75f);
+    int CRight_factor = (1 << 10) * C_Right_BTN_Size / CRightScaled;
     if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
         C_Right_BTN_Pos[1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
         if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
@@ -3462,6 +3471,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         C_Right_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos_ori[0]);
     }
     //C Button Up
+    s16 C_Up_BTN_Size = 32;
+    int CUpScaled = C_Up_BTN_Size * CVar_GetFloat("gCBtnUScale", 0.5f);
+    int CUp_factor = (1 << 10) * C_Up_BTN_Size / CUpScaled;
     if (CVar_GetS32("gCBtnUPosType", 0) != 0) {
         C_Up_BTN_Pos[1] = CVar_GetS32("gCBtnUPosY", 0)+Y_Margins_CU;
         if (CVar_GetS32("gCBtnUPosType", 0) == 1) {//Anchor Left
@@ -3480,6 +3492,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         C_Up_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Up_BTN_Pos_ori[0]);
     }
     //C Button down
+    s16 C_Down_BTN_Size = 32;
+    int CDownScaled = C_Down_BTN_Size * CVar_GetFloat("gCBtnDScale", 0.75f);
+    int CDown_factor = (1 << 10) * C_Down_BTN_Size / CDownScaled;
     if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
         C_Down_BTN_Pos[1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
         if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
@@ -3513,7 +3528,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     }
     gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
-    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, 32, 32, PosX_BtnB, PosY_BtnB, R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_DD(0) << 1, R_ITEM_BTN_DD(0) << 1);
+    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, BBtn_Size, BBtn_Size, PosX_BtnB, PosY_BtnB, 
+    BBtnScaled, BBtnScaled,
+    BBtn_factor, BBtn_factor);
 
     // C-Left Button Color & Texture
     gDPPipeSync(OVERLAY_DISP++);
@@ -3527,9 +3544,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, interfaceCtx->cLeftAlpha);
     }
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Left_BTN_Pos[0] << 2, C_Left_BTN_Pos[1] << 2,
-                        (C_Left_BTN_Pos[0] + R_ITEM_BTN_WIDTH(1)) << 2,
-                        (C_Left_BTN_Pos[1] + R_ITEM_BTN_WIDTH(1)) << 2,
-                        G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(1) << 1, R_ITEM_BTN_DD(1) << 1);
+                        (C_Left_BTN_Pos[0] + CLeftScaled) << 2,
+                        (C_Left_BTN_Pos[1] + CLeftScaled) << 2,
+                        G_TX_RENDERTILE, 0, 0, CLeft_factor, CLeft_factor);
 
     // C-Down Button Color & Texture
     if (CVar_GetS32("gHudColors", 1) == 0) {
@@ -3542,9 +3559,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, interfaceCtx->cDownAlpha);
     }
     gSPWideTextureRectangle(OVERLAY_DISP++,  C_Down_BTN_Pos[0] << 2, C_Down_BTN_Pos[1] << 2,
-                        (C_Down_BTN_Pos[0] + R_ITEM_BTN_WIDTH(2)) << 2,
-                        (C_Down_BTN_Pos[1] + R_ITEM_BTN_WIDTH(2)) << 2,
-                        G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
+                        (C_Down_BTN_Pos[0] + CDownScaled) << 2,
+                        (C_Down_BTN_Pos[1] + CDownScaled) << 2,
+                        G_TX_RENDERTILE, 0, 0, CDown_factor, CDown_factor);
 
     // C-Right Button Color & Texture
     if (CVar_GetS32("gHudColors", 1) == 0) {
@@ -3557,9 +3574,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, interfaceCtx->cRightAlpha);
     }
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Right_BTN_Pos[0] << 2, C_Right_BTN_Pos[1] << 2,
-                        (C_Right_BTN_Pos[0] + R_ITEM_BTN_WIDTH(3)) << 2,
-                        (C_Right_BTN_Pos[1] + R_ITEM_BTN_WIDTH(3)) << 2,
-                        G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(3) << 1, R_ITEM_BTN_DD(3) << 1);
+                        (C_Right_BTN_Pos[0] + CRightScaled) << 2,
+                        (C_Right_BTN_Pos[1] + CRightScaled) << 2,
+                        G_TX_RENDERTILE, 0, 0, CRight_factor, CRight_factor);
 
     if ((pauseCtx->state < 8) || (pauseCtx->state >= 18)) {
         if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
@@ -3700,6 +3717,11 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 { R_ITEM_ICON_X(2)+X_Margins_CD, R_ITEM_ICON_Y(2)+Y_Margins_CD },
                 { R_ITEM_ICON_X(3)+X_Margins_CR, R_ITEM_ICON_Y(3)+Y_Margins_CR },
             };
+            const s16 ItemIconWidthFactor[3][2] = {
+                { CLeftScaled, CLeft_factor },
+                { CDownScaled, CDown_factor },
+                { CRightScaled, CRight_factor },
+            };
             s16 ItemIconPos[3][2]; //(X,Y)
             //C button Left
             if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
@@ -3775,16 +3797,16 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             }
             
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32, 
-                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], R_ITEM_BTN_WIDTH(temp),
-                                          R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
+                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], ItemIconWidthFactor[temp-1][0],
+                                          ItemIconWidthFactor[temp-1][0], ItemIconWidthFactor[temp-1][1], ItemIconWidthFactor[temp-1][1]);
 
             const char* cButtonIcons[] = { gButtonBackgroundTex, gEquippedItemOutlineTex, gEmptyCLeftArrowTex,
                                            gEmptyCDownArrowTex, gEmptyCRightArrowTex
             };
 
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, cButtonIcons[(temp + 1)], 32, 32,
-                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], R_ITEM_BTN_WIDTH(temp),
-                                          R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
+                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], ItemIconWidthFactor[temp-1][0],
+                                          ItemIconWidthFactor[temp-1][0], ItemIconWidthFactor[temp-1][1], ItemIconWidthFactor[temp-1][1]);
         }
     }
 

@@ -520,7 +520,7 @@ void Draw_Placements(){
             DrawUseMarginsSlider("B Button", "gBBtn");
             DrawPositionsRadioBoxes("gBBtn");
             DrawPositionSlider("gBBtn", 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50);
-            DrawScaleSlider("gBBtn",1.0f);
+            DrawScaleSlider("gBBtn",0.91f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -565,7 +565,7 @@ void Draw_Placements(){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnU", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
-            DrawScaleSlider("gCBtnU",1.0f);
+            DrawScaleSlider("gCBtnU",0.5f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -586,7 +586,7 @@ void Draw_Placements(){
                 Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnD", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CD, Max_X_CD);
-            DrawScaleSlider("gCBtnD",1.0f);
+            DrawScaleSlider("gCBtnD",0.85f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -607,7 +607,7 @@ void Draw_Placements(){
                 Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnL", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CL, Max_X_CL);
-            DrawScaleSlider("gCBtnL",1.0f);
+            DrawScaleSlider("gCBtnL",0.85f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -628,7 +628,7 @@ void Draw_Placements(){
                 Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnR", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CR, Max_X_CR);
-            DrawScaleSlider("gCBtnR",1.0f);
+            DrawScaleSlider("gCBtnR",0.85f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
