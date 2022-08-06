@@ -4034,44 +4034,7 @@ void DrawRandoEditor(bool& open) {
                         }
                         ImGui::Separator();
                     }
-                        // ImGui::Text("Shuffle Entrances");
-                        // InsertHelpHoverText("Shuffle where the entrances between areas lead to.\n"
-                        //                     "If turned on, select which kinds of entrances you "
-                        //                     "want shuffled in the options below.\n Note that some "
-                        //                     "types of entrances can have widly varying generation times.");
-                        // SohImGui::EnhancementCombobox("gRandomizeShuffleEntrances", randoShuffleEntrances, 2, 0);
-                        // if (CVar_GetS32("gRandomizeShuffleEntrances", 0) == 1) {
-                        //     ImGui::Indent();
-                        //     ImGui::Text("Shuffle Dungeons Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and "
-                        //         "Gerudo Training Grounds\nGanon's Castle is not shuffled.\nAdditionally, the entrance "
-                        //         "of Deku Tree, Fire Temple and Bottom of the Well are open for both adult and child.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances",
-                        //                                   randoShuffleDungeonsEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Overworld Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of Overworld entrances, which corresponds to almost all loading "
-                        //         "zones between Overworld areas.\nSome entrances are unshuffled to avoid issues:\n"
-                        //         "- Hyrule Castle Courtyard and Garden entrance\n"
-                        //         "- Both Market Back Alley entrances\n"
-                        //         "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleOverworldEntrances",
-                        //                                   randoShuffleOverworldEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Interiors Entrances");
-                        //     InsertHelpHoverText("Interior entrances will not be shuffled.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances",
-                        //                                   randoShuffleInteriorsEntrances, 2, 0);
-                        //     ImGui::Text("Shuffle Grottos Entrances");
-                        //     InsertHelpHoverText(
-                        //         "Shuffle the pool of grotto entrances, including all graves, small Fairy "
-                        //         "fountains and the Lost Woods Stage.");
-                        //     SohImGui::EnhancementCombobox("gRandomizeShuffleGrottosEntrances",
-                        //                                   randoShuffleGrottosEntrances, 2, 0);
-                        //     ImGui::Unindent();
-                        // }
-                        // ImGui::Separator();
-
+                    
                         // todo can't do this until bowling is unlocked by chus
                         // Bombchus in Logic
                         // ImGui::Text("Bombchus in Logic");
