@@ -1736,6 +1736,71 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             } else {
                 msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
             }
+        } else if (gSaveContext.n64ddFlag && textId == 0x60 && GET_PLAYER(globalCtx)->getItemId >= GI_GERUDO_FORTRESS_SMALL_KEY && GET_PLAYER(globalCtx)->getItemId <= GI_GANONS_CASTLE_SMALL_KEY) {
+            char* keyMsg;
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG: default:
+                    switch (GET_PLAYER(globalCtx)->getItemId) {
+                        case GI_GERUDO_FORTRESS_SMALL_KEY:
+                            keyMsg = "\x08You got a \x05\x46\Thieves Hideout\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FOREST_TEMPLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x42\Forest Temple\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FIRE_TEMPLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x41\Fire Temple\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_WATER_TEMPLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x43\Water Temple\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SPIRIT_TEMPLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x46\Spirit Temple\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SHADOW_TEMPLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x45\Shadow Temple\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_BOTTOM_OF_THE_WELL_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x45\Bottom of the Well\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x46\Gerudo Training Grounds\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_GANONS_CASTLE_SMALL_KEY: 
+                            keyMsg = "\x08You got a \x05\x41\Ganon's Castle\x01\Small Key\x05\x40!\x09\x02"; 
+                            break;
+                    }
+                    strcpy(font->msgBuf, keyMsg);
+                    break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (gSaveContext.n64ddFlag && textId == 0xC7 && GET_PLAYER(globalCtx)->getItemId >= GI_FOREST_TEMPLE_BOSS_KEY && GET_PLAYER(globalCtx)->getItemId <= GI_GANONS_CASTLE_BOSS_KEY) {
+            char* keyMsg;
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG: default:
+                    switch (GET_PLAYER(globalCtx)->getItemId) {
+                        case GI_FOREST_TEMPLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x42\Forest Temple\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FIRE_TEMPLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x41\Fire Temple\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_WATER_TEMPLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x43\Water Temple\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SPIRIT_TEMPLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x46\Spirit Temple\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SHADOW_TEMPLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x45\Shadow Temple\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_GANONS_CASTLE_BOSS_KEY: 
+                            keyMsg = "\x08You got a \x05\x41\Ganon's Castle\x01\Boss Key\x05\x40!\x09\x02"; 
+                            break;
+                    }
+                    strcpy(font->msgBuf, keyMsg);
+                    break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else if (textId == 0xF8 && GET_PLAYER(globalCtx)->getItemId == GI_ICE_TRAP) {
             switch (gSaveContext.language) {
                 case LANGUAGE_FRA:
