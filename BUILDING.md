@@ -53,7 +53,7 @@ cd "build/x64"
 ```
 
 ## Linux
-1. Requires `gcc, x11, curl, python3, sdl2, libpng, glew, ninja, cmake`
+1. Requires `gcc >= 10`, `x11`, `curl`, `python3`, `sdl2 >= 2.0.22`, `libpng`, `glew >= 2.2`, `ninja`, `cmake`, `lld`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
