@@ -1,9 +1,6 @@
 from enum import Enum
-from os import chdir
 from tabnanny import check
 import struct
-
-chdir ("C:\\Users\\ryan\\Documents\\GitHub\\Shipwrighttest\\OTRExporter")
 
 class Checksums(Enum):
     OOT_NTSC_10 = "EC7011B7"
