@@ -1776,19 +1776,19 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
-            case ITEM_FOREST_TEMPLE_BOSS_KEY:
+            case ITEM_FOREST_TEMPLE_SMALL_KEY:
                 mapIndex = SCENE_BMORI1;
                 break;
-            case ITEM_FIRE_TEMPLE_BOSS_KEY:
+            case ITEM_FIRE_TEMPLE_SMALL_KEY:
                 mapIndex = SCENE_HIDAN;
                 break;
-            case ITEM_WATER_TEMPLE_BOSS_KEY:
+            case ITEM_WATER_TEMPLE_SMALL_KEY:
                 mapIndex = SCENE_MIZUSIN;
                 break;
-            case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
+            case ITEM_SPIRIT_TEMPLE_SMALL_KEY:
                 mapIndex = SCENE_JYASINZOU;
                 break;
-            case ITEM_SHADOW_TEMPLE_BOSS_KEY:
+            case ITEM_SHADOW_TEMPLE_SMALL_KEY:
                 mapIndex = SCENE_HAKADAN;
                 break;
             case ITEM_BOTTOM_OF_THE_WELL_SMALL_KEY:
