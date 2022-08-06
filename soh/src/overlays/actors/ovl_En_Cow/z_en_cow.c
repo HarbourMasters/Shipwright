@@ -342,7 +342,11 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
 
 void func_809DF870(EnCow* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        if (Inventory_HasEmptyBottle() || (gSaveContext.n64ddFlag && EnCow_GetRandomizerItem(this, globalCtx) != ITEM_NONE)) {
+        if (Inventory_HasEmptyBottle() || 
+                (gSaveContext.n64ddFlag && 
+                Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) && 
+                EnCow_GetRandomizerItem(this, globalCtx) != ITEM_NONE)
+        ) {
             Message_ContinueTextbox(globalCtx, 0x2007);
             this->actionFunc = func_809DF7D8;
         } else {
