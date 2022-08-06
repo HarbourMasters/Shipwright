@@ -1,4 +1,5 @@
 #include "ItemTableManager.h"
+#include "stddef.h"
 
 ItemTableManager::ItemTableManager() {
 }
