@@ -1384,6 +1384,12 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.infTable[29] &= ~1;
+        }
+
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
@@ -1444,6 +1450,12 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
+        // When becoming child, set swordless flag if player doesn't have kokiri sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+            gSaveContext.infTable[29] |= 1;
+        }
+
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
 
@@ -2111,6 +2123,52 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;
+
+    // Autosave after getting items by default (cvars are not shown in the UI)
+    if (CVar_GetS32("gAutosave", 0)) {
+        if (CVar_GetS32("gAutosaveAllItems", 1)) {
+            Gameplay_PerformSave(globalCtx);
+        }
+        else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
+            switch (item) {
+                case ITEM_STICK:
+                case ITEM_NUT:
+                case ITEM_BOMB:
+                case ITEM_BOW:
+                case ITEM_SEEDS:
+                case ITEM_FISHING_POLE:
+                case ITEM_MAGIC_SMALL:
+                case ITEM_MAGIC_LARGE:
+                case ITEM_INVALID_4:
+                case ITEM_INVALID_5:
+                case ITEM_INVALID_6:
+                case ITEM_INVALID_7:
+                case ITEM_HEART:
+                case ITEM_RUPEE_GREEN:
+                case ITEM_RUPEE_BLUE:
+                case ITEM_RUPEE_RED:
+                case ITEM_RUPEE_PURPLE:
+                case ITEM_RUPEE_GOLD:
+                case ITEM_INVALID_8:
+                case ITEM_STICKS_5:
+                case ITEM_STICKS_10:
+                case ITEM_NUTS_5:
+                case ITEM_NUTS_10:
+                case ITEM_BOMBS_5:
+                case ITEM_BOMBS_10:
+                case ITEM_BOMBS_20:
+                case ITEM_BOMBS_30:
+                case ITEM_ARROWS_SMALL:
+                case ITEM_ARROWS_MEDIUM:
+                case ITEM_ARROWS_LARGE:
+                case ITEM_SEEDS_30:
+                    break;
+                default:
+                    Gameplay_PerformSave(globalCtx);
+                    break;
+            }
+        }
+    }
 
     return temp;
 }
@@ -3366,8 +3424,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     const s16 C_Right_BTN_Pos_ori[] = { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR };
     const s16 C_Up_BTN_Pos_ori[]    = { C_UP_BUTTON_X+X_Margins_CU, C_UP_BUTTON_Y+Y_Margins_CU };
     const s16 C_Down_BTN_Pos_ori[]  = { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD };
-    s16 LabelX_Navi=8;
-    s16 LabelY_Navi=4 - !!CVar_GetS32("gNaviTextFix", 0);
+    s16 LabelX_Navi=7 + !!CVar_GetS32("gNaviTextFix", 0);
+    s16 LabelY_Navi=4;
     s16 C_Left_BTN_Pos[2]; //(X,Y)
     s16 C_Right_BTN_Pos[2];
     s16 C_Up_BTN_Pos[2];

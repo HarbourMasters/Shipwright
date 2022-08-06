@@ -64,6 +64,9 @@ u32 Locale_IsRegionNative(void);
 #if !defined(__APPLE__) && !defined(__SWITCH__)
 void __assert(const char* exp, const char* file, s32 line);
 #endif
+#if defined(__APPLE__) && defined(NDEBUG)
+void __assert(const char* exp, const char* file, s32 line);
+#endif
 void isPrintfInit(void);
 void osSyncPrintfUnused(const char* fmt, ...);
 //void osSyncPrintf(const char* fmt, ...);
@@ -1530,6 +1533,7 @@ s32 func_800C0CB8(GlobalContext* globalCtx);
 s32 FrameAdvance_IsEnabled(GlobalContext* globalCtx);
 s32 func_800C0D34(GlobalContext* globalCtx, Actor* actor, s16* yaw);
 s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos);
+void Gameplay_PerformSave(GlobalContext* globalCtx);
 void PreRender_SetValuesSave(PreRender* this, u32 width, u32 height, void* fbuf, void* zbuf, void* cvg);
 void PreRender_Init(PreRender* this);
 void PreRender_SetValues(PreRender* this, u32 width, u32 height, void* fbuf, void* zbuf);
