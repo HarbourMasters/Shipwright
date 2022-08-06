@@ -1797,6 +1797,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             case ITEM_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
                 mapIndex = SCENE_MEN;
                 break;
+            case ITEM_GERUDO_FORTRESS_SMALL_KEY:
+                mapIndex = SCENE_GERUDOWAY;
+                break;
             case ITEM_GANONS_CASTLE_SMALL_KEY:
                 mapIndex = SCENE_GANONTIKA;
                 break;
