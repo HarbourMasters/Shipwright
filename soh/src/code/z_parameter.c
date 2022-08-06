@@ -1753,54 +1753,52 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
             case ITEM_FOREST_TEMPLE_BOSS_KEY:
-                mapIndex = 3;
+                mapIndex = SCENE_BMORI1;
                 break;
             case ITEM_FIRE_TEMPLE_BOSS_KEY:
-                mapIndex = 4;
+                mapIndex = SCENE_HIDAN;
                 break;
             case ITEM_WATER_TEMPLE_BOSS_KEY:
-                mapIndex = 5;
+                mapIndex = SCENE_MIZUSIN;
                 break;
             case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
-                mapIndex = 6;
+                mapIndex = SCENE_JYASINZOU;
                 break;
             case ITEM_SHADOW_TEMPLE_BOSS_KEY:
-                mapIndex = 7;
+                mapIndex = SCENE_HAKADAN;
                 break;
             case ITEM_GANONS_CASTLE_BOSS_KEY:
-                mapIndex = 13;
+                mapIndex = SCENE_GANON;
                 break;
         }
     
         gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-    } else if (item == ITEM_GERUDO_FORTRESS_SMALL_KEY) {
-        // todo
-    } else if ((item >= ITEM_FOREST_TEMPLE_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
+    } else if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
-            case ITEM_FOREST_TEMPLE_SMALL_KEY:
-                mapIndex = 3;
+            case ITEM_FOREST_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_BMORI1;
                 break;
-            case ITEM_FIRE_TEMPLE_SMALL_KEY:
-                mapIndex = 4;
+            case ITEM_FIRE_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HIDAN;
                 break;
-            case ITEM_WATER_TEMPLE_SMALL_KEY:
-                mapIndex = 5;
+            case ITEM_WATER_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_MIZUSIN;
                 break;
-            case ITEM_SPIRIT_TEMPLE_SMALL_KEY:
-                mapIndex = 6;
+            case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_JYASINZOU;
                 break;
-            case ITEM_SHADOW_TEMPLE_SMALL_KEY:
-                mapIndex = 7;
+            case ITEM_SHADOW_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HAKADAN;
                 break;
             case ITEM_BOTTOM_OF_THE_WELL_SMALL_KEY:
-                mapIndex = 8;
+                mapIndex = SCENE_HAKADANCH;
                 break;
             case ITEM_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-                mapIndex = 11;
+                mapIndex = SCENE_MEN;
                 break;
             case ITEM_GANONS_CASTLE_SMALL_KEY:
-                mapIndex = 13;
+                mapIndex = SCENE_GANONTIKA;
                 break;
         }
     
