@@ -525,18 +525,23 @@ endif()
 ################################################################################
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
     find_package(SDL2)
-    find_package(GLEW)
-    find_package(X11)
-    if (NOT GLEW_FOUND)
-        if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-            include (FetchContent)
-            FetchContent_Declare(
-                glew
-                GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-                SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
-            )
-            FetchContent_MakeAvailable(glew)
-            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
+    if (USE_X11)
+        find_package(X11)
+    endif()
+    if (NOT NO_GLEW)
+        find_package(GLEW)
+
+        if (NOT GLEW_FOUND)
+            if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
+                include (FetchContent)
+                FetchContent_Declare(
+                    glew
+                    GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+                    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
+                )
+                FetchContent_MakeAvailable(glew)
+                add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
+            endif()
         endif()
     endif()
 
@@ -639,19 +644,54 @@ endif()
 ################################################################################
 # Link with other targets.
 
+cmake_dependent_option(NO_GLEW "Build without using libGLEW" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+cmake_dependent_option(NO_GLEW "Build without PulseAudio, using only SDLAudio" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+cmake_dependent_option(USE_OPENGLES "Build targetting OpenGLESv2 instead of full OpenGL" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+cmake_dependent_option(USE_X11 "Build with X11/GLX support" ON "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+
 find_package(OpenGL QUIET)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(X11)
-    find_package(PulseAudio)
+    if (USE_X11)
+        find_package(X11)
+        add_compile_definitions(X11_SUPPORTED)
+        set(GLX-LIB ${OPENGL_glx_LIBRARY})
+        set(X11-LIBS ${X11_LIBRARIES})
+    else()
+        message(STATUS "Disabling X11/GLX")
+    endif()
+
+    if (NOT NO_PULSE)
+        find_package(PulseAudio)
+        set(PULSE-LIB ${PULSEAUDIO_LIBRARY})
+    else()
+        add_compile_definitions(NO_PULSE)
+        message(STATUS "Disabling Pulse")
+    endif()
 endif()
 
-if (NOT GLEW_FOUND)
-    set(GLEW-LIB glew_s)
+if (NOT NO_GLEW)
+    if (NOT GLEW_FOUND)
+        set(GLEW-LIB glew_s)
+    else()
+        set(GLEW-LIB  GLEW::GLEW)
+    endif()
 else()
-    set(GLEW-LIB  GLEW::GLEW)
+    message(STATUS "Disabling GLEW")
+    add_compile_definitions(NO_GLEW)
 endif()
- 
+
+if (USE_OPENGLES)
+    add_compile_definitions(USE_OPENGLES IMGUI_IMPL_OPENGL_ES3)
+    find_library(OPENGL-LIB GLESv2)
+    if (NOT OPENGL-LIB)
+        message(FATAL_ERROR "USE_OPENGLES=ON, but libGLESv2 could not be found")
+    endif()
+    message(STATUS "Building with OpenGLESv2")
+else()
+    set(OPENGL-LIB ${OPENGL_opengl_LIBRARY})
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_link_libraries(${PROJECT_NAME}
@@ -702,11 +742,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 else()
     target_link_libraries(${PROJECT_NAME}
         SDL2::SDL2
-        ${PULSEAUDIO_LIBRARY}
+        ${PULSE-LIB}
         ${GLEW-LIB}
-        ${OPENGL_glx_LIBRARY}
-        ${OPENGL_opengl_LIBRARY}
-        ${X11_LIBRARIES}
+        ${GLX-LIB}
+        ${OPENGL-LIB}
+        ${X11-LIBS}
         storm
     )
 endif()
