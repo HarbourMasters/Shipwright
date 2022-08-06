@@ -69,8 +69,8 @@ extern "C" {
 
 	    if (SohImGui::controller->Opened) return;
 
-        Ship::Window::ControllerApi->WriteToPad(pad);
-        ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
+        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
+        Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
 
     const char* ResourceMgr_GetNameByCRC(uint64_t crc) {
