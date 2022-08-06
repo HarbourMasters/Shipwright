@@ -186,6 +186,7 @@ typedef struct {
     u8 trialsDone[6];
     u8 cowsMilked[10];
     u8 temporaryWeapon;
+    u16 adultTradeItems;
 } SaveContext; // size = 0x1428
 
 typedef enum {

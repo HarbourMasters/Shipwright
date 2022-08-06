@@ -1,0 +1,35 @@
+#include "z64adult_trade_shuffle.h"
+#include "functions.h"
+#include "variables.h"
+#include "macros.h"
+
+void Randomizer_ConsumeAdultTradeItem(GlobalContext* globalCtx, u8 itemId) {
+    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
+    if (gSaveContext.adultTradeItems == 0) {
+        Inventory_ReplaceItem(globalCtx, itemId, ITEM_NONE);
+    } else {
+        Inventory_ReplaceItem(globalCtx, itemId, Randomizer_GetNextAdultTradeItem());
+    }
+}
+
+u8 Randomizer_GetNextAdultTradeItem() {
+    const u16 numTradeItems = ITEM_CLAIM_CHECK - ITEM_POCKET_EGG + 1;
+    u16 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
+    for (int i = 0; i < numTradeItems; i++) {
+        u16 tradeIndex = (currentTradeItemIndex + i + 1) % numTradeItems;
+        if (gSaveContext.adultTradeItems & (1 << tradeIndex)) {
+			return ITEM_POCKET_EGG + tradeIndex;
+        }
+    }
+}
+
+u8 Randomizer_GetPrevAdultTradeItem() {
+    const u16 numTradeItems = ITEM_CLAIM_CHECK - ITEM_POCKET_EGG + 1;
+    u16 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
+    for (int i = 0; i < numTradeItems; i++) {
+        u16 tradeIndex = (currentTradeItemIndex - i - 1 + numTradeItems) % numTradeItems;
+        if (gSaveContext.adultTradeItems & (1 << tradeIndex)) {
+			return ITEM_POCKET_EGG + tradeIndex;
+        }
+    }
+}

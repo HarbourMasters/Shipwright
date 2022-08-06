@@ -6,6 +6,7 @@
 
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
+#include "z64adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -465,6 +466,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             if (this->isTrading) {
                 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_PRESCRIPTION);
                 Flags_SetTreasure(globalCtx, 0x1F);
             } else {
                 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
@@ -480,7 +482,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
 
 void EnKz_StartTimer(EnKz* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG) {
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }

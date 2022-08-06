@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "z64adult_trade_shuffle.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -2162,6 +2163,10 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if ((item == ITEM_SAW) && CVar_GetS32("gDekuNutUpgradeFix", 0) == 0) {
             gSaveContext.itemGetInf[1] |= 0x8000;
+        }
+
+        if (item >= ITEM_POCKET_EGG) {
+            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
         }
 
         temp = INV_CONTENT(item);
