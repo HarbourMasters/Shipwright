@@ -1957,6 +1957,34 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
     }
 }
 
+
+void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream)
+        return;
+
+    bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json EntrancesJson = spoilerFileJson["Entrances"];
+
+        int index = 0;
+                for (auto ent = EntrancesJson.begin(); ent != EntrancesJson.end(); ++ent) {
+                    gSaveContext.EntranceIndeces[index].index = stoi(ent.key());
+                    gSaveContext.EntranceIndeces[index].overrideindex = (ent.value());
+
+                    // EntranceOverrideIndex.push_back(stoi(ent.key()));
+                    // EntranceOverrideNewIndex.push_back(ent.value());
+                    index++;
+                }
+    } catch (const std::exception& e) {
+        return;
+    }
+}
+
+
 GetItemID Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     GetItemID itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
     return itemId;
@@ -4034,7 +4062,7 @@ void DrawRandoEditor(bool& open) {
                         }
                         ImGui::Separator();
                     }
-                    
+
                         // todo can't do this until bowling is unlocked by chus
                         // Bombchus in Logic
                         // ImGui::Text("Bombchus in Logic");

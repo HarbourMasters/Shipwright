@@ -10,6 +10,7 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
+    std::unordered_map<s32, s32> EntranceIndeces;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
@@ -40,6 +41,8 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     std::string GetHintFromCheck(RandomizerCheck check);
+    std::list<s32> EntranceOverrideIndex;
+    std::list<s32> EntranceOverrideNewIndex;
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 };

@@ -72,6 +72,12 @@ typedef struct {
     char hintText[200];
 } HintLocationRando;
 
+//fix
+typedef struct {
+    int index;
+    int overrideindex;
+} EntranceIndexRando;
+
 typedef struct {
     RandomizerSettingKey key;
     u8 value;
@@ -177,6 +183,7 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[500];
     HintLocationRando hintLocations[50];
+    EntranceIndexRando EntranceIndeces[109];
     char childAltarText[250];
     char adultAltarText[750];
     char ganonHintText[150];

@@ -378,6 +378,8 @@ void Gameplay_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
     }
 
+
+
     Gameplay_SpawnScene(
         globalCtx,
         gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
@@ -1627,6 +1629,20 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
+        int index;
+        for (index = 0; index<109; ++index) {
+        if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
+            OTRGameplay_SpawnScene(
+                globalCtx,
+                gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
+                gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
+        } else {
+            OTRGameplay_SpawnScene(
+                globalCtx,
+                gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
+                gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+        }
+    }
     OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
 }
 
