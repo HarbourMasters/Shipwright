@@ -7,6 +7,8 @@
 #include "../libultraship/ImGuiImpl.h"
 #include "soh/frame_interpolation.h"
 
+#include <time.h>
+
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
@@ -201,7 +203,8 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
         GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetTreasure(globalCtx, 0x1F);
+        player->pendingFlag.flagID = 0x1F;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 
@@ -238,10 +241,11 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        globalCtx->sceneLoadFlag == 0 && player->getItemId == GI_NONE) {
+        globalCtx->sceneLoadFlag == 0) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetTreasure(globalCtx, 0x1E);
+        player->pendingFlag.flagID = 0x1E;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 
@@ -693,6 +697,11 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
+                            }
+
+                            // Don't autosave in grottos or cutscenes
+                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
+                                Gameplay_PerformSave(globalCtx);
                             }
                         }
                         globalCtx->sceneLoadFlag = 0;
@@ -1409,7 +1418,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                     OVERLAY_DISP = sp70;
                     globalCtx->unk_121C7 = 2;
                     SREG(33) |= 1;
-                } else {
+                } else if (R_PAUSE_MENU_MODE != 3) {
                 Gameplay_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
                         Gameplay_DrawOverlayElements(globalCtx);
@@ -1441,6 +1450,18 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     }
 
     CLOSE_DISPS(gfxCtx);
+}
+
+time_t Gameplay_GetRealTime() {
+    time_t t1, t2;
+    struct tm* tms;
+    time(&t1);
+    tms = localtime(&t1);
+    tms->tm_hour = 0;
+    tms->tm_min = 0;
+    tms->tm_sec = 0;
+    t2 = mktime(tms);
+    return t1 - t2;
 }
 
 void Gameplay_Main(GameState* thisx) {
@@ -1486,6 +1507,20 @@ void Gameplay_Main(GameState* thisx) {
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
     }
+    
+    if (CVar_GetS32("gTimeSync", 0)) {
+        const int maxRealDaySeconds = 86400;
+        const int maxInGameDayTicks = 65536;
+
+        int secs = (int)Gameplay_GetRealTime();
+        float percent = (float)secs / (float)maxRealDaySeconds;
+
+        int newIngameTime = maxInGameDayTicks * percent;
+
+        gSaveContext.dayTime = newIngameTime;
+
+    }
+
 }
 
 // original name: "Game_play_demo_mode_check"
@@ -1940,5 +1975,21 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
         return true;
     } else {
         return false;
+    }
+}
+
+void Gameplay_PerformSave(GlobalContext* globalCtx) {
+    Gameplay_SaveSceneFlags(globalCtx);
+    gSaveContext.savedSceneNum = globalCtx->sceneNum;
+    if (gSaveContext.temporaryWeapon) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+        Save_SaveFile();
+        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+    } else {
+        Save_SaveFile();
     }
 }

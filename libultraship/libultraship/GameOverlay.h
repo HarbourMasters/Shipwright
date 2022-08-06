@@ -3,21 +3,21 @@
 #include <vector>
 
 #include "Lib/ImGui/imgui.h"
-#include <map>
 #include <unordered_map>
 
-enum class OverlayType {
-	TEXT, IMAGE, NOTIFICATION
-};
-
-struct Overlay {
-	OverlayType type;
-	const char* value;
-	float fadeTime;
-	float duration;
-};
-
 namespace Ship {
+
+	enum class OverlayType {
+		TEXT, IMAGE, NOTIFICATION
+	};
+
+	struct Overlay {
+		OverlayType type;
+		const char* value;
+		float fadeTime;
+		float duration;
+	};
+
 	class GameOverlay {
 	public:
 		std::unordered_map<std::string, Overlay*> RegisteredOverlays;

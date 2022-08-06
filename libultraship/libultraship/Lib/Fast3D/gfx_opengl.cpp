@@ -29,7 +29,7 @@
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
 #elif __APPLE__
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <GL/glew.h>
 #elif __SWITCH__
 #include <SDL2/SDL.h>
@@ -44,7 +44,6 @@
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
 #include "../../ImGuiImpl.h"
-#include "../../Environment.h"
 #include "../../GlobalCtx2.h"
 #include "gfx_pc.h"
 

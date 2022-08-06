@@ -32,7 +32,6 @@
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
-#include "../../GameSettings.h"
 
 #define WINCLASS_NAME L"N64GAME"
 #define GFX_API_NAME "DirectX"
@@ -240,7 +239,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
-            ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+            Ship::ExecuteHooks<Ship::ExitGame>();
             exit(0);
         case WM_PAINT:
             if (dxgi.in_paint) {
@@ -274,7 +273,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             DragQueryFileA((HDROP)w_param, 0, fileName, 256);
             CVar_SetString("gDroppedFile", fileName);
             CVar_SetS32("gNewFileDropped", 1);
-            Game::SaveSettings();
+            CVar_Save();
             break;
         case WM_SYSKEYDOWN:
             if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {
@@ -358,7 +357,6 @@ static void gfx_dxgi_show_cursor(bool hide) {
       * @bug When menubar is open in windowed mode and you toggle fullscreen
       * ShowCursor no longer responds. Debugging shows the bool to be correct.
     **/
-    INFO("renderer: %s", hide ? "true" : "false");
     ShowCursor(hide);
 }
 

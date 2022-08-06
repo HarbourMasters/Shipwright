@@ -7,16 +7,19 @@
 #include <algorithm>
 #include <vector>
 
+#include <cstddef>
+#include <PR/ultra64/types.h>
+#include <PR/ultra64/sptask.h>
+#include <PR/ultra64/pi.h>
+#include <PR/ultra64/message.h>
+#include "../../soh/include/z64audio.h"
 #include "Archive.h"
-#include "Environment.h"
-#include "GameSettings.h"
 #include "Console.h"
 #include "Hooks.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
-#include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
 #include "GameOverlay.h"
@@ -25,7 +28,7 @@
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
-#include "Utils/StringHelper.h"
+#include "UltraController.h"
 
 #if __APPLE__
 #include <SDL_hints.h>
@@ -69,6 +72,14 @@ std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
 
 bool isBetaQuestEnabled = false;
+
+enum SeqPlayers {
+    /* 0 */ SEQ_BGM_MAIN,
+    /* 1 */ SEQ_FANFARE,
+    /* 2 */ SEQ_SFX,
+    /* 3 */ SEQ_BGM_SUB,
+    /* 4 */ SEQ_MAX
+};
 
 extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
@@ -116,6 +127,23 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
+
+    void UpdateAudio() {
+        Audio_SetGameVolume(SEQ_BGM_MAIN, CVar_GetFloat("gMainMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_BGM_SUB, CVar_GetFloat("gSubMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_FANFARE, CVar_GetFloat("gSFXMusicVolume", 1));
+        Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
+    }
+
+    void InitSettings() {
+        Ship::RegisterHook<Ship::AudioInit>(UpdateAudio);
+        Ship::RegisterHook<Ship::GfxInit>([] {
+            gfx_get_current_rendering_api()->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
+            SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
+            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+            UpdateAudio();
+        });
+    }
 
     int GetBackendID(std::shared_ptr<Mercury> cfg) {
         std::string backend = cfg->getString("Window.GfxBackend");
@@ -349,7 +377,7 @@ namespace SohImGui {
     }
 
     void Init(WindowImpl window_impl) {
-        Game::LoadSettings();
+        CVar_Load();
         impl = window_impl;
         ImGuiContext* ctx = ImGui::CreateContext();
         ImGui::SetCurrentContext(ctx);
@@ -386,7 +414,7 @@ namespace SohImGui {
         ImGui::GetStyle().ScaleAllSizes(2);
     #endif
 
-        ModInternal::RegisterHook<ModInternal::GfxInit>([] {
+        Ship::RegisterHook<Ship::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
                 ShowCursor(CVar_GetS32("gOpenMenuBar", 0), Dialogues::dLoadSettings);
 
@@ -403,11 +431,11 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         });
 
-        ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
+        Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
         });
 
-        Game::InitSettings();
+        InitSettings();
 
         CVar_SetS32("gRandoGenerating", 0);
         CVar_SetS32("gNewSeedGenerated", 0);
@@ -421,7 +449,7 @@ namespace SohImGui {
 
     void Update(EventImpl event) {
         if (needs_save) {
-            Game::SaveSettings();
+            CVar_Save();
             needs_save = false;
         }
         ImGuiProcessEvent(event);
@@ -438,10 +466,9 @@ namespace SohImGui {
             const float volume = floorf(value * 100) / 100;
             CVar_SetFloat(key, volume);
             needs_save = true;
-            Game::SetSeqPlayerVolume(playerId, volume);
+            Audio_SetGameVolume(playerId, volume);
         }
     }
-
 
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
         if (FirstTimeValue <= 0) {
@@ -792,7 +819,7 @@ namespace SohImGui {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
-            GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
+            GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
             GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
             if (CVar_GetS32("gControlNav", 0)) {
@@ -903,10 +930,12 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Graphics"))
             {
+#ifndef __APPLE__
                 EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
                 Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
-                EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
+#endif
+                EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true);
                 Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
@@ -1018,6 +1047,9 @@ namespace SohImGui {
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
                         Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
+                        EnhancementCheckbox("Remember Save Location", "gRememberSaveLocation");
+                        Tooltip("When loading a save, places Link at the last entrance he went through.\n"
+                                "This doesn't work if the save was made in a grotto.");
                         ImGui::EndMenu();
                     }
 
@@ -1270,6 +1302,12 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
+                EnhancementCheckbox("Autosave", "gAutosave");
+                Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
+                    "To disable saving when obtaining an item, manually set gAutosaveAllItems and gAutosaveMajorItems to 0\n"
+                    "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
+                    "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
+
                 EXPERIMENTAL();
 
                 const char* fps_cvar = "gInterpolationFPS";
@@ -1418,6 +1456,9 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                EnhancementCheckbox("Time Sync", "gTimeSync");
+                Tooltip("This syncs the ingame time with the real world time");
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
@@ -1630,12 +1671,10 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
-        std::string fb_str = SohUtils::getEnvironmentVar("framebuffer");
-        if (!fb_str.empty()) {
-            uintptr_t fbuf = (uintptr_t)std::stoull(fb_str);
-            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);
+        if (gfxFramebuffer) {
+            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(gfxFramebuffer), pos, size);
             ImGui::SetCursorPos(pos);
-            ImGui::Image(reinterpret_cast<ImTextureID>(fbuf), size);
+            ImGui::Image(reinterpret_cast<ImTextureID>(gfxFramebuffer), size);
         }
 
         ImGui::End();
