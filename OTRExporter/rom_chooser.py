@@ -1,9 +1,6 @@
 import os, sys, glob
 
 from rom_info import Z64Rom
-from os import chdir
-chdir ("C:\\Users\\ryan\\Documents\\GitHub\\Shipwrighttest\\OTRExporter")
-
 
 def chooseROM():
     roms = []
