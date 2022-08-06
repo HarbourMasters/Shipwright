@@ -30,7 +30,7 @@ pipeline {
                         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja
                         cmake --build build-cmake --target ExtractAssets --
                     '''
-                    stash includes: 'soh/assets/**/*', name: 'gnu-clang-assets'
+                    stash includes: 'soh/assets/**/*', name: 'assets'
                 }
             }
         }
@@ -60,12 +60,9 @@ pipeline {
                         ])
                             
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            bat """ 
-
-                            xcopy "..\\..\\ZELOOTD.z64" "OTRExporter\\"
-                            
+                            unstash 'assets'
+                            bat """                             
                             "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON} -D CMAKE_BUILD_TYPE:STRING=Release
-                            "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --target ExtractAssets --config Release
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
                             "${env.CPACK}" -G ZIP
@@ -98,7 +95,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            unstash 'gnu-clang-assets'
+                            unstash 'assets'
                             sh '''
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
@@ -133,7 +130,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            unstash 'gnu-clang-assets'
+                            unstash 'assets'
                             sh '''
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                             cmake --build build-cmake --config Release --
@@ -169,7 +166,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            unstash 'gnu-clang-assets'
+                            unstash 'assets'
                             sh '''                            
                             docker build . -t sohswitch
                             docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
