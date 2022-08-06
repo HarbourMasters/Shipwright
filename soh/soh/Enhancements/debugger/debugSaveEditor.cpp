@@ -1,5 +1,6 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
+#include "../../OTRGlobals.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "ImGuiHelpers.h"
 
@@ -648,8 +649,9 @@ void DrawInventoryTab() {
     }
     
     // Trade quest flags are only used when shuffling the trade sequence, so
-    // this is only necessary when that's enabled.
-    if (gSaveContext.n64ddFlag &&  ImGui::TreeNode("Adult trade quest items")) {
+    // don't show this if it isn't needed.
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
+        && ImGui::TreeNode("Adult trade quest items")) {
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
         }
