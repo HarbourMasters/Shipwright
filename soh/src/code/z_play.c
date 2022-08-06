@@ -1630,20 +1630,23 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
         int index;
-        for (index = 0; index<109; ++index) {
+        for (index = 0; index<110; ++index) {
         if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
             OTRGameplay_SpawnScene(
                 globalCtx,
                 gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
                 gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
-        } else {
+        } else if (index==109){
             OTRGameplay_SpawnScene(
                 globalCtx,
                 gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
                 gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
         }
+        else {
+            continue;
+        }
     }
-    OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
+    //OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
 }
 
 void func_800C016C(GlobalContext* globalCtx, Vec3f* src, Vec3f* dest) {
