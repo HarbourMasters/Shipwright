@@ -292,7 +292,6 @@ void EnCow_SetCowMilked(EnCow* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     player->pendingFlag.flagID = cowInfo.cowId;
     player->pendingFlag.flagType = FLAG_COW_MILKED;
-    // gSaveContext.cowsMilked[cowInfo.cowId] = 1;
 }
 
 void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
@@ -345,7 +344,6 @@ void EnCow_GivePlayerRandomizedItem(EnCow* this, GlobalContext* globalCtx) {
     if (!EnCow_HasBeenMilked(this, globalCtx)) {
         CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
         GetItemID itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
-        // GiveItemWithoutActor(globalCtx, itemId);
         func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
     } else {
         // once we've gotten the rando reward from the cow,
