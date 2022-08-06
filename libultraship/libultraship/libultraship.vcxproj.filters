@@ -354,6 +354,9 @@
     <ClCompile Include="Factories\AudioFactory.cpp">
       <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
+    <ClCompile Include="CrashHandler.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -658,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="Lib\dr_libs\wav.h">
       <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="CrashHandler.h">
+      <Filter>Source Files\Logging</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
