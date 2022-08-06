@@ -213,7 +213,15 @@ set(Header_Files__soh__Enhancements__randomizer__3drando
     "soh/Enhancements/randomizer/3drando/trial.hpp"
     "soh/Enhancements/randomizer/3drando/utils.hpp"
 )
+
 source_group("Header Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Header_Files__soh__Enhancements__randomizer__3drando})
+
+set(Header_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.h"
+    "soh/Enhancements/item-tables/ItemTableTypes.h"
+)
+
+source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
@@ -325,6 +333,13 @@ set(Source_Files__soh__Enhancements__randomizer__3drando__location_access
     "soh/Enhancements/randomizer/3drando/location_access/locacc_zoras_domain.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando\\location_access" FILES ${Source_Files__soh__Enhancements__randomizer__3drando__location_access})   
+
+set(Source_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\item-tables" FILES $
+{Source_Files_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1534,6 +1549,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
+    ${Header_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__cosmetics}
@@ -1542,6 +1558,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
+    ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}
