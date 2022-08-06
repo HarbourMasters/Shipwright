@@ -366,9 +366,11 @@ void func_809DF96C(EnCow* this, GlobalContext* globalCtx) {
                     // reward from this cow yet, give that, otherwise use the
                     // vanilla cow behavior
                     if (gSaveContext.n64ddFlag &&
-                       Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
-                       !EnCow_HasBeenMilked(this, globalCtx)) {
+                        Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
+                        !EnCow_HasBeenMilked(this, globalCtx)) {
                         EnCow_SetCowMilked(this, globalCtx);
+                        // setting the ocarina mode here prevents intermittent issues
+                        // with the item get not triggering until walking away
                         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
                         this->actionFunc = EnCow_GivePlayerRandomizedItem;
                         return;
