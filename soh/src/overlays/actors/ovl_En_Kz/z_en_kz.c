@@ -482,7 +482,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
 
 void EnKz_StartTimer(EnKz* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !gSaveContext.n64ddFlag) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }
