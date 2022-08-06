@@ -35,8 +35,6 @@
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
-#include <time.h>
-#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
@@ -239,7 +237,7 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 #ifdef __SWITCH__
     Ship::Switch::Exit();
 #endif
-    ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+    Ship::ExecuteHooks<Ship::ExitGame>();
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
@@ -306,10 +304,10 @@ static void gfx_sdl_handle_events(void) {
             case SDL_DROPFILE:
                 CVar_SetString("gDroppedFile", event.drop.file);
                 CVar_SetS32("gNewFileDropped", 1);
-                Game::SaveSettings();
+                CVar_Save();
                 break;
             case SDL_QUIT:
-                ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+                Ship::ExecuteHooks<Ship::ExitGame>();
                 SDL_Quit(); // bandaid fix for linux window closing issue
                 exit(0);
         }

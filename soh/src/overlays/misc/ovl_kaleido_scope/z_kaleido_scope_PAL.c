@@ -12,7 +12,6 @@
 #include "textures/map_name_static/map_name_static.h"
 #include "textures/map_48x85_static/map_48x85_static.h"
 #include "vt.h"
-#include "Hooks.h"
 
 #include "soh/frame_interpolation.h"
 
@@ -3228,10 +3227,9 @@ void KaleidoScope_LoadDungeonMap(GlobalContext* globalCtx) {
 
     char* firstTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX];
     char* secondTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    uint32_t firstTextureSize = ResourceMgr_LoadTexSizeByName(firstTextureName);
 
     memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(firstTextureName), ResourceMgr_LoadTexSizeByName(firstTextureName));
-    memcpy(interfaceCtx->mapSegment + (firstTextureSize / 2), ResourceMgr_LoadTexByName(secondTextureName), ResourceMgr_LoadTexSizeByName(secondTextureName));
+    memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(secondTextureName), ResourceMgr_LoadTexSizeByName(secondTextureName));
 }
 
 void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx) {
@@ -3846,19 +3844,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                    &D_801333E8);
-                            Gameplay_SaveSceneFlags(globalCtx);
-                            gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            if (gSaveContext.temporaryWeapon) {
-                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                                player->currentSwordItem = ITEM_NONE;
-                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-                                Save_SaveFile();
-                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-                                player->currentSwordItem = ITEM_SWORD_KOKIRI;
-                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-                            } else {
-                                Save_SaveFile();
-                            }
+                            Gameplay_PerformSave(globalCtx);
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }

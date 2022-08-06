@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Name=SOH
-Exec=AppRun
+Exec=soh.sh
 Terminal=false
-Icon=soh
+Icon=sohIcon
 Type=Application
 Categories=Game;
 Name[en_US]=

@@ -8,7 +8,6 @@
 #include <Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <GameSettings.h>
 #include "../libultraship/ImGuiImpl.h"
 #include <thread>
 #include "3drando/rando_main.hpp"
@@ -3192,7 +3191,7 @@ std::thread randoThread;
 
 void GenerateRandomizerImgui() {
     CVar_SetS32("gRandoGenerating", 1);
-    Game::SaveSettings();
+    CVar_Save();
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 1);
@@ -3258,9 +3257,8 @@ void GenerateRandomizerImgui() {
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
-    Game::SaveSettings();
-
-    Game::LoadSettings();
+    CVar_Save();
+    CVar_Load();
 
     generated = 1;
 }
