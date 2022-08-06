@@ -8,6 +8,32 @@ pipeline {
     }
     
     stages {
+        stage('Generate Assets') {
+            options {
+                timeout(time: 20)
+            }
+            agent {
+                label "SoH-Mac-Builders"
+            }
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                    extensions: scm.extensions,
+                    userRemoteConfigs: scm.userRemoteConfigs
+                ])
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    sh '''
+                        cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+
+                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja
+                        cmake --build build-cmake --target ExtractAssets --
+                    '''
+                    stash includes: 'soh/assets/**/*', name: 'gnu-clang-assets'
+                }
+            }
+        }
         stage('Build SoH') {
             parallel {
                 stage ('Build Windows') {
@@ -72,6 +98,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'gnu-clang-assets'
                             sh '''
                             
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
@@ -108,11 +135,11 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'gnu-clang-assets'
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-                            cmake --build build-cmake --target ExtractAssets --
                             cmake --build build-cmake --config Release --
                             (cd build-cmake && cpack)
 
@@ -146,6 +173,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'gnu-clang-assets'
                             sh '''
                             
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
