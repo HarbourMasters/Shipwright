@@ -2269,9 +2269,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_COMPASS;
 
         case RG_FOREST_TEMPLE_BOSS_KEY:
-            return GI_FIRE_TEMPLE_BOSS_KEY;
-        case RG_FIRE_TEMPLE_BOSS_KEY:
             return GI_FOREST_TEMPLE_BOSS_KEY;
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+            return GI_FIRE_TEMPLE_BOSS_KEY;
         case RG_WATER_TEMPLE_BOSS_KEY:
             return GI_WATER_TEMPLE_BOSS_KEY;
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
