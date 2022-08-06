@@ -981,6 +981,21 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
                                                { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
                                                { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
                                                { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
+                                               { GI_GERUDO_FORTRESS_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_FOREST_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_FIRE_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_WATER_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_SPIRIT_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_SHADOW_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_BOTTOM_OF_THE_WELL_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_GANONS_CASTLE_SMALL_KEY, GID_KEY_SMALL },
+                                               { GI_FOREST_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
+                                               { GI_FIRE_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
+                                               { GI_WATER_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
+                                               { GI_SPIRIT_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
+                                               { GI_SHADOW_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
+                                               { GI_GANONS_CASTLE_BOSS_KEY, GID_KEY_BOSS },
                                                { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
                                                { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
                                                { GI_STONE_GORON, GID_GORON_RUBY },
@@ -2253,25 +2268,37 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_ICE_CAVERN_COMPASS:
             return GI_COMPASS;
 
-        // todo implement dungeon-specific keys/keyrings
         case RG_FOREST_TEMPLE_BOSS_KEY:
+            return GI_FIRE_TEMPLE_BOSS_KEY;
         case RG_FIRE_TEMPLE_BOSS_KEY:
+            return GI_FOREST_TEMPLE_BOSS_KEY;
         case RG_WATER_TEMPLE_BOSS_KEY:
+            return GI_WATER_TEMPLE_BOSS_KEY;
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
+            return GI_SPIRIT_TEMPLE_BOSS_KEY;
         case RG_SHADOW_TEMPLE_BOSS_KEY:
+            return GI_SHADOW_TEMPLE_BOSS_KEY;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            return GI_KEY_BOSS;
+            return GI_GANONS_CASTLE_BOSS_KEY;
 
         case RG_FOREST_TEMPLE_SMALL_KEY:
+            return GI_FOREST_TEMPLE_SMALL_KEY;
         case RG_FIRE_TEMPLE_SMALL_KEY:
+            return GI_FIRE_TEMPLE_SMALL_KEY;
         case RG_WATER_TEMPLE_SMALL_KEY:
+            return GI_WATER_TEMPLE_SMALL_KEY;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            return GI_SPIRIT_TEMPLE_SMALL_KEY;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
+            return GI_SHADOW_TEMPLE_SMALL_KEY;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            return GI_BOTTOM_OF_THE_WELL_SMALL_KEY;
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            return GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
+            return GI_GERUDO_FORTRESS_SMALL_KEY;
         case RG_GANONS_CASTLE_SMALL_KEY:
-            return GI_KEY_SMALL;
+            return GI_GANONS_CASTLE_SMALL_KEY;
             
         // todo test this with keys in own dungeon
         case RG_TREASURE_GAME_SMALL_KEY:
