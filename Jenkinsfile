@@ -100,8 +100,6 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             unstash 'gnu-clang-assets'
                             sh '''
-                            
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
                             docker exec sohcont scripts/linux/appimage/build.sh
@@ -137,8 +135,6 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             unstash 'gnu-clang-assets'
                             sh '''
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                             cmake --build build-cmake --config Release --
                             (cd build-cmake && cpack)
@@ -174,9 +170,7 @@ pipeline {
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             unstash 'gnu-clang-assets'
-                            sh '''
-                            
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            sh '''                            
                             docker build . -t sohswitch
                             docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
                             docker exec sohcont scripts/switch/build.sh
