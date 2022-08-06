@@ -1684,13 +1684,61 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
-                    case RSK_GANONS_BOSS_KEY:
-                        if(it.value() == "Start with") {
+                    case RSK_KEYSANITY:
+                        if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "Vanilla") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Own dungeon") {
+                        } else if(it.value() == "Own Dungeon") {
                             gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        }
+                        break;
+                    case RSK_BOSS_KEYSANITY:
+                        if(it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        }
+                        break;
+                    case RSK_GANONS_BOSS_KEY:
+                        if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if(it.value() == "Own dungeon") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Start with") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        } else if(it.value() == "LACS-Vanilla") {
+                            gSaveContext.randoSettings[index].value = 6;
+                        } else if(it.value() == "LACS-Medallions") {
+                            gSaveContext.randoSettings[index].value = 7;
+                        } else if(it.value() == "LACS-Stones") {
+                            gSaveContext.randoSettings[index].value = 8;
+                        } else if(it.value() == "LACS-Rewards") {
+                            gSaveContext.randoSettings[index].value = 9;
+                        } else if(it.value() == "LACS-Dungeons") {
+                            gSaveContext.randoSettings[index].value = 10;
+                        } else if(it.value() == "LACS-Tokens") {
+                            gSaveContext.randoSettings[index].value = 11;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -3479,9 +3527,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
-    cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 0);
+    cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 1);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
-    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 0);
+    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
@@ -3570,14 +3618,13 @@ void DrawRandoEditor(bool& open) {
 
     // Shuffle Dungeon Items Settings
     const char* randoShuffleMapsAndCompasses[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
-                                                    "Anywhere",    "Start with",  "Vanilla" };
+                                                    "Anywhere",    "Start With",  "Vanilla" };
     const char* randoShuffleSmallKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
-    // const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
-    //                                               "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
-    //                                               "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
-    const char* randoShuffleGanonsBossKey[3] = {"Vanilla", "Own dungeon", "Start with"};
+    const char* randoShuffleGanonsBossKey[12] = { "Vanilla", "Own dungeon", "Start with", "Any Dungeon", 
+                                                "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Medallions", 
+                                                "LACS-Stones", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens" };
 
     // Timesaver Settings
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
@@ -4088,7 +4135,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Anywhere - Small Keys can appear anywhere in the world."
                     );
-                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 0);
+                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 1);
                     PaddedSeparator();
 
                     // Gerudo Keys
@@ -4114,7 +4161,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Anywhere - Boss Keys can appear anywhere in the world."
                     );  
-                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 0);
+                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 1);
                     PaddedSeparator();
 
                     // RANDOTODO implement ganon's boss key outside of ganon's castle
@@ -4127,8 +4174,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Start with - Places Ganon's Boss Key in your starting inventory."
                     );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
-                                                    0);
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 0);
                     PaddedSeparator();
 
                     // Start with Maps & Compasses
