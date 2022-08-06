@@ -3970,11 +3970,11 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
                         InsertHelpHoverText(
                             "Adds all of the adult trade quest items into the pool, each of which "
-                            "can be traded for a unique reward."
+                            "can be traded for a unique reward.\n"
                             "\n"
                             "You will be able to choose which of your owned adult trade items is visible "
                             "in the inventory by selecting the item with A and using the control stick or "
-                            "D-pad."
+                            "D-pad.\n"
                             "\n"
                             "If disabled, only the Claim Check will be found in the pool."
                         );
