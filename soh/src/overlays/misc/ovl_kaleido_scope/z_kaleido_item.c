@@ -1,6 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "z64adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -396,11 +397,11 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         pauseCtx->cursorColorSet = 8;
                         if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
                              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
-							Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+							Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                             Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
                         } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
 							dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
-							Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+							Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                             Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
                         }
                         gSelectingAdultTrade = cursorSlot == SLOT_TRADE_ADULT;
