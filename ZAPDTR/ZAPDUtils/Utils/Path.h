@@ -4,12 +4,18 @@
 #include <string>
 #include "Utils/StringHelper.h"
 
+#ifdef GHC_USE_STD_FS
+#include "../../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+//#endif
+#else
 #if __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;
 #else
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
 #endif
 
 class Path

@@ -10,6 +10,18 @@
 #include "spdlog/spdlog.h"
 #include "Lib/Mercury/Mercury.h"
 
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
+namespace fs = std::filesystem;
+#else
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
+
 namespace Ship {
 	class ResourceMgr;
 	class Window;
@@ -28,8 +40,8 @@ namespace Ship {
 			static std::string GetAppDirectoryPath();
 			static std::string GetPathRelativeToAppDirectory(const char* path);
 
-			void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
-			void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+			void WriteSaveFile(const fs::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
+			void ReadSaveFile(fs::path savePath, uintptr_t addr, void* dramAddr, size_t size);
 
 			GlobalCtx2(std::string Name);
 			~GlobalCtx2();

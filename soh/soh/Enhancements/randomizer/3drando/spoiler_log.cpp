@@ -23,7 +23,20 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
 #include <variables.h>
 
 #define NOGDI
@@ -726,8 +739,8 @@ const char* SpoilerLog_Write(int language) {
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations(language);
 
-    if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!fs::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
+        fs::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);

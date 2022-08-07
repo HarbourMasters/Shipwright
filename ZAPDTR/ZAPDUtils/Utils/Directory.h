@@ -5,6 +5,10 @@
 #include "StringHelper.h"
 #include <iostream>
 
+#ifdef GHC_USE_STD_FS
+#include "../../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
 #if __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -12,6 +16,8 @@ namespace fs = std::filesystem;
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #endif
+#endif
+
 
 #undef GetCurrentDirectory
 #undef CreateDirectory

@@ -3,7 +3,21 @@
 #include <array>
 #include <cstdio>
 #include <cstdlib>
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
+
 #include <fstream>
 #include <vector>
 
@@ -12,7 +26,7 @@
 #include "tinyxml2.h"
 #include "utils.hpp"
 
-namespace fs = std::filesystem;
+
 
 static const std::string CACHED_SETTINGS_FILENAME = "CACHED_SETTINGS";
 static const std::string CACHED_COSMETICS_FILENAME = "CACHED_COSMETICS";
@@ -36,15 +50,15 @@ static std::string_view GetBasePath(OptionCategory category) {
 //Creates preset directories if they don't exist
 bool CreatePresetDirectories() {
   //Create the 3ds directory if it doesn't exist
-  std::filesystem::create_directory("./3ds");
+  fs::create_directory("./3ds");
   //Create the presets directory if it doesn't exist
-  std::filesystem::create_directory("./3ds/presets");
+  fs::create_directory("./3ds/presets");
   //Create the oot3d directory if it doesn't exist
-  std::filesystem::create_directory("./3ds/presets/oot3dr");
+  fs::create_directory("./3ds/presets/oot3dr");
   //Create the cosmetics directory if it doesn't exist
-  std::filesystem::create_directory("./3ds/presets/oot3dr/cosmetics");
+  fs::create_directory("./3ds/presets/oot3dr/cosmetics");
   //Create the settings directory if it doesn't exist
-  std::filesystem::create_directory("./3ds/presets/oot3dr/settings");
+  fs::create_directory("./3ds/presets/oot3dr/settings");
 
   return true;
 }
@@ -159,7 +173,7 @@ bool LoadPreset(std::string_view presetName, OptionCategory category) {
 bool DeletePreset(std::string_view presetName, OptionCategory category) {
   const std::string filepath = PresetPath(presetName, category);
 
-  std::filesystem::remove(filepath);
+  fs::remove(filepath);
 
   return true;
 }

@@ -4,7 +4,19 @@
 #include "spdlog/spdlog.h"
 #include "Utils/StringHelper.h"
 #include "Lib/StrHash64.h"
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
@@ -311,8 +323,8 @@ namespace Ship {
 	bool Archive::LoadPatchMPQs() {
 		// OTRTODO: We also want to periodically scan the patch directories for new MPQs. When new MPQs are found we will load the contents to fileCache and then copy over to gameResourceAddresses
 		if (PatchesPath.length() > 0) {
-			if (std::filesystem::is_directory(PatchesPath)) {
-				for (const auto& p : std::filesystem::recursive_directory_iterator(PatchesPath)) {
+			if (fs::is_directory(PatchesPath)) {
+				for (const auto& p : fs::recursive_directory_iterator(PatchesPath)) {
 					if (StringHelper::IEquals(p.path().extension().string(), ".otr") || StringHelper::IEquals(p.path().extension().string(), ".mpq")) {
 						SPDLOG_ERROR("Reading {} mpq patch", p.path().string().c_str());
 						if (!LoadPatchMPQ(p.path().string())) {
@@ -329,12 +341,12 @@ namespace Ship {
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
 		HANDLE mpqHandle = NULL;
 #ifdef _WIN32
-		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
+		std::wstring wfullPath = fs::absolute(MainPath).wstring();
 #endif
 #if defined(__SWITCH__)
 		std::string fullPath = MainPath;
 #else
-		std::string fullPath = std::filesystem::absolute(MainPath).string();
+		std::string fullPath = fs::absolute(MainPath).string();
 #endif
 
 #ifdef _WIN32
@@ -377,13 +389,13 @@ namespace Ship {
 #if defined(__SWITCH__)
 		std::string fullPath = path;
 #else
-		std::string fullPath = std::filesystem::absolute(path).string();
+		std::string fullPath = fs::absolute(path).string();
 #endif
 		if (mpqHandles.contains(fullPath)) {
 			return true;
 		}
 
-		std::wstring wPath = std::filesystem::absolute(path).wstring();
+		std::wstring wPath = fs::absolute(path).wstring();
 
 #ifdef _WIN32
 		if (!SFileOpenArchive(wPath.c_str(), 0, MPQ_OPEN_READ_ONLY, &patchHandle)) {

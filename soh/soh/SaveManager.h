@@ -21,7 +21,20 @@ typedef struct {
 #include <tuple>
 #include <functional>
 #include <vector>
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
 
 #include "Lib/nlohmann/json.hpp"
 
@@ -103,7 +116,7 @@ public:
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
   private:
-    std::filesystem::path GetFileName(int fileNum);
+    fs::path GetFileName(int fileNum);
 
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();

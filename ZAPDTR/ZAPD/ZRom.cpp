@@ -9,7 +9,11 @@
 #endif
 #include <Globals.h>
 
+#ifdef GHC_USE_STD_FS
+namespace fs = ghc::filesystem;
+#else
 namespace fs = std::filesystem;
+#endif
 
 #define DMA_ENTRY_SIZE 16
 

@@ -1,8 +1,21 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
 #include <locale>
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -1162,9 +1175,9 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
     return (s32*)res->commands.data();
 }
 
-std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
+fs::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
     const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
-    std::filesystem::path saveFile = std::filesystem::absolute(fileName);
+    fs::path saveFile = fs::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
         create_directories(saveFile.parent_path());
@@ -1173,7 +1186,7 @@ std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
     return saveFile;
 }
 
-std::filesystem::path GetSaveFile() {
+fs::path GetSaveFile() {
     const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
 
     return GetSaveFile(pConf);
@@ -1182,7 +1195,7 @@ std::filesystem::path GetSaveFile() {
 void OTRGlobals::CheckSaveFile(size_t sramSize) const {
     const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
 
-    std::filesystem::path savePath = GetSaveFile(pConf);
+    fs::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     if (saveFile.fail()) {
         saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);

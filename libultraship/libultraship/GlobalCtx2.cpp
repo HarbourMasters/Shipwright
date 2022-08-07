@@ -13,6 +13,18 @@
 #include "SwitchImpl.h"
 #endif
 
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
@@ -107,14 +119,14 @@ namespace Ship {
         }
     }
 
-    void GlobalCtx2::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr, const size_t size) {
+    void GlobalCtx2::WriteSaveFile(const fs::path& savePath, const uintptr_t addr, void* dramAddr, const size_t size) {
         std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
         saveFile.seekp(addr);
         saveFile.write((char*)dramAddr, size);
         saveFile.close();
     }
 
-    void GlobalCtx2::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+    void GlobalCtx2::ReadSaveFile(fs::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
         std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
 
         // If the file doesn't exist, initialize DRAM

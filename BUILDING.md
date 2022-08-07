@@ -104,7 +104,7 @@ cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging) -DCMAKE_CXX_FLAGS="-DGHC_USE_STD_FS" (to compile supporting macOS 10.13 and 10.14)
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Compile the project

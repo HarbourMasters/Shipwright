@@ -10,13 +10,27 @@
 #include "spdlog/spdlog.h"
 
 #include <fstream>
+
+#ifdef GHC_USE_STD_FS
+#include "../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
+#if __has_include(<filesystem>)
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+#endif
+
+
 #include <array>
 
 extern "C" SaveContext gSaveContext;
 
-std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+fs::path SaveManager::GetFileName(int fileNum) {
+    const fs::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
@@ -133,24 +147,24 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
-    const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
+    const fs::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    const fs::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
-    if (!std::filesystem::exists(sSavePath)) {
-        std::filesystem::create_directory(sSavePath);
+    if (!fs::exists(sSavePath)) {
+        fs::create_directory(sSavePath);
     }
 
     // If there is a lingering unversioned save, convert it
-    if (std::filesystem::exists(sOldSavePath)) {
+    if (fs::exists(sOldSavePath)) {
         ConvertFromUnversioned();
-        std::filesystem::rename(sOldSavePath, sOldBackupSavePath);
+        fs::rename(sOldSavePath, sOldBackupSavePath);
     }
 
     // If the global save file exist, load it. Otherwise, create it.
-    if (std::filesystem::exists(sGlobalPath)) {
+    if (fs::exists(sGlobalPath)) {
         std::ifstream input(sGlobalPath);
         nlohmann::json globalBlock;
         input >> globalBlock;
@@ -179,7 +193,7 @@ void SaveManager::Init() {
 
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
-        if (std::filesystem::exists(GetFileName(fileNum))) {
+        if (fs::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
         }
 
@@ -490,7 +504,7 @@ void SaveManager::SaveGlobal() {
 }
 
 void SaveManager::LoadFile(int fileNum) {
-    assert(std::filesystem::exists(GetFileName(fileNum)));
+    assert(fs::exists(GetFileName(fileNum)));
     InitFile(false);
 
     std::ifstream input(GetFileName(fileNum));
@@ -538,11 +552,11 @@ void SaveManager::LoadFile(int fileNum) {
 bool SaveManager::SaveFile_Exist(int fileNum) {
     
     try {
-        std::filesystem::exists(GetFileName(fileNum));
+        fs::exists(GetFileName(fileNum));
         printf("File[%d] - exist \n",fileNum);
         return true;
     }
-    catch(std::filesystem::filesystem_error const& ex) {
+    catch(fs::filesystem_error const& ex) {
         printf("File[%d] - do not exist \n",fileNum);
         return false;
     }
@@ -1126,9 +1140,9 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
 }
 
 void SaveManager::CopyZeldaFile(int from, int to) {
-    assert(std::filesystem::exists(GetFileName(from)));
+    assert(fs::exists(GetFileName(from)));
     DeleteZeldaFile(to);
-    std::filesystem::copy_file(GetFileName(from), GetFileName(to));
+    fs::copy_file(GetFileName(from), GetFileName(to));
     fileMetaInfo[to].valid = true;
     fileMetaInfo[to].deaths = fileMetaInfo[from].deaths;
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].playerName); i++) {
@@ -1145,8 +1159,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
-    if (std::filesystem::exists(GetFileName(fileNum))) {
-        std::filesystem::remove(GetFileName(fileNum));
+    if (fs::exists(GetFileName(fileNum))) {
+        fs::remove(GetFileName(fileNum));
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;

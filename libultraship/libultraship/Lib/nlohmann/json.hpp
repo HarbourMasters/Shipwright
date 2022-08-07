@@ -3822,7 +3822,13 @@ namespace std_fs = std::experimental::filesystem;
 #include <filesystem>
 namespace nlohmann::detail
 {
+#ifdef GHC_USE_STD_FS
+#include "../../../ghc/filesystem.hpp"
+namespace std_fs = ghc::filesystem;
+#else
 namespace std_fs = std::filesystem;
+#endif
+
 } // namespace nlohmann::detail
 #endif
 

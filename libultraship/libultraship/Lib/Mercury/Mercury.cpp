@@ -6,9 +6,13 @@
 #include <filesystem>
 #include <unordered_map>
 #include <any>
-#include <Utils/StringHelper.h>
 
+#ifdef GHC_USE_STD_FS
+#include "../../../../include/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
+#else
 namespace fs = std::filesystem;
+#endif
 using json = nlohmann::json;
 
 std::unordered_map<std::string, std::any> ramMap;
@@ -17,9 +21,18 @@ Mercury::Mercury(std::string path) : path_(std::move(path)) {
 	this->reload();
 }
 
-std::string Mercury::formatNestedKey(const std::string& key) {
-    std::vector<std::string> dots = StringHelper::Split(key, ".");
+std::vector<std::string> split(const std::string& s, const char delimiter) {
+    std::vector<std::string> result;
+    std::stringstream ss(s);
+    std::string item;
+    while (getline(ss, item, delimiter)) {
+        result.push_back(item);
+    }
+    return result;
+}
 
+std::string Mercury::formatNestedKey(const std::string& key) {
+	const std::vector<std::string> dots = split(key, '.');
     std::string tmp;
     if (dots.size() > 1)
         for (const auto& dot : dots) {
@@ -32,7 +45,7 @@ std::string Mercury::formatNestedKey(const std::string& key) {
 }
 
 json Mercury::nested(const std::string& key) {
-    std::vector<std::string> dots = StringHelper::Split(key, ".");
+    std::vector<std::string> dots = split(key, '.');
     if (!this->vjson.is_object())
         return this->vjson;
     json gjson = this->vjson.unflatten();
