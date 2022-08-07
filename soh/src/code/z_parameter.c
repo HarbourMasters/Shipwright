@@ -1749,30 +1749,70 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         }
         return ITEM_NONE;
-    } else if (item == ITEM_KEY_SMALL) {
-        // Small key exceptions for rando.
-        if (gSaveContext.n64ddFlag) {
-            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
-                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                    gSaveContext.inventory.dungeonKeys[13] = 1;
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[13]++;
-                    return ITEM_NONE;
-                }
-            }
-
-            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
-                    gSaveContext.inventory.dungeonKeys[6] = 1;
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[6]++;
-                    return ITEM_NONE;
-                }
-            }
+    } else if ((item >= ITEM_FOREST_TEMPLE_BOSS_KEY) && (item <= ITEM_GANONS_CASTLE_BOSS_KEY)) {
+        int mapIndex = gSaveContext.mapIndex;
+        switch (item) {
+            case ITEM_FOREST_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_BMORI1;
+                break;
+            case ITEM_FIRE_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HIDAN;
+                break;
+            case ITEM_WATER_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_MIZUSIN;
+                break;
+            case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_JYASINZOU;
+                break;
+            case ITEM_SHADOW_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HAKADAN;
+                break;
+            case ITEM_GANONS_CASTLE_BOSS_KEY:
+                mapIndex = SCENE_GANON;
+                break;
         }
-
+    
+        gSaveContext.inventory.dungeonItems[mapIndex] |= gBitFlags[ITEM_KEY_BOSS - ITEM_KEY_BOSS];
+    } else if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
+        int mapIndex = gSaveContext.mapIndex;
+        switch (item) {
+            case ITEM_FOREST_TEMPLE_SMALL_KEY:
+                mapIndex = SCENE_BMORI1;
+                break;
+            case ITEM_FIRE_TEMPLE_SMALL_KEY:
+                mapIndex = SCENE_HIDAN;
+                break;
+            case ITEM_WATER_TEMPLE_SMALL_KEY:
+                mapIndex = SCENE_MIZUSIN;
+                break;
+            case ITEM_SPIRIT_TEMPLE_SMALL_KEY:
+                mapIndex = SCENE_JYASINZOU;
+                break;
+            case ITEM_SHADOW_TEMPLE_SMALL_KEY:
+                mapIndex = SCENE_HAKADAN;
+                break;
+            case ITEM_BOTTOM_OF_THE_WELL_SMALL_KEY:
+                mapIndex = SCENE_HAKADANCH;
+                break;
+            case ITEM_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+                mapIndex = SCENE_MEN;
+                break;
+            case ITEM_GERUDO_FORTRESS_SMALL_KEY:
+                mapIndex = SCENE_GERUDOWAY;
+                break;
+            case ITEM_GANONS_CASTLE_SMALL_KEY:
+                mapIndex = SCENE_GANONTIKA;
+                break;
+        }
+    
+        if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+            gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+            return ITEM_NONE;
+        } else {
+            gSaveContext.inventory.dungeonKeys[mapIndex]++;
+            return ITEM_NONE;
+        }
+    } else if (item == ITEM_KEY_SMALL) {
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             return ITEM_NONE;

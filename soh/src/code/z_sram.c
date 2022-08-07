@@ -814,9 +814,28 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // For Ganon's boss key "Start With" is 0
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
-            gSaveContext.inventory.dungeonItems[10] |= 1;
+        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
+            // TODO: If master quest there are different key counts
+            gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = 5; // Forest
+            gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = 8; // Fire
+            gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = 6; // Water
+            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 5; // Spirit
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = 5; // Shadow
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = 2; // BotW
+            gSaveContext.inventory.dungeonKeys[SCENE_MEN] = 9; // GTG
+            gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = 2; // Ganon
+        }
+
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+            gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
+            gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
+            gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
+            gSaveContext.inventory.dungeonItems[SCENE_JYASINZOU] |= 1; // Spirit
+            gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
+        }
+
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
+            gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
         HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
