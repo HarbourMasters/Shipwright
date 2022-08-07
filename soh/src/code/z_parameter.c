@@ -2329,6 +2329,8 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
+    } else if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_BOSS_KEY)) {
+        return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
