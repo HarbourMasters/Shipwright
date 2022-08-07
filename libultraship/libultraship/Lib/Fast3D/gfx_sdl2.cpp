@@ -238,6 +238,8 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
     Ship::Switch::Exit();
 #endif
     Ship::ExecuteHooks<Ship::ExitGame>();
+
+    SDL_Quit();
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
@@ -307,9 +309,8 @@ static void gfx_sdl_handle_events(void) {
                 CVar_Save();
                 break;
             case SDL_QUIT:
-                Ship::ExecuteHooks<Ship::ExitGame>();
-                SDL_Quit(); // bandaid fix for linux window closing issue
-                exit(0);
+                is_running = false;
+                break;
         }
     }
 }

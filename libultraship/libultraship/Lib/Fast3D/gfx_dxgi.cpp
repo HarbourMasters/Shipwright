@@ -239,8 +239,8 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
-            Ship::ExecuteHooks<Ship::ExitGame>();
-            exit(0);
+            PostQuitMessage(0);
+            break;
         case WM_PAINT:
             if (dxgi.in_paint) {
                 dxgi.recursive_paint_detected = true;
@@ -378,6 +378,8 @@ static void gfx_dxgi_main_loop(void (*run_one_game_iter)(void)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+
+    Ship::ExecuteHooks<Ship::ExitGame>();
 }
 
 static void gfx_dxgi_get_dimensions(uint32_t *width, uint32_t *height) {
