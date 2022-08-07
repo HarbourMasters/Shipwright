@@ -5041,7 +5041,11 @@ s32 func_8083B040(Player* this, GlobalContext* globalCtx) {
                         func_80835DE4(globalCtx, this, func_8084F104, 0);
 
                         if (sp2C >= 0) {
-                            giEntry = ItemTable_Retrieve(D_80854528[sp2C] - 1);
+                            if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                                giEntry = ItemTable_Retrieve(D_80854528[sp2C] - 1);
+                            } else {
+                                giEntry = this->getItemEntry;
+                            }
                             func_8083AE40(this, giEntry.objectId);
                         }
 
