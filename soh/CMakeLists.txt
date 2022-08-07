@@ -1805,7 +1805,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
-	    -O3 -ffast-math
         )
 
         target_link_options(${PROJECT_NAME} PRIVATE

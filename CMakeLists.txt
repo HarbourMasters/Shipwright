@@ -42,11 +42,16 @@ endif()
 ################################################################################
 # Global configuration types
 ################################################################################
-set(CMAKE_CONFIGURATION_TYPES
-    "Debug"
-    "Release"
-    CACHE STRING "" FORCE
-)
+if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+set(CMAKE_C_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
+else()
+set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif()
 
 if(NOT CMAKE_BUILD_TYPE )
 	set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
