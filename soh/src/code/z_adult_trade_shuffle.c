@@ -5,11 +5,7 @@
 
 void Randomizer_ConsumeAdultTradeItem(GlobalContext* globalCtx, u8 itemId) {
     gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
-    if (gSaveContext.adultTradeItems == 0) {
-        Inventory_ReplaceItem(globalCtx, itemId, ITEM_NONE);
-    } else {
-        Inventory_ReplaceItem(globalCtx, itemId, Randomizer_GetNextAdultTradeItem());
-    }
+	Inventory_ReplaceItem(globalCtx, itemId, Randomizer_GetNextAdultTradeItem());
 }
 
 u8 Randomizer_GetNextAdultTradeItem() {
@@ -21,6 +17,7 @@ u8 Randomizer_GetNextAdultTradeItem() {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }
+    return ITEM_NONE;
 }
 
 u8 Randomizer_GetPrevAdultTradeItem() {
@@ -32,4 +29,5 @@ u8 Randomizer_GetPrevAdultTradeItem() {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }
+    return ITEM_NONE;
 }

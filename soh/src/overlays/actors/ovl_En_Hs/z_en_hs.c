@@ -82,7 +82,7 @@ void EnHs_Init(Actor* thisx, GlobalContext* globalCtx) {
         bool shouldDespawn;
         bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
         if (gSaveContext.n64ddFlag) {
-            shouldDespawn = tradedMushroom && !(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_COJIRO))
+            shouldDespawn = tradedMushroom && !(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_COJIRO));
         } else {
             shouldDespawn = tradedMushroom;
         }
