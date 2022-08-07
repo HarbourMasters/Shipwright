@@ -2329,8 +2329,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
 
-        case RG_ICE_TRAP:
-            return GI_ICE_TRAP;
+        // case RG_ICE_TRAP:
+        //     return GI_ICE_TRAP;
 
         case RG_MILK:
             return GI_MILK; //todo logic around needing a bottle?
@@ -2429,6 +2429,7 @@ bool Randomizer::IsGetItemRandoExclusive(RandomizerGet randoGet) {
         case RG_BOTTLE_WITH_BUGS:
         case RG_BOTTLE_WITH_POE:
         case RG_BOTTLE_WITH_BIG_POE:
+        case RG_ICE_TRAP:
             return true;
         default:
             return false;
@@ -4807,6 +4808,7 @@ void InitRandoItemTable() {
 
         // Starting here, these do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
         // RandomizerGet enum values for both.
+        GET_ITEM(RG_ICE_TRAP, OBJECT_INVALID, GID_RUPEE_GOLD, 0, 0, CHEST_ANIM_SHORT),
         GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG),

@@ -6281,7 +6281,12 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
 
             if (this->getItemId < GI_MAX) {
-                GetItemEntry giEntry = ItemTable_Retrieve(this->getItemId - 1);
+                GetItemEntry giEntry;
+                if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                    giEntry = ItemTable_Retrieve(this->getItemId - 1);
+                } else {
+                    giEntry = this->getItemEntry;
+                }
 
                 if ((interactedActor != &this->actor) && !iREG(67)) {
                     interactedActor->parent = &this->actor;
@@ -6289,7 +6294,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 iREG(67) = false;
 
-                if (gSaveContext.n64ddFlag && this->getItemId == GI_ICE_TRAP) {
+                if (gSaveContext.n64ddFlag && this->getItemId == RG_ICE_TRAP) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
