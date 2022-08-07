@@ -12975,15 +12975,16 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
         else {
             func_80832DBC(this);
 
-            if (this->getItemId == GI_ICE_TRAP) {
+            if ((this->getItemId == GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
+                (gSaveContext.n64ddFlag && this->getItemId == RG_ICE_TRAP)) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
 
-                if (this->getItemId != GI_ICE_TRAP) {
+                if ((this->getItemId != GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
+                    (gSaveContext.n64ddFlag && this->getItemId != RG_ICE_TRAP)) {
                     Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                         this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
                     func_8083C0E8(this, globalCtx);
-                }
-                else {
+                } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                 }
