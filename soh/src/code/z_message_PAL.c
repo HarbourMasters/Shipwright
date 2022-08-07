@@ -1750,7 +1750,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                     break;
             }
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
-        } else if (textId == 0x0140 && gSaveContext.n64ddFlag) { //888888888
+        // Give Navi rando-specific gameplay tips
+        } else if (textId == 0x0140 && gSaveContext.n64ddFlag) {
             RandoNaviTip(globalCtx);
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else {
