@@ -1981,7 +1981,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
 nx_generate_nacp(Ship.nacp
    NAME "Ship of Harkirian"
-   AUTHOR "Ship"
+   AUTHOR "Harbour Masters"
    VERSION "3.1.0"
 )
  
