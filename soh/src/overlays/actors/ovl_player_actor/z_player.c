@@ -12741,25 +12741,60 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             Randomizer_Item_Give(globalCtx, giEntry);
         }
         Player_SetPendingFlag(this, globalCtx);
-        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
-        if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
-            ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
-            ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
-            (this->getItemId == GI_HEART)) {
-            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        }
-        else {
-            if ((this->getItemId == GI_HEART_CONTAINER_2) || (this->getItemId == GI_HEART_CONTAINER) ||
-                ((this->getItemId == GI_HEART_PIECE) &&
-                    ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-                temp1 = NA_BGM_HEART_GET | 0x900;
+        if (this->getItemEntry.objectId != OBJECT_INVALID) {
+            if (giEntry.modIndex == 0) {
+                if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
+                    ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
+                    ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
+                    (this->getItemId == GI_HEART)) {
+                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                } else {
+                    if ((this->getItemId == GI_HEART_CONTAINER_2) || (this->getItemId == GI_HEART_CONTAINER) ||
+                        ((this->getItemId == GI_HEART_PIECE) &&
+                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                        temp1 = NA_BGM_HEART_GET | 0x900;
+                    } else {
+                        temp1 = temp2 =
+                            (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                    }
+                    Audio_PlayFanfare(temp1);
+                }
+            } else {
+                if (this->getItemId == RG_DOUBLE_DEFENSE || this->getItemId == RG_MAGIC_SINGLE ||
+                    this->getItemId == RG_MAGIC_DOUBLE) {
+                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
+                } else {
+                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
+                }
             }
-            else {
-                temp1 = temp2 = (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+        } else {
+            if (giEntry.modIndex == 0) {
+                if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
+                    ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
+                    (giEntry.itemId == ITEM_HEART)) {
+                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                } else {
+                    if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
+                        ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                        temp1 = NA_BGM_HEART_GET | 0x900;
+                    } else {
+                        temp1 = temp2 =
+                            (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                    }
+                    Audio_PlayFanfare(temp1);
+                }
+            } else {
+                if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
+                    giEntry.itemId == RG_MAGIC_DOUBLE) {
+                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
+                } else {
+                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
+                }
             }
-            Audio_PlayFanfare(temp1);
         }
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
