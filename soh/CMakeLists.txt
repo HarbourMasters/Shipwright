@@ -1979,13 +1979,16 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
-set_target_properties(soh PROPERTIES
-        APP_TITLE "Ship of Harkirian"
-        APP_AUTHOR "Ship"
-        APP_VERSION "3.0.0"
-        ICON "icon.jpg")
-
-nx_create_nro(soh)
+nx_generate_nacp(Ship.nacp
+   NAME "Ship of Harkirian"
+   AUTHOR "Ship"
+   VERSION "3.1.0"
+)
+ 
+nx_create_nro(soh
+    NACP Ship.nacp
+    ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
+)
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.nro DESTINATION . COMPONENT ship)
 
