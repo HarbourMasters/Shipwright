@@ -1773,6 +1773,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
     
         gSaveContext.inventory.dungeonItems[mapIndex] |= gBitFlags[ITEM_KEY_BOSS - ITEM_KEY_BOSS];
+        return ITEM_NONE;
     } else if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
