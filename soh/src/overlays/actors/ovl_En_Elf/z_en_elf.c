@@ -1382,7 +1382,7 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
 
     if (player->naviTextId == 0) {
         if (player->unk_664 == NULL) {
-            if (((gSaveContext.naviTimer >= 600) && (gSaveContext.naviTimer <= 3000)) || (nREG(89) != 0)) {
+            if (((gSaveContext.naviTimer >= 40) && (gSaveContext.naviTimer <= 3000)) || (nREG(89) != 0)) {
                 player->naviTextId = ElfMessage_GetCUpText(globalCtx);
 
                 if (player->naviTextId == 0x15F) {
@@ -1401,7 +1401,7 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
 
         if (thisx->textId == ElfMessage_GetCUpText(globalCtx)) {
             this->fairyFlags |= 0x80;
-            gSaveContext.naviTimer = 3001;
+            gSaveContext.naviTimer = 10;
         }
 
         this->fairyFlags |= 0x10;

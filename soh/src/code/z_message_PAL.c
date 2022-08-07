@@ -1750,6 +1750,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                     break;
             }
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (textId == 0x0140 && gSaveContext.n64ddFlag) { //888888888
+            RandoNaviTip(globalCtx);
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

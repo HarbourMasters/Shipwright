@@ -15286,5 +15286,9 @@ void func_80853148(GlobalContext* globalCtx, Actor* actor) {
     if ((this->naviActor == this->targetActor) && ((this->targetActor->textId & 0xFF00) != 0x200)) {
         this->naviActor->flags |= ACTOR_FLAG_8;
         func_80835EA4(globalCtx, 0xB);
+
+        if (actor->textId >= 0x0140 && actor->textId <= 0x015F && gSaveContext.n64ddFlag) {
+            Message_StartTextbox(globalCtx, 0x0140, NULL);
+        }
     }
 }
