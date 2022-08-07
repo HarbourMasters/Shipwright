@@ -3347,8 +3347,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
     s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH();
     s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
-    int StartBTN_Label_H_Scaled = StartBTN_Label_H * CVar_GetFloat("gStartBtnScale", 0.75f) + (CVar_GetFloat("gStartBtnScale", 0.75f)/3);
-    int StartBTN_Label_W_Scaled = StartBTN_Label_W * CVar_GetFloat("gStartBtnScale", 0.75f) + (CVar_GetFloat("gStartBtnScale", 0.75f)/3);
+    int StartBTN_Label_H_Scaled = StartBTN_Label_H * (CVar_GetFloat("gStartBtnScale", 0.75f)+CVar_GetFloat("gStartBtnScale", 0.75f)/2.14);
+    int StartBTN_Label_W_Scaled = StartBTN_Label_W * (CVar_GetFloat("gStartBtnScale", 0.75f)+CVar_GetFloat("gStartBtnScale", 0.75f)/2.14);
     int StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
     int StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
     const s16 StartBtn_Label_W_ori = StartBTN_Label_W / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
@@ -3359,23 +3359,31 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     s16 rStartLabelY;
     if (CVar_GetS32("gStartBtnPosType", 0) != 0) {
         PosY_StartBtn = CVar_GetS32("gStartBtnPosY", 0)+Y_Margins_StartBtn;
-        rStartLabelY = CVar_GetS32("gStartBtnPosY", 0)+Y_Margins_StartBtn+3;
+        rStartLabelY = PosY_StartBtn+(StartBTN_Label_H_Scaled/5);
         if (CVar_GetS32("gStartBtnPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Left_HUD_Margin;};
             PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
-            rStartLabelX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn-12);
+            rStartLabelX = OTRGetDimensionFromLeftEdge((CVar_GetS32("gStartBtnPosX", 0)-(StartBTN_Label_W_Scaled/4)+X_Margins_StartBtn));
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Right_HUD_Margin;};
             PosX_StartBtn = OTRGetDimensionFromRightEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
-            rStartLabelX = OTRGetDimensionFromRightEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn-12);
+            rStartLabelX = OTRGetDimensionFromRightEdge((CVar_GetS32("gStartBtnPosX", 0)-(StartBTN_Label_W_Scaled/4)+X_Margins_StartBtn));
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 3) {//Anchor None
             PosX_StartBtn = CVar_GetS32("gStartBtnPosX", 0);
-            rStartLabelX = CVar_GetS32("gStartBtnPosX", 0)-12;
+            rStartLabelX = PosX_StartBtn-(StartBTN_Label_W_Scaled/4);
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 4) {//Hidden
            PosX_StartBtn = -9999;
            rStartLabelX = -9999;
         }
     } else {
+        StartBTN_H_Scaled = StartBtn_Icon_H * 0.75f;
+        StartBTN_W_Scaled = StartBtn_Icon_W * 0.75f;
+        StartBTN_Label_H_Scaled = StartBTN_Label_H * 1.0f;
+        StartBTN_Label_W_Scaled = StartBTN_Label_W * 1.0f;
+        StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
+        StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
+        StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
+        StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
         PosY_StartBtn = PosY_StartBtn_ori;
         PosX_StartBtn = PosX_StartBtn_ori;
         rStartLabelY = rStartLabelY_ori;
@@ -3623,7 +3631,6 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            //const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
             gSPWideTextureRectangle(
                 OVERLAY_DISP++, rStartLabelX << 2, rStartLabelY << 2, 
                 (rStartLabelX + StartBTN_Label_W) << 2,
