@@ -1208,38 +1208,56 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 getItemId) {
+void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetItemEntry giEntry) {
     s16 color_slot;
-    switch (getItemId) {
-        case GI_MINUET_OF_FOREST:
-        case GI_SINGLE_MAGIC:
-        case GI_DOUBLE_MAGIC:
-            color_slot = 0;
+    switch (giEntry.modIndex) {
+        case 0:
+            switch (giEntry.itemId) {
+                case ITEM_SONG_MINUET:
+                    color_slot = 0;
+                    break;
+                case ITEM_SONG_BOLERO:
+                    color_slot = 1;
+                    break;
+                case ITEM_SONG_SERENADE:
+                    color_slot = 2;
+                    break;
+                case ITEM_SONG_REQUIEM:
+                    color_slot = 3;
+                    break;
+                case ITEM_SONG_NOCTURNE:
+                    color_slot = 4;
+                    break;
+                case ITEM_SONG_PRELUDE:
+                    color_slot = 5;
+                    break;
+                case ITEM_STICK_UPGRADE_20:
+                case ITEM_STICK_UPGRADE_30:
+                    color_slot = 6;
+                    break;
+                case ITEM_NUT_UPGRADE_30:
+                case ITEM_NUT_UPGRADE_40:
+                    color_slot = 7;
+                    break;
+                default:
+                    return;
+            }
             break;
-        case GI_BOLERO_OF_FIRE:
-        case GI_DOUBLE_DEFENSE:
-            color_slot = 1;
+        case 1:
+            switch (giEntry.itemId) {
+                case RG_MAGIC_SINGLE:
+                case RG_MAGIC_DOUBLE:
+                    color_slot = 0;
+                    break;
+                case RG_DOUBLE_DEFENSE:
+                    color_slot = 1;
+                    break;
+                default:
+                    return;
+            }
             break;
-        case GI_SERENADE_OF_WATER:
-            color_slot = 2;
-            break;
-        case GI_REQUIEM_OF_SPIRIT:
-            color_slot = 3;
-            break;
-        case GI_NOCTURNE_OF_SHADOW:
-            color_slot = 4;
-            break;
-        case GI_PRELUDE_OF_LIGHT:
-            color_slot = 5;
-            break;
-        case GI_STICK_UPGRADE_20:
-        case GI_STICK_UPGRADE_30:
-            color_slot = 6;
-            break;
-        case GI_NUT_UPGRADE_30:
-        case GI_NUT_UPGRADE_40:
-            color_slot = 7;
-            break;
+        default:
+            return;
     }
 
     s16* colors[9][3] = {
@@ -1320,10 +1338,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
         s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
         GetItem_Draw(globalCtx, randoGetItemEntry.gi);
     } else {
         s32 texIndex = this->actor.params - 3;
@@ -1383,10 +1398,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
         s32 randoGetItemId = Randomizer_GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
         GetItem_Draw(globalCtx, ABS(randoGetItemEntry.gi - 1));
     } else {
         s32 pad;
