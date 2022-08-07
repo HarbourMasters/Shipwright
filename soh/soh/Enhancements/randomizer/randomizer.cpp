@@ -3965,9 +3965,8 @@ void DrawRandoEditor(bool& open) {
                         PaddedSeparator();
 
                         // Shuffle Cows
-                        ImGui::Text(Settings::ShuffleCows.GetName().c_str());
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
                         InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
                         PaddedSeparator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
@@ -4042,7 +4041,6 @@ void DrawRandoEditor(bool& open) {
                             "This setting does not effect the item earned from playing\n"
                             "the Song of Storms and the frog song minigame."
                         );
-                        PaddedSeparator();
                     }
                     ImGui::PopItemWidth();
 
