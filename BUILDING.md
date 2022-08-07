@@ -30,8 +30,8 @@ With the cmake build system you have two options for working on the project:
 #### Visual Studio
 To develop using Visual Studio you only need to use cmake to generate the solution file:
 ```powershell
-# Generates Ship.sln at the root directory
-& 'C:\Program Files\CMake\bin\cmake' -S . -G "Visual Studio 17 2022" -T v142 -A x64
+# Generates Ship.sln at `build/x64`
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
 ```
 
 #### Visual Studio Code or another editor
@@ -53,7 +53,7 @@ cd "build/x64"
 ```
 
 ## Linux
-1. Requires `gcc, x11, curl, python3, sdl2, libpng, glew, ninja, cmake`
+1. Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
