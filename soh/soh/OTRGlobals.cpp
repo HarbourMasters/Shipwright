@@ -1647,6 +1647,21 @@ extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer,
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
 }
 
+extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
+    if (OTRGlobals::Instance->getItemModIndex != MOD_VANILLA) {
+        getItemID++; // counteracts the - 1 offset used for vanilla table
+    }
+
+    return ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+}
+
+extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
+    if (tableID == MOD_VANILLA) {
+        getItemID--; // counteracts the - 1 offset used for vanilla table
+    }
+    return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
+}
+
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
         OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
@@ -1654,6 +1669,18 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
         OTRGlobals::Instance->getItemModIndex = MOD_VANILLA;
     }
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+}
+
+extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    s16 getItemModIndex;
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(
+            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+        getItemModIndex = MOD_RANDOMIZER;
+    } else {
+        getItemModIndex = MOD_VANILLA;
+    }
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
@@ -1665,6 +1692,17 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
 
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    s16 getItemModIndex;
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
+        getItemModIndex = MOD_RANDOMIZER;
+    } else {
+        getItemModIndex = MOD_VANILLA;
+    }
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+}
+
 extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
     return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
          Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
@@ -1672,12 +1710,4 @@ extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomize
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
-}
-
-extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {    
-    if (OTRGlobals::Instance->getItemModIndex != MOD_VANILLA) {
-        getItemID++; // counteracts the - 1 offset used for vanilla table
-    }
-
-    return ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
 }

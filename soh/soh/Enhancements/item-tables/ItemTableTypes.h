@@ -10,4 +10,4 @@ typedef struct {
     /* 0x03 */ uint16_t textId;
     /* 0x04 */ uint16_t objectId;
     /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
-} GetItemEntry;                   // size = 0x06
+} GetItemEntry;                   // size = 0x08

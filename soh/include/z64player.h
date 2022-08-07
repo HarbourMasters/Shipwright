@@ -2,6 +2,7 @@
 #define Z64PLAYER_H
 
 #include "z64actor.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 struct Player;
 
@@ -626,6 +627,7 @@ typedef struct Player {
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
     /* 0x0A94 */ PendingFlag pendingFlag;
-} Player; // size = 0xA94
+    /* 0x0AA0 */ GetItemEntry getItemEntry;
+} Player; // size = 0xAA8
 
 #endif

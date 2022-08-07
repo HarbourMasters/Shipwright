@@ -2206,7 +2206,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
     if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
         temp = SLOT(ITEM_BOTTLE);
         for (i = 0; i < 4; i++) {
-            if (gSaveContext.inventory.items[temp + i] == RG_NONE) {
+            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                 switch (item) {
                     case RG_BOTTLE_WITH_RED_POTION:
                         item = ITEM_POTION_RED;
@@ -2238,7 +2238,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 }
 
                 gSaveContext.inventory.items[temp + i] = item;
-                return RG_NONE;
+                return ITEM_NONE;
             }
         }
     }

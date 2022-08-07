@@ -1592,7 +1592,12 @@ s32 func_808332E4(Player* this) {
 }
 
 void func_808332F4(Player* this, GlobalContext* globalCtx) {
-    GetItemEntry giEntry = ItemTable_Retrieve(this->getItemId - 1);
+    GetItemEntry giEntry;
+    if (this->getItemEntry.objectId == OBJECT_INVALID) {
+        giEntry = ItemTable_Retrieve(this->getItemId - 1);
+    } else {
+        giEntry = this->getItemEntry;
+    }
 
     this->unk_862 = ABS(giEntry.gi);
 }
@@ -6324,7 +6329,12 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
             if (this->getItemId != GI_NONE) {
-                GetItemEntry giEntry = ItemTable_Retrieve(-this->getItemId - 1);
+                GetItemEntry giEntry;
+                if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                    giEntry = ItemTable_Retrieve(-this->getItemId - 1);
+                } else {
+                    giEntry = this->getItemEntry;
+                }
                 EnBox* chest = (EnBox*)interactedActor;
                 if (CVar_GetS32("gFastChests", 0) != 0) {
                     giEntry.gi = -1 * abs(giEntry.gi);
@@ -12701,12 +12711,16 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     s32 temp1;
     s32 temp2;
 
-    if (this->getItemId == GI_NONE) {
+    if (this->getItemId == GI_NONE && this->getItemEntry.objectId == OBJECT_INVALID) {
         return 1;
     }
 
     if (this->unk_84F == 0) {
-        giEntry = ItemTable_Retrieve(this->getItemId - 1);
+        if (this->getItemEntry.objectId == OBJECT_INVALID) {
+            giEntry = ItemTable_Retrieve(this->getItemId - 1);
+        } else {
+            giEntry = this->getItemEntry;
+        }
         this->unk_84F = 1;
 
         // make sure we get the BGS instead of giant's knife
@@ -12723,6 +12737,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             Randomizer_Item_Give(globalCtx, giEntry);
         }
         Player_SetPendingFlag(this, globalCtx);
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
@@ -12741,8 +12756,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             }
             Audio_PlayFanfare(temp1);
         }
-    }
-    else {
+    } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
                 globalCtx->nextEntranceIndex = 0x0123;
