@@ -183,6 +183,11 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "DMC Deku Scrub Grotto Center", RC_DMC_DEKU_SCRUB_GROTTO_CENTER },
     { "ZR Open Grotto Chest", RC_ZR_OPEN_GROTTO_CHEST },
     { "ZR Magic Bean Salesman", RC_ZR_MAGIC_BEAN_SALESMAN },
+    { "ZR Frogs Zelda's Lullaby", RC_ZR_FROGS_ZELDAS_LULLABY },
+    { "ZR Frogs Epona's Song", RC_ZR_FROGS_EPONAS_SONG },
+    { "ZR Frogs Saria's Song", RC_ZR_FROGS_SARIAS_SONG },
+    { "ZR Frogs Sun's Song", RC_ZR_FROGS_SUNS_SONG },
+    { "ZR Frogs Song of Time", RC_ZR_FROGS_SONG_OF_TIME },
     { "ZR Frogs in the Rain", RC_ZR_FROGS_IN_THE_RAIN },
     { "ZR Frogs Ocarina Game", RC_ZR_FROGS_OCARINA_GAME },
     { "ZR Near Open Grotto Freestanding PoH", RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH },
@@ -3447,6 +3452,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) && CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
+    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
@@ -3536,6 +3542,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoToken[2] = { "Off", "On" };
     const char* randoShuffleMagicBeans[2] = { "Off", "On" };
     const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    const char* randoShuffleFrogSongRupees[2] = { "Off", "On" };
     const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
@@ -4024,6 +4031,18 @@ void DrawRandoEditor(bool& open) {
                             "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
                             "the gate to Haunted Wasteland and the Horseback Archery minigame."
                         );
+                        PaddedSeparator();
+
+                        // Shuffle Frog Song Rupees
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
+                        InsertHelpHoverText(
+                            "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                            "you to earn items by playing songs at the Frog Choir.\n"
+                            "\n"
+                            "This setting does not effect the item earned from playing\n"
+                            "the Song of Storms and the frog song minigame."
+                        );
+                        PaddedSeparator();
                     }
                     ImGui::PopItemWidth();
 
