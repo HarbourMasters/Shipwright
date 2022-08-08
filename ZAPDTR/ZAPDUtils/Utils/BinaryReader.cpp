@@ -130,7 +130,13 @@ float BinaryReader::ReadSingle()
 	stream->Read((char*)&result, sizeof(float));
 
 	if (endianness != Endianness::Native)
-		result = BitConverter::ToFloatBE((uint8_t*)&result, 0);
+	{
+		float tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&result;
+		dst[3] = src[0]; dst[2] = src[1]; dst[1] = src[2]; dst[0] = src[3];
+		result = tmp;
+	}
 
 	if (std::isnan(result))
 		throw std::runtime_error("BinaryReader::ReadSingle(): Error reading stream");
@@ -145,7 +151,14 @@ double BinaryReader::ReadDouble()
 	stream->Read((char*)&result, sizeof(double));
 
 	if (endianness != Endianness::Native)
-		result = BitConverter::ToDoubleBE((uint8_t*)&result, 0);
+	{
+		double tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&result;
+		dst[7] = src[0]; dst[6] = src[1]; dst[5] = src[2]; dst[4] = src[3];
+		dst[3] = src[4]; dst[2] = src[5]; dst[1] = src[6]; dst[0] = src[7];
+		result = tmp;
+	}
 
 	if (std::isnan(result))
 		throw std::runtime_error("BinaryReader::ReadDouble(): Error reading stream");

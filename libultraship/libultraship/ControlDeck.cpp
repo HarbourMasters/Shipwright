@@ -3,9 +3,15 @@
 #include "Window.h"
 #include "Controller.h"
 #include "VirtualController.h"
+#include <Utils/StringHelper.h>
+
+#ifndef __WIIU__
 #include "KeyboardController.h"
 #include "SDLController.h"
-#include <Utils/StringHelper.h>
+#else
+#include "WiiUGamepad.h"
+#include "WiiUController.h"
+#endif
 
 namespace Ship {
     uint8_t* controllerBits;
@@ -20,6 +26,7 @@ namespace Ship {
         virtualDevices.clear();
         physicalDevices.clear();
 
+#ifndef __WIIU__
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 auto sdl = std::make_shared<SDLController>(i);
@@ -30,6 +37,20 @@ namespace Ship {
 
         physicalDevices.push_back(std::make_shared<VirtualController>("Auto", "Auto", true));
         physicalDevices.push_back(std::make_shared<KeyboardController>());
+#else
+        physicalDevices.push_back(std::make_shared<VirtualController>("Auto", "Auto", true));
+
+        auto gamepad = std::make_shared<Ship::WiiUGamepad>();
+        gamepad->Open();
+        physicalDevices.push_back(gamepad);
+
+        for (int i = 0; i < 4; i++) {
+            auto controller = std::make_shared<Ship::WiiUController>((WPADChan) i);
+            controller->Open();
+            physicalDevices.push_back(controller);
+        }
+#endif
+
         physicalDevices.push_back(std::make_shared<VirtualController>("Disconnected", "None", false));
 
         for (const auto& device : physicalDevices) {

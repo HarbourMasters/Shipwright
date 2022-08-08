@@ -11,6 +11,8 @@
 #include "OSXFolderManager.h"
 #elif defined(__SWITCH__)
 #include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
 #endif
 
 namespace Ship {
@@ -59,7 +61,6 @@ namespace Ship {
     void GlobalCtx2::InitWindow() {
         InitLogging();
         Config = std::make_shared<Mercury>(GetPathRelativeToAppDirectory("shipofharkinian.json"));
-        Config->reload();
 
         MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
         PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
@@ -73,6 +74,8 @@ namespace Ship {
             MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
 #elif defined(__SWITCH__)
             printf("Main OTR file not found!\n");
+#elif defined(__WIIU__)
+            Ship::WiiU::ThrowMissingOTR(MainPath.c_str());
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
@@ -85,6 +88,7 @@ namespace Ship {
 
     void GlobalCtx2::InitLogging() {
         try {
+#ifndef __WIIU__
             auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log").c_str());
 
             // Setup Logging
@@ -101,6 +105,17 @@ namespace Ship {
             GetLogger()->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%@] [%l] %v");
             spdlog::register_logger(GetLogger());
             spdlog::set_default_logger(GetLogger());
+#elif defined(_DEBUG)
+            // Setup Logging
+            auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+            ConsoleSink->set_level(spdlog::level::trace);
+            std::vector<spdlog::sink_ptr> Sinks{ ConsoleSink };
+            Logger = std::make_shared<spdlog::logger>(GetName(), Sinks.begin(), Sinks.end());
+            GetLogger()->set_level(spdlog::level::trace);
+            GetLogger()->set_pattern("[%s:%#] [%l] %v");
+            spdlog::register_logger(GetLogger());
+            spdlog::set_default_logger(GetLogger());
+#endif
         }
         catch (const spdlog::spdlog_ex& ex) {
             std::cout << "Log initialization failed: " << ex.what() << std::endl;

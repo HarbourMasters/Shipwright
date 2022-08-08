@@ -20,7 +20,9 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad, int32_t slot) {
 		ReadFromSource(slot);
 
+#ifndef __WIIU__
 		SDL_PumpEvents();
+#endif
 
 		// Button Inputs
 		pad->button |= dwPressedButtons[slot] & 0xFFFF;

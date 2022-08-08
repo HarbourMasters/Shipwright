@@ -30,6 +30,16 @@
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "UltraController.h"
 
+#ifdef __WIIU__
+#include <gx2/registers.h> // GX2SetViewport / GX2SetScissor
+
+#include "Lib/ImGui/backends/wiiu/imgui_impl_gx2.h"
+#include "Lib/ImGui/backends/wiiu/imgui_impl_wiiu.h"
+
+#include "Lib/Fast3D/gfx_wiiu.h"
+#include "Lib/Fast3D/gfx_gx2.h"
+#endif
+
 #if __APPLE__
 #include <SDL_hints.h>
 #else
@@ -99,7 +109,11 @@ namespace SohImGui {
     int lastBackendID = 0;
 
     const char* filters[3] = {
+#ifdef __WIIU__
+        "",
+#else
         "Three-Point",
+#endif
         "Linear",
         "None"
     };
@@ -108,7 +122,11 @@ namespace SohImGui {
 #ifdef _WIN32
         { "dx11", "DirectX" },
 #endif
+#ifndef __WIIU__
         { "sdl", "OpenGL" }
+#else
+        { "wiiu", "GX2" }
+#endif
     };
 
 
@@ -172,10 +190,16 @@ namespace SohImGui {
 
     void ImGuiWMInit() {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            ImGui_ImplWiiU_Init();
+            break;
+#else
         case Backend::SDL:
             SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
+#endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_Init(impl.dx11.window);
@@ -189,6 +213,11 @@ namespace SohImGui {
 
     void ImGuiBackendInit() {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            ImGui_ImplGX2_Init();
+            break;
+#else
         case Backend::SDL:
         #if defined(__APPLE__)
             ImGui_ImplOpenGL3_Init("#version 410 core");
@@ -196,6 +225,7 @@ namespace SohImGui {
             ImGui_ImplOpenGL3_Init("#version 120");
         #endif
             break;
+#endif
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -209,9 +239,17 @@ namespace SohImGui {
 
     void ImGuiProcessEvent(EventImpl event) {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            if (!ImGui_ImplWiiU_ProcessInput((ImGui_ImplWiiU_ControllerInput*)event.gx2.input)) {
+                
+            }
+            break;
+#else
         case Backend::SDL:
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
             break;
+#endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_WndProcHandler(static_cast<HWND>(event.win32.handle), event.win32.msg, event.win32.wparam, event.win32.lparam);
@@ -224,9 +262,14 @@ namespace SohImGui {
 
     void ImGuiWMNewFrame() {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            break;
+#else
         case Backend::SDL:
             ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(impl.sdl.window));
             break;
+#endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_NewFrame();
@@ -239,9 +282,16 @@ namespace SohImGui {
 
     void ImGuiBackendNewFrame() {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            io->DeltaTime = (float) frametime / 1000.0f / 1000.0f;
+            ImGui_ImplGX2_NewFrame();
+            break;
+#else
         case Backend::SDL:
             ImGui_ImplOpenGL3_NewFrame();
             break;
+#endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_NewFrame();
@@ -254,9 +304,20 @@ namespace SohImGui {
 
     void ImGuiRenderDrawData(ImDrawData* data) {
         switch (impl.backend) {
+#ifdef __WIIU__
+        case Backend::GX2:
+            ImGui_ImplGX2_RenderDrawData(data);
+
+            // Reset viewport and scissor for drawing the keyboard
+            GX2SetViewport(0.0f, 0.0f, io->DisplaySize.x, io->DisplaySize.y, 0.0f, 1.0f);
+            GX2SetScissor(0, 0, io->DisplaySize.x, io->DisplaySize.y);
+            ImGui_ImplWiiU_DrawKeyboardOverlay();
+            break;
+#else
         case Backend::SDL:
             ImGui_ImplOpenGL3_RenderDrawData(data);
             break;
+#endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_RenderDrawData(data);
@@ -388,9 +449,19 @@ namespace SohImGui {
         Ship::Switch::SetupFont(io->Fonts);
     #endif
 
+#ifdef __WIIU__
+        // Scale everything by 2 for the Wii U
+        ImGui::GetStyle().ScaleAllSizes(2.0f);
+        io->FontGlobalScale = 2.0f;
+
+        // Setup display sizes
+        io->DisplaySize.x = window_impl.gx2.width;
+        io->DisplaySize.y =  window_impl.gx2.height;
+#endif
+
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
-            #ifdef __SWITCH__
+            #if defined(__SWITCH__) || defined(__WIIU__)
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
             #else
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
@@ -405,6 +476,13 @@ namespace SohImGui {
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
+
+        if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
+            io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+        } else {
+            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
+        }
+
         console->Init();
         overlay->Init();
         controller->Init();
@@ -822,12 +900,8 @@ namespace SohImGui {
             GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
             GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
-            if (CVar_GetS32("gControlNav", 0)) {
-                if (CVar_GetS32("gOpenMenuBar", 0)) {
-                    io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
-                } else {
-                    io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
-                }
+            if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
+                io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
             } else {
                 io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
             }
@@ -851,13 +925,18 @@ namespace SohImGui {
             if (DefaultAssets.contains("Game_Icon")) {
             #ifdef __SWITCH__
                 ImVec2 iconSize = ImVec2(20.0f, 20.0f);
+                float posScale = 1.0f;
+            #elif defined(__WIIU__)
+                ImVec2 iconSize = ImVec2(16.0f * 2, 16.0f * 2);
+                float posScale = 2.0f;
             #else
                 ImVec2 iconSize = ImVec2(16.0f, 16.0f);
+                float posScale = 1.0f;
             #endif
-                ImGui::SetCursorPos(ImVec2(5, 2.5f));
+                ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
                 ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), iconSize);
                 ImGui::SameLine();
-                ImGui::SetCursorPos(ImVec2(25, 0));
+                ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
             }
 
             if (ImGui::BeginMenu("Shipwright")) {
@@ -929,9 +1008,11 @@ namespace SohImGui {
                 Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
 #endif
+#ifndef __WIIU__
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true);
                 Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
+#endif
 
                 if (impl.backend == Backend::DX11)
                 {
@@ -1306,7 +1387,7 @@ namespace SohImGui {
 
                 const char* fps_cvar = "gInterpolationFPS";
                 {
-                #ifdef __SWITCH__
+                #if defined(__SWITCH__) || defined(__WIIU__)
                     int minFps = 20;
                     int maxFps = 60;
                 #else
@@ -1316,6 +1397,12 @@ namespace SohImGui {
 
                     int val = CVar_GetS32(fps_cvar, minFps);
                     val = MAX(MIN(val, maxFps), 20);
+
+#ifdef __WIIU__
+                    // only support divisors of 60 on the Wii U
+                    val = 60 / (60 / val);
+#endif
+
                     int fps = val;
 
                     if (fps == 20)
@@ -1330,7 +1417,12 @@ namespace SohImGui {
                     std::string MinusBTNFPSI = " - ##FPSInterpolation";
                     std::string PlusBTNFPSI = " + ##FPSInterpolation";
                     if (ImGui::Button(MinusBTNFPSI.c_str())) {
+#ifdef __WIIU__
+                        if (val >= 60) val = 30;
+                        else val = 20;
+#else
                         val--;
+#endif
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
@@ -1339,6 +1431,10 @@ namespace SohImGui {
 
                     if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
+#ifdef __WIIU__
+                        // only support divisors of 60 on the Wii U
+                        val = 60 / (60 / val);
+#endif
                         if (val > 360)
                         {
                             val = 360;
@@ -1362,7 +1458,12 @@ namespace SohImGui {
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
                     if (ImGui::Button(PlusBTNFPSI.c_str())) {
+#ifdef __WIIU__
+                        if (val <= 20) val = 30;
+                        else val = 60;
+#else
                         val++;
+#endif
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
@@ -1597,14 +1698,18 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 
-#ifdef _WIN32
+#if defined(_WIN32)
             ImGui::Text("Platform: Windows");
-#elif __APPLE__
+#elif defined(__APPLE__)
             ImGui::Text("Platform: macOS");
 #elif defined(__SWITCH__)
             ImGui::Text("Platform: Nintendo Switch");
-#else
+#elif defined(__WIIU__)
+            ImGui::Text("Platform: Nintendo Wii U");
+#elif defined(__linux__)
             ImGui::Text("Platform: Linux");
+#else
+            ImGui::Text("Platform: Unknown");
 #endif
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
             ImGui::End();
@@ -1774,6 +1879,13 @@ namespace SohImGui {
             return gfx_d3d11_get_texture_by_id(id);
         }
 #endif
+#ifdef __WIIU__
+        if (impl.backend == Backend::GX2)
+        {
+            return gfx_gx2_texture_for_imgui(id);
+        }
+#endif
+
         return reinterpret_cast<ImTextureID>(id);
     }
 
