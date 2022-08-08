@@ -50,14 +50,21 @@ void Ship::Switch::Exit(){
 }
 
 void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
-    plInitialize(PlServiceType_System);
+    Result rInit = plInitialize(PlServiceType_System);
+
+    if (!R_SUCCEEDED(rInit)) {
+        return;
+    }
+
     static PlFontData stdFontData, extFontData;
 
     PlFontData fonts_std;
     PlFontData fonts_ext;
 
-    plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
-    plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
+    Result rStd  = plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
+    Result rNext = plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
+
+    if(!R_SUCCEEDED(rStd) || !R_SUCCEEDED(rNext)) result;
 
     ImFontConfig config;
     config.FontDataOwnedByAtlas = false;
