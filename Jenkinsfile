@@ -8,12 +8,35 @@ pipeline {
     }
     
     stages {
+        stage('Generate Assets') {
+            options {
+                timeout(time: 10)
+            }
+            agent {
+                label "SoH-Mac-Builders"
+            }
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                    extensions: scm.extensions,
+                    userRemoteConfigs: scm.userRemoteConfigs
+                ])
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    sh '''
+                        cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+
+                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                        cmake --build build-cmake --target ExtractAssets --config Release
+                    '''
+                    stash includes: 'soh/assets/**/*', name: 'assets'
+                }
+            }
+        }
         stage('Build SoH') {
             parallel {
                 stage ('Build Windows') {
-                    options {
-                        timeout(time: 20)
-                    }
                     environment {
                         PLATFORM='x64'
                         PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
@@ -34,12 +57,9 @@ pipeline {
                         ])
                             
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            bat """ 
-
-                            xcopy "..\\..\\ZELOOTD.z64" "OTRExporter\\"
-                            
-                            "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python3_EXECUTABLE=${env.PYTHON} -D CMAKE_BUILD_TYPE:STRING=Release
-                            "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --target ExtractAssets --config Release
+                            unstash 'assets'
+                            bat """                             
+                            "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON} -D CMAKE_BUILD_TYPE:STRING=Release
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
                             "${env.CPACK}" -G ZIP
@@ -57,9 +77,6 @@ pipeline {
                     }
                 }
                 stage ('Build Linux') {
-                    options {
-                        timeout(time: 20)
-                    }
                     agent {
                         label "SoH-Linux-Builders"
                     }
@@ -72,9 +89,8 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'assets'
                             sh '''
-                            
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
                             docker exec sohcont scripts/linux/appimage/build.sh
@@ -108,11 +124,9 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'assets'
                             sh '''
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-                            cmake --build build-cmake --target ExtractAssets --
                             cmake --build build-cmake --config Release --
                             (cd build-cmake && cpack)
 
@@ -131,9 +145,6 @@ pipeline {
                     }
                 }
                 stage ('Build Switch') {
-                    options {
-                        timeout(time: 20)
-                    }
                     agent {
                         label "SoH-Linux-Builders"
                     }
@@ -146,9 +157,8 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            sh '''
-                            
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            unstash 'assets'
+                            sh '''                            
                             docker build . -t sohswitch
                             docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
                             docker exec sohcont scripts/switch/build.sh
