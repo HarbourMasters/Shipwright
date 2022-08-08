@@ -790,11 +790,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.eventChkInf[1] |= (1 << 3);
             gSaveContext.eventChkInf[1] |= (1 << 4);
 
+            // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM. TODO: Is this flag used for anything else?
+            gSaveContext.eventChkInf[4] |= 1;
+
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;
-
-            // make sure saria is at SFM
-            gSaveContext.eventChkInf[4] |= (1 << 0);
 
             // set this at the end to ensure we always start with the letter
             // this is for the off chance we got the weird egg from impa (which should never happen)
