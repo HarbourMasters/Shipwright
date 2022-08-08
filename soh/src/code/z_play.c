@@ -378,12 +378,38 @@ void Gameplay_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
     }
 
-
-
-    Gameplay_SpawnScene(
-        globalCtx,
-        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+     //int index;
+     //for (index = 0; index<110; ++index) {
+     //    if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
+     //        Gameplay_SpawnScene(
+     //            globalCtx,
+     //            gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0,
+     //            gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
+     //            ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
+     //    } else if (index==109){
+     //        Gameplay_SpawnScene(
+     //            globalCtx,
+     //            gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0,
+     //            gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
+     //            ((void)0, gSaveContext.entranceIndex)].spawn);
+     //    }
+     //    else {
+     //        continue;
+     //    }
+     //}
+    if (gSaveContext.entranceIndex == 0000 || gSaveContext.entranceIndex == 0001 || gSaveContext.entranceIndex == 0002 ||
+        gSaveContext.entranceIndex == 0003) {
+        Gameplay_SpawnScene(
+            globalCtx,
+            gEntranceTable[(4) + ((void)0, gSaveContext.sceneSetupIndex)]
+                .scene,
+            gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + (4)].spawn);
+    } else {
+        Gameplay_SpawnScene(
+            globalCtx,
+            gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene, 
+            gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+    }
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
     Cutscene_HandleEntranceTriggers(globalCtx);
@@ -1629,24 +1655,8 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
-        int index;
-        for (index = 0; index<110; ++index) {
-        if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
-            OTRGameplay_SpawnScene(
-                globalCtx,
-                gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-                gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
-        } else if (index==109){
-            OTRGameplay_SpawnScene(
-                globalCtx,
-                gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-                gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
-        }
-        else {
-            continue;
-        }
-    }
-    //OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
+
+    OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
 }
 
 void func_800C016C(GlobalContext* globalCtx, Vec3f* src, Vec3f* dest) {

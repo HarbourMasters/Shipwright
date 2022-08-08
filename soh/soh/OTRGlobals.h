@@ -97,6 +97,7 @@ int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
 int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent);
 s16 Randomizer_GetItemModelFromId(s16 itemId);
 s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
 s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);

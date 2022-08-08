@@ -34,6 +34,7 @@ class Randomizer {
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
+    void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
     std::string GetChildAltarText() const;

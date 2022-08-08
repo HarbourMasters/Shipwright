@@ -57,6 +57,11 @@ void SaveManager::LoadRandomizerVersion1() {
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.EntranceIndeces); i++) {
+        SaveManager::Instance->LoadData("index" + std::to_string(i), gSaveContext.EntranceIndeces[i].index);
+        SaveManager::Instance->LoadData("overrideindex" + std::to_string(i), gSaveContext.EntranceIndeces[i].overrideindex);
+    }
+
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
     }
@@ -88,6 +93,8 @@ void SaveManager::LoadRandomizerVersion1() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
+
+
 }
 
 void SaveManager::SaveRandomizer() {
@@ -97,6 +104,11 @@ void SaveManager::SaveRandomizer() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.EntranceIndeces); i++) {
+        SaveManager::Instance->SaveData("index" + std::to_string(i), gSaveContext.EntranceIndeces[i].index);
+        SaveManager::Instance->SaveData("overrideindex" + std::to_string(i), gSaveContext.EntranceIndeces[i].overrideindex);
     }
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {

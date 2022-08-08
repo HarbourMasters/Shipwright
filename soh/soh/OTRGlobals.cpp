@@ -1401,6 +1401,10 @@ extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool s
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
 
+extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
+}
+
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
