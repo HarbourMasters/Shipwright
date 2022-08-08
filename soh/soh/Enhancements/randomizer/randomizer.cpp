@@ -3253,7 +3253,7 @@ void GenerateRandomizerImgui() {
 
     // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
     cvarSettings[RSK_SKIP_CHILD_STEALTH] =
-        !(CVar_GetS32("gRandomizeSkipChildZelda", 0)) && CVar_GetS32("gRandomizeSkipChildStealth", 0);
+        !CVar_GetS32("gRandomizeSkipChildZelda", 0) && CVar_GetS32("gRandomizeSkipChildStealth", 0);
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
