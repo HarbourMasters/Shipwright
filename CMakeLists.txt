@@ -136,7 +136,7 @@ string(REGEX REPLACE "Release" "${CMAKE_BUILD_TYPE}" filedata "${filedata}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" "${filedata}")
 file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-find_package(Python3 COMPONENTS Interpreter)
+find_package(Python COMPONENTS Interpreter)
 
 add_custom_target(
     ExtractAssets
