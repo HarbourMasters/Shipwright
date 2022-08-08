@@ -136,12 +136,12 @@ string(REGEX REPLACE "Release" "${CMAKE_BUILD_TYPE}" filedata "${filedata}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" "${filedata}")
 file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-find_package(Python COMPONENTS Interpreter)
+find_package(Python3 COMPONENTS Interpreter)
 
 add_custom_target(
     ExtractAssets
     COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
-    COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_SOURCE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_BINARY_DIR}/soh
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
