@@ -1758,10 +1758,10 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             return ITEM_NONE;
         }
     } else if (
-        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY) && (item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= ITEM_DEKU_TREE_MAP) && (item <= ITEM_ICE_CAVERN_MAP) ||
-        (item >= ITEM_DEKU_TREE_COMPASS) && (item <= ITEM_ICE_CAVERN_COMPASS)
+        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY && item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
+        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY && item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
+        (item >= ITEM_DEKU_TREE_MAP && item <= ITEM_ICE_CAVERN_MAP) ||
+        (item >= ITEM_DEKU_TREE_COMPASS && item <= ITEM_ICE_CAVERN_COMPASS)
     ) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {

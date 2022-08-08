@@ -416,7 +416,7 @@ void GiveLinkDungeonReward(GetItemID getItemId) {
     }
 }
 
-void GiveLinkDungeonItem(GetItemID getItemId, GetItemID type) {
+void GiveLinkDungeonItem(GetItemID getItemId) {
     int mapIndex;
 
     switch (getItemId) {
@@ -485,21 +485,23 @@ void GiveLinkDungeonItem(GetItemID getItemId, GetItemID type) {
             break;
     }
 
-    if (type == GI_MAP) {
-        uint32_t mapBitMask = 1 << 1;
-        gSaveContext.inventory.dungeonItems[mapIndex] |= mapBitMask;
-    } else if (type == GI_COMPASS) {
-        uint32_t compassBitMask = 1 << 2;
-        gSaveContext.inventory.dungeonItems[mapIndex] |= compassBitMask;
-    } else if (type == GI_KEY_SMALL) {
+    if ((getItemId >= GI_GERUDO_FORTRESS_SMALL_KEY) && (getItemId <= GI_GANONS_CASTLE_SMALL_KEY)) {
         if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
         } else {
             gSaveContext.inventory.dungeonKeys[mapIndex]++;
         }
-    } else if (type == GI_KEY_BOSS) {
-        uint32_t bossKeyBitMask = 1 << 0;
-        gSaveContext.inventory.dungeonItems[mapIndex] |= bossKeyBitMask;
+    } else {
+        int bitmask;
+        if ((getItemId >= GI_DEKU_TREE_MAP) && (getItemId <= GI_ICE_CAVERN_MAP)) {
+            bitmask = gBitFlags[2];
+        } else if ((getItemId >= GI_DEKU_TREE_COMPASS) && (getItemId <= GI_ICE_CAVERN_COMPASS)) {
+            bitmask = gBitFlags[1];
+        } else {
+            bitmask = gBitFlags[0];
+        }
+
+        gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
     }
 }
 
@@ -875,14 +877,13 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkMagic(giid);
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
-            } else if (giid >= GI_GERUDO_FORTRESS_SMALL_KEY && giid <= GI_GANONS_CASTLE_SMALL_KEY) {
-                GiveLinkDungeonItem(giid, GI_KEY_SMALL);
-            } else if (giid >= GI_FOREST_TEMPLE_BOSS_KEY && giid <= GI_GANONS_CASTLE_BOSS_KEY) {
-                GiveLinkDungeonItem(giid, GI_KEY_BOSS);
-            } else if (giid >= GI_DEKU_TREE_MAP && giid <= GI_ICE_CAVERN_MAP) {
-                GiveLinkDungeonItem(giid, GI_MAP);
-            } else if (giid >= GI_DEKU_TREE_COMPASS && giid <= GI_ICE_CAVERN_COMPASS) {
-                GiveLinkDungeonItem(giid, GI_COMPASS);
+            } else if (
+                (giid >= GI_GERUDO_FORTRESS_SMALL_KEY && giid <= GI_GANONS_CASTLE_SMALL_KEY) ||
+                (giid >= GI_FOREST_TEMPLE_BOSS_KEY && giid <= GI_GANONS_CASTLE_BOSS_KEY) ||
+                (giid >= GI_DEKU_TREE_MAP && giid <= GI_ICE_CAVERN_MAP) ||
+                (giid >= GI_DEKU_TREE_COMPASS && giid <= GI_ICE_CAVERN_COMPASS)
+            ) {
+                GiveLinkDungeonItem(giid);
             } else {
                 s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
                 if (iid != -1) INV_CONTENT(iid) = iid;
