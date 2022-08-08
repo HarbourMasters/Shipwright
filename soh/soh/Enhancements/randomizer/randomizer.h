@@ -54,6 +54,7 @@ class Randomizer {
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     void LoadRequiredTrials(const char* spoilerFileName);
     bool IsTrialRequired(RandomizerInf trial);
+    void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerGet GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams);

@@ -290,6 +290,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Randomizer_LoadRequiredTrials(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
         Randomizer_LoadMerchantMessages(fileLoc);
+        Randomizer_LoadEntranceOverrides(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1620,6 +1621,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadHintLocations("");
     Randomizer_LoadMerchantMessages("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

@@ -483,6 +483,17 @@ void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
     }
 }
 
+void Randomizer::LoadEntranceOverrides(const char* spoilerFileName, bool silent){
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseEntranceDataFile(spoilerFileName, silent);
+    }
+
+    for (auto EntranceOverride : gSaveContext.EntranceIndeces) {
+        this->EntranceIndeces[EntranceOverride.index] = EntranceOverride.overrideindex;
+    }
+}
+
+
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1033,10 +1044,10 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
         spoilerFileStream >> spoilerFileJson;
         json EntrancesJson = spoilerFileJson["Entrances"];
 
-        int index = 0;
-                for (auto ent = EntrancesJson.begin(); ent != EntrancesJson.end(); ++ent) {
-                    gSaveContext.EntranceIndeces[index].index = stoi(ent.key());
-                    gSaveContext.EntranceIndeces[index].overrideindex = (ent.value());
+    int index = 0;
+                for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it) {
+                    gSaveContext.EntranceIndeces[index].index = stoi(it.key());
+                    gSaveContext.EntranceIndeces[index].overrideindex = (it.value());
 
                     // EntranceOverrideIndex.push_back(stoi(ent.key()));
                     // EntranceOverrideNewIndex.push_back(ent.value());
