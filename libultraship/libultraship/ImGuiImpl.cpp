@@ -822,7 +822,12 @@ namespace SohImGui {
             GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
             GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
-            if (CVar_GetS32("gControlNav", 0)) {
+        #ifdef __SWITCH__
+            bool enableControllerNavigation = true;
+        #else
+            bool enableControllerNavigation = CVar_GetS32("gControlNav", 0);
+        #endif
+            if (enableControllerNavigation) {
                 if (CVar_GetS32("gOpenMenuBar", 0)) {
                     io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
                 } else {
@@ -892,9 +897,11 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
             {
+
+            #ifndef __SWITCH__
                 EnhancementCheckbox("Use Controller Navigation", "gControlNav");
                 Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-
+            #endif
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
 
@@ -1365,7 +1372,7 @@ namespace SohImGui {
                         {
                             val = 20;
                         }
-                        
+
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
