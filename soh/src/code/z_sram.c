@@ -416,27 +416,63 @@ void GiveLinkDungeonReward(GetItemID getItemId) {
     }
 }
 
-void GiveLinkSmallKey(GetItemID getItemId) {
+void GiveLinkDungeonItem(GetItemID getItemId, GetItemID type) {
     int mapIndex;
 
     switch (getItemId) {
+        case GI_DEKU_TREE_MAP:
+        case GI_DEKU_TREE_COMPASS:
+            mapIndex = SCENE_YDAN;
+            break;
+        case GI_DODONGOS_CAVERN_MAP:
+        case GI_DODONGOS_CAVERN_COMPASS:
+            mapIndex = SCENE_DDAN;
+            break;
+        case GI_JABU_JABUS_BELLY_MAP:
+        case GI_JABU_JABUS_BELLY_COMPASS:
+            mapIndex = SCENE_BDAN;
+            break;
+        case GI_FOREST_TEMPLE_MAP:
+        case GI_FOREST_TEMPLE_COMPASS:
         case GI_FOREST_TEMPLE_SMALL_KEY:
+        case GI_FOREST_TEMPLE_BOSS_KEY:
             mapIndex = SCENE_BMORI1;
             break;
+        case GI_FIRE_TEMPLE_MAP:
+        case GI_FIRE_TEMPLE_COMPASS:
         case GI_FIRE_TEMPLE_SMALL_KEY:
+        case GI_FIRE_TEMPLE_BOSS_KEY:
             mapIndex = SCENE_HIDAN;
             break;
+        case GI_WATER_TEMPLE_MAP:
+        case GI_WATER_TEMPLE_COMPASS:
         case GI_WATER_TEMPLE_SMALL_KEY:
+        case GI_WATER_TEMPLE_BOSS_KEY:
             mapIndex = SCENE_MIZUSIN;
             break;
+        case GI_SPIRIT_TEMPLE_MAP:
+        case GI_SPIRIT_TEMPLE_COMPASS:
         case GI_SPIRIT_TEMPLE_SMALL_KEY:
+        case GI_SPIRIT_TEMPLE_BOSS_KEY:
             mapIndex = SCENE_JYASINZOU;
             break;
+        case GI_SHADOW_TEMPLE_MAP:
+        case GI_SHADOW_TEMPLE_COMPASS:
         case GI_SHADOW_TEMPLE_SMALL_KEY:
+        case GI_SHADOW_TEMPLE_BOSS_KEY:
             mapIndex = SCENE_HAKADAN;
             break;
+        case GI_BOTTOM_OF_THE_WELL_MAP:
+        case GI_BOTTOM_OF_THE_WELL_COMPASS:
         case GI_BOTTOM_OF_THE_WELL_SMALL_KEY:
             mapIndex = SCENE_HAKADANCH;
+            break;
+        case GI_ICE_CAVERN_MAP:
+        case GI_ICE_CAVERN_COMPASS:
+            mapIndex = SCENE_ICE_DOUKUTO;
+            break;
+        case GI_GANONS_CASTLE_BOSS_KEY:
+            mapIndex = SCENE_GANON;
             break;
         case GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
             mapIndex = SCENE_MEN;
@@ -449,38 +485,22 @@ void GiveLinkSmallKey(GetItemID getItemId) {
             break;
     }
 
-    if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
-        gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
-    } else {
-        gSaveContext.inventory.dungeonKeys[mapIndex]++;
+    if (type == GI_MAP) {
+        uint32_t mapBitMask = 1 << 1;
+        gSaveContext.inventory.dungeonItems[mapIndex] |= mapBitMask;
+    } else if (type == GI_COMPASS) {
+        uint32_t compassBitMask = 1 << 2;
+        gSaveContext.inventory.dungeonItems[mapIndex] |= compassBitMask;
+    } else if (type == GI_KEY_SMALL) {
+        if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+            gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+        } else {
+            gSaveContext.inventory.dungeonKeys[mapIndex]++;
+        }
+    } else if (type == GI_KEY_BOSS) {
+        uint32_t bossKeyBitMask = 1 << 0;
+        gSaveContext.inventory.dungeonItems[mapIndex] |= bossKeyBitMask;
     }
-}
-
-void GiveLinkBossKey(GetItemID getItemId) {
-    int mapIndex;
-
-    switch (getItemId) {
-        case GI_FOREST_TEMPLE_BOSS_KEY:
-            mapIndex = SCENE_BMORI1;
-            break;
-        case GI_FIRE_TEMPLE_BOSS_KEY:
-            mapIndex = SCENE_HIDAN;
-            break;
-        case GI_WATER_TEMPLE_BOSS_KEY:
-            mapIndex = SCENE_MIZUSIN;
-            break;
-        case GI_SPIRIT_TEMPLE_BOSS_KEY:
-            mapIndex = SCENE_JYASINZOU;
-            break;
-        case GI_SHADOW_TEMPLE_BOSS_KEY:
-            mapIndex = SCENE_HAKADAN;
-            break;
-        case GI_GANONS_CASTLE_BOSS_KEY:
-            mapIndex = SCENE_GANON;
-            break;
-    }
-
-    gSaveContext.inventory.dungeonItems[mapIndex] |= 1;
 }
 
 void GiveLinksPocketMedallion() {
@@ -754,11 +774,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
-            for(int scene = 0; scene <= 9; scene++) {
+            for(int scene = SCENE_YDAN; scene <= SCENE_ICE_DOUKUTO; scene++) {
                 gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
             }
         }
@@ -856,9 +876,13 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
             } else if (giid >= GI_GERUDO_FORTRESS_SMALL_KEY && giid <= GI_GANONS_CASTLE_SMALL_KEY) {
-                GiveLinkSmallKey(giid);
+                GiveLinkDungeonItem(giid, GI_KEY_SMALL);
             } else if (giid >= GI_FOREST_TEMPLE_BOSS_KEY && giid <= GI_GANONS_CASTLE_BOSS_KEY) {
-                GiveLinkBossKey(giid);
+                GiveLinkDungeonItem(giid, GI_KEY_BOSS);
+            } else if (giid >= GI_DEKU_TREE_MAP && giid <= GI_ICE_CAVERN_MAP) {
+                GiveLinkDungeonItem(giid, GI_MAP);
+            } else if (giid >= GI_DEKU_TREE_COMPASS && giid <= GI_ICE_CAVERN_COMPASS) {
+                GiveLinkDungeonItem(giid, GI_COMPASS);
             } else {
                 s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
                 if (iid != -1) INV_CONTENT(iid) = iid;

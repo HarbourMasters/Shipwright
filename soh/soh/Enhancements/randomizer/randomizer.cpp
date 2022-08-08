@@ -985,6 +985,18 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
                                                { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
                                                { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
                                                { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
+                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
+                                               { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
+                                               { GI_STONE_GORON, GID_GORON_RUBY },
+                                               { GI_STONE_ZORA, GID_ZORA_SAPPHIRE },
+                                               { GI_MEDALLION_FOREST, GID_MEDALLION_FOREST },
+                                               { GI_MEDALLION_FIRE, GID_MEDALLION_FIRE },
+                                               { GI_MEDALLION_WATER, GID_MEDALLION_WATER },
+                                               { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
+                                               { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
+                                               { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
+                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
+                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
                                                { GI_GERUDO_FORTRESS_SMALL_KEY, GID_KEY_SMALL },
                                                { GI_FOREST_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
                                                { GI_FIRE_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
@@ -1000,18 +1012,26 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
                                                { GI_SPIRIT_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
                                                { GI_SHADOW_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
                                                { GI_GANONS_CASTLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
-                                               { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
-                                               { GI_STONE_GORON, GID_GORON_RUBY },
-                                               { GI_STONE_ZORA, GID_ZORA_SAPPHIRE },
-                                               { GI_MEDALLION_FOREST, GID_MEDALLION_FOREST },
-                                               { GI_MEDALLION_FIRE, GID_MEDALLION_FIRE },
-                                               { GI_MEDALLION_WATER, GID_MEDALLION_WATER },
-                                               { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
-                                               { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
-                                               { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
-                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
-                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
+                                               { GI_DEKU_TREE_MAP, GID_DUNGEON_MAP },
+                                               { GI_DODONGOS_CAVERN_MAP, GID_DUNGEON_MAP },
+                                               { GI_JABU_JABUS_BELLY_MAP, GID_DUNGEON_MAP },
+                                               { GI_FOREST_TEMPLE_MAP, GID_DUNGEON_MAP },
+                                               { GI_FIRE_TEMPLE_MAP, GID_DUNGEON_MAP },
+                                               { GI_WATER_TEMPLE_MAP, GID_DUNGEON_MAP },
+                                               { GI_SPIRIT_TEMPLE_MAP, GID_DUNGEON_MAP },
+                                               { GI_SHADOW_TEMPLE_MAP, GID_DUNGEON_MAP },
+                                               { GI_BOTTOM_OF_THE_WELL_MAP, GID_DUNGEON_MAP },
+                                               { GI_ICE_CAVERN_MAP, GID_DUNGEON_MAP },
+                                               { GI_DEKU_TREE_COMPASS, GID_COMPASS },
+                                               { GI_DODONGOS_CAVERN_COMPASS, GID_COMPASS },
+                                               { GI_JABU_JABUS_BELLY_COMPASS, GID_COMPASS },
+                                               { GI_FOREST_TEMPLE_COMPASS, GID_COMPASS },
+                                               { GI_FIRE_TEMPLE_COMPASS, GID_COMPASS },
+                                               { GI_WATER_TEMPLE_COMPASS, GID_COMPASS },
+                                               { GI_SPIRIT_TEMPLE_COMPASS, GID_COMPASS },
+                                               { GI_SHADOW_TEMPLE_COMPASS, GID_COMPASS },
+                                               { GI_BOTTOM_OF_THE_WELL_COMPASS, GID_COMPASS },
+                                               { GI_ICE_CAVERN_COMPASS, GID_COMPASS },
                                                { GI_ICE_TRAP, GID_RUPEE_GOLD },
                                                { GI_ICE_TRAP, GID_MAXIMUM },
                                                { GI_TEXT_0, GID_MAXIMUM } };
@@ -1634,10 +1654,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_STARTING_MAPS_COMPASSES:
-                        if(it.value() == "Own Dungeon") {
-                            gSaveContext.randoSettings[index].value = 0; 
-                        } else if (it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = 1; 
+                        if(it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 5;
                         }
                         break;
                     case RSK_STARTING_DEKU_SHIELD:
@@ -2300,30 +2328,47 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PRELUDE_OF_LIGHT:
             return GI_PRELUDE_OF_LIGHT;
 
-        // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
+            return GI_DEKU_TREE_MAP;
         case RG_DODONGOS_CAVERN_MAP:
+            return GI_DODONGOS_CAVERN_MAP;
         case RG_JABU_JABUS_BELLY_MAP:
+            return GI_JABU_JABUS_BELLY_MAP;
         case RG_FOREST_TEMPLE_MAP:
+            return GI_FOREST_TEMPLE_MAP;
         case RG_FIRE_TEMPLE_MAP:
+            return GI_FIRE_TEMPLE_MAP;
         case RG_WATER_TEMPLE_MAP:
+            return GI_WATER_TEMPLE_MAP;
         case RG_SPIRIT_TEMPLE_MAP:
+            return GI_SPIRIT_TEMPLE_MAP;
         case RG_SHADOW_TEMPLE_MAP:
+            return GI_SHADOW_TEMPLE_MAP;
         case RG_BOTTOM_OF_THE_WELL_MAP:
+            return GI_BOTTOM_OF_THE_WELL_MAP;
         case RG_ICE_CAVERN_MAP:
-            return GI_MAP;
+            return GI_ICE_CAVERN_MAP;
 
         case RG_DEKU_TREE_COMPASS:
+            return GI_DEKU_TREE_COMPASS;
         case RG_DODONGOS_CAVERN_COMPASS:
+            return GI_DODONGOS_CAVERN_COMPASS;
         case RG_JABU_JABUS_BELLY_COMPASS:
+            return GI_JABU_JABUS_BELLY_COMPASS;
         case RG_FOREST_TEMPLE_COMPASS:
+            return GI_FOREST_TEMPLE_COMPASS;
         case RG_FIRE_TEMPLE_COMPASS:
+            return GI_FIRE_TEMPLE_COMPASS;
         case RG_WATER_TEMPLE_COMPASS:
+            return GI_WATER_TEMPLE_COMPASS;
         case RG_SPIRIT_TEMPLE_COMPASS:
+            return GI_SPIRIT_TEMPLE_COMPASS;
         case RG_SHADOW_TEMPLE_COMPASS:
+            return GI_SHADOW_TEMPLE_COMPASS;
         case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            return GI_BOTTOM_OF_THE_WELL_COMPASS;
         case RG_ICE_CAVERN_COMPASS:
-            return GI_COMPASS;
+            return GI_ICE_CAVERN_COMPASS;
 
         case RG_FOREST_TEMPLE_BOSS_KEY:
             return GI_FOREST_TEMPLE_BOSS_KEY;
@@ -3518,7 +3563,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
-    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 1);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
@@ -3627,8 +3672,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
-    const char* randoShuffleMapsAndCompasses[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
-                                                    "Anywhere",    "Start With",  "Vanilla" };
+    const char* randoShuffleMapsAndCompasses[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleSmallKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
@@ -4198,7 +4242,17 @@ void DrawRandoEditor(bool& open) {
                     PaddedSeparator();
 
                     // Start with Maps & Compasses
-                    SohImGui::EnhancementCheckbox(Settings::MapsAndCompasses.GetName().c_str(), "gRandomizeStartingMapsCompasses");
+                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                        "\n"
+                        "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Boss Keys can appear anywhere in the world."
+                    );  
+                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 1);
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();

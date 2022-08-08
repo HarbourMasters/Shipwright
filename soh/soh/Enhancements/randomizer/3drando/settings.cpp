@@ -2544,14 +2544,7 @@ namespace Settings {
     StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
 
-    if(cvarSettings[RSK_STARTING_MAPS_COMPASSES]) {
-      // "Start With" is index 0
-      MapsAndCompasses.SetSelectedIndex(0); 
-    } else {
-      // We don't support maps/compasses outside of their own dungeon yet
-      // "Own Dungeon" is index 2
-      MapsAndCompasses.SetSelectedIndex(2);
-    }
+    MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);

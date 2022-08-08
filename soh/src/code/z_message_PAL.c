@@ -1801,6 +1801,86 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                     break;
             }
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (gSaveContext.n64ddFlag && textId == 0x66 && GET_PLAYER(globalCtx)->getItemId >= GI_DEKU_TREE_MAP && GET_PLAYER(globalCtx)->getItemId <= GI_ICE_CAVERN_MAP) {
+            char* keyMsg;
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG: default:
+                    switch (GET_PLAYER(globalCtx)->getItemId) {
+                        case GI_DEKU_TREE_MAP:
+                            keyMsg = "\x08You got the \x05\x42\Deku Tree Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_DODONGOS_CAVERN_MAP:
+                            keyMsg = "\x08You got the \x05\x41\Dodongo's Cavern Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_JABU_JABUS_BELLY_MAP:
+                            keyMsg = "\x08You got the \x05\x43\Jabu Jabu's Belly Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FOREST_TEMPLE_MAP:
+                            keyMsg = "\x08You got the \x05\x42\Forest Temple Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FIRE_TEMPLE_MAP: 
+                            keyMsg = "\x08You got the \x05\x41\Fire Temple Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_WATER_TEMPLE_MAP: 
+                            keyMsg = "\x08You got the \x05\x43\Water Temple Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SPIRIT_TEMPLE_MAP: 
+                            keyMsg = "\x08You got the \x05\x46\Spirit Temple Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SHADOW_TEMPLE_MAP: 
+                            keyMsg = "\x08You got the \x05\x45\Shadow Temple Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_BOTTOM_OF_THE_WELL_MAP: 
+                            keyMsg = "\x08You got the \x05\x45\Bottom of the Well Map\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_ICE_CAVERN_MAP: 
+                            keyMsg = "\x08You got the \x05\x43\Ice Cavern Map\x05\x40!\x09\x02"; 
+                            break;
+                    }
+                    strcpy(font->msgBuf, keyMsg);
+                    break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (gSaveContext.n64ddFlag && textId == 0x67 && GET_PLAYER(globalCtx)->getItemId >= GI_DEKU_TREE_COMPASS && GET_PLAYER(globalCtx)->getItemId <= GI_ICE_CAVERN_COMPASS) {
+            char* keyMsg;
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG: default:
+                    switch (GET_PLAYER(globalCtx)->getItemId) {
+                        case GI_DEKU_TREE_COMPASS:
+                            keyMsg = "\x08You got the \x05\x42\Deku Tree Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_DODONGOS_CAVERN_COMPASS:
+                            keyMsg = "\x08You got the \x05\x41\Dodongo's Cavern Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_JABU_JABUS_BELLY_COMPASS:
+                            keyMsg = "\x08You got the \x05\x43\Jabu Jabu's Belly Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FOREST_TEMPLE_COMPASS:
+                            keyMsg = "\x08You got the \x05\x42\Forest Temple Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_FIRE_TEMPLE_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x41\Fire Temple Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_WATER_TEMPLE_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x43\Water Temple Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SPIRIT_TEMPLE_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x46\Spirit Temple Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_SHADOW_TEMPLE_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x45\Shadow Temple Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_BOTTOM_OF_THE_WELL_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x45\Bottom of the Well Compass\x05\x40!\x09\x02"; 
+                            break;
+                        case GI_ICE_CAVERN_COMPASS: 
+                            keyMsg = "\x08You got the \x05\x43\Ice Cavern Compass\x05\x40!\x09\x02"; 
+                            break;
+                    }
+                    strcpy(font->msgBuf, keyMsg);
+                    break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else if (textId == 0xF8 && GET_PLAYER(globalCtx)->getItemId == GI_ICE_TRAP) {
             switch (gSaveContext.language) {
                 case LANGUAGE_FRA:
