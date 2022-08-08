@@ -20,6 +20,9 @@ add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(cmake/automate-vcpkg.cmake)
 
+set(VCPKG_TRIPLET x64-windows-static)
+set(VCPKG_TARGET_TRIPLET x64-windows-static)
+
 vcpkg_bootstrap()
 vcpkg_install_packages(zlib bzip2 libpng)
 endif()
@@ -42,11 +45,16 @@ endif()
 ################################################################################
 # Global configuration types
 ################################################################################
-set(CMAKE_CONFIGURATION_TYPES
-    "Debug"
-    "Release"
-    CACHE STRING "" FORCE
-)
+if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+set(CMAKE_C_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
+else()
+set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif()
 
 if(NOT CMAKE_BUILD_TYPE )
 	set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
@@ -138,8 +146,9 @@ find_package(Python3 COMPONENTS Interpreter)
 add_custom_target(
     ExtractAssets
     COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
-    COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_SOURCE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_BINARY_DIR}/soh
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD

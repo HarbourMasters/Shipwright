@@ -481,22 +481,6 @@ static void RunFrame()
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
 
-#ifdef __SWITCH__
-            #define SAMPLES_HIGH 752
-            #define SAMPLES_LOW 720
-
-            #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-            #define NUM_AUDIO_CHANNELS 2
-            int samples_left = AudioPlayer_Buffered();
-            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-
-            s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-            for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-            }
-
-            AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-#endif
             Graph_StartFrame();
 
             // TODO: Workaround for rumble being too long. Implement os thread functions.

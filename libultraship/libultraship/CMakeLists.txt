@@ -456,6 +456,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 				"NDEBUG"
 			">"
 			"ENABLE_OPENGL;"
+            "SPDLOG_ACTIVE_LEVEL=0;"
 	)
 endif()
 ################################################################################

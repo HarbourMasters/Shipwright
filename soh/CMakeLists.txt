@@ -1559,7 +1559,7 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+add_executable(${PROJECT_NAME} ${ALL_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
@@ -1805,7 +1805,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
-	    -O3 -ffast-math
         )
 
         target_link_options(${PROJECT_NAME} PRIVATE
@@ -1979,13 +1978,16 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
-set_target_properties(soh PROPERTIES
-        APP_TITLE "Ship of Harkirian"
-        APP_AUTHOR "Ship"
-        APP_VERSION "3.0.0"
-        ICON "icon.jpg")
-
-nx_create_nro(soh)
+nx_generate_nacp(Ship.nacp
+   NAME "Ship of Harkinian"
+   AUTHOR "Harbour Masters"
+   VERSION "3.1.0"
+)
+ 
+nx_create_nro(soh
+    NACP Ship.nacp
+    ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
+)
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.nro DESTINATION . COMPONENT ship)
 
