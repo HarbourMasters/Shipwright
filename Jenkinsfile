@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Generate Assets') {
             options {
-                timeout(time: 20)
+                timeout(time: 10)
             }
             agent {
                 label "SoH-Mac-Builders"
@@ -37,9 +37,6 @@ pipeline {
         stage('Build SoH') {
             parallel {
                 stage ('Build Windows') {
-                    options {
-                        timeout(time: 20)
-                    }
                     environment {
                         PLATFORM='x64'
                         PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
@@ -80,9 +77,6 @@ pipeline {
                     }
                 }
                 stage ('Build Linux') {
-                    options {
-                        timeout(time: 20)
-                    }
                     agent {
                         label "SoH-Linux-Builders"
                     }
@@ -151,9 +145,6 @@ pipeline {
                     }
                 }
                 stage ('Build Switch') {
-                    options {
-                        timeout(time: 20)
-                    }
                     agent {
                         label "SoH-Linux-Builders"
                     }
