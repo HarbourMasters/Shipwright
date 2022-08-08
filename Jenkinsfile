@@ -27,8 +27,8 @@ pipeline {
                     sh '''
                         cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
-                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja
-                        cmake --build build-cmake --target ExtractAssets --
+                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                        cmake --build build-cmake --target ExtractAssets --config Release
                     '''
                     stash includes: 'soh/assets/**/*', name: 'assets'
                 }
