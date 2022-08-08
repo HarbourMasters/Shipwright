@@ -416,6 +416,73 @@ void GiveLinkDungeonReward(GetItemID getItemId) {
     }
 }
 
+void GiveLinkSmallKey(GetItemID getItemId) {
+    int mapIndex;
+
+    switch (getItemId) {
+        case GI_FOREST_TEMPLE_SMALL_KEY:
+            mapIndex = SCENE_BMORI1;
+            break;
+        case GI_FIRE_TEMPLE_SMALL_KEY:
+            mapIndex = SCENE_HIDAN;
+            break;
+        case GI_WATER_TEMPLE_SMALL_KEY:
+            mapIndex = SCENE_MIZUSIN;
+            break;
+        case GI_SPIRIT_TEMPLE_SMALL_KEY:
+            mapIndex = SCENE_JYASINZOU;
+            break;
+        case GI_SHADOW_TEMPLE_SMALL_KEY:
+            mapIndex = SCENE_HAKADAN;
+            break;
+        case GI_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            mapIndex = SCENE_HAKADANCH;
+            break;
+        case GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            mapIndex = SCENE_MEN;
+            break;
+        case GI_GERUDO_FORTRESS_SMALL_KEY:
+            mapIndex = SCENE_GERUDOWAY;
+            break;
+        case GI_GANONS_CASTLE_SMALL_KEY:
+            mapIndex = SCENE_GANONTIKA;
+            break;
+    }
+
+    if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+        gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+    } else {
+        gSaveContext.inventory.dungeonKeys[mapIndex]++;
+    }
+}
+
+void GiveLinkBossKey(GetItemID getItemId) {
+    int mapIndex;
+
+    switch (getItemId) {
+        case GI_FOREST_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_BMORI1;
+            break;
+        case GI_FIRE_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_HIDAN;
+            break;
+        case GI_WATER_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_MIZUSIN;
+            break;
+        case GI_SPIRIT_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_JYASINZOU;
+            break;
+        case GI_SHADOW_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_HAKADAN;
+            break;
+        case GI_GANONS_CASTLE_BOSS_KEY:
+            mapIndex = SCENE_GANON;
+            break;
+    }
+
+    gSaveContext.inventory.dungeonItems[mapIndex] |= 1;
+}
+
 void GiveLinksPocketMedallion() {
     GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
@@ -788,6 +855,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkMagic(giid);
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
+            } else if (giid >= GI_GERUDO_FORTRESS_SMALL_KEY && giid <= GI_GANONS_CASTLE_SMALL_KEY) {
+                GiveLinkSmallKey(giid);
+            } else if (giid >= GI_FOREST_TEMPLE_BOSS_KEY && giid <= GI_GANONS_CASTLE_BOSS_KEY) {
+                GiveLinkBossKey(giid);
             } else {
                 s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
                 if (iid != -1) INV_CONTENT(iid) = iid;
