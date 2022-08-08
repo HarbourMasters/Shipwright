@@ -86,6 +86,12 @@ namespace SohImGui {
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue = 0);
 
+    void applyEnhancementPresets(void);
+    void applyEnhancementPresetDefault(void);
+    void applyEnhancementPresetVanillaPlus(void);
+    void applyEnhancementPresetEnhanced(void);
+    void applyEnhancementPresetRandomizer(void);
+
     void DrawMainMenuAndCalculateGameSize(void);
 
     void DrawFramebufferAndGameInput(void);
