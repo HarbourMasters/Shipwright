@@ -4,9 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <locale>
-#include <codecvt>
 #include "GlobalCtx2.h"
-#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -22,11 +20,9 @@
 #else
 #include <time.h>
 #endif
-#include <Vertex.h>
 #include <CollisionHeader.h>
 #include <Array.h>
 #include <Cutscene.h>
-#include <Texture.h>
 #include "Lib/stb/stb_image.h"
 #define DRMP3_IMPLEMENTATION
 #include "Lib/dr_libs/mp3.h"
@@ -39,10 +35,10 @@
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
-#include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include "Hooks.h"
 #include <soh/Enhancements/custom_message/CustomMessageManager.h>
 
 #ifdef __APPLE__
@@ -90,11 +86,73 @@ extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
+void OTRAudio_Thread() {
+    while (audio.running) {
+        {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
+            while (!audio.processing && audio.running) {
+                audio.cv_to_thread.wait(Lock);
+            }
+
+            if (!audio.running) {
+                break;
+            }
+        }
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        //AudioMgr_ThreadEntry(&gAudioMgr);
+        // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+        // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+        //#define SAMPLES_HIGH 560
+        //#define SAMPLES_LOW 528
+        // PAL values
+        //#define SAMPLES_HIGH 656
+        //#define SAMPLES_LOW 624
+
+        // 44KHZ values
+        #define SAMPLES_HIGH 752
+        #define SAMPLES_LOW 720
+
+        #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
+        #define NUM_AUDIO_CHANNELS 2
+
+        int samples_left = AudioPlayer_Buffered();
+        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+
+        // 3 is the maximum authentic frame divisor.
+        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+        }
+
+        AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+
+        audio.processing = false;
+        audio.cv_from_thread.notify_one();
+    }
+}
+
 // C->C++ Bridge
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
     ResourceMgr_CacheDirectory("audio");
+
+    if (!audio.running) {
+        audio.running = true;
+        audio.thread = std::thread(OTRAudio_Thread);
+    }
+}
+
+extern "C" void OTRAudio_Exit() {
+    // Tell the audio thread to stop
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        audio.running = false;
+    }
+    audio.cv_to_thread.notify_all();
+
+    // Wait until the audio thread quit
+    audio.thread.join();
 }
 
 extern "C" void OTRExtScanner() {
@@ -134,6 +192,10 @@ extern "C" void InitOTR() {
     Rando_Init();
     InitItemTracker();
     OTRExtScanner();
+}
+
+extern "C" void DeinitOTR() {
+    OTRAudio_Exit();
 }
 
 #ifdef _WIN32
@@ -235,56 +297,10 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-#ifndef __SWITCH__
-    if (!audio.initialized) {
-        audio.initialized = true;
-        std::thread([]() {
-            for (;;) {
-                {
-                    std::unique_lock<std::mutex> Lock(audio.mutex);
-                    while (!audio.processing) {
-                        audio.cv_to_thread.wait(Lock);
-                    }
-                }
-                std::unique_lock<std::mutex> Lock(audio.mutex);
-                //AudioMgr_ThreadEntry(&gAudioMgr);
-                // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-                // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-                //#define SAMPLES_HIGH 560
-                //#define SAMPLES_LOW 528
-                // PAL values
-                //#define SAMPLES_HIGH 656
-                //#define SAMPLES_LOW 624
-
-                // 44KHZ values
-                #define SAMPLES_HIGH 752
-                #define SAMPLES_LOW 720
-
-                #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-                #define NUM_AUDIO_CHANNELS 2
-
-                int samples_left = AudioPlayer_Buffered();
-                u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-
-                // 3 is the maximum authentic frame divisor.
-                s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-                for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                    AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-                }
-
-                AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-
-                audio.processing = false;
-                audio.cv_from_thread.notify_one();
-            }
-        }).detach();
-    }
-
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-#endif
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
@@ -327,14 +343,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
-#ifndef __SWITCH__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
-#endif
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -1310,10 +1324,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    for (int i = 0; i < controllers.size(); ++i) {
-        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        physicalDevice->WriteToSource(i, controller);
     }
 }
 
@@ -1367,16 +1382,20 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
-
-    for (const auto virtual_entry : controllers) {
-        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        if (physicalDevice->CanRumble()) {
             return 1;
         }
     }
 
     return 0;
+}
+
+extern "C" void Hooks_ExecuteAudioInit() {
+    Ship::ExecuteHooks<Ship::AudioInit>();
 }
 
 extern "C" void* getN64WeirdFrame(s32 i) {
@@ -1457,6 +1476,11 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+}
+
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
+         Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {

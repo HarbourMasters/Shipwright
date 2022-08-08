@@ -16,8 +16,8 @@ namespace Ship {
 	}
 
 	std::shared_ptr<Controller> GetControllerPerSlot(int slot) {
-		const std::vector<int> vDevices = Window::ControllerApi->virtualDevices;
-		return Window::ControllerApi->physicalDevices[vDevices[slot]];
+		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
 	}
 
 	void InputEditor::DrawButton(const char* label, int n64Btn) {
@@ -82,20 +82,21 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawControllerSchema() {
-
-		const std::vector<int> vDevices = Window::ControllerApi->virtualDevices;
-		const std::vector<std::shared_ptr<Controller>> devices = Window::ControllerApi->physicalDevices;
-
-		std::shared_ptr<Controller> Backend = devices[vDevices[CurrentPort]];
-		DeviceProfile& profile =Backend->profiles[CurrentPort];
+		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+		auto Backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
+		DeviceProfile& profile = Backend->profiles[CurrentPort];
 		float sensitivity = profile.Thresholds[SENSITIVITY];
 		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();
 		const char* ControllerName = Backend->GetControllerName();
 
 		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {
-			for (uint8_t i = 0; i < devices.size(); i++) {
-				if (ImGui::Selectable(devices[i]->GetControllerName(), i == vDevices[CurrentPort])) {
-					Window::ControllerApi->SetPhysicalDevice(CurrentPort, i);
+			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
+				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
+				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
+					DeviceName+="##"+std::to_string(i);
+				}
+				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
+					controlDeck->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
 			ImGui::EndCombo();
@@ -104,7 +105,7 @@ namespace Ship {
 		ImGui::SameLine();
 
 		if(ImGui::Button("Refresh")) {
-			Window::ControllerApi->ScanPhysicalDevices();
+			controlDeck->ScanPhysicalDevices();
 		}
 
 		SohImGui::BeginGroupPanel("Buttons", ImVec2(150, 20));

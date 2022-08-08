@@ -32,7 +32,6 @@
 #include "../../luslog.h"
 #include "../StrHash64.h"
 #include "../../ImGuiImpl.h"
-#include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
 #include "../../Utils.h"
@@ -48,6 +47,8 @@ extern "C" {
     char* ResourceMgr_LoadTexByName(char* texPath);
     int ResourceMgr_OTRSigCheck(char* imgData);
 }
+
+uintptr_t gfxFramebuffer;
 
 using namespace std;
 
@@ -1065,8 +1066,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                 dotx /= 127.0f;
                 doty /= 127.0f;
 
-                dotx = math::clamp(dotx, -1.0f, 1.0f);
-                doty = math::clamp(doty, -1.0f, 1.0f);
+                dotx = Ship::Math::clamp(dotx, -1.0f, 1.0f);
+                doty = Ship::Math::clamp(doty, -1.0f, 1.0f);
 
                 if (rsp.geometry_mode & G_TEXTURE_GEN_LINEAR) {
                                     // Not sure exactly what formula we should use to get accurate values
@@ -1118,7 +1119,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             if (winv < 0.0f) winv = std::numeric_limits<int16_t>::max();
 
             float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
-            fog_z = math::clamp(fog_z, 0.0f, 255.0f);
+            fog_z = Ship::Math::clamp(fog_z, 0.0f, 255.0f);
             d->color.a = fog_z; // Use alpha variable to store fog factor
         } else {
             d->color.a = v->cn[3];
@@ -2698,7 +2699,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
         //gfx_lookup_or_create_shader_program(precomp_shaders[i]);
     }
 
-    ModInternal::ExecuteHooks<ModInternal::GfxInit>();
+    Ship::ExecuteHooks<Ship::GfxInit>();
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {
@@ -2782,7 +2783,7 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
-    SohUtils::saveEnvironmentVar("framebuffer", string());
+    gfxFramebuffer = 0;
     if (game_renders_to_framebuffer) {
         gfx_rapi->start_draw_to_framebuffer(0, 1);
         gfx_rapi->clear_framebuffer();
@@ -2792,12 +2793,12 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
 
             if (different_size) {
                 gfx_rapi->resolve_msaa_color_buffer(game_framebuffer_msaa_resolved, game_framebuffer);
-                SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved)));
+                gfxFramebuffer = (uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved);
             } else {
                 gfx_rapi->resolve_msaa_color_buffer(0, game_framebuffer);
             }
         } else {
-            SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer)));
+            gfxFramebuffer = (uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer);
         }
     }
     SohImGui::DrawFramebufferAndGameInput();
