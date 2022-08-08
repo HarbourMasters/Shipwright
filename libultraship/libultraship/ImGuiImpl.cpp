@@ -1062,6 +1062,8 @@ namespace SohImGui {
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                         EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
                         Tooltip("Prevent dropping inputs when playing the ocarina quickly");
+                        EnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang");
+                        Tooltip("Instantly return the boomerang to Link by pressing its item button while it's in the air");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
