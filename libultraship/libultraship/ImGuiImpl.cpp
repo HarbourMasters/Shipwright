@@ -1112,6 +1112,7 @@ namespace SohImGui {
                         PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                         PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
+                        Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
                         Tooltip("Instantly return the boomerang to Link by pressing its item button while it's in the air");
                         PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
