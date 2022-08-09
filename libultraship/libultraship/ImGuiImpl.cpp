@@ -1044,7 +1044,7 @@ namespace SohImGui {
             {
 
                 const char* enhancementPresets[4] = { "Default", "Vanilla Plus", "Enhanced", "Randomizer"};
-                ImGui::Text("Enhancement Presets");
+                PaddedText("Enhancement Presets", false, true);
                 SohImGui::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 4, 0);
                 Tooltip(
                     "Default - Set all enhancements to their default values. The true vanilla SoH experience.\n"
@@ -1055,9 +1055,14 @@ namespace SohImGui {
                     "\n"
                     "Randomizer - The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer."
                 );
+
+                InsertPadding();
+
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                 if (ImGui::Button("Apply Preset")) {
                     applyEnhancementPresets();
                 }
+                ImGui::PopStyleVar(1);
 
                 PaddedSeparator();
 
@@ -1606,9 +1611,6 @@ namespace SohImGui {
                         ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 8, "", ImGuiSliderFlags_AlwaysClamp);
                         Tooltip("Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\nCtrl+Click to type in a value.");
 
-                        ImGui::Text("After Slider Beta Quest World: %d", betaQuestWorld);
-
-
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
                         if (ImGui::Button(" + ##BetaQuest")) {
@@ -1621,8 +1623,6 @@ namespace SohImGui {
                         else if (betaQuestWorld < 0) {
                             betaQuestWorld = 0;
                         }
-
-                        ImGui::Text("After Clamp Beta Quest World: %d", betaQuestWorld);
                     }
                     else {
                         lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
