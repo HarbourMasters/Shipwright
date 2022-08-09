@@ -56,7 +56,7 @@ typedef struct {
     /* 0x28 */ f32 scale;
     /* 0x2C */ f32 lerpFactor;
     /* 0x30 */ u8 state;
-    s32 epoch;
+    u32 epoch;
 } EnViewerFireEffect; // size = 0x34
 
 typedef struct EnViewer {

@@ -215,6 +215,13 @@ set(Header_Files__soh__Enhancements__randomizer__3drando
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Header_Files__soh__Enhancements__randomizer__3drando})
 
+set(Header_Files__soh__Enhancements__custom_message
+    "soh/Enhancements/custom-message/CustomMessageTypes.h"
+    "soh/Enhancements/custom-message/CustomMessageManager.h"
+)
+
+source_group("Header Files\\soh\\Enhancements\\custom-message" FILES ${Header_Files__soh__Enhancements__custom_message})
+
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
     "soh/OTRAudio.h"
@@ -325,6 +332,12 @@ set(Source_Files__soh__Enhancements__randomizer__3drando__location_access
     "soh/Enhancements/randomizer/3drando/location_access/locacc_zoras_domain.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando\\location_access" FILES ${Source_Files__soh__Enhancements__randomizer__3drando__location_access})   
+
+set(Source_Files__soh__Enhancements__custom_message
+    "soh/Enhancements/custom-message/CustomMessageManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\custom-message" FILES ${Source_Files__soh__Enhancements__custom_message})
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1534,6 +1547,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
+    ${Header_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__cosmetics}
@@ -1542,6 +1556,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
+    ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}

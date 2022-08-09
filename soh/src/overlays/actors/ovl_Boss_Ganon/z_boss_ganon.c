@@ -3356,7 +3356,7 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
     s32 pad;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);
@@ -3463,7 +3463,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
     f32 yRot;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);
@@ -4158,7 +4158,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     f32 alpha;
     s32 pad;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);

@@ -32,7 +32,6 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
-#include "Enhancements/randomizer/randomizer.h"
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
@@ -40,6 +39,7 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include "Hooks.h"
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -54,9 +54,12 @@
 #endif
 
 #include <Audio.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include <functions.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
+CustomMessageManager* CustomMessageManager::Instance;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
@@ -175,6 +178,7 @@ extern "C" void InitOTR() {
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
+    CustomMessageManager::Instance = new CustomMessageManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -1437,99 +1441,39 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
-    std::string scrubText("");
-    int language = CVar_GetS32("gLanguages", 0);
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     int price = 0;
     switch (scrubTextId) {
-        case 0x10A2:
+        case TEXT_SCRUB_POH:
             price = 10;
             break;
-        case 0x10DC:
-        case 0x10DD:
+        case TEXT_SCRUB_STICK_UPGRADE:
+        case TEXT_SCRUB_NUT_UPGRADE:
             price = 40;
             break;
     }
-    switch (language) {
-    case 0: default:
-        scrubText += 0x12; // add the sound
-        scrubText += 0x38; // sound id
-        scrubText += 0x82; // sound id
-        scrubText += "All right! You win! In return for";
-        scrubText += 0x01; // newline
-        scrubText += "sparing me, I will sell you a";
-        scrubText += 0x01; // newline
-        scrubText += 0x05; // change the color
-        scrubText += 0x42; // green
-        scrubText += "mysterious item";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "!";
-        scrubText += 0x01; // newline
-        scrubText += 0x05; // change the color
-        scrubText += 0x41; // red
-        scrubText += std::to_string(price);
-        scrubText += price > 1 ? " Rupees" : " Rupee";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += " it is!";
-        scrubText += 0x07; // go to a new message
-        scrubText += 0x10; // message id
-        scrubText += 0xA3; // message id
-            break;
-    case 2:
-        scrubText += 0x12; // add the sound
-        scrubText += 0x38; // sound id
-        scrubText += 0x82; // sound id
-        scrubText += "J'abandonne! Tu veux bien m'acheter";
-        scrubText += 0x01; // newline
-        scrubText += "un ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x42; // green
-        scrubText += "objet myst\x96rieux";
-        //scrubText += ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "?";
-        scrubText += 0x01; // newline
-        scrubText += "\x84";
-        scrubText += "a fera ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x41; // red
-        scrubText += std::to_string(price) + " Rubis";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "!";
-        scrubText += 0x07; // go to a new message
-        scrubText += 0x10; // message id
-        scrubText += 0xA3; // message id
-        break;
-    }
-
-    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
-extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
-    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
-                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
-    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
+    return (LINK_IS_ADULT)
+               ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
+               : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
 }
 
-extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetGanonText() {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
 }
 
-extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetGanonHintText() {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
 }
 
-extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck
+extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
-    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
-    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+    const CustomMessageEntry hintText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
+    return hintText;
 }
 
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
@@ -1547,4 +1491,90 @@ extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomize
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
+
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+    const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    return getItemText;
+}
+
+extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
+    MessageContext* msgCtx = &globalCtx->msgCtx;
+    uint16_t textId = msgCtx->textId;
+    Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
+    CustomMessageEntry messageEntry;
+    if (gSaveContext.n64ddFlag) {
+        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
+            messageEntry =
+                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+              Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+
+            s16 actorParams = msgCtx->talkActor->params;
+
+            // if we're in a generic grotto
+            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+                // look for the chest in the actorlist to determine
+                // which grotto we're in
+                int numOfActorLists =
+                    sizeof(globalCtx->actorCtx.actorLists) / sizeof(globalCtx->actorCtx.actorLists[0]);
+                for (int i = 0; i < numOfActorLists; i++) {
+                    if (globalCtx->actorCtx.actorLists[i].length) {
+                        if (globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                            // set the params for the hint check to be negative chest params
+                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                        }
+                    }
+                }
+            }
+
+            RandomizerCheck hintCheck =
+                Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+
+            messageEntry = Randomizer_GetHintFromCheck(hintCheck);
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
+            // rando hints at altar
+            messageEntry = Randomizer_GetAltarMessage();
+        } else if (textId == TEXT_GANONDORF) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                messageEntry = Randomizer_GetGanonText();
+            } else {
+                messageEntry = Randomizer_GetGanonHintText();
+            }
+        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
+            messageEntry = Randomizer_GetScrubMessage(textId);
+        }
+    }
+    if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
+        if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
+                textId = TEXT_GS_NO_FREEZE;
+            } else {
+                textId = TEXT_GS_FREEZE;
+            }
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
+        }
+    }
+    if (messageEntry.textBoxType != -1) {
+        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
+        switch (gSaveContext.language) {
+            case LANGUAGE_FRA:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
+            case LANGUAGE_GER:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
+
+            case LANGUAGE_ENG:
+            default:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
+        }
+    }
+    return false;
 }
