@@ -39,8 +39,10 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Printf(&printer, "GCC SHIP");
 #endif
 
-    GfxPrint_SetPos(&printer, 5, 4);
+    GfxPrint_SetPos(&printer, 1, 4);
     GfxPrint_Printf(&printer, "Game Version: %s", gameVersionStr);
+    GfxPrint_SetPos(&printer, 1, 5);
+    GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
 
     GfxPrint_SetColor(&printer, 255, 255, 255, 255);
     GfxPrint_SetPos(&printer, 2, 22);
@@ -49,8 +51,6 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Printf(&printer, "Build Date:%s", gBuildDate);
     GfxPrint_SetPos(&printer, 3, 26);
     GfxPrint_Printf(&printer, "%s", gBuildTeam);
-    GfxPrint_SetPos(&printer, 3, 28);
-    GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
     g = GfxPrint_Close(&printer);
     GfxPrint_Destroy(&printer);
     *gfxp = g;

@@ -348,11 +348,14 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
 		if (nameSet && nameSet->find(name) == nameSet->end()) {
+			str += StringHelper::Sprintf(R"(
 #ifdef _WIN32
-			str += StringHelper::Sprintf("\nstatic const __declspec(align(2)) char %s[] = d%s;", name.c_str(), name.c_str());
+static const __declspec(align(2)) char %s[] = d%s;
 #else
-			str += StringHelper::Sprintf("\nstatic const char %s[] __attribute__((aligned (2))) = d%s;", name.c_str(), name.c_str());
+static const char %s[] __attribute__((aligned (2))) = d%s;
 #endif
+			)", name.c_str(), name.c_str(), name.c_str(), name.c_str());
+
 			if (nameSet) {
 				nameSet->insert(name);
 			}

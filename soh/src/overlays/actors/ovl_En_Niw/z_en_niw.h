@@ -18,6 +18,7 @@ typedef struct {
     /* 0x002C */ f32 scale;
     /* 0x0030 */ f32 unk_30;
     /* 0x0034 */ u8 timer;
+    u32 epoch;
 } EnNiwFeather; // size = 0x0038
 
 typedef struct EnNiw {

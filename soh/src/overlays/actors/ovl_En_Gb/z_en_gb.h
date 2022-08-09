@@ -27,6 +27,7 @@ typedef struct {
     /* 0x20 */ f32   unk_20;
     /* 0x24 */ f32   unk_24;
     /* 0x28 */ f32   unk_28;
+    u32 epoch;
 } EnGbCagedSoul; // size = 0x2C
 
 typedef struct EnGb {

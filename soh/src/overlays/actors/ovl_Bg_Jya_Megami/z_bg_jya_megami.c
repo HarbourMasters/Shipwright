@@ -1,6 +1,7 @@
 #include "z_bg_jya_megami.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS 0
 
@@ -217,6 +218,7 @@ void BgJyaMegami_SetupExplode(BgJyaMegami* this) {
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         Math_Vec3f_Copy(&this->pieces[i].pos, &this->dyna.actor.world.pos);
         this->pieces[i].vel.x = sPiecesInit[i].velX;
+        this->pieces[i].epoch++;
     }
     this->explosionTimer = 0;
 }
@@ -326,6 +328,9 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         piece = &this->pieces[i];
+
+        FrameInterpolation_RecordOpenChild(piece, piece->epoch);
+
         Matrix_Translate(piece->pos.x + sPiecesInit[i].unk_00.x, piece->pos.y + sPiecesInit[i].unk_00.y,
                          piece->pos.z + sPiecesInit[i].unk_00.z, MTXMODE_NEW);
         Matrix_RotateY(piece->rotVelY * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -337,6 +342,8 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[i]);
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

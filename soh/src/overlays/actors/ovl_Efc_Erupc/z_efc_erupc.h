@@ -19,7 +19,8 @@ typedef struct {
     /* 0x30 */ char unk_2C[4];
     /* 0x34 */ f32 scale;
     /* 0x38 */ char unk_34[8];
-} EfcErupcParticles; // size 0x3C
+    /* 0x3C */ u32 epoch;
+} EfcErupcParticles; // size 0x40
 
 #define EFC_ERUPC_NUM_PARTICLES 100
 

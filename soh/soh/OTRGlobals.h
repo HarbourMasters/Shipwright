@@ -10,6 +10,8 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
+const std::string customMessageTableID = "BaseGameOverrides";
+
 class OTRGlobals
 {
 public:
@@ -85,22 +87,21 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
-int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
-int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 s16 Randomizer_GetItemModelFromId(s16 itemId);
 s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
 s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
+int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 #endif
 
 #endif

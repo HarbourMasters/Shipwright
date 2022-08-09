@@ -203,7 +203,8 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
         GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetTreasure(globalCtx, 0x1F);
+        player->pendingFlag.flagID = 0x1F;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 
@@ -276,11 +277,15 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+    // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
+    // eventChkInf[4] & 1 = Got Zelda's Letter
+    // eventChkInf[5] & 0x200 = Got Impa's reward
+    // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
+    // entranceIndex 0x400, Zelda's Courtyard
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
+        !(gSaveContext.eventChkInf[4] & 1) && !(gSaveContext.eventChkInf[5] & 0x200)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
-        } else if (gSaveContext.entranceIndex == 0x296) {
-            gSaveContext.entranceIndex = 0x23D;
         }
     }
 
@@ -696,6 +701,11 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
+                            }
+
+                            // Don't autosave in grottos or cutscenes
+                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
+                                Gameplay_PerformSave(globalCtx);
                             }
                         }
                         globalCtx->sceneLoadFlag = 0;
@@ -1969,5 +1979,21 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
         return true;
     } else {
         return false;
+    }
+}
+
+void Gameplay_PerformSave(GlobalContext* globalCtx) {
+    Gameplay_SaveSceneFlags(globalCtx);
+    gSaveContext.savedSceneNum = globalCtx->sceneNum;
+    if (gSaveContext.temporaryWeapon) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+        Save_SaveFile();
+        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+    } else {
+        Save_SaveFile();
     }
 }

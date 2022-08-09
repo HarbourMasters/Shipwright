@@ -1,15 +1,12 @@
 #pragma once
 
-#ifdef __cplusplus
-
 #include <functional>
-
 #include "UltraController.h"
-#include "Controller.h"
 
 #define DEFINE_HOOK(name, type) struct name { typedef std::function<type> fn; }
 
-namespace ModInternal {
+namespace Ship {
+    class Controller;
 
     template <typename H>
     struct RegisteredHooks {
@@ -29,22 +26,9 @@ namespace ModInternal {
     }
 
     DEFINE_HOOK(ControllerRead, void(OSContPad* cont_pad));
-    DEFINE_HOOK(ControllerRawInput, void(Ship::Controller* backend, uint32_t raw));
+    DEFINE_HOOK(ControllerRawInput, void(Controller* backend, uint32_t raw));
     DEFINE_HOOK(AudioInit, void());
     DEFINE_HOOK(LoadTexture, void(const char* path, uint8_t** texture));
     DEFINE_HOOK(GfxInit, void());
     DEFINE_HOOK(ExitGame, void());
-
 }
-
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void ModInternal_ExecuteAudioInitHooks();
-
-#ifdef __cplusplus
-}
-#endif
