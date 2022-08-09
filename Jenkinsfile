@@ -13,7 +13,7 @@ pipeline {
                 timeout(time: 10)
             }
             agent {
-                label "SoH-Mac-Builders"
+                label "SoH-Asset-Builders"
             }
             steps {
                 checkout([
