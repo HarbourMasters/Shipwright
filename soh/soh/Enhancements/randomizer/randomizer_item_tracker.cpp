@@ -1353,9 +1353,6 @@ void DrawFloatingDungeons(int Icon_Cells_Size, int Icon_Spacing) {
             ImGui::SameLine(Icon_Cells_Size * 3);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
             DrawDungeonItem(ITEM_COMPASS, SCENE_ICE_DOUKUTO);
-            ImGui::SameLine(Icon_Cells_Size * 4);
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
-            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_MEN);
             ImGui::SameLine(Icon_Cells_Size * 5);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
             DrawDungeonItem(ITEM_KEY_BOSS, SCENE_GANONTIKA);
