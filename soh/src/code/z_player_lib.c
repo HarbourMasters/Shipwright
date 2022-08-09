@@ -752,11 +752,11 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     };
     color = &sTemp;
     if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Kokiri", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+        *color = CVar_GetRGB("gTunic_Kokiri_", sTunicColors[PLAYER_TUNIC_KOKIRI]);
     } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Goron", sTunicColors[PLAYER_TUNIC_GORON]);
+        *color = CVar_GetRGB("gTunic_Goron_", sTunicColors[PLAYER_TUNIC_GORON]);
     } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Zora", sTunicColors[PLAYER_TUNIC_ZORA]);
+        *color = CVar_GetRGB("gTunic_Zora_", sTunicColors[PLAYER_TUNIC_ZORA]);
     } else if (!CVar_GetS32("gUseTunicsCol",0)){
         if (tunic >= 3) {
             color->r = sOriginalTunicColors[0].r;

@@ -251,9 +251,9 @@ extern "C" void CVar_Save()
             auto keyStr = key.c_str();
             Color_RGBA8 clr = cvar.second->value.valueRGBA;
             pConf->setUInt(StringHelper::Sprintf("%s.R", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.G", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.B", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.A", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.G", keyStr), clr.g);
+            pConf->setUInt(StringHelper::Sprintf("%s.B", keyStr), clr.b);
+            pConf->setUInt(StringHelper::Sprintf("%s.A", keyStr), clr.a);
             pConf->setString(StringHelper::Sprintf("%s.Type", keyStr), mercuryRGBAObjectType);
         }
     }

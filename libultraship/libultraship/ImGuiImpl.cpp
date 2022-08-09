@@ -652,12 +652,6 @@ namespace SohImGui {
     }
 
     void RandomizeColor(const char* cvarName, ImVec4* colors) {
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "##";
@@ -672,9 +666,13 @@ namespace SohImGui {
             colors->x = (float)RND_R / 255;
             colors->y = (float)RND_G / 255;
             colors->z = (float)RND_B / 255;
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+
+            Color_RGBA8 newColor;
+            newColor.r = RND_R;
+            newColor.g = RND_G;
+            newColor.b = RND_B;
+            newColor.a = 255;
+            CVar_SetRGBA(cvarName, newColor);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
@@ -707,10 +705,12 @@ namespace SohImGui {
             if (has_alpha) { colors->w = defaultcolors.w / 255; };
 
             Color_RGBA8 colorsRGBA;
-            colorsRGBA.r = defaultcolors.x / 255;
-            colorsRGBA.g = defaultcolors.y / 255;
-            colorsRGBA.b = defaultcolors.z / 255;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w / 255; };
+            colorsRGBA.r = ClampFloatToInt(defaultcolors.x, 0, 255);
+            colorsRGBA.g = ClampFloatToInt(defaultcolors.y, 0, 255);
+            colorsRGBA.b = ClampFloatToInt(defaultcolors.z, 0, 255);
+            if (has_alpha) { 
+                colorsRGBA.a = ClampFloatToInt(defaultcolors.w, 0, 255);
+            };
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.

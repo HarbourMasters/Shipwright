@@ -355,20 +355,20 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         }
     } else {
         if (actorCategory == ACTORCAT_PLAYER) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Idle_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Idle_Outer", naviColor->outer);
+            naviColor->inner = CVar_GetRGBA("gNavi_Idle_Inner_", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Idle_Outer_", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner = CVar_GetRGBA("gNavi_NPC_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_NPC_Outer", naviColor->outer);
+            naviColor->inner = CVar_GetRGBA("gNavi_NPC_Inner_", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_NPC_Outer_", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Enemy_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Enemy_Outer", naviColor->outer);
+            naviColor->inner = CVar_GetRGBA("gNavi_Enemy_Inner_", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Enemy_Outer_", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Prop_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Prop_Outer", naviColor->outer);
+            naviColor->inner = CVar_GetRGBA("gNavi_Prop_Inner_", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Prop_Outer_", naviColor->outer);
         }
     }
     
