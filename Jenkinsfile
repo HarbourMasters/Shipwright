@@ -40,6 +40,7 @@ pipeline {
                             
                             "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON} -D CMAKE_BUILD_TYPE:STRING=Release
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --target ExtractAssets --config Release
+                            "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --target OTRGui --config Release
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
                             "${env.CPACK}" -G ZIP
@@ -113,6 +114,7 @@ pipeline {
 
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                             cmake --build build-cmake --target ExtractAssets --
+                            cmake --build build-cmake --target OTRGui --
                             cmake --build build-cmake --config Release --
                             (cd build-cmake && cpack)
 
