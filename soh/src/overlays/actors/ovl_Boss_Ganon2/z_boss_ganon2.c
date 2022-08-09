@@ -2464,7 +2464,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
     f32 angle;
     f32 sin;
     f32 cos;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -2637,7 +2637,7 @@ void BossGanon2_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -2701,7 +2701,7 @@ void func_80904FC8(BossGanon2* this, GlobalContext* globalCtx) {
 void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
     Player* player;
     f32 phi_f20;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -2933,7 +2933,7 @@ void func_809060E8(GlobalContext* globalCtx) {
     BossGanon2Effect* effect;
     s16 i;
     BossGanon2Effect* effects;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     effects = effect = globalCtx->specialEffects;

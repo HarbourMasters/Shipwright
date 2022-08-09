@@ -25,7 +25,7 @@ typedef struct {
     /* 0x0C */ Vec3f position;
     /* 0x18 */ Vec3s unkVelocity;
     /* 0x1E */ Vec3s unkPosition;
-    /* 0x24 */ s32 epoch;
+    /* 0x24 */ u32 epoch;
 } EffectSparkElement; // size = 0x28
 
 typedef struct {
@@ -118,7 +118,7 @@ typedef struct {
     /* 0x10 */ f32 startX;
     /* 0x14 */ s16 yaw;
     /* 0x16 */ s16 pitch;
-    /* 0x18 */ s32 epoch;
+    /* 0x18 */ u32 epoch;
 } EffectShieldParticleElement; // size = 0x1C
 
 typedef struct {

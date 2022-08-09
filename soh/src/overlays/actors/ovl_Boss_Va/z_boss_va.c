@@ -4006,7 +4006,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     f32 yScale;
     f32 segAngle = 0.0f;
     s32 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
