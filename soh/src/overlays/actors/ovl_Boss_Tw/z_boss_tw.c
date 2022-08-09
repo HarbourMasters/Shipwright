@@ -3329,7 +3329,7 @@ void func_80942180(BossTw* this, GlobalContext* globalCtx) {
 void func_809426F0(BossTw* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -4418,7 +4418,7 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 scaleFactor;
     s16 tailIdx;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -4492,7 +4492,7 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
     f32 scaleFactor;
     s16 tailIdx;
     s16 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
