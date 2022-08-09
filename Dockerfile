@@ -46,7 +46,8 @@ RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
 	cd SDL2-${SDL2VER} && \
 	./configure --build=x86_64-linux-gnu && \
 	make -j$(nproc) && make install && \
-	rm ../SDL2-${SDL2VER}.tar.gz
+	rm ../SDL2-${SDL2VER}.tar.gz && \
+	cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
 
 RUN \
 	ln -sf /proc/self/mounts /etc/mtab && \
