@@ -1663,7 +1663,10 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
-    if (sTextIsCredits) {
+    // RANDOTODO: Use this for ice trap messages
+    if (CustomMessage_RetrieveIfExists(globalCtx)) {
+        osSyncPrintf("Found custom message");
+    } else if (sTextIsCredits) {
         Message_FindCreditsMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;
         char* src = (uintptr_t)font->msgOffset;
@@ -1674,91 +1677,14 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, __FILE__, __LINE__);
     } else {
         Message_FindMessage(globalCtx, textId);
-        // if we're rando'd and talking to a gossip stone
-        if (gSaveContext.n64ddFlag &&
-            textId == 0x2053 &&
-            Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
-                (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
-                    Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
-                   CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        msgCtx->msgLength = font->msgLength;
+        char* src = (uintptr_t)font->msgOffset;
+        memcpy(font->msgBuf, src, font->msgLength);
+    }
 
-            s16 actorParams = msgCtx->talkActor->params;
-
-            // if we're in a generic grotto
-            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
-                // look for the chest in the actorlist to determine
-                // which grotto we're in
-                int numOfActorLists = sizeof(globalCtx->actorCtx.actorLists)/sizeof(globalCtx->actorCtx.actorLists[0]);
-                for(int i = 0; i < numOfActorLists; i++) {
-                    if(globalCtx->actorCtx.actorLists[i].length) {
-                        if(globalCtx->actorCtx.actorLists[i].head->id == 10) {
-                            // set the params for the hint check to be negative chest params
-                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
-                        }
-                    }
-                }
-            }
-
-            RandomizerCheck hintCheck = Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
-
-            // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
-            // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
-            msgCtx->msgLength = font->msgLength = Randomizer_CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
-        } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
-            // rando hints at altar
-            msgCtx->msgLength = font->msgLength = Randomizer_CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
-        } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-            switch (gSaveContext.language) {
-                case LANGUAGE_FRA:
-                    strcpy(font->msgBuf, "\x08\x13\x71Vous obtenez un \x05\x41Symbole de\x01Skulltula d'or\x05\x40! "
-                                         "Vous avez\x01\collect\x96 "
-                                         "\x05\x41\x19\x05\x40 symboles en tout!\x02");
-                    break;
-                case LANGUAGE_GER:
-                    strcpy(font->msgBuf, "\x08\x13\x71\Du erh\x93lst ein \x05\x41Goldene\x01Skulltula-Symbol\x05\x40\! "
-                                         "Du hast\x01insgesamt "
-                                         "\x05\x41\x19\x05\x40 symbol gesammelt!\x02");
-                        break;
-                    case LANGUAGE_ENG: default:
-                        strcpy(font->msgBuf,
-                               "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
-                               "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
-                        break;
-            }
-            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
-        } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
-            msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
-        } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {
-            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
-                msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonText(font->msgBuf, sizeof(font->msgBuf));
-            } else {
-                msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
-            }
-        } else if (textId == 0xF8 && GET_PLAYER(globalCtx)->getItemId == GI_ICE_TRAP) {
-            switch (gSaveContext.language) {
-                case LANGUAGE_FRA:
-                    strcpy(font->msgBuf, "\x08\x06\x50\x05\x43IDIOT\x0E\x20\x02");
-                    break;
-                case LANGUAGE_GER:
-                    strcpy(font->msgBuf, "\x08\x06\x15 Du bist ein\x05\x43 DUMMKOPF\x05\x40!\x0E\x20\x02");
-                    break;
-                case LANGUAGE_ENG:
-                default:
-                    strcpy(font->msgBuf, "\x08\x06\x30You are a\x05\x43 FOWL\x05\x40!\x0E\x20\x02");
-                    break;
-            }
-            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
-        // Give Navi rando-specific gameplay tips
-        } else if (textId == 0x0140 && gSaveContext.n64ddFlag) {
-            RandoNaviTip(globalCtx);
-            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
-        } else {
-            msgCtx->msgLength = font->msgLength;
-            char* src = (uintptr_t)font->msgOffset;
-            memcpy(font->msgBuf, src, font->msgLength);
-        }
+    if (textId == 0x0140 && gSaveContext.n64ddFlag) { // 888888888
+        RandoNaviTip(globalCtx);
+        msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
     }
 
     msgCtx->textBoxProperties = font->charTexBuf[0];
