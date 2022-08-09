@@ -564,7 +564,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
     Demo6K* this = (Demo6K*)thisx;
     s32 pad;
     u16 timer1 = this->timer1;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -695,7 +695,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames = globalCtx->state.frames;
     s32 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     if ((i = (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[1] != NULL)) &&
