@@ -17,7 +17,7 @@ namespace Ship {
             bool CanGyro() const override { return false; }
             bool CanRumble() const override { return true; };
 
-            void ClearRawPress() override {}
+            void ClearRawPress() override;
             int32_t ReadRawPress() override;
 
             const char* GetButtonName(int slot, int n64Button) override;

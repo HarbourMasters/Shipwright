@@ -167,79 +167,101 @@ namespace Ship {
         }
     }
 
+    void WiiUController::ClearRawPress() {
+        // Clear already triggered buttons
+        KPADError error;
+        KPADStatus* status = Ship::WiiU::GetKPADStatus(chan, &error);
+        if (status) {
+            switch (extensionType) {
+                case WPAD_EXT_PRO_CONTROLLER:
+                    status->pro.trigger = 0;
+                    break;
+                case WPAD_EXT_CLASSIC:
+                case WPAD_EXT_MPLUS_CLASSIC:
+                    status->classic.trigger = 0;
+                    break;
+                case WPAD_EXT_NUNCHUK:
+                case WPAD_EXT_MPLUS_NUNCHUK:
+                case WPAD_EXT_MPLUS:
+                case WPAD_EXT_CORE:
+                    status->trigger = 0;
+                    break;
+            }
+        }
+    }
+
     int32_t WiiUController::ReadRawPress() {
         KPADError error;
-        KPADStatus status;
-        KPADReadEx(chan, &status, 1, &error);
-        if (error != KPAD_ERROR_OK) {
+        KPADStatus* status = Ship::WiiU::GetKPADStatus(chan, &error);
+        if (!status || error != KPAD_ERROR_OK) {
             return -1;
         }
 
         switch (extensionType) {
             case WPAD_EXT_PRO_CONTROLLER:
                 for (uint32_t i = WPAD_PRO_BUTTON_UP; i <= WPAD_PRO_STICK_R_EMULATION_UP; i <<= 1) {
-                    if (status.pro.trigger & i) {
+                    if (status->pro.trigger & i) {
                         return i;
                     }
                 }
 
-                if (status.pro.leftStick.x > 0.7f) {
+                if (status->pro.leftStick.x > 0.7f) {
                     return WPAD_PRO_STICK_L_EMULATION_RIGHT;
                 }
-                if (status.pro.leftStick.x < -0.7f) {
+                if (status->pro.leftStick.x < -0.7f) {
                     return WPAD_PRO_STICK_L_EMULATION_LEFT;
                 }
-                if (status.pro.leftStick.y > 0.7f) {
+                if (status->pro.leftStick.y > 0.7f) {
                     return WPAD_PRO_STICK_L_EMULATION_UP;
                 }
-                if (status.pro.leftStick.y < -0.7f) {
+                if (status->pro.leftStick.y < -0.7f) {
                     return WPAD_PRO_STICK_L_EMULATION_DOWN;
                 }
 
-                if (status.pro.rightStick.x > 0.7f) {
+                if (status->pro.rightStick.x > 0.7f) {
                     return WPAD_PRO_STICK_R_EMULATION_RIGHT;
                 }
-                if (status.pro.rightStick.x < -0.7f) {
+                if (status->pro.rightStick.x < -0.7f) {
                     return WPAD_PRO_STICK_R_EMULATION_LEFT;
                 }
-                if (status.pro.rightStick.y > 0.7f) {
+                if (status->pro.rightStick.y > 0.7f) {
                     return WPAD_PRO_STICK_R_EMULATION_UP;
                 }
-                if (status.pro.rightStick.y < -0.7f) {
+                if (status->pro.rightStick.y < -0.7f) {
                     return WPAD_PRO_STICK_R_EMULATION_DOWN;
                 }
                 break;
             case WPAD_EXT_CLASSIC:
             case WPAD_EXT_MPLUS_CLASSIC:
                 for (uint32_t i = WPAD_CLASSIC_BUTTON_UP; i <= WPAD_CLASSIC_STICK_R_EMULATION_UP; i <<= 1) {
-                    if (status.classic.trigger & i) {
+                    if (status->classic.trigger & i) {
                         return i;
                     }
                 }
 
-                if (status.classic.leftStick.x > 0.7f) {
+                if (status->classic.leftStick.x > 0.7f) {
                     return WPAD_CLASSIC_STICK_L_EMULATION_RIGHT;
                 }
-                if (status.classic.leftStick.x < -0.7f) {
+                if (status->classic.leftStick.x < -0.7f) {
                     return WPAD_CLASSIC_STICK_L_EMULATION_LEFT;
                 }
-                if (status.classic.leftStick.y > 0.7f) {
+                if (status->classic.leftStick.y > 0.7f) {
                     return WPAD_CLASSIC_STICK_L_EMULATION_UP;
                 }
-                if (status.classic.leftStick.y < -0.7f) {
+                if (status->classic.leftStick.y < -0.7f) {
                     return WPAD_CLASSIC_STICK_L_EMULATION_DOWN;
                 }
 
-                if (status.classic.rightStick.x > 0.7f) {
+                if (status->classic.rightStick.x > 0.7f) {
                     return WPAD_CLASSIC_STICK_R_EMULATION_RIGHT;
                 }
-                if (status.classic.rightStick.x < -0.7f) {
+                if (status->classic.rightStick.x < -0.7f) {
                     return WPAD_CLASSIC_STICK_R_EMULATION_LEFT;
                 }
-                if (status.classic.rightStick.y > 0.7f) {
+                if (status->classic.rightStick.y > 0.7f) {
                     return WPAD_CLASSIC_STICK_R_EMULATION_UP;
                 }
-                if (status.classic.rightStick.y < -0.7f) {
+                if (status->classic.rightStick.y < -0.7f) {
                     return WPAD_CLASSIC_STICK_R_EMULATION_DOWN;
                 }
                 break;
@@ -248,7 +270,7 @@ namespace Ship {
             case WPAD_EXT_MPLUS:
             case WPAD_EXT_CORE:
                 for (uint32_t i = WPAD_BUTTON_LEFT; i <= WPAD_BUTTON_HOME; i <<= 1) {
-                    if (status.trigger & i) {
+                    if (status->trigger & i) {
                         return i;
                     }
                 }
