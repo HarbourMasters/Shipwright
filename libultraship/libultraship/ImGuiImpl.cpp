@@ -1017,8 +1017,8 @@ namespace SohImGui {
                         EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
                         Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                         EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
+                        EnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "");
 
-                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                         EnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift");
                         Tooltip("Speeds up lifting silver rocks and obelisks");
                         EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
