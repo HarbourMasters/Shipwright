@@ -169,6 +169,45 @@ pipeline {
                         }
                     }
                 }
+                stage ('Build Wii U') {
+                    options {
+                        timeout(time: 20)
+                    }
+                    agent {
+                        label "SoH-Linux-Builders"
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            sh '''
+                            
+                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            docker build . -t sohwiiu
+                            docker run --name sohcont -dit --rm -v $(pwd):/soh sohwiiu /bin/bash
+                            docker exec sohcont scripts/wiiu/build.sh
+                            
+                            mv build-wiiu/soh/*.rpx soh.rpx
+                            mv README.md readme.txt
+                            
+                            7z a soh-wiiu.7z soh.rpx readme.txt
+                            
+                            '''
+                        }
+                        sh 'sudo docker container stop sohcont'
+                        archiveArtifacts artifacts: 'soh-wiiu.7z', followSymlinks: false, onlyIfSuccessful: true
+                    }
+                    post {
+                        always {
+                            step([$class: 'WsCleanup']) // Clean workspace
+                        }
+                    }
+                }
             }
         }
     }
