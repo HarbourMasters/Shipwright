@@ -2223,6 +2223,8 @@ namespace SohImGui {
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
 
+        // Equipment Toggle
+        CVar_SetS32("gEquipmentCanBeRemoved", 1);
         // Count Golden Skulltulas
         CVar_SetS32("gInjectSkulltulaCount", 1);
 
