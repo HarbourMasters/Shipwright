@@ -15293,8 +15293,8 @@ void func_80853148(GlobalContext* globalCtx, Actor* actor) {
         this->naviActor->flags |= ACTOR_FLAG_8;
         func_80835EA4(globalCtx, 0xB);
         // If rando'd and Navi wants to give you a general quest tip, give a rando tip instead
-        if (actor->textId >= 0x0140 && actor->textId <= 0x015F && gSaveContext.n64ddFlag) {
-            Message_StartTextbox(globalCtx, 0x0140, NULL);
-        }
+  //      if (actor->textId >= 0x0140 && actor->textId <= 0x015F && gSaveContext.n64ddFlag) {
+  //          Message_StartTextbox(globalCtx, 0x0140, NULL);
+  //      }
     }
 }

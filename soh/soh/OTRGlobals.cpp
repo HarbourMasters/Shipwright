@@ -1449,6 +1449,11 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
+extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
+    u16 naviTextId = rand() % 2;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
@@ -1542,7 +1547,10 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
+        } else if (textId >= 0x0140 && textId <= 0x015F) {
+            messageEntry = Randomizer_GetNaviMessage();
         }
+
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {

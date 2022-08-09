@@ -27,6 +27,7 @@ u8 generated;
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
+const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -4418,6 +4419,15 @@ void CreateScrubMessages() {
     }
 }
 
+void CreateNaviRandoMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
+    customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, 0x00,
+                                        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, "Test Eng0", "Test Ger", "Test Fre" });
+    customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, 0x01,
+                                        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, "Test Eng1", "Test Ger", "Test Fre" });
+}
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
@@ -4446,6 +4456,7 @@ void Randomizer::CreateCustomMessages() {
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();
+    CreateNaviRandoMessages();
 }
 
 void InitRando() {
