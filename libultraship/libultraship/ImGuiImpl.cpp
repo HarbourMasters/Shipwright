@@ -1752,6 +1752,14 @@ namespace SohImGui {
                     needs_save = true;
                     customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
                 }
+                InsertPadding();
+                if (ImGui::Button(GetWindowButtonText("Check Tracker", CVar_GetS32("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
+                {
+                    bool currentValue = CVar_GetS32("gCheckTrackerEnabled", 0);
+                    CVar_SetS32("gCheckTrackerEnabled", !currentValue);
+                    needs_save = true;
+                    customWindows["Check Tracker"].enabled = CVar_GetS32("gCheckTrackerEnabled", 0);
+                }
                 ImGui::PopStyleVar(3);
                 ImGui::PopStyleColor(1);
 
