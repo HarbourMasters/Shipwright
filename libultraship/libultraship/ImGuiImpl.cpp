@@ -94,7 +94,6 @@ namespace SohImGui {
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
-    DetailedControlEditor* detailedControls = new DetailedControlEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
@@ -412,7 +411,6 @@ namespace SohImGui {
         console->Init();
         overlay->Init();
         controller->Init();
-        detailedControls->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
     #ifdef __SWITCH__
@@ -1072,7 +1070,7 @@ namespace SohImGui {
                     // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                     EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                     Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                    PaddedEnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText", true, false);
+                    PaddedEnhancementCheckbox("D-pad Support in Text Choice", "gDpadText", true, false);
                     PaddedEnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop", true, false);
                     PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
                     Tooltip("Allows the D-pad to be used as extra C buttons");
@@ -1082,6 +1080,25 @@ namespace SohImGui {
                     Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                     PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
                     Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
+
+                    InsertPadding();
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                    float availableWidth = ImGui::GetContentRegionAvail().x;
+                    if (ImGui::Button(
+                        GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(),
+                        ImVec2(availableWidth, 0)
+                    )) {
+                        bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
+                        CVar_SetS32("gGameControlEditorEnabled", !currentValue);
+                        needs_save = true;
+                        customWindows["Game Control Editor"].enabled = CVar_GetS32("gGameControlEditorEnabled", 0);
+                    }
+                    ImGui::PopStyleVar(3);
+                    ImGui::PopStyleColor(1);
+
                     ImGui::EndMenu();
                 }
 
@@ -1801,7 +1818,6 @@ namespace SohImGui {
 
         console->Draw();
         controller->DrawHud();
-        detailedControls->DrawHud();
 
         for (auto& windowIter : customWindows) {
             CustomWindow& window = windowIter.second;

@@ -157,6 +157,11 @@ set(Header_Files__soh__Enhancements
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
+set(Header_Files__soh__Enhancements__controls
+    "soh/Enhancements/controls/GameControlEditor.h"
+)
+source_group("Header Files\\soh\\Enhancements\\controls" FILES ${Header_Files__soh__Enhancements__controls})
+
 set(Header_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 )
@@ -248,6 +253,11 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/savestates.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
+
+set(Source_Files__soh__Enhancements__controls
+    "soh/Enhancements/controls/GameControlEditor.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\controls" FILES ${Source_Files__soh__Enhancements__controls})
 
 set(Source_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.cpp"
@@ -1543,6 +1553,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${Header_Files__soh__Enhancements}
+    ${Header_Files__soh__Enhancements__controls}
     ${Header_Files__soh__Enhancements__cosmetics}
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
@@ -1550,6 +1561,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
+    ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__soh__Enhancements__randomizer}

@@ -29,6 +29,7 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
@@ -187,6 +188,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
+    GameControlEditor::Init();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
