@@ -402,6 +402,10 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
+    float HeartsScale = 0.7f; 
+    if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
+        HeartsScale = CVar_GetFloat("gHeartsCountScale", 0.7f);
+    }
     static s32 epoch = 0;
     epoch++;
 
@@ -424,14 +428,14 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
     s16 PosY_original = 0.0f+Y_Margins;
     if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-        offsetY = CVar_GetS32("gHeartsCountPosY", 0)+Y_Margins;
+        offsetY = CVar_GetS32("gHeartsCountPosY", 0)+Y_Margins+(HeartsScale*15);
         if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
+            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins+70.0f);
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
             X_Margins = Right_LM_Margin;
-            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
+            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins+70.0f);
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-            offsetX = CVar_GetS32("gHeartsCountPosX", 0);
+            offsetX = CVar_GetS32("gHeartsCountPosX", 0)+70.0f;
         } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
             offsetX = -9999;
         }
@@ -559,16 +563,27 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
                 }
             }
 
-            temp3 = 26.0f + offsetY;
-            temp2 = 30.0f + offsetX;
-            temp4 = 1.0f;
-            temp4 /= 0.68f;
+            temp3 = offsetY;
+            temp2 = offsetX;
+            temp4 = 1.0f;//Heart texture size
+            temp4 /= 0.68f; //Hearts Scaled size
             temp4 *= 1 << 10;
             temp1 = 8.0f;
             temp1 *= 0.68f;
-            gSPWideTextureRectangle(OVERLAY_DISP++, (s32)((temp2 - temp1) * 4), (s32)((temp3 - temp1) * 4),
+            /*gSPWideTextureRectangle(OVERLAY_DISP++, (s32)((temp2 - temp1) * 4), (s32)((temp3 - temp1) * 4),
                                 (s32)((temp2 + temp1) * 4), (s32)((temp3 + temp1) * 4), G_TX_RENDERTILE, 0, 0,
-                                (s32)temp4, (s32)temp4);
+                                (s32)temp4, (s32)temp4);*/
+            Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
+            Matrix_SetTranslateScaleMtx2(matrix, 
+                HeartsScale, //Scale X
+                HeartsScale, //Scale Y
+                HeartsScale, //Scale Z
+                -130+offsetX, //Pos X
+                (-94+offsetY) *-1, //Pos Y
+                0.0f); //Pos Z
+            gSPMatrix(OVERLAY_DISP++, matrix, G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPVertex(OVERLAY_DISP++, sp154, 4, 0);
+            gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
         } else {
             if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
                 if (curCombineModeSet != 2) {
@@ -588,28 +603,33 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
 
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
-                Matrix_SetTranslateScaleMtx2(matrix, 1.0f - (0.32f * sp144), 1.0f - (0.32f * sp144),
-                                             1.0f - (0.32f * sp144), -130.0f + offsetX,
-                                             94.5f - offsetY, 0.0f);
+                Matrix_SetTranslateScaleMtx2(matrix, 
+                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144), 
+                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144),
+                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144), 
+                -130+offsetX, //Pos X
+                (-94+offsetY) *-1, //Pos Y
+                0.0f);
                 gSPMatrix(OVERLAY_DISP++, matrix, G_MTX_MODELVIEW | G_MTX_LOAD);
                 gSPVertex(OVERLAY_DISP++, sp154, 4, 0);
                 gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
             }
         }
 
-        offsetX += 10.0f;
+        //offsetX += 10.0f;
+        offsetX += (HeartsScale*14.5f);
         if (i == 9) {
             PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
-            PosY_original = 10.0f+Y_Margins;
+            PosY_original = (HeartsScale*15)+Y_Margins;
             if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-                offsetY = CVar_GetS32("gHeartsCountPosY", 0)+Y_Margins+10.0f;
+                offsetY = CVar_GetS32("gHeartsCountPosY", 0)+((HeartsScale*15)*2)+Y_Margins;
                 if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
+                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins+70.0f);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
                     X_Margins = Right_LM_Margin;
-                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins);
+                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsCountPosX", 0)+X_Margins+70.0f);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-                    offsetX = CVar_GetS32("gHeartsCountPosX", 0);
+                    offsetX = CVar_GetS32("gHeartsCountPosX", 0)+70.0f;
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
                     offsetX = -9999;
                 }

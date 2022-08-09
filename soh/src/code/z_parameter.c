@@ -3270,6 +3270,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     static void* cUpLabelTextures[] = { gNaviCUpENGTex, gNaviCUpENGTex, gNaviCUpENGTex };
     static s16 startButtonLeftPos[] = { 132, 130, 130 };
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    Vtx Vtx_Labels = VTX(-31, -31, 0, 0, 0, 255, 255, 255, 255);
     Player* player = GET_PLAYER(globalCtx);
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     s16 temp; // Used as both an alpha value and a button index
@@ -3337,57 +3339,40 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     }
     s16 StartBtn_Icon_H = 32;
     s16 StartBtn_Icon_W = 32;
-    int StartBTN_H_Scaled = StartBtn_Icon_H * CVar_GetFloat("gStartBtnScale", 0.75f);
-    int StartBTN_W_Scaled = StartBtn_Icon_W * CVar_GetFloat("gStartBtnScale", 0.75f);
+    float Start_BTN_Scale = 0.75f;
+    if (CVar_GetS32("gStartBtnPosType", 0) != 0) {
+        Start_BTN_Scale = CVar_GetFloat("gStartBtnScale", 0.75f);
+    }
+    int StartBTN_H_Scaled = StartBtn_Icon_H * Start_BTN_Scale;
+    int StartBTN_W_Scaled = StartBtn_Icon_W * Start_BTN_Scale;
     int StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
     int StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
-    const s16 rStartLabelX_ori = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+X_Margins_StartBtn);
-    const s16 rStartLabelY_ori = R_START_LABEL_Y(gSaveContext.language)+Y_Margins_StartBtn;
     const s16 PosX_StartBtn_ori = OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+X_Margins_StartBtn);
     const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
     s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH();
     s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
-    int StartBTN_Label_H_Scaled = StartBTN_Label_H * (CVar_GetFloat("gStartBtnScale", 0.75f)+CVar_GetFloat("gStartBtnScale", 0.75f)/2.14);
-    int StartBTN_Label_W_Scaled = StartBTN_Label_W * (CVar_GetFloat("gStartBtnScale", 0.75f)+CVar_GetFloat("gStartBtnScale", 0.75f)/2.14);
-    int StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
-    int StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
-    const s16 StartBtn_Label_W_ori = StartBTN_Label_W / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
-    const s16 StartBtn_Label_H_ori = StartBTN_Label_H / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
     s16 PosX_StartBtn;
     s16 PosY_StartBtn;
-    s16 rStartLabelX;
-    s16 rStartLabelY;
     if (CVar_GetS32("gStartBtnPosType", 0) != 0) {
-        PosY_StartBtn = CVar_GetS32("gStartBtnPosY", 0)+Y_Margins_StartBtn;
-        rStartLabelY = PosY_StartBtn+(StartBTN_Label_H_Scaled/5);
+        PosY_StartBtn = CVar_GetS32("gStartBtnPosY", 0)-(Start_BTN_Scale*13)+Y_Margins_StartBtn;
         if (CVar_GetS32("gStartBtnPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Left_HUD_Margin;};
-            PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
-            rStartLabelX = OTRGetDimensionFromLeftEdge((CVar_GetS32("gStartBtnPosX", 0)-(StartBTN_Label_W_Scaled/4)+X_Margins_StartBtn));
+            PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)-(Start_BTN_Scale*13)+X_Margins_StartBtn);
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Right_HUD_Margin;};
             PosX_StartBtn = OTRGetDimensionFromRightEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
-            rStartLabelX = OTRGetDimensionFromRightEdge((CVar_GetS32("gStartBtnPosX", 0)-(StartBTN_Label_W_Scaled/4)+X_Margins_StartBtn));
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 3) {//Anchor None
             PosX_StartBtn = CVar_GetS32("gStartBtnPosX", 0);
-            rStartLabelX = PosX_StartBtn-(StartBTN_Label_W_Scaled/4);
         } else if (CVar_GetS32("gStartBtnPosType", 0) == 4) {//Hidden
            PosX_StartBtn = -9999;
-           rStartLabelX = -9999;
         }
     } else {
         StartBTN_H_Scaled = StartBtn_Icon_H * 0.75f;
         StartBTN_W_Scaled = StartBtn_Icon_W * 0.75f;
-        StartBTN_Label_H_Scaled = StartBTN_Label_H * 1.0f;
-        StartBTN_Label_W_Scaled = StartBTN_Label_W * 1.0f;
         StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
         StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
-        StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
-        StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
         PosY_StartBtn = PosY_StartBtn_ori;
         PosX_StartBtn = PosX_StartBtn_ori;
-        rStartLabelY = rStartLabelY_ori;
-        rStartLabelX = rStartLabelX_ori;
     }
     //C Buttons position
     s16 X_Margins_CL;
@@ -3630,11 +3615,19 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-            gSPWideTextureRectangle(
-                OVERLAY_DISP++, rStartLabelX << 2, rStartLabelY << 2, 
-                (rStartLabelX + StartBTN_Label_W) << 2,
-                (rStartLabelY + StartBTN_Label_H) << 2, G_TX_RENDERTILE, 0, 0, StartBTN_Label_W_factor, StartBTN_Label_H_factor);
+            gDPPipeSync(OVERLAY_DISP++);
+            gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+                            PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
+            Matrix_Translate(PosX_StartBtn-160+((Start_BTN_Scale+Start_BTN_Scale/3)*11.5f), (PosY_StartBtn-120+((Start_BTN_Scale+Start_BTN_Scale/3)*11.5f)) * -1, 1.0f, MTXMODE_NEW);
+            Matrix_Scale(Start_BTN_Scale+(Start_BTN_Scale/3), Start_BTN_Scale+(Start_BTN_Scale/3), Start_BTN_Scale+(Start_BTN_Scale/3), MTXMODE_APPLY);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                    G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
+            Interface_DrawActionLabel(globalCtx->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2);
+            gDPPipeSync(OVERLAY_DISP++);
         }
     }
 
