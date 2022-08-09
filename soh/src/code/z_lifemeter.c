@@ -413,7 +413,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);

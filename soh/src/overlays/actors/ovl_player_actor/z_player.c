@@ -20,6 +20,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
     { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
@@ -138,10 +139,10 @@ s32 func_808353D8(Player* this, GlobalContext* globalCtx);
 s32 func_80835588(Player* this, GlobalContext* globalCtx);
 s32 func_808356E8(Player* this, GlobalContext* globalCtx);
 s32 func_80835800(Player* this, GlobalContext* globalCtx);
-s32 func_80835884(Player* this, GlobalContext* globalCtx);
-s32 func_808358F0(Player* this, GlobalContext* globalCtx);
-s32 func_808359FC(Player* this, GlobalContext* globalCtx);
-s32 func_80835B60(Player* this, GlobalContext* globalCtx);
+s32 func_80835884(Player* this, GlobalContext* globalCtx); // Start aiming boomerang
+s32 func_808358F0(Player* this, GlobalContext* globalCtx); // Aim boomerang
+s32 func_808359FC(Player* this, GlobalContext* globalCtx); // Throw boomerang
+s32 func_80835B60(Player* this, GlobalContext* globalCtx); // Boomerang active
 s32 func_80835C08(Player* this, GlobalContext* globalCtx);
 void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item);
 void func_80839F90(Player* this, GlobalContext* globalCtx);
@@ -479,8 +480,8 @@ static s32 D_80853604 = 0;
 static s32 D_80853608 = 0;
 static s32 D_8085360C = 0;
 static s16 D_80853610 = 0;
-static s32 D_80853614 = 0;
-static s32 D_80853618 = 0;
+static s32 D_80853614 = 0; // Held item button just pressed?
+static s32 D_80853618 = 0; // Held item button currently down?
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -645,15 +646,15 @@ GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_DOUBLE_MAGIC, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG),
 
-    GET_ITEM(ITEM_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
 
     GET_ITEM_NONE,
     GET_ITEM_NONE,
@@ -947,6 +948,7 @@ static s8 sItemActionParams[] = {
 
 static u8 sMaskMemory;
 
+// Used to map action params to update functions
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
     func_8083485C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C,
@@ -2719,6 +2721,10 @@ s32 func_80835B60(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
+    }
+
+    if (D_80853614 && CVar_GetS32("gFastBoomerang", 0)) {
+        this->boomerangQuickRecall = true;
     }
 
     return 0;
