@@ -1370,21 +1370,12 @@ void DrawFloatingDungeons(int Icon_Cells_Size, int Icon_Spacing) {
             ImGui::SameLine(Icon_Cells_Size * 2);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
             DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADANCH);
-            ImGui::SameLine(Icon_Cells_Size * 3);
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
-            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_ICE_DOUKUTO);
             ImGui::EndGroup();
             ImGui::BeginGroup();
             DrawDungeonItem(ITEM_KEY_BOSS, SCENE_JYASINZOU);
             ImGui::SameLine(Icon_Cells_Size);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
             DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HAKADAN);
-            ImGui::SameLine(Icon_Cells_Size * 2);
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
-            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HAKADANCH);
-            ImGui::SameLine(Icon_Cells_Size * 3);
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
-            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_ICE_DOUKUTO);
         } else {
             DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADANCH);
             ImGui::SameLine(Icon_Cells_Size);
