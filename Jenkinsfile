@@ -210,7 +210,6 @@ pipeline {
                             
                             '''
                         }
-                        sh 'sudo docker container stop sohwiiucont'
                         archiveArtifacts artifacts: 'soh-wiiu.7z', followSymlinks: false, onlyIfSuccessful: true
                     }
                     post {
