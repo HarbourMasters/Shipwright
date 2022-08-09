@@ -1061,6 +1061,7 @@ namespace SohImGui {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                 if (ImGui::Button("Apply Preset")) {
                     applyEnhancementPresets();
+                    needs_save = true;
                 }
                 ImGui::PopStyleVar(1);
 
@@ -1628,7 +1629,6 @@ namespace SohImGui {
                     else {
                         lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
                         CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
-                        needs_save = true;
                     }
                     if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
                     {
