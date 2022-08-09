@@ -910,6 +910,7 @@ namespace SohImGui {
                     BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
                     InsertPadding();
                     BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
+                    ImGui::EndMenu();
                 }
 
                 InsertPadding();
@@ -939,7 +940,6 @@ namespace SohImGui {
                     EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                     Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                     ImGui::PopItemWidth();
-
                     ImGui::EndMenu();
                 }
 
