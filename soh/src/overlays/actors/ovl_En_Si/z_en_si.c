@@ -151,10 +151,10 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
                 giveItemId = sGetItemTable[getItemId - 1].itemId;
                 Item_Give(globalCtx, giveItemId);
             }
+            player->getItemId = getItemId;
         } else {
             Item_Give(globalCtx, giveItemId);
         }
-        player->getItemId = getItemId;
         Message_StartTextbox(globalCtx, textId, NULL);
         if (gSaveContext.n64ddFlag) {
             Audio_PlayFanfare_Rando(getItemId);
