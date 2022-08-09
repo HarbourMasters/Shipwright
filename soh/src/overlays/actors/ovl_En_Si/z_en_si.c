@@ -108,13 +108,13 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                         giveItemId = sGetItemTable[getItemId - 1].itemId;
                         Item_Give(globalCtx, giveItemId);
                     }
+                    player->getItemId = getItemId;
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
                 if ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != GI_ICE_TRAP) {
                     player->actor.freezeTimer = 20;
                 }
-                player->getItemId = getItemId;
                 Message_StartTextbox(globalCtx, textId, NULL);
 
                 if (gSaveContext.n64ddFlag) {
