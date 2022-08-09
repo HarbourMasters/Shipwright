@@ -1549,8 +1549,10 @@ void DrawItemTrackerOptions(bool& open) {
         CVar_SetS32("gRandoTrackIconSize", 32);
         CVar_SetS32("gRandoTrackIconSpacing", 0);
         if (CVar_GetS32("gItemTrackerTheme", 0) == 0) { // One block tracker, original tracker style
-            ImVec2 Default_Pos_Wnd = { OriginPosition.x, OriginPosition.y };
-            ImGui::SetWindowPos("ItemTracker_Theme_0_Grouped", Default_Pos_Wnd);
+            ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
+            ImGui::SetWindowPos("ItemTracker_Theme_0_Grouped", Default_Pos_Wnd_0);
+            ImVec2 Default_Pos_Wnd_1 = { OriginPosition.x, OriginPosition.y + 175};
+            ImGui::SetWindowPos("ItemTracker_Theme_0_Dungeons", Default_Pos_Wnd_1);
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 1) { // Per groups elements N.1
             ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
             ImGui::SetWindowPos("ItemTracker_Theme_1_Inventory", Default_Pos_Wnd_0);
@@ -1560,6 +1562,8 @@ void DrawItemTrackerOptions(bool& open) {
             ImGui::SetWindowPos("ItemTracker_Theme_1_Tokens", Default_Pos_Wnd_2);
             ImVec2 Default_Pos_Wnd_3 = { OriginPosition.x + 5, OriginPosition.y + 380 };
             ImGui::SetWindowPos("ItemTracker_Theme_1_Songs", Default_Pos_Wnd_3);
+            ImVec2 Default_Pos_Wnd_4 = { OriginPosition.x + 100, OriginPosition.y + 175};
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Dungeons", Default_Pos_Wnd_4);
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 2) { // Per groups elements N.2
             ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
             ImGui::SetWindowPos("ItemTracker_Theme_2_Inventory", Default_Pos_Wnd_0);
@@ -1575,6 +1579,8 @@ void DrawItemTrackerOptions(bool& open) {
             ImGui::SetWindowPos("ItemTracker_Theme_2_Tokens", Default_Pos_Wnd_5);
             ImVec2 Default_Pos_Wnd_6 = { OriginPosition.x, OriginPosition.y + 368 };
             ImGui::SetWindowPos("ItemTracker_Theme_2_Song", Default_Pos_Wnd_6);
+            ImVec2 Default_Pos_Wnd_7 = { OriginPosition.x - 100, OriginPosition.y};
+            ImGui::SetWindowPos("ItemTracker_Theme_0_Dungeons", Default_Pos_Wnd_7);
         }
     }
     SohImGui::EnhancementCheckbox("Alternative medallions display", "gItemTrackerMedallionsPlacement");
