@@ -776,6 +776,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
+        // "Start with" == 0 for Maps and Compasses
         if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
@@ -910,6 +911,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
+        // "Start with" == 0 for Keysanity
         if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
             // TODO: If master quest there are different key counts
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = 5; // Forest
@@ -922,6 +924,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = 2; // Ganon
         }
 
+        // "Start with" == 0 for Boss Kesanity
         if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
             gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
             gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
@@ -930,6 +933,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
         }
 
+        // "Start with" == 2 for Ganon's Boss Key
         if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
             gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }

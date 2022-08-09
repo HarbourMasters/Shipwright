@@ -3552,7 +3552,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
-    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 1);
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
@@ -3571,10 +3571,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
-    cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 1);
+    cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
-    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 1);
-    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
+    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
+    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 1);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
@@ -4184,6 +4184,10 @@ void DrawRandoEditor(bool& open) {
                     // Keysanity
                     ImGui::Text(Settings::Keysanity.GetName().c_str());
                     InsertHelpHoverText(
+                        "Start with - You will start with all Small Keys from all dungeons.\n"
+                        "\n"
+                        "Vanilla - Small Keys will appear in their vanilla locations.\n"
+                        "\n"
                         "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
                         "\n"
                         "Any dungeon - Small Keys can only appear inside of any dungon.\n"
@@ -4192,17 +4196,19 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Anywhere - Small Keys can appear anywhere in the world."
                     );
-                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 1);
+                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 2);
                     PaddedSeparator();
 
                     // Gerudo Keys
                     ImGui::Text(Settings::GerudoKeys.GetName().c_str());
                     InsertHelpHoverText(
-                        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+                        "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
                         "\n"
-                        "Overworld - Small Keys can only appear outside of dungeons.\n"
+                        "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
                         "\n"
-                        "Anywhere - Small Keys can appear anywhere in the world."
+                        "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, 0);
                     PaddedSeparator();
@@ -4210,6 +4216,10 @@ void DrawRandoEditor(bool& open) {
                     // Boss Keysanity
                     ImGui::Text(Settings::BossKeysanity.GetName().c_str());
                     InsertHelpHoverText(
+                        "Start with - You will start with Boss keys from all dungeons.\n"
+                        "\n"
+                        "Vanilla - Boss Keys will appear in their vanilla locations.\n"
+                        "\n"
                         "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
                         "\n"
                         "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
@@ -4218,34 +4228,43 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Anywhere - Boss Keys can appear anywhere in the world."
                     );  
-                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 1);
+                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 2);
                     PaddedSeparator();
 
-                    // RANDOTODO implement ganon's boss key outside of ganon's castle
                     // Ganon's Boss Key
                     ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
                     InsertHelpHoverText(
-                        "Vanilla - Key will appear in the vanilla location.\n"
+                        "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
                         "\n"
-                        "Own dungeon - Key can appear anywhere inside Ganon's Castle.\n"
+                        "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
                         "\n"
                         "Start with - Places Ganon's Boss Key in your starting inventory."
+                        "\n"
+                        "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
                     );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 0);
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 1);
                     PaddedSeparator();
 
                     // Start with Maps & Compasses
                     ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
                     InsertHelpHoverText(
-                        "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
                         "\n"
-                        "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                        "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
                         "\n"
-                        "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                        "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
                         "\n"
-                        "Anywhere - Boss Keys can appear anywhere in the world."
+                        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                        "\n"
+                        "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                        "\n"
+                        "Anywhere - Maps & Compasses can appear anywhere in the world."
                     );  
-                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 1);
+                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
