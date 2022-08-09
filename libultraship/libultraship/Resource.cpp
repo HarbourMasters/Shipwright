@@ -56,9 +56,7 @@ namespace Ship
 
         patches.clear();
 
-#if _DEBUG
         if (file != nullptr)
-            printf("Deconstructor called on file %s\n", file->path.c_str());
-#endif
+            SPDLOG_TRACE("Deconstructor called on file %s\n", file->path.c_str());
     }
 }
