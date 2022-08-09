@@ -912,8 +912,9 @@ void DrawCosmeticsEditor(bool& open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
         return;
     }
+
     ImGui::SetNextWindowSize(ImVec2(620, 430), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Cosmetics Editor", &open)) {
         ImGui::End();
         return;
     }
@@ -951,7 +952,7 @@ void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
     //LoadRainbowColor() will this way run in background once it's window is activated
     //ImGui::SetNextItemWidth(0.0f);
-    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", LoadRainbowColor, true, true);
+    SohImGui::AddWindow("Enhancements", "Rainbowfunction", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", DrawCosmeticsEditor);
+    SohImGui::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
 }

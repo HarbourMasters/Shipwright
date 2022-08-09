@@ -13,12 +13,19 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 using json = nlohmann::json;
+using namespace std::literals::string_literals;
 
 std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
 u8 generated;
+
+const std::string Randomizer::getItemMessageTableID = "Randomizer";
+const std::string Randomizer::hintMessageTableID = "RandomizerHints";
+const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -1476,6 +1483,26 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText,
+                                             gSaveContext.childAltarText, gSaveContext.childAltarText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText,
+                                             gSaveContext.adultAltarText, gSaveContext.adultAltarText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_GANONDORF,
+                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText,
+                                             gSaveContext.ganonHintText, gSaveContext.ganonHintText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
+                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText,
+                                             gSaveContext.ganonText, gSaveContext.ganonText });
+
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
@@ -1484,6 +1511,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
 }
 
@@ -1795,57 +1824,8 @@ std::string AltarIconString(char iconChar) {
 
 std::string FormatJsonHintText(std::string jsonHint) {
     std::string formattedHintMessage = jsonHint;
-    char newLine = 0x01;
-    char playerName = 0x0F;
-    char nextBox = 0x04;
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '&', newLine);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '^', nextBox);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
 
-    std::unordered_map<std::string, char> textBoxSpecialCharacters = {
-        {"À", 0x80 },
-        {"î", 0x81 },
-        {"Â", 0x82 },
-        {"Ä", 0x83 },
-        {"Ç", 0x84 },
-        {"È", 0x85 },
-        {"É", 0x86 },
-        {"Ê", 0x87 },
-        {"Ë", 0x88 },
-        {"Ï", 0x89 },
-        {"Ô", 0x8A },
-        {"Ö", 0x8B },
-        {"Ù", 0x8C },
-        {"Û", 0x8D },
-        {"Ü", 0x8E },
-        {"ß", 0x8F },
-        {"à", 0x90 },
-        {"á", 0x91 },
-        {"â", 0x92 },
-        {"ä", 0x93 },
-        {"ç", 0x94 },
-        {"è", 0x95 },
-        {"é", 0x96 },
-        {"ê", 0x97 },
-        {"ë", 0x98 },
-        {"ï", 0x99 },
-        {"ô", 0x9A },
-        {"ö", 0x9B },
-        {"ù", 0x9C },
-        {"û", 0x9D },
-        {"ü", 0x9E }
-    };
-
-    // add special characters
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
-        size_t start_pos = 0;
-        std::string textBoxSpecialCharacterString = "";
-        textBoxSpecialCharacterString += specialCharacterPair.second;
-        while((start_pos = formattedHintMessage.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
-            formattedHintMessage.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
-            start_pos += textBoxSpecialCharacterString.length();
-        }
-    }
+    CustomMessageManager::Instance->FormatCustomMessage(formattedHintMessage);
 
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
@@ -2404,10 +2384,6 @@ std::string Randomizer::GetGanonText() const {
 
 std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
-}
-
-std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {
-    return this->hintLocations[check];
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -3250,7 +3226,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] = CVar_GetS32("gRandomizeSkipChildStealth", 0);
+    // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
+        !CVar_GetS32("gRandomizeSkipChildZelda", 0) && CVar_GetS32("gRandomizeSkipChildStealth", 0);
+
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
@@ -4726,9 +4705,64 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
     }*/
 
+void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+    for (GetItemMessage messageEntry : messageEntries) {
+        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
+                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+                                              messageEntry.english, messageEntry.german,
+                                              messageEntry.french });
+    }
+}
+
+void CreateScrubMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
+    const std::vector<u8> prices = { 10, 40 };
+    for (u8 price : prices) {
+        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+            // RANDTODO: Translate the below string to German.
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
+                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
+            });
+    }
+}
+
+void Randomizer::CreateCustomMessages() {
+    // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
+    // with GIMESSAGE(getItemID, itemID, english, german, french).
+    const std::vector<GetItemMessage> getItemMessages = {
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
+                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
+    };
+    CreateGetItemMessages(getItemMessages);
+    CreateScrubMessages();
+}
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    Randomizer::CreateCustomMessages();
 }
 
 extern "C" {

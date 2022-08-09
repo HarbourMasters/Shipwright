@@ -406,7 +406,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
         HeartsScale = CVar_GetFloat("gHeartsCountScale", 0.7f);
     }
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);
