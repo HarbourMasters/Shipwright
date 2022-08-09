@@ -1682,6 +1682,11 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         memcpy(font->msgBuf, src, font->msgLength);
     }
 
+    if (textId == 0x0140 && gSaveContext.n64ddFlag) { // 888888888
+        RandoNaviTip(globalCtx);
+        msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+    }
+
     msgCtx->textBoxProperties = font->charTexBuf[0];
     msgCtx->textBoxType = msgCtx->textBoxProperties >> 4;
     msgCtx->textBoxPos = msgCtx->textBoxProperties & 0xF;
