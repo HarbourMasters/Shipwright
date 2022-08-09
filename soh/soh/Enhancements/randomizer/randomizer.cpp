@@ -1406,14 +1406,15 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
+    { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
     { "Shuffle Dungeon Items:Start with Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
-    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY},
-    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
@@ -1731,6 +1732,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Skip") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
+                        break;
+                    case RSK_SHUFFLE_TOKENS:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Dungeons") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "All Tokens") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                        break;
                 }
                 index++;
             }
