@@ -24,6 +24,10 @@ docs/doxygen/
 *.map
 *.dump
 out.txt
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
 
 # Tool artifacts
 tools/mipspro7.2_compiler/
@@ -406,3 +410,36 @@ oot.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
+
+# Switch Stuff
+
+*.nro
+*.nacp
+ZAPDTR/ZAPDUtils/lib/*
+!/soh/icon.jpg
+
+# Xcode
+xcuserdata/
+*.xcconfig
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# cmake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+*/extract_assets_cmake*
+/build*
+build.c

@@ -14,3 +14,11 @@ namespace Ship {
 		constexpr int GetSampleRate() const { return 44100; }
 	};
 }
+
+#ifdef _WIN32
+#include "WasapiAudioPlayer.h"
+#elif defined(__linux)
+#include "PulseAudioPlayer.h"
+#else
+#include "SDLAudioPlayer.h"
+#endif

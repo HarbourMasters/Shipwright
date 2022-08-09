@@ -14,7 +14,6 @@
 #define Path _Path
 #define PATH_HACK
 #include <Utils/StringHelper.h>
-#include <Utils/File.h>
 
 #include "Window.h"
 #include "Lib/ImGui/imgui_internal.h"
@@ -375,10 +374,15 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
+#define VARTYPE_RGBA    3
 
 static int CheckVarType(const std::string& input)
 {
     int result = VARTYPE_STRING;
+
+    if (input[0] == '#') {
+        return VARTYPE_RGBA;
+    }
 
     for (size_t i = 0; i < input.size(); i++)
     {
@@ -407,11 +411,21 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
     if (vType == VARTYPE_STRING)
         CVar_SetString(args[1].c_str(), args[2].c_str());
     else if (vType == VARTYPE_FLOAT)
-        CVar_SetFloat(args[1].c_str(), std::stof(args[2]));
+        CVar_SetFloat((char*)args[1].c_str(), std::stof(args[2]));
+    else if (vType == VARTYPE_RGBA)
+    {
+        uint32_t val = std::stoul(&args[2].c_str()[1], nullptr, 16);
+        Color_RGBA8 clr;
+        clr.r = val >> 24;
+        clr.g = val >> 16;
+        clr.b = val >> 8;
+        clr.a = val & 0xFF;
+        CVar_SetRGBA((char*)args[1].c_str(), clr);
+    }
     else
         CVar_SetS32(args[1].c_str(), std::stoi(args[2]));
 
-    DebugConsole_SaveCVars();
+    CVar_Save();
 
     //INFO("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
@@ -426,12 +440,14 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
 
     if (cvar != nullptr)
     {
-        if (cvar->type == CVAR_TYPE_S32)
+        if (cvar->type == CVarType::S32)
             INFO("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
-        else if (cvar->type == CVAR_TYPE_FLOAT)
+        else if (cvar->type == CVarType::Float)
             INFO("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
-        else if (cvar->type == CVAR_TYPE_STRING)
+        else if (cvar->type == CVarType::String)
             INFO("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
+        else if (cvar->type == CVarType::RGBA)
+            INFO("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
     }
     else
     {
@@ -446,132 +462,49 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("kill", { KillPlayerHandler, "Commit suicide." });
     CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
     CMD_REGISTER("rupee", { RuppeHandler, "Set your rupee counter.", {
-        {"amount", ArgumentType::NUMBER }
+        {"amount", Ship::ArgumentType::NUMBER }
     }});
-    CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", { { "Item ID", ArgumentType::NUMBER } } });
-    CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", {
-        {"health", ArgumentType::NUMBER }
+    CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", { { "Item ID", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", { { "health", Ship::ArgumentType::NUMBER }
     }});
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", {
-        { "actor_id", ArgumentType::NUMBER },
-        { "data",     ArgumentType::NUMBER },
-        { "x",        ArgumentType::PLAYER_POS, true },
-        { "y",        ArgumentType::PLAYER_POS, true },
-        { "z",        ArgumentType::PLAYER_POS, true },
-        { "rx",       ArgumentType::PLAYER_ROT, true },
-        { "ry",       ArgumentType::PLAYER_ROT, true },
-        { "rz",       ArgumentType::PLAYER_ROT, true }
+    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
+                              { "data", Ship::ArgumentType::NUMBER },
+                              { "x", Ship::ArgumentType::PLAYER_POS, true },
+                              { "y", Ship::ArgumentType::PLAYER_POS, true },
+                              { "z", Ship::ArgumentType::PLAYER_POS, true },
+                              { "rx", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "ry", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "rz", Ship::ArgumentType::PLAYER_ROT, true }
     }});
-    CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {
-        { "x",        ArgumentType::PLAYER_POS, true },
-        { "y",        ArgumentType::PLAYER_POS, true },
-        { "z",        ArgumentType::PLAYER_POS, true }
+    CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", { { "x", Ship::ArgumentType::PLAYER_POS, true },
+                            { "y", Ship::ArgumentType::PLAYER_POS, true },
+                            { "z", Ship::ArgumentType::PLAYER_POS, true }
     }});
     CMD_REGISTER("set", { SetCVarHandler,
                           "Sets a console variable.",
-                          { { "varName", ArgumentType::TEXT }, { "varValue", ArgumentType::TEXT } } });
-    CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", { { "varName", ArgumentType::TEXT } } });
+                          { { "varName", Ship::ArgumentType::TEXT }, { "varValue", Ship::ArgumentType::TEXT } } });
+    CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", { { "varName", Ship::ArgumentType::TEXT } } });
     CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
     CMD_REGISTER("ammo", { AmmoHandler, "Changes ammo of an item.",
-                            { { "item", ArgumentType::TEXT },
-                              { "count", ArgumentType::NUMBER } } });
+                           { { "item", Ship::ArgumentType::TEXT }, { "count", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("bottle", { BottleHandler,
                        "Changes item in a bottle slot.",
-                       { { "item", ArgumentType::TEXT }, { "slot", ArgumentType::NUMBER } } });
+                             { { "item", Ship::ArgumentType::TEXT }, { "slot", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("item", { ItemHandler,
                              "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",
-                             { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
-    CMD_REGISTER("entrance",
-                 { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
+                           { { "slot", Ship::ArgumentType::NUMBER }, { "item id", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("entrance", { EntranceHandler,
+                               "Sends player to the entered entrance (hex)",
+                               { { "entrance", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
     CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
-    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
-        { "Slot number", ArgumentType::NUMBER, }
+    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", { {
+                                   "Slot number",
+                                   Ship::ArgumentType::NUMBER,
+                               }
         } });
-    DebugConsole_LoadCVars();
-}
-
-template <typename Numeric> bool is_number(const std::string& s) {
-    Numeric n;
-    return ((std::istringstream(s) >> n >> std::ws).eof());
-}
-
-void DebugConsole_LoadLegacyCVars() {
-    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
-    if (File::Exists(cvarsConfig)) {
-        const auto lines = File::ReadAllLines(cvarsConfig);
-
-        for (const std::string& line : lines) {
-            std::vector<std::string> cfg = StringHelper::Split(line, " = ");
-            if (line.empty()) continue;
-            if (cfg.size() < 2) continue;
-            if (cfg[1].find("\"") != std::string::npos) {
-                std::string value(cfg[1]);
-                value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
-                CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
-            }
-            if (is_number<float>(cfg[1])) {
-                CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
-            }
-            if (is_number<int>(cfg[1])) {
-                CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
-            }
-        }
-
-        fs::remove(cvarsConfig);
-    }
-}
-
-void DebugConsole_LoadCVars() {
-
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-    pConf->reload();
-
-    for (const auto& item : pConf->rjson["CVars"].items()) {
-        auto value = item.value();
-        switch (value.type()) {
-            case nlohmann::detail::value_t::array:
-                break;
-            case nlohmann::detail::value_t::string:
-                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
-                break;
-            case nlohmann::detail::value_t::boolean:
-                CVar_SetS32(item.key().c_str(), value.get<bool>());
-                break;
-            case nlohmann::detail::value_t::number_unsigned:
-            case nlohmann::detail::value_t::number_integer:
-                CVar_SetS32(item.key().c_str(), value.get<int>());
-                break;
-            case nlohmann::detail::value_t::number_float:
-                CVar_SetFloat(item.key().c_str(), value.get<float>());
-                break;
-            default: ;
-        }
-        if (item.key() == "gOpenMenuBar") {
-            int bp = 0;
-        }
-    }
-
-    DebugConsole_LoadLegacyCVars();
-}
-
-void DebugConsole_SaveCVars()
-{
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-
-    for (const auto &cvar : cvars) {
-        const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
-
-        if (cvar.second->type == CVAR_TYPE_STRING && cvar.second->value.valueStr != nullptr)
-            pConf->setString(key, std::string(cvar.second->value.valueStr));
-        else if (cvar.second->type == CVAR_TYPE_S32)
-            pConf->setInt(key, cvar.second->value.valueS32);
-        else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            pConf->setFloat(key, cvar.second->value.valueFloat);
-    }
-
-    pConf->save();
+    CVar_Load();
 }

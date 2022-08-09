@@ -65,6 +65,7 @@
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
+#include "imgui_internal.h"
 
 // SDL
 // (the multi-viewports feature requires SDL features supported from SDL 2.0.4+. SDL 2.0.5+ is highly recommended)
@@ -77,7 +78,7 @@
 #include <SDL2/SDL_syswm.h>
 #endif
 
-#if SDL_VERSION_ATLEAST(2,0,4) && !defined(__EMSCRIPTEN__) && !defined(__ANDROID__) && !(defined(__APPLE__) && TARGET_OS_IOS) && !defined(__amigaos4__)
+#if SDL_VERSION_ATLEAST(2,0,4) && !defined(__EMSCRIPTEN__) && !defined(__ANDROID__) && !(defined(__APPLE__) && TARGET_OS_IOS) && !defined(__amigaos4__) && !defined(__SWITCH__)
 #define SDL_HAS_CAPTURE_AND_GLOBAL_MOUSE    1
 #else
 #define SDL_HAS_CAPTURE_AND_GLOBAL_MOUSE    0
@@ -105,6 +106,7 @@ struct ImGui_ImplSDL2_Data
     char*           ClipboardTextData;
     bool            MouseCanUseGlobalState;
     bool            UseVulkan;
+    bool            ShowingVirtualKeyboard;
 
     ImGui_ImplSDL2_Data()   { memset((void*)this, 0, sizeof(*this)); }
 };
@@ -269,6 +271,23 @@ bool ImGui_ImplSDL2_ProcessEvent(const SDL_Event* event)
 {
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplSDL2_Data* bd = ImGui_ImplSDL2_GetBackendData();
+    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+
+    #ifdef __SWITCH__
+        if (io.WantTextInput) {
+            if (!bd->ShowingVirtualKeyboard) {
+                state->ClearText();
+
+                bd->ShowingVirtualKeyboard = true;
+                SDL_StartTextInput();
+            }
+        } else {
+            if (bd->ShowingVirtualKeyboard) {
+                bd->ShowingVirtualKeyboard = false;
+                SDL_StopTextInput();
+            }
+        }
+    #endif
 
     switch (event->type)
     {
@@ -411,6 +430,7 @@ static bool ImGui_ImplSDL2_Init(SDL_Window* window, SDL_Renderer* renderer, void
     // Our mouse update function expect PlatformHandle to be filled for the main viewport
     ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     main_viewport->PlatformHandle = (void*)window;
+#if defined(_WIN32) || defined(__APPLE__)
     SDL_SysWMinfo info;
     SDL_VERSION(&info.version);
     if (SDL_GetWindowWMInfo(window, &info))
@@ -421,6 +441,7 @@ static bool ImGui_ImplSDL2_Init(SDL_Window* window, SDL_Renderer* renderer, void
         main_viewport->PlatformHandleRaw = (void*)info.info.cocoa.window;
 #endif
     }
+#endif
 
     // Set SDL hint to receive mouse click events on window focus, otherwise SDL doesn't emit the event.
     // Without this, when clicking to gain focus, our widgets wouldn't activate even though they showed as hovered.
@@ -583,8 +604,11 @@ static void ImGui_ImplSDL2_UpdateMouseCursor()
 static void ImGui_ImplSDL2_UpdateGamepads()
 {
     ImGuiIO& io = ImGui::GetIO();
-    if ((io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
-        return;
+
+    // Remove this check because we always want to be able to trigger the menu via controller
+    // The ImGuiConfigFlags_NavEnableGamepad is still separately used by ImGui for enabling imgui navigation
+    // if ((io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
+    //     return;
 
     // Get gamepad
     io.BackendFlags &= ~ImGuiBackendFlags_HasGamepad;
@@ -600,10 +624,17 @@ static void ImGui_ImplSDL2_UpdateGamepads()
     const int thumb_dead_zone = 8000;           // SDL_gamecontroller.h suggests using this value.
     MAP_BUTTON(ImGuiKey_GamepadStart,           SDL_CONTROLLER_BUTTON_START);
     MAP_BUTTON(ImGuiKey_GamepadBack,            SDL_CONTROLLER_BUTTON_BACK);
+#ifdef __SWITCH__
+    MAP_BUTTON(ImGuiKey_GamepadFaceDown,        SDL_CONTROLLER_BUTTON_B);              // Xbox A, PS Cross
+    MAP_BUTTON(ImGuiKey_GamepadFaceRight,       SDL_CONTROLLER_BUTTON_A);              // Xbox B, PS Circle
+    MAP_BUTTON(ImGuiKey_GamepadFaceLeft,        SDL_CONTROLLER_BUTTON_Y);              // Xbox X, PS Square
+    MAP_BUTTON(ImGuiKey_GamepadFaceUp,          SDL_CONTROLLER_BUTTON_X);              // Xbox Y, PS Triangle
+#else
     MAP_BUTTON(ImGuiKey_GamepadFaceDown,        SDL_CONTROLLER_BUTTON_A);              // Xbox A, PS Cross
     MAP_BUTTON(ImGuiKey_GamepadFaceRight,       SDL_CONTROLLER_BUTTON_B);              // Xbox B, PS Circle
     MAP_BUTTON(ImGuiKey_GamepadFaceLeft,        SDL_CONTROLLER_BUTTON_X);              // Xbox X, PS Square
     MAP_BUTTON(ImGuiKey_GamepadFaceUp,          SDL_CONTROLLER_BUTTON_Y);              // Xbox Y, PS Triangle
+#endif
     MAP_BUTTON(ImGuiKey_GamepadDpadLeft,        SDL_CONTROLLER_BUTTON_DPAD_LEFT);
     MAP_BUTTON(ImGuiKey_GamepadDpadRight,       SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
     MAP_BUTTON(ImGuiKey_GamepadDpadUp,          SDL_CONTROLLER_BUTTON_DPAD_UP);
@@ -757,6 +788,7 @@ static void ImGui_ImplSDL2_CreateWindow(ImGuiViewport* viewport)
         SDL_GL_MakeCurrent(vd->Window, backup_context);
 
     viewport->PlatformHandle = (void*)vd->Window;
+#if defined(_WIN32) || defined(__APPLE__)
     SDL_SysWMinfo info;
     SDL_VERSION(&info.version);
     if (SDL_GetWindowWMInfo(vd->Window, &info))
@@ -767,6 +799,7 @@ static void ImGui_ImplSDL2_CreateWindow(ImGuiViewport* viewport)
         viewport->PlatformHandleRaw = (void*)info.info.cocoa.window;
 #endif
     }
+#endif
 }
 
 static void ImGui_ImplSDL2_DestroyWindow(ImGuiViewport* viewport)

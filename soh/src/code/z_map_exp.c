@@ -412,8 +412,10 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                 //(uintptr_t)_map_grand_staticSegmentRomStart + gMapData->owMinimapTexOffset[extendedMapIndex],
                                 //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
-            if (sEntranceIconMapIndex < 24)
-                memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableOW[sEntranceIconMapIndex]), gMapData->owMinimapTexSize[mapIndex]);
+            if (sEntranceIconMapIndex < 24) {
+                const char* textureName = minimapTableOW[sEntranceIconMapIndex];
+                memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
+            }
 
             interfaceCtx->unk_258 = mapIndex;
             break;
@@ -445,7 +447,8 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, __FILE__, __LINE__);
 
-            memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]), 0xFF0);
+            const char* textureName = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
+            memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
 
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];
@@ -713,6 +716,11 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
+    // If any of these CVars are enabled, disable toggling the minimap with L, unless gEnableMapToggle is set
+    bool enableMapToggle =
+        !(CVar_GetS32("gDebugEnabled", 0) || CVar_GetS32("gMoonJumpOnL", 0) || CVar_GetS32("gTurboOnL", 0)) ||
+        CVar_GetS32("gEnableMapToggle", 0);
+
     if (globalCtx->pauseCtx.state < 4) {
         //Minimap margins
         s16 X_Margins_Minimap;
@@ -781,7 +789,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     }
                 }
 
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx)) {
+                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx) && enableMapToggle) {
                     osSyncPrintf("Game_play_demo_mode_check=%d\n", Gameplay_InCsMode(globalCtx));
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
@@ -948,7 +956,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     Minimap_DrawCompassIcons(globalCtx); // Draw icons for the player spawn and current position
                 }
 
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx)) {
+                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx) && enableMapToggle) {
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
                                                                       &D_801333E0, &D_801333E0, &D_801333E8); }

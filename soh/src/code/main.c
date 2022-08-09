@@ -36,14 +36,14 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
-
-    BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
     Main(0);
+    DeinitOTR();
+    return 0;
 }
 
 void Main(void* arg) {

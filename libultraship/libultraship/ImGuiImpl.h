@@ -1,5 +1,15 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void enableBetaQuest();
+    void disableBetaQuest();
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
@@ -59,7 +69,7 @@ namespace SohImGui {
         WindowDrawFunc drawFunc;
     } CustomWindow;
 
-    extern Console* console;
+    extern Ship::Console* console;
     extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
@@ -76,13 +86,19 @@ namespace SohImGui {
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue = 0);
 
+    void applyEnhancementPresets(void);
+    void applyEnhancementPresetDefault(void);
+    void applyEnhancementPresetVanillaPlus(void);
+    void applyEnhancementPresetEnhanced(void);
+    void applyEnhancementPresetRandomizer(void);
+
     void DrawMainMenuAndCalculateGameSize(void);
 
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);
-    void BindCmd(const std::string& cmd, CommandEntry entry);
+    void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
@@ -94,4 +110,14 @@ namespace SohImGui {
     ImTextureID GetTextureByName(const std::string& name);
     void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
     void EndGroupPanel(float minHeight = 0.0f);
+    std::string BreakTooltip(const char* text, int lineLength = 60);
+    std::string BreakTooltip(const std::string& text, int lineLength = 60);
+    void InsertPadding(float extraVerticalPadding = 0.0f);
+    void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
+    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true);
+    void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
+    std::string GetWindowButtonText(const char* text, bool menuOpen);
 }
+
+#endif

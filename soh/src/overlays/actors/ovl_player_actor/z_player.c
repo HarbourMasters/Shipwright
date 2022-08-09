@@ -20,6 +20,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 typedef struct {
     /* 0x00 */ u8 itemId;
@@ -146,10 +147,10 @@ s32 func_808353D8(Player* this, GlobalContext* globalCtx);
 s32 func_80835588(Player* this, GlobalContext* globalCtx);
 s32 func_808356E8(Player* this, GlobalContext* globalCtx);
 s32 func_80835800(Player* this, GlobalContext* globalCtx);
-s32 func_80835884(Player* this, GlobalContext* globalCtx);
-s32 func_808358F0(Player* this, GlobalContext* globalCtx);
-s32 func_808359FC(Player* this, GlobalContext* globalCtx);
-s32 func_80835B60(Player* this, GlobalContext* globalCtx);
+s32 func_80835884(Player* this, GlobalContext* globalCtx); // Start aiming boomerang
+s32 func_808358F0(Player* this, GlobalContext* globalCtx); // Aim boomerang
+s32 func_808359FC(Player* this, GlobalContext* globalCtx); // Throw boomerang
+s32 func_80835B60(Player* this, GlobalContext* globalCtx); // Boomerang active
 s32 func_80835C08(Player* this, GlobalContext* globalCtx);
 void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item);
 void func_80839F90(Player* this, GlobalContext* globalCtx);
@@ -487,8 +488,8 @@ static s32 D_80853604 = 0;
 static s32 D_80853608 = 0;
 static s32 D_8085360C = 0;
 static s16 D_80853610 = 0;
-static s32 D_80853614 = 0;
-static s32 D_80853618 = 0;
+static s32 D_80853614 = 0; // Held item button just pressed?
+static s32 D_80853618 = 0; // Held item button currently down?
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -653,15 +654,15 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_DOUBLE_MAGIC, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG),
 
-    GET_ITEM(ITEM_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG),
 
     GET_ITEM_NONE,
     GET_ITEM_NONE,
@@ -955,6 +956,7 @@ static s8 sItemActionParams[] = {
 
 static u8 sMaskMemory;
 
+// Used to map action params to update functions
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
     func_8083485C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C,
@@ -2727,6 +2729,10 @@ s32 func_80835B60(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
+    }
+
+    if (D_80853614 && CVar_GetS32("gFastBoomerang", 0)) {
+        this->boomerangQuickRecall = true;
     }
 
     return 0;
@@ -4649,7 +4655,11 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            func_80832264(globalCtx, this, anim);
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
+            } else {
+                LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
+            }
         }
     }
     else {
@@ -5192,7 +5202,7 @@ s32 func_8083B644(Player* this, GlobalContext* globalCtx) {
                             this->stateFlags2 |= PLAYER_STATE2_21;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVar_GetS32("gNaviOnL", 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5248,7 +5258,8 @@ s32 func_8083B998(Player* this, GlobalContext* globalCtx) {
         (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_0 | ACTOR_FLAG_18) || (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_21;
     }
-    else if ((this->naviTextId == 0) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    else if ((this->naviTextId == 0 || CVar_GetS32("gNaviOnL", 0)) &&
+             !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
         (YREG(15) != 0x10) && (YREG(15) != 0x20) && !func_8083B8F4(this, globalCtx)) {
         func_80078884(NA_SE_SY_ERROR);
     }
@@ -7164,7 +7175,7 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                         ((sp34 == 3) || Player_GetSwordHeld(this)))) {
-                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 1) == 1) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 0) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;
@@ -7872,15 +7883,35 @@ s32 func_8084285C(Player* this, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s32 func_808428D8(Player* this, GlobalContext* globalCtx) {
-    if (!Player_IsChildWithHylianShield(this) && Player_GetSwordHeld(this) && D_80853614) {
-        func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
-        this->unk_84F = 1;
-        this->swordAnimation = 0xC;
-        this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+    if (Player_IsChildWithHylianShield(this) || !Player_GetSwordHeld(this) || !D_80853614) {
+        return 0;
+    }
+
+    func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
+    this->unk_84F = 1;
+    this->swordAnimation = 0xC;
+    this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+
+    if (!CVar_GetS32("gCrouchStabHammerFix", 0)) {
         return 1;
     }
 
-    return 0;
+    u32 swordId;
+    if (Player_HoldsBrokenKnife(this)) {
+        swordId = 1;
+    } else {
+        swordId = Player_GetSwordHeld(this) - 1;
+    }
+
+    if (swordId != 4 && !CVar_GetS32("gCrouchStabFix", 0)) { // 4 = Megaton Hammer
+        return 1;
+    }
+
+    u32 flags = D_80854488[swordId][0];
+    func_80837918(this, 0, flags);
+    func_80837918(this, 1, flags);
+
+    return 1;
 }
 
 s32 func_80842964(Player* this, GlobalContext* globalCtx) {
@@ -9910,8 +9941,15 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
             this->unk_837 = 20;
         }
         else if (this->unk_837 != 0) {
-            doAction = DO_ACTION_NONE;
-            this->unk_837--;
+            if (CVar_GetS32("gInstantPutaway", 0) != 0)
+            {
+                this->unk_837 = 0;
+            }
+            else
+            {
+                doAction = DO_ACTION_NONE;
+                this->unk_837--;
+            }
         }
 
         Interface_SetDoAction(globalCtx, doAction);
@@ -13170,7 +13208,10 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
     if (LinkAnimation_Update(globalCtx, &this->skelAnime)) {
         if (this->unk_84F != 0) {
             if (this->unk_850 == 0) {
-                Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor);
+                if (CVar_GetS32("gFastDrops", 0))
+                    { this->unk_84F = 0; }
+                else
+                    { Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor); }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 this->unk_850 = 1;
             }
@@ -13206,11 +13247,13 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
                         if (i < 4) {
                             this->unk_84F = i + 1;
                             this->unk_850 = 0;
-                            this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(globalCtx, this, catchInfo->itemId, ABS(catchInfo->actionParam));
-                            func_808322D0(globalCtx, this, sp24->unk_04);
-                            func_80835EA4(globalCtx, 4);
+                            if (!CVar_GetS32("gFastDrops", 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
+                                func_808322D0(globalCtx, this, sp24->unk_04);
+                                func_80835EA4(globalCtx, 4);
+                            }
                         }
                     }
                 }

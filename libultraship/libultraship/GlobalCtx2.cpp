@@ -7,14 +7,14 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/sohconsole_sink.h"
-#include "ModManager.h"
 #ifdef __APPLE__
 #include "OSXFolderManager.h"
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
 #endif
 
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
-    ModManager* INSTANCE;
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
         return Context.lock();
     }
@@ -54,7 +54,6 @@ namespace Ship {
 
     GlobalCtx2::~GlobalCtx2() {
         SPDLOG_INFO("destruct GlobalCtx2");
-        INSTANCE->Exit();
     }
 
     void GlobalCtx2::InitWindow() {
@@ -72,13 +71,16 @@ namespace Ship {
         {
 #ifdef _WIN32
             MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
+#elif defined(__SWITCH__)
+            printf("Main OTR file not found!\n");
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
             exit(1);
         }
-        INSTANCE = new ModManager(ResMan);
-        INSTANCE->Init();
+    #ifdef __SWITCH__
+        Ship::Switch::Init(PostInitPhase);
+    #endif
     }
 
     void GlobalCtx2::InitLogging() {

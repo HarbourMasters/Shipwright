@@ -4,8 +4,10 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-
+#include "../libultraship/ImGuiImpl.h"
 #include "soh/frame_interpolation.h"
+
+#include <time.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -190,6 +192,7 @@ void Gameplay_Destroy(GameState* thisx) {
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
     Fault_RemoveClient(&D_801614B8);
+    disableBetaQuest();
     gGlobalCtx = NULL;
 }
 
@@ -262,6 +265,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    enableBetaQuest();
     gGlobalCtx = globalCtx;
     //globalCtx->state.gfxCtx = NULL;
     uintptr_t zAlloc;
@@ -273,11 +277,15 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+    // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
+    // eventChkInf[4] & 1 = Got Zelda's Letter
+    // eventChkInf[5] & 0x200 = Got Impa's reward
+    // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
+    // entranceIndex 0x400, Zelda's Courtyard
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
+        !(gSaveContext.eventChkInf[4] & 1) && !(gSaveContext.eventChkInf[5] & 0x200)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
-        } else if (gSaveContext.entranceIndex == 0x296) {
-            gSaveContext.entranceIndex = 0x23D;
         }
     }
 
@@ -693,6 +701,11 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
+                            }
+
+                            // Don't autosave in grottos or cutscenes
+                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
+                                Gameplay_PerformSave(globalCtx);
                             }
                         }
                         globalCtx->sceneLoadFlag = 0;
@@ -1443,6 +1456,18 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
+time_t Gameplay_GetRealTime() {
+    time_t t1, t2;
+    struct tm* tms;
+    time(&t1);
+    tms = localtime(&t1);
+    tms->tm_hour = 0;
+    tms->tm_min = 0;
+    tms->tm_sec = 0;
+    t2 = mktime(tms);
+    return t1 - t2;
+}
+
 void Gameplay_Main(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
 
@@ -1486,6 +1511,20 @@ void Gameplay_Main(GameState* thisx) {
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
     }
+    
+    if (CVar_GetS32("gTimeSync", 0)) {
+        const int maxRealDaySeconds = 86400;
+        const int maxInGameDayTicks = 65536;
+
+        int secs = (int)Gameplay_GetRealTime();
+        float percent = (float)secs / (float)maxRealDaySeconds;
+
+        int newIngameTime = maxInGameDayTicks * percent;
+
+        gSaveContext.dayTime = newIngameTime;
+
+    }
+
 }
 
 // original name: "Game_play_demo_mode_check"
@@ -1940,5 +1979,21 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
         return true;
     } else {
         return false;
+    }
+}
+
+void Gameplay_PerformSave(GlobalContext* globalCtx) {
+    Gameplay_SaveSceneFlags(globalCtx);
+    gSaveContext.savedSceneNum = globalCtx->sceneNum;
+    if (gSaveContext.temporaryWeapon) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+        Save_SaveFile();
+        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+    } else {
+        Save_SaveFile();
     }
 }

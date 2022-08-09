@@ -60,7 +60,10 @@ void Locale_ResetRegion(void);
 u32 func_80001F48(void);
 u32 func_80001F8C(void);
 u32 Locale_IsRegionNative(void);
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__SWITCH__)
+void __assert(const char* exp, const char* file, s32 line);
+#endif
+#if defined(__APPLE__) && defined(NDEBUG)
 void __assert(const char* exp, const char* file, s32 line);
 #endif
 void isPrintfInit(void);
@@ -1528,6 +1531,7 @@ s32 func_800C0CB8(GlobalContext* globalCtx);
 s32 FrameAdvance_IsEnabled(GlobalContext* globalCtx);
 s32 func_800C0D34(GlobalContext* globalCtx, Actor* actor, s16* yaw);
 s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos);
+void Gameplay_PerformSave(GlobalContext* globalCtx);
 void PreRender_SetValuesSave(PreRender* this, u32 width, u32 height, void* fbuf, void* zbuf, void* cvg);
 void PreRender_Init(PreRender* this);
 void PreRender_SetValues(PreRender* this, u32 width, u32 height, void* fbuf, void* zbuf);
@@ -1872,7 +1876,7 @@ void FaultDrawer_SetCharPad(s8, s8);
 void FaultDrawer_SetCursor(s32, s32);
 void FaultDrawer_FillScreen();
 void* FaultDrawer_FormatStringFunc(void*, const char*, u32);
-void FaultDrawer_VPrintf(const char*, char*);
+void FaultDrawer_VPrintf(const char*, va_list);
 void FaultDrawer_Printf(const char*, ...);
 void FaultDrawer_DrawText(s32, s32, const char*, ...);
 void FaultDrawer_SetDrawerFB(void*, u16, u16);

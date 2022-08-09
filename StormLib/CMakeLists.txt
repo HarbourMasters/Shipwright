@@ -1,8 +1,9 @@
-project(StormLib)
+set(PROJECT_NAME StormLib)
+#project(StormLib)
 cmake_minimum_required(VERSION 3.10)
 
 set(LIBRARY_NAME storm)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -14,6 +15,13 @@ option(STORM_BUILD_TESTS
     "Compile StormLib test application" OFF
 #   "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__Windows
+           src/lzma/C/LzFindMt.c
+           src/lzma/C/Threads.c
+)
+endif()
 
 set(SRC_FILES
            src/adpcm/adpcm.cpp
@@ -46,6 +54,7 @@ set(SRC_FILES
            src/SFileVerify.cpp
            src/libtomcrypt/src/pk/rsa/rsa_verify_simple.c
            src/libtomcrypt/src/misc/crypt_libc.c
+           ${Source_Files__Windows}
 )
 
 if(MSVC)
@@ -323,10 +332,85 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DO_LARGEFILE=0 -Dstat64=stat -Dlstat64=lstat -Dlseek64=lseek -Doff64_t=off_t -Dfstat64=fstat -Dftruncate64=ftruncate")
 endif()
 
+if(NOT WIN32 AND NOT APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
+  # Enable POSIX extensions such as `readlink` and `ftruncate`.
+  add_definitions(-D_POSIX_C_SOURCE=200809L)
+endif()
+
 add_library(${LIBRARY_NAME} ${LIB_TYPE} ${SRC_FILES} ${SRC_ADDITIONAL_FILES} ${STORM_DEF_FILES})
 if(WIN32)
     set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "StormLib")
 endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+use_props(${LIBRARY_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+endif()
+
+################################################################################
+# Compile definitions
+################################################################################
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+       if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+               target_compile_definitions(${LIBRARY_NAME} PRIVATE
+                       "$<$<CONFIG:Debug>:"
+                               "_DEBUG;"
+                               "_CRT_SECURE_NO_WARNINGS;"
+                       ">"
+                       "$<$<CONFIG:Release>:"
+                               "NDEBUG"
+                       ">"
+                       WIN32
+                       _LIB
+                       "UNICODE;"
+                       "_UNICODE"
+               )
+       elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+               target_compile_definitions(${LIBRARY_NAME} PRIVATE
+                       "$<$<CONFIG:Debug>:"
+                               "_DEBUG;"
+                               "_CRT_SECURE_NO_WARNINGS;"
+                       ">"
+                       "$<$<CONFIG:Release>:"
+                               "NDEBUG;"
+                       ">"
+                       "WIN32;"
+                       _LIB
+                       "UNICODE;"
+                       "_UNICODE"
+               )
+       endif()
+endif()
+
+################################################################################
+# MSVC runtime library
+################################################################################
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${LIBRARY_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
+        if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+                string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+                        $<$<CONFIG:Debug>:
+                                MultiThreadedDebug
+                        >
+                        $<$<CONFIG:Release>:
+                                MultiThreaded
+                        >
+                        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+                )
+        elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+                string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+                        $<$<CONFIG:Debug>:
+                                MultiThreadedDebug
+                        >
+                        $<$<CONFIG:Release>:
+                                MultiThreaded
+                        >
+                        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+                )
+        endif()
+        set_target_properties(${LIBRARY_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+endif()
+
 
 target_link_libraries(${LIBRARY_NAME} ${LINK_LIBS})
 target_compile_definitions(${LIBRARY_NAME} INTERFACE STORMLIB_NO_AUTO_LINK) #CMake will take care of the linking

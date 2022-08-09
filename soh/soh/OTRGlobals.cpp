@@ -4,9 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <locale>
-#include <codecvt>
 #include "GlobalCtx2.h"
-#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -22,11 +20,9 @@
 #else
 #include <time.h>
 #endif
-#include <Vertex.h>
 #include <CollisionHeader.h>
 #include <Array.h>
 #include <Cutscene.h>
-#include <Texture.h>
 #include "Lib/stb/stb_image.h"
 #define DRMP3_IMPLEMENTATION
 #include "Lib/dr_libs/mp3.h"
@@ -36,14 +32,14 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
-#include "Enhancements/randomizer/randomizer.h"
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
-#include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include "Hooks.h"
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -51,10 +47,17 @@
 #include <SDL2/SDL_scancode.h>
 #endif
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #include <Audio.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include <functions.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
+CustomMessageManager* CustomMessageManager::Instance;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
@@ -83,11 +86,73 @@ extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
+void OTRAudio_Thread() {
+    while (audio.running) {
+        {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
+            while (!audio.processing && audio.running) {
+                audio.cv_to_thread.wait(Lock);
+            }
+
+            if (!audio.running) {
+                break;
+            }
+        }
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        //AudioMgr_ThreadEntry(&gAudioMgr);
+        // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+        // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+        //#define SAMPLES_HIGH 560
+        //#define SAMPLES_LOW 528
+        // PAL values
+        //#define SAMPLES_HIGH 656
+        //#define SAMPLES_LOW 624
+
+        // 44KHZ values
+        #define SAMPLES_HIGH 752
+        #define SAMPLES_LOW 720
+
+        #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
+        #define NUM_AUDIO_CHANNELS 2
+
+        int samples_left = AudioPlayer_Buffered();
+        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+
+        // 3 is the maximum authentic frame divisor.
+        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+        }
+
+        AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+
+        audio.processing = false;
+        audio.cv_from_thread.notify_one();
+    }
+}
+
 // C->C++ Bridge
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
     ResourceMgr_CacheDirectory("audio");
+
+    if (!audio.running) {
+        audio.running = true;
+        audio.thread = std::thread(OTRAudio_Thread);
+    }
+}
+
+extern "C" void OTRAudio_Exit() {
+    // Tell the audio thread to stop
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        audio.running = false;
+    }
+    audio.cv_to_thread.notify_all();
+
+    // Wait until the audio thread quit
+    audio.thread.join();
 }
 
 extern "C" void OTRExtScanner() {
@@ -104,14 +169,17 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
+    CustomMessageManager::Instance = new CustomMessageManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
     {
-        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
-        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -124,6 +192,10 @@ extern "C" void InitOTR() {
     Rando_Init();
     InitItemTracker();
     OTRExtScanner();
+}
+
+extern "C" void DeinitOTR() {
+    OTRAudio_Exit();
 }
 
 #ifdef _WIN32
@@ -225,59 +297,12 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-    if (!audio.initialized) {
-        audio.initialized = true;
-        std::thread([]() {
-            for (;;) {
-                {
-                    std::unique_lock<std::mutex> Lock(audio.mutex);
-                    while (!audio.processing) {
-                        audio.cv_to_thread.wait(Lock);
-                    }
-                }
-                std::unique_lock<std::mutex> Lock(audio.mutex);
-                //AudioMgr_ThreadEntry(&gAudioMgr);
-                // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-                // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-                //#define SAMPLES_HIGH 560
-                //#define SAMPLES_LOW 528
-                // PAL values
-                //#define SAMPLES_HIGH 656
-                //#define SAMPLES_LOW 624
-
-                // 44KHZ values
-                #define SAMPLES_HIGH 752
-                #define SAMPLES_LOW 720
-
-                #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-                #define NUM_AUDIO_CHANNELS 2
-                int samples_left = AudioPlayer_Buffered();
-                u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
-
-                // 3 is the maximum authentic frame divisor.
-                s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-                for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                    AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-                }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
-                AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-
-                audio.processing = false;
-                audio.cv_from_thread.notify_one();
-            }
-        }).detach();
-    }
-
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-    audio.cv_to_thread.notify_one();
 
+    audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = CVar_GetS32("gInterpolationFPS", 20);
     static int last_fps;
@@ -444,6 +469,12 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 }
 
 extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
+
+extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
@@ -787,8 +818,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
-                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
                 }
             }
 
@@ -819,8 +850,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                     for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
-                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
                     }
                 }
                 if (soundFont->instruments[i].lowNotesSound != nullptr)
@@ -1293,10 +1324,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    for (int i = 0; i < controllers.size(); ++i) {
-        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        physicalDevice->WriteToSource(i, controller);
     }
 }
 
@@ -1350,16 +1382,20 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
+    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
-    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
-
-    for (const auto virtual_entry : controllers) {
-        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
+    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+        if (physicalDevice->CanRumble()) {
             return 1;
         }
     }
 
     return 0;
+}
+
+extern "C" void Hooks_ExecuteAudioInit() {
+    Ship::ExecuteHooks<Ship::AudioInit>();
 }
 
 extern "C" void* getN64WeirdFrame(s32 i) {
@@ -1399,99 +1435,39 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
-    std::string scrubText("");
-    int language = CVar_GetS32("gLanguages", 0);
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     int price = 0;
     switch (scrubTextId) {
-        case 0x10A2:
+        case TEXT_SCRUB_POH:
             price = 10;
             break;
-        case 0x10DC:
-        case 0x10DD:
+        case TEXT_SCRUB_STICK_UPGRADE:
+        case TEXT_SCRUB_NUT_UPGRADE:
             price = 40;
             break;
     }
-    switch (language) { 
-    case 0: default:
-        scrubText += 0x12; // add the sound
-        scrubText += 0x38; // sound id
-        scrubText += 0x82; // sound id
-        scrubText += "All right! You win! In return for";
-        scrubText += 0x01; // newline
-        scrubText += "sparing me, I will sell you a";
-        scrubText += 0x01; // newline
-        scrubText += 0x05; // change the color
-        scrubText += 0x42; // green
-        scrubText += "mysterious item";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "!";
-        scrubText += 0x01; // newline
-        scrubText += 0x05; // change the color
-        scrubText += 0x41; // red
-        scrubText += std::to_string(price);
-        scrubText += price > 1 ? " Rupees" : " Rupee";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += " it is!";
-        scrubText += 0x07; // go to a new message
-        scrubText += 0x10; // message id
-        scrubText += 0xA3; // message id
-            break;
-    case 2:
-        scrubText += 0x12; // add the sound
-        scrubText += 0x38; // sound id
-        scrubText += 0x82; // sound id
-        scrubText += "J'abandonne! Tu veux bien m'acheter";
-        scrubText += 0x01; // newline
-        scrubText += "un ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x42; // green
-        scrubText += "objet myst\x96rieux";
-        //scrubText += ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "?";
-        scrubText += 0x01; // newline
-        scrubText += "\x84";
-        scrubText += "a fera ";
-        scrubText += 0x05; // change the color
-        scrubText += 0x41; // red
-        scrubText += std::to_string(price) + " Rubis";
-        scrubText += 0x05; // change the color
-        scrubText += 0x40; // white
-        scrubText += "!";
-        scrubText += 0x07; // go to a new message
-        scrubText += 0x10; // message id
-        scrubText += 0xA3; // message id
-        break;
-    }
-    
-    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
-extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
-    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
-                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
-    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
+    return (LINK_IS_ADULT)
+               ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
+               : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
 }
 
-extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetGanonText() {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
 }
 
-extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetGanonHintText() {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
 }
 
-extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
-    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
-    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+    const CustomMessageEntry hintText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
+    return hintText;
 }
 
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
@@ -1509,4 +1485,90 @@ extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomize
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
+
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+    const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    return getItemText;
+}
+
+extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
+    MessageContext* msgCtx = &globalCtx->msgCtx;
+    uint16_t textId = msgCtx->textId;
+    Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
+    CustomMessageEntry messageEntry;
+    if (gSaveContext.n64ddFlag) {
+        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
+            messageEntry =
+                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+              Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+
+            s16 actorParams = msgCtx->talkActor->params;
+
+            // if we're in a generic grotto
+            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+                // look for the chest in the actorlist to determine
+                // which grotto we're in
+                int numOfActorLists =
+                    sizeof(globalCtx->actorCtx.actorLists) / sizeof(globalCtx->actorCtx.actorLists[0]);
+                for (int i = 0; i < numOfActorLists; i++) {
+                    if (globalCtx->actorCtx.actorLists[i].length) {
+                        if (globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                            // set the params for the hint check to be negative chest params
+                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                        }
+                    }
+                }
+            }
+
+            RandomizerCheck hintCheck =
+                Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+
+            messageEntry = Randomizer_GetHintFromCheck(hintCheck);
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
+            // rando hints at altar
+            messageEntry = Randomizer_GetAltarMessage();
+        } else if (textId == TEXT_GANONDORF) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                messageEntry = Randomizer_GetGanonText();
+            } else {
+                messageEntry = Randomizer_GetGanonHintText();
+            }
+        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
+            messageEntry = Randomizer_GetScrubMessage(textId);
+        }
+    }
+    if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
+        if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
+                textId = TEXT_GS_NO_FREEZE;
+            } else {
+                textId = TEXT_GS_FREEZE;
+            }
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
+        }
+    }
+    if (messageEntry.textBoxType != -1) {
+        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
+        switch (gSaveContext.language) {
+            case LANGUAGE_FRA:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
+            case LANGUAGE_GER:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
+
+            case LANGUAGE_ENG:
+            default:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
+        }
+    }
+    return false;
 }

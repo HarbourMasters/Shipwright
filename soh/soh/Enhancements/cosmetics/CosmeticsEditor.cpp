@@ -1,12 +1,9 @@
 #include "CosmeticsEditor.h"
-#include "../../util.h"
 #include "../libultraship/ImGuiImpl.h"
 
-#include <array>
-#include <bit>
-#include <map>
 #include <string>
 #include <Cvar.h>
+#include <PR/ultra64/types.h>
 
 /**
  * Colors variables
@@ -92,11 +89,55 @@ const char* RainbowColorCvarList[] = {
     "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
     "gDF_Col", "gDF_Env",
-    "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env", 
+    "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
     "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim", 
+    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
 };
+const char* MarginCvarList[] {
+    "gHearts", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
+    "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
+    "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
+};
+
+void SetMarginAll(const char* ButtonName, bool SetActivated) {
+    if (ImGui::Button(ButtonName)) {
+        u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
+        //MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the case this function will not touch it with pose type 0.
+        const char* MarginCvarNonAnchor[] { "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
+        u8 arrayLengthNonMargin = sizeof(MarginCvarNonAnchor) / sizeof(*MarginCvarNonAnchor);
+        for (u8 s = 0; s < arrayLength; s++) {
+            std::string cvarName = MarginCvarList[s];
+            std::string cvarPosType = cvarName+"PosType";
+            std::string cvarNameMargins = cvarName+"UseMargins";
+            if (CVar_GetS32(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+                for(int i = 0; i < arrayLengthNonMargin; i++){
+                    if(MarginCvarNonAnchor[i] == cvarName && CVar_GetS32(cvarPosType.c_str(),0) == 0){ //Our element is both in original position and do not have anchor by default so we skip it.
+                        CVar_SetS32(cvarNameMargins.c_str(), false); //force set off
+                    } else if(MarginCvarNonAnchor[i] == cvarName && CVar_GetS32(cvarPosType.c_str(),0) != 0){ //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                        CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+                    } else if(MarginCvarNonAnchor[i] != cvarName){ //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
+                        CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+                    }
+                }
+            } else { //Since the user requested to turn all margin off no need to do any check there.
+                CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+            }
+        }
+    }
+}
+void ResetPositionAll() {
+    if (ImGui::Button("Reset all positions")) {
+        u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
+        for (u8 s = 0; s < arrayLength; s++) {
+            std::string cvarName = MarginCvarList[s];
+            std::string cvarPosType = cvarName+"PosType";
+            std::string cvarNameMargins = cvarName+"UseMargins";
+            CVar_SetS32(cvarPosType.c_str(), 0);
+            CVar_SetS32(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
+        }
+    }
+}
 void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
@@ -140,6 +181,7 @@ void LoadRainbowColor(bool& open) {
         }
     }
 }
+
 void Table_InitHeader(bool has_header = true) {
     if (has_header) {
         ImGui::TableHeadersRow();
@@ -147,6 +189,7 @@ void Table_InitHeader(bool has_header = true) {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
     ImGui::AlignTextToFramePadding(); //This is to adjust Vertical pos of item in a cell to be normlized.
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
 void Table_NextCol() {
@@ -160,8 +203,10 @@ void Table_NextLine() {
     ImGui::AlignTextToFramePadding();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
+
 void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 0) {
     // place the ? button to the most of the right side of the cell it is using.
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
     ImGui::SmallButton("?");
     SohImGui::Tooltip(helptext.c_str());
@@ -169,6 +214,7 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
         //I do not use ImGui::SameLine(); because it make some element vanish.
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
     }
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
 void Draw_Npcs(){
     SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
@@ -178,28 +224,28 @@ void Draw_Npcs(){
         ImGui::TableSetupColumn("Outer colors##Navi", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Inner color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Primary)", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
+        SohImGui::EnhancementColor("Navi Idle (Primary)", "gNavi_Idle_Inner", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Secondary)", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
+        SohImGui::EnhancementColor("Navi Idle (Secondary)", "gNavi_Idle_Outer", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Primary)", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
+        SohImGui::EnhancementColor("Navi NPC (Primary)", "gNavi_NPC_Inner", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Secondary)", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
+        SohImGui::EnhancementColor("Navi NPC (Secondary)", "gNavi_NPC_Outer", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy (Primary)", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
+        SohImGui::EnhancementColor("Navi Enemy", "gNavi_Enemy_Inner", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy (Secondary)", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
+        SohImGui::EnhancementColor("Navi Enemy (Secondary)", "gNavi_Enemy_Outer", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Primary)", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
+        SohImGui::EnhancementColor("Navi Prop (Primary)", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Secondary)", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
+        SohImGui::EnhancementColor("Navi Prop (Secondary)", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
@@ -376,10 +422,18 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General margins settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
-        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "");
-        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "");
-        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "");
-        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "");
+        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
+        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
+        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        SetMarginAll("All margins on",true);
+        SohImGui::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        ImGui::SameLine();
+        SetMarginAll("All margins off",false);
+        SohImGui::Tooltip("Set all of the element to not use margin");
+        ImGui::SameLine();
+        ResetPositionAll();
+        SohImGui::Tooltip("Revert every element to use their original position and no margins");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -399,9 +453,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gHeartsCountPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##HeartCountPosY", "gHeartsPosY", -22, ImGui::GetWindowViewport()->Size.y, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##HeartCountPosY", "gHeartsPosY", -22, ImGui::GetWindowViewport()->Size.y, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -423,9 +477,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gMagicBarPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -447,7 +501,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gVSOAPosType", 4); //in case you want only SFX
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
@@ -456,7 +510,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gVSOAPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -478,9 +532,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gBBtnPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##BBtnPosY", "gBBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/4+50, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##BBtnPosY", "gBBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##BBtnPosX", "gBBtnPosX", -1, ImGui::GetWindowViewport()->Size.x-50, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##BBtnPosX", "gBBtnPosX", -1, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -502,9 +556,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gABtnPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ABtnPosY", "gABtnPosY", -10, ImGui::GetWindowViewport()->Size.y/4+50, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ABtnPosY", "gABtnPosY", -10, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ABtnPosX", "gABtnPosX", -20, ImGui::GetWindowViewport()->Size.x-50, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ABtnPosX", "gABtnPosX", -20, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -526,9 +580,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gStartBtnPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##StartBtnPosY", "gStartBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##StartBtnPosY", "gStartBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##StartBtnPosX", "gStartBtnPosX", 0, ImGui::GetWindowViewport()->Size.x/2+70, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##StartBtnPosX", "gStartBtnPosX", 0, ImGui::GetWindowViewport()->Size.x/2+70, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -550,7 +604,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gCBtnUPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnUPosY", "gCBtnUPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnUPosY", "gCBtnUPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CU = 0;
             s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
@@ -561,7 +615,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnUPosType",0) == 4){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", Min_X_CU, Max_X_CU, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", Min_X_CU, Max_X_CU, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -583,7 +637,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gCBtnDPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnDPosY", "gCBtnDPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnDPosY", "gCBtnDPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CD = 0;
             s16 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
@@ -594,7 +648,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
                 Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnDPosX", "gCBtnDPosX", Min_X_CD, Max_X_CD, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnDPosX", "gCBtnDPosX", Min_X_CD, Max_X_CD, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -616,7 +670,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gCBtnLPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnLPosY", "gCBtnLPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnLPosY", "gCBtnLPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CL = 0;
             s16 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
@@ -627,7 +681,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
                 Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnLPosX", "gCBtnLPosX", Min_X_CL, Max_X_CL, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnLPosX", "gCBtnLPosX", Min_X_CL, Max_X_CL, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -649,7 +703,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gCBtnRPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CR = 0;
             s16 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
@@ -660,7 +714,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnRPosType",0) == 4){
                 Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", Min_X_CR, Max_X_CR, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", Min_X_CR, Max_X_CR, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -682,7 +736,7 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
@@ -691,7 +745,7 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gDPadPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", Min_X_Dpad, Max_X_Dpad, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -713,9 +767,9 @@ void Draw_Placements(){
             //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gMinimapPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MinimapPosY", "gMinimapPosY", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MinimapPosY", "gMinimapPosY", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MinimapPosX", "gMinimapPosX", ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MinimapPosX", "gMinimapPosX", ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -737,9 +791,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gSKCPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##SKCPosY", "gSKCPosY", 0, ImGui::GetWindowViewport()->Size.y/3, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##SKCPosY", "gSKCPosY", 0, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##SKCPosX", "gSKCPosX", -1, ImGui::GetWindowViewport()->Size.x/2, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##SKCPosX", "gSKCPosX", -1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -761,9 +815,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gRCPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##RCPosY", "gRCPosY", -2, ImGui::GetWindowViewport()->Size.y/3, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##RCPosY", "gRCPosY", -2, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##RCPosX", "gRCPosX", -3, ImGui::GetWindowViewport()->Size.x/2, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##RCPosX", "gRCPosX", -3, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -785,9 +839,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gCarrotsPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CarrotsPosY", "gCarrotsPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CarrotsPosY", "gCarrotsPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CarrotsPosX", "gCarrotsPosX", -50, ImGui::GetWindowViewport()->Size.x/2+25, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CarrotsPosX", "gCarrotsPosX", -50, ImGui::GetWindowViewport()->Size.x/2+25, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -809,9 +863,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gTimersPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TimersPosY", "gTimersPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TimersPosY", "gTimersPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TimersPosX", "gTimersPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TimersPosX", "gTimersPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -833,9 +887,9 @@ void Draw_Placements(){
             //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gASPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ASPosX", "gASPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ASPosX", "gASPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -857,9 +911,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gTCMPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCMPosY", "gTCMPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCMPosY", "gTCMPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCMPosX", "gTCMPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCMPosX", "gTCMPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, ""), true;
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -881,9 +935,9 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gTCBPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCBPosY", "gTCBPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCBPosY", "gTCBPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCBPosX", "gTCBPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "");
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCBPosX", "gTCBPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1070,7 +1124,7 @@ void DrawCosmeticsEditor(bool& open) {
         return;
     }
     ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Cosmetics Editor", &open)) {
         ImGui::End();
         return;
     }
@@ -1108,7 +1162,7 @@ void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
     //LoadRainbowColor() will this way run in background once it's window is activated
     //ImGui::SetNextItemWidth(0.0f);
-    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", LoadRainbowColor, true, true);
+    SohImGui::AddWindow("Enhancements", "Rainbowfunction", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", DrawCosmeticsEditor);
+    SohImGui::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
 }

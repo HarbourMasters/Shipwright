@@ -9,7 +9,6 @@
 
 namespace Ship {
 
-	extern "C" uint8_t __enableGameInput;
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
 	bool needs_save = false;
@@ -33,8 +32,8 @@ namespace Ship {
 	}
 
 	std::shared_ptr<Controller> GetControllerPerSlot(int slot) {
-		const std::vector<int> vDevices = Window::ControllerApi->virtualDevices;
-		return Window::ControllerApi->physicalDevices[vDevices[slot]];
+		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
 	}
 
 	void InputEditor::DrawButton(const char* label, int n64Btn) {
@@ -42,7 +41,7 @@ namespace Ship {
 
 		float size = 40;
 		bool readingMode = BtnReading == n64Btn;
-		bool disabled = BtnReading != -1 && !readingMode || !backend->Connected();
+		bool disabled = (BtnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
 		ImVec2 len = ImGui::CalcTextSize(label);
 		ImVec2 pos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosY(pos.y + len.y / 4);
@@ -99,24 +98,21 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawControllerSchema() {
-
-		const std::vector<int> vDevices = Window::ControllerApi->virtualDevices;
-		const std::vector<std::shared_ptr<Controller>> devices = Window::ControllerApi->physicalDevices;
-
-		std::shared_ptr<Controller> Backend = devices[vDevices[CurrentPort]];
-		DeviceProfile& profile =Backend->profiles[CurrentPort];
+		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+		auto Backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
+		DeviceProfile& profile = Backend->profiles[CurrentPort];
 		float sensitivity = profile.Thresholds[SENSITIVITY];
-		bool IsKeyboard = Backend->GetGuid() == "Keyboard" || !Backend->Connected();
+		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();
 		const char* ControllerName = Backend->GetControllerName();
 
 		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {
-			for (uint8_t i = 0; i < devices.size(); i++) {
-				std::string DeviceName = devices[i]->GetControllerName();
+			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
+				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
 				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
 					DeviceName+="##"+std::to_string(i);
 				}
-				if (ImGui::Selectable(DeviceName.c_str(), i == vDevices[CurrentPort])) {
-					Window::ControllerApi->SetPhysicalDevice(CurrentPort, i);
+				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
+					controlDeck->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
 			ImGui::EndCombo();
@@ -125,7 +121,7 @@ namespace Ship {
 		ImGui::SameLine();
 
 		if(ImGui::Button("Refresh")) {
-			Window::ControllerApi->ScanPhysicalDevices();
+			controlDeck->ScanPhysicalDevices();
 		}
 
 		SohImGui::BeginGroupPanel("Buttons", ImVec2(150, 20));
@@ -137,6 +133,12 @@ namespace Ship {
 			DrawButton("START", BTN_START);
 			SEPARATION();
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 116.0f);
+=======
+	#ifdef __SWITCH__
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
+	#else
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
@@ -145,6 +147,11 @@ namespace Ship {
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
 		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 162.0f);
+	#ifdef __SWITCH__
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
+	#else
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
@@ -175,6 +182,11 @@ namespace Ship {
 				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
 			}
 		SohImGui::EndGroupPanel(IsKeyboard ? 16.0f : 92.0f);
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
+		#else
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+		#endif
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -211,29 +223,34 @@ namespace Ship {
 				EnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
 				Tooltip("Allows you to use the right stick when:\n-Aiming with weapons\n-In the C-Up first-person view");
 			SohImGui::EndGroupPanel(13.0f);
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(43.0f);
+		#else
+			SohImGui::EndGroupPanel(14.0f);
+		#endif
 		}
 
 		if(Backend->CanGyro()) {
 			ImGui::SameLine();
 
 			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
-			float cursorX = ImGui::GetCursorPosX() + 5;
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
-			ImGui::PushItemWidth(135.0f);
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
-			ImGui::PopItemWidth();
-			ImGui::Dummy(ImVec2(0, 1));
-			ImGui::SetCursorPosX(cursorX);
-			if (ImGui::Button("Recalibrate Gyro##RGyro")) {
-				profile.Thresholds[DRIFT_X] = 0.0f;
-				profile.Thresholds[DRIFT_Y] = 0.0f;
-			}
-			ImGui::SetCursorPosX(cursorX);
-			DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
+				float cursorX = ImGui::GetCursorPosX() + 5;
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
+				ImGui::PushItemWidth(135.0f);
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
+				ImGui::PopItemWidth();
+				ImGui::Dummy(ImVec2(0, 1));
+				ImGui::SetCursorPosX(cursorX);
+				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
+					profile.Thresholds[DRIFT_X] = 0.0f;
+					profile.Thresholds[DRIFT_Y] = 0.0f;
+				}
+				ImGui::SetCursorPosX(cursorX);
+				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
 
 			ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -248,6 +265,23 @@ namespace Ship {
 			ImGui::PopItemWidth();
 			ImGui::EndChild();
 			SohImGui::EndGroupPanel(83.0f);
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+				ImGui::Text("Drift X");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::Text("Drift Y");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::EndChild();
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(46.0f);
+		#else
+			SohImGui::EndGroupPanel(14.0f);
+		#endif
 		}
 
 		ImGui::SameLine();
@@ -263,7 +297,11 @@ namespace Ship {
 		SohImGui::EndGroupPanel();
 
 		ImGui::SetCursorPosX(cursor.x);
+	#ifdef __SWITCH__
+		ImGui::SetCursorPosY(cursor.y + 167);
+	#else
 		ImGui::SetCursorPosY(cursor.y + 120);
+	#endif
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
@@ -281,9 +319,6 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawHud() {
-
-		__enableGameInput = true;
-
 		if (!this->Opened) {
 			BtnReading = -1;
 			CVar_SetS32("gControllerConfigurationEnabled", 0);
@@ -291,6 +326,15 @@ namespace Ship {
 		}
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 360));
+#ifdef __SWITCH__
+		ImVec2 minSize = ImVec2(641, 250);
+		ImVec2 maxSize = ImVec2(2200, 505);
+#else
+		ImVec2 minSize = ImVec2(641, 250);
+		ImVec2 maxSize = ImVec2(1200, 290);
+#endif
+
+		ImGui::SetNextWindowSizeConstraints(minSize, maxSize);
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", &this->Opened, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);

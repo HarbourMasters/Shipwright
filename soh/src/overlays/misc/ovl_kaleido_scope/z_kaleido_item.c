@@ -9,14 +9,15 @@ u8 gAmmoItems[] = {
 static s16 sEquipState = 0;
 static s16 sEquipAnimTimer = 0;
 static s16 sEquipMoveTimer = 10;
+bool gSelectingMask;
 
 static s16 sAmmoVtxOffset[] = {
-    0, 2, 4, 6, 99, 99, 8, 99, 99, 10, 99, 99, 99, 99, 99, 99, 12,
+    0, 2, 4, 6, 99, 99, 8, 99, 10, 99, 99, 99, 99, 99, 12,
 };
 
 extern const char* _gAmmoDigit0Tex[];
 
-void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item) {
+void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
     s16 ammo;
     s16 i;
 
@@ -50,7 +51,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
     gDPPipeSync(POLY_KAL_DISP++);
 
     if (i != 0) {
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[item] + 31) * 4], 4, 0);
+        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[slot] + 31) * 4], 4, 0);
 
         gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[i]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -59,7 +60,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[item] + 32) * 4], 4, 0);
+    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[slot] + 32) * 4], 4, 0);
 
     gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[ammo]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -108,7 +109,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     pauseCtx->nameColorSet = 0;
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
-        moveCursorResult = 0;
+        moveCursorResult = 0 || gSelectingMask;
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
 
         cursorItem = pauseCtx->cursorItem[PAUSE_ITEM];
@@ -282,7 +283,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         if (pauseCtx->cursorSpecialPos == 0) {
             if (cursorItem != PAUSE_ITEM_NONE) {
                 if ((ABS(pauseCtx->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-                    moveCursorResult = 0;
+                    moveCursorResult = 0 || gSelectingMask;
 
                     cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                     cursorY = pauseCtx->cursorY[PAUSE_ITEM];
@@ -350,6 +351,40 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 KaleidoScope_SetCursorVtx(pauseCtx, index, pauseCtx->itemVtx);
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
+                    if (CVar_GetS32("gMaskSelect", 0) && (gSaveContext.eventChkInf[8] & 0x8000) &&
+                        cursorSlot == SLOT_TRADE_CHILD && CHECK_BTN_ALL(input->press.button, BTN_A)) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        gSelectingMask = !gSelectingMask;
+                    }
+                    if (gSelectingMask) {
+                        pauseCtx->cursorColorSet = 8;
+                        if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
+                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) &&
+                            INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_TRUTH) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            ++INV_CONTENT(ITEM_TRADE_CHILD);
+                        } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
+                                    dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) &&
+                                   INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_KEATON) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            --INV_CONTENT(ITEM_TRADE_CHILD);
+                        } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelX > 30 || pauseCtx->stickRelY < -30 || pauseCtx->stickRelY > 30) ||
+                                   dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT)) {
+                            INV_CONTENT(ITEM_TRADE_CHILD) ^= ITEM_MASK_KEATON ^ ITEM_MASK_TRUTH;
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        }
+                        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
+                            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD) {
+                                if (!LINK_IS_ADULT || CVar_GetS32("gNoRestrictAge", 0)) {
+                                    gSaveContext.equips.buttonItems[cSlotIndex+1] = INV_CONTENT(ITEM_TRADE_CHILD);
+                                } else if (INV_CONTENT(ITEM_TRADE_CHILD) != gSaveContext.equips.buttonItems[cSlotIndex+1]) {
+                                    gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
+                                    gSaveContext.equips.buttonItems[cSlotIndex+1] = ITEM_NONE;
+                                }
+                            }
+                        }
+                        gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
+                    }
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
                     if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
@@ -464,7 +499,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
     for (i = 0; i < 15; i++) {
         if ((gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
-            KaleidoScope_DrawAmmoCount(pauseCtx, globalCtx->state.gfxCtx, gSaveContext.inventory.items[i]);
+            KaleidoScope_DrawAmmoCount(pauseCtx, globalCtx->state.gfxCtx, gSaveContext.inventory.items[i], i);
         }
     }
 
@@ -474,6 +509,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s16 animX, s16 animY) {
     Input* input = &globalCtx->state.input[0];
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    gSelectingMask = false;
 
     if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
         pauseCtx->equipTargetCBtn = 0;
