@@ -452,7 +452,7 @@ namespace SohImGui {
         Ship::Switch::SetupFont(io->Fonts);
     #endif
 
-#ifdef __WIIU__
+    #ifdef __WIIU__
         // Scale everything by 2 for the Wii U
         ImGui::GetStyle().ScaleAllSizes(2.0f);
         io->FontGlobalScale = 2.0f;
@@ -460,7 +460,7 @@ namespace SohImGui {
         // Setup display sizes
         io->DisplaySize.x = window_impl.gx2.width;
         io->DisplaySize.y =  window_impl.gx2.height;
-#endif
+    #endif
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
@@ -695,7 +695,11 @@ namespace SohImGui {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
         if (PlusMinusButton) {
+        #ifdef __WIIU__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+        #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+        #endif
         }
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
@@ -1527,10 +1531,10 @@ namespace SohImGui {
                     int val = CVar_GetS32(fps_cvar, minFps);
                     val = MAX(MIN(val, maxFps), 20);
 
-#ifdef __WIIU__
+                #ifdef __WIIU__
                     // only support divisors of 60 on the Wii U
                     val = 60 / (60 / val);
-#endif
+                #endif
 
                     int fps = val;
 
@@ -1546,24 +1550,28 @@ namespace SohImGui {
                     std::string MinusBTNFPSI = " - ##FPSInterpolation";
                     std::string PlusBTNFPSI = " + ##FPSInterpolation";
                     if (ImGui::Button(MinusBTNFPSI.c_str())) {
-#ifdef __WIIU__
+                    #ifdef __WIIU__
                         if (val >= 60) val = 30;
                         else val = 20;
-#else
+                    #else
                         val--;
-#endif
+                    #endif
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                #ifdef __WIIU__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+                #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                #endif
                     if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
-#ifdef __WIIU__
+                    #ifdef __WIIU__
                         // only support divisors of 60 on the Wii U
                         val = 60 / (60 / val);
-#endif
+                    #endif
                         if (val > 360)
                         {
                             val = 360;
@@ -1587,12 +1595,12 @@ namespace SohImGui {
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
                     if (ImGui::Button(PlusBTNFPSI.c_str())) {
-#ifdef __WIIU__
+                    #ifdef __WIIU__
                         if (val <= 20) val = 30;
                         else val = 60;
-#else
+                    #else
                         val++;
-#endif
+                    #endif
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
