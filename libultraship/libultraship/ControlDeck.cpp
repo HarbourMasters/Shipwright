@@ -6,6 +6,7 @@
 #include "KeyboardController.h"
 #include "SDLController.h"
 #include <Utils/StringHelper.h>
+#include "Cvar.h"
 
 namespace Ship {
     uint8_t* controllerBits;
@@ -51,18 +52,31 @@ namespace Ship {
         *controllerBits |= (backend->Connected()) << slot;
     }
 
-    void ControlDeck::WriteToPad(OSContPad* pad) const {
-        for (size_t i = 0; i < virtualDevices.size(); i++) {
-            const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
-            if (backend->GetGuid() == "Auto") {
-                for (const auto& device : physicalDevices) {
-                    device->Read(&pad[i], i);
-                }
-                continue;
-            }
-            backend->Read(&pad[i], i);
-        }
-    }
+	void ControlDeck::WriteToPad(OSContPad* pad) const {
+
+	#ifdef __SWITCH__
+		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0);
+	#else
+		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+	#endif
+
+		for (size_t i = 0; i < virtualDevices.size(); i++) {
+			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+			if (backend->GetGuid() == "Auto") {
+				for (const auto& device : physicalDevices) {
+					if(shouldBlockGameInput && device->GetGuid() != "Keyboard") {
+						continue;
+					}
+					device->Read(&pad[i], i);
+				}
+				continue;
+			}
+			if(shouldBlockGameInput && backend->GetGuid() != "Keyboard") {
+				continue;
+			}
+			backend->Read(&pad[i], i);
+		}
+	}
 
 #define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), slot, __VA_ARGS__)
 
