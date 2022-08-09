@@ -261,7 +261,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     f32 angle;
     s32 i;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
