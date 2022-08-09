@@ -196,6 +196,7 @@ pipeline {
                             userRemoteConfigs: scm.userRemoteConfigs
                         ])
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            unstash 'assets'
                             sh '''
                             if docker ps -aq --filter "name=sohwiiucont" | grep -q .; then docker rm -f sohwiiucont; fi
                             docker build . -t sohwiiu
