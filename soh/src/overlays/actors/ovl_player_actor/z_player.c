@@ -6251,6 +6251,9 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
+        case FLAG_COW_MILKED:
+            gSaveContext.cowsMilked[this->pendingFlag.flagID] = 1;
+            break;
         case FLAG_NONE:
         default:
             break;
