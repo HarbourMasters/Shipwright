@@ -386,8 +386,8 @@ static void gfx_gx2_set_scissor(int x, int y, int width, int height) {
     uint32_t buffer_height = current_framebuffer->color_buffer.surface.height;
     uint32_t buffer_width = current_framebuffer->color_buffer.surface.width;
 
-    current_scissor_x = std::min(0u, (uint32_t) x);
-    current_scissor_y = std::min(0u, buffer_height - y - height);
+    current_scissor_x = std::min((uint32_t) width, (uint32_t) x);
+    current_scissor_y = std::min((uint32_t) height, buffer_height - y - height);
     current_scissor_width = std::min((uint32_t) width, buffer_width);
     current_scissor_height = std::min((uint32_t) height, buffer_height);
 
