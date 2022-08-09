@@ -48,8 +48,10 @@ With the cmake build system you have two options for working on the project:
 #### Visual Studio
 To develop using Visual Studio you only need to use cmake to generate the solution file:
 ```powershell
-# Generates Ship.sln at `build/x64`
+# Generates Ship.sln at `build/x64` for Visual Studio 2022
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
+# or for Visual Studio 2019
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
 ```
 
 #### Visual Studio Code or another editor
