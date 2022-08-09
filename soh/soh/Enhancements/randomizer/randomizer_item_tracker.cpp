@@ -1154,7 +1154,6 @@ void DrawFloatingStones(int Icon_Cells_Size, int Icon_Spacing) {
 
 void DrawFloatingDungeons(int Icon_Cells_Size, int Icon_Spacing) {
     if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
-        ImGui::NewLine();
         ImGui::BeginGroup();
         if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
             ImGui::Text("DEKU");
