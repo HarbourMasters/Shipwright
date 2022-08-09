@@ -39,7 +39,7 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include "Hooks.h"
-#include <soh/Enhancements/custom_message/CustomMessageManager.h>
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -52,7 +52,7 @@
 #endif
 
 #include <Audio.h>
-#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include <functions.h>
 
 OTRGlobals* OTRGlobals::Instance;

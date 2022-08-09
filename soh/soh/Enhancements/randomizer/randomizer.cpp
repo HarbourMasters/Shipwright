@@ -13,8 +13,8 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom_message/CustomMessageManager.h>
-#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;

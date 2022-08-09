@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "z64item.h"
+#include "../../../include/z64item.h"
 
 #undef MESSAGE_END
 

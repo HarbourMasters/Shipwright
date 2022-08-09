@@ -6,8 +6,8 @@
 #include "vt.h"
 #include <Text.h>
 #include <message_data_static.h>
-#include <soh/Enhancements/custom_message/CustomMessageManager.h>
-#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;

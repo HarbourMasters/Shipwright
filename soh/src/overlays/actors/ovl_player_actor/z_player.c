@@ -20,7 +20,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
-#include "../../../../soh/Enhancements/custom_message/CustomMessageTypes.h"
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 typedef struct {
     /* 0x00 */ u8 itemId;
