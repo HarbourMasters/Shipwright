@@ -1441,6 +1441,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
+    { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -1450,8 +1451,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
-    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY},
-    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
@@ -1825,6 +1826,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Skip") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
+                        break;
+                    case RSK_SHUFFLE_TOKENS:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Dungeons") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "All Tokens") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                        break;
                 }
                 index++;
             }
@@ -4545,10 +4558,16 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
-                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-                                              messageEntry.english, messageEntry.german,
-                                              messageEntry.french });
+        if (messageEntry.giid == GI_ICE_TRAP) {
+            customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
+                                                { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                  messageEntry.german, messageEntry.french });
+        } else {
+            customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
+                                                       messageEntry.iid,
+                                                       { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                         messageEntry.german, messageEntry.french });
+        }
     }
 }
 
@@ -4574,23 +4593,27 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
+        GIMESSAGE(GI_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
+                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
-                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
+                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FISH, ITEM_FISH,
-                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
+                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
+        GIMESSAGE_UNTRANSLATED(
+            GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
+        GIMESSAGE_UNTRANSLATED(
+            GI_BOTTLE_WITH_FISH, ITEM_FISH,
+            "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
-                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
+                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
+                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
+                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
         GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
-                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
+                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
 
         GIMESSAGE_UNTRANSLATED(GI_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!"),
         GIMESSAGE_UNTRANSLATED(GI_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!"),
