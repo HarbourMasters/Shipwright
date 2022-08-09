@@ -166,12 +166,12 @@ void func_80A6E740(EnHs* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         func_80A6E3A0(this, func_80A6E630);
     } else {
-		s32 itemId = GI_ODD_MUSHROOM;
+        s32 itemId = GI_ODD_MUSHROOM;
         if (gSaveContext.n64ddFlag) {
             itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
         }
-		func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
     }
 
     this->unk_2A8 |= 1;
@@ -187,7 +187,7 @@ void func_80A6E7BC(EnHs* this, GlobalContext* globalCtx) {
                     itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
                 }
-				func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
+                func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
                 break;
             case 1:
                 Message_ContinueTextbox(globalCtx, 0x10B4);

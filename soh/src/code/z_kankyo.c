@@ -2054,14 +2054,14 @@ bool HatchPocketEgg(GlobalContext* globalCtx) {
         return Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
-	if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
+    if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
          return 0;
     }
 
     // Swap the flags, then replace the item if it's selected
-	gSaveContext.adultTradeItems ^= ADULT_TRADE_FLAG(ITEM_POCKET_EGG) | ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    gSaveContext.adultTradeItems ^= ADULT_TRADE_FLAG(ITEM_POCKET_EGG) | ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
-	return 1;
+    return 1;
 }
 
 // updates bgm/sfx and other things as the day progresses
