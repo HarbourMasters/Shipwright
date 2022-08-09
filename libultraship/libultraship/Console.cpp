@@ -100,11 +100,15 @@ namespace Ship {
 	}
 
 	void Console::Draw() {
+		if (!this->opened) {
+			CVar_SetS32("gConsoleEnabled", 0);
+			return;
+		}
+
 		bool input_focus = false;
-		if (!this->opened) return;
 
 		ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-		ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+		ImGui::Begin("Console", &this->opened, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 		// SohImGui::ShowCursor(ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows | ImGuiHoveredFlags_RectOnly), SohImGui::Dialogues::dConsole);
