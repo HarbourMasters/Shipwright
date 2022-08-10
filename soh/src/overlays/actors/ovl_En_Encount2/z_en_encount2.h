@@ -14,7 +14,7 @@ typedef struct {
     /* 0x0010 */ u8 isAlive;
     /* 0x0014 */ Vec3f moveDirection;
     /* 0x0020 */ Vec3f rot;
-    /* 0x002C */ s32 epoch;
+    /* 0x002C */ u32 epoch;
 } EnEncount2Particle; // size = 0x30
 
 typedef struct EnEncount2 {

@@ -4,7 +4,8 @@
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include <memory>
+#include <soh/Enhancements/randomizer/randomizerTypes.h>
 
 class Randomizer {
   private:
@@ -27,6 +28,10 @@ class Randomizer {
     Randomizer();
     ~Randomizer();
 
+    static const std::string getItemMessageTableID;
+    static const std::string hintMessageTableID;
+    static const std::string scrubMessageTableID;
+
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
     s32 GetItemIDFromGetItemID(s32 getItemId);
@@ -41,11 +46,11 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    std::string GetHintFromCheck(RandomizerCheck check);
     std::list<s32> EntranceOverrideIndex;
     std::list<s32> EntranceOverrideNewIndex;
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+    static void CreateCustomMessages();
 };
 
 #ifdef __cplusplus

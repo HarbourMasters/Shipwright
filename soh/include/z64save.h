@@ -191,6 +191,7 @@ typedef struct {
     u8 seedIcons[5];
     u8 dungeonsDone[8];
     u8 trialsDone[6];
+    u8 cowsMilked[10];
     u8 temporaryWeapon;
 } SaveContext; // size = 0x1428
 

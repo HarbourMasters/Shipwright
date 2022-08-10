@@ -126,6 +126,8 @@ extern string_view magicBeansDesc;
 extern string_view merchantsDesc;
 extern string_view merchantsHintsDesc;
 
+extern string_view frogSongRupeesDesc;
+
 extern string_view adultTradeDesc;
 
 extern string_view chestMinigameDesc;

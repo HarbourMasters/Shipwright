@@ -385,6 +385,13 @@ string_view merchantsHintsDesc        = "These hints will make Medigoron and the
                                         "The Clearer Hints setting will affect how they\n" //
                                         "refer to the item.";                              //
 /*------------------------------                                                           //
+|   SHUFFLE FROG SONG RUPEES   |                                                           //
+------------------------------*/                                                           //
+string_view frogSongRupeesDesc        = "Enabling this adds 5 Purple Rupees to the item\n" //
+                                        "pool and shuffles the rewards from playing Zelda's\n"
+                                        "Lullaby, Epona's Song, Saria's Song, Sun's Song,\n"
+                                        "and Song of Time to the frogs in Zora's River.\n";//
+/*------------------------------                                                           //
 |     SHUFFLE ADULT TRADE      |                                                           //
 ------------------------------*/                                                           //
 string_view adultTradeDesc            = "Enabling this adds all of the adult trade quest\n"//

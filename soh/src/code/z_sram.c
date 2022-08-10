@@ -5,6 +5,7 @@
 
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
+#define NUM_COWS 10
 
 /**
  *  Initialize new save.
@@ -619,6 +620,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.trialsDone[i] = 0;
         }
 
+        // Sets all cows to unmilked when generating a rando save.
+        for (u8 i = 0; i < NUM_COWS; i++) {
+            gSaveContext.cowsMilked[i] = 0;
+        }
+
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
         gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal
@@ -793,11 +799,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.eventChkInf[1] |= (1 << 3);
             gSaveContext.eventChkInf[1] |= (1 << 4);
 
+            // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM. TODO: Is this flag used for anything else?
+            gSaveContext.eventChkInf[4] |= 1;
+
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;
-
-            // make sure saria is at SFM
-            gSaveContext.eventChkInf[4] |= (1 << 0);
 
             // set this at the end to ensure we always start with the letter
             // this is for the off chance we got the weird egg from impa (which should never happen)
