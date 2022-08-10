@@ -10,6 +10,7 @@ typedef struct {
 } Sprite;
 
 typedef enum {
+    RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,
     RC_QUEEN_GOHMA,
     RC_KING_DODONGO,
@@ -752,7 +753,6 @@ typedef enum {
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
-    RC_UNKNOWN_CHECK,
     RC_MAX
 } RandomizerCheck;
 
