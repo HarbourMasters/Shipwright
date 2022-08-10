@@ -1793,18 +1793,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 4;
                         } else if(it.value() == "Anywhere") {
                             gSaveContext.randoSettings[index].value = 5;
-                        } else if(it.value() == "LACS-Vanilla") {
-                            gSaveContext.randoSettings[index].value = 6;
-                        } else if(it.value() == "LACS-Medallions") {
-                            gSaveContext.randoSettings[index].value = 7;
-                        } else if(it.value() == "LACS-Stones") {
-                            gSaveContext.randoSettings[index].value = 8;
-                        } else if(it.value() == "LACS-Rewards") {
-                            gSaveContext.randoSettings[index].value = 9;
-                        } else if(it.value() == "LACS-Dungeons") {
-                            gSaveContext.randoSettings[index].value = 10;
-                        } else if(it.value() == "LACS-Tokens") {
-                            gSaveContext.randoSettings[index].value = 11;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
