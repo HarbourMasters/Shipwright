@@ -4419,13 +4419,16 @@ void CreateScrubMessages() {
     }
 }
 
+CustomMessageMinimal NaviMessages[];
+
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, 0x00,
-                                        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, "Test Eng0", "Test Ger", "Test Fre" });
-    customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, 0x01,
-                                        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, "Test Eng1", "Test Ger", "Test Fre" });
+    for (int i = 0; i <= 3; i++) {
+        customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
+                                              NaviMessages[i].german, NaviMessages[i].french });
+    }
 }
 
 void Randomizer::CreateCustomMessages() {
@@ -4471,3 +4474,17 @@ void Rando_Init(void) {
 }
 
 }
+
+CustomMessageMinimal NaviMessages[3] = { { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
+                                           "%cGerman tip about playing rando! 0", 
+                                           "%cFrench tip about playing rando! 0" }, 
+
+                                         { "%cSometimes you can use the %rMegaton &Hammer %cinstead of bombs!", 
+                                           "%cGerman tip about playing rando! 1",
+                                           "%cFrench tip about playing rando! 1" }, 
+
+                                         { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do &you know where they are?",
+                                           "%cGerman tip about playing rando! 2",
+                                           "%cFrench tip about playing rando! 2" }
+
+};

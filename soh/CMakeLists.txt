@@ -485,7 +485,6 @@ set(Source_Files__src__code
     "src/code/z_map_exp.c"
     "src/code/z_map_mark.c"
     "src/code/z_message_PAL.c"
-    "src/code/z_message_RandoNaviTips.c"
     "src/code/z_moji.c"
     "src/code/z_msgevent.c"
     "src/code/z_olib.c"
