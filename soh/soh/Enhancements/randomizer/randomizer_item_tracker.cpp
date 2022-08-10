@@ -1643,6 +1643,7 @@ void DrawItemTrackerOptions(bool& open) {
 }
 
 void InitItemTracker() {
+    CVar_RegisterS32("gRandoTrackIconSize", 32);
     SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
     SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
 }
