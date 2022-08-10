@@ -2443,7 +2443,7 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     f32 phi_f20;
     f32 phi_f22;
     Vec3f sp110;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);

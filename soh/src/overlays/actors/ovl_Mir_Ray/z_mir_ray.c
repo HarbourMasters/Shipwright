@@ -482,7 +482,7 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 i;
     MirRayShieldReflection reflection[6];
     s32 temp;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     this->reflectIntensity = 0.0f;

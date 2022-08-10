@@ -165,6 +165,11 @@ void LocationTable_Init() {
     //Zoras River
     locationTable[ZR_OPEN_GROTTO_CHEST]                  = ItemLocation::Chest      (0x3E, 0x09, "ZR Open Grotto Chest",                 ZR_OPEN_GROTTO_CHEST,                  RED_RUPEE,                 {Category::cZorasRiver, Category::cGrotto,},                                                                                                                                   SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_MAGIC_BEAN_SALESMAN]                = ItemLocation::Base       (0x54, 0x16, "ZR Magic Bean Salesman",               ZR_MAGIC_BEAN_SALESMAN,                MAGIC_BEAN,                {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::MagicBeans(0x54, 0x01),          SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_FROGS_ZELDAS_LULLABY]               = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs Zelda's Lullaby",             ZR_FROGS_ZELDAS_LULLABY,               PURPLE_RUPEE,              {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_FROGS_EPONAS_SONG]                  = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs Epona's Song",                ZR_FROGS_EPONAS_SONG,                  PURPLE_RUPEE,              {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_FROGS_SARIAS_SONG]                  = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs Saria's Song",                ZR_FROGS_SARIAS_SONG,                  PURPLE_RUPEE,              {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_FROGS_SUNS_SONG]                    = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs Sun's Song",                  ZR_FROGS_SUNS_SONG,                    PURPLE_RUPEE,              {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_FROGS_SONG_OF_TIME]                 = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs Song of Time",                ZR_FROGS_SONG_OF_TIME,                 PURPLE_RUPEE,              {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_FROGS_IN_THE_RAIN]                  = ItemLocation::Base       (0x54, 0x3E, "ZR Frogs in the Rain",                 ZR_FROGS_IN_THE_RAIN,                  PIECE_OF_HEART,            {Category::cZorasRiver,},                                                                                             SpoilerCollectionCheck::EventChkInf(0xD6),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_FROGS_OCARINA_GAME]                 = ItemLocation::Base       (0x54, 0x76, "ZR Frogs Ocarina Game",                ZR_FROGS_OCARINA_GAME,                 PIECE_OF_HEART,            {Category::cZorasRiver, Category::cMinigame,},                                                                        SpoilerCollectionCheck::EventChkInf(0xD0),               SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH]  = ItemLocation::Collectable(0x54, 0x04, "ZR Near Open Grotto Freestanding PoH", ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,  PIECE_OF_HEART,            {Category::cZorasRiver,},                                                                                                                                                      SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
@@ -1302,6 +1307,11 @@ std::vector<uint32_t> overworldLocations = {
   //Zoras River
   ZR_OPEN_GROTTO_CHEST,
   ZR_MAGIC_BEAN_SALESMAN,
+  ZR_FROGS_ZELDAS_LULLABY,
+  ZR_FROGS_EPONAS_SONG,
+  ZR_FROGS_SARIAS_SONG,
+  ZR_FROGS_SUNS_SONG,
+  ZR_FROGS_SONG_OF_TIME,
   ZR_FROGS_IN_THE_RAIN,
   ZR_FROGS_OCARINA_GAME,
   ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,
@@ -1460,11 +1470,11 @@ void GenerateLocationPool() {
 
 void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmediately /*= false*/, bool setHidden /*= false*/) {
   auto loc = Location(locKey);
-  SPDLOG_INFO("\n");
-  SPDLOG_INFO(ItemTable(item).GetName().GetEnglish());
-  SPDLOG_INFO(" placed at ");
-  SPDLOG_INFO(loc->GetName());
-  SPDLOG_INFO("\n\n");
+  SPDLOG_DEBUG("\n");
+  SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+  SPDLOG_DEBUG(" placed at ");
+  SPDLOG_DEBUG(loc->GetName());
+  SPDLOG_DEBUG("\n\n");
 
   if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
     ItemTable(item).ApplyEffect();
@@ -1551,7 +1561,7 @@ void AddExcludedOptions() {
 }
 
 void CreateItemOverrides() {
-    SPDLOG_INFO("NOW CREATING OVERRIDES\n\n");
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
         ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
@@ -1563,18 +1573,18 @@ void CreateItemOverrides() {
             .key = loc->Key(),
             .value = val,
         });
-        SPDLOG_INFO("\tScene: ");
-        SPDLOG_INFO(std::to_string(loc->Key().scene));
-        SPDLOG_INFO("\tType: ");
-        SPDLOG_INFO(std::to_string(loc->Key().type));
-        SPDLOG_INFO("\tFlag:  ");
-        SPDLOG_INFO(std::to_string(loc->Key().flag));
-        SPDLOG_INFO("\t");
-        SPDLOG_INFO(loc->GetName());
-        SPDLOG_INFO(": ");
-        SPDLOG_INFO(loc->GetPlacedItemName().GetEnglish());
-        SPDLOG_INFO("\n");
+        SPDLOG_DEBUG("\tScene: ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().scene));
+        SPDLOG_DEBUG("\tType: ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().type));
+        SPDLOG_DEBUG("\tFlag:  ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().flag));
+        SPDLOG_DEBUG("\t");
+        SPDLOG_DEBUG(loc->GetName());
+        SPDLOG_DEBUG(": ");
+        SPDLOG_DEBUG(loc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG("\n");
     }
-    SPDLOG_INFO("Overrides Created: ");
-    SPDLOG_INFO(std::to_string(overrides.size()));
+    SPDLOG_DEBUG("Overrides Created: ");
+    SPDLOG_DEBUG(std::to_string(overrides.size()));
 }

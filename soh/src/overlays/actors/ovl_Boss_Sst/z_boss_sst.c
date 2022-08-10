@@ -2706,7 +2706,7 @@ s32 BossSst_OverrideHandTrailDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx**
 
 void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
     BossSst* this = (BossSst*)thisx;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);

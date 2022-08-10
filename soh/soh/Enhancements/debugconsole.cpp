@@ -14,7 +14,6 @@
 #define Path _Path
 #define PATH_HACK
 #include <Utils/StringHelper.h>
-#include <Utils/File.h>
 
 #include "Window.h"
 #include "Lib/ImGui/imgui_internal.h"
@@ -35,12 +34,12 @@ extern GlobalContext* gGlobalCtx;
 
 static bool ActorSpawnHandler(const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
-        ERROR("Not enough arguments passed to actorspawn");
+        SohImGui::console->SendErrorMessage("Not enough arguments passed to actorspawn");
         return CMD_FAILED;
     }
 
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -76,7 +75,7 @@ static bool ActorSpawnHandler(const std::vector<std::string>& args) {
 
     if (Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
-        ERROR("Failed to spawn actor. Actor_Spawn returned NULL");
+        SohImGui::console->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -85,14 +84,13 @@ static bool ActorSpawnHandler(const std::vector<std::string>& args) {
 
 static bool KillPlayerHandler([[maybe_unused]] const std::vector<std::string>&) {
     gSaveContext.health = 0;
-
-    INFO("[SOH] You've met with a terrible fate, haven't you?");
+    SohImGui::console->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
     return CMD_SUCCESS;
 }
 
 static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -101,18 +99,18 @@ static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
     try {
         health = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Health value must be an integer.");
+        SohImGui::console->SendErrorMessage("[SOH] Health value must be an integer.");
         return CMD_FAILED;
     }
 
     if (health < 0) {
-        ERROR("[SOH] Health value must be a positive integer");
+        SohImGui::console->SendErrorMessage("[SOH] Health value must be a positive integer");
         return CMD_SUCCESS;
     }
 
     gSaveContext.health = health * 0x10;
 
-    INFO("[SOH] Player health updated to %d", health);
+    SohImGui::console->SendInfoMessage("[SOH] Player health updated to %d", health);
     return CMD_SUCCESS;
 }
 
@@ -134,31 +132,32 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
         rupeeAmount = std::stoi(args[1]);
     }
     catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Rupee count must be an integer.");
+        SohImGui::console->SendErrorMessage("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
 
     if (rupeeAmount < 0) {
-        ERROR("[SOH] Rupee count must be positive");
+        SohImGui::console->SendErrorMessage("[SOH] Rupee count must be positive");
         return CMD_FAILED;
     }
 
     gSaveContext.rupees = rupeeAmount;
 
-    INFO("Set rupee count to %u", rupeeAmount);
+    SohImGui::console->SendInfoMessage("Set rupee count to %u", rupeeAmount);
     return CMD_SUCCESS;
 }
 
 static bool SetPosHandler(const std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
     Player* player = GET_PLAYER(gGlobalCtx);
 
     if (args.size() == 1) {
-        INFO("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x, player->actor.world.pos.y,
+        SohImGui::console->SendInfoMessage("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+                                            player->actor.world.pos.y,
              player->actor.world.pos.z);
         return CMD_SUCCESS;
     }
@@ -169,14 +168,15 @@ static bool SetPosHandler(const std::vector<std::string> args) {
     player->actor.world.pos.y = std::stof(args[2]);
     player->actor.world.pos.z = std::stof(args[3]);
 
-    INFO("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x, player->actor.world.pos.y,
+    SohImGui::console->SendInfoMessage("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+                                        player->actor.world.pos.y,
          player->actor.world.pos.z);
     return CMD_SUCCESS;
 }
 
 static bool ResetHandler(std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -197,7 +197,7 @@ const static std::map<std::string, uint16_t> ammoItems{
 
 static bool AmmoHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -206,19 +206,19 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
     try {
         count = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("Ammo count must be an integer");
+        SohImGui::console->SendErrorMessage("Ammo count must be an integer");
         return CMD_FAILED;
     }
 
     if (count < 0) {
-        ERROR("Ammo count must be positive");
+        SohImGui::console->SendErrorMessage("Ammo count must be positive");
         return CMD_FAILED;
     }
 
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
-        ERROR("Invalid item passed");
+        SohImGui::console->SendErrorMessage("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -240,7 +240,7 @@ const static std::map<std::string, uint16_t> bottleItems{
 
 static bool BottleHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -248,19 +248,19 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     try {
         slot = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Bottle slot must be an integer.");
+        SohImGui::console->SendErrorMessage("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
 
     if ((slot < 1) || (slot > 4)) {
-        ERROR("Invalid slot passed");
+        SohImGui::console->SendErrorMessage("Invalid slot passed");
         return CMD_FAILED;
     }
 
     const auto& it = bottleItems.find(args[1]);
 
     if (it ==  bottleItems.end()) {
-        ERROR("Invalid item passed");
+        SohImGui::console->SendErrorMessage("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -272,7 +272,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
 
 static bool BHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -282,7 +282,7 @@ static bool BHandler(const std::vector<std::string>& args) {
 
 static bool ItemHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -293,7 +293,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
 
 static bool EntranceHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -302,11 +302,11 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     try {
         entrance = std::stoi(args[1], nullptr, 16);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Entrance value must be a Hex number.");
+        SohImGui::console->SendErrorMessage("[SOH] Entrance value must be a Hex number.");
         return CMD_FAILED;
     }
-    gGlobalCtx->nextEntranceIndex = entrance;
 
+    gGlobalCtx->nextEntranceIndex = entrance;
     gGlobalCtx->sceneLoadFlag = 0x14;
     gGlobalCtx->fadeTransition = 11;
     gSaveContext.nextTransition = 11;
@@ -318,10 +318,10 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Saved state to slot %u", slot);
+            SohImGui::console->SendInfoMessage("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+            SohImGui::console->SendErrorMessage("[SOH] Can not save a state outside of \"GamePlay\"");
             return CMD_FAILED;
 
     }
@@ -333,16 +333,16 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Loaded state from slot %u", slot);
+            SohImGui::console->SendInfoMessage("[SOH] Loaded state from slot (%u)", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
+            SohImGui::console->SendErrorMessage("[SOH] Invalid State Slot Number (%u)", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERROR("[SOH] State Slot (%u) is empty", slot);
+            SohImGui::console->SendErrorMessage("[SOH] State Slot (%u) is empty", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+            SohImGui::console->SendErrorMessage("[SOH] Can not load a state outside of \"GamePlay\"");
             return CMD_FAILED;
     }
 
@@ -350,7 +350,7 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
 
 static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
     int slot;
@@ -358,17 +358,18 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
     try {
         slot = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] SaveState slot value must be a number.");
+        SohImGui::console->SendErrorMessage("[SOH] SaveState slot value must be a number.");
         return CMD_FAILED;
     }
 
     if (slot < 0) {
-        ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
+        SohImGui::console->SendErrorMessage("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return CMD_FAILED;
     }
 
     OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
-    INFO("[SOH] Slot %u selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
+    SohImGui::console->SendInfoMessage("[SOH] Slot %u selected",
+                                        OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return CMD_SUCCESS;
 }
 
@@ -426,9 +427,9 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
     else
         CVar_SetS32(args[1].c_str(), std::stoi(args[2]));
 
-    DebugConsole_SaveCVars();
+    CVar_Save();
 
-    //INFO("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
+    //SohImGui::console->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
 }
 
@@ -442,17 +443,17 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
     if (cvar != nullptr)
     {
         if (cvar->type == CVarType::S32)
-            INFO("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
+            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
         else if (cvar->type == CVarType::Float)
-            INFO("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
+            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
         else if (cvar->type == CVarType::String)
-            INFO("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
+            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
         else if (cvar->type == CVarType::RGBA)
-            INFO("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
+            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
     }
     else
     {
-        INFO("[SOH] Could not find variable %s", args[1].c_str());
+        SohImGui::console->SendInfoMessage("[SOH] Could not find variable %s", args[1].c_str());
     }
 
 
@@ -507,123 +508,5 @@ void DebugConsole_Init(void) {
                                    Ship::ArgumentType::NUMBER,
                                }
         } });
-    DebugConsole_LoadCVars();
-}
-
-template <typename Numeric> bool is_number(const std::string& s) {
-    Numeric n;
-    return ((std::istringstream(s) >> n >> std::ws).eof());
-}
-
-void DebugConsole_LoadLegacyCVars() {
-    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
-    if (File::Exists(cvarsConfig)) {
-        const auto lines = File::ReadAllLines(cvarsConfig);
-
-        for (const std::string& line : lines) {
-            std::vector<std::string> cfg = StringHelper::Split(line, " = ");
-            if (line.empty()) continue;
-            if (cfg.size() < 2) continue;
-
-            if (cfg[1].find("\"") == std::string::npos && (cfg[1].find("#") != std::string::npos)) 
-            {
-                std::string value(cfg[1]);
-                value.erase(std::remove_if(value.begin(), value.end(), [](char c) { return c == '#'; }), value.end());
-                auto splitTest = StringHelper::Split(value, "\r")[0];
-
-                uint32_t val = std::stoul(splitTest, nullptr, 16);
-                Color_RGBA8 clr;
-                clr.r = val >> 24;
-                clr.g = val >> 16;
-                clr.b = val >> 8;
-                clr.a = val & 0xFF;
-                CVar_SetRGBA(cfg[0].c_str(), clr);
-            }
-
-            if (cfg[1].find("\"") != std::string::npos) {
-                std::string value(cfg[1]);
-                value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
-                CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
-            }
-            if (is_number<float>(cfg[1])) {
-                CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
-            }
-            if (is_number<int>(cfg[1])) {
-                CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
-            }
-        }
-
-        fs::remove(cvarsConfig);
-    }
-}
-
-void DebugConsole_LoadCVars() {
-
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-    pConf->reload();
-
-    for (const auto& item : pConf->rjson["CVars"].items()) {
-        auto value = item.value();
-        switch (value.type()) {
-            case nlohmann::detail::value_t::array:
-                break;
-            case nlohmann::detail::value_t::object:
-                if (value["Type"].get<std::string>() == mercuryRGBAObjectType) {
-                    Color_RGBA8 clr;
-                    clr.r = value["R"].get<uint8_t>();
-                    clr.g = value["G"].get<uint8_t>();
-                    clr.b = value["B"].get<uint8_t>();
-                    clr.a = value["A"].get<uint8_t>();
-                }
-
-                break;
-            case nlohmann::detail::value_t::string:
-                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
-                break;
-            case nlohmann::detail::value_t::boolean:
-                CVar_SetS32(item.key().c_str(), value.get<bool>());
-                break;
-            case nlohmann::detail::value_t::number_unsigned:
-            case nlohmann::detail::value_t::number_integer:
-                CVar_SetS32(item.key().c_str(), value.get<int>());
-                break;
-            case nlohmann::detail::value_t::number_float:
-                CVar_SetFloat(item.key().c_str(), value.get<float>());
-                break;
-            default: ;
-        }
-        if (item.key() == "gOpenMenuBar") {
-            int bp = 0;
-        }
-    }
-
-    DebugConsole_LoadLegacyCVars();
-}
-
-void DebugConsole_SaveCVars()
-{
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-
-    for (const auto &cvar : cvars) {
-        const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
-
-        if (cvar.second->type == CVarType::String && cvar.second->value.valueStr != nullptr)
-            pConf->setString(key, std::string(cvar.second->value.valueStr));
-        else if (cvar.second->type == CVarType::S32)
-            pConf->setInt(key, cvar.second->value.valueS32);
-        else if (cvar.second->type == CVarType::Float)
-            pConf->setFloat(key, cvar.second->value.valueFloat);
-        else if (cvar.second->type == CVarType::RGBA)
-        {
-            auto keyStr = key.c_str();
-            Color_RGBA8 clr = cvar.second->value.valueRGBA;
-            pConf->setUInt(StringHelper::Sprintf("%s.R", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.G", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.B", keyStr), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.A", keyStr), clr.r);
-            pConf->setString(StringHelper::Sprintf("%s.Type", keyStr), mercuryRGBAObjectType);
-        }
-    }
-
-    pConf->save();
+    CVar_Load();
 }
