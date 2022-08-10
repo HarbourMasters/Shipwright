@@ -2413,7 +2413,7 @@ void drawCheck(int i) {
         ImGui::PopStyleColor();
     }
 
-    if (showSpoilers) {
+    if (showSpoilers || checks[i]) {
         ImGui::SameLine();
         if (checks[i])
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 150, 0, 100));
