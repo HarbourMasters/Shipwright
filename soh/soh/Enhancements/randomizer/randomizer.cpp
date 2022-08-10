@@ -3669,9 +3669,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleSmallKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[12] = { "Vanilla", "Own dungeon", "Start with", "Any Dungeon", 
-                                                "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Medallions", 
-                                                "LACS-Stones", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens" };
+    const char* randoShuffleGanonsBossKey[6] = { "Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere" };
 
     // Timesaver Settings
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
