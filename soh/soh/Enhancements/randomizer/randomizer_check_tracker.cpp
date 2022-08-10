@@ -2636,7 +2636,7 @@ void drawCheck(int i) {
         return;
     }
 
-    // Skip shop items, Scrubs, Cows (if set so) and Golden Skulltulas (if set so)
+    // Skip shop items, Scrubs, Cows (if not Cowsanity) and Golden Skulltulas (if set so)
     if (isIgnoredCheck(gSaveContext.itemLocations[i].check) || isShopCheck(gSaveContext.itemLocations[i].check) ||
         (!showGs && isGsCheck(gSaveContext.itemLocations[i].check)) ||
         isScrubCheck(gSaveContext.itemLocations[i].check) ||
@@ -2659,24 +2659,27 @@ void drawCheck(int i) {
 
     if (showSpoilers || checks[i]) {
         ImGui::SameLine();
-        if (checks[i])
+        if (checks[i]) {
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 150, 0, 100));
-        else
+        } else {
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
+        }
         ImGui::Text("(%s)", GetEnumToName[gSaveContext.itemLocations[i].get].c_str());
         ImGui::PopStyleColor();
     }
 
     currentRegionCheckCount++;
-    if (checks[i])
+    if (checks[i]) {
         currentRegionCheckedCheckCount++;
+    }
 
     ImGui::Dummy(ImVec2(0.0f, 0.5f));
 }
 
 void DrawTracker() {
-    if (gGlobalCtx == nullptr)
+    if (gGlobalCtx == nullptr) {
         return;
+    }
 
     const char* regionStrings[36] = {
         "Current",
@@ -2752,7 +2755,7 @@ void DrawTracker() {
             if (selectedRegion == 1) {
                 showAll = true;
             } else if (selectedRegion > 1) {
-                currentRegion = static_cast<RandomizerRegion>(selectedRegion + -1);
+                currentRegion = static_cast<RandomizerRegion>(selectedRegion - 1);
             } else {
                 setRegionByCurrentSceneID();
             }
