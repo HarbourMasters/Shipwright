@@ -1304,7 +1304,7 @@ namespace Settings {
     ctx.numRequiredCuccos    = NumRequiredCuccos.Value<uint8_t>();
     ctx.kingZoraSpeed        = KingZoraSpeed.Value<uint8_t>();
     ctx.completeMaskQuest    = CompleteMaskQuest ? 1 : 0;
-    ctx.enableGlitchCutscenes = CompleteMaskQuest ? 1 : 0;
+    ctx.enableGlitchCutscenes = EnableGlitchCutscenes ? 1 : 0;
     ctx.quickText            = QuickText.Value<uint8_t>();
     ctx.skipSongReplays      = SkipSongReplays.Value<uint8_t>();
     ctx.keepFWWarpPoint      = KeepFWWarpPoint ? 1 : 0;
