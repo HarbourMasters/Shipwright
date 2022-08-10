@@ -71,9 +71,9 @@ namespace Ship {
 		this->filterBuffer = new char[MAX_BUFFER_SIZE];
 		strcpy(this->filterBuffer, "");
 		AddCommand("help", { HelpCommand, "Shows all the commands" });
-		AddCommand("help", { ClearCommand, "Clear the console history" });
-		AddCommand("help", { BindCommand, "Binds key to commands" });
-		AddCommand("help", { BindToggleCommand, "Bind key as a bool toggle" });
+		AddCommand("clear", { ClearCommand, "Clear the console history" });
+		AddCommand("bind", { BindCommand, "Binds key to commands" });
+		AddCommand("bind-toggle", { BindToggleCommand, "Bind key as a bool toggle" });
 	}
 
 	void Console::Update() {
