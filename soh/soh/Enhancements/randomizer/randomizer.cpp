@@ -4424,7 +4424,7 @@ CustomMessageMinimal NaviMessages[];
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    for (int i = 0; i <= 3; i++) {
+    for (int i = 0; i <= 14; i++) {
         customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
                                               NaviMessages[i].german, NaviMessages[i].french });
@@ -4475,16 +4475,66 @@ void Rando_Init(void) {
 
 }
 
-CustomMessageMinimal NaviMessages[3] = { { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
-                                           "%cGerman tip about playing rando! 0", 
-                                           "%cFrench tip about playing rando! 0" }, 
+CustomMessageMinimal NaviMessages[15] = { 
+    
+    { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
+      "%cGerman tip about playing rando! 0", 
+      "%cFrench tip about playing rando! 0" }, 
 
-                                         { "%cSometimes you can use the %rMegaton &Hammer %cinstead of bombs!", 
-                                           "%cGerman tip about playing rando! 1",
-                                           "%cFrench tip about playing rando! 1" }, 
+    { "%cSometimes you can use the %rMegaton&Hammer %cinstead of bombs!", 
+      "%cGerman tip about playing rando! 1",
+      "%cFrench tip about playing rando! 1" }, 
 
-                                         { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do &you know where they are?",
-                                           "%cGerman tip about playing rando! 2",
-                                           "%cFrench tip about playing rando! 2" }
+    { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do&you know where they are?",
+      "%cGerman tip about playing rando! 2",
+      "%cFrench tip about playing rando! 2" },
+
+    { "%cStuck on this seed? You could &throw in the towel and check the&%wspoiler log%c...",
+      "%cGerman tip about playing rando! 3",
+      "%cFrench tip about playing rando! 3" },
+
+    { "%cDid you know that the %yHover&Boots %ccan be used to cross&quicksand?", 
+      "%cGerman tip about playing rando! 4",
+      "%cFrench tip about playing rando! 4" },
+
+    { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!", 
+      "%cGerman tip about playing rando! 5",
+      "%cFrench tip about playing rando! 5" },
+
+    { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?", 
+      "%cGerman tip about playing rando! 6",
+      "%cFrench tip about playing rando! 6" },
+
+    { "%cYou know the %wBombchu Bowling&Alley%c? I heard %wonly two of the &prizes %care worthwhile. The rest &is junk!", 
+      "%cGerman tip about playing rando! 7",
+      "%cFrench tip about playing rando! 7" },
+
+    { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
+      "%cGerman tip about playing rando! 8",
+      "%cFrench tip about playing rando! 8" },
+
+    { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your safety!", 
+      "%cGerman tip about playing rando! 9",
+      "%cFrench tip about playing rando! 9" },
+
+    { "%cIf you can't pick up a %rbomb&flower %cwith your hands, you can&still detonate it with %rfire %cor&with %warrows%c!", 
+      "%cGerman tip about playing rando! 10",
+      "%cFrench tip about playing rando! 10" },
+
+    { "%cEven an adult can't push large&blocks without some %wextra&strength%c!", 
+      "%cGerman tip about playing rando! 11",
+      "%cFrench tip about playing rando! 11" },
+
+    { "%cI've heard that %rFlare Dancer&%cis weak to the Master Sword!&Have you tried it?", 
+      "%cGerman tip about playing rando! 12",
+      "%cFrench tip about playing rando! 12" },
+
+    { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!", 
+      "%cGerman tip about playing rando! 13",
+      "%cFrench tip about playing rando! 13" },
+
+    { "%cI hear the patch of %wsoft soil&%cin %bZora's River %cis the only one&that isn't home to a %rspider%c!", 
+      "%cGerman tip about playing rando! 14",
+      "%cFrench tip about playing rando! 14" },
 
 };

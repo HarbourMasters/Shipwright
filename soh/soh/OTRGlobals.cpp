@@ -1450,7 +1450,7 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
 }
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
-    u16 naviTextId = rand() % 3;
+    u16 naviTextId = rand() % 15;
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
