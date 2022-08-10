@@ -2537,6 +2537,8 @@ namespace Settings {
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     ShuffleFrogSongRupees.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES]);
 
+    ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
+
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);
     
@@ -2544,14 +2546,7 @@ namespace Settings {
     StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
 
-    if(cvarSettings[RSK_STARTING_MAPS_COMPASSES]) {
-      // "Start With" is index 0
-      MapsAndCompasses.SetSelectedIndex(0); 
-    } else {
-      // We don't support maps/compasses outside of their own dungeon yet
-      // "Own Dungeon" is index 2
-      MapsAndCompasses.SetSelectedIndex(2);
-    }
+    MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);
@@ -2563,6 +2558,9 @@ namespace Settings {
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
 
+    Keysanity.SetSelectedIndex(cvarSettings[RSK_KEYSANITY]);
+    GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
+    BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
     NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
@@ -2571,6 +2569,8 @@ namespace Settings {
     SkipEponaRace.SetSelectedIndex(cvarSettings[RSK_SKIP_EPONA_RACE]);
 
     SkipTowerEscape.SetSelectedIndex(cvarSettings[RSK_SKIP_TOWER_ESCAPE]);
+
+    CompleteMaskQuest.SetSelectedIndex(cvarSettings[RSK_COMPLETE_MASK_QUEST]);
 
     NightGSExpectSuns.SetSelectedIndex(cvarSettings[RSK_SKULLS_SUNS_SONG]);
 

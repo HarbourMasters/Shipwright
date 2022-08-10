@@ -1184,6 +1184,6 @@ void GenerateItemPool() {
 }
 
 void AddJunk() {
-  SPDLOG_INFO("HAD TO PLACE EXTRA JUNK ");
+  SPDLOG_DEBUG("HAD TO PLACE EXTRA JUNK ");
   AddItemToMainPool(GetPendingJunkItem());
 }

@@ -1530,7 +1530,7 @@ namespace SohImGui {
                 if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
                     for (int sId = 0; sId <= SwitchProfiles::POWERSAVINGM3; sId++) {
                         if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
-                            INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
                             CVar_SetS32("gSwitchPerfMode", sId);
                             Switch::ApplyOverclock();
                             needs_save = true;
@@ -1751,6 +1751,14 @@ namespace SohImGui {
                     CVar_SetS32("gItemTrackerEnabled", !currentValue);
                     needs_save = true;
                     customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+                }
+                InsertPadding();
+                if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
+                {
+                    bool currentValue = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
+                    CVar_SetS32("gItemTrackerSettingsEnabled", !currentValue);
+                    needs_save = true;
+                    customWindows["Item Tracker Settings"].enabled = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
                 }
                 ImGui::PopStyleVar(3);
                 ImGui::PopStyleColor(1);

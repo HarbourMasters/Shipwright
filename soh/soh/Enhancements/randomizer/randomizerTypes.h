@@ -10,6 +10,7 @@ typedef struct {
 } Sprite;
 
 typedef enum {
+    RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,
     RC_QUEEN_GOHMA,
     RC_KING_DODONGO,
@@ -752,7 +753,7 @@ typedef enum {
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
-    RC_UNKNOWN_CHECK
+    RC_MAX
 } RandomizerCheck;
 
 // based on https://github.com/TestRunnerSRL/OoT-Randomizer/blob/e337d7f603b91a6bacb618fb32cc7fd70ed9ffca/ItemList.py
@@ -971,7 +972,7 @@ typedef enum {
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_SHUFFLE_KOKIRI_SWORD,
-    RSK_STARTING_MAPS_COMPASSES, //RANDOTODO more options for this, rn it's just start with or own dungeon
+    RSK_STARTING_MAPS_COMPASSES,
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
@@ -984,6 +985,9 @@ typedef enum {
     RSK_GOSSIP_STONE_HINTS,
     RSK_HINT_CLARITY,
     RSK_HINT_DISTRIBUTION,
+    RSK_KEYSANITY,
+    RSK_GERUDO_KEYS,
+    RSK_BOSS_KEYSANITY,
     RSK_GANONS_BOSS_KEY,
     RSK_SKIP_CHILD_STEALTH,
     RSK_SKIP_CHILD_ZELDA,
@@ -1001,5 +1005,7 @@ typedef enum {
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
     RSK_SKIP_TOWER_ESCAPE,
-    RSK_SKULLS_SUNS_SONG
+    RSK_COMPLETE_MASK_QUEST,
+    RSK_SKULLS_SUNS_SONG,
+    RSK_SHUFFLE_ADULT_TRADE
 } RandomizerSettingKey;

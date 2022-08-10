@@ -7,6 +7,7 @@
 #include "z_en_hs.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -78,7 +79,14 @@ void EnHs_Init(Actor* thisx, GlobalContext* globalCtx) {
         // "chicken shop (adult era)"
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
-        if (gSaveContext.itemGetInf[3] & 1) {
+        bool shouldDespawn;
+        bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
+        if (gSaveContext.n64ddFlag) {
+            shouldDespawn = tradedMushroom && !(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_COJIRO));
+        } else {
+            shouldDespawn = tradedMushroom;
+        }
+        if (shouldDespawn) {
             // "chicken shop closed"
             osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコ屋閉店 \n" VT_RST);
             Actor_Kill(&this->actor);
@@ -127,7 +135,9 @@ void func_80A6E5EC(EnHs* this, GlobalContext* globalCtx) {
 
 void func_80A6E630(EnHs* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        func_80088AA0(180);
+        if (!gSaveContext.n64ddFlag) {
+            func_80088AA0(180);
+        }
         func_80A6E3A0(this, func_80A6E6B0);
         gSaveContext.eventInf[1] &= ~1;
     }
@@ -156,7 +166,12 @@ void func_80A6E740(EnHs* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         func_80A6E3A0(this, func_80A6E630);
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_ODD_MUSHROOM, 10000.0f, 50.0f);
+        s32 itemId = GI_ODD_MUSHROOM;
+        if (gSaveContext.n64ddFlag) {
+            itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
+        }
+        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
     }
 
     this->unk_2A8 |= 1;
@@ -167,7 +182,12 @@ void func_80A6E7BC(EnHs* this, GlobalContext* globalCtx) {
         switch (globalCtx->msgCtx.choiceIndex) {
             case 0:
                 func_80A6E3A0(this, func_80A6E740);
-                func_8002F434(&this->actor, globalCtx, GI_ODD_MUSHROOM, 10000.0f, 50.0f);
+                s32 itemId = GI_ODD_MUSHROOM;
+                if (gSaveContext.n64ddFlag) {
+                    itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
+                }
+                func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
                 break;
             case 1:
                 Message_ContinueTextbox(globalCtx, 0x10B4);

@@ -1,5 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -10,6 +12,7 @@ static s16 sEquipState = 0;
 static s16 sEquipAnimTimer = 0;
 static s16 sEquipMoveTimer = 10;
 bool gSelectingMask;
+bool gSelectingAdultTrade;
 
 static s16 sAmmoVtxOffset[] = {
     0, 2, 4, 6, 99, 99, 8, 99, 10, 99, 99, 99, 99, 99, 12,
@@ -109,7 +112,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     pauseCtx->nameColorSet = 0;
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
-        moveCursorResult = 0 || gSelectingMask;
+        moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
 
         cursorItem = pauseCtx->cursorItem[PAUSE_ITEM];
@@ -283,7 +286,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         if (pauseCtx->cursorSpecialPos == 0) {
             if (cursorItem != PAUSE_ITEM_NONE) {
                 if ((ABS(pauseCtx->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-                    moveCursorResult = 0 || gSelectingMask;
+                    moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
 
                     cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                     cursorY = pauseCtx->cursorY[PAUSE_ITEM];
@@ -384,6 +387,24 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             }
                         }
                         gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
+                    }
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                        cursorSlot == SLOT_TRADE_ADULT && CHECK_BTN_ALL(input->press.button, BTN_A)) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        gSelectingAdultTrade = !gSelectingAdultTrade;
+                    }
+                    if (gSelectingAdultTrade) {
+                        pauseCtx->cursorColorSet = 8;
+                        if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
+                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
+                        } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
+                            dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
+                        }
+                        gSelectingAdultTrade = cursorSlot == SLOT_TRADE_ADULT;
                     }
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
                     if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
@@ -510,6 +531,7 @@ void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s
     Input* input = &globalCtx->state.input[0];
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     gSelectingMask = false;
+    gSelectingAdultTrade = false;
 
     if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
         pauseCtx->equipTargetCBtn = 0;

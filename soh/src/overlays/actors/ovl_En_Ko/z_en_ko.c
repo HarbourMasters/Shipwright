@@ -10,6 +10,7 @@
 #include "objects/object_km1/object_km1.h"
 #include "objects/object_kw1/object_kw1.h"
 #include "vt.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -1216,7 +1217,12 @@ void func_80A99504(EnKo* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A99560;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_SAW, 120.0f, 10.0f);
+        s32 itemId = GI_SAW;
+        if (gSaveContext.n64ddFlag) {
+            itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_ODD_POTION, GI_SAW);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_ODD_POTION);
+        }
+        func_8002F434(&this->actor, globalCtx, itemId, 120.0f, 10.0f);
     }
 }
 
