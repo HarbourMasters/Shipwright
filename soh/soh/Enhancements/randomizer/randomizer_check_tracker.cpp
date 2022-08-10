@@ -1,4 +1,5 @@
 #include "randomizer_check_tracker.h"
+#include <soh/OTRGlobals.h>
 #include "GlobalCtx2.h"
 #include "../libultraship/ImGuiImpl.h"
 #include <soh/Enhancements/randomizer/randomizer.h>
@@ -2404,7 +2405,6 @@ static bool checks[500];
 static bool showSpoilers = false;
 static bool showChecked = false;
 static bool showGs = false;
-static bool showCows = false;
 static bool showSelectedRegion = false;
 static bool showAll = false;
 static int selectedRegion = 0;
@@ -2415,7 +2415,8 @@ void drawCheck(int i) {
         isShopCheck(gSaveContext.itemLocations[i].check) ||
         (!showGs && isGsCheck(gSaveContext.itemLocations[i].check)) ||
         isScrubCheck(gSaveContext.itemLocations[i].check) ||
-        (!showCows && isCowCheck(gSaveContext.itemLocations[i].check))) {
+        (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) &&
+         isCowCheck(gSaveContext.itemLocations[i].check))) {
         return;
     }
 
@@ -2478,15 +2479,12 @@ void DrawTracker() {
     };
 
     if (ImGui::BeginTabBar("Check Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-
         if (ImGui::BeginTabItem("Check Tracker")) {
             ImGui::Text("Options:");
             DrawGroupWithBorder([&]() {
                 ImGui::Checkbox("Show Checked", &showChecked);
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Skulltulas", &showGs);
-                ImGui::SameLine();
-                ImGui::Checkbox("Show Cows", &showCows);
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Spoilers", &showSpoilers);
 
