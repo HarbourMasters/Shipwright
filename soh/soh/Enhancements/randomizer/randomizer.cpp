@@ -1034,25 +1034,32 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 
 void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
-    if (!spoilerFileStream)
+    if (!spoilerFileStream) {
         return;
+    }
 
-    bool success = false;
+    // set all the entrances to be -1 since 0 is a valid index
+    EntranceIndexRando unusedIndex;
+    unusedIndex.index = -1;
+    unusedIndex.overrideindex = -1;
+    for (int i = 0; i < (ARRAY_COUNT(gSaveContext.EntranceIndeces)); i++) {
+        gSaveContext.EntranceIndeces[i] = unusedIndex;
+    }
 
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
         json EntrancesJson = spoilerFileJson["Entrances"];
 
-    int index = 0;
-                for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it) {
-                    gSaveContext.EntranceIndeces[index].index = stoi(it.key());
-                    gSaveContext.EntranceIndeces[index].overrideindex = (it.value());
+        int index = 0;
+        for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it) {
+            EntranceIndexRando indexEntry;
+            indexEntry.index = stoi(it.key());
+            indexEntry.overrideindex = it.value();
+            gSaveContext.EntranceIndeces[index] = indexEntry;
 
-                    // EntranceOverrideIndex.push_back(stoi(ent.key()));
-                    // EntranceOverrideNewIndex.push_back(ent.value());
-                    index++;
-                }
+            index++;
+        }
     } catch (const std::exception& e) {
         return;
     }
