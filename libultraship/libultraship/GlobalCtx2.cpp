@@ -90,12 +90,20 @@ namespace Ship {
             // Setup Logging
             spdlog::init_thread_pool(8192, 1);
             auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
-            auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
             SohConsoleSink->set_level(spdlog::level::trace);
+#if defined(__linux__)
+            auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
             ConsoleSink->set_level(spdlog::level::trace);
+#endif
+            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
             FileSink->set_level(spdlog::level::trace);
-            std::vector<spdlog::sink_ptr> Sinks{ ConsoleSink, FileSink, SohConsoleSink };
+            std::vector<spdlog::sink_ptr> Sinks{
+#if defined(__linux__)
+                ConsoleSink,
+#endif
+            	FileSink,
+            	SohConsoleSink
+            };
             Logger = std::make_shared<spdlog::async_logger>(GetName(), Sinks.begin(), Sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
             GetLogger()->set_level(spdlog::level::trace);
             GetLogger()->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%@] [%l] %v");

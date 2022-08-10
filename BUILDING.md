@@ -2,9 +2,27 @@
 
 ## Windows
 
-1. Requires Visual Studio 2022 Community Edition && `python3, cmake, git` (can be installed via chocolatey or manually)
-2. Clone the Ship of Harkinian repository
-3. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+Requires:
+  * At least 8GB of RAM (machines with 4GB have seen complier failures)
+  * Visual Studio 2022 Community Edition with the C++ feature set
+  * One of the Windows SDKs that comes with Visual Studio, for example the current Windows 10 version 10.0.19041.0
+  * The `MSVC v142 - VS 2019 C++ build tools` component of Visual Studio
+  * Python 3 (can be installed manually or as part of Visual Studio)
+  * Git (can be installed manually or as part of Visual Studio)
+  * Cmake (can be installed via chocolatey or manually)
+
+During installation, check the "Desktop development with C++" feature set:
+
+![image](https://user-images.githubusercontent.com/30329717/183511274-d11aceea-7900-46ec-acb6-3f2cc110021a.png)
+Doing so should also check one of the Windows SDKs by default.  Then, in the installation details in the right-hand column, make sure you also check the v142 toolset. 
+
+You can also find the v142 toolset by searching through the individual components tab:  
+
+![image](https://user-images.githubusercontent.com/30329717/183521169-ead6a73b-a1bf-4e99-aab8-441746d8f08e.png)
+While you're there, you can also install Python 3 and Git if needed.
+
+1. Clone the Ship of Harkinian repository
+2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
 _Note: Instructions assume using powershell_
 ```powershell
@@ -30,8 +48,10 @@ With the cmake build system you have two options for working on the project:
 #### Visual Studio
 To develop using Visual Studio you only need to use cmake to generate the solution file:
 ```powershell
-# Generates Ship.sln at `build/x64`
+# Generates Ship.sln at `build/x64` for Visual Studio 2022
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
+# or for Visual Studio 2019
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
 ```
 
 #### Visual Studio Code or another editor
@@ -53,7 +73,7 @@ cd "build/x64"
 ```
 
 ## Linux
-1. Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
+Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
@@ -91,7 +111,7 @@ cpack -G External (creates appimage)
 ```
 
 ## macOS
-1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
+Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 

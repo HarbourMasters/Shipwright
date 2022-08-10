@@ -269,7 +269,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     f32* distanceTraveled;
     s32 i;
     f32 aux;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);
@@ -321,7 +321,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
     f32 aux;
     Player* player = GET_PLAYER(globalCtx);
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);

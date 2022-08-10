@@ -166,10 +166,12 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
 #ifdef __SWITCH__
     // For Switch we need to set the window width before creating the window
     Ship::Switch::GetDisplaySize(&window_width, &window_height);
+    width = window_width;
+    height = window_height;
 #endif
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+            width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
 #ifndef __SWITCH__
     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
