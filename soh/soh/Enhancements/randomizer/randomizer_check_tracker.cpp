@@ -2,6 +2,7 @@
 #include <soh/OTRGlobals.h>
 #include "GlobalCtx2.h"
 #include "../libultraship/ImGuiImpl.h"
+#include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include <soh/Enhancements/randomizer/randomizer.h>
 #include "Lib/nlohmann/json.hpp"
 
@@ -2433,6 +2434,8 @@ void drawCheck(int i) {
         ImGui::SameLine();
         ImGui::Text("(%s)", GetEnumToName[gSaveContext.itemLocations[i].get].c_str());
     }
+
+    ImGui::Dummy(ImVec2(0.0f, 0.5f));
 }
 
 void DrawTracker() {
@@ -2480,18 +2483,25 @@ void DrawTracker() {
 
     if (ImGui::BeginTabBar("Check Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Check Tracker")) {
+            ImGui::Dummy(ImVec2(0.0f, 4.0f));
             ImGui::Text("Options:");
+            ImGui::Dummy(ImVec2(0.0f, 1.0f));
             DrawGroupWithBorder([&]() {
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
                 ImGui::Checkbox("Show Checked", &showChecked);
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Skulltulas", &showGs);
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Spoilers", &showSpoilers);
 
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
                 ImGui::Text("Select Region:");
                 ImGui::SameLine();
                 SohImGui::EnhancementCombobox("gCheckTrackerSelectedRegion", regionStrings, 36, 0);
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
             });
+
+            ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
             // get currentRegion from Combobox or gGlobalCtx->sceneNum, or show all
             selectedRegion = (RandomizerRegion)CVar_GetS32("gCheckTrackerSelectedRegion", 0);
@@ -2510,8 +2520,11 @@ void DrawTracker() {
                 ImGui::Text("Checks in %s:", RegionToString[currentRegion].c_str());
             }
 
+            ImGui::Dummy(ImVec2(0.0f, 1.0f));
+
             // draw checkboxes
             DrawGroupWithBorder([&]() {
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
                 for (int i = 0; i < 500; i++) {
                     if (showAll || isCheckInCurrentRegion(gSaveContext.itemLocations[i].check)) {
                         drawCheck(i);
