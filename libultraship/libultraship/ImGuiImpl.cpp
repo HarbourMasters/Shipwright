@@ -861,7 +861,7 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
              ImGui::IsKeyDown(ImGuiKey_RightSuper)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Commands["reset"].handler(emptyArgs);
+            console->Dispatch("reset");
         }
         #else
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
