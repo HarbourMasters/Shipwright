@@ -114,7 +114,6 @@ pipeline {
 
                             cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                             cmake --build build-cmake --target ExtractAssets --
-                            cmake --build build-cmake --target OTRGui --
                             cmake --build build-cmake --config Release --
                             (cd build-cmake && cpack)
 
