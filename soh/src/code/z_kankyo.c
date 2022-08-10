@@ -2058,8 +2058,8 @@ bool HatchPocketEgg(GlobalContext* globalCtx) {
          return 0;
     }
 
-    // Swap the flags, then replace the item if it's selected
-    gSaveContext.adultTradeItems ^= ADULT_TRADE_FLAG(ITEM_POCKET_EGG) | ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
+    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     return 1;
 }
