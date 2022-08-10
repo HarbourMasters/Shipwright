@@ -4420,11 +4420,12 @@ void CreateScrubMessages() {
 }
 
 CustomMessageMinimal NaviMessages[];
+extern const int NaviMsgCount = 15;
 
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    for (int i = 0; i <= 14; i++) {
+    for (int i = 0; i <= (NaviMsgCount - 1); i++) {
         customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
                                               NaviMessages[i].german, NaviMessages[i].french });
@@ -4475,7 +4476,7 @@ void Rando_Init(void) {
 
 }
 
-CustomMessageMinimal NaviMessages[15] = { 
+CustomMessageMinimal NaviMessages[NaviMsgCount] = { 
     
     { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
       "%cGerman tip about playing rando! 0", 
