@@ -2419,7 +2419,15 @@ void drawCheck(int i) {
         return;
     }
 
+    bool checked = checks[i];
+    if (checked) {
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 125));
+    }
     ImGui::Checkbox(CheckEnumToName[gSaveContext.itemLocations[i].check].c_str(), &checks[i]);
+    if (checked) {
+        ImGui::PopStyleColor();
+    }
+
     if (showSpoilers) {
         ImGui::SameLine();
         ImGui::Text("(%s)", GetEnumToName[gSaveContext.itemLocations[i].get].c_str());
