@@ -14,12 +14,19 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 using json = nlohmann::json;
+using namespace std::literals::string_literals;
 
 std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
 u8 generated;
+
+const std::string Randomizer::getItemMessageTableID = "Randomizer";
+const std::string Randomizer::hintMessageTableID = "RandomizerHints";
+const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -183,6 +190,11 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "DMC Deku Scrub Grotto Center", RC_DMC_DEKU_SCRUB_GROTTO_CENTER },
     { "ZR Open Grotto Chest", RC_ZR_OPEN_GROTTO_CHEST },
     { "ZR Magic Bean Salesman", RC_ZR_MAGIC_BEAN_SALESMAN },
+    { "ZR Frogs Zelda's Lullaby", RC_ZR_FROGS_ZELDAS_LULLABY },
+    { "ZR Frogs Epona's Song", RC_ZR_FROGS_EPONAS_SONG },
+    { "ZR Frogs Saria's Song", RC_ZR_FROGS_SARIAS_SONG },
+    { "ZR Frogs Sun's Song", RC_ZR_FROGS_SUNS_SONG },
+    { "ZR Frogs Song of Time", RC_ZR_FROGS_SONG_OF_TIME },
     { "ZR Frogs in the Rain", RC_ZR_FROGS_IN_THE_RAIN },
     { "ZR Frogs Ocarina Game", RC_ZR_FROGS_OCARINA_GAME },
     { "ZR Near Open Grotto Freestanding PoH", RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH },
@@ -1394,6 +1406,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
+    { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
@@ -1401,8 +1414,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Start with Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
-    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY},
-    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
@@ -1478,6 +1491,26 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText,
+                                             gSaveContext.childAltarText, gSaveContext.childAltarText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText,
+                                             gSaveContext.adultAltarText, gSaveContext.adultAltarText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_GANONDORF,
+                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText,
+                                             gSaveContext.ganonHintText, gSaveContext.ganonHintText });
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
+                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText,
+                                             gSaveContext.ganonText, gSaveContext.ganonText });
+
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
@@ -1486,6 +1519,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
 }
 
@@ -1699,6 +1734,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Skip") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
+                        break;
+                    case RSK_SHUFFLE_TOKENS:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Dungeons") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "All Tokens") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                        break;
                 }
                 index++;
             }
@@ -1799,57 +1846,8 @@ std::string AltarIconString(char iconChar) {
 
 std::string FormatJsonHintText(std::string jsonHint) {
     std::string formattedHintMessage = jsonHint;
-    char newLine = 0x01;
-    char playerName = 0x0F;
-    char nextBox = 0x04;
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '&', newLine);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '^', nextBox);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
 
-    std::unordered_map<std::string, char> textBoxSpecialCharacters = {
-        {"À", 0x80 },
-        {"î", 0x81 },
-        {"Â", 0x82 },
-        {"Ä", 0x83 },
-        {"Ç", 0x84 },
-        {"È", 0x85 },
-        {"É", 0x86 },
-        {"Ê", 0x87 },
-        {"Ë", 0x88 },
-        {"Ï", 0x89 },
-        {"Ô", 0x8A },
-        {"Ö", 0x8B },
-        {"Ù", 0x8C },
-        {"Û", 0x8D },
-        {"Ü", 0x8E },
-        {"ß", 0x8F },
-        {"à", 0x90 },
-        {"á", 0x91 },
-        {"â", 0x92 },
-        {"ä", 0x93 },
-        {"ç", 0x94 },
-        {"è", 0x95 },
-        {"é", 0x96 },
-        {"ê", 0x97 },
-        {"ë", 0x98 },
-        {"ï", 0x99 },
-        {"ô", 0x9A },
-        {"ö", 0x9B },
-        {"ù", 0x9C },
-        {"û", 0x9D },
-        {"ü", 0x9E }
-    };
-
-    // add special characters
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
-        size_t start_pos = 0;
-        std::string textBoxSpecialCharacterString = "";
-        textBoxSpecialCharacterString += specialCharacterPair.second;
-        while((start_pos = formattedHintMessage.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
-            formattedHintMessage.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
-            start_pos += textBoxSpecialCharacterString.length();
-        }
-    }
+    CustomMessageManager::Instance->FormatCustomMessage(formattedHintMessage);
 
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
@@ -2408,10 +2406,6 @@ std::string Randomizer::GetGanonText() const {
 
 std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
-}
-
-std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {
-    return this->hintLocations[check];
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -3447,9 +3441,11 @@ void GenerateRandomizerImgui() {
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) && CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
+                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
+    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
@@ -3474,7 +3470,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] = CVar_GetS32("gRandomizeSkipChildStealth", 0);
+    // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
+        !CVar_GetS32("gRandomizeSkipChildZelda", 0) && CVar_GetS32("gRandomizeSkipChildStealth", 0);
+
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
@@ -3539,6 +3538,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoToken[2] = { "Off", "On" };
     const char* randoShuffleMagicBeans[2] = { "Off", "On" };
     const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    const char* randoShuffleFrogSongRupees[2] = { "Off", "On" };
     const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
@@ -3961,9 +3961,8 @@ void DrawRandoEditor(bool& open) {
                         PaddedSeparator();
 
                         // Shuffle Cows
-                        ImGui::Text(Settings::ShuffleCows.GetName().c_str());
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
                         InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
                         PaddedSeparator();
 
                         // Shuffle Adult Trade Quest
@@ -4040,6 +4039,17 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
                             "the gate to Haunted Wasteland and the Horseback Archery minigame."
+                        );
+                        PaddedSeparator();
+
+                        // Shuffle Frog Song Rupees
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
+                        InsertHelpHoverText(
+                            "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                            "you to earn items by playing songs at the Frog Choir.\n"
+                            "\n"
+                            "This setting does not effect the item earned from playing\n"
+                            "the Song of Storms and the frog song minigame."
                         );
                     }
                     ImGui::PopItemWidth();
@@ -4390,8 +4400,74 @@ void DrawRandoEditor(bool& open) {
         ImGui::End();
     }
 
+void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+    for (GetItemMessage messageEntry : messageEntries) {
+        if (messageEntry.giid == GI_ICE_TRAP) {
+            customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
+                                                { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                  messageEntry.german, messageEntry.french });
+        } else {
+            customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
+                                                       messageEntry.iid,
+                                                       { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                         messageEntry.german, messageEntry.french });
+        }
+    }
+}
+
+void CreateScrubMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
+    const std::vector<u8> prices = { 10, 40 };
+    for (u8 price : prices) {
+        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+            // RANDTODO: Translate the below string to German.
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
+                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
+            });
+    }
+}
+
+void Randomizer::CreateCustomMessages() {
+    // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
+    // with GIMESSAGE(getItemID, itemID, english, german, french).
+    const std::vector<GetItemMessage> getItemMessages = {
+        GIMESSAGE(GI_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
+                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
+        GIMESSAGE_UNTRANSLATED(
+            GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
+        GIMESSAGE_UNTRANSLATED(
+            GI_BOTTLE_WITH_FISH, ITEM_FISH,
+            "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
+                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
+    };
+    CreateGetItemMessages(getItemMessages);
+    CreateScrubMessages();
+}
+
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    Randomizer::CreateCustomMessages();
 }
 
 extern "C" {
