@@ -12706,6 +12706,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     GetItemEntry* giEntry;
     s32 temp1;
     s32 temp2;
+    static s32 equipItem;
+    static bool equipNow;
 
     if (this->getItemId == GI_NONE) {
         return 1;
@@ -12714,6 +12716,10 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     if (this->unk_84F == 0) {
         giEntry = &sGetItemTable[this->getItemId - 1];
         this->unk_84F = 1;
+        equipItem = giEntry->itemId;
+        equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
+                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
+                    CVar_GetS32("gNoRestrictAge", 0));
 
         // make sure we get the BGS instead of giant's knife
         if(this->getItemId == GI_SWORD_BGS) {
@@ -12743,6 +12749,30 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             }
             Audio_PlayFanfare(temp1);
         }
+    }
+    else if (equipNow && Message_ShouldAdvance(globalCtx) &&
+             Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
+        if (globalCtx->msgCtx.choiceIndex == 0) { // Equip now? Yes
+
+            if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
+                gSaveContext.equips.buttonItems[0] = equipItem;
+                Inventory_ChangeEquipment(EQUIP_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
+                func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
+
+            } else if (equipItem >= ITEM_SHIELD_DEKU && equipItem <= ITEM_SHIELD_MIRROR) {
+                Inventory_ChangeEquipment(EQUIP_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
+                func_808328EC(&this->actor, NA_SE_IT_SHIELD_REMOVE);
+                Player_SetEquipmentData(globalCtx, this);
+
+            } else if (equipItem == ITEM_TUNIC_GORON || equipItem == ITEM_TUNIC_ZORA) {
+                Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+                Player_SetEquipmentData(globalCtx, this);
+            }
+        }
+        equipNow = false;
+        Message_CloseTextbox(globalCtx);
+        globalCtx->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     }
     else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {

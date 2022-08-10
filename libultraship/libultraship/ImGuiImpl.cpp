@@ -1119,6 +1119,8 @@ namespace SohImGui {
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
                         Tooltip("Instantly return the boomerang to Link by pressing its item button while it's in the air");
+                        PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
+                        Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
                         PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                         Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                         PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);

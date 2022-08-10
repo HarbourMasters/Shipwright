@@ -89,6 +89,7 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
 void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
+int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);

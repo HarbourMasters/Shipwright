@@ -1403,6 +1403,41 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
+extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
+    std::string postfix;
+
+    if (gSaveContext.language == LANGUAGE_FRA) {
+        postfix = "\x04\x1A\x08" "Désirez-vous l'équiper maintenant?" "\x09&&"
+                  "\x1B%g" "Oui" "&"
+                           "Non" "%w\x02";
+    } else if (gSaveContext.language == LANGUAGE_GER) {
+        postfix = "\x04\x1A\x08" "Möchtest Du es jetzt ausrüsten?" "\x09&&"
+                  "\x1B%g" "Ja!" "&"
+                           "Nein!" "%w\x02";
+    } else {
+        postfix = "\x04\x1A\x08" "Would you like to equip it now?" "\x09&&"
+                  "\x1B%g" "Yes" "&"
+                           "No" "%w\x02";
+    }
+    CustomMessageManager::Instance->FormatCustomMessage(postfix);
+    std::string str;
+    std::string FixedBaseStr(src);
+    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+
+    if (RemoveControlChar != std::string::npos) {
+        FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
+    }
+    str = FixedBaseStr + postfix;
+
+    if (!str.empty()) {
+        memset(buffer, 0, maxBufferSize);
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, str.length());
+        memcpy(buffer, str.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
+}
+
 extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
 }
