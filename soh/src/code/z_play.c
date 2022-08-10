@@ -382,25 +382,25 @@ void Gameplay_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
     }
 
-     //int index;
-     //for (index = 0; index<110; ++index) {
-     //    if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
-     //        Gameplay_SpawnScene(
-     //            globalCtx,
-     //            gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0,
-     //            gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
-     //            ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
-     //    } else if (index==109){
-     //        Gameplay_SpawnScene(
-     //            globalCtx,
-     //            gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0,
-     //            gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
-     //            ((void)0, gSaveContext.entranceIndex)].spawn);
-     //    }
-     //    else {
-     //        continue;
-     //    }
-     //}
+     int index;
+     for (index = 0; index<110; ++index) {
+        if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
+            Gameplay_SpawnScene(
+                globalCtx,
+                gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0,
+                gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
+                ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
+        } else if (index==109){
+            Gameplay_SpawnScene(
+                globalCtx,
+                gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0,
+                gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
+                ((void)0, gSaveContext.entranceIndex)].spawn);
+        }
+        else {
+            continue;
+        }
+     }
     if (gSaveContext.entranceIndex == 0000 || gSaveContext.entranceIndex == 0001 || gSaveContext.entranceIndex == 0002 ||
         gSaveContext.entranceIndex == 0003) {
         Gameplay_SpawnScene(
