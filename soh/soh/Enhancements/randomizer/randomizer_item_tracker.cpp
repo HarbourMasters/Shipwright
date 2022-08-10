@@ -688,19 +688,26 @@ void DrawDungeonItem(uint32_t itemId, uint32_t scene) {
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
+     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[scene]) != 0;
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    if (itemId == ITEM_KEY_SMALL) {
+        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+                    ImVec2(0, 0), ImVec2(1, 1));
+    }
+    else {
+        ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+                    ImVec2(0, 0), ImVec2(1, 1));
+    }
 
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
     int estimatedTextHeight = 10;
     ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
 
-    if (itemId == ITEM_KEY_SMALL) {
-         if (gSaveContext.inventory.dungeonKeys[scene] == 0) {
+    if (itemId == ITEM_KEY_SMALL) { // This check there for small key is necessary to get the text position properly and can't be on the same ITEM_KEY chack from the top
+         if (gSaveContext.inventory.dungeonKeys[scene] <= 0) {
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-            ImGui::Text("%i", gSaveContext.inventory.dungeonKeys[scene]);
+            ImGui::Text("0");
             ImGui::PopStyleColor();
          }
          else {
@@ -1463,12 +1470,12 @@ void DrawItemTracker(bool& open) {
                 DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
             }
-
+            /*
             if (CVar_GetS32("gItemTrackerNotes", 0)) {
                 BeginFloatingWindows("ItemTracker_Theme_0_Notes");
                 DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
-            }
+            }*/
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 1) { // Per groups elements N.1
             BeginFloatingWindows("ItemTracker_Theme_1_Inventory");
             DrawFloatingInventory(Icon_Cells_Size, Icon_Spacing);
@@ -1491,12 +1498,12 @@ void DrawItemTracker(bool& open) {
                 DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
             }
-
+            /*
             if (CVar_GetS32("gItemTrackerNotes", 0)) {
                 BeginFloatingWindows("ItemTracker_Theme_1_Notes");
                 DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
-            }
+            }*/
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 2) { // Per groups elements N.2
             BeginFloatingWindows("ItemTracker_Theme_2_Inventory");
             DrawFloatingInventory(Icon_Cells_Size, Icon_Spacing);
@@ -1531,12 +1538,12 @@ void DrawItemTracker(bool& open) {
                 DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
             }
-
+            /*
             if (CVar_GetS32("gItemTrackerNotes", 0)) {
                 BeginFloatingWindows("ItemTracker_Theme_2_Notes");
                 DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
                 EndFloatingWindows();
-            }
+            }*/
         }
     }
 }
@@ -1590,8 +1597,8 @@ void DrawItemTrackerOptions(bool& open) {
             ImGui::SetWindowPos("ItemTracker_Theme_0_Grouped", Default_Pos_Wnd_0);
             ImVec2 Default_Pos_Wnd_1 = { OriginPosition.x, OriginPosition.y + 175};
             ImGui::SetWindowPos("ItemTracker_Theme_0_Dungeons", Default_Pos_Wnd_1);
-            ImVec2 Default_Pos_Wnd_2 = { OriginPosition.x + 100, OriginPosition.y};
-            ImGui::SetWindowPos("ItemTracker_Theme_0_Notes", Default_Pos_Wnd_2);
+            //ImVec2 Default_Pos_Wnd_2 = { OriginPosition.x + 100, OriginPosition.y};
+            //ImGui::SetWindowPos("ItemTracker_Theme_0_Notes", Default_Pos_Wnd_2);
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 1) { // Per groups elements N.1
             ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
             ImGui::SetWindowPos("ItemTracker_Theme_1_Inventory", Default_Pos_Wnd_0);
@@ -1603,8 +1610,8 @@ void DrawItemTrackerOptions(bool& open) {
             ImGui::SetWindowPos("ItemTracker_Theme_1_Songs", Default_Pos_Wnd_3);
             ImVec2 Default_Pos_Wnd_4 = { OriginPosition.x + 100, OriginPosition.y + 175};
             ImGui::SetWindowPos("ItemTracker_Theme_1_Dungeons", Default_Pos_Wnd_4);
-            ImVec2 Default_Pos_Wnd_5 = { OriginPosition.x - 100, OriginPosition.y};
-            ImGui::SetWindowPos("ItemTracker_Theme_1_Notes", Default_Pos_Wnd_5);
+            //ImVec2 Default_Pos_Wnd_5 = { OriginPosition.x - 100, OriginPosition.y};
+            //ImGui::SetWindowPos("ItemTracker_Theme_1_Notes", Default_Pos_Wnd_5);
         } else if (CVar_GetS32("gItemTrackerTheme", 0) == 2) { // Per groups elements N.2
             ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
             ImGui::SetWindowPos("ItemTracker_Theme_2_Inventory", Default_Pos_Wnd_0);
@@ -1622,8 +1629,8 @@ void DrawItemTrackerOptions(bool& open) {
             ImGui::SetWindowPos("ItemTracker_Theme_2_Song", Default_Pos_Wnd_6);
             ImVec2 Default_Pos_Wnd_7 = { OriginPosition.x - 100, OriginPosition.y};
             ImGui::SetWindowPos("ItemTracker_Theme_2_Dungeons", Default_Pos_Wnd_7);
-            ImVec2 Default_Pos_Wnd_8 = { OriginPosition.x - 100, OriginPosition.y + 170};
-            ImGui::SetWindowPos("ItemTracker_Theme_2_Notes", Default_Pos_Wnd_8);
+            //ImVec2 Default_Pos_Wnd_8 = { OriginPosition.x - 100, OriginPosition.y + 170};
+            //ImGui::SetWindowPos("ItemTracker_Theme_2_Notes", Default_Pos_Wnd_8);
         }
     }
     SohImGui::EnhancementCheckbox("Alternative medallions display", "gItemTrackerMedallionsPlacement");
