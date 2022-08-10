@@ -1440,6 +1440,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
+    { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
@@ -1677,6 +1678,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
+                    case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_RANDOM_TRIALS:
