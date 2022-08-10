@@ -1,20 +1,22 @@
 #include "Console.h"
 
-#include <iostream>
-#include <sstream>
-
 #include "Cvar.h"
 #include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "Utils.h"
 
 namespace Ship {
-	std::map<ImGuiKey, std::string> Bindings;
-	std::map<ImGuiKey, std::string> BindingToggle;
+	std::string BuildUsage(const CommandEntry& entry) {
+		std::string usage;
+		for (const auto& arg : entry.arguments)
+			usage += StringHelper::Sprintf(arg.optional ? "[%s] " : "<%s> ", arg.info.c_str());
+		return usage;
+	}
 
-	static bool HelpCommand(const std::vector<std::string>&) {
+	static bool HelpCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		SohImGui::console->SendInfoMessage("SoH Commands:");
 		for (const auto& cmd : SohImGui::console->Commands) {
 			SohImGui::console->SendInfoMessage(" - " + cmd.first);
@@ -22,18 +24,12 @@ namespace Ship {
 		return CMD_SUCCESS;
 	}
 
-	static bool ClearCommand(const std::vector<std::string>&) {
+	static bool ClearCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		SohImGui::console->Log[SohImGui::console->selected_channel].clear();
 		return CMD_SUCCESS;
 	}
 
-	std::string toLowerCase(std::string in) {
-		std::string cpy(in);
-		std::transform(cpy.begin(), cpy.end(), cpy.begin(), ::tolower);
-		return cpy;
-	}
-
-	static bool BindCommand(const std::vector<std::string>& args) {
+	static bool BindCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		if (args.size() > 2) {
 			const ImGuiIO* io = &ImGui::GetIO();;
 			for (size_t k = 0; k < std::size(io->KeysData); k++) {
@@ -44,8 +40,8 @@ namespace Ship {
 					const char* const delim = " ";
 					std::ostringstream imploded;
 					std::copy(args.begin() + 2, args.end(), std::ostream_iterator<std::string>(imploded, delim));
-					Bindings[k] = imploded.str();
-					SohImGui::console->SendInfoMessage("Binding '%s' to %s", args[1].c_str(), Bindings[k].c_str());
+					Console->Bindings[k] = imploded.str();
+					SohImGui::console->SendInfoMessage("Binding '%s' to %s", args[1].c_str(), Console->Bindings[k].c_str());
 					break;
 				}
 			}
@@ -53,27 +49,20 @@ namespace Ship {
 		return CMD_SUCCESS;
 	}
 
-	static bool BindToggleCommand(const std::vector<std::string>& args) {
+	static bool BindToggleCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		if (args.size() > 2) {
 			const ImGuiIO* io = &ImGui::GetIO();;
 			for (size_t k = 0; k < std::size(io->KeysData); k++) {
 				std::string key(ImGui::GetKeyName(k));
 
 				if (toLowerCase(args[1]) == toLowerCase(key)) {
-					BindingToggle[k] = args[2];
-					SohImGui::console->SendInfoMessage("Binding toggle '%s' to %s", args[1].c_str(), BindingToggle[k].c_str());
+					Console->BindingToggle[k] = args[2];
+					SohImGui::console->SendInfoMessage("Binding toggle '%s' to %s", args[1].c_str(), Console->BindingToggle[k].c_str());
 					break;
 				}
 			}
 		}
 		return CMD_SUCCESS;
-	}
-
-	std::string BuildUsage(const CommandEntry& entry) {
-		std::string usage;
-		for (const auto& arg : entry.arguments)
-			usage += StringHelper::Sprintf(arg.optional ? "[%s] " : "<%s> ", arg.info.c_str());
-		return usage;
 	}
 
 	void Console::Init() {
@@ -281,8 +270,10 @@ namespace Ship {
 		const std::vector<std::string> cmd_args = StringHelper::Split(line, " ");
 		if (this->Commands.contains(cmd_args[0])) {
 			const CommandEntry entry = this->Commands[cmd_args[0]];
-			if (!entry.handler(cmd_args) && !entry.arguments.empty())
+			if (!entry.handler(shared_from_this(), cmd_args) && !entry.arguments.empty()) {
 				SendErrorMessage("[SOH] Usage: " + cmd_args[0] + " " + BuildUsage(entry));
+			}
+
 			return;
 		}
 		SendErrorMessage("[SOH] Command not found");

@@ -91,7 +91,7 @@ namespace SohImGui {
 
     WindowImpl impl;
     ImGuiIO* io;
-    Console* console = new Console;
+    std::shared_ptr<Console> console = std::make_shared<Console>();
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
@@ -863,7 +863,7 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
              ImGui::IsKeyDown(ImGuiKey_RightCtrl)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Commands["reset"].handler(emptyArgs);
+            console->Commands["reset"].handler(console, emptyArgs);
         }
         #endif
 
@@ -891,7 +891,7 @@ namespace SohImGui {
                     "Ctrl+R"
                     #endif
                     )) {
-                    console->Commands["reset"].handler(emptyArgs);
+                    console->Commands["reset"].handler(console, emptyArgs);
                 }
                 ImGui::EndMenu();
             }
@@ -1638,7 +1638,7 @@ namespace SohImGui {
                         CVar_SetS32("gEnableBetaQuest", betaQuestEnabled);
                         CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
 
-                        console->Commands["reset"].handler(emptyArgs);
+                        console->Commands["reset"].handler(console, emptyArgs);
 
                         needs_save = true;
                     }

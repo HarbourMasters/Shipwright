@@ -16,7 +16,8 @@ namespace Ship {
 	#define MAX_BUFFER_SIZE 255
 	#define NULLSTR "None"
 
-	typedef std::function<bool(std::vector<std::string> args)> CommandHandler;
+	class Console;
+	typedef std::function<bool(std::shared_ptr<Console> Console, std::vector<std::string> args)> CommandHandler;
 
 	enum class ArgumentType {
 		TEXT, NUMBER, PLAYER_POS, PLAYER_ROT
@@ -40,14 +41,15 @@ namespace Ship {
 		std::string channel = "Console";
 	};
 
-	class Console {
+	class Console : public std::enable_shared_from_this<Console> {
+	private:
 		int selectedId = -1;
 		std::vector<int> selectedEntries;
 		std::string filter;
 		spdlog::level::level_enum level_filter = spdlog::level::trace;
-		std::vector<std::string> log_channels = { "Console", "Logs" };
-		std::vector<spdlog::level::level_enum> priority_filters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
-		std::vector<ImVec4> priority_colors = {
+		const std::vector<std::string> log_channels = { "Console", "Logs" };
+		const std::vector<spdlog::level::level_enum> priority_filters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
+		const std::vector<ImVec4> priority_colors = {
 			ImVec4(0.8f, 0.8f, 0.8f, 1.0f),     // TRACE
 			ImVec4(0.9f, 0.9f, 0.9f, 1.0f),     // DEBUG
 			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),     // INFO
@@ -60,6 +62,8 @@ namespace Ship {
 		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, va_list args);
 
 	public:
+		std::map<ImGuiKey, std::string> Bindings;
+		std::map<ImGuiKey, std::string> BindingToggle;
 		std::map<std::string, std::vector<ConsoleLine>> Log;
 		std::map<std::string, CommandEntry> Commands;
 		std::vector<std::string> Autocomplete;
@@ -69,8 +73,8 @@ namespace Ship {
 		char* InputBuffer = nullptr;
 		bool OpenAutocomplete = false;
 		int HistoryIndex = -1;
-		std::string selected_channel = "Console";
 		bool opened = false;
+		std::string selected_channel = "Console";
 		void Init();
 		void Update();
 		void Draw();
