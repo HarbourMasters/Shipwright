@@ -1407,6 +1407,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
+    { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -1638,6 +1639,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
                     case RSK_SHUFFLE_COWS:
+                    case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_RANDOM_TRIALS:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -3434,6 +3436,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
+    cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3960,6 +3963,20 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Cows
                         SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
                         InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                        PaddedSeparator();
+
+                        // Shuffle Adult Trade Quest
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
+                        InsertHelpHoverText(
+                            "Adds all of the adult trade quest items into the pool, each of which "
+                            "can be traded for a unique reward.\n"
+                            "\n"
+                            "You will be able to choose which of your owned adult trade items is visible "
+                            "in the inventory by selecting the item with A and using the control stick or "
+                            "D-pad.\n"
+                            "\n"
+                            "If disabled, only the Claim Check will be found in the pool."
+                        );
                         PaddedSeparator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
