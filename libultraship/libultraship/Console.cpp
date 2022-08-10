@@ -45,7 +45,7 @@ namespace Ship {
 					std::ostringstream imploded;
 					std::copy(args.begin() + 2, args.end(), std::ostream_iterator<std::string>(imploded, delim));
 					Bindings[k] = imploded.str();
-					SohImGui::console->SendInfoMessage("Binding '%s' to %s", args[1], Bindings[k]);
+					SohImGui::console->SendInfoMessage("Binding '%s' to %s", args[1].c_str(), Bindings[k].c_str());
 					break;
 				}
 			}
