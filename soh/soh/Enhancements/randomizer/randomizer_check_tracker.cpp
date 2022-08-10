@@ -2430,9 +2430,9 @@ void DrawTracker() {
     if (gGlobalCtx == nullptr)
         return;
 
-    const char* regionStrings[35] = {
-        // RegionToString[RR_UNKNOWN].c_str(),
+    const char* regionStrings[36] = {
         "Current",
+        "Show All",
         RegionToString[RR_KF].c_str(),
         RegionToString[RR_LW].c_str(),
         RegionToString[RR_HF].c_str(),
@@ -2480,21 +2480,23 @@ void DrawTracker() {
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Cows", &showCows);
                 ImGui::SameLine();
-                ImGui::Checkbox("Show All Regions", &showAll);
-                ImGui::SameLine();
                 ImGui::Checkbox("Show Spoilers", &showSpoilers);
 
                 ImGui::Text("Select Region:");
                 ImGui::SameLine();
-                SohImGui::EnhancementCombobox("gCheckTrackerSelectedRegion", regionStrings, 35, 0);
+                SohImGui::EnhancementCombobox("gCheckTrackerSelectedRegion", regionStrings, 36, 0);
             });
 
-            // get currentRegion from Combobox or gGlobalCtx->sceneNum
+            // get currentRegion from Combobox or gGlobalCtx->sceneNum, or show all
             selectedRegion = (RandomizerRegion)CVar_GetS32("gCheckTrackerSelectedRegion", 0);
-            if (selectedRegion > 0)
-                currentRegion = static_cast<RandomizerRegion>(selectedRegion);
-            else
+            showAll = false;
+            if (selectedRegion == 1) {
+                showAll = true;
+            } else if (selectedRegion > 1) {
+                currentRegion = static_cast<RandomizerRegion>(selectedRegion + -1);
+            } else {
                 setRegionByCurrentSceneID();
+            }
 
             if (showAll) {
                 ImGui::Text("Checks:");
