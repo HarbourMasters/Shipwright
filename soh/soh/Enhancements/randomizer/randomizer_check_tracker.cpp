@@ -21,31 +21,6 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
-    // First group encapsulates the inner portion and border
-    ImGui::BeginGroup();
-
-    ImVec2 padding = ImGui::GetStyle().FramePadding;
-    ImVec2 p0 = ImGui::GetCursorScreenPos();
-    ImGui::SetCursorScreenPos(ImVec2(p0.x + padding.x, p0.y + padding.y));
-
-    // Second group encapsulates just the inner portion
-    ImGui::BeginGroup();
-
-    drawFunc();
-
-    ImGui::Dummy(padding);
-    ImGui::EndGroup();
-
-    ImVec2 p1 = ImGui::GetItemRectMax();
-    p1.x += padding.x;
-    ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
-    ImGui::GetWindowDrawList()->AddRect(
-        p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
-
-    ImGui::EndGroup();
-}
-
 typedef enum {
     RR_UNKNOWN,
     RR_KF,
@@ -2409,11 +2384,19 @@ static bool showGs = false;
 static bool showSelectedRegion = false;
 static bool showAll = false;
 static int selectedRegion = 0;
+static int currentRegionCheckCount = 0;
+static int currentRegionCheckedCheckCount = 0;
 
 void drawCheck(int i) {
-    // ignore checked Checks, shop items, ignored Checks, Scrubs, Cows (if set so) and Golden Skulltulas (if set so)
-    if ((!showChecked && checks[i]) || isIgnoredCheck(gSaveContext.itemLocations[i].check) ||
-        isShopCheck(gSaveContext.itemLocations[i].check) ||
+    // Skip checked Check
+    if (!showChecked && checks[i]) {
+        currentRegionCheckCount++;
+        currentRegionCheckedCheckCount++;
+        return;
+    }
+
+    // Skip shop items, Scrubs, Cows (if set so) and Golden Skulltulas (if set so)
+    if (isIgnoredCheck(gSaveContext.itemLocations[i].check) || isShopCheck(gSaveContext.itemLocations[i].check) ||
         (!showGs && isGsCheck(gSaveContext.itemLocations[i].check)) ||
         isScrubCheck(gSaveContext.itemLocations[i].check) ||
         (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) &&
@@ -2423,7 +2406,7 @@ void drawCheck(int i) {
 
     bool checked = checks[i];
     if (checked) {
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 125));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 100));
     }
     ImGui::Checkbox(CheckEnumToName[gSaveContext.itemLocations[i].check].c_str(), &checks[i]);
     if (checked) {
@@ -2432,8 +2415,17 @@ void drawCheck(int i) {
 
     if (showSpoilers) {
         ImGui::SameLine();
+        if (checks[i])
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 150, 0, 100));
+        else
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
         ImGui::Text("(%s)", GetEnumToName[gSaveContext.itemLocations[i].get].c_str());
+        ImGui::PopStyleColor();
     }
+
+    currentRegionCheckCount++;
+    if (checks[i])
+        currentRegionCheckedCheckCount++;
 
     ImGui::Dummy(ImVec2(0.0f, 0.5f));
 }
@@ -2442,6 +2434,7 @@ void DrawTracker() {
     if (gGlobalCtx == nullptr)
         return;
 
+    static std::string lastActionString = "";
     const char* regionStrings[36] = {
         "Current",
         "Show All",
@@ -2484,10 +2477,15 @@ void DrawTracker() {
     if (ImGui::BeginTabBar("Check Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Check Tracker")) {
             ImGui::Dummy(ImVec2(0.0f, 4.0f));
-            ImGui::Text("Options:");
-            ImGui::Dummy(ImVec2(0.0f, 1.0f));
-            DrawGroupWithBorder([&]() {
+
+            if (ImGui::BeginTable("tableCheckTrackerOptions", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Options", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+                ImGui::TableHeadersRow();
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+
                 ImGui::Dummy(ImVec2(0.0f, 1.0f));
+
                 ImGui::Checkbox("Show Checked", &showChecked);
                 ImGui::SameLine();
                 ImGui::Checkbox("Show Skulltulas", &showGs);
@@ -2499,7 +2497,9 @@ void DrawTracker() {
                 ImGui::SameLine();
                 SohImGui::EnhancementCombobox("gCheckTrackerSelectedRegion", regionStrings, 36, 0);
                 ImGui::Dummy(ImVec2(0.0f, 1.0f));
-            });
+
+                ImGui::EndTable();
+            }
 
             ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
@@ -2514,35 +2514,52 @@ void DrawTracker() {
                 setRegionByCurrentSceneID();
             }
 
-            if (showAll) {
-                ImGui::Text("Checks:");
-            } else {
-                ImGui::Text("Checks in %s:", RegionToString[currentRegion].c_str());
-            }
+            std::string checksCountString =
+                std::to_string(currentRegionCheckedCheckCount) + "/" + std::to_string(currentRegionCheckCount);
+            std::string checksTitleString =
+                showAll ? "All Checks (" + checksCountString + "):"
+                        : "Checks in " + RegionToString[currentRegion] + " (" + checksCountString + "):";
 
-            ImGui::Dummy(ImVec2(0.0f, 1.0f));
+            currentRegionCheckCount = 0;
+            currentRegionCheckedCheckCount = 0;
 
-            // draw checkboxes
-            DrawGroupWithBorder([&]() {
+            if (ImGui::BeginTable("tableCheckTrackerChecks", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn(checksTitleString.c_str(), ImGuiTableColumnFlags_WidthStretch, 150.0f);
+                ImGui::TableHeadersRow();
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
                 ImGui::Dummy(ImVec2(0.0f, 1.0f));
+
                 for (int i = 0; i < 500; i++) {
                     if (showAll || isCheckInCurrentRegion(gSaveContext.itemLocations[i].check)) {
                         drawCheck(i);
                     }
                 }
-            });
 
+                ImGui::EndTable();
+            }
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Settings")) {
-            ImGui::Text("Tracker Data:");
-            DrawGroupWithBorder([&]() {
+        if (ImGui::BeginTabItem("Save/Load/Reset")) {
+
+            ImGui::Dummy(ImVec2(0.0f, 4.0f));
+
+            if (ImGui::BeginTable("tableCheckTrackerSave", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Tracker Data", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+                ImGui::TableHeadersRow();
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
+
                 if (ImGui::Button("Reset")) {
                     for (int i = 0; i < 500; i++) {
                         checks[i] = false;
+                        lastActionString = "Reseted Tracker Data.";
                     }
                 }
+                InsertHelpHoverText("Resets all Checks to unchecked.");
                 ImGui::SameLine();
                 if (ImGui::Button("Load")) {
                     if (DoesFileExist(trackerSaveFilePath)) {
@@ -2553,8 +2570,10 @@ void DrawTracker() {
                             checks[i] = it.value();
                             i++;
                         }
+                        lastActionString = "Loaded: " + trackerSaveFilePath;
                     }
                 }
+                InsertHelpHoverText("Load saved Tracker Data from file.");
                 ImGui::SameLine();
                 if (ImGui::Button("Save")) {
                     nlohmann::json trackerJsonSave = nlohmann::json::array();
@@ -2563,12 +2582,21 @@ void DrawTracker() {
                     }
                     std::ofstream output(trackerSaveFilePath);
                     output << std::setw(4) << trackerJsonSave << std::endl;
+                    lastActionString = "Saved: " + trackerSaveFilePath;
                 }
-            });
+                InsertHelpHoverText("Save current Tracker Data to file.");
+                ImGui::SameLine();
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 125));
+                ImGui::Text(lastActionString.c_str());
+                ImGui::PopStyleColor();
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
+
+                ImGui::EndTable();
+            }
             ImGui::EndTabItem();
         }
-        ImGui::EndTabBar();
     }
+    ImGui::EndTabBar();
 }
 
 void DrawCheckTracker(bool& open) {
