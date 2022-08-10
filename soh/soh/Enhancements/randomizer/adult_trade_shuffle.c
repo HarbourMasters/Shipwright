@@ -1,4 +1,4 @@
-#include "z64adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"

@@ -6,7 +6,7 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
-#include "z64adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 

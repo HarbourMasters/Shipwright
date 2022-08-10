@@ -1,6 +1,6 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
-#include "z64adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 u8 gAmmoItems[] = {

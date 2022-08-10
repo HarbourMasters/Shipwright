@@ -4,7 +4,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/frame_interpolation.h"
-#include "z64adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,

@@ -124,7 +124,6 @@ set(Header_Files__include
     "include/vt.h"
     "include/z64.h"
     "include/z64actor.h"
-    "include/z64adult_trade_shuffle.h"
     "include/z64animation.h"
     "include/z64audio.h"
     "include/z64bgcheck.h"
@@ -175,6 +174,7 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
@@ -260,6 +260,7 @@ source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__s
 set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.cpp"
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.c"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
 
@@ -425,7 +426,6 @@ set(Source_Files__src__code
     "src/code/ucode_disas.c"
     "src/code/z_actor.c"
     "src/code/z_actor_dlftbls.c"
-    "src/code/z_adult_trade_shuffle.c"
     "src/code/z_bgcheck.c"
     "src/code/z_camera.c"
     "src/code/z_cheap_proc.c"
