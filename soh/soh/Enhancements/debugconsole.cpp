@@ -34,12 +34,12 @@ extern GlobalContext* gGlobalCtx;
 
 static bool ActorSpawnHandler(const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
-        ERROR("Not enough arguments passed to actorspawn");
+        SPDLOG_ERROR("Not enough arguments passed to actorspawn");
         return CMD_FAILED;
     }
 
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SPDLOG_ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -75,7 +75,7 @@ static bool ActorSpawnHandler(const std::vector<std::string>& args) {
 
     if (Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
-        ERROR("Failed to spawn actor. Actor_Spawn returned NULL");
+        SPDLOG_ERROR("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -85,13 +85,13 @@ static bool ActorSpawnHandler(const std::vector<std::string>& args) {
 static bool KillPlayerHandler([[maybe_unused]] const std::vector<std::string>&) {
     gSaveContext.health = 0;
 
-    INFO("[SOH] You've met with a terrible fate, haven't you?");
+    SPDLOG_INFO("[SOH] You've met with a terrible fate, haven't you?");
     return CMD_SUCCESS;
 }
 
 static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -100,18 +100,18 @@ static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
     try {
         health = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Health value must be an integer.");
+        SPDLOG_ERROR("[SOH] Health value must be an integer.");
         return CMD_FAILED;
     }
 
     if (health < 0) {
-        ERROR("[SOH] Health value must be a positive integer");
+        SPDLOG_ERROR("[SOH] Health value must be a positive integer");
         return CMD_SUCCESS;
     }
 
     gSaveContext.health = health * 0x10;
 
-    INFO("[SOH] Player health updated to %d", health);
+    SPDLOG_INFO("[SOH] Player health updated to %d", health);
     return CMD_SUCCESS;
 }
 
@@ -133,31 +133,31 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
         rupeeAmount = std::stoi(args[1]);
     }
     catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Rupee count must be an integer.");
+        SPDLOG_ERROR("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
 
     if (rupeeAmount < 0) {
-        ERROR("[SOH] Rupee count must be positive");
+        SPDLOG_ERROR("[SOH] Rupee count must be positive");
         return CMD_FAILED;
     }
 
     gSaveContext.rupees = rupeeAmount;
 
-    INFO("Set rupee count to %u", rupeeAmount);
+    SPDLOG_INFO("Set rupee count to {}", rupeeAmount);
     return CMD_SUCCESS;
 }
 
 static bool SetPosHandler(const std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SPDLOG_ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
     Player* player = GET_PLAYER(gGlobalCtx);
 
     if (args.size() == 1) {
-        INFO("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x, player->actor.world.pos.y,
+        SPDLOG_INFO("Player position is [ {:.2f}, {:.2f}, {:.2f} ]", player->actor.world.pos.x, player->actor.world.pos.y,
              player->actor.world.pos.z);
         return CMD_SUCCESS;
     }
@@ -168,14 +168,14 @@ static bool SetPosHandler(const std::vector<std::string> args) {
     player->actor.world.pos.y = std::stof(args[2]);
     player->actor.world.pos.z = std::stof(args[3]);
 
-    INFO("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x, player->actor.world.pos.y,
+    SPDLOG_INFO("Set player position to [ {:.2f}, {:.2f}, {:.2f} ]", player->actor.world.pos.x, player->actor.world.pos.y,
          player->actor.world.pos.z);
     return CMD_SUCCESS;
 }
 
 static bool ResetHandler(std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        ERROR("GlobalCtx == nullptr");
+        SPDLOG_ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -196,7 +196,7 @@ const static std::map<std::string, uint16_t> ammoItems{
 
 static bool AmmoHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -205,19 +205,19 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
     try {
         count = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("Ammo count must be an integer");
+        SPDLOG_ERROR("Ammo count must be an integer");
         return CMD_FAILED;
     }
 
     if (count < 0) {
-        ERROR("Ammo count must be positive");
+        SPDLOG_ERROR("Ammo count must be positive");
         return CMD_FAILED;
     }
 
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
-        ERROR("Invalid item passed");
+        SPDLOG_ERROR("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -239,7 +239,7 @@ const static std::map<std::string, uint16_t> bottleItems{
 
 static bool BottleHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -247,19 +247,19 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     try {
         slot = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Bottle slot must be an integer.");
+        SPDLOG_ERROR("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
 
     if ((slot < 1) || (slot > 4)) {
-        ERROR("Invalid slot passed");
+        SPDLOG_ERROR("Invalid slot passed");
         return CMD_FAILED;
     }
 
     const auto& it = bottleItems.find(args[1]);
 
     if (it ==  bottleItems.end()) {
-        ERROR("Invalid item passed");
+        SPDLOG_ERROR("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -271,7 +271,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
 
 static bool BHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -281,7 +281,7 @@ static bool BHandler(const std::vector<std::string>& args) {
 
 static bool ItemHandler(const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -292,7 +292,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
 
 static bool EntranceHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -301,7 +301,7 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     try {
         entrance = std::stoi(args[1], nullptr, 16);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] Entrance value must be a Hex number.");
+        SPDLOG_ERROR("[SOH] Entrance value must be a Hex number.");
         return CMD_FAILED;
     }
     gGlobalCtx->nextEntranceIndex = entrance;
@@ -317,10 +317,10 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Saved state to slot %u", slot);
+            SPDLOG_INFO("[SOH] Saved state to slot {}", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+            SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
             return CMD_FAILED;
 
     }
@@ -332,16 +332,16 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Loaded state from slot %u", slot);
+            SPDLOG_INFO("[SOH] Loaded state from slot ({})", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
+            SPDLOG_ERROR("[SOH] Invalid State Slot Number ({})", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERROR("[SOH] State Slot (%u) is empty", slot);
+            SPDLOG_ERROR("[SOH] State Slot ({}) is empty", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+            SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
             return CMD_FAILED;
     }
 
@@ -349,7 +349,7 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
 
 static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        ERROR("[SOH] Unexpected arguments passed");
+        SPDLOG_ERROR("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
     int slot;
@@ -357,17 +357,17 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
     try {
         slot = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERROR("[SOH] SaveState slot value must be a number.");
+        SPDLOG_ERROR("[SOH] SaveState slot value must be a number.");
         return CMD_FAILED;
     }
 
     if (slot < 0) {
-        ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
+        SPDLOG_ERROR("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return CMD_FAILED;
     }
 
     OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
-    INFO("[SOH] Slot %u selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
+    SPDLOG_INFO("[SOH] Slot {} selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return CMD_SUCCESS;
 }
 
@@ -441,17 +441,18 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
     if (cvar != nullptr)
     {
         if (cvar->type == CVarType::S32)
-            INFO("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
+            SPDLOG_INFO("[SOH] Variable {} is {}", args[1], cvar->value.valueS32);
         else if (cvar->type == CVarType::Float)
-            INFO("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
+            SPDLOG_INFO("[SOH] Variable {} is {}", args[1], cvar->value.valueFloat);
         else if (cvar->type == CVarType::String)
-            INFO("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
+            SPDLOG_INFO("[SOH] Variable {} is {}", args[1], cvar->value.valueStr);
         else if (cvar->type == CVarType::RGBA)
-            INFO("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
+            SPDLOG_INFO("[SOH] Variable {} is ({}, {}, {}, {})", args[1], cvar->value.valueRGBA.r,
+                        cvar->value.valueRGBA.g, cvar->value.valueRGBA.b, cvar->value.valueRGBA.a);
     }
     else
     {
-        INFO("[SOH] Could not find variable %s", args[1].c_str());
+        SPDLOG_INFO("[SOH] Could not find variable %s", args[1]);
     }
 
 
