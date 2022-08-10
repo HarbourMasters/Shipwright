@@ -3,6 +3,7 @@
 #include "objects/object_os_anime/object_os_anime.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -454,8 +455,13 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
         if (LINK_IS_ADULT) {
             getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
 
-            if (gSaveContext.n64ddFlag && getItemId == GI_POCKET_EGG) {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+            if (gSaveContext.n64ddFlag) {
+                if (getItemId == GI_POCKET_EGG) {
+                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                } else {
+                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_POCKET_CUCCO);
+                }
             }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);

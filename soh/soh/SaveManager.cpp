@@ -88,6 +88,8 @@ void SaveManager::LoadRandomizerVersion1() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
+
+    SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 }
 
 void SaveManager::SaveRandomizer() {
@@ -130,6 +132,8 @@ void SaveManager::SaveRandomizer() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
         SaveManager::Instance->SaveData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
+
+    SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
 }
 
 void SaveManager::Init() {

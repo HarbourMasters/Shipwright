@@ -108,6 +108,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                         giveItemId = sGetItemTable[getItemId - 1].itemId;
                         Item_Give(globalCtx, giveItemId);
                     }
+                    player->getItemId = getItemId;
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
@@ -150,6 +151,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
                 giveItemId = sGetItemTable[getItemId - 1].itemId;
                 Item_Give(globalCtx, giveItemId);
             }
+            player->getItemId = getItemId;
         } else {
             Item_Give(globalCtx, giveItemId);
         }

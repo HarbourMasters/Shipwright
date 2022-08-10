@@ -416,6 +416,95 @@ void GiveLinkDungeonReward(GetItemID getItemId) {
     }
 }
 
+void GiveLinkDungeonItem(GetItemID getItemId) {
+    int mapIndex;
+
+    switch (getItemId) {
+        case GI_DEKU_TREE_MAP:
+        case GI_DEKU_TREE_COMPASS:
+            mapIndex = SCENE_YDAN;
+            break;
+        case GI_DODONGOS_CAVERN_MAP:
+        case GI_DODONGOS_CAVERN_COMPASS:
+            mapIndex = SCENE_DDAN;
+            break;
+        case GI_JABU_JABUS_BELLY_MAP:
+        case GI_JABU_JABUS_BELLY_COMPASS:
+            mapIndex = SCENE_BDAN;
+            break;
+        case GI_FOREST_TEMPLE_MAP:
+        case GI_FOREST_TEMPLE_COMPASS:
+        case GI_FOREST_TEMPLE_SMALL_KEY:
+        case GI_FOREST_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_BMORI1;
+            break;
+        case GI_FIRE_TEMPLE_MAP:
+        case GI_FIRE_TEMPLE_COMPASS:
+        case GI_FIRE_TEMPLE_SMALL_KEY:
+        case GI_FIRE_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_HIDAN;
+            break;
+        case GI_WATER_TEMPLE_MAP:
+        case GI_WATER_TEMPLE_COMPASS:
+        case GI_WATER_TEMPLE_SMALL_KEY:
+        case GI_WATER_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_MIZUSIN;
+            break;
+        case GI_SPIRIT_TEMPLE_MAP:
+        case GI_SPIRIT_TEMPLE_COMPASS:
+        case GI_SPIRIT_TEMPLE_SMALL_KEY:
+        case GI_SPIRIT_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_JYASINZOU;
+            break;
+        case GI_SHADOW_TEMPLE_MAP:
+        case GI_SHADOW_TEMPLE_COMPASS:
+        case GI_SHADOW_TEMPLE_SMALL_KEY:
+        case GI_SHADOW_TEMPLE_BOSS_KEY:
+            mapIndex = SCENE_HAKADAN;
+            break;
+        case GI_BOTTOM_OF_THE_WELL_MAP:
+        case GI_BOTTOM_OF_THE_WELL_COMPASS:
+        case GI_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            mapIndex = SCENE_HAKADANCH;
+            break;
+        case GI_ICE_CAVERN_MAP:
+        case GI_ICE_CAVERN_COMPASS:
+            mapIndex = SCENE_ICE_DOUKUTO;
+            break;
+        case GI_GANONS_CASTLE_BOSS_KEY:
+            mapIndex = SCENE_GANON;
+            break;
+        case GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            mapIndex = SCENE_MEN;
+            break;
+        case GI_GERUDO_FORTRESS_SMALL_KEY:
+            mapIndex = SCENE_GERUDOWAY;
+            break;
+        case GI_GANONS_CASTLE_SMALL_KEY:
+            mapIndex = SCENE_GANONTIKA;
+            break;
+    }
+
+    if ((getItemId >= GI_GERUDO_FORTRESS_SMALL_KEY) && (getItemId <= GI_GANONS_CASTLE_SMALL_KEY)) {
+        if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+            gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+        } else {
+            gSaveContext.inventory.dungeonKeys[mapIndex]++;
+        }
+    } else {
+        int bitmask;
+        if ((getItemId >= GI_DEKU_TREE_MAP) && (getItemId <= GI_ICE_CAVERN_MAP)) {
+            bitmask = gBitFlags[2];
+        } else if ((getItemId >= GI_DEKU_TREE_COMPASS) && (getItemId <= GI_ICE_CAVERN_COMPASS)) {
+            bitmask = gBitFlags[1];
+        } else {
+            bitmask = gBitFlags[0];
+        }
+
+        gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
+    }
+}
+
 void GiveLinksPocketMedallion() {
     GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
@@ -563,13 +652,15 @@ void Sram_OpenSave() {
         gSaveContext.equips.equipment |= 2;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
-            INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
+    if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+        for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
+                INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-            for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                    gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
+                    if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                        gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                    }
                 }
             }
         }
@@ -687,11 +778,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+        // "Start with" == 0 for Maps and Compasses
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
-            for(int scene = 0; scene <= 9; scene++) {
+            for(int scene = SCENE_YDAN; scene <= SCENE_ICE_DOUKUTO; scene++) {
                 gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
             }
         }
@@ -788,6 +880,13 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkMagic(giid);
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
+            } else if (
+                (giid >= GI_GERUDO_FORTRESS_SMALL_KEY && giid <= GI_GANONS_CASTLE_SMALL_KEY) ||
+                (giid >= GI_FOREST_TEMPLE_BOSS_KEY && giid <= GI_GANONS_CASTLE_BOSS_KEY) ||
+                (giid >= GI_DEKU_TREE_MAP && giid <= GI_ICE_CAVERN_MAP) ||
+                (giid >= GI_DEKU_TREE_COMPASS && giid <= GI_ICE_CAVERN_COMPASS)
+            ) {
+                GiveLinkDungeonItem(giid);
             } else {
                 s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
                 if (iid != -1) INV_CONTENT(iid) = iid;
@@ -814,9 +913,31 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // For Ganon's boss key "Start With" is 0
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
-            gSaveContext.inventory.dungeonItems[10] |= 1;
+        // "Start with" == 0 for Keysanity
+        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
+            // TODO: If master quest there are different key counts
+            gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = 5; // Forest
+            gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = 8; // Fire
+            gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = 6; // Water
+            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 5; // Spirit
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = 5; // Shadow
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = 2; // BotW
+            gSaveContext.inventory.dungeonKeys[SCENE_MEN] = 9; // GTG
+            gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = 2; // Ganon
+        }
+
+        // "Start with" == 0 for Boss Kesanity
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+            gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
+            gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
+            gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
+            gSaveContext.inventory.dungeonItems[SCENE_JYASINZOU] |= 1; // Spirit
+            gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
+        }
+
+        // "Start with" == 2 for Ganon's Boss Key
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
+            gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
         HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
@@ -877,6 +998,21 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
+        }
+
+        // shuffle adult trade quest
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            gSaveContext.adultTradeItems = 0;
+        }
+
+        // complete mask quest
+        if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+            gSaveContext.itemGetInf[3] |= 0x100;   // Sold Keaton Mask
+            gSaveContext.itemGetInf[3] |= 0x200;   // Sold Skull Mask
+            gSaveContext.itemGetInf[3] |= 0x400;   // Sold Spooky Mask
+            gSaveContext.itemGetInf[3] |= 0x800;   // bunny hood related
+            gSaveContext.itemGetInf[3] |= 0x8000;  // Obtained Mask of Truth
+            gSaveContext.eventChkInf[8] |= 0x8000; // sold all masks
         }
     }
 
