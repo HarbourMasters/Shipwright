@@ -209,9 +209,10 @@ namespace Ship {
 				if (!overlay->RegisteredOverlays.contains(key)) {
 					overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
 					SPDLOG_INFO("Added overlay: {} ", key);
+					SohImGui::console->SendInfoMessage("Added overlay: %s", key);
 				}
 				else {
-					SPDLOG_ERROR("Overlay already exists: %s", key);
+					SPDLOG_ERROR("Overlay already exists: {}", key);
 				}
 			}
 			else if (args[1] == "remove") {
@@ -220,12 +221,12 @@ namespace Ship {
 					SPDLOG_INFO("Removed overlay: {} ", key);
 				}
 				else {
-					SPDLOG_ERROR("Overlay not found: %s ", key);
+					SPDLOG_ERROR("Overlay not found: {}", key);
 				}
 			}
 		}
 		else {
-			SPDLOG_ERROR("CVar %s does not exist", args[2].c_str());
+			SPDLOG_ERROR("CVar {} does not exist", args[2].c_str());
 		}
 
 		return CMD_SUCCESS;
