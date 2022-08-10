@@ -1,6 +1,7 @@
 #include "Resource.h"
 #include "DisplayList.h"
 #include "ResourceMgr.h"
+#include "spdlog/spdlog.h"
 #include "Utils/BinaryReader.h"
 #include "Lib/tinyxml2/tinyxml2.h"
 #include "Lib/Fast3D/U64/PR/ultra64/gbi.h"

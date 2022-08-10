@@ -6,25 +6,17 @@
 #include <functional>
 
 #include "Lib/ImGui/imgui.h"
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
+#include "spdlog/spdlog.h"
 
 namespace Ship {
-	#define LOG(msg, ...) SohImGui::console->Append("Main", Ship::Priority::LOG_LVL, msg, ##__VA_ARGS__)
-	#define INFO(msg, ...) SohImGui::console->Append("Main", Ship::Priority::INFO_LVL, msg, ##__VA_ARGS__)
-	#define WARNING(msg, ...) SohImGui::console->Append("Main", Ship::Priority::WARNING_LVL, msg, ##__VA_ARGS__)
-	#define ERROR(msg, ...) SohImGui::console->Append("Main", Ship::Priority::ERROR_LVL, msg, ##__VA_ARGS__)
 	#define CMD_SUCCESS true
 	#define CMD_FAILED false
 	#define MAX_BUFFER_SIZE 255
 	#define NULLSTR "None"
 
 	typedef std::function<bool(std::vector<std::string> args)> CommandHandler;
-
-	enum Priority {
-		INFO_LVL,
-		LOG_LVL,
-		WARNING_LVL,
-		ERROR_LVL
-	};
 
 	enum class ArgumentType {
 		TEXT, NUMBER, PLAYER_POS, PLAYER_ROT
@@ -44,7 +36,7 @@ namespace Ship {
 
 	struct ConsoleLine {
 		std::string text;
-		Priority priority = Priority::INFO_LVL;
+		spdlog::level::level_enum priority = spdlog::level::info;
 		std::string channel = "Main";
 	};
 
@@ -52,15 +44,21 @@ namespace Ship {
 		int selectedId = -1;
 		std::vector<int> selectedEntries;
 		std::string filter;
-		std::string level_filter = NULLSTR;
-		std::vector<std::string> log_channels = { "Main", "SoH Logging" };
-		std::vector<std::string> priority_filters = { "None", "Info", "Log", "Warning", "Error" };
+		spdlog::level::level_enum level_filter = spdlog::level::trace;
+		std::vector<std::string> log_channels = { "Console", "Logs" };
+		std::vector<spdlog::level::level_enum> priority_filters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
 		std::vector<ImVec4> priority_colors = {
-			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
-			ImVec4(0.2f, 1.0f, 0.2f, 1.0f),
-			ImVec4(0.9f, 0.8f, 0.4f, 0.01f),
-			ImVec4(1.0f, 0.2f, 0.2f, 1.0f)
+			ImVec4(0.8f, 0.8f, 0.8f, 1.0f),     // TRACE
+			ImVec4(0.9f, 0.9f, 0.9f, 1.0f),     // DEBUG
+			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),     // INFO
+			ImVec4(1.0f, 0.875f, 0.125f, 1.0f), // WARN
+			ImVec4(0.65f, 0.18f, 0.25, 1.0f),   // ERROR
+			ImVec4(0.95f, 0.11f, 0.25, 1.0f),   // CRITICAL
+			ImVec4(0.0f, 0.0f, 0.0f, 0.0f)      // OFF
 		};
+	protected:
+		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, va_list args);
+
 	public:
 		std::map<std::string, std::vector<ConsoleLine>> Log;
 		std::map<std::string, CommandEntry> Commands;
@@ -71,13 +69,17 @@ namespace Ship {
 		char* InputBuffer = nullptr;
 		bool OpenAutocomplete = false;
 		int HistoryIndex = -1;
-		std::string selected_channel = "Main";
+		std::string selected_channel = "Console";
 		bool opened = false;
 		void Init();
 		void Update();
 		void Draw();
-		void Append(const std::string& channel, Priority priority, const char* fmt, ...) IM_FMTARGS(4);
 		void Dispatch(const std::string& line);
 		static int CallbackStub(ImGuiInputTextCallbackData* data);
+		void SendInfoMessage(const char* fmt, ...);
+		void SendErrorMessage(const char* fmt, ...);
+		void SendInfoMessage(const std::string& str);
+		void SendErrorMessage(const std::string& str);
+		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, ...);
 	};
 }

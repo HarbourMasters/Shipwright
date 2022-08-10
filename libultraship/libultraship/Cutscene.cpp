@@ -1,4 +1,5 @@
 #include "Cutscene.h"
+#include "spdlog/spdlog.h"
 
 enum class CutsceneCommands
 {

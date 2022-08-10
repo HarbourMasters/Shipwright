@@ -4,7 +4,6 @@
 #include "File.h"
 #include "Archive.h"
 #include "ResourceMgr.h"
-#include "Console.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Utils/StringHelper.h"
@@ -209,24 +208,24 @@ namespace Ship {
 			if (args[1] == "add") {
 				if (!overlay->RegisteredOverlays.contains(key)) {
 					overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
-					INFO("Added overlay: %s ", key);
+					SPDLOG_INFO("Added overlay: {} ", key);
 				}
 				else {
-					ERROR("Overlay already exists: %s", key);
+					SPDLOG_ERROR("Overlay already exists: %s", key);
 				}
 			}
 			else if (args[1] == "remove") {
 				if (overlay->RegisteredOverlays.contains(key)) {
 					overlay->RegisteredOverlays.erase(key);
-					INFO("Removed overlay: %s ", key);
+					SPDLOG_INFO("Removed overlay: {} ", key);
 				}
 				else {
-					ERROR("Overlay not found: %s ", key);
+					SPDLOG_ERROR("Overlay not found: %s ", key);
 				}
 			}
 		}
 		else {
-			ERROR("CVar %s does not exist", args[2].c_str());
+			SPDLOG_ERROR("CVar %s does not exist", args[2].c_str());
 		}
 
 		return CMD_SUCCESS;
