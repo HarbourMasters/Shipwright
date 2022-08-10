@@ -43,13 +43,33 @@ namespace Ship {
 
 	class Console : public std::enable_shared_from_this<Console> {
 	private:
+		static int CallbackStub(ImGuiInputTextCallbackData* data);
+		static bool ClearCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool HelpCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool BindCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool BindToggleCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+
+		bool opened = false;
 		int selectedId = -1;
+		int historyIndex = -1;
 		std::vector<int> selectedEntries;
 		std::string filter;
-		spdlog::level::level_enum level_filter = spdlog::level::trace;
-		const std::vector<std::string> log_channels = { "Console", "Logs" };
-		const std::vector<spdlog::level::level_enum> priority_filters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
-		const std::vector<ImVec4> priority_colors = {
+		std::string currentChannel = "Console";
+		bool openAutocomplete = false;
+		char* inputBuffer = nullptr;
+		char* filterBuffer = nullptr;
+		std::string cmdHint = NULLSTR;
+		spdlog::level::level_enum levelFilter = spdlog::level::trace;
+
+		std::vector<std::string> History;
+		std::vector<std::string> Autocomplete;
+		std::map<ImGuiKey, std::string> Bindings;
+		std::map<ImGuiKey, std::string> BindingToggle;
+		std::map<std::string, CommandEntry> Commands;
+		std::map<std::string, std::vector<ConsoleLine>> Log;
+		const std::vector<std::string> LogChannels = { "Console", "Logs" };
+		const std::vector<spdlog::level::level_enum> PriorityFilters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
+		const std::vector<ImVec4> PriorityColours = {
 			ImVec4(0.8f, 0.8f, 0.8f, 1.0f),     // TRACE
 			ImVec4(0.9f, 0.9f, 0.9f, 1.0f),     // DEBUG
 			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),     // INFO
@@ -62,28 +82,23 @@ namespace Ship {
 		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, va_list args);
 
 	public:
-		std::map<ImGuiKey, std::string> Bindings;
-		std::map<ImGuiKey, std::string> BindingToggle;
-		std::map<std::string, std::vector<ConsoleLine>> Log;
-		std::map<std::string, CommandEntry> Commands;
-		std::vector<std::string> Autocomplete;
-		std::vector<std::string> History;
-		std::string CMDHint = NULLSTR;
-		char* FilterBuffer = nullptr;
-		char* InputBuffer = nullptr;
-		bool OpenAutocomplete = false;
-		int HistoryIndex = -1;
-		bool opened = false;
-		std::string selected_channel = "Console";
+		void ClearLogs(std::string channel);
+		void ClearLogs();
 		void Init();
 		void Update();
 		void Draw();
 		void Dispatch(const std::string& line);
-		static int CallbackStub(ImGuiInputTextCallbackData* data);
 		void SendInfoMessage(const char* fmt, ...);
 		void SendErrorMessage(const char* fmt, ...);
 		void SendInfoMessage(const std::string& str);
 		void SendErrorMessage(const std::string& str);
 		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, ...);
+		bool HasCommand(const std::string& command);
+		void AddCommand(const std::string& command, CommandEntry entry);
+
+		std::string GetCurrentChannel() { return currentChannel; }
+		bool IsOpened() { return opened;  }
+		void Close() { opened = false; }
+		void Open() { opened = true;  }
 	};
 }

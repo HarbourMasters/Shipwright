@@ -141,7 +141,11 @@ namespace SohImGui {
         Ship::RegisterHook<Ship::AudioInit>(UpdateAudio);
         Ship::RegisterHook<Ship::GfxInit>([] {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
-            SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
+            if (CVar_GetS32("gConsoleEnabled", 0)) {
+                console->Open();
+            } else {
+                console->Close();
+            }
             SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
             UpdateAudio();
         });
@@ -863,7 +867,7 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
              ImGui::IsKeyDown(ImGuiKey_RightCtrl)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Commands["reset"].handler(console, emptyArgs);
+            console->Dispatch("reset");
         }
         #endif
 
@@ -891,7 +895,7 @@ namespace SohImGui {
                     "Ctrl+R"
                     #endif
                     )) {
-                    console->Commands["reset"].handler(console, emptyArgs);
+                    console->Dispatch("reset");
                 }
                 ImGui::EndMenu();
             }
@@ -1638,7 +1642,7 @@ namespace SohImGui {
                         CVar_SetS32("gEnableBetaQuest", betaQuestEnabled);
                         CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
 
-                        console->Commands["reset"].handler(console, emptyArgs);
+                        console->Dispatch("reset");
 
                         needs_save = true;
                     }
@@ -1695,7 +1699,11 @@ namespace SohImGui {
                     bool currentValue = CVar_GetS32("gConsoleEnabled", 0);
                     CVar_SetS32("gConsoleEnabled", !currentValue);
                     needs_save = true;
-                    console->opened = CVar_GetS32("gConsoleEnabled", 0);
+                    if(CVar_GetS32("gConsoleEnabled", 0)){
+                        console->Open();
+                    } else {
+                        console->Close();
+                    }
                 }
                 Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 InsertPadding();
@@ -2240,7 +2248,7 @@ namespace SohImGui {
     }
 
     void BindCmd(const std::string& cmd, CommandEntry entry) {
-        console->Commands[cmd] = std::move(entry);
+        console->AddCommand(cmd, entry);
     }
 
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {

@@ -156,7 +156,8 @@ namespace Ship {
 				this->CurrentFont = DefaultFont;
 			}
 		}
-		SohImGui::console->Commands["overlay"] = { OverlayCommand, "Draw an overlay using a cvar value" };
+
+		SohImGui::console->AddCommand("overlay", { OverlayCommand, "Draw an overlay using a cvar value" });
 	}
 
 	void GameOverlay::DrawSettings() {
