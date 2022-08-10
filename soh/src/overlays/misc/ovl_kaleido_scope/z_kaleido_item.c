@@ -398,11 +398,15 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
                              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
                             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
+                            if (Randomizer_GetNextAdultTradeItem() != ITEM_NONE) {
+                                Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
+                            }
                         } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
                             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
+                            if (Randomizer_GetPrevAdultTradeItem() != ITEM_NONE) {
+                                Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
+                            }
                         }
                         gSelectingAdultTrade = cursorSlot == SLOT_TRADE_ADULT;
                     }
