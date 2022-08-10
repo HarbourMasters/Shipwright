@@ -265,6 +265,7 @@ namespace Settings {
   Option NumRequiredCuccos   = Option::U8  ("Cuccos to return",       {NumOpts(0, 7)},                                          {numRequiredCuccosDesc});
   Option KingZoraSpeed       = Option::U8  ("King Zora Speed",        {"Fast", "Vanilla", "Random"},                                          {kingZoraSpeedFast, kingZoraSpeedVanilla, kingZoraSpeedRandom});
   Option CompleteMaskQuest   = Option::Bool("Complete Mask Quest",    {"Off", "On"},                                                          {completeMaskDesc});
+  Option EnableGlitchCutscenes = Option::Bool("Enable Glitch-Useful Cutscenes", {"Off", "On"},                                                {glitchCutscenesDesc});
   Option QuickText           = Option::U8  ("Quick Text",             {"0: Vanilla", "1: Skippable", "2: Instant", "3: Turbo"},               {quickTextDesc0, quickTextDesc1, quickTextDesc2, quickTextDesc3},                                                 OptionCategory::Setting,    QUICKTEXT_INSTANT);
   Option SkipSongReplays     = Option::U8  ("Skip Song Replays",    {"Don't Skip", "Skip (No SFX)", "Skip (Keep SFX)"},                     {skipSongReplaysDesc});
   Option KeepFWWarpPoint     = Option::Bool("Keep FW Warp Point",     {"Off", "On"},                                                          {keepFWWarpPointDesc});
@@ -281,6 +282,7 @@ namespace Settings {
     &NumRequiredCuccos,
     &KingZoraSpeed,
     &CompleteMaskQuest,
+    &EnableGlitchCutscenes,
     &QuickText,
     &SkipSongReplays,
     &KeepFWWarpPoint,
@@ -1302,6 +1304,7 @@ namespace Settings {
     ctx.numRequiredCuccos    = NumRequiredCuccos.Value<uint8_t>();
     ctx.kingZoraSpeed        = KingZoraSpeed.Value<uint8_t>();
     ctx.completeMaskQuest    = CompleteMaskQuest ? 1 : 0;
+    ctx.enableGlitchCutscenes = CompleteMaskQuest ? 1 : 0;
     ctx.quickText            = QuickText.Value<uint8_t>();
     ctx.skipSongReplays      = SkipSongReplays.Value<uint8_t>();
     ctx.keepFWWarpPoint      = KeepFWWarpPoint ? 1 : 0;
@@ -2571,6 +2574,8 @@ namespace Settings {
     SkipTowerEscape.SetSelectedIndex(cvarSettings[RSK_SKIP_TOWER_ESCAPE]);
 
     CompleteMaskQuest.SetSelectedIndex(cvarSettings[RSK_COMPLETE_MASK_QUEST]);
+
+    EnableGlitchCutscenes.SetSelectedIndex(cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES]);
 
     NightGSExpectSuns.SetSelectedIndex(cvarSettings[RSK_SKULLS_SUNS_SONG]);
 

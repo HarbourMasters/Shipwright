@@ -348,7 +348,8 @@ static void WriteSettings(const bool printAll = false) {
             setting->GetName() == "Skip Epona Race" ||
             setting->GetName() == "Skip Tower Escape" ||
             setting->GetName() == "Skip Child Stealth" ||
-            setting->GetName() == "Complete Mask Quest") {
+            setting->GetName() == "Complete Mask Quest" || 
+            setting->GetName() == "Enable Glitch-Useful Cutscenes") {
             std::string settingName = menu->name + ":" + setting->GetName();
             jsonData["settings"][settingName] = setting->GetSelectedOptionText();
         }
