@@ -17,9 +17,9 @@ namespace Ship {
 	}
 
 	bool Console::HelpCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
-		SohImGui::console->SendInfoMessage("SoH Commands:");
-		for (const auto& cmd : SohImGui::console->Commands) {
-			SohImGui::console->SendInfoMessage(" - " + cmd.first);
+		Console->SendInfoMessage("SoH Commands:");
+		for (const auto& cmd : Console->Commands) {
+			Console->SendInfoMessage(" - " + cmd.first);
 		}
 		return CMD_SUCCESS;
 	}
@@ -41,7 +41,7 @@ namespace Ship {
 					std::ostringstream imploded;
 					std::copy(args.begin() + 2, args.end(), std::ostream_iterator<std::string>(imploded, delim));
 					Console->Bindings[k] = imploded.str();
-					SohImGui::console->SendInfoMessage("Binding '%s' to %s", args[1].c_str(), Console->Bindings[k].c_str());
+					Console->SendInfoMessage("Binding '%s' to %s", args[1].c_str(), Console->Bindings[k].c_str());
 					break;
 				}
 			}
@@ -57,7 +57,7 @@ namespace Ship {
 
 				if (toLowerCase(args[1]) == toLowerCase(key)) {
 					Console->BindingToggle[k] = args[2];
-					SohImGui::console->SendInfoMessage("Binding toggle '%s' to %s", args[1].c_str(), Console->BindingToggle[k].c_str());
+					Console->SendInfoMessage("Binding toggle '%s' to %s", args[1].c_str(), Console->BindingToggle[k].c_str());
 					break;
 				}
 			}
