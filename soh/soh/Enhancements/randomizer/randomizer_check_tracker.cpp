@@ -2383,9 +2383,21 @@ static bool showChecked = false;
 static bool showGs = false;
 static bool showSelectedRegion = false;
 static bool showAll = false;
+static bool autosaveWhenCheckboxChanges = false;
 static int selectedRegion = 0;
 static int currentRegionCheckCount = 0;
 static int currentRegionCheckedCheckCount = 0;
+static std::string lastActionString = "";
+
+void saveTrackerDataToFile() {
+    nlohmann::json trackerJsonSave = nlohmann::json::array();
+    for (int i = 0; i < 500; i++) {
+        trackerJsonSave.push_back(checks[i]);
+    }
+    std::ofstream output(trackerSaveFilePath);
+    output << std::setw(4) << trackerJsonSave << std::endl;
+    lastActionString = "Saved: " + trackerSaveFilePath;
+}
 
 void drawCheck(int i) {
     // Skip checked Check
@@ -2408,7 +2420,10 @@ void drawCheck(int i) {
     if (checked) {
         ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 100));
     }
-    ImGui::Checkbox(CheckEnumToName[gSaveContext.itemLocations[i].check].c_str(), &checks[i]);
+    if (ImGui::Checkbox(CheckEnumToName[gSaveContext.itemLocations[i].check].c_str(), &checks[i]) &&
+        autosaveWhenCheckboxChanges) {
+        saveTrackerDataToFile();
+    }
     if (checked) {
         ImGui::PopStyleColor();
     }
@@ -2434,7 +2449,6 @@ void DrawTracker() {
     if (gGlobalCtx == nullptr)
         return;
 
-    static std::string lastActionString = "";
     const char* regionStrings[36] = {
         "Current",
         "Show All",
@@ -2576,21 +2590,18 @@ void DrawTracker() {
                 InsertHelpHoverText("Load saved Tracker Data from file.");
                 ImGui::SameLine();
                 if (ImGui::Button("Save")) {
-                    nlohmann::json trackerJsonSave = nlohmann::json::array();
-                    for (int i = 0; i < 500; i++) {
-                        trackerJsonSave.push_back(checks[i]);
-                    }
-                    std::ofstream output(trackerSaveFilePath);
-                    output << std::setw(4) << trackerJsonSave << std::endl;
-                    lastActionString = "Saved: " + trackerSaveFilePath;
+                    saveTrackerDataToFile();
                 }
                 InsertHelpHoverText("Save current Tracker Data to file.");
                 ImGui::SameLine();
+                ImGui::Checkbox("Auto-Save", &autosaveWhenCheckboxChanges);
+                InsertHelpHoverText("Saves Tracker Data automatically everytime when checkbox is toggled.");
+
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 125));
                 ImGui::Text(lastActionString.c_str());
                 ImGui::PopStyleColor();
-                ImGui::Dummy(ImVec2(0.0f, 1.0f));
 
+                ImGui::Dummy(ImVec2(0.0f, 1.0f));
                 ImGui::EndTable();
             }
             ImGui::EndTabItem();
