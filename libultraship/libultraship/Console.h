@@ -37,7 +37,7 @@ namespace Ship {
 	struct ConsoleLine {
 		std::string text;
 		spdlog::level::level_enum priority = spdlog::level::info;
-		std::string channel = "Main";
+		std::string channel = "Console";
 	};
 
 	class Console {
