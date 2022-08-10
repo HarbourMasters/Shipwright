@@ -1004,6 +1004,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
             gSaveContext.adultTradeItems = 0;
         }
+
+        // complete mask quest
+        if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+            gSaveContext.itemGetInf[3] |= 0x100;   // Sold Keaton Mask
+            gSaveContext.itemGetInf[3] |= 0x200;   // Sold Skull Mask
+            gSaveContext.itemGetInf[3] |= 0x400;   // Sold Spooky Mask
+            gSaveContext.itemGetInf[3] |= 0x800;   // bunny hood related
+            gSaveContext.itemGetInf[3] |= 0x8000;  // Obtained Mask of Truth
+            gSaveContext.eventChkInf[8] |= 0x8000; // sold all masks
+        }
     }
 
     Save_SaveFile();
