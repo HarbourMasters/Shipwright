@@ -1461,7 +1461,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
     { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
-    { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE }
+    { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE },
+    { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1679,6 +1680,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_RANDOM_TRIALS:
+                    case RSK_STARTING_DEKU_SHIELD:
+                    case RSK_STARTING_KOKIRI_SWORD:
+                    case RSK_COMPLETE_MASK_QUEST:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -1698,20 +1702,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 4;
                         } else if(it.value() == "Anywhere") {
                             gSaveContext.randoSettings[index].value = 5;
-                        }
-                        break;
-                    case RSK_STARTING_DEKU_SHIELD:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        }
-                        break;
-                    case RSK_STARTING_KOKIRI_SWORD:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_STARTING_OCARINA:
@@ -3590,6 +3580,7 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
+    cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
@@ -4347,6 +4338,13 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
                     InsertHelpHoverText(
                         "The tower escape sequence between Ganondorf and Ganon will be skipped."
+                    );
+                    PaddedSeparator();
+
+                    // Complete mask quest
+                    SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(), "gRandomizeCompleteMaskQuest");
+                    InsertHelpHoverText(
+                        "Once the happy mask shop is opened, all masks will be available to be borrowed."
                     );
 
                     // COLUMN 2 - HINT SETTINGS
