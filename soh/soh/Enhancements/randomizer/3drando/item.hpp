@@ -103,11 +103,11 @@ public:
             return false;
         }
 
-        if ((type == ITEMTYPE_BOSSKEY && getItemId != 0x9A) && (BossKeysanity.Is(BOSSKEYSANITY_VANILLA) || BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON))) {
+        if ((type == ITEMTYPE_BOSSKEY && getItemId != 0xAD) && (BossKeysanity.Is(BOSSKEYSANITY_VANILLA) || BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON))) {
             return false;
         }
             //Ganons Castle Boss Key
-        if (getItemId == 0x9A && (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA) || GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON))) {
+        if (getItemId == 0xAD && (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA) || GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON))) {
             return false;
         }
 

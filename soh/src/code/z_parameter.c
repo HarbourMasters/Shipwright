@@ -1751,34 +1751,105 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
-        // Small key exceptions for rando.
-        if (gSaveContext.n64ddFlag) {
-            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
-                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                    gSaveContext.inventory.dungeonKeys[13] = 1;
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[13]++;
-                    return ITEM_NONE;
-                }
-            }
-
-            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
-                    gSaveContext.inventory.dungeonKeys[6] = 1;
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[6]++;
-                    return ITEM_NONE;
-                }
-            }
-        }
-
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             return ITEM_NONE;
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+            return ITEM_NONE;
+        }
+    } else if (
+        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY && item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
+        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY && item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
+        (item >= ITEM_DEKU_TREE_MAP && item <= ITEM_ICE_CAVERN_MAP) ||
+        (item >= ITEM_DEKU_TREE_COMPASS && item <= ITEM_ICE_CAVERN_COMPASS)
+    ) {
+        int mapIndex = gSaveContext.mapIndex;
+        switch (item) {
+            case ITEM_DEKU_TREE_MAP:
+            case ITEM_DEKU_TREE_COMPASS:
+                mapIndex = SCENE_YDAN;
+                break;
+            case ITEM_DODONGOS_CAVERN_MAP:
+            case ITEM_DODONGOS_CAVERN_COMPASS:
+                mapIndex = SCENE_DDAN;
+                break;
+            case ITEM_JABU_JABUS_BELLY_MAP:
+            case ITEM_JABU_JABUS_BELLY_COMPASS:
+                mapIndex = SCENE_BDAN;
+                break;
+            case ITEM_FOREST_TEMPLE_MAP:
+            case ITEM_FOREST_TEMPLE_COMPASS:
+            case ITEM_FOREST_TEMPLE_SMALL_KEY:
+            case ITEM_FOREST_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_BMORI1;
+                break;
+            case ITEM_FIRE_TEMPLE_MAP:
+            case ITEM_FIRE_TEMPLE_COMPASS:
+            case ITEM_FIRE_TEMPLE_SMALL_KEY:
+            case ITEM_FIRE_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HIDAN;
+                break;
+            case ITEM_WATER_TEMPLE_MAP:
+            case ITEM_WATER_TEMPLE_COMPASS:
+            case ITEM_WATER_TEMPLE_SMALL_KEY:
+            case ITEM_WATER_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_MIZUSIN;
+                break;
+            case ITEM_SPIRIT_TEMPLE_MAP:
+            case ITEM_SPIRIT_TEMPLE_COMPASS:
+            case ITEM_SPIRIT_TEMPLE_SMALL_KEY:
+            case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_JYASINZOU;
+                break;
+            case ITEM_SHADOW_TEMPLE_MAP:
+            case ITEM_SHADOW_TEMPLE_COMPASS:
+            case ITEM_SHADOW_TEMPLE_SMALL_KEY:
+            case ITEM_SHADOW_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HAKADAN;
+                break;
+            case ITEM_BOTTOM_OF_THE_WELL_MAP:
+            case ITEM_BOTTOM_OF_THE_WELL_COMPASS:
+            case ITEM_BOTTOM_OF_THE_WELL_SMALL_KEY:
+                mapIndex = SCENE_HAKADANCH;
+                break;
+            case ITEM_ICE_CAVERN_MAP:
+            case ITEM_ICE_CAVERN_COMPASS:
+                mapIndex = SCENE_ICE_DOUKUTO;
+                break;
+            case ITEM_GANONS_CASTLE_BOSS_KEY:
+                mapIndex = SCENE_GANON;
+                break;
+            case ITEM_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+                mapIndex = SCENE_MEN;
+                break;
+            case ITEM_GERUDO_FORTRESS_SMALL_KEY:
+                mapIndex = SCENE_GERUDOWAY;
+                break;
+            case ITEM_GANONS_CASTLE_SMALL_KEY:
+                mapIndex = SCENE_GANONTIKA;
+                break;
+        }
+
+        if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
+            if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+                gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+                return ITEM_NONE;
+            } else {
+                gSaveContext.inventory.dungeonKeys[mapIndex]++;
+                return ITEM_NONE;
+            }
+        } else {
+            int bitmask;
+            if ((item >= ITEM_DEKU_TREE_MAP) && (item <= ITEM_ICE_CAVERN_MAP)) {
+                bitmask = gBitFlags[2];
+            } else if ((item >= ITEM_DEKU_TREE_COMPASS) && (item <= ITEM_ICE_CAVERN_COMPASS)) {
+                bitmask = gBitFlags[1];
+            } else {
+                bitmask = gBitFlags[0];
+            }
+            
+            gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
             return ITEM_NONE;
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
@@ -2294,6 +2365,13 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
+    } else if (
+        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
+        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY) && (item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
+        (item >= ITEM_DEKU_TREE_MAP) && (item <= ITEM_ICE_CAVERN_MAP) ||
+        (item >= ITEM_DEKU_TREE_COMPASS) && (item <= ITEM_ICE_CAVERN_COMPASS)
+    ) {
+        return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
