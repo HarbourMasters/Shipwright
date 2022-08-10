@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include <cstring>
+#include <algorithm>
 
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -57,5 +58,11 @@ namespace Ship {
 		}
 
 		return args;
+	}
+
+	std::string toLowerCase(std::string in) {
+		std::string cpy(in);
+		std::transform(cpy.begin(), cpy.end(), cpy.begin(), ::tolower);
+		return cpy;
 	}
 }
