@@ -384,6 +384,7 @@ void Gameplay_Init(GameState* thisx) {
 
      int index;
      for (index = 0; index<110; ++index) {
+        // NOTE: this is why filling with -1 matters, sometimes gSaveContext.entranceIndex is 0 
         if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
             Gameplay_SpawnScene(
                 globalCtx,
