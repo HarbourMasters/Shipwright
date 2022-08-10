@@ -1,4 +1,11 @@
 #include "GameControlEditor.h"
+
+#include <string>
+#include <list>
+#include <unordered_map>
+#include <utility>
+#include <iterator>
+
 #include "Lib/ImGui/imgui.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Cvar.h"
