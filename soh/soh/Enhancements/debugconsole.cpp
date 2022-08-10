@@ -292,6 +292,19 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     return CMD_SUCCESS;
 }
 
+static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    Player* player = GET_PLAYER(gGlobalCtx);
+    player->getItemId = std::stoi(args[1]);
+    func_8002F434(&player->actor, gGlobalCtx, std::stoi(args[1]), 30.0f, 40.0f);
+
+    return CMD_SUCCESS;
+}
+
 static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
@@ -497,6 +510,9 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("item", { ItemHandler,
                              "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",
                            { { "slot", Ship::ArgumentType::NUMBER }, { "item id", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("gItem", { GiveItemHandler,
+                             "Gives an item to the player as if it was given from an actor",
+                           { { "item id", Ship::ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance", { EntranceHandler,
                                "Sends player to the entered entrance (hex)",
                                { { "entrance", Ship::ArgumentType::NUMBER } } });
