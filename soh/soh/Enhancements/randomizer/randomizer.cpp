@@ -4232,7 +4232,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
                     );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 1);
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
                     PaddedSeparator();
 
                     // Start with Maps & Compasses
