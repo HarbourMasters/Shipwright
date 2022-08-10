@@ -15,6 +15,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
@@ -535,8 +536,12 @@ void DrawBGSItemFlag(uint8_t itemID) {
     ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &hasItem);
     if (hasItem) {
         gSaveContext.adultTradeItems |= (1 << tradeIndex);
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
+            INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
+        }
     } else {
         gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
+        Inventory_ReplaceItem(gGlobalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
     }
 }
 
@@ -611,6 +616,17 @@ void DrawInventoryTab() {
                     if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando
+                        if (gSaveContext.n64ddFlag &&
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                            selectedIndex == SLOT_TRADE_ADULT) {
+                                if (slotEntry.id == ITEM_NONE) {
+                                    gSaveContext.adultTradeItems = 0;
+                                } else if (slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                                    uint32_t tradeID = slotEntry.id - ITEM_POCKET_EGG;
+                                    gSaveContext.adultTradeItems |= tradeID;
+                                }
+                            }
                         ImGui::CloseCurrentPopup();
                     }
                     SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
