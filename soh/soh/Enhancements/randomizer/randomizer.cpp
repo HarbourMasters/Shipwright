@@ -4180,6 +4180,24 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
                     PaddedSeparator();
 
+                    // Start with Maps & Compasses
+                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
+                            "\n"
+                            "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+                            "\n"
+                            "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+                            "\n"
+                            "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                            "\n"
+                            "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                            "\n"
+                            "Anywhere - Maps & Compasses can appear anywhere in the world."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
+                    PaddedSeparator();
+
                     // Keysanity
                     ImGui::Text(Settings::Keysanity.GetName().c_str());
                     InsertHelpHoverText(
@@ -4246,24 +4264,6 @@ void DrawRandoEditor(bool& open) {
                         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
-                    PaddedSeparator();
-
-                    // Start with Maps & Compasses
-                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
-                        "\n"
-                        "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                        "\n"
-                        "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                        "\n"
-                        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Maps & Compasses can appear anywhere in the world."
-                    );  
-                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
