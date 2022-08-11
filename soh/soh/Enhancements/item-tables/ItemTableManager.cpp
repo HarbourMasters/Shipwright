@@ -12,15 +12,6 @@ bool ItemTableManager::AddItemTable(uint16_t tableID) {
     return itemTables.emplace(tableID, newItemTable).second;
 }
 
-bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, uint16_t itemID, uint16_t objectID, int16_t drawID, uint16_t textID, uint16_t field, bool chestAnim) {
-    ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable == nullptr) {
-        return false;
-    }
-    GetItemEntry getItemEntry = GET_ITEM(itemID, objectID, drawID, textID, field, chestAnim);
-    return itemTable->emplace(getItemID, getItemEntry).second;
-}
-
 bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable == nullptr) {

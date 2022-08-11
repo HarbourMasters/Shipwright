@@ -341,6 +341,18 @@ set(Source_Files__soh__Enhancements__randomizer__3drando__location_access
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando\\location_access" FILES ${Source_Files__soh__Enhancements__randomizer__3drando__location_access})   
 
+set(Source_Files__soh__Enhancements__custom_message
+    "soh/Enhancements/custom-message/CustomMessageManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\custom-message" FILES ${Source_Files__soh__Enhancements__custom_message})
+
+set(Source_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
+
 set(Source_Files__src__boot
     "src/boot/assert.c"
     "src/boot/boot_main.c"
