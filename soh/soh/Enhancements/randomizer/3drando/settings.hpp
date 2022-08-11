@@ -440,6 +440,7 @@ typedef struct {
     uint8_t numRequiredCuccos;
     uint8_t kingZoraSpeed;
     uint8_t completeMaskQuest;
+    uint8_t enableGlitchCutscenes;
     uint8_t quickText;
     uint8_t skipSongReplays;
     uint8_t keepFWWarpPoint;
@@ -942,6 +943,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option NumRequiredCuccos;
   extern Option KingZoraSpeed;
   extern Option CompleteMaskQuest;
+  extern Option EnableGlitchCutscenes;
   extern Option QuickText;
   extern Option SkipSongReplays;
   extern Option KeepFWWarpPoint;

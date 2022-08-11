@@ -593,6 +593,13 @@ string_view kingZoraSpeedRandom       = "King Zora will move out of the way in 1
 string_view completeMaskDesc          = "Once the happy mask shop is opened, all masks\n"  //
                                         "will be available to be borrowed.";               //
 /*------------------------------                                                           //
+|    ENABLE GLITCH CUTSCENES   |                                                           //
+------------------------------*/                                                           //
+string_view glitchCutscenesDesc       = "The cutscenes of the Poes in Forest Temple and\n" //
+                                        "Darunia in Fire Temple will not be skipped.\n"    //
+                                        "These cutscenes are only useful for glitched\n"   //
+                                        "gameplay and can be safely skipped otherwise.";   //
+/*------------------------------                                                           //
 |          QUICK TEXT          |                                                           //
 ------------------------------*/                                                           //
 string_view quickTextDesc0            = "Quick text will be unchanged, requiring\n"        //
