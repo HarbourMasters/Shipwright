@@ -61,8 +61,8 @@ extern "C" {
         pad->button = 0;
         pad->stick_x = 0;
         pad->stick_y = 0;
-        pad->cam_x = 0;
-        pad->cam_y = 0;
+        pad->right_stick_x = 0;
+        pad->right_stick_y = 0;
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;

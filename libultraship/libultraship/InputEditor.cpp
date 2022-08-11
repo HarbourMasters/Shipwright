@@ -48,9 +48,9 @@ namespace Ship {
 			}
 		}
 
-		const char* BtnName = backend->GetButtonName(CurrentPort, n64Btn);
+		const std::string BtnName = backend->GetButtonName(CurrentPort, n64Btn);
 
-		if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName, n64Btn).c_str())) {
+		if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName.c_str(), n64Btn).c_str())) {
 			BtnReading = n64Btn;
 			backend->ClearRawPress();
 		}
@@ -84,18 +84,16 @@ namespace Ship {
 	void InputEditor::DrawControllerSchema() {
 		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 		auto Backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
-		DeviceProfile& profile = Backend->profiles[CurrentPort];
-		float sensitivity = profile.Thresholds[SENSITIVITY];
+		auto profile = Backend->getProfile(CurrentPort);
 		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();
-		const char* ControllerName = Backend->GetControllerName();
+		std::string ControllerName = Backend->GetControllerName();
 
-		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {
+		if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
 			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
-				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
-				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
-					DeviceName+="##"+std::to_string(i);
+				if (ControllerName != "Keyboard" && ControllerName != "Auto") {
+					ControllerName += "##"+std::to_string(i);
 				}
-				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
+				if (ImGui::Selectable(ControllerName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
 					controlDeck->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
@@ -142,7 +140,7 @@ namespace Ship {
 
 			if (!IsKeyboard) {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-				DrawVirtualStick("##MainVirtualStick", ImVec2(Backend->wStickX, Backend->wStickY));
+				DrawVirtualStick("##MainVirtualStick", ImVec2(Backend->getLeftStickX(CurrentPort), Backend->getLeftStickY(CurrentPort)));
 				ImGui::SameLine();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -150,7 +148,7 @@ namespace Ship {
 				ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
 				ImGui::Text("Deadzone");
 				ImGui::PushItemWidth(80);
-				ImGui::InputFloat("##MDZone", &profile.Thresholds[LEFT_STICK], 1.0f, 0.0f, "%.0f");
+				ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[0] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
@@ -172,18 +170,20 @@ namespace Ship {
 				DrawButton("Right", BTN_VSTICKRIGHT);
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->wCamX / sensitivity, Backend->wCamY / sensitivity));
+				// 2 is the SDL value for right stick X axis
+				// 3 is the SDL value for right stick Y axis.
+				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort) / profile->AxisSensitivities[2], Backend->getRightStickY(CurrentPort) / profile->AxisSensitivities[3]));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 				ImGui::BeginChild("##CSInput", ImVec2(90, 85), false);
 					ImGui::Text("Deadzone");
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MDZone", &profile.Thresholds[RIGHT_STICK], 1.0f, 0.0f, "%.0f");
+					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 					ImGui::Text("Sensitivity");
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MSensitivity", &profile.Thresholds[SENSITIVITY], 1.0f, 0.0f, "%.0f");
+					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2] /* This is the SDL value for right stick X axis */, 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
@@ -199,32 +199,32 @@ namespace Ship {
 			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
 				float cursorX = ImGui::GetCursorPosX() + 5;
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
+				ImGui::Checkbox("Enable Gyro", &profile->UseGyro);
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
+				ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile->GyroData[GYRO_SENSITIVITY]));
 				ImGui::PushItemWidth(135.0f);
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
+				ImGui::SliderFloat("##GSensitivity", &profile->GyroData[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
 				ImGui::PopItemWidth();
 				ImGui::Dummy(ImVec2(0, 1));
 				ImGui::SetCursorPosX(cursorX);
 				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
-					profile.Thresholds[DRIFT_X] = 0.0f;
-					profile.Thresholds[DRIFT_Y] = 0.0f;
+					profile->GyroData[DRIFT_X] = 0.0f;
+					profile->GyroData[DRIFT_Y] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
-				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
+				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
 				ImGui::Text("Drift X");
 				ImGui::PushItemWidth(80);
-				ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
+				ImGui::InputFloat("##GDriftX", &profile->GyroData[DRIFT_X], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::Text("Drift Y");
 				ImGui::PushItemWidth(80);
-				ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::InputFloat("##GDriftY", &profile->GyroData[DRIFT_Y], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
@@ -255,13 +255,13 @@ namespace Ship {
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
-			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
+			ImGui::Checkbox("Rumble Enabled", &profile->UseRumble);
 			if (Backend->CanRumble()) {
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100.0f * profile.RumbleStrength));
+				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100.0f * profile->RumbleStrength));
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::PushItemWidth(135.0f);
-				ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0.0f, 1.0f, "");
+				ImGui::SliderFloat("##RStrength", &profile->RumbleStrength, 0.0f, 1.0f, "");
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
