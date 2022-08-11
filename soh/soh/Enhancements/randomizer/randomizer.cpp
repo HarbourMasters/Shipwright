@@ -1447,7 +1447,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
-    { "Shuffle Dungeon Items:Start with Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
+    { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
@@ -4180,6 +4180,24 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
                     PaddedSeparator();
 
+                    // Maps & Compasses
+                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
+                            "\n"
+                            "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+                            "\n"
+                            "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+                            "\n"
+                            "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                            "\n"
+                            "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                            "\n"
+                            "Anywhere - Maps & Compasses can appear anywhere in the world."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
+                    PaddedSeparator();
+
                     // Keysanity
                     ImGui::Text(Settings::Keysanity.GetName().c_str());
                     InsertHelpHoverText(
@@ -4246,24 +4264,6 @@ void DrawRandoEditor(bool& open) {
                         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
-                    PaddedSeparator();
-
-                    // Start with Maps & Compasses
-                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
-                        "\n"
-                        "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                        "\n"
-                        "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                        "\n"
-                        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Maps & Compasses can appear anywhere in the world."
-                    );  
-                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
