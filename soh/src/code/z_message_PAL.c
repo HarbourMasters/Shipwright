@@ -1685,10 +1685,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                  (textId == 0x4C || textId == 0xA4)) ||
                 // 4D == Hylian Shield
                 textId == 0x4D)) {
-        char* msgBase = NULL;
         Message_FindMessage(globalCtx, textId);
-        msgBase = (uintptr_t)font->msgOffset;
-        msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, msgBase, sizeof(font->msgBuf));
+        msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, font->msgOffset, sizeof(font->msgBuf));
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;
