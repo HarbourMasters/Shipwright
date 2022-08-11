@@ -12737,16 +12737,15 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
-        if (giEntry.modIndex == 0) {
+        if (giEntry.modIndex == MOD_NONE) {
             Item_Give(globalCtx, giEntry.itemId);
-        }
-        else {
+        } else {
             Randomizer_Item_Give(globalCtx, giEntry);
         }
         Player_SetPendingFlag(this, globalCtx);
 
         if (this->getItemEntry.objectId != OBJECT_INVALID) {
-            if (giEntry.modIndex == 0) {
+            if (giEntry.modIndex == MOD_NONE) {
                 if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
                     ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
                     ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
@@ -12772,7 +12771,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 }
             }
         } else {
-            if (giEntry.modIndex == 0) {
+            if (giEntry.modIndex == MOD_NONE) {
                 if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                     ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
                     (giEntry.itemId == ITEM_HEART)) {

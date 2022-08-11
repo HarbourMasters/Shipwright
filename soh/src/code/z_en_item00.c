@@ -1211,7 +1211,7 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetItemEntry giEntry) {
     s16 color_slot;
     switch (giEntry.modIndex) {
-        case 0:
+        case MOD_NONE:
             switch (giEntry.itemId) {
                 case ITEM_SONG_MINUET:
                     color_slot = 0;
@@ -1243,7 +1243,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetI
                     return;
             }
             break;
-        case 1:
+        case MOD_RANDOMIZER:
             switch (giEntry.itemId) {
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:

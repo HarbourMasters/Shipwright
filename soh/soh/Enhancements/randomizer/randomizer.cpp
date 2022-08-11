@@ -4787,7 +4787,7 @@ void InitRandoItemTable() {
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_SIZE(extendedVanillaGetItemTable); i++) {
-        extendedVanillaGetItemTable[i].modIndex = MOD_VANILLA;
+        extendedVanillaGetItemTable[i].modIndex = MOD_NONE;
         // These items should use their RG value as their getItemID.
         // RANDOTODO: Add the getItemID as a member of the GetItemEntry
         // struct, since that value will be useful in other places as well.

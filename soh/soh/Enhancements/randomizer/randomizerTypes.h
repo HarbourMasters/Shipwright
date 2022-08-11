@@ -1,5 +1,10 @@
 #pragma once
 
+// This should probably go in a less rando-specific location
+// but the best location will probably be in the modding engine
+// which doesn't exist yet.
+typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+
 typedef struct {
     char tex[512];
     uint16_t width;

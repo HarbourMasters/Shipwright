@@ -285,10 +285,10 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM_NONE,
         GET_ITEM_NONE,
     };
-    ItemTableManager::Instance->AddItemTable(MOD_VANILLA);
+    ItemTableManager::Instance->AddItemTable(MOD_NONE);
     for (uint8_t i = 0; i < ARRAY_SIZE(getItemTable); i++) {
-        getItemTable[i].modIndex = MOD_VANILLA;
-        ItemTableManager::Instance->AddItemEntry(MOD_VANILLA, i, getItemTable[i]);
+        getItemTable[i].modIndex = MOD_NONE;
+        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i, getItemTable[i]);
     }
 }
 
@@ -1610,7 +1610,7 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    if (OTRGlobals::Instance->getItemModIndex != MOD_VANILLA) {
+    if (OTRGlobals::Instance->getItemModIndex != MOD_NONE) {
         getItemID++; // counteracts the - 1 offset used for vanilla table
     }
 
@@ -1618,7 +1618,7 @@ extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
 }
 
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
-    if (tableID == MOD_VANILLA) {
+    if (tableID == MOD_NONE) {
         getItemID--; // counteracts the - 1 offset used for vanilla table
     }
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
@@ -1628,7 +1628,7 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
     if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
         OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
     } else {
-        OTRGlobals::Instance->getItemModIndex = MOD_VANILLA;
+        OTRGlobals::Instance->getItemModIndex = MOD_NONE;
     }
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
@@ -1639,7 +1639,7 @@ extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId
             OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
         getItemModIndex = MOD_RANDOMIZER;
     } else {
-        getItemModIndex = MOD_VANILLA;
+        getItemModIndex = MOD_NONE;
     }
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
@@ -1649,7 +1649,7 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
     if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
         OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
     } else {
-        OTRGlobals::Instance->getItemModIndex = MOD_VANILLA;
+        OTRGlobals::Instance->getItemModIndex = MOD_NONE;
     }
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
@@ -1659,7 +1659,7 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
         getItemModIndex = MOD_RANDOMIZER;
     } else {
-        getItemModIndex = MOD_VANILLA;
+        getItemModIndex = MOD_NONE;
     }
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
