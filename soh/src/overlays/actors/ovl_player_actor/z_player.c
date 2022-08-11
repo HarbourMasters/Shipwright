@@ -12750,7 +12750,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             Audio_PlayFanfare(temp1);
         }
     }
-    else if (equipNow && Message_ShouldAdvance(globalCtx) &&
+    else if (equipNow && Message_ShouldAdvanceSilent(globalCtx) &&
              Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
         if (globalCtx->msgCtx.choiceIndex == 0) { // Equip now? Yes
 

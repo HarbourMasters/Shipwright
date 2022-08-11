@@ -1980,6 +1980,8 @@ namespace SohImGui {
         CVar_SetS32("gDpadNoDropOcarinaInput", 0);
         // Instant Putaway
         CVar_SetS32("gInstantPutaway", 0);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 0);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 0);
 
@@ -2194,6 +2196,8 @@ namespace SohImGui {
         CVar_SetS32("gFastOcarinaPlayback", 1);
         // Instant Putaway
         CVar_SetS32("gInstantPutaway", 1);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
 
