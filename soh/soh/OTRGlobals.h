@@ -11,6 +11,8 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
+const std::string customMessageTableID = "BaseGameOverrides";
+
 class OTRGlobals
 {
 public:
@@ -94,10 +96,6 @@ Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
-int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
-int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 s16 Randomizer_GetItemModelFromId(s16 itemId);
@@ -108,6 +106,7 @@ GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actor
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
+int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 #endif
 

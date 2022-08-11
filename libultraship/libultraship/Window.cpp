@@ -19,7 +19,7 @@
 #include <string>
 #include <chrono>
 #include "Console.h"
-#include "Cvar.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 
@@ -67,10 +67,9 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-        if (!CVar_GetS32("gOpenMenuBar", 0)) {
-            Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
-        }
+	    if (SohImGui::controller->Opened) return;
 
+        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
 
