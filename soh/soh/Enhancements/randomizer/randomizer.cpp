@@ -4739,8 +4739,8 @@ void Randomizer::CreateCustomMessages() {
 }
 
 void InitRandoItemTable() {
-    GetItemEntry getItemTable[] = {
-        // The first several entries have ItemIDs from vanilla, but not GetItemIDs or entries in sGetItemTable
+    // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
+    GetItemEntry extendedVanillaGetItemTable[] = {
         GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG),
@@ -4765,9 +4765,11 @@ void InitRandoItemTable() {
         GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG),
+    };
 
-        // Starting here, these do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
-        // RandomizerGet enum values for both.
+    // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
+    // RandomizerGet enum values for both.
+    GetItemEntry randoGetItemTable[] = {
         GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0, CHEST_ANIM_SHORT),
         GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG),
         GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
@@ -4784,18 +4786,13 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
-    for (int i = 0; i < ARRAY_SIZE(getItemTable); i++) {
-        if (i < 21) {
-            // We want to use vanilla Give_Item code for indices 0-20 since
-            // vanilla already handles that.
-            getItemTable[i].modIndex = MOD_VANILLA;
-        } else {
-            // Mark these as randomizer items so we use the rando exclusive
-            // Give_Item_Randomizer for these.
-            getItemTable[i].modIndex = MOD_RANDOMIZER;
-        }
+    for (int i = 0; i < ARRAY_SIZE(extendedVanillaGetItemTable); i++) {
+        extendedVanillaGetItemTable[i].modIndex = MOD_VANILLA;
+        // These items should use their RG value as their getItemID.
+        // RANDOTODO: Add the getItemID as a member of the GetItemEntry
+        // struct, since that value will be useful in other places as well.
         uint8_t getItemID;
-        switch (getItemTable[i].itemId) {
+        switch (extendedVanillaGetItemTable[i].itemId) {
             case ITEM_MEDALLION_LIGHT:
                 getItemID = RG_LIGHT_MEDALLION;
                 break;
@@ -4860,10 +4857,17 @@ void InitRandoItemTable() {
                 getItemID = RG_PRELUDE_OF_LIGHT;
                 break;
             default:
-                getItemID = getItemTable[i].itemId;
+                // We should never get here. If this branch of code executes,
+                // then you've added an item to extendedVanillaGetItemTable that
+                // should be in randoGetItemTable.
+                getItemID = RG_NONE;
                 break;
         }
-        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, getItemID, getItemTable[i]);
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, getItemID, extendedVanillaGetItemTable[i]);
+    }
+    for (int i = 0; i < ARRAY_SIZE(randoGetItemTable); i++) {
+        randoGetItemTable[i].modIndex = MOD_RANDOMIZER;
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
 }
 
