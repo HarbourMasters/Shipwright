@@ -688,7 +688,7 @@ void DrawDungeonItem(uint32_t itemId, uint32_t scene) {
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
-     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[scene]) != 0;
+    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[scene]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
         ImGui::Image(SohImGui::GetTextureByName(hasSmallKey ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
