@@ -13,7 +13,7 @@ pipeline {
                 timeout(time: 10)
             }
             agent {
-                label "SoH-Mac-Builders"
+                label "SoH-Asset-Builders"
             }
             steps {
                 checkout([
@@ -23,14 +23,17 @@ pipeline {
                     extensions: scm.extensions,
                     userRemoteConfigs: scm.userRemoteConfigs
                 ])
-                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                    sh '''
-                        cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                sh '''
+                    cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
-                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-                        cmake --build build-cmake --target ExtractAssets --config Release
-                    '''
-                    stash includes: 'soh/assets/**/*', name: 'assets'
+                    cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                    cmake --build build-cmake --target ExtractAssets --config Release
+                '''
+                stash includes: 'soh/assets/**/*', name: 'assets'
+            }
+            post {
+                unsuccessful {
+                    step([$class: 'WsCleanup']) // Clean workspace
                 }
             }
         }
