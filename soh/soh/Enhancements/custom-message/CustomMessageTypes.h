@@ -30,4 +30,7 @@ typedef struct {
 #define GIMESSAGE_UNTRANSLATED(giid, iid, message) \
     { giid, iid, message, message, message }
 
+#define GIMESSAGE_NO_GERMAN(giid, iid, english, french) \
+    { giid, iid, english, english, french  }
+
 #endif
