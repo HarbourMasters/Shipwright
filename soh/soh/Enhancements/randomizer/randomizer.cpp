@@ -4180,7 +4180,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
                     PaddedSeparator();
 
-                    // Start with Maps & Compasses
+                    // Maps & Compasses
                     ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
                     InsertHelpHoverText(
                         "Start with - You will start with Maps & Compasses from all dungeons.\n"
