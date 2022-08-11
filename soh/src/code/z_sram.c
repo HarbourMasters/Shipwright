@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include <string.h>
+#include <soh/Enhancements/randomizer/randomizerTypes.h>
 
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
@@ -306,11 +307,11 @@ void GiveLinkDekuNutUpgrade(GetItemID giid) {
 }
 
 void GiveLinkMagic(GetItemID giid) {
-    if (giid == GI_SINGLE_MAGIC) {
+    if (giid == RG_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
         gSaveContext.magicAcquired = true;
         gSaveContext.doubleMagic = false;
-    } else if (giid == GI_DOUBLE_MAGIC) {
+    } else if (giid == RG_MAGIC_DOUBLE) {
         gSaveContext.magicLevel = 2;
         gSaveContext.magicAcquired = true;
         gSaveContext.doubleMagic = true;
@@ -326,40 +327,40 @@ void GiveLinkSong(GetItemID getItemId) {
     uint32_t bitMask;
 
     switch (getItemId) {
-        case GI_ZELDAS_LULLABY:
+        case RG_ZELDAS_LULLABY:
             bitMask = 1 << QUEST_SONG_LULLABY;
             break;
-        case GI_SUNS_SONG:
+        case RG_SUNS_SONG:
             bitMask = 1 << QUEST_SONG_SUN;
             break;
-        case GI_EPONAS_SONG:
+        case RG_EPONAS_SONG:
             bitMask = 1 << QUEST_SONG_EPONA;
             break;
-        case GI_SONG_OF_STORMS:
+        case RG_SONG_OF_STORMS:
             bitMask = 1 << QUEST_SONG_STORMS;
             break;
-        case GI_SONG_OF_TIME:
+        case RG_SONG_OF_TIME:
             bitMask = 1 << QUEST_SONG_TIME;
             break;
-        case GI_SARIAS_SONG:
+        case RG_SARIAS_SONG:
             bitMask = 1 << QUEST_SONG_SARIA;
             break;
-        case GI_MINUET_OF_FOREST:
+        case RG_MINUET_OF_FOREST:
             bitMask = 1 << QUEST_SONG_MINUET;
             break;
-        case GI_BOLERO_OF_FIRE:
+        case RG_BOLERO_OF_FIRE:
             bitMask = 1 << QUEST_SONG_BOLERO;
             break;
-        case GI_SERENADE_OF_WATER:
+        case RG_SERENADE_OF_WATER:
             bitMask = 1 << QUEST_SONG_SERENADE;
             break;
-        case GI_NOCTURNE_OF_SHADOW:
+        case RG_NOCTURNE_OF_SHADOW:
             bitMask = 1 << QUEST_SONG_NOCTURNE;
             break;
-        case GI_REQUIEM_OF_SPIRIT:
+        case RG_REQUIEM_OF_SPIRIT:
             bitMask = 1 << QUEST_SONG_REQUIEM;
             break;
-        case GI_PRELUDE_OF_LIGHT:
+        case RG_PRELUDE_OF_LIGHT:
             bitMask = 1 << QUEST_SONG_PRELUDE;
             break;
     }
@@ -696,30 +697,22 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         if(Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-            s32 giid = Randomizer_GetItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
-            
-            if(giid >= GI_ZELDAS_LULLABY && giid <= GI_PRELUDE_OF_LIGHT) {
+            s32 giid = Randomizer_GetItemIdFromKnownCheck(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY);
+
+            if (giid >= RG_ZELDAS_LULLABY && giid <= RG_PRELUDE_OF_LIGHT) {
                 GiveLinkSong(giid);
-            } else if (giid == GI_RUPEE_GREEN ||
-                       giid == GI_RUPEE_BLUE ||
-                       giid == GI_RUPEE_RED ||
-                       giid == GI_RUPEE_PURPLE ||
-                       giid == GI_RUPEE_GOLD) {
+            } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
+                       giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
                 GiveLinkRupeesByGetItemId(giid);
-            } else if (giid == GI_BOMBCHUS_10 ||
-                       giid == GI_BOMBCHUS_5 ||
-                       giid == GI_BOMBCHUS_20) {
+            } else if (giid == GI_BOMBCHUS_10 || giid == GI_BOMBCHUS_5 || giid == GI_BOMBCHUS_20) {
                 GiveLinkBombchus(giid);
-            } else if (giid == GI_STICKS_1 ||
-                       giid == GI_STICKS_5 ||
-                       giid == GI_STICKS_10) {
+            } else if (giid == GI_STICKS_1 || giid == GI_STICKS_5 || giid == GI_STICKS_10) {
                 GiveLinkDekuSticksByGetItemId(giid);
-            } else if (giid == GI_NUTS_5 ||
-                       giid == GI_NUTS_10) {
+            } else if (giid == GI_NUTS_5 || giid == GI_NUTS_10) {
                 GiveLinkDekuNutsByGetItemId(giid);
             } else if (giid == GI_BEAN) {
                 GiveLinkBeans();
-            } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {
+            } else if (giid >= RG_KOKIRI_EMERALD && giid <= RG_LIGHT_MEDALLION) {
                 GiveLinkDungeonReward(giid);
             } else if (giid == GI_SWORD_KOKIRI) {
                 GiveLinkKokiriSword();
@@ -741,27 +734,17 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkIronBoots();
             } else if (giid == GI_BOOTS_HOVER) {
                 GiveLinkHoverBoots();
-            } else if (giid == GI_SLINGSHOT ||
-                       giid == GI_BULLET_BAG_40 ||
-                       giid == GI_BULLET_BAG_50) {
+            } else if (giid == GI_SLINGSHOT || giid == GI_BULLET_BAG_40 || giid == GI_BULLET_BAG_50) {
                 GiveLinkBulletBagUpgrade(giid);
-            } else if (giid == GI_BOW ||
-                       giid == GI_QUIVER_40 ||
-                       giid == GI_QUIVER_50) {
+            } else if (giid == GI_BOW || giid == GI_QUIVER_40 || giid == GI_QUIVER_50) {
                 GiveLinkQuiverUpgrade(giid);
-            } else if (giid == GI_BOMB_BAG_20 ||
-                       giid == GI_BOMB_BAG_30 ||
-                       giid == GI_BOMB_BAG_40) {
+            } else if (giid == GI_BOMB_BAG_20 || giid == GI_BOMB_BAG_30 || giid == GI_BOMB_BAG_40) {
                 GiveLinkBombBagUpgrade(giid);
-            } else if (giid == GI_BRACELET ||
-                       giid == GI_GAUNTLETS_SILVER ||
-                       giid == GI_GAUNTLETS_GOLD) {
+            } else if (giid == GI_BRACELET || giid == GI_GAUNTLETS_SILVER || giid == GI_GAUNTLETS_GOLD) {
                 GiveLinkStrengthUpgrade(giid);
-            } else if (giid == GI_SCALE_SILVER ||
-                       giid == GI_SCALE_GOLD) {
+            } else if (giid == GI_SCALE_SILVER || giid == GI_SCALE_GOLD) {
                 GiveLinkScaleUpgrade(giid);
-            } else if (giid == GI_WALLET_ADULT ||
-                       giid == GI_WALLET_GIANT) {
+            } else if (giid == GI_WALLET_ADULT || giid == GI_WALLET_GIANT) {
                 GiveLinkWalletUpgrade(giid);
             } else if (giid == GI_STONE_OF_AGONY) {
                 GiveLinkStoneOfAgony();
@@ -771,16 +754,13 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkPieceOfHeart();
             } else if (giid == GI_HEART_CONTAINER) {
                 GiveLinkHeartContainer();
-            } else if (giid == GI_STICK_UPGRADE_20 ||
-                       giid == GI_STICK_UPGRADE_30) {
+            } else if (giid == GI_STICK_UPGRADE_20 || giid == GI_STICK_UPGRADE_30) {
                 GiveLinkDekuStickUpgrade(giid);
-            } else if (giid == GI_NUT_UPGRADE_30 ||
-                       giid == GI_NUT_UPGRADE_40) {
+            } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
                 GiveLinkDekuNutUpgrade(giid);
-            } else if (giid == GI_SINGLE_MAGIC ||
-                       giid == GI_DOUBLE_MAGIC) {
+            } else if (giid == RG_MAGIC_SINGLE || giid == RG_MAGIC_DOUBLE) {
                 GiveLinkMagic(giid);
-            } else if (giid == GI_DOUBLE_DEFENSE) {
+            } else if (giid == RG_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
             } else {
                 s32 iid = Randomizer_GetItemIDFromGetItemID(giid);

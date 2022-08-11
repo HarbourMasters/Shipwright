@@ -357,7 +357,7 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, RG_EPONAS_SONG);
     // Prevents flag from getting set if we weren't able to get the item (i.e. Player is holding shield
     // when closing the textbox).
     if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&

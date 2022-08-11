@@ -21,6 +21,7 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, GlobalContext* globalCtx);
 void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -229,13 +230,10 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
         func_8002ED80(&this->actor, globalCtx, 0);
 
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
-            s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
-            if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-                (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-            }
-            if (randoGetItemId != GI_NONE) {
-                GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+            if (randoGetItem.itemId != RG_NONE) {
+                GetItem_Draw(globalCtx, ABS(randoGetItem.gi) - 1);
                 return;
             }
         }
@@ -249,20 +247,17 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 type = this->actor.params & 0xFF;
 
     if (gSaveContext.n64ddFlag) {
-        s32 randoGetItemId = GI_NONE;
+        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
-            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
-            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
 
-        if (randoGetItemId != GI_NONE) {
-            this->giDrawId = Randomizer_GetItemModelFromId(randoGetItemId);
+        if (randoGetItem.itemId != RG_NONE) {
+            this->giDrawId = ABS(randoGetItem.gi) - 1;
         }
     }
 

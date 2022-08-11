@@ -244,15 +244,6 @@ typedef enum {
     /* 0x99 */ ITEM_STICK_UPGRADE_30,
     /* 0x9A */ ITEM_NUT_UPGRADE_30,
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
-    /* 0x9C */ ITEM_BOTTLE_WITH_RED_POTION,
-    /* 0x9D */ ITEM_BOTTLE_WITH_GREEN_POTION,
-    /* 0x9E */ ITEM_BOTTLE_WITH_BLUE_POTION,
-    /* 0x9F */ ITEM_BOTTLE_WITH_FAIRY,
-    /* 0xA0 */ ITEM_BOTTLE_WITH_FISH,
-    /* 0xA1 */ ITEM_BOTTLE_WITH_BLUE_FIRE,
-    /* 0xA2 */ ITEM_BOTTLE_WITH_BUGS,
-    /* 0xA3 */ ITEM_BOTTLE_WITH_POE,
-    /* 0xA4 */ ITEM_BOTTLE_WITH_BIG_POE,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
@@ -388,47 +379,7 @@ typedef enum {
     /* 0x7A */ GI_NUT_UPGRADE_40,
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
-    /* 0x7D */ GI_TEXT_0, // no model appears over Link, shows text id 0 (pocket egg)
-
-    /* 0x7E */ GI_MEDALLION_LIGHT,
-    /* 0x7F */ GI_MEDALLION_FOREST,
-    /* 0x80 */ GI_MEDALLION_FIRE,
-    /* 0x81 */ GI_MEDALLION_WATER,
-    /* 0x82 */ GI_MEDALLION_SHADOW,
-    /* 0x83 */ GI_MEDALLION_SPIRIT,
-
-    /* 0x81 */ GI_STONE_KOKIRI,
-    /* 0x82 */ GI_STONE_GORON,
-    /* 0x83 */ GI_STONE_ZORA,
-
-    /* 0x81 */ GI_ZELDAS_LULLABY,
-    /* 0x82 */ GI_SUNS_SONG,
-    /* 0x83 */ GI_EPONAS_SONG,
-    /* 0x81 */ GI_SONG_OF_STORMS,
-    /* 0x82 */ GI_SONG_OF_TIME,
-    /* 0x83 */ GI_SARIAS_SONG,
-
-    /* 0x81 */ GI_MINUET_OF_FOREST,
-    /* 0x82 */ GI_BOLERO_OF_FIRE,
-    /* 0x83 */ GI_SERENADE_OF_WATER,
-    /* 0x81 */ GI_NOCTURNE_OF_SHADOW,
-    /* 0x82 */ GI_REQUIEM_OF_SPIRIT,
-    /* 0x83 */ GI_PRELUDE_OF_LIGHT,
-
-    GI_SINGLE_MAGIC,
-    GI_DOUBLE_MAGIC,
-    GI_DOUBLE_DEFENSE,
-
-    GI_BOTTLE_WITH_RED_POTION,
-    GI_BOTTLE_WITH_GREEN_POTION,
-    GI_BOTTLE_WITH_BLUE_POTION,
-    GI_BOTTLE_WITH_FAIRY,
-    GI_BOTTLE_WITH_FISH,
-    GI_BOTTLE_WITH_BLUE_FIRE,
-    GI_BOTTLE_WITH_BUGS,
-    GI_BOTTLE_WITH_POE,
-    GI_BOTTLE_WITH_BIG_POE,
-
+    /* 0x7D */ GI_TEXT_0,   // no model appears over Link, shows text id 0 (pocket egg)
     /* 0x84 */ GI_MAX
 } GetItemID;
 

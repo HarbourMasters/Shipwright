@@ -1542,10 +1542,6 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
-extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
-}
-
 extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
 }

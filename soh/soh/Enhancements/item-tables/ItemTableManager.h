@@ -2,15 +2,6 @@
 #include "ItemTableTypes.h"
 #include "z64item.h"
 
-#define CHEST_ANIM_SHORT 0
-#define CHEST_ANIM_LONG 1
-
-#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
-
-#define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, 0 }
-
 #include <unordered_map>
 
 typedef std::unordered_map<uint16_t, GetItemEntry> ItemTable;

@@ -899,7 +899,7 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
     if (impa->parent != NULL && impa->parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {

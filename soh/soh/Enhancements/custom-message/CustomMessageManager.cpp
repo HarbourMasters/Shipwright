@@ -1,5 +1,6 @@
 #include "CustomMessageManager.h"
 #include <algorithm>
+#include <stdint.h>
 
 using namespace std::literals::string_literals;
 
@@ -46,7 +47,7 @@ void CustomMessageManager::ReplaceColors(std::string& string) {
     }
 }
 
-void CustomMessageManager::FormatCustomMessage(std::string& message, ItemID iid) {
+void CustomMessageManager::FormatCustomMessage(std::string& message, uint16_t iid) {
     message.insert(0, ITEM_OBTAINED(iid));
     size_t start_pos = 0;
     std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
@@ -80,9 +81,8 @@ bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t tex
     return messageInsertResult.second;
 }
 
-
-
-bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messageEntry) {
+bool CustomMessageManager::CreateGetItemMessage(std::string tableID, uint16_t giid, uint16_t iid,
+                                                CustomMessageEntry messageEntry) {
     FormatCustomMessage(messageEntry.english, iid);
     FormatCustomMessage(messageEntry.german, iid);
     FormatCustomMessage(messageEntry.french, iid);

@@ -5970,7 +5970,7 @@ s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* ar
     return true;
 }
 
-s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
         // RANDOTODO update this logic when we implement keysanity
         // because 3drando replaces the keys not the rupees
@@ -5981,27 +5981,27 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
             switch(room) {
                 case 1:
                     if(!Flags_GetCollectible(globalCtx, 0x1B)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
                     }
                     break;
                 case 2:
                     if(!Flags_GetCollectible(globalCtx, 0x1C)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
                     }
                     break;
                 case 3:
                     if(!Flags_GetCollectible(globalCtx, 0x1D)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
                     }
                     break;
                 case 4:
                     if(!Flags_GetCollectible(globalCtx, 0x1E)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
                     }
                     break;
                 case 5:
                     if(!Flags_GetCollectible(globalCtx, 0x1F)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
                     }
                     break;
             }
@@ -6009,17 +6009,17 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
     }
 
     if(ogDrawId == GID_HEART_PIECE) {
-        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
+        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
     }
 
-    return GI_NONE;
+    return (GetItemEntry)GET_ITEM_NONE;
 }
 
 s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
-    s32 randoGetItemId = GetChestGameRandoGetItemId(room, ogDrawId, globalCtx);
+    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, globalCtx);
 
-    if(randoGetItemId != GI_NONE) {
-        return Randomizer_GetItemModelFromId(randoGetItemId);
+    if (randoGetItem.itemId != RG_NONE) {
+        return ABS(randoGetItem.gi) - 1;
     }
 
     return ogDrawId;
