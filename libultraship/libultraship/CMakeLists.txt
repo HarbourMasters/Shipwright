@@ -89,7 +89,7 @@ set(Source_Files__Controller
     "SDLController.cpp"
     "SDLController.h"
     "UltraController.h"
-    "VirtualController.h"
+    "DummyController.h"
 )
 source_group("Source Files\\Controller" FILES ${Source_Files__Controller})
 
