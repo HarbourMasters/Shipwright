@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Vertex::Vertex()
+    ModelVertex::ModelVertex()
     {
         pos = Vec3f(0, 0, 0);
         normal = Vec3f(0, 0, 0);
@@ -10,7 +10,7 @@ namespace Ship
         uv = Vec2f(0, 0);
     }
 
-    Vertex::Vertex(BinaryReader* reader)
+    ModelVertex::ModelVertex(BinaryReader* reader)
     {
         pos = reader->ReadVec3f();
         normal = reader->ReadVec3f();
@@ -36,7 +36,7 @@ namespace Ship
         uvCoords = reader->ReadUInt32();
         boneWeights = reader->ReadUInt32();
 
-        Vertex* vtxData = new Vertex[numVerts];
+        ModelVertex* vtxData = new ModelVertex[numVerts];
         uint32_t* indicesData = new uint32_t[numPolys];
 
         if (vertices != 0)

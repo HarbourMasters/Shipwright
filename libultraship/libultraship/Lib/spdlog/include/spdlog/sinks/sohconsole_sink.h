@@ -41,7 +41,7 @@ protected:
         }
         formatted.push_back('\0');
         const char* msg_output = formatted.data();
-        if (CVar_GetS32("gSinkEnabled", 0) && SohImGui::console->opened) {
+        if (CVar_GetS32("gSinkEnabled", 0) && SohImGui::console->IsOpened()) {
             SohImGui::console->Append("Logs", msg.level, "%s", msg_output);
         }
     }
