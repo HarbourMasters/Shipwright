@@ -12,7 +12,7 @@ namespace Ship {
 	Controller::Controller() : isRumbling(false) {
 		Attachment = nullptr;
 
-		for(int virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
+		for(int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
 			profiles[virtualSlot] = std::make_shared<DeviceProfileV0>();
 			ButtonData[virtualSlot] = std::make_shared<Buttons>();
 		}

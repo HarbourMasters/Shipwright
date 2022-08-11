@@ -1410,8 +1410,8 @@ s32 Camera_Noop(Camera* camera) {
 }
 
 s32 SetCameraManual(Camera* camera) {
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x * 10.0f;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y * 10.0f;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
 
     if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
         camera->globalCtx->manualCamera = true;
@@ -1479,8 +1479,8 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 1;
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x * 10.0f;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y * 10.0f;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
 
     camera->globalCtx->camX += newCamX;
     camera->globalCtx->camY += newCamY;
