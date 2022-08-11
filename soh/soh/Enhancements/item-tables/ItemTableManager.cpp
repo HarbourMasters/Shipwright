@@ -1,4 +1,5 @@
 #include "ItemTableManager.h"
+#include <stdexcept>
 
 ItemTableManager::ItemTableManager() {
 }
@@ -13,38 +14,29 @@ bool ItemTableManager::AddItemTable(uint16_t tableID) {
 }
 
 bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry) {
-    ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable == nullptr) {
-        return false;
-    }
-    return itemTable->emplace(getItemID, getItemEntry).second;
+    try {
+        ItemTable* itemTable = RetrieveItemTable(tableID);
+        return itemTable->emplace(getItemID, getItemEntry).second;
+    } catch (const std::out_of_range& oor) { return false; }
 }
 
 GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t itemID) {
-    ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable != nullptr) {
-        auto foundItemEntry = itemTable->find(itemID);
-        if (foundItemEntry != itemTable->end()) {
-            return foundItemEntry->second;
-        }
-    }
-    return GET_ITEM_NONE;
+    try {
+        ItemTable* itemTable = RetrieveItemTable(tableID);
+        return itemTable->at(itemID);
+    } catch (std::out_of_range& oor) { return GET_ITEM_NONE; }
 }
 
 bool ItemTableManager::ClearItemTable(uint16_t tableID) {
-    ItemTable* itemTable = RetrieveItemTable(tableID);
-    if (itemTable != nullptr) {
+    try {
+        ItemTable* itemTable = RetrieveItemTable(tableID);
         itemTable->clear();
         return true;
-    }
-    return false;
+    } catch (const std::out_of_range& oor) { return false; }
 }
 
 ItemTable* ItemTableManager::RetrieveItemTable(uint16_t tableID) {
-    auto foundItemTable = itemTables.find(tableID);
-    if (foundItemTable == itemTables.end()) {
-        return nullptr;
-    }
-    ItemTable& itemTable = foundItemTable->second;
-    return &itemTable;
+    try {
+        return &itemTables.at(tableID);
+    } catch (const std::out_of_range& oor) { throw(oor); }
 }
