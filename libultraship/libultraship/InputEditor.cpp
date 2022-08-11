@@ -172,7 +172,7 @@ namespace Ship {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 				// 2 is the SDL value for right stick X axis
 				// 3 is the SDL value for right stick Y axis.
-				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort) / profile->AxisSensitivities[2], Backend->getRightStickY(CurrentPort) / profile->AxisSensitivities[3]));
+				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort) / profile->AxisSensitivities[2], Backend->getRightStickY(CurrentPort) / profile->AxisSensitivities[2]));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -184,6 +184,7 @@ namespace Ship {
 					ImGui::Text("Sensitivity");
 					ImGui::PushItemWidth(80);
 					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2] /* This is the SDL value for right stick X axis */, 1.0f, 0.0f, "%.0f");
+					profile->AxisSensitivities[3] = profile->AxisSensitivities[2];
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
