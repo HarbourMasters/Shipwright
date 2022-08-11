@@ -420,7 +420,7 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
       if (!Location(loc)->IsAddedToPool()) {
         allLocationsReachable = false;
         auto message = "Location " + Location(loc)->GetName() + " not reachable\n";
-        SPDLOG_INFO(message);
+        SPDLOG_DEBUG(message);
         #ifndef ENABLE_DEBUG
           break;
         #endif
@@ -567,17 +567,17 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
 
     if (items.size() > allowedLocations.size()) {
         printf("\x1b[2;2HERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
-        SPDLOG_INFO("Items:\n");
+        SPDLOG_DEBUG("Items:\n");
         for (const uint32_t item : items) {
-            SPDLOG_INFO("\t");
-            SPDLOG_INFO(ItemTable(item).GetName().GetEnglish());
-            SPDLOG_INFO("\n");
+            SPDLOG_DEBUG("\t");
+            SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+            SPDLOG_DEBUG("\n");
         }
-        SPDLOG_INFO("\nAllowed Locations:\n");
+        SPDLOG_DEBUG("\nAllowed Locations:\n");
         for (const uint32_t loc : allowedLocations) {
-            SPDLOG_INFO("\t");
-            SPDLOG_INFO(Location(loc)->GetName());
-            SPDLOG_INFO("\n");
+            SPDLOG_DEBUG("\t");
+            SPDLOG_DEBUG(Location(loc)->GetName());
+            SPDLOG_DEBUG("\n");
         }
         placementFailure = true;
         return;
@@ -627,9 +627,9 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
             // retry if there are no more locations to place items
             if (accessibleLocations.empty()) {
 
-                SPDLOG_INFO("\nCANNOT PLACE ");
-                SPDLOG_INFO(ItemTable(item).GetName().GetEnglish());
-                SPDLOG_INFO(". TRYING AGAIN...\n");
+                SPDLOG_DEBUG("\nCANNOT PLACE ");
+                SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+                SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
                 Areas::DumpWorldGraph(ItemTable(item).GetName().GetEnglish());
@@ -666,7 +666,7 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
                 LogicReset();
                 GetAccessibleLocations(allLocations, SearchMode::CheckBeatable);
                 if (playthroughBeatable) {
-                    SPDLOG_INFO("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
+                    SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
                                 " major items remaining.\n\n");
                     FastFill(itemsToPlace, GetEmptyLocations(allowedLocations), true);
                     return;
@@ -1062,7 +1062,7 @@ int Fill() {
     }
     //Unsuccessful placement
     if(retries < 4) {
-      SPDLOG_INFO("\nGOT STUCK. RETRYING...\n");
+      SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
       Areas::ResetAllLocations();
       LogicReset();
       ClearProgress();
