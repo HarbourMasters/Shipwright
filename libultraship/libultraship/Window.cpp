@@ -66,8 +66,11 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
+        
+        if (SohImGui::controller->Opened) return;
 
-	    if (SohImGui::controller->Opened) return;
+        ImGuiIO io = ImGui::GetIO();
+        if (io.WantCaptureKeyboard) return;
 
         Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
