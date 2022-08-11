@@ -22,14 +22,6 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
-//typedef struct {
-//    /* 0x00 */ u8 itemId;
-//    /* 0x01 */ u8 field; // various bit-packed data
-//    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
-//    /* 0x03 */ u8 textId;
-//    /* 0x04 */ u16 objectId;
-//} GetItemEntry; // size = 0x06
-
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
     { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
 

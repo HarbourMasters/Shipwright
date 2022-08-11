@@ -2009,9 +2009,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MAGIC_BEAN_PACK:
             return GI_BEAN; //todo make it 10 of them
 
-        /*case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;*/
-
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
 
@@ -2161,52 +2158,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-        /*case RG_BOTTLE_WITH_RED_POTION:
-            return GI_BOTTLE_WITH_RED_POTION;
-        case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_BOTTLE_WITH_GREEN_POTION;
-        case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_BOTTLE_WITH_BLUE_POTION;
-        case RG_BOTTLE_WITH_FAIRY:
-            return GI_BOTTLE_WITH_FAIRY;
-        case RG_BOTTLE_WITH_FISH:
-            return GI_BOTTLE_WITH_FISH;
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BOTTLE_WITH_BLUE_FIRE;
-        case RG_BOTTLE_WITH_BUGS:
-            return GI_BOTTLE_WITH_BUGS;
-        case RG_BOTTLE_WITH_POE:
-            return GI_BOTTLE_WITH_POE;
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
-        case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BOTTLE_WITH_BIG_POE;
-
-        case RG_ZELDAS_LULLABY:
-            return GI_ZELDAS_LULLABY;
-        case RG_EPONAS_SONG:
-            return GI_EPONAS_SONG;
-        case RG_SARIAS_SONG:
-            return GI_SARIAS_SONG;
-        case RG_SUNS_SONG:
-            return GI_SUNS_SONG;
-        case RG_SONG_OF_TIME:
-            return GI_SONG_OF_TIME;
-        case RG_SONG_OF_STORMS:
-            return GI_SONG_OF_STORMS;
-
-        case RG_MINUET_OF_FOREST:
-            return GI_MINUET_OF_FOREST;
-        case RG_BOLERO_OF_FIRE:
-            return GI_BOLERO_OF_FIRE;
-        case RG_SERENADE_OF_WATER:
-            return GI_SERENADE_OF_WATER;
-        case RG_REQUIEM_OF_SPIRIT:
-            return GI_REQUIEM_OF_SPIRIT;
-        case RG_NOCTURNE_OF_SHADOW:
-            return GI_NOCTURNE_OF_SHADOW;
-        case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;*/
 
         // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
@@ -2269,26 +2220,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_GANONS_CASTLE_KEY_RING:
             return GI_RUPEE_BLUE;
 
-        /*case RG_KOKIRI_EMERALD:
-            return GI_STONE_KOKIRI;
-        case RG_GORON_RUBY:
-            return GI_STONE_GORON;
-        case RG_ZORA_SAPPHIRE:
-            return GI_STONE_ZORA;
-
-        case RG_FOREST_MEDALLION:
-            return GI_MEDALLION_FOREST;
-        case RG_FIRE_MEDALLION:
-            return GI_MEDALLION_FIRE;
-        case RG_WATER_MEDALLION:
-            return GI_MEDALLION_WATER;
-        case RG_SPIRIT_MEDALLION:
-            return GI_MEDALLION_SPIRIT;
-        case RG_SHADOW_MEDALLION:
-            return GI_MEDALLION_SHADOW;
-        case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;*/
-
         case RG_RECOVERY_HEART:
             return GI_HEART;
 
@@ -2308,10 +2239,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-
-        // case RG_ICE_TRAP:
-        //     return GI_ICE_TRAP;
-
         case RG_MILK:
             return GI_MILK; //todo logic around needing a bottle?
 
