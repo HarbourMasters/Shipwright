@@ -27,14 +27,17 @@ typedef struct {
 #define GIMESSAGE(giid, iid, english, german, french) \
     { giid, iid, english, german, french }
 
-GetItemMessage GIMESSAGE_UNTRANSLATED(u16 giid, u16 iid, std::string message) {
-    GetItemMessage giMessage;
-    giMessage.giid = giid;
-    giMessage.iid = iid;
-    giMessage.english = message;
-    giMessage.german = message;
-    giMessage.french = message;
-    return giMessage;
-}
+#define GIMESSAGE_UNTRANSLATED(giid, iid, message) \
+    { giid, iid, message, message, message }
+
+// GetItemMessage GIMESSAGE_UNTRANSLATED(u16 giid, u16 iid, std::string message) {
+//     GetItemMessage giMessage;
+//     giMessage.giid = giid;
+//     giMessage.iid = iid;
+//     giMessage.english = message;
+//     giMessage.german = message;
+//     giMessage.french = message;
+//     return giMessage;
+// }
 
 #endif
