@@ -222,6 +222,13 @@ set(Header_Files__soh__Enhancements__custom_message
 
 source_group("Header Files\\soh\\Enhancements\\custom-message" FILES ${Header_Files__soh__Enhancements__custom_message})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Header_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.h"
+)
+source_group("Header Files\\soh\\Enhancements\\crowd-control" FILES ${Header_Files__soh__Enhancements__crowd_control})
+endif()
+
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
     "soh/OTRAudio.h"
@@ -338,6 +345,13 @@ set(Source_Files__soh__Enhancements__custom_message
 )
 
 source_group("Source Files\\soh\\Enhancements\\custom-message" FILES ${Source_Files__soh__Enhancements__custom_message})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\crowd-control" FILES ${Source_Files__soh__Enhancements__crowd_control})
+endif()
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1548,6 +1562,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__cosmetics}
@@ -1557,6 +1572,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}
@@ -1663,7 +1679,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Debug>:"
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_DX11"
+				"ENABLE_DX11;"
+                "ENABLE_CROWD_CONTROL"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
