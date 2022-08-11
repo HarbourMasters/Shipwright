@@ -424,12 +424,8 @@ namespace Ship {
                 profile.Mappings[WPAD_PRO_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
                 profile.Mappings[WPAD_PRO_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
                 profile.Mappings[WPAD_PRO_STICK_R_EMULATION_UP] = BTN_CUP;
-                profile.Mappings[WPAD_PRO_BUTTON_X] = BTN_CRIGHT;
-                profile.Mappings[WPAD_PRO_BUTTON_Y] = BTN_CLEFT;
-                profile.Mappings[WPAD_PRO_TRIGGER_R] = BTN_CDOWN;
-                profile.Mappings[WPAD_PRO_TRIGGER_L] = BTN_CUP;
                 profile.Mappings[WPAD_PRO_TRIGGER_ZR] = BTN_R;
-                profile.Mappings[WPAD_PRO_BUTTON_MINUS] = BTN_L;
+                profile.Mappings[WPAD_PRO_TRIGGER_L] = BTN_L;
                 profile.Mappings[WPAD_PRO_BUTTON_RIGHT] = BTN_DRIGHT;
                 profile.Mappings[WPAD_PRO_BUTTON_LEFT] = BTN_DLEFT;
                 profile.Mappings[WPAD_PRO_BUTTON_DOWN] = BTN_DDOWN;
@@ -449,18 +445,14 @@ namespace Ship {
                 profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
                 profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
                 profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_UP] = BTN_CUP;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_X] = BTN_CRIGHT;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_Y] = BTN_CLEFT;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_ZR] = BTN_CDOWN;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_ZL] = BTN_CUP;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_R] = BTN_R;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_MINUS] = BTN_L;
+                profile.Mappings[WPAD_CLASSIC_BUTTON_ZR] = BTN_R;
+                profile.Mappings[WPAD_CLASSIC_BUTTON_L] = BTN_L;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_RIGHT] = BTN_DRIGHT;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_LEFT] = BTN_DLEFT;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_DOWN] = BTN_DDOWN;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_UP] = BTN_DUP;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_PLUS] = BTN_START;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_L] = BTN_Z;
+                profile.Mappings[WPAD_CLASSIC_BUTTON_ZL] = BTN_Z;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_B] = BTN_B;
                 profile.Mappings[WPAD_CLASSIC_BUTTON_A] = BTN_A;
                 profile.Mappings[WPAD_CLASSIC_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
@@ -485,6 +477,8 @@ namespace Ship {
                 break;
         }
 
+        profile.Thresholds[LEFT_STICK] = 0.0f;
+        profile.Thresholds[RIGHT_STICK] = 0.0f;
         profile.Thresholds[SENSITIVITY] = 16.0f;
     }
 

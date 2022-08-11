@@ -293,12 +293,8 @@ namespace Ship {
         profile.Mappings[VPAD_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
         profile.Mappings[VPAD_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
         profile.Mappings[VPAD_STICK_R_EMULATION_UP] = BTN_CUP;
-        profile.Mappings[VPAD_BUTTON_X] = BTN_CRIGHT;
-        profile.Mappings[VPAD_BUTTON_Y] = BTN_CLEFT;
-        profile.Mappings[VPAD_BUTTON_R] = BTN_CDOWN;
-        profile.Mappings[VPAD_BUTTON_L] = BTN_CUP;
         profile.Mappings[VPAD_BUTTON_ZR] = BTN_R;
-        profile.Mappings[VPAD_BUTTON_MINUS] = BTN_L;
+        profile.Mappings[VPAD_BUTTON_L] = BTN_L;
         profile.Mappings[VPAD_BUTTON_RIGHT] = BTN_DRIGHT;
         profile.Mappings[VPAD_BUTTON_LEFT] = BTN_DLEFT;
         profile.Mappings[VPAD_BUTTON_DOWN] = BTN_DDOWN;
@@ -312,6 +308,8 @@ namespace Ship {
         profile.Mappings[VPAD_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
         profile.Mappings[VPAD_STICK_L_EMULATION_UP] = BTN_STICKUP;
 
+        profile.Thresholds[LEFT_STICK] = 0.0f;
+        profile.Thresholds[RIGHT_STICK] = 0.0f;
         profile.Thresholds[SENSITIVITY] = 16.0f;
         profile.Thresholds[GYRO_SENSITIVITY] = 1.0f;
         profile.Thresholds[DRIFT_X] = 0.0f;
