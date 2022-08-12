@@ -606,13 +606,20 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
     // TODO: Implement
 }
 
-static bool AddRemoveRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        int value = std::stoi(args[1], nullptr, 10);
+        gSaveContext.rupees += value;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Rupee value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -927,11 +934,7 @@ void DebugConsole_Init(void) {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("add_rupees", { AddRemoveRupeesHandler, "Adds rupees.", {
-        { "value", Ship::ArgumentType::NUMBER }
-    }});
-
-    CMD_REGISTER("subtract_rupees", { AddRemoveRupeesHandler, "Subtracts rupees.", {
+    CMD_REGISTER("update_rupees", { UpdateRupeesHandler, "Adds rupees.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
