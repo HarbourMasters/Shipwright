@@ -1590,10 +1590,10 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::Text("Chroma Key");
     auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
     ImGui::ColorEdit4("Chroma Key Selection", (float*)&ChromaKeyBackground, flags);
-    CVar_SetFloat("gTrackerBgColorR", ChromaKeyBackground.x);
-    CVar_SetFloat("gTrackerBgColorG", ChromaKeyBackground.y);
-    CVar_SetFloat("gTrackerBgColorB", ChromaKeyBackground.z);
-    CVar_SetFloat("gTrackerBgColorA", ChromaKeyBackground.w);
+    CVar_SetFloat("gItemTrackerBgColorR", ChromaKeyBackground.x);
+    CVar_SetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
+    CVar_SetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
+    CVar_SetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
 
     const char* ItemsTrackerTheme[3] = { "One Block", "Grouped style n.1", "Grouped style n.2" };
     ImGui::Text("Using theme :");
@@ -1670,10 +1670,10 @@ void InitItemTracker() {
     CVar_RegisterS32("gRandoTrackIconSize", 32);
     SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
     SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
-    float trackerBgR = CVar_GetFloat("gTrackerBgColorR", 0);
-    float trackerBgG = CVar_GetFloat("gTrackerBgColorG", 0);
-    float trackerBgB = CVar_GetFloat("gTrackerBgColorB", 0);
-    float trackerBgA = CVar_GetFloat("gTrackerBgColorA", 1);
+    float trackerBgR = CVar_GetFloat("gItemTrackerBgColorR", 0);
+    float trackerBgG = CVar_GetFloat("gItemTrackerBgColorG", 0);
+    float trackerBgB = CVar_GetFloat("gItemTrackerBgColorB", 0);
+    float trackerBgA = CVar_GetFloat("gItemTrackerBgColorA", 1);
     ChromaKeyBackground = {
         trackerBgR,
         trackerBgG,
