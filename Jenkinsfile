@@ -13,7 +13,7 @@ pipeline {
                 timeout(time: 10)
             }
             agent {
-                label "SoH-Mac-Builders"
+                label "SoH-Asset-Builders"
             }
             steps {
                 checkout([
@@ -23,14 +23,17 @@ pipeline {
                     extensions: scm.extensions,
                     userRemoteConfigs: scm.userRemoteConfigs
                 ])
-                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                    sh '''
-                        cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                sh '''
+                    cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
-                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-                        cmake --build build-cmake --target ExtractAssets --config Release
-                    '''
-                    stash includes: 'soh/assets/**/*', name: 'assets'
+                    cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                    cmake --build build-cmake --target ExtractAssets --config Release
+                '''
+                stash includes: 'soh/assets/**/*', name: 'assets'
+            }
+            post {
+                unsuccessful {
+                    step([$class: 'WsCleanup']) // Clean workspace
                 }
             }
         }
@@ -60,6 +63,7 @@ pipeline {
                             unstash 'assets'
                             bat """                             
                             "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON} -D CMAKE_BUILD_TYPE:STRING=Release
+                            "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --target OTRGui --config Release
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
                             "${env.CPACK}" -G ZIP

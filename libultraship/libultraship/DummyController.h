@@ -5,9 +5,9 @@
 #include "Controller.h"
 
 namespace Ship {
-	class VirtualController final : public Controller {
+	class DummyController final : public Controller {
 	public:
-		VirtualController(const std::string& CUID, const std::string& KeyName, bool Connected) {
+		DummyController(const std::string& CUID, const std::string& KeyName, bool Connected) {
 			GUID = CUID;
 			isConnected = Connected;
 			ButtonName = KeyName;
@@ -15,8 +15,8 @@ namespace Ship {
 
 		std::map<std::vector<std::string>, int32_t> ReadButtonPress();
 		void ReadFromSource(int32_t slot) override {}
-		const char* GetControllerName() override { return GUID.c_str(); }
-		const char* GetButtonName(int slot, int n64Button) override { return ButtonName.c_str(); }
+		const std::string GetControllerName() override { return GUID; }
+		const std::string GetButtonName(int slot, int n64Button) override { return ButtonName; }
 		void WriteToSource(int32_t slot, ControllerCallback* controller) override { }
 		bool Connected() const override { return isConnected; }
 		bool CanRumble() const override { return false; }

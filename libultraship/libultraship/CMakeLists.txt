@@ -87,7 +87,7 @@ set(Source_Files__Controller
     "KeyboardController.cpp"
     "KeyboardController.h"
     "UltraController.h"
-    "VirtualController.h"
+    "DummyController.h"
 )
 
 if (NOT CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
