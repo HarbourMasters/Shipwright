@@ -13,7 +13,7 @@ typedef struct {
     /* 0x04 */ u16 objectId;
 } GetItemEntry; // size = 0x06
 
-extern GetItemEntry sGetItemTable[160];
+extern GetItemEntry sGetItemTable[195];
 
 typedef enum {
     /* 0 */ PLAYER_SWORD_NONE,

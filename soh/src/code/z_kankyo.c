@@ -4,6 +4,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -2048,6 +2049,21 @@ void Environment_PlaySceneSequence(GlobalContext* globalCtx) {
     Audio_SetEnvReverb(globalCtx->roomCtx.curRoom.echo);
 }
 
+bool HatchPocketEgg(GlobalContext* globalCtx) {
+    if (!gSaveContext.n64ddFlag) {
+        return Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
+    }
+
+    if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
+         return 0;
+    }
+
+    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
+    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
+    return 1;
+}
+
 // updates bgm/sfx and other things as the day progresses
 void func_80075B44(GlobalContext* globalCtx) {
     switch (globalCtx->envCtx.unk_E0) {
@@ -2101,7 +2117,7 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) &&
+                     HatchPocketEgg(globalCtx)) &&
                     globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }

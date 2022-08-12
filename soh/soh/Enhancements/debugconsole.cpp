@@ -5,6 +5,7 @@
 #include "debugconsole.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "savestates.h"
+#include "Console.h"
 
 #include <vector>
 #include <string>
@@ -32,7 +33,7 @@ extern GlobalContext* gGlobalCtx;
 
 #define CMD_REGISTER SohImGui::BindCmd
 
-static bool ActorSpawnHandler(const std::vector<std::string>& args) {
+static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
         SohImGui::console->SendErrorMessage("Not enough arguments passed to actorspawn");
         return CMD_FAILED;
@@ -82,13 +83,13 @@ static bool ActorSpawnHandler(const std::vector<std::string>& args) {
 }
 
 
-static bool KillPlayerHandler([[maybe_unused]] const std::vector<std::string>&) {
+static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.health = 0;
     SohImGui::console->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
     return CMD_SUCCESS;
 }
 
-static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
+static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -115,7 +116,7 @@ static bool SetPlayerHealthHandler(const std::vector<std::string>& args) {
 }
 
 
-static bool LoadSceneHandler(const std::vector<std::string>&) {
+static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = 0xFF;
     gSaveContext.gameMode = 0;
@@ -123,7 +124,7 @@ static bool LoadSceneHandler(const std::vector<std::string>&) {
     return CMD_SUCCESS;
 }
 
-static bool RuppeHandler(const std::vector<std::string>& args) {
+static bool RuppeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() < 2)
         return CMD_FAILED;
 
@@ -147,7 +148,7 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
     return CMD_SUCCESS;
 }
 
-static bool SetPosHandler(const std::vector<std::string> args) {
+static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
         SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
@@ -174,7 +175,7 @@ static bool SetPosHandler(const std::vector<std::string> args) {
     return CMD_SUCCESS;
 }
 
-static bool ResetHandler(std::vector<std::string> args) {
+static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
         SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
@@ -195,7 +196,7 @@ const static std::map<std::string, uint16_t> ammoItems{
     { "magic_beans", ITEM_BEAN },
 };
 
-static bool AmmoHandler(const std::vector<std::string>& args) {
+static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -238,7 +239,7 @@ const static std::map<std::string, uint16_t> bottleItems{
     { "big_poe", ITEM_BIG_POE },  { "blue_fire", ITEM_BLUE_FIRE }, { "rutos_letter", ITEM_LETTER_RUTO },
 };
 
-static bool BottleHandler(const std::vector<std::string>& args) {
+static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -270,7 +271,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     return CMD_SUCCESS;
 }
 
-static bool BHandler(const std::vector<std::string>& args) {
+static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -280,7 +281,7 @@ static bool BHandler(const std::vector<std::string>& args) {
     return CMD_SUCCESS;
 }
 
-static bool ItemHandler(const std::vector<std::string>& args) {
+static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -291,7 +292,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
     return CMD_SUCCESS;
 }
 
-static bool EntranceHandler(const std::vector<std::string>& args) {
+static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -312,7 +313,7 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     gSaveContext.nextTransition = 11;
 }
 
-static bool SaveStateHandler(const std::vector<std::string>& args) {
+static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
@@ -323,11 +324,10 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             SohImGui::console->SendErrorMessage("[SOH] Can not save a state outside of \"GamePlay\"");
             return CMD_FAILED;
-
     }
 }
 
-static bool LoadStateHandler(const std::vector<std::string>& args) {
+static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
 
@@ -348,7 +348,7 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
 
 }
 
-static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
+static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -404,7 +404,7 @@ static int CheckVarType(const std::string& input)
     return result;
 }
 
-static bool SetCVarHandler(const std::vector<std::string>& args) {
+static bool SetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() < 3)
         return CMD_FAILED;
 
@@ -434,7 +434,7 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
 }
 
 
-static bool GetCVarHandler(const std::vector<std::string>& args) {
+static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() < 2)
         return CMD_FAILED;
 
