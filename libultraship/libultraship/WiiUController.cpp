@@ -36,17 +36,19 @@ namespace Ship {
         connected = false;
         extensionType = (WPADExtensionType) -1;
 
-        for (int32_t& btn : dwPressedButtons) {
-            btn = 0;
+        for (int i = 0; i < MAXCONTROLLERS; i++) {
+            getPressedButtons(i) = 0;
+            getLeftStickX(i) = 0;
+            getLeftStickY(i) = 0;
+            getRightStickX(i) = 0;
+            getRightStickY(i) = 0;
+            getGyroX(i) = 0;
+            getGyroY(i) = 0;
         }
-        wStickX = 0;
-        wStickY = 0;
-        wCamX = 0;
-        wCamY = 0;
     }
 
-    void WiiUController::ReadFromSource(int32_t slot) {
-        DeviceProfile& profile = profiles[slot];
+    void WiiUController::ReadFromSource(int32_t virtualSlot) {
+        auto profile = getProfile(virtualSlot);
 
         KPADError error;
         KPADStatus* status = Ship::WiiU::GetKPADStatus(chan, &error);
@@ -61,11 +63,13 @@ namespace Ship {
             return;
         }
 
-        dwPressedButtons[slot] = 0;
-        wStickX = 0;
-        wStickY = 0;
-        wCamX = 0;
-        wCamY = 0;
+        getPressedButtons(virtualSlot) = 0;
+        getLeftStickX(virtualSlot) = 0;
+        getLeftStickY(virtualSlot) = 0;
+        getRightStickX(virtualSlot) = 0;
+        getRightStickY(virtualSlot) = 0;
+        getGyroX(virtualSlot) = 0;
+        getGyroY(virtualSlot) = 0;
 
         if (error != KPAD_ERROR_OK) {
             return;
@@ -79,29 +83,29 @@ namespace Ship {
         switch (extensionType) {
             case WPAD_EXT_PRO_CONTROLLER:
                 for (uint32_t i = WPAD_PRO_BUTTON_UP; i <= WPAD_PRO_STICK_R_EMULATION_UP; i <<= 1) {
-                    if (profile.Mappings.contains(i)) {
+                    if (profile->Mappings.contains(i)) {
                         // check if the stick is mapped to an analog stick
                         if (i >= WPAD_PRO_STICK_L_EMULATION_LEFT) {
                             float axisX = i >= WPAD_PRO_STICK_R_EMULATION_LEFT ? status->pro.rightStick.x : status->pro.leftStick.x;
                             float axisY = i >= WPAD_PRO_STICK_R_EMULATION_LEFT ? status->pro.rightStick.y : status->pro.leftStick.y;
 
-                            if (profile.Mappings[i] == BTN_STICKRIGHT || profile.Mappings[i] == BTN_STICKLEFT) {
+                            if (profile->Mappings[i] == BTN_STICKRIGHT || profile->Mappings[i] == BTN_STICKLEFT) {
                                 stickX = axisX * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_STICKDOWN || profile.Mappings[i] == BTN_STICKUP) {
+                            } else if (profile->Mappings[i] == BTN_STICKDOWN || profile->Mappings[i] == BTN_STICKUP) {
                                 stickY = axisY * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_VSTICKRIGHT || profile.Mappings[i] == BTN_VSTICKLEFT) {
+                            } else if (profile->Mappings[i] == BTN_VSTICKRIGHT || profile->Mappings[i] == BTN_VSTICKLEFT) {
                                 camX = axisX * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_VSTICKDOWN || profile.Mappings[i] == BTN_VSTICKUP) {
+                            } else if (profile->Mappings[i] == BTN_VSTICKDOWN || profile->Mappings[i] == BTN_VSTICKUP) {
                                 camY = axisY * 85;
                                 continue;
                             }
                         }
 
                         if (status->pro.hold & i) {
-                            dwPressedButtons[slot] |= profile.Mappings[i];
+                            getPressedButtons(virtualSlot) |= profile->Mappings[i];
                         }
                     }
                 }
@@ -109,29 +113,29 @@ namespace Ship {
             case WPAD_EXT_CLASSIC:
             case WPAD_EXT_MPLUS_CLASSIC:
                 for (uint32_t i = WPAD_CLASSIC_BUTTON_UP; i <= WPAD_CLASSIC_STICK_R_EMULATION_UP; i <<= 1) {
-                    if (profile.Mappings.contains(i)) {
+                    if (profile->Mappings.contains(i)) {
                         // check if the stick is mapped to an analog stick
                         if (i >= WPAD_CLASSIC_STICK_L_EMULATION_LEFT) {
                             float axisX = i >= WPAD_CLASSIC_STICK_R_EMULATION_LEFT ? status->classic.rightStick.x : status->classic.leftStick.x;
                             float axisY = i >= WPAD_CLASSIC_STICK_R_EMULATION_LEFT ? status->classic.rightStick.y : status->classic.leftStick.y;
 
-                            if (profile.Mappings[i] == BTN_STICKRIGHT || profile.Mappings[i] == BTN_STICKLEFT) {
+                            if (profile->Mappings[i] == BTN_STICKRIGHT || profile->Mappings[i] == BTN_STICKLEFT) {
                                 stickX = axisX * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_STICKDOWN || profile.Mappings[i] == BTN_STICKUP) {
+                            } else if (profile->Mappings[i] == BTN_STICKDOWN || profile->Mappings[i] == BTN_STICKUP) {
                                 stickY = axisY * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_VSTICKRIGHT || profile.Mappings[i] == BTN_VSTICKLEFT) {
+                            } else if (profile->Mappings[i] == BTN_VSTICKRIGHT || profile->Mappings[i] == BTN_VSTICKLEFT) {
                                 camX = axisX * 85;
                                 continue;
-                            } else if (profile.Mappings[i] == BTN_VSTICKDOWN || profile.Mappings[i] == BTN_VSTICKUP) {
+                            } else if (profile->Mappings[i] == BTN_VSTICKDOWN || profile->Mappings[i] == BTN_VSTICKUP) {
                                 camY = axisY * 85;
                                 continue;
                             }
                         }
 
                         if (status->classic.hold & i) {
-                            dwPressedButtons[slot] |= profile.Mappings[i];
+                            getPressedButtons(virtualSlot) |= profile->Mappings[i];
                         }
                     }
                 }
@@ -141,9 +145,9 @@ namespace Ship {
             case WPAD_EXT_MPLUS:
             case WPAD_EXT_CORE:
                 for (uint32_t i = WPAD_BUTTON_LEFT; i <= WPAD_BUTTON_HOME; i <<= 1) {
-                    if (profile.Mappings.contains(i)) {
+                    if (profile->Mappings.contains(i)) {
                         if (status->hold & i) {
-                            dwPressedButtons[slot] |= profile.Mappings[i];
+                            getPressedButtons(virtualSlot) |= profile->Mappings[i];
                         }
                     }
                 }
@@ -153,16 +157,16 @@ namespace Ship {
         }
 
         if (stickX || stickY) {
-            NormalizeStickAxis(stickX, stickY, profile.Thresholds[LEFT_STICK], false, profile.Thresholds[SENSITIVITY]);
+            NormalizeStickAxis(virtualSlot, stickX, stickY, profile->AxisDeadzones[0], false);
         }
 
         if (camX || camY) {
-            NormalizeStickAxis(camX, camY, profile.Thresholds[RIGHT_STICK], true, profile.Thresholds[SENSITIVITY]);
+            NormalizeStickAxis(virtualSlot, camX, camY, profile->AxisDeadzones[2], true);
         }
     }
 
-    void WiiUController::WriteToSource(int32_t slot, ControllerCallback* controller) {
-        if (profiles[slot].UseRumble) {
+    void WiiUController::WriteToSource(int32_t virtualSlot, ControllerCallback* controller) {
+        if (getProfile(virtualSlot)->UseRumble) {
             WPADControlMotor(chan, controller->rumble);
         }
     }
@@ -280,8 +284,8 @@ namespace Ship {
         return -1;
     }
 
-    const char* WiiUController::GetButtonName(int slot, int n64Button) {
-        std::map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+    const std::string WiiUController::GetButtonName(int32_t virtualSlot, int n64Button) {
+        std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
         const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
             return pair.second == n64Button;
         });
@@ -370,11 +374,13 @@ namespace Ship {
         return "Unknown";
     }
 
-    const char* WiiUController::GetControllerName() {
-        return controllerName.c_str();
+    const std::string WiiUController::GetControllerName() {
+        return controllerName;
     }
 
-    void WiiUController::NormalizeStickAxis(float x, float y, uint16_t threshold, bool isRightStick, float sensitivity) {
+    void WiiUController::NormalizeStickAxis(int32_t virtualSlot, float x, float y, uint16_t threshold, bool isRightStick) {
+        auto profile = getProfile(virtualSlot);
+
         //create scaled circular dead-zone in range {-15 ... +15}
         auto len = sqrt(x * x + y * y);
         if (len < threshold) {
@@ -402,84 +408,85 @@ namespace Ship {
         }
 
         if (isRightStick) {
-            wCamX = x * sensitivity;
-            wCamY = y * sensitivity;
+            getRightStickX(virtualSlot) = x * profile->AxisSensitivities[2];
+            getRightStickY(virtualSlot) = y * profile->AxisSensitivities[3];
         } else {
-            wStickX = x;
-            wStickY = y;
+            getLeftStickX(virtualSlot) = x * profile->AxisSensitivities[0];
+            getLeftStickY(virtualSlot) = y * profile->AxisSensitivities[1];
         }
     }
 
-    void WiiUController::CreateDefaultBinding(int32_t slot) {
-        DeviceProfile& profile = profiles[slot];
-        profile.Mappings.clear();
+    void WiiUController::CreateDefaultBinding(int32_t virtualSlot) {
+        auto profile = getProfile(virtualSlot);
+        profile->Mappings.clear();
 
-        profile.UseRumble = true;
-        profile.RumbleStrength = 1.0f;
-        profile.UseGyro = false;
+        profile->UseRumble = true;
+        profile->RumbleStrength = 1.0f;
+        profile->UseGyro = false;
 
         switch (extensionType) {
             case WPAD_EXT_PRO_CONTROLLER:
-                profile.Mappings[WPAD_PRO_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
-                profile.Mappings[WPAD_PRO_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
-                profile.Mappings[WPAD_PRO_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
-                profile.Mappings[WPAD_PRO_STICK_R_EMULATION_UP] = BTN_CUP;
-                profile.Mappings[WPAD_PRO_TRIGGER_ZR] = BTN_R;
-                profile.Mappings[WPAD_PRO_TRIGGER_L] = BTN_L;
-                profile.Mappings[WPAD_PRO_BUTTON_RIGHT] = BTN_DRIGHT;
-                profile.Mappings[WPAD_PRO_BUTTON_LEFT] = BTN_DLEFT;
-                profile.Mappings[WPAD_PRO_BUTTON_DOWN] = BTN_DDOWN;
-                profile.Mappings[WPAD_PRO_BUTTON_UP] = BTN_DUP;
-                profile.Mappings[WPAD_PRO_BUTTON_PLUS] = BTN_START;
-                profile.Mappings[WPAD_PRO_TRIGGER_ZL] = BTN_Z;
-                profile.Mappings[WPAD_PRO_BUTTON_B] = BTN_B;
-                profile.Mappings[WPAD_PRO_BUTTON_A] = BTN_A;
-                profile.Mappings[WPAD_PRO_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
-                profile.Mappings[WPAD_PRO_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
-                profile.Mappings[WPAD_PRO_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
-                profile.Mappings[WPAD_PRO_STICK_L_EMULATION_UP] = BTN_STICKUP;
+                profile->Mappings[WPAD_PRO_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
+                profile->Mappings[WPAD_PRO_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
+                profile->Mappings[WPAD_PRO_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
+                profile->Mappings[WPAD_PRO_STICK_R_EMULATION_UP] = BTN_CUP;
+                profile->Mappings[WPAD_PRO_TRIGGER_ZR] = BTN_R;
+                profile->Mappings[WPAD_PRO_TRIGGER_L] = BTN_L;
+                profile->Mappings[WPAD_PRO_BUTTON_RIGHT] = BTN_DRIGHT;
+                profile->Mappings[WPAD_PRO_BUTTON_LEFT] = BTN_DLEFT;
+                profile->Mappings[WPAD_PRO_BUTTON_DOWN] = BTN_DDOWN;
+                profile->Mappings[WPAD_PRO_BUTTON_UP] = BTN_DUP;
+                profile->Mappings[WPAD_PRO_BUTTON_PLUS] = BTN_START;
+                profile->Mappings[WPAD_PRO_TRIGGER_ZL] = BTN_Z;
+                profile->Mappings[WPAD_PRO_BUTTON_B] = BTN_B;
+                profile->Mappings[WPAD_PRO_BUTTON_A] = BTN_A;
+                profile->Mappings[WPAD_PRO_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
+                profile->Mappings[WPAD_PRO_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
+                profile->Mappings[WPAD_PRO_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
+                profile->Mappings[WPAD_PRO_STICK_L_EMULATION_UP] = BTN_STICKUP;
                 break;
             case WPAD_EXT_CLASSIC:
             case WPAD_EXT_MPLUS_CLASSIC:
-                profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
-                profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
-                profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
-                profile.Mappings[WPAD_CLASSIC_STICK_R_EMULATION_UP] = BTN_CUP;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_ZR] = BTN_R;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_L] = BTN_L;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_RIGHT] = BTN_DRIGHT;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_LEFT] = BTN_DLEFT;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_DOWN] = BTN_DDOWN;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_UP] = BTN_DUP;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_PLUS] = BTN_START;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_ZL] = BTN_Z;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_B] = BTN_B;
-                profile.Mappings[WPAD_CLASSIC_BUTTON_A] = BTN_A;
-                profile.Mappings[WPAD_CLASSIC_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
-                profile.Mappings[WPAD_CLASSIC_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
-                profile.Mappings[WPAD_CLASSIC_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
-                profile.Mappings[WPAD_CLASSIC_STICK_L_EMULATION_UP] = BTN_STICKUP;
+                profile->Mappings[WPAD_CLASSIC_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
+                profile->Mappings[WPAD_CLASSIC_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
+                profile->Mappings[WPAD_CLASSIC_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
+                profile->Mappings[WPAD_CLASSIC_STICK_R_EMULATION_UP] = BTN_CUP;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_ZR] = BTN_R;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_L] = BTN_L;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_RIGHT] = BTN_DRIGHT;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_LEFT] = BTN_DLEFT;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_DOWN] = BTN_DDOWN;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_UP] = BTN_DUP;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_PLUS] = BTN_START;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_ZL] = BTN_Z;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_B] = BTN_B;
+                profile->Mappings[WPAD_CLASSIC_BUTTON_A] = BTN_A;
+                profile->Mappings[WPAD_CLASSIC_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
+                profile->Mappings[WPAD_CLASSIC_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
+                profile->Mappings[WPAD_CLASSIC_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
+                profile->Mappings[WPAD_CLASSIC_STICK_L_EMULATION_UP] = BTN_STICKUP;
                 break;
             case WPAD_EXT_NUNCHUK:
             case WPAD_EXT_MPLUS_NUNCHUK:
             case WPAD_EXT_MPLUS:
             case WPAD_EXT_CORE:
-                profile.Mappings[WPAD_BUTTON_1] = BTN_R;
-                profile.Mappings[WPAD_BUTTON_2] = BTN_L;
-                profile.Mappings[WPAD_BUTTON_RIGHT] = BTN_DRIGHT;
-                profile.Mappings[WPAD_BUTTON_LEFT] = BTN_DLEFT;
-                profile.Mappings[WPAD_BUTTON_DOWN] = BTN_DDOWN;
-                profile.Mappings[WPAD_BUTTON_UP] = BTN_DUP;
-                profile.Mappings[WPAD_BUTTON_PLUS] = BTN_START;
-                profile.Mappings[WPAD_BUTTON_MINUS] = BTN_Z;
-                profile.Mappings[WPAD_BUTTON_B] = BTN_B;
-                profile.Mappings[WPAD_BUTTON_A] = BTN_A;
+                profile->Mappings[WPAD_BUTTON_1] = BTN_R;
+                profile->Mappings[WPAD_BUTTON_2] = BTN_L;
+                profile->Mappings[WPAD_BUTTON_RIGHT] = BTN_DRIGHT;
+                profile->Mappings[WPAD_BUTTON_LEFT] = BTN_DLEFT;
+                profile->Mappings[WPAD_BUTTON_DOWN] = BTN_DDOWN;
+                profile->Mappings[WPAD_BUTTON_UP] = BTN_DUP;
+                profile->Mappings[WPAD_BUTTON_PLUS] = BTN_START;
+                profile->Mappings[WPAD_BUTTON_MINUS] = BTN_Z;
+                profile->Mappings[WPAD_BUTTON_B] = BTN_B;
+                profile->Mappings[WPAD_BUTTON_A] = BTN_A;
                 break;
         }
 
-        profile.Thresholds[LEFT_STICK] = 0.0f;
-        profile.Thresholds[RIGHT_STICK] = 0.0f;
-        profile.Thresholds[SENSITIVITY] = 16.0f;
+        for (int i = 0; i < 4; i++) {
+            profile->AxisSensitivities[i] = 1.0f;
+            profile->AxisDeadzones[i] = 0.0f;
+        }
     }
 
     std::string WiiUController::GetControllerExtensionName() {

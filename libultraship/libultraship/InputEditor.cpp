@@ -198,7 +198,7 @@ namespace Ship {
 			#else
 					ImGui::PushItemWidth(80);
 			#endif
-					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
+					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2] /* This is the SDL value for right stick X axis */, 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 					ImGui::Text("Sensitivity");
 			#ifdef __WIIU__

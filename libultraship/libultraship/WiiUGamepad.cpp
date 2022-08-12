@@ -26,17 +26,19 @@ namespace Ship {
     void WiiUGamepad::Close() {
         connected = false;
 
-        for (int32_t& btn : dwPressedButtons) {
-            btn = 0;
+        for (int i = 0; i < MAXCONTROLLERS; i++) {
+            getPressedButtons(i) = 0;
+            getLeftStickX(i) = 0;
+            getLeftStickY(i) = 0;
+            getRightStickX(i) = 0;
+            getRightStickY(i) = 0;
+            getGyroX(i) = 0;
+            getGyroY(i) = 0;
         }
-        wStickX = 0;
-        wStickY = 0;
-        wCamX = 0;
-        wCamY = 0;
     }
 
-    void WiiUGamepad::ReadFromSource(int32_t slot) {
-        DeviceProfile& profile = profiles[slot];
+    void WiiUGamepad::ReadFromSource(int32_t virtualSlot) {
+        auto profile = getProfile(virtualSlot);
 
         VPADReadError error;
         VPADStatus* status = Ship::WiiU::GetVPADStatus(&error);
@@ -45,11 +47,13 @@ namespace Ship {
             return;
         }
 
-        dwPressedButtons[slot] = 0;
-        wStickX = 0;
-        wStickY = 0;
-        wCamX = 0;
-        wCamY = 0;
+        getPressedButtons(virtualSlot) = 0;
+        getLeftStickX(virtualSlot) = 0;
+        getLeftStickY(virtualSlot) = 0;
+        getRightStickX(virtualSlot) = 0;
+        getRightStickY(virtualSlot) = 0;
+        getGyroX(virtualSlot) = 0;
+        getGyroY(virtualSlot) = 0;
 
         if (error != VPAD_READ_SUCCESS) {
             return; 
@@ -61,48 +65,48 @@ namespace Ship {
         int16_t camY = 0;
 
         for (uint32_t i = VPAD_BUTTON_SYNC; i <= VPAD_STICK_L_EMULATION_LEFT; i <<= 1) {
-            if (profile.Mappings.contains(i)) {
+            if (profile->Mappings.contains(i)) {
                 // check if the stick is mapped to an analog stick
                 if (i >= VPAD_STICK_R_EMULATION_DOWN) {
                     float axisX = i >= VPAD_STICK_L_EMULATION_DOWN ? status->leftStick.x : status->rightStick.x;
                     float axisY = i >= VPAD_STICK_L_EMULATION_DOWN ? status->leftStick.y : status->rightStick.y;
 
-                    if (profile.Mappings[i] == BTN_STICKRIGHT || profile.Mappings[i] == BTN_STICKLEFT) {
+                    if (profile->Mappings[i] == BTN_STICKRIGHT || profile->Mappings[i] == BTN_STICKLEFT) {
                         stickX = axisX * 85;
                         continue;
-                    } else if (profile.Mappings[i] == BTN_STICKDOWN || profile.Mappings[i] == BTN_STICKUP) {
+                    } else if (profile->Mappings[i] == BTN_STICKDOWN || profile->Mappings[i] == BTN_STICKUP) {
                         stickY = axisY * 85;
                         continue;
-                    } else if (profile.Mappings[i] == BTN_VSTICKRIGHT || profile.Mappings[i] == BTN_VSTICKLEFT) {
+                    } else if (profile->Mappings[i] == BTN_VSTICKRIGHT || profile->Mappings[i] == BTN_VSTICKLEFT) {
                         camX = axisX * 85;
                         continue;
-                    } else if (profile.Mappings[i] == BTN_VSTICKDOWN || profile.Mappings[i] == BTN_VSTICKUP) {
+                    } else if (profile->Mappings[i] == BTN_VSTICKDOWN || profile->Mappings[i] == BTN_VSTICKUP) {
                         camY = axisY * 85;
                         continue;
                     }
                 }
 
                 if (status->hold & i) {
-                    dwPressedButtons[slot] |= profile.Mappings[i];
+                    getPressedButtons(virtualSlot) |= profile->Mappings[i];
                 }
             }
         }
 
         if (stickX || stickY) {
-            NormalizeStickAxis(stickX, stickY, profile.Thresholds[LEFT_STICK], false, profile.Thresholds[SENSITIVITY]);
+            NormalizeStickAxis(virtualSlot, stickX, stickY, profile->AxisDeadzones[0], false);
         }
 
         if (camX || camY) {
-            NormalizeStickAxis(camX, camY, profile.Thresholds[RIGHT_STICK], true, profile.Thresholds[SENSITIVITY]);
+            NormalizeStickAxis(virtualSlot, camX, camY, profile->AxisDeadzones[2], true);
         }
 
-        if (profile.UseGyro) {
+        if (profile->UseGyro) {
             float gyroX = status->gyro.x * -8.0f;
             float gyroY = status->gyro.z * 8.0f;
 
-            float gyro_drift_x = profile.Thresholds[DRIFT_X] / 100.0f;
-            float gyro_drift_y = profile.Thresholds[DRIFT_Y] / 100.0f;
-            const float gyro_sensitivity = profile.Thresholds[GYRO_SENSITIVITY];
+            float gyro_drift_x = profile->GyroData[DRIFT_X] / 100.0f;
+            float gyro_drift_y = profile->GyroData[DRIFT_Y] / 100.0f;
+            const float gyro_sensitivity = profile->GyroData[GYRO_SENSITIVITY];
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroX;
@@ -112,24 +116,26 @@ namespace Ship {
                 gyro_drift_y = gyroY;
             }
 
-            profile.Thresholds[DRIFT_X] = gyro_drift_x * 100.0f;
-            profile.Thresholds[DRIFT_Y] = gyro_drift_y * 100.0f;
+            profile->GyroData[DRIFT_X] = gyro_drift_x * 100.0f;
+            profile->GyroData[DRIFT_Y] = gyro_drift_y * 100.0f;
 
-            wGyroX = gyroX - gyro_drift_x;
-            wGyroY = gyroY - gyro_drift_y;
+            getGyroX(virtualSlot) = gyroX - gyro_drift_x;
+            getGyroY(virtualSlot) = gyroY - gyro_drift_y;
 
-            wGyroX *= gyro_sensitivity;
-            wGyroY *= gyro_sensitivity;
+            getGyroX(virtualSlot) *= gyro_sensitivity;
+            getGyroY(virtualSlot) *= gyro_sensitivity;
         }
     }
 
-    void WiiUGamepad::WriteToSource(int32_t slot, ControllerCallback* controller) {
-        if (profiles[slot].UseRumble) {
+    void WiiUGamepad::WriteToSource(int32_t virtualSlot, ControllerCallback* controller) {
+        auto profile = getProfile(virtualSlot);
+
+        if (profile->UseRumble) {
             int patternSize = sizeof(rumblePattern) * 8;
 
             // update rumble pattern if strength changed
-            if (rumblePatternStrength != profiles[slot].RumbleStrength) {
-                rumblePatternStrength = profiles[slot].RumbleStrength;
+            if (rumblePatternStrength != profile->RumbleStrength) {
+                rumblePatternStrength = profile->RumbleStrength;
                 if (rumblePatternStrength > 1.0f) {
                     rumblePatternStrength = 1.0f;
                 } else if (rumblePatternStrength < 0.0f) {
@@ -202,8 +208,8 @@ namespace Ship {
         return -1;
     }
 
-    const char* WiiUGamepad::GetButtonName(int slot, int n64Button) {
-        std::map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+    const std::string WiiUGamepad::GetButtonName(int32_t virtualSlot, int n64Button) {
+        std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
         const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
             return pair.second == n64Button;
         });
@@ -241,11 +247,13 @@ namespace Ship {
         return "Unknown";
     }
 
-    const char* WiiUGamepad::GetControllerName() {
+    const std::string WiiUGamepad::GetControllerName() {
         return Connected() ? "Wii U GamePad" : "Wii U GamePad (Disconnected)";
     }
 
-    void WiiUGamepad::NormalizeStickAxis(float x, float y, uint16_t threshold, bool isRightStick, float sensitivity) {
+    void WiiUGamepad::NormalizeStickAxis(int32_t virtualSlot, float x, float y, uint16_t threshold, bool isRightStick) {
+        auto profile = getProfile(virtualSlot);
+
         //create scaled circular dead-zone in range {-15 ... +15}
         auto len = sqrt(x * x + y * y);
         if (len < threshold) {
@@ -273,47 +281,49 @@ namespace Ship {
         }
 
         if (isRightStick) {
-            wCamX = x * sensitivity;
-            wCamY = y * sensitivity;
+            getRightStickX(virtualSlot) = x * profile->AxisSensitivities[2];
+            getRightStickY(virtualSlot) = y * profile->AxisSensitivities[3];
         } else {
-            wStickX = x;
-            wStickY = y;
+            getLeftStickX(virtualSlot) = x * profile->AxisSensitivities[0];
+            getLeftStickY(virtualSlot) = y * profile->AxisSensitivities[1];
         }
     }
 
-    void WiiUGamepad::CreateDefaultBinding(int32_t slot) {
-        DeviceProfile& profile = profiles[slot];
-        profile.Mappings.clear();
+    void WiiUGamepad::CreateDefaultBinding(int32_t virtualSlot) {
+        auto profile = getProfile(virtualSlot);
+        profile->Mappings.clear();
 
-        profile.UseRumble = true;
-        profile.RumbleStrength = 1.0f;
-        profile.UseGyro = false;
+        profile->UseRumble = true;
+        profile->RumbleStrength = 1.0f;
+        profile->UseGyro = false;
 
-        profile.Mappings[VPAD_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
-        profile.Mappings[VPAD_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
-        profile.Mappings[VPAD_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
-        profile.Mappings[VPAD_STICK_R_EMULATION_UP] = BTN_CUP;
-        profile.Mappings[VPAD_BUTTON_ZR] = BTN_R;
-        profile.Mappings[VPAD_BUTTON_L] = BTN_L;
-        profile.Mappings[VPAD_BUTTON_RIGHT] = BTN_DRIGHT;
-        profile.Mappings[VPAD_BUTTON_LEFT] = BTN_DLEFT;
-        profile.Mappings[VPAD_BUTTON_DOWN] = BTN_DDOWN;
-        profile.Mappings[VPAD_BUTTON_UP] = BTN_DUP;
-        profile.Mappings[VPAD_BUTTON_PLUS] = BTN_START;
-        profile.Mappings[VPAD_BUTTON_ZL] = BTN_Z;
-        profile.Mappings[VPAD_BUTTON_B] = BTN_B;
-        profile.Mappings[VPAD_BUTTON_A] = BTN_A;
-        profile.Mappings[VPAD_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
-        profile.Mappings[VPAD_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
-        profile.Mappings[VPAD_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
-        profile.Mappings[VPAD_STICK_L_EMULATION_UP] = BTN_STICKUP;
+        profile->Mappings[VPAD_STICK_R_EMULATION_RIGHT] = BTN_CRIGHT;
+        profile->Mappings[VPAD_STICK_R_EMULATION_LEFT] = BTN_CLEFT;
+        profile->Mappings[VPAD_STICK_R_EMULATION_DOWN] = BTN_CDOWN;
+        profile->Mappings[VPAD_STICK_R_EMULATION_UP] = BTN_CUP;
+        profile->Mappings[VPAD_BUTTON_ZR] = BTN_R;
+        profile->Mappings[VPAD_BUTTON_L] = BTN_L;
+        profile->Mappings[VPAD_BUTTON_RIGHT] = BTN_DRIGHT;
+        profile->Mappings[VPAD_BUTTON_LEFT] = BTN_DLEFT;
+        profile->Mappings[VPAD_BUTTON_DOWN] = BTN_DDOWN;
+        profile->Mappings[VPAD_BUTTON_UP] = BTN_DUP;
+        profile->Mappings[VPAD_BUTTON_PLUS] = BTN_START;
+        profile->Mappings[VPAD_BUTTON_ZL] = BTN_Z;
+        profile->Mappings[VPAD_BUTTON_B] = BTN_B;
+        profile->Mappings[VPAD_BUTTON_A] = BTN_A;
+        profile->Mappings[VPAD_STICK_L_EMULATION_RIGHT] = BTN_STICKRIGHT;
+        profile->Mappings[VPAD_STICK_L_EMULATION_LEFT] = BTN_STICKLEFT;
+        profile->Mappings[VPAD_STICK_L_EMULATION_DOWN] = BTN_STICKDOWN;
+        profile->Mappings[VPAD_STICK_L_EMULATION_UP] = BTN_STICKUP;
 
-        profile.Thresholds[LEFT_STICK] = 0.0f;
-        profile.Thresholds[RIGHT_STICK] = 0.0f;
-        profile.Thresholds[SENSITIVITY] = 16.0f;
-        profile.Thresholds[GYRO_SENSITIVITY] = 1.0f;
-        profile.Thresholds[DRIFT_X] = 0.0f;
-        profile.Thresholds[DRIFT_Y] = 0.0f;
+        for (int i = 0; i < 4; i++) {
+            profile->AxisSensitivities[i] = 1.0f;
+            profile->AxisDeadzones[i] = 0.0f;
+        }
+
+        profile->GyroData[GYRO_SENSITIVITY] = 1.0f;
+        profile->GyroData[DRIFT_X] = 0.0f;
+        profile->GyroData[DRIFT_Y] = 0.0f;
     }
 }
 #endif
