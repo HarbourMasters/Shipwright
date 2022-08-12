@@ -34,6 +34,8 @@ typedef struct {
         }                                                             \
     }
 
+bool validSaveFile = false;
+
 // Maps items ids to info for use in ImGui
 std::map<uint32_t, ItemMapEntry> itemMappingSSS = {
     ITEM_MAP_ENTRY(ITEM_STICK),
@@ -243,8 +245,8 @@ void DrawEquip(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip && validSaveFile ? entry.name : entry.nameFaded), 
+                ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
@@ -451,14 +453,25 @@ void DrawItem(uint32_t itemId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
 
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && validSaveFile ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
     int estimatedTextHeight = 10;
     ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
 
-    switch (actualItemId) {
+    if (validSaveFile) {
+        DrawItemAmmo(actualItemId);
+    } else {
+        ImGui::Text(" ");
+    }
+    ImGui::EndGroup();
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
+
+void DrawItemAmmo(int itemId) {
+    switch (itemId) {
         case ITEM_STICK:
             if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
                 if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
@@ -667,9 +680,6 @@ void DrawItem(uint32_t itemId) {
             ImGui::Text(" ");
             break;
     }
-    ImGui::EndGroup();
-
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
 void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
@@ -677,8 +687,8 @@ void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     bool hasItem = actualItemId != ITEM_NONE;
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && validSaveFile ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
@@ -691,12 +701,12 @@ void DrawDungeonItem(uint32_t itemId, uint32_t scene) {
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[scene]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                    ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey && validSaveFile ? entry.name : entry.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
     else {
-        ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                    ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(hasItem && validSaveFile ? entry.name : entry.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
     ImVec2 p = ImGui::GetCursorScreenPos();
@@ -763,7 +773,7 @@ std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTracker
 
 void DrawUpgrade(int32_t categoryId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    if (CUR_UPG_VALUE(categoryId) == 0) {
+    if (CUR_UPG_VALUE(categoryId) == 0 && validSaveFile) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
         ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize), ImVec2(0, 0),
                      ImVec2(1, 1));
@@ -822,8 +832,8 @@ void DrawSong(int32_t songId) {
         CVar_GetS32("gItemTrackeSongColor", 0) ? songTrackerMap[songId] : vanillaSongTrackerMap[songId];
     uint32_t bitMask = 1 << entry.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
-    ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize / 1.5, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasSong && validSaveFile ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
 }
 
@@ -1455,6 +1465,7 @@ void DrawItemTracker(bool& open) {
     }
     int Icon_Cells_Size = CVar_GetS32("gRandoTrackIconSize", 0);
     int Icon_Spacing = CVar_GetS32("gRandoTrackIconSpacing", 0);
+    validSaveFile = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 3;
 
     if (CVar_GetS32("gItemTrackerEnabled", 0)) {
         int ImGui_DefaultMargin = 0;
