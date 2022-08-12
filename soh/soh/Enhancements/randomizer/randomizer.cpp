@@ -2107,7 +2107,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BEAN; //todo make it 10 of them
 
         case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
+            return !gSaveContext.doubleDefense ? GI_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
