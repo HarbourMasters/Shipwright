@@ -1562,7 +1562,7 @@ void RemoveEffect(const char* effectId) {
             gravityLevel = 1;
             return;
         } else if (strcmp(effectId, "no_ui") == 0) {
-            noUi = 0;
+            noUI = 0;
             return;
         } else if (strcmp(effectId, "invisible") == 0) {
             invisibleLink = 0;
@@ -1670,7 +1670,7 @@ u8 ExecuteEffect(const char* effectId, uint32_t value) {
             Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_WALLMAS, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
             return 1;
         } else if (strcmp(effectId, "no_ui") == 0) {
-            noUi = 1;
+            noUI = 1;
             return 1;
         } else if (strcmp(effectId, "invisible") == 0) {
             invisibleLink = 1;

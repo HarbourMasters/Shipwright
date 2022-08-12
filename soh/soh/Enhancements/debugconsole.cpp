@@ -39,7 +39,7 @@ uint32_t giantLink;
 uint32_t minishLink;
 uint32_t gravityLevel;
 uint32_t resetLinkScale;
-uint32_t noUi;
+uint32_t noUI;
 uint32_t invisibleLink;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -468,6 +468,22 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     }
 }
 
+// TODO: Does not yet function
+static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        bool noUI = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] NoUI value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -631,6 +647,10 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("remove_heart_container", { RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3." });
 
     CMD_REGISTER("gravity", { GravityHandler, "Set gravity level.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("no_ui", { NoUIHandler, "Disable the UI.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
