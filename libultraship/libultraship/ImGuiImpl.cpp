@@ -1562,7 +1562,40 @@ namespace SohImGui {
 
                     ImGui::EndMenu();
                 }
+                if (ImGui::BeginMenu("Time...")) {
+                    ImGui::Text("Set Time Of Day");
+                    if (ImGui::Button("Dawn")) {
+                        CVar_SetS32("gSetDawn", 1);
+                    }
+                    Tooltip("Sets Time To 06:00");
+                    ImGui::SameLine();
+                    if (ImGui::Button("Noon")) {
+                        CVar_SetS32("gSetNoon", 1);
+                    }
+                    Tooltip("Sets Time To 12:00");
+                    ImGui::SameLine();
+                    if (ImGui::Button("Sunset")) {
+                        CVar_SetS32("gSetSunset", 1);
+                    }
+                    Tooltip("Sets Time To 18:00");
+                    ImGui::SameLine();
+                    if (ImGui::Button("Midnight")) {
+                        CVar_SetS32("gSetMidnight", 1);
+                    }
+                    Tooltip("Sets Time To 00:00");
+                    ImGui::Text("Time Rate Modifiers");
+                    PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
+                    Tooltip("This syncs the ingame time with the real world time");
+                    PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
+                    Tooltip("Freezes the time of day");
+                    PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, "", 0, true, true, false);
+                    if (ImGui::Button("Reset Speed of Time")) {
+                        CVar_SetS32("gResetRate", 1);
+                    }
+                    Tooltip("Sets the Speed of Time Slider back to 0.");
 
+                    ImGui::EndMenu();
+                }
                 PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
                 Tooltip("Allows you to walk through walls");
                 PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
@@ -1581,11 +1614,6 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
-                PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
-                Tooltip("This syncs the ingame time with the real world time");
-                PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
-                Tooltip("Freezes the time of day");
-                PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, "", 0, true, true, false);
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
