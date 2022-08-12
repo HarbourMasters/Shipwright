@@ -420,7 +420,13 @@ void GameState_Update(GameState* gameState) {
         if (CVar_GetS32("gPrevTime", -1) == -1) {
             CVar_SetS32("gPrevTime", gSaveContext.dayTime);
         }
-
+        
+        int32_t prevTime = CVar_GetS32("gPrevTime", gSaveContext.dayTime);
+        gSaveContext.dayTime = prevTime;
+    } else {
+        CVar_SetS32("gPrevTime", -1);
+    }
+        
     // Increases the rate of time. Sets it to the base rate if the slider is at 0.
     // NOTE: Please comment if there are any other exceptions aside from the Sun's Song that alter the rate of time.
     if (gGlobalCtx) {
@@ -456,15 +462,7 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gSetMidnight", 0);
         gSaveContext.dayTime = 0;
     }
-    
-    //Increases the rate of time. Sets it to the base rate if the slider is at 0. 
-    //NOTE: Please comment if there are any other exceptions aside from the Sun's Song that alter the rate of time.
-    if (gGlobalCtx) {
-        if (gSaveContext.sunsSongState == SUNSSONG_INACTIVE) { //Checks to confirm the Sun's Song isn't being played. (For when in places where time passes)
-            gTimeIncrement = gGlobalCtx->envCtx.timeIncrement + CVar_GetS32("gTimeRate", 0);
-        }
-    }
-
+   
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
     gSaveContext.language = CVar_GetS32("gLanguages", 0);
 
