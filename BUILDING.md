@@ -179,15 +179,10 @@ cd Shipwright
 cmake -H. -Bbuild-cmake -GNinja
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
-
-# Build the Wii U docker container:
-docker build -t sohwiiubuilder -f Dockerfile.wiiu .
-
 # Setup cmake project for building for Wii U
-docker run -it --rm -v ${PWD}:/project sohwiiubuilder cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-
+cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
-docker run -it --rm -v ${PWD}:/project sohwiiubuilder cmake --build build-wiiu --target soh
+cmake --build build-wiiu --target soh
 
 # Now you can run the executable in ./build-wiiu/soh/soh.rpx
 # To develop the project open the repository in VSCode (or your preferred editor)
