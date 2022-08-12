@@ -3632,15 +3632,11 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
     cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
     cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
-
-
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleEntrances", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
     cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
-
-
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
     RandoMain::GenerateRando(cvarSettings);
