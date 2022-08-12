@@ -46,6 +46,7 @@ namespace Ship {
 		virtual void CreateDefaultBinding(int32_t virtualSlot) = 0;
 		virtual void ClearRawPress() = 0;
 		virtual int32_t ReadRawPress() = 0;
+		virtual int16_t ReadRawAxis(uint32_t axis) = 0;
 		void SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode);
 		std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
 		int8_t& getLeftStickX(int32_t virtualSlot);

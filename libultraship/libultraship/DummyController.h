@@ -24,6 +24,7 @@ namespace Ship {
 
 		void ClearRawPress() override {}
 		int32_t ReadRawPress() override { return -1; }
+		int16_t ReadRawAxis(uint32_t axis) override { return 0; }
 		bool HasPadConf() const { return true; }
 		std::optional<std::string> GetPadConfSection() { return "Unk"; }
 		void CreateDefaultBinding(int32_t slot) override {}

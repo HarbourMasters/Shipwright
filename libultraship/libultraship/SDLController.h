@@ -32,6 +32,7 @@ namespace Ship {
 			bool Open();
 			void ClearRawPress() override {}
 			int32_t ReadRawPress() override;
+			int16_t ReadRawAxis(uint32_t axis) override;
 
 		protected:
 			void CreateDefaultBinding(int32_t virtualSlot) override;

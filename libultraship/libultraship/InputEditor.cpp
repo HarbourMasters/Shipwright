@@ -61,7 +61,18 @@ namespace Ship {
 		}
 	}
 
-	void InputEditor::DrawVirtualStick(const char* label, ImVec2 stick) {
+	void InputEditor::DrawVirtualStick(const char* label, std::shared_ptr<Ship::Controller> physicalDevice, AnalogStick stick) {
+		// SDL Values:
+		// SDL_CONTROLLER_AXIS_LEFTX = 0
+		// SDL_CONTROLLER_AXIS_LEFTY = 1
+		// SDL_CONTROLLER_AXIS_RIGHTX = 2
+		// SDL_CONTROLLER_AXIS_RIGHTY = 3
+		// InputEditor AnalogStick Values:
+		// LEFT_ANALOG_STICK = 0
+		// RIGHT_ANALOG_STICK = 1
+		auto rawX = physicalDevice->ReadRawAxis(stick * 2);
+		auto rawY = physicalDevice->ReadRawAxis(stick * 2 + 1);
+
 		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, ImGui::GetCursorPos().y));
 		ImGui::BeginChild(label, ImVec2(68, 75), false);
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -71,8 +82,8 @@ namespace Ship {
 		float rad = sz * 0.5f;
 		ImVec2 pos = ImVec2(p.x + sz * 0.5f + 12, p.y + sz * 0.5f + 11);
 
-		float stickX =  (stick.x / 83.0f) * (rad * 0.5f);
-		float stickY = -(stick.y / 83.0f) * (rad * 0.5f);
+		float stickX = (rawX / 32767.0f) * (rad * 0.5f);
+		float stickY = (rawY / 32767.0f) * (rad * 0.5f);
 
 		ImVec4 rect = ImVec4(p.x + 2, p.y + 2, 65, 65);
 		draw_list->AddRect(ImVec2(rect.x, rect.y), ImVec2(rect.x + rect.z, rect.y + rect.w), ImColor(100, 100, 100, 255), 0.0f, 0, 1.5f);
@@ -140,7 +151,7 @@ namespace Ship {
 
 			if (!IsKeyboard) {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-				DrawVirtualStick("##MainVirtualStick", ImVec2(Backend->getLeftStickX(CurrentPort), Backend->getLeftStickY(CurrentPort)));
+				DrawVirtualStick("##MainVirtualStick", Backend, LEFT_ANALOG_STICK);
 				ImGui::SameLine();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -172,7 +183,7 @@ namespace Ship {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 				// 2 is the SDL value for right stick X axis
 				// 3 is the SDL value for right stick Y axis.
-				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort) / profile->AxisSensitivities[2], Backend->getRightStickY(CurrentPort) / profile->AxisSensitivities[2]));
+				DrawVirtualStick("##CameraVirtualStick", Backend, RIGHT_ANALOG_STICK);
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -214,7 +225,7 @@ namespace Ship {
 					profile->GyroData[DRIFT_Y] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
-				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
+				// DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);

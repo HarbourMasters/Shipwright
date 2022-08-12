@@ -126,6 +126,10 @@ namespace Ship {
         return -1;
     }
 
+    int16_t SDLController::ReadRawAxis(uint32_t axis) {
+        return SDL_GameControllerGetAxis(Cont, static_cast<SDL_GameControllerAxis>(axis));
+    }
+
     void SDLController::ReadFromSource(int32_t virtualSlot) {
         auto profile = getProfile(virtualSlot);
 

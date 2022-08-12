@@ -22,6 +22,7 @@ namespace Ship {
 			}
 
 			int32_t ReadRawPress() override;
+			int16_t ReadRawAxis(uint32_t axis) override { return 0; };
 			void ReleaseAllButtons();
 
 			void SetLastScancode(int32_t key) {
