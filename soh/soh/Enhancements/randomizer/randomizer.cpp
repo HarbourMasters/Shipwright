@@ -3630,14 +3630,17 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
+    cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
+    cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
+<<<<<<< HEAD
 
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleEntrances", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
     cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
-    cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
-    cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
+=======
+>>>>>>> upstream/rando-next
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
@@ -3661,7 +3664,7 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-// Randomizer settings
+// Randomizer settingss
     // Logic Settings
     const char* randoLogicRules[2] = { "Glitchless", "No logic"};
 
@@ -4189,6 +4192,74 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Separator();
                     }
 
+                        // todo can't do this until bowling is unlocked by chus
+                        // Bombchus in Logic
+                        // ImGui::Text("Bombchus in Logic");
+                        // InsertHelpHoverText(
+                        //     "Bombchus are properly considered in logic.\nThey can be replenished in shops or "
+                        //     "through bombchu drops, if those are enabled.\nBombchu Bowling is opened by bombchus.");
+                        // SohImGui::EnhancementCombobox("gRandomizeBombchusInLogic", randoBombchusInLogic, 3, 0);
+                        // ImGui::Separator();
+
+                        // todo implement chu drops
+                        // Ammo Drops
+                        // ImGui::Text("Ammo Drops");
+                        // switch (CVar_GetS32("gRandomizeAmmoDrops", 0)) {
+                        //     case 0:
+                        //         InsertHelpHoverText(
+                        //             "Bombs, arrows, seeds, nuts, sticks and magic jars appear as normal.\n"
+                        //             "Bombchus can sometimes replace bomb drops.");
+                        //         break;
+                        //     case 1:
+                        //         InsertHelpHoverText(
+                        //             "All ammo drops will be replaced by blue rupees, except for Deku Sticks.\n"
+                        //             "Ammo upgrades will only refill ammo by 10 units.");
+                        //         break;
+                        //     case 2:
+                        //         InsertHelpHoverText(
+                        //             "Bombs, arrow, seeds, nuts, sticks and magic jars appear as normal.");
+                        //         break;
+                        // }
+                        // SohImGui::EnhancementCombobox("gRandomizeAmmoDrops", randoAmmoDrops, 3, 0);
+                        // ImGui::Separator();
+
+                        // todo implement drop replacements
+                        // Heart Drops and Refills
+                        // ImGui::Text("Heart Drops and Refills");
+                        // switch (CVar_GetS32("gRandomizeHeartDropsAndRefills", 0)) {
+                        //     case 0:
+                        //         InsertHelpHoverText(
+                        //             "Heart drops will appear as normal.\nHealth upgrades fully heal Link when "
+                        //             "picked up.\nFairies heal Link as normal.");
+                        //         break;
+                        //     case 1:
+                        //         InsertHelpHoverText(
+                        //             "Heart drops will be replaced by green rupees.\nHealth upgrades fully heal "
+                        //             "Link when picked up.\nFairies heal Link as normal.");
+                        //         break;
+                        //     case 2:
+                        //         InsertHelpHoverText(
+                        //             "Heart drops will appear as normal.\nHealth upgrades don't heal Link when "
+                        //             "picked up.\nFairies heal Link by only 3 hearts.");
+                        //         break;
+                        //     case 3:
+                        //         InsertHelpHoverText(
+                        //             "Heart drops will be replaced by green rupees.\nHealth upgrades don't heal "
+                        //             "Link when picked up.\nFairies heal Link by only 3 hearts.");
+                        //         break;
+                        // }
+                        // SohImGui::EnhancementCombobox("gRandomizeHeartDropsAndRefills", randoHeartDropsAndRefills, 4,
+                        //                               0);
+                        // ImGui::Separator();
+                    // }
+                    // ImGui::TableNextColumn();
+
+                    // COLUMN 3
+                    // Randomize Settings
+                    //ImGui::NewLine();
+                    // SohImGui::EnhancementCheckbox("Randomize All Shuffle Settings", "gRandomizeAllShuffleSettings");
+                    // InsertHelpHoverText("Randomize all Shuffle Settings");
+                    // ImGui::Separator();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
                     if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
@@ -4780,10 +4851,10 @@ void CreateScrubMessages() {
     for (u8 price : prices) {
         customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+              "\x12\x38\x82\\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
             // RANDTODO: Translate the below string to German.
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+              "\x12\x38\x82\\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
               "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
                   std::to_string(price) + " Rubis%w!\x07\x10\xA3"
