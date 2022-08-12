@@ -15,9 +15,9 @@ namespace Ship {
 		BtnReading = -1;
 	}
 
-	std::shared_ptr<Controller> GetControllerPerSlot(int slot) {
+	std::shared_ptr<Controller> GetControllerPerSlot(int virtualSlot) {
 		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
-		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+		return controlDeck->GetPhysicalDeviceFromVirtualSlot(virtualSlot);
 	}
 
 	void InputEditor::DrawButton(const char* label, int n64Btn) {
@@ -61,18 +61,67 @@ namespace Ship {
 		}
 	}
 
-	void InputEditor::DrawVirtualStick(const char* label, std::shared_ptr<Ship::Controller> physicalDevice, AnalogStick stick) {
-		// SDL Values:
-		// SDL_CONTROLLER_AXIS_LEFTX = 0
-		// SDL_CONTROLLER_AXIS_LEFTY = 1
-		// SDL_CONTROLLER_AXIS_RIGHTX = 2
-		// SDL_CONTROLLER_AXIS_RIGHTY = 3
-		// InputEditor AnalogStick Values:
-		// LEFT_ANALOG_STICK = 0
-		// RIGHT_ANALOG_STICK = 1
-		auto rawX = physicalDevice->ReadRawAxis(stick * 2);
-		auto rawY = physicalDevice->ReadRawAxis(stick * 2 + 1);
+	void InputEditor::DrawVirtualStick(const char* label,
+									   int32_t CurrentPort,
+							  		   InputAxisDirection yAxisUp,
+							  		   InputAxisDirection yAxisDown,
+							  		   InputAxisDirection xAxisLeft,
+							  		   InputAxisDirection xAxisRight) {
+		// Get the controller based on the current virtualSlot (port)
+		const std::shared_ptr<Controller> physicalDevice = GetControllerPerSlot(CurrentPort);
+		
+		int16_t inputX = 0;
+		int16_t inputY = 0;
 
+		// For each mapped axis direction
+		const InputAxisDirection directions[] = { yAxisUp, yAxisDown, xAxisLeft, xAxisRight };
+		for(auto direction : directions) {
+			// get the mapped SDL button code
+			auto mappedDirection = physicalDevice->GetMappedButton(CurrentPort, direction);
+
+			if (mappedDirection == -1) {
+				// SDL_CONTROLLER_BUTTON_INVALID is -1
+				continue;
+			}
+
+			if (abs(mappedDirection) < AXIS_SCANCODE_BIT) {
+				// if it's absolute value is less than the scancode bit,
+				// this is a button and not an axis
+				if (physicalDevice->ButtonIsPressedRaw(mappedDirection)) {
+					if (direction == yAxisUp) {
+						inputY -= 32767;
+					} else if (direction == yAxisDown) {
+						inputY += 32767;
+					} else if (direction == xAxisLeft) {
+						inputX -= 32767;
+					} else if (direction == xAxisRight) {
+						inputX += 32767;
+					}
+				}
+			} else {
+				// this is an axis, so we subtract the scancode to figure out which one
+				auto sdlAxis = abs(mappedDirection) - AXIS_SCANCODE_BIT;
+
+				// we only want to change the input in the direction we've mapped, so
+				// * only read positive values when mappedDirection > 0
+				// * only read negative values when mappedDirection < 0
+				// subtracting 1 from each value to prevents overflow issues
+				if ((mappedDirection > 0 && physicalDevice->ReadRawAxis(sdlAxis) > 0) ||
+					(mappedDirection < 0 && physicalDevice->ReadRawAxis(sdlAxis) < 0)) {
+					if (direction == yAxisUp) {
+						inputY -= (abs(physicalDevice->ReadRawAxis(sdlAxis)) - 1);
+					} else if (direction == yAxisDown) {
+						inputY += (abs(physicalDevice->ReadRawAxis(sdlAxis)) - 1);
+					} else if (direction == xAxisLeft) {
+						inputX -= (abs(physicalDevice->ReadRawAxis(sdlAxis)) - 1);
+					} else if (direction == xAxisRight) {
+						inputX += (abs(physicalDevice->ReadRawAxis(sdlAxis)) - 1);
+					}
+				}
+			}
+		}
+
+		// now that we have the input values, do some math and draw them
 		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, ImGui::GetCursorPos().y));
 		ImGui::BeginChild(label, ImVec2(68, 75), false);
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -82,8 +131,8 @@ namespace Ship {
 		float rad = sz * 0.5f;
 		ImVec2 pos = ImVec2(p.x + sz * 0.5f + 12, p.y + sz * 0.5f + 11);
 
-		float stickX = (rawX / 32767.0f) * (rad * 0.5f);
-		float stickY = (rawY / 32767.0f) * (rad * 0.5f);
+		float stickX = (inputX / 32767.0f) * (rad * 0.5f);
+		float stickY = (inputY / 32767.0f) * (rad * 0.5f);
 
 		ImVec4 rect = ImVec4(p.x + 2, p.y + 2, 65, 65);
 		draw_list->AddRect(ImVec2(rect.x, rect.y), ImVec2(rect.x + rect.z, rect.y + rect.w), ImColor(100, 100, 100, 255), 0.0f, 0, 1.5f);
@@ -151,7 +200,12 @@ namespace Ship {
 
 			if (!IsKeyboard) {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-				DrawVirtualStick("##MainVirtualStick", Backend, LEFT_ANALOG_STICK);
+				DrawVirtualStick("##MainVirtualStick",
+								 CurrentPort,
+								 PRIMARY_ANALOG_STICK_UP,
+								 PRIMARY_ANALOG_STICK_DOWN,
+								 PRIMARY_ANALOG_STICK_LEFT,
+								 PRIMARY_ANALOG_STICK_RIGHT);
 				ImGui::SameLine();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -181,9 +235,12 @@ namespace Ship {
 				DrawButton("Right", BTN_VSTICKRIGHT);
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-				// 2 is the SDL value for right stick X axis
-				// 3 is the SDL value for right stick Y axis.
-				DrawVirtualStick("##CameraVirtualStick", Backend, RIGHT_ANALOG_STICK);
+				DrawVirtualStick("##CameraVirtualStick",
+								 CurrentPort,
+								 SECONDARY_ANALOG_STICK_UP,
+								 SECONDARY_ANALOG_STICK_DOWN,
+								 SECONDARY_ANALOG_STICK_LEFT,
+								 SECONDARY_ANALOG_STICK_RIGHT);
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -225,7 +282,8 @@ namespace Ship {
 					profile->GyroData[DRIFT_Y] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
-				// DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
+				// TODO: implement/test gyro preview
+				DrawVirtualStick("##GyroPreview", CurrentPort, GYRO_Y, GYRO_Y, GYRO_X, GYRO_X);
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);

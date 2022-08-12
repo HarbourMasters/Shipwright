@@ -79,6 +79,21 @@ namespace Ship {
 		Mappings[dwScancode] = n64Button;
 	}
 
+    int32_t Controller::GetMappedButton(int32_t virtualSlot, int32_t n64Button) {
+        std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
+
+        const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
+            return pair.second == n64Button;
+        });
+
+        if (find == Mappings.end()) {
+            // SDL_CONTROLLER_BUTTON_INVALID = -1
+            return -1;
+        }
+
+        return find->first;
+    }
+
 	int8_t& Controller::getLeftStickX(int32_t virtualSlot) {
 		return ButtonData[virtualSlot]->leftStickX;
 	}

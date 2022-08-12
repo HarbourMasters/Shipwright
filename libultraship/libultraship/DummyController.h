@@ -16,6 +16,7 @@ namespace Ship {
 		std::map<std::vector<std::string>, int32_t> ReadButtonPress();
 		void ReadFromSource(int32_t slot) override {}
 		const std::string GetControllerName() override { return GUID; }
+		int32_t GetMappedButton(int32_t virtualSlot, int32_t n64Button) override { return -1; }
 		const std::string GetButtonName(int slot, int n64Button) override { return ButtonName; }
 		void WriteToSource(int32_t slot, ControllerCallback* controller) override { }
 		bool Connected() const override { return isConnected; }
@@ -25,6 +26,7 @@ namespace Ship {
 		void ClearRawPress() override {}
 		int32_t ReadRawPress() override { return -1; }
 		int16_t ReadRawAxis(uint32_t axis) override { return 0; }
+		bool ButtonIsPressedRaw(int32_t sdlButton) override { return false; }
 		bool HasPadConf() const { return true; }
 		std::optional<std::string> GetPadConfSection() { return "Unk"; }
 		void CreateDefaultBinding(int32_t slot) override {}

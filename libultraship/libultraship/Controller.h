@@ -47,6 +47,7 @@ namespace Ship {
 		virtual void ClearRawPress() = 0;
 		virtual int32_t ReadRawPress() = 0;
 		virtual int16_t ReadRawAxis(uint32_t axis) = 0;
+		virtual bool ButtonIsPressedRaw(int32_t sdlButton) = 0;
 		void SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode);
 		std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
 		int8_t& getLeftStickX(int32_t virtualSlot);
@@ -59,6 +60,7 @@ namespace Ship {
 		std::shared_ptr<DeviceProfileV0> getProfile(int32_t virtualSlot);
 		bool IsRumbling() { return isRumbling; }
 		std::string GetGuid() { return GUID; }
+		virtual int32_t GetMappedButton(int32_t virtualSlot, int32_t n64Button);
 		virtual const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) = 0;
 		virtual const std::string GetControllerName() = 0;
 

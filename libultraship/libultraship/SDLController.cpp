@@ -126,6 +126,10 @@ namespace Ship {
         return -1;
     }
 
+    bool SDLController::ButtonIsPressedRaw(int32_t sdlButton) {
+        return SDL_GameControllerGetButton(Cont, static_cast<SDL_GameControllerButton>(sdlButton));
+    }
+
     int16_t SDLController::ReadRawAxis(uint32_t axis) {
         return SDL_GameControllerGetAxis(Cont, static_cast<SDL_GameControllerAxis>(axis));
     }
@@ -404,27 +408,25 @@ namespace Ship {
             }
         }
     }
-    
+
     const std::string SDLController::GetButtonName(int32_t virtualSlot, int32_t n64Button) {
         char buffer[50];
-        std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
+        int32_t btn = GetMappedButton(virtualSlot, n64Button);
 
-        const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
-            return pair.second == n64Button;
-        });
+        if (btn == -1) {
+            return "Unknown";
+        }
 
-        if (find == Mappings.end()) return "Unknown";
+        uint32_t absBtn = abs(btn);
 
-        int btn = abs(find->first);
+        if (absBtn >= AXIS_SCANCODE_BIT) {
+            absBtn -= AXIS_SCANCODE_BIT;
 
-        if(btn >= AXIS_SCANCODE_BIT) {
-            btn -= AXIS_SCANCODE_BIT;
-
-        	snprintf(buffer, sizeof(buffer), "%s%s", AxisNames[btn], find->first > 0 ? "+" : "-");
+        	snprintf(buffer, sizeof(buffer), "%s%s", AxisNames[absBtn], btn > 0 ? "+" : "-");
             return buffer;
         }
 
-        snprintf(buffer, sizeof(buffer), "Button %d", btn);
+        snprintf(buffer, sizeof(buffer), "Button %d", absBtn);
         return buffer;
     }
 

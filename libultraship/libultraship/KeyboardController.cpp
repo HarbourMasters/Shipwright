@@ -64,13 +64,13 @@ namespace Ship {
 	}
 
 	const std::string KeyboardController::GetButtonName(int32_t virtualSlot, int32_t n64Button) {
-		std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
-		const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
-			return pair.second == n64Button;
-		});
+		int32_t btn = GetMappedButton(virtualSlot, n64Button);
 
-		if (find == Mappings.end()) return "Unknown";
-		const char* name = GlobalCtx2::GetInstance()->GetWindow()->GetKeyName(find->first);
+        if (btn == -1) {
+            return "Unknown";
+        }
+
+		const char* name = GlobalCtx2::GetInstance()->GetWindow()->GetKeyName(btn);
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 

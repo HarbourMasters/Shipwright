@@ -33,6 +33,7 @@ namespace Ship {
 			void ClearRawPress() override {}
 			int32_t ReadRawPress() override;
 			int16_t ReadRawAxis(uint32_t axis) override;
+			bool ButtonIsPressedRaw(int32_t sdlButton) override;
 
 		protected:
 			void CreateDefaultBinding(int32_t virtualSlot) override;
