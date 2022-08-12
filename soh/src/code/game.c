@@ -426,13 +426,19 @@ void GameState_Update(GameState* gameState) {
     } else {
         CVar_SetS32("gPrevTime", -1);
     }
-        
+    
+    //Keeps track of what time it is for the clock found in cheats.
+    if (CVar_GetS32("gCurrTime", 0) != gSaveContext.dayTime) {
+        CVar_SetS32("gCurrTime", gSaveContext.dayTime);
+    }
+    
     // Increases the rate of time. Sets it to the base rate if the slider is at 0.
     // NOTE: Please comment if there are any other exceptions aside from the Sun's Song that alter the rate of time.
     if (gGlobalCtx) {
         if (gSaveContext.sunsSongState == SUNSSONG_INACTIVE || gSaveContext.sceneSetupIndex == 5) { //Checks to confirm the Sun's Song isn't being played and that
             // the scene with Ganon in front of Hyrule Castle Town is not active.
             gTimeIncrement = gGlobalCtx->envCtx.timeIncrement + CVar_GetS32("gTimeRate", 0);
+            CVar_SetS32("gCurrRate", gTimeIncrement);
         }
     }
     
@@ -446,21 +452,25 @@ void GameState_Update(GameState* gameState) {
     if (CVar_GetS32("gSetDawn", 0) == 1) {
         CVar_SetS32("gSetDawn", 0);
         gSaveContext.dayTime = 0x4000;
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
     }
 
     if (CVar_GetS32("gSetNoon", 0) == 1){
         CVar_SetS32("gSetNoon", 0);
         gSaveContext.dayTime = 0x8000;
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
     }
 
     if (CVar_GetS32("gSetSunset", 0) == 1){
         CVar_SetS32("gSetSunset", 0);
         gSaveContext.dayTime = 0xC001;
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
     }
 
     if (CVar_GetS32("gSetMidnight", 0) == 1){
         CVar_SetS32("gSetMidnight", 0);
         gSaveContext.dayTime = 0;
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
     }
    
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.

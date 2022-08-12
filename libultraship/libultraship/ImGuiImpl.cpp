@@ -1588,12 +1588,16 @@ namespace SohImGui {
                     Tooltip("This syncs the ingame time with the real world time");
                     PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
                     Tooltip("Freezes the time of day");
-                    PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, "", 0, true, true, false);
                     if (ImGui::Button("Reset Speed of Time")) {
                         CVar_SetS32("gResetRate", 1);
                     }
                     Tooltip("Sets the Speed of Time Slider back to 0.");
-
+                    char timeRate[6];
+                    sprintf(timeRate, "%d", (long)CVar_GetS32("gCurrRate", 0));
+                    PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, timeRate, 0, true, true, false);
+                    char time[6];
+                    sprintf(time, "%d", (long)CVar_GetS32("gCurrTime",0));
+                    PaddedEnhancementSliderInt("Current Time of Day", "##CURRENTTIME", "gCurrTime", 0, 0xffff, time , 0, false, true, false);
                     ImGui::EndMenu();
                 }
                 PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
