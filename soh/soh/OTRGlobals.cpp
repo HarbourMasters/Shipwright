@@ -30,6 +30,7 @@
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
+#include "Enhancements/sfx-editor/SfxEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
@@ -187,6 +188,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
