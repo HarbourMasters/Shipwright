@@ -128,8 +128,8 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
         link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
-    } else if(AllowStickRotation && input->cur.cam_x != 0){
-        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.cam_x*(((f32)RotationSpeed)/600.0f));
+    } else if (AllowStickRotation && input->cur.right_stick_x * 10.0f != 0) {
+        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.right_stick_x * 10.0f * (((f32)RotationSpeed) / 600.0f));
     }
 
     if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) || // reset rotation
@@ -138,13 +138,13 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
         link_kaleido_rot.y = 32300;
-    } else if (AllowStickRotation && input->cur.cam_y < -1200) {
+    } else if (AllowStickRotation && input->cur.right_stick_y * 10.0f < -1200) {
         link_kaleido_rot.y = 32300;
     }
 
-    if (AllowStickRotation && input->cur.cam_y>0) { // Zoom in
-        scale = scale + input->cur.cam_y*.00005;
-        pos.y = pos.y - input->cur.cam_y*.25;
+    if (AllowStickRotation && input->cur.right_stick_y * 10.0f > 0) { // Zoom in
+        scale = scale + input->cur.right_stick_y * 10.0f * .00005f;
+        pos.y = pos.y - input->cur.right_stick_y * 10.0f * 0.25f;
     }
     
 
