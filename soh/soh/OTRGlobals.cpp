@@ -286,7 +286,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM_NONE,
     };
     ItemTableManager::Instance->AddItemTable(MOD_NONE);
-    for (uint8_t i = 0; i < ARRAY_SIZE(getItemTable); i++) {
+    for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
         getItemTable[i].modIndex = MOD_NONE;
         ItemTableManager::Instance->AddItemEntry(MOD_NONE, i, getItemTable[i]);
     }
@@ -1621,7 +1621,7 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
 }
 
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
         OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
     } else {
         OTRGlobals::Instance->getItemModIndex = MOD_NONE;
@@ -1631,7 +1631,7 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
 
 extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(
             OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
         getItemModIndex = MOD_RANDOMIZER;
     } else {
@@ -1642,7 +1642,7 @@ extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId
 }
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
         OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER;
     } else {
         OTRGlobals::Instance->getItemModIndex = MOD_NONE;
@@ -1652,7 +1652,7 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsRandoItem(randomizerCheck)) {
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
         getItemModIndex = MOD_RANDOMIZER;
     } else {
         getItemModIndex = MOD_NONE;

@@ -21,7 +21,7 @@ class Randomizer {
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
-    bool IsGetItemRandoExclusive(RandomizerGet randoGet);
+    bool IsItemVanilla(RandomizerGet randoGet);
 
 
   public:
@@ -48,7 +48,7 @@ class Randomizer {
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
-    bool CheckContainsRandoItem(RandomizerCheck randoCheck);
+    bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
 #ifdef __cplusplus

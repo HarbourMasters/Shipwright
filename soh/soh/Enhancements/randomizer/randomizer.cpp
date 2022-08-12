@@ -2137,7 +2137,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_RUPEE_BLUE; //todo
 
         default: {
-            if (IsGetItemRandoExclusive(randoGet)) {
+            if (!IsItemVanilla(randoGet)) {
                 return (GetItemID)randoGet;
             }
             return ogItemId;
@@ -2145,50 +2145,66 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
     }
 }
 
-bool Randomizer::IsGetItemRandoExclusive(RandomizerGet randoGet) {
+bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
     switch (randoGet) {
-        case RG_LIGHT_MEDALLION:
-        case RG_FOREST_MEDALLION:
-        case RG_FIRE_MEDALLION:
-        case RG_WATER_MEDALLION:
-        case RG_SHADOW_MEDALLION:
-        case RG_SPIRIT_MEDALLION:
-        case RG_KOKIRI_EMERALD:
-        case RG_GORON_RUBY:
-        case RG_ZORA_SAPPHIRE:
-        case RG_ZELDAS_LULLABY:
-        case RG_SUNS_SONG:
-        case RG_EPONAS_SONG:
-        case RG_SONG_OF_STORMS:
-        case RG_SONG_OF_TIME:
-        case RG_SARIAS_SONG:
-        case RG_MINUET_OF_FOREST:
-        case RG_BOLERO_OF_FIRE:
-        case RG_SERENADE_OF_WATER:
-        case RG_NOCTURNE_OF_SHADOW:
-        case RG_REQUIEM_OF_SPIRIT:
-        case RG_PRELUDE_OF_LIGHT:
-        case RG_PROGRESSIVE_MAGIC_METER:
-        case RG_DOUBLE_DEFENSE:
-        case RG_BOTTLE_WITH_RED_POTION:
-        case RG_BOTTLE_WITH_GREEN_POTION:
-        case RG_BOTTLE_WITH_BLUE_POTION:
-        case RG_BOTTLE_WITH_FAIRY:
-        case RG_BOTTLE_WITH_FISH:
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-        case RG_BOTTLE_WITH_BUGS:
-        case RG_BOTTLE_WITH_POE:
-        case RG_BOTTLE_WITH_BIG_POE:
-        case RG_ICE_TRAP:
+        case RG_KOKIRI_SWORD: 
+        case RG_GIANTS_KNIFE: 
+        case RG_BIGGORON_SWORD:
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_IRON_BOOTS:
+        case RG_HOVER_BOOTS:
+        case RG_BOOMERANG:
+        case RG_LENS_OF_TRUTH:
+        case RG_MEGATON_HAMMER:
+        case RG_STONE_OF_AGONY:
+        case RG_DINS_FIRE:
+        case RG_FARORES_WIND:
+        case RG_NAYRUS_LOVE:
+        case RG_FIRE_ARROWS:
+        case RG_ICE_ARROWS:
+        case RG_LIGHT_ARROWS:
+        case RG_GERUDO_MEMBERSHIP_CARD:
+        case RG_MAGIC_BEAN:
+        case RG_WEIRD_EGG: 
+        case RG_ZELDAS_LETTER:
+        case RG_POCKET_EGG:
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+        case RG_GOLD_SKULLTULA_TOKEN:
+        case RG_PROGRESSIVE_HOOKSHOT:
+        case RG_PROGRESSIVE_STRENGTH:
+        case RG_PROGRESSIVE_BOMB_BAG:
+        case RG_PROGRESSIVE_BOW:
+        case RG_PROGRESSIVE_SLINGSHOT:
+        case RG_PROGRESSIVE_WALLET:
+        case RG_PROGRESSIVE_SCALE:
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_OCARINA:
+        case RG_PROGRESSIVE_GORONSWORD:
+        case RG_EMPTY_BOTTLE:
+        case RG_BOTTLE_WITH_MILK:
             return true;
         default:
             return false;
     }
 }
 
-bool Randomizer::CheckContainsRandoItem(RandomizerCheck randoCheck) {
+bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
     RandomizerGet randoGet = this->itemLocations[randoCheck];
-    return IsGetItemRandoExclusive(randoGet);
+    return IsItemVanilla(randoGet);
 }
 
 std::string Randomizer::GetAdultAltarText() const {
