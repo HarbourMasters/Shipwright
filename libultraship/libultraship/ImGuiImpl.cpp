@@ -1958,7 +1958,7 @@ namespace SohImGui {
         CVar_SetS32("gForgeTime", 3);
         // Vine/Ladder Climb speed (+0 to +12)
         CVar_SetS32("gClimbSpeed", 0);
-        // Faster Block Push
+        // Faster Block Push (+0 to +5)
         CVar_SetS32("gFasterBlockPush", 0);
         // No Forced Navi
         CVar_SetS32("gNoForcedNavi", 0);
@@ -2128,8 +2128,8 @@ namespace SohImGui {
         CVar_SetS32("gTextSpeed", 5);
         // King Zora Speed (1 to 5)
         CVar_SetS32("gMweepSpeed", 2);
-        // Faster Block Push
-        CVar_SetS32("gFasterBlockPush", 1);
+        // Faster Block Push (+0 to +5)
+        CVar_SetS32("gFasterBlockPush", 5);
         // Better Owl
         CVar_SetS32("gBetterOwl", 1);
         // Prevent Dropped Ocarina Inputs
