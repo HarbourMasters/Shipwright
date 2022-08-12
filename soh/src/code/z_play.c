@@ -1559,7 +1559,7 @@ void RemoveEffect(const char* effectId) {
             Player_SetBootData(gGlobalCtx, player);
             return;
         } else if (strcmp(effectId, "high_gravity") == 0 || strcmp(effectId, "low_gravity") == 0) {
-            highGravity = 0;
+            gravityLevel = 1;
             return;
         } else if (strcmp(effectId, "no_ui") == 0) {
             noUi = 0;
@@ -1597,10 +1597,10 @@ u8 ExecuteEffect(const char* effectId, uint32_t value) {
 
     if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0) {
         if (strcmp(effectId, "high_gravity") == 0) {
-            highGravity = 1;
+            gravityLevel = 2;
             return 1;
         } else if (strcmp(effectId, "low_gravity") == 0) {
-            highGravity = 2;
+            gravityLevel = 0;
             return 1;
         } else if (strcmp(effectId, "giant_link") == 0) {
             giantLink = 1;

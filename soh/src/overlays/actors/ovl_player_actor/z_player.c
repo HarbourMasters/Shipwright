@@ -11128,11 +11128,11 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
         resetLinkScale = 0;
     }
 
-    if (highGravity == 1) {
+    if (gravityLevel == 2) {
         this->actor.gravity = -4.0f;
     }
 
-    if (highGravity == 2) {
+    if (gravityLevel == 0) {
         this->actor.gravity = -0.3f;
     }
 }

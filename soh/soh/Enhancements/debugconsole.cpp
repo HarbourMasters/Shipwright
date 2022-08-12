@@ -4,6 +4,7 @@
 
 #include "debugconsole.h"
 #include "../libultraship/ImGuiImpl.h"
+#include "../libultraship/Utils.h"
 #include "savestates.h"
 #include "Console.h"
 
@@ -36,7 +37,7 @@ extern GlobalContext* gGlobalCtx;
 uint32_t defenseModifier;
 uint32_t giantLink;
 uint32_t minishLink;
-uint32_t highGravity;
+uint32_t gravityLevel;
 uint32_t resetLinkScale;
 uint32_t noUi;
 uint32_t invisibleLink;
@@ -90,7 +91,6 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     return CMD_SUCCESS;
 }
 
-
 static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.health = 0;
     SohImGui::console->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
@@ -122,7 +122,6 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
     SohImGui::console->SendInfoMessage("[SOH] Player health updated to %d", health);
     return CMD_SUCCESS;
 }
-
 
 static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.respawnFlag = 0;
@@ -387,17 +386,86 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
         return CMD_FAILED;
     }
 
-    bool invisible;
-
     try {
-        invisible = std::stoi(args[1], nullptr, 10);
+        invisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::console->SendErrorMessage("[SOH] Invisible value must be a number.");
         return CMD_FAILED;
     }
-    
-    invisibleLink = invisible;
+}
+
+static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        giantLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (giantLink)
+            minishLink = 0;
+        else
+            resetLinkScale = 1;
+
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Giant value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
+static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        resetLinkScale = 1;
+        minishLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+
+        if (minishLink)
+            giantLink = 0;
+        else
+            resetLinkScale = 1;
+
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Minish value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
+static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gSaveContext.healthCapacity >= 0x140)
+        return CMD_FAILED;
+
+    gSaveContext.healthCapacity += 0x10;
     return CMD_SUCCESS;
+}
+
+static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if ((gSaveContext.healthCapacity - 0x10) < 3)
+        return CMD_FAILED;
+
+    gSaveContext.healthCapacity -= 0x10;
+    return CMD_SUCCESS;
+}
+
+static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        gravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), 0.0f, 2.0f);
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Minish value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 #define VARTYPE_INTEGER 0
@@ -459,7 +527,6 @@ static bool SetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     //SohImGui::console->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
 }
-
 
 static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() < 2)
@@ -546,8 +613,25 @@ void DebugConsole_Init(void) {
         { "Slot number", Ship::ArgumentType::NUMBER, }
     }});
 
-    CMD_REGISTER("invisible", { InvisibleHandler, "Toggles invisibility.", {
-        { "invisible", Ship::ArgumentType::NUMBER }
+    // Console effects
+    CMD_REGISTER("invisible", { InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("giant_link", { GiantLinkHandler, "Turn Link into a giant Lonky boi.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("minish_link", { MinishLinkHandler, "Turn Link into a minish boi.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("add_heart_container", { AddHeartContainerHandler, "Give Link a heart! The maximum amount of hearts is 20!" });
+
+    CMD_REGISTER("remove_heart_container", { RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3." });
+
+    CMD_REGISTER("gravity", { GravityHandler, "Set gravity level.", {
+        { "value", Ship::ArgumentType::NUMBER }
     }});
 
     CVar_Load();
