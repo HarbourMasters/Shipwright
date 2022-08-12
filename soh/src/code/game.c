@@ -426,6 +426,12 @@ void GameState_Update(GameState* gameState) {
     } else {
         CVar_SetS32("gPrevTime", -1);
     }
+    
+    // Sets time to a specific rate.
+    if (gGlobalCtx) {
+        uint16_t currentTime = gGlobalCtx->envCtx.timeIncrement;
+        gTimeIncrement = currentTime + CVar_GetS32("gTimeRate", 0);
+    }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
     gSaveContext.language = CVar_GetS32("gLanguages", 0);
