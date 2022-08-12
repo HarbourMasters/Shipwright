@@ -5,7 +5,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern uint32_t defenseModifier;
 extern uint32_t giantLink;
 extern uint32_t minishLink;
 extern uint32_t gravityLevel;

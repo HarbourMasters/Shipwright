@@ -1533,8 +1533,6 @@ u8 PlayerGrounded(Player* player) {
     return (player->actor.world.pos.y - player->actor.floorHeight) == 0;
 }
 
-extern func_80AB70A0(EnNiw* this, GlobalContext* globalCtx);
-
 void RemoveEffect(const char* effectId) {
     if (gGlobalCtx == NULL) {
         return;
@@ -1551,7 +1549,7 @@ void RemoveEffect(const char* effectId) {
             minishLink = 0;
             resetLinkScale = 1;
         } else if (strcmp(effectId, "defense_modifier") == 0) {
-            defenseModifier = 0;
+            // defenseModifier = 0;
             return;
         } else if (strcmp(effectId, "iron_boots") == 0 || strcmp(effectId, "hover_boots") == 0) {
             player->currentBoots = PLAYER_BOOTS_KOKIRI;
@@ -1562,7 +1560,7 @@ void RemoveEffect(const char* effectId) {
             gravityLevel = 1;
             return;
         } else if (strcmp(effectId, "no_ui") == 0) {
-            noUI = 0;
+            // noUI = 0;
             return;
         } else if (strcmp(effectId, "invisible") == 0) {
             invisibleLink = 0;
@@ -1609,7 +1607,7 @@ u8 ExecuteEffect(const char* effectId, uint32_t value) {
             minishLink = 1;
             return 1;
         } else if (strcmp(effectId, "defense_modifier") == 0) {
-            defenseModifier = value;
+            // defenseModifier = value;
             return 1;
         } else if (strcmp(effectId, "kill") == 0) {
             if (PlayerGrounded(player)) {
@@ -1621,7 +1619,7 @@ u8 ExecuteEffect(const char* effectId, uint32_t value) {
             EnNiw* cucco =
                 (EnNiw*)Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_NIW, player->actor.world.pos.x,
                                     player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
-            cucco->actionFunc = func_80AB70A0;
+            // cucco->actionFunc = func_80AB70A0;
             return 1;
         } else if (strcmp(effectId, "damage") == 0) {
             Health_ChangeBy(gGlobalCtx, -value * 16);
@@ -1670,7 +1668,7 @@ u8 ExecuteEffect(const char* effectId, uint32_t value) {
             Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_WALLMAS, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
             return 1;
         } else if (strcmp(effectId, "no_ui") == 0) {
-            noUI = 1;
+            // noUI = 1;
             return 1;
         } else if (strcmp(effectId, "invisible") == 0) {
             invisibleLink = 1;

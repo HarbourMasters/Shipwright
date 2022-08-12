@@ -31,15 +31,14 @@ extern GlobalContext* gGlobalCtx;
 }
 
 #include "Cvar.h"
+#include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::BindCmd
 
-uint32_t defenseModifier;
 uint32_t giantLink;
 uint32_t minishLink;
 uint32_t gravityLevel;
 uint32_t resetLinkScale;
-uint32_t noUI;
 uint32_t invisibleLink;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -388,6 +387,11 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         invisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (!invisibleLink) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
+        }
+
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::console->SendErrorMessage("[SOH] Invisible value must be a number.");
@@ -441,7 +445,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, con
     if (gSaveContext.healthCapacity >= 0x140)
         return CMD_FAILED;
 
-    gSaveContext.healthCapacity += 0x10;
+    Health_GiveHearts(1);
     return CMD_SUCCESS;
 }
 
@@ -449,7 +453,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
     if ((gSaveContext.healthCapacity - 0x10) < 3)
         return CMD_FAILED;
 
-    gSaveContext.healthCapacity -= 0x10;
+    Health_RemoveHearts(1);
     return CMD_SUCCESS;
 }
 
@@ -468,20 +472,236 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     }
 }
 
-// TODO: Does not yet function
 static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
-    try {
-        bool noUI = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+    // TODO: Implement
+}
+
+static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Player* player = GET_PLAYER(gGlobalCtx);
+    if (PlayerGrounded(player)) {
+        func_80837C0C(gGlobalCtx, player, 3, 0, 0, 0, 0);
         return CMD_SUCCESS;
-    } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] NoUI value must be a number.");
+    }
+
+    return CMD_FAILED;
+}
+
+static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+
+    // TODO: Implement
+}
+
+static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        int value = std::stoi(args[1], nullptr, 10);
+        if (value < 0) {
+            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            return CMD_FAILED;
+        }
+
+        Player* player = GET_PLAYER(gGlobalCtx);
+
+        Health_ChangeBy(gGlobalCtx, -value * 0x10);
+        func_80837C0C(gGlobalCtx, player, 0, 0, 0, 0, 0);
+        player->invincibilityTimer = 28;
+
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Damage value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
+static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        int value = std::stoi(args[1], nullptr, 10);
+        if (value < 0) {
+            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            return CMD_FAILED;
+        }
+
+        Health_ChangeBy(gGlobalCtx, value * 0x10);
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Heal value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
+static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Magic_Fill(gGlobalCtx);
+    return CMD_SUCCESS;
+}
+
+static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Magic_Empty();
+    return CMD_SUCCESS;
+}
+
+static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+     if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    // TODO: Implement
+}
+
+static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool AddRemoveRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    // TODO: Implement
+}
+
+const static std::map<std::string, uint16_t> boots {
+    { "kokiri", PLAYER_BOOTS_KOKIRI },
+    { "iron", PLAYER_BOOTS_IRON }, { "hover", PLAYER_BOOTS_HOVER },
+};
+
+static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    const auto& it = boots.find(args[1]);
+    if (it == ammoItems.end()) {
+        SohImGui::console->SendErrorMessage("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
+        return CMD_FAILED;
+    }
+
+    Player* player = GET_PLAYER(gGlobalCtx);
+    player->currentBoots = it->second;
+    Inventory_ChangeEquipment(EQUIP_BOOTS, it->second + 1);
+    Player_SetBootData(gGlobalCtx, player);
+
+    return CMD_SUCCESS;
+}
+
+static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        int value = std::stoi(args[1], nullptr, 10);
+        if (value < 0) {
+            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            return CMD_FAILED;
+        }
+
+        Player* player = GET_PLAYER(gGlobalCtx);
+        func_8002F71C(gGlobalCtx, &player->actor, value * 5, player->actor.world.rot.y + 0x8000, value * 5);
+    
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Knockback value must be a number.");
+        return CMD_FAILED;
+    }
+}
+
+static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Player* player = GET_PLAYER(gGlobalCtx);
+    if (PlayerGrounded(player)) {
+        func_80837C0C(gGlobalCtx, player, 4, 0, 0, 0, 0);
+        return CMD_SUCCESS;
+    }
+
+    return CMD_FAILED;
+}
+
+static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Player* player = GET_PLAYER(gGlobalCtx);
+    if (PlayerGrounded(player)) {
+        for (int i = 0; i < 18; i++) {
+            player->flameTimers[i] = Rand_S16Offset(0, 200);
+        }
+        player->isBurning = true;
+        func_80837C0C(gGlobalCtx, player, 0, 0, 0, 0, 0);
+        return 1;
+    }
+    return 0;
+}
+
+static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    Player* player = GET_PLAYER(gGlobalCtx);
+    EnNiw* cucco = (EnNiw*)Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_NIW, player->actor.world.pos.x,
+                                       player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
+    // TODO: Start the storm with the function below
+    // cucco->actionFunc = func_80AB70A0;
+    return CMD_SUCCESS;
 }
 
 #define VARTYPE_INTEGER 0
@@ -571,17 +791,33 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 }
 
 void DebugConsole_Init(void) {
+    // Console
+    CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
+
+    // Save States
+    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
+    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
+    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
+        { "Slot number", Ship::ArgumentType::NUMBER, }
+    }});
+
+    // Gameplay
     CMD_REGISTER("kill", { KillPlayerHandler, "Commit suicide." });
+
     CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
+
     CMD_REGISTER("rupee", { RuppeHandler, "Set your rupee counter.", {
         {"amount", Ship::ArgumentType::NUMBER }
     }});
+
     CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", {
         { "Item ID", Ship::ArgumentType::NUMBER }
     }});
+
     CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", {
         { "health", Ship::ArgumentType::NUMBER }
     }});
+
     CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", {
         { "actor_id", Ship::ArgumentType::NUMBER },
         { "data", Ship::ArgumentType::NUMBER },
@@ -592,19 +828,22 @@ void DebugConsole_Init(void) {
         { "ry", Ship::ArgumentType::PLAYER_ROT, true },
         { "rz", Ship::ArgumentType::PLAYER_ROT, true }
     }});
+
     CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {
         { "x", Ship::ArgumentType::PLAYER_POS, true },
         { "y", Ship::ArgumentType::PLAYER_POS, true },
         { "z", Ship::ArgumentType::PLAYER_POS, true }
     }});
+
     CMD_REGISTER("set", { SetCVarHandler,  "Sets a console variable.", {
         { "varName", Ship::ArgumentType::TEXT },
         { "varValue", Ship::ArgumentType::TEXT }
     }});
+
     CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", {
         { "varName", Ship::ArgumentType::TEXT }
     }});
-    CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
+    
     CMD_REGISTER("ammo", { AmmoHandler, "Changes ammo of an item.", {
         { "item", Ship::ArgumentType::TEXT },
         { "count", Ship::ArgumentType::NUMBER }
@@ -619,17 +858,11 @@ void DebugConsole_Init(void) {
         { "slot", Ship::ArgumentType::NUMBER },
         { "item id", Ship::ArgumentType::NUMBER }
     }});
+
     CMD_REGISTER("entrance", { EntranceHandler, "Sends player to the entered entrance (hex)", {
         { "entrance", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
-    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
-    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
-        { "Slot number", Ship::ArgumentType::NUMBER, }
-    }});
-
-    // Console effects
     CMD_REGISTER("invisible", { InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
@@ -650,9 +883,75 @@ void DebugConsole_Init(void) {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("no_ui", { NoUIHandler, "Disable the UI.", {
+    CMD_REGISTER("no_ui", { NoUIHandler, "Disables the UI.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
+
+    CMD_REGISTER("freeze", { FreezeHandler, "Freezes Link in place" });
+
+    CMD_REGISTER("defense_modifier", { DefenseModifierHandler, "Sets the defense modifier.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("damage", { DamageHandler, "Deal damage to Link.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("heal", { HealHandler, "Heals Link.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("fill_magic", { FillMagicHandler, "Fills magic." });
+
+    CMD_REGISTER("empty_magic", { EmptyMagicHandler, "Empties magic." });
+
+    CMD_REGISTER("no_z", { NoZHandler, "Disables Z-button presses.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("ohko", { OneHitKOHandler, "Activates one hit KO.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("pacifist", { PacifistHandler, "Activates pacifist mode.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("paper_link", { PaperLinkHandler, "Link but made out of paper.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("rainstorm", { RainstormHandler, "Activates rainstorm." });
+
+    CMD_REGISTER("reverse_controls", { ReverseControlsHandler, "Reverses the controls.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("add_rupees", { AddRemoveRupeesHandler, "Adds rupees.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("subtract_rupees", { AddRemoveRupeesHandler, "Subtracts rupees.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("speed_modifier", { SpeedModifierHandler, "Sets the speed modifier.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("boots", { BootsHandler, "Activates boots.", {
+        { "type", Ship::ArgumentType::TEXT },
+    }});
+
+    CMD_REGISTER("knockback", { KnockbackHandler, "Knocks Link back.", {
+        { "value", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("electrocute", { ElectrocuteHandler, "Electrocutes Link." });
+
+    CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
+
+    CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Activates Cucco Storm." });
 
     CVar_Load();
 }

@@ -2684,6 +2684,10 @@ void Health_GiveHearts(s16 hearts) {
     gSaveContext.healthCapacity += hearts * 0x10;
 }
 
+void Health_RemoveHearts(s16 hearts) {
+    gSaveContext.healthCapacity -= hearts * 0x10;
+}
+
 void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 }
@@ -2753,6 +2757,12 @@ void Magic_Fill(GlobalContext* globalCtx) {
         gSaveContext.unk_13F6 = (gSaveContext.doubleMagic * 0x30) + 0x30;
         gSaveContext.unk_13F0 = 9;
     }
+}
+
+// TODO: Make it stop blinking
+void Magic_Empty() {
+    gSaveContext.unk_13F8 = 0;
+    gSaveContext.unk_13F0 = 1;
 }
 
 void func_800876C8(GlobalContext* globalCtx) {
