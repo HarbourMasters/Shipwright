@@ -321,6 +321,7 @@ static void WriteShuffledEntrance(
         case LANGUAGE_FRA:
         default:
             jsonData["Entrances"][std::to_string(originalIndex)] = replacementIndex;
+            jsonData["Entrances"][std::to_string(replacementDestinationIndex)] = destinationIndex;
             break;
     }
 //   tinyxml2::XMLElement* parentNode,

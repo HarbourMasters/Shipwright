@@ -383,7 +383,7 @@ void Gameplay_Init(GameState* thisx) {
     }
 
      int index;
-     for (index = 0; index<110; ++index) {
+     for (index = 0; index<250; ++index) {
         // NOTE: this is why filling with -1 matters, sometimes gSaveContext.entranceIndex is 0 
         if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
             Gameplay_SpawnScene(
@@ -391,30 +391,32 @@ void Gameplay_Init(GameState* thisx) {
                 gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0,
                 gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
                 ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
-        } else if (index==109){
+            break;
+        } else if (index==249){
             Gameplay_SpawnScene(
                 globalCtx,
                 gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0,
                 gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
                 ((void)0, gSaveContext.entranceIndex)].spawn);
+            break;
         }
         else {
             continue;
         }
      }
-    if (gSaveContext.entranceIndex == 0000 || gSaveContext.entranceIndex == 0001 || gSaveContext.entranceIndex == 0002 ||
-        gSaveContext.entranceIndex == 0003) {
-        Gameplay_SpawnScene(
-            globalCtx,
-            gEntranceTable[(4) + ((void)0, gSaveContext.sceneSetupIndex)]
-                .scene,
-            gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + (4)].spawn);
-    } else {
-        Gameplay_SpawnScene(
-            globalCtx,
-            gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene, 
-            gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
-    }
+    //if (gSaveContext.entranceIndex == 0000 || gSaveContext.entranceIndex == 0001 || gSaveContext.entranceIndex == 0002 ||
+    //    gSaveContext.entranceIndex == 0003) {
+    //    Gameplay_SpawnScene(
+    //        globalCtx,
+    //        gEntranceTable[(4) + ((void)0, gSaveContext.sceneSetupIndex)]
+    //            .scene,
+    //        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + (4)].spawn);
+    //} else {
+    //    Gameplay_SpawnScene(
+    //        globalCtx,
+    //        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene, 
+    //        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+    //}
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
     Cutscene_HandleEntranceTriggers(globalCtx);
