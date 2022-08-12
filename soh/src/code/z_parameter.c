@@ -2573,6 +2573,21 @@ s32 Inventory_ConsumeFairy(GlobalContext* globalCtx) {
     return 0;
 }
 
+bool Inventory_HatchPocketCucco(GlobalContext* globalCtx) {
+    if (!gSaveContext.n64ddFlag) {
+        return Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
+    }
+
+    if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
+         return 0;
+    }
+
+    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
+    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
+    return 1;
+}
+
 void func_80086D5C(s32* buf, u16 size) {
     u16 i;
 
