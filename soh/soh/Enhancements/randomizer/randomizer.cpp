@@ -16,6 +16,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include <stdexcept>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -4580,6 +4581,18 @@ void Randomizer::CreateCustomMessages() {
     CreateScrubMessages();
 }
 
+class ExtendedVanillaTableInvalidItemIdException: public std::exception {
+    private:
+    s16 itemID;
+
+    public:
+      ExtendedVanillaTableInvalidItemIdException(s16 itemID): itemID(itemID) {}
+      std::string what() {
+        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
+        "item, try adding it to randoGetItemTable instead.";
+      }
+};
+
 void InitRandoItemTable() {
     // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
     GetItemEntry extendedVanillaGetItemTable[] = {
@@ -4702,8 +4715,7 @@ void InitRandoItemTable() {
                 // We should never get here. If this branch of code executes,
                 // then you've added an item to extendedVanillaGetItemTable that
                 // should be in randoGetItemTable.
-                getItemID = RG_NONE;
-                break;
+                throw ExtendedVanillaTableInvalidItemIdException(extendedVanillaGetItemTable[i].itemId);
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, getItemID, extendedVanillaGetItemTable[i]);
     }
