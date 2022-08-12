@@ -93,7 +93,7 @@ namespace Ship {
 				if (ControllerName != "Keyboard" && ControllerName != "Auto") {
 					ControllerName += "##"+std::to_string(i);
 				}
-				if (ImGui::Selectable(ControllerName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
+				if (ImGui::Selectable(controlDeck->GetPhysicalDevice(i)->GetControllerName().c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
 					controlDeck->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
