@@ -270,8 +270,7 @@ void DrawQuest(uint32_t itemId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? entry.name : entry.nameFaded),
-                 ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
