@@ -4641,7 +4641,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
-    for (int i = 0; i < ARRAY_SIZE(extendedVanillaGetItemTable); i++) {
+    for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
         extendedVanillaGetItemTable[i].modIndex = MOD_NONE;
         // These items should use their RG value as their getItemID.
         // RANDOTODO: Add the getItemID as a member of the GetItemEntry
@@ -4719,7 +4719,7 @@ void InitRandoItemTable() {
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, getItemID, extendedVanillaGetItemTable[i]);
     }
-    for (int i = 0; i < ARRAY_SIZE(randoGetItemTable); i++) {
+    for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
         randoGetItemTable[i].modIndex = MOD_RANDOMIZER;
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

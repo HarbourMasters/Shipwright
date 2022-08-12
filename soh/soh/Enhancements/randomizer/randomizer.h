@@ -7,8 +7,6 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
