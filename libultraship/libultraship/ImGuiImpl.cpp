@@ -1575,8 +1575,6 @@ namespace SohImGui {
                 Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
                 PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
                 Tooltip("Allows you to use any item at any location");
-                PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
-                Tooltip("Freezes the time of day");
                 PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
@@ -1585,6 +1583,9 @@ namespace SohImGui {
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
                 PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
                 Tooltip("This syncs the ingame time with the real world time");
+                PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
+                Tooltip("Freezes the time of day");
+                PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, "", 0, true, true, false);
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
