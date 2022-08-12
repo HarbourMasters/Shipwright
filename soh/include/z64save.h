@@ -185,7 +185,7 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
-    EntranceIndexRando EntranceIndeces[109];
+    EntranceIndexRando EntranceIndeces[250];
     char childAltarText[250];
     char adultAltarText[750];
     char ganonHintText[150];
