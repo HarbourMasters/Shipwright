@@ -2578,7 +2578,7 @@ bool Inventory_HatchPocketCucco(GlobalContext* globalCtx) {
         return Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
-    if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
+    if (!PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_POCKET_EGG)) { 
          return 0;
     }
 
