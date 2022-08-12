@@ -240,7 +240,7 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = {
 };
 
 bool IsValidSaveFile() {
-    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 3;
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
 }
 
