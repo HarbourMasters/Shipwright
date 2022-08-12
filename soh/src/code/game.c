@@ -427,10 +427,12 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gPrevTime", -1);
     }
     
-    // Sets time to a specific rate.
+    //Increases the rate of time. Sets it to the base rate if the slider is at 0. 
+    //NOTE: Please comment if there are any other exceptions aside from the Sun's Song that alter the rate of time.
     if (gGlobalCtx) {
-        uint16_t currentTime = gGlobalCtx->envCtx.timeIncrement;
-        gTimeIncrement = currentTime + CVar_GetS32("gTimeRate", 0);
+        if (gSaveContext.sunsSongState == SUNSSONG_INACTIVE) { //Checks to confirm the Sun's Song isn't being played. (For when in places where time passes)
+            gTimeIncrement = gGlobalCtx->envCtx.timeIncrement + CVar_GetS32("gTimeRate", 0);
+        }
     }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
