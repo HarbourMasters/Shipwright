@@ -334,11 +334,9 @@ void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
         Message_CloseTextbox(globalCtx);
-        if (!gSaveContext.n64ddFlag) {
-            if (!CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
-                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
-                gSaveContext.cutsceneTrigger = 1;
-            }
+        if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
+            gSaveContext.cutsceneTrigger = 1;
         } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
             GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
