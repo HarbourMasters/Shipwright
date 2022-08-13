@@ -233,7 +233,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
             GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
             if (randoGetItem.itemId != RG_NONE) {
-                GetItem_Draw(globalCtx, ABS(randoGetItem.gi) - 1);
+                GetItem_Draw(globalCtx, randoGetItem.gid);
                 return;
             }
         }
@@ -257,7 +257,7 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
 
         if (randoGetItem.itemId != RG_NONE) {
-            this->giDrawId = ABS(randoGetItem.gi) - 1;
+            this->giDrawId = randoGetItem.gid;
         }
     }
 

@@ -1338,7 +1338,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
-        GetItem_Draw(globalCtx, ABS(randoGetItemEntry.gi) - 1);
+        GetItem_Draw(globalCtx, randoGetItemEntry.gid);
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1397,7 +1397,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
-        GetItem_Draw(globalCtx, ABS(randoGetItemEntry.gi) - 1);
+        GetItem_Draw(globalCtx, randoGetItemEntry.gid);
     } else {
         s32 pad;
 

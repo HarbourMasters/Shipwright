@@ -533,7 +533,7 @@ void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
         GetItemEntry randoGetItem =
             Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-        GetItem_Draw(globalCtx, ABS(randoGetItem.gi) - 1);
+        GetItem_Draw(globalCtx, randoGetItem.gid);
     } else {
         GetItem_Draw(globalCtx, GID_HEART_PIECE);
     }
