@@ -6084,7 +6084,7 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
         case FLAG_EVENT_CHECK_INF:
-            Flags_SetEventChkInf(globalCtx, this->pendingFlag.flagID);
+            Flags_SetEventChkInf(this->pendingFlag.flagID);
             break;
         case FLAG_NONE:
         default:
