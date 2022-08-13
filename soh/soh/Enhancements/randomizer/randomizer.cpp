@@ -2147,6 +2147,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
 
 bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
     switch (randoGet) {
+        case RG_NONE:
         case RG_KOKIRI_SWORD: 
         case RG_GIANTS_KNIFE: 
         case RG_BIGGORON_SWORD:
