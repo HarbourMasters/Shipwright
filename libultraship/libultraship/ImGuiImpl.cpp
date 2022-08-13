@@ -1585,6 +1585,8 @@ namespace SohImGui {
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
                 PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
                 Tooltip("This syncs the ingame time with the real world time");
+		PaddedEnhancementCheckbox("Drawbridge always open", "gOpenBridge", true, false);
+                Tooltip("The drawbridge to Castle Town will remain open, even if it is night-time.");
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
