@@ -45,7 +45,10 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(LAKE_HYLIA, {[]{return true;}}),
   });
 
-  areaTable[GV_GROTTO_LEDGE] = Area("GV Grotto Ledge", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[GV_GROTTO_LEDGE] = Area("GV Grotto Ledge", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(RC_GV_OCTOROK_GROTTO_USELESS_CHECK, {[]{return CanUse(SILVER_GAUNTLETS);}}),
+                }, {
                   //Exits
                   Entrance(GV_LOWER_STREAM,   {[]{return true;}}),
                   Entrance(GV_OCTOROK_GROTTO, {[]{return CanUse(SILVER_GAUNTLETS);}}),

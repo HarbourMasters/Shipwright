@@ -739,6 +739,10 @@ void GenerateItemPool() {
     PlaceItemInLocation(ZR_FROGS_SONG_OF_TIME, PURPLE_RUPEE, false, true);
   }
 
+  if (true) {
+    AddItemToMainPool(PURPLE_RUPEE, 5);
+  }
+
   if (ShuffleAdultTradeQuest) {
     AddItemToMainPool(POCKET_EGG);
     AddItemToMainPool(COJIRO);

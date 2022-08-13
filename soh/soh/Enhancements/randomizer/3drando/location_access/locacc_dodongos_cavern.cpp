@@ -175,7 +175,10 @@ void AreaTable_Init_DodongosCavern() {
                                                  /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (IsAdult && CanUse(HOOKSHOT) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED));}}),
   });
 
-  areaTable[DODONGOS_CAVERN_UPPER_LIZALFOS] = Area("Dodongos Cavern Upper Lizalfos", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[DODONGOS_CAVERN_UPPER_LIZALFOS] = Area("Dodongos Cavern Upper Lizalfos", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(RC_DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK,{[]{return true;}}),
+                }, {
                   //Exits
                   Entrance(DODONGOS_CAVERN_LOWER_LIZALFOS,        {[]{return true;}}),
                   Entrance(DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM,  {[]{return Here(DODONGOS_CAVERN_LOWER_LIZALFOS, []{return IsAdult || Slingshot || Sticks || KokiriSword || HasExplosives;});},

@@ -10,6 +10,7 @@
 #include <Path.h>
 #include <Text.h>
 #include <Blob.h>
+#include "../libultraship/ImGuiImpl.h"
 
 extern Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
@@ -61,6 +62,34 @@ bool func_80098508(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
+const std::map<u16, std::map<u16, std::vector<std::pair<int, Ship::ActorSpawnEntry>>>> sceneActorOverrides = {
+    { 0x01, { // Dodongo's Cavern
+        { 0x03, {
+            { -1, { ACTOR_EN_ITEM00, 3558, 531, -1984, 0, 0, 0, 0x106 }},
+        } },
+    } },
+    { 0x02, { // Jabu Jabu's Belly
+        { 0x0d, {
+            { 3, { ACTOR_EN_ITEM00, -1150, -1113, -2248, 0, 0, 0, 0x106 }},
+        } },
+    } },
+    { 0x3e, { // Grotto
+        { 0x05, { // Octorok Grotto
+            { 8, { ACTOR_EN_ITEM00, 32, -129, 852, 0, 0, 0, 0x406 }},
+        } },
+    } },
+     { 0x55, { // Kokiri Forest
+        { 0x00, {
+            { -1, { ACTOR_EN_ITEM00, 1297, 240, -553, 0, 0, 0, 0x106 }},
+        } },
+    } },
+    { 0x09, { // Ice Cavern
+        { 0x09, {
+            { 9, { ACTOR_EN_ITEM00, 366, 213, -2036, 0, 0, 0, 0x406 }},
+        } },
+    } },
+};
+
 // Scene Command 0x01: Actor List
 bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
@@ -72,6 +101,17 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     else
     {
         ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
+        if (sceneActorOverrides.find(globalCtx->sceneNum) != sceneActorOverrides.end() && sceneActorOverrides.at(globalCtx->sceneNum).find(globalCtx->roomCtx.curRoom.num) != sceneActorOverrides.at(globalCtx->sceneNum).end()) {
+            auto& roomOverrides = sceneActorOverrides.at(globalCtx->sceneNum).at(globalCtx->roomCtx.curRoom.num);
+            for (auto& [index, entry] : roomOverrides) {
+                if (index == -1) {
+                    cmdActor->entries.push_back(entry);
+                } else {
+                    cmdActor->entries[index] = entry;
+                }
+            }
+            globalCtx->numSetupActors = cmdActor->entries.size();
+        }
 
         for (int i = 0; i < cmdActor->entries.size(); i++)
         {

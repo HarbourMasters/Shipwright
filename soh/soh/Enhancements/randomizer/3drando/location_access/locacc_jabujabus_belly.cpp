@@ -76,7 +76,11 @@ void AreaTable_Init_JabuJabusBelly() {
                   //Events
                   EventAccess(&FairyPot, {[]{return FairyPot || (CanUse(BOOMERANG) || CanUse(HOVER_BOOTS));},
                               /*Glitched*/[]{return (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);}}),
-                }, {}, {
+                }, {
+                  //Locations
+                  LocationAccess(JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK, {[]{return CanUse(BOOMERANG) || CanUse(HOVER_BOOTS);},
+                              /*Glitched*/[]{return (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);}}),
+                }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_MAIN_LOWER, {[]{return true;}}),
   });

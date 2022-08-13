@@ -1745,6 +1745,20 @@ namespace Settings {
       IncludeAndHide({ZR_FROGS_SONG_OF_TIME});
     }
 
+    if (true) {
+      Unhide({DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK});
+      Unhide({JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK});
+      Unhide({ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK});
+      Unhide({GV_OCTOROK_GROTTO_USELESS_CHECK});
+      Unhide({KF_ABOVE_BEAN_PATCH_USELESS_CHECK});
+    } else {
+      IncludeAndHide({DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK});
+      IncludeAndHide({JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK});
+      IncludeAndHide({ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK});
+      IncludeAndHide({GV_OCTOROK_GROTTO_USELESS_CHECK});
+      IncludeAndHide({KF_ABOVE_BEAN_PATCH_USELESS_CHECK});
+    }
+
     //Force include adult trade quest if Shuffle Adult Trade Quest is off
     std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POTION, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
     if (ShuffleAdultTradeQuest) {

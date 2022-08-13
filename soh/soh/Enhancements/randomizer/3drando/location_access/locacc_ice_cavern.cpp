@@ -64,6 +64,7 @@ void AreaTable_Init_IceCavern() {
   }, {
                   //Locations
                   LocationAccess(ICE_CAVERN_MQ_MAP_CHEST, {[]{return BlueFire && (IsAdult || CanUse(STICKS) || KokiriSword || CanUseProjectile);}}),
+                  LocationAccess(RC_ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK, {[]{return BlueFire && (IsAdult || CanUse(STICKS) || KokiriSword || CanUseProjectile);}}),
   }, {});
 
   areaTable[ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Area("Ice Cavern MQ Iron Boots Region", "Ice Cavern", ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {

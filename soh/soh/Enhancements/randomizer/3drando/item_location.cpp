@@ -790,6 +790,16 @@ void LocationTable_Init() {
     locationTable[JABU_JABUS_BELLY_MQ_COW]                       = ItemLocation::Base   (0x02, 0x15, "Jabu Jabus Belly MQ Cow",                        JABU_JABUS_BELLY_MQ_COW,     MILK,                      {Category::cJabuJabusBelly, Category::cCow},                                                                      SpoilerCollectionCheck::Cow(0x02, 0x15),                 SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
 
     /*-------------------------------
+          --- Useless Checks ---
+      -------------------------------*/
+
+    locationTable[RC_DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK] = ItemLocation::Collectable(0x54, 0x01, "Dodongo's Cavern Lizalfos Platform Useless Check", RC_DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK,PURPLE_RUPEE, {Category::cDodongosCavern,},                                                                                                                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK]      = ItemLocation::Collectable(0x54, 0x01, "Jabu Jabus Belly Bottom Room Useless Check",       RC_JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK,PURPLE_RUPEE,      {Category::cJabuJabusBelly,},                                                                                                                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK]        = ItemLocation::Collectable(0x54, 0x01, "Ice Cavern Map Room Frozen Useless Check",         RC_ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK,PURPLE_RUPEE,        {Category::cIceCavern,},                                                                                                                               SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_GV_OCTOROK_GROTTO_USELESS_CHECK]                 = ItemLocation::Collectable(0x54, 0x01, "GV Octorok Grotto Useless Check",                          RC_GV_OCTOROK_GROTTO_USELESS_CHECK,PURPLE_RUPEE,                 {Category::cGerudoValley, Category::cGrotto,},                                                                                                         SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_KF_ABOVE_BEAN_PATCH_USELESS_CHECK]               = ItemLocation::Collectable(0x54, 0x01, "KF Above Bean Patch Useless Check",                RC_KF_ABOVE_BEAN_PATCH_USELESS_CHECK,PURPLE_RUPEE,               {Category::cKokiriForest, Category::cForest,},                                                                                                         SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+
+    /*-------------------------------
               --- SHOPS ---
       8     6               2     4
 
@@ -1427,6 +1437,13 @@ std::vector<uint32_t> overworldLocations = {
   LLR_GS_RAIN_SHED,
   LLR_GS_HOUSE_WINDOW,
   LLR_GS_TREE,
+
+  //Useless Checks
+  RC_DODONGOS_CAVERN_LIZALFOS_PLATFORM_USELESS_CHECK,
+  RC_JABU_JABUS_BELLY_BOTTOM_ROOM_USELESS_CHECK,
+  RC_ICE_CAVERN_MAP_ROOM_FROZEN_USELESS_CHECK,
+  RC_GV_OCTOROK_GROTTO_USELESS_CHECK,
+  RC_KF_ABOVE_BEAN_PATCH_USELESS_CHECK,
 };
 
 ItemLocation* Location(uint32_t locKey) {
