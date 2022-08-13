@@ -2049,18 +2049,18 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return ogItemId;
 
         case RG_KOKIRI_SWORD:
-            return GI_SWORD_KOKIRI;
+            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? GI_SWORD_KOKIRI : GI_RUPEE_BLUE;
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return GI_SWORD_BGS;
+            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
         case RG_HYLIAN_SHIELD:
             return GI_SHIELD_HYLIAN;
         case RG_MIRROR_SHIELD:
-            return GI_SHIELD_MIRROR;
+            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? GI_SHIELD_MIRROR : GI_RUPEE_BLUE;
 
         case RG_GORON_TUNIC:
             return GI_TUNIC_GORON;
@@ -2068,35 +2068,35 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_TUNIC_ZORA;
 
         case RG_IRON_BOOTS:
-            return GI_BOOTS_IRON;
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? GI_BOOTS_IRON : GI_RUPEE_BLUE;
         case RG_HOVER_BOOTS:
-            return GI_BOOTS_HOVER;
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? GI_BOOTS_HOVER : GI_RUPEE_BLUE;
 
         case RG_BOOMERANG:
-            return GI_BOOMERANG;
+            return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? GI_BOOMERANG : GI_RUPEE_BLUE;
 
         case RG_LENS_OF_TRUTH:
-            return GI_LENS;
+            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? GI_LENS : GI_RUPEE_BLUE;
 
         case RG_MEGATON_HAMMER:
-            return GI_HAMMER;
+            return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? GI_HAMMER : GI_RUPEE_BLUE;
 
         case RG_STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
 
         case RG_DINS_FIRE:
-            return GI_DINS_FIRE;
+            return INV_CONTENT(ITEM_DINS_FIRE) == ITEM_NONE ? GI_DINS_FIRE : GI_RUPEE_BLUE;
         case RG_FARORES_WIND:
-            return GI_FARORES_WIND;
+            return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? GI_FARORES_WIND : GI_RUPEE_BLUE;
         case RG_NAYRUS_LOVE:
-            return GI_NAYRUS_LOVE;
+            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? GI_NAYRUS_LOVE : GI_RUPEE_BLUE;
 
         case RG_FIRE_ARROWS:
-            return GI_ARROW_FIRE;
+            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE ? GI_ARROW_FIRE : GI_RUPEE_BLUE;
         case RG_ICE_ARROWS:
-            return GI_ARROW_ICE;
+            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? GI_ARROW_ICE : GI_RUPEE_BLUE;
         case RG_LIGHT_ARROWS:
-            return GI_ARROW_LIGHT;
+            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? GI_ARROW_LIGHT : GI_RUPEE_BLUE;
 
         case RG_GERUDO_MEMBERSHIP_CARD:
             return GI_GERUDO_CARD;
@@ -2107,7 +2107,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BEAN; //todo make it 10 of them
 
         case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
+            return !gSaveContext.doubleDefense ? GI_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
