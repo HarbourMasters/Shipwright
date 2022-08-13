@@ -784,8 +784,6 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateZ;
     PosRot posRot;
     u8 linkAge = gSaveContext.linkAge;
-    // static u32 epoch = 0;
-    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -793,8 +791,6 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
         this->sparkleCounter += 2;
     }
     for (i = this->sparkleCounter - 1; i >= 0; i--) {
-        // FrameInterpolation_RecordOpenChild("Kankyo Warp Sparkles", epoch + i * 25);
-
         temp_f22 = 1.0f - (i / (f32)this->sparkleCounter);
 
         switch (this->unk_150[i].unk_22) {
@@ -908,8 +904,6 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, disp);
             this->unk_150[i].unk_24 += 0x190;
         }
-
-        // FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
