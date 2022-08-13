@@ -1766,8 +1766,8 @@ static f32 sSinkingLureSizes[] = {
 void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
     s16 i;
     f32 scale;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1780,7 +1780,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
 
         for (i = SINKING_LURE_SEG_COUNT - 1; i >= 0; i--) {
             if ((i + D_80B7FEA0) < SINKING_LURE_SEG_COUNT) {
-                FrameInterpolation_RecordOpenChild("Fishing Lures 1", epoch + i * 25);
+                // FrameInterpolation_RecordOpenChild("Fishing Lures 1", epoch + i * 25);
                 Matrix_Translate(sSinkingLurePos[i].x, sSinkingLurePos[i].y, sSinkingLurePos[i].z, MTXMODE_NEW);
                 scale = sSinkingLureSizes[i + D_80B7FEA0] * 0.04f;
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -1789,7 +1789,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gFishingSinkingLureSegmentModelDL);
-                FrameInterpolation_RecordCloseChild();
+                // FrameInterpolation_RecordCloseChild();
             }
         }
     } else {
@@ -1799,7 +1799,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
 
         for (i = SINKING_LURE_SEG_COUNT - 1; i >= 0; i--) {
             if ((i + D_80B7FEA0) < SINKING_LURE_SEG_COUNT) {
-                FrameInterpolation_RecordOpenChild("Fishing Lures 2", epoch + i * 25);
+                // FrameInterpolation_RecordOpenChild("Fishing Lures 2", epoch + i * 25);
                 Matrix_Translate(sSinkingLurePos[i].x, sSinkingLurePos[i].y, sSinkingLurePos[i].z, MTXMODE_NEW);
                 scale = sSinkingLureSizes[i + D_80B7FEA0] * 0.04f;
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -1808,7 +1808,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gFishingSinkingLureSegmentModelDL);
-                FrameInterpolation_RecordCloseChild();
+                // FrameInterpolation_RecordCloseChild();
             }
         }
     }

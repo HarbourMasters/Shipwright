@@ -522,8 +522,8 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateY;
     f32 translateZ;
     s16 j;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -597,7 +597,7 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Scale(sRainScale * 0.001f, sRainScale * 0.001f, sRainScale * 0.001f, MTXMODE_APPLY);
 
         for (j = 0; j < 5; j++) {
-            FrameInterpolation_RecordOpenChild("Kankyo Rain", epoch + i * j * 25);
+            // FrameInterpolation_RecordOpenChild("Kankyo Rain", epoch + i * j * 25);
 
             s32 pad1;
 
@@ -629,7 +629,7 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_star_field_DL_000080);
 
-            FrameInterpolation_RecordCloseChild();
+            // FrameInterpolation_RecordCloseChild();
         }
     }
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -663,13 +663,13 @@ void DemoKankyo_DrawClouds(Actor* thisx, GlobalContext* globalCtx) {
     f32 dx;
     f32 dy;
     f32 dz;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 30; i++) {
-        FrameInterpolation_RecordOpenChild("Kankyo Clouds", epoch + i * 25);
+        // FrameInterpolation_RecordOpenChild("Kankyo Clouds", epoch + i * 25);
 
         dx = -(Math_SinS(this->unk_150[i].unk_20 - 0x8000) * 120.0f) * (30.0f + (i / 30.0f) * 10.0f);
         dy = Math_CosS(this->unk_150[i].unk_20 - 0x8000) * 5.0f + 1200.0f;
@@ -693,7 +693,7 @@ void DemoKankyo_DrawClouds(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffDustDL);
 
-        FrameInterpolation_RecordCloseChild();
+        // FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -784,8 +784,8 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateZ;
     PosRot posRot;
     u8 linkAge = gSaveContext.linkAge;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -793,7 +793,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
         this->sparkleCounter += 2;
     }
     for (i = this->sparkleCounter - 1; i >= 0; i--) {
-        FrameInterpolation_RecordOpenChild("Kankyo Warp Sparkles", epoch + i * 25);
+        // FrameInterpolation_RecordOpenChild("Kankyo Warp Sparkles", epoch + i * 25);
 
         temp_f22 = 1.0f - (i / (f32)this->sparkleCounter);
 
@@ -909,7 +909,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
             this->unk_150[i].unk_24 += 0x190;
         }
 
-        FrameInterpolation_RecordCloseChild();
+        // FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -933,8 +933,8 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 scale;
     s16 i;
     PosRot posRot;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -943,7 +943,7 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = this->sparkleCounter - 1; i >= 0; i--) {
-        FrameInterpolation_RecordOpenChild("Kankyo Sparkles", epoch + i * 25);
+        // FrameInterpolation_RecordOpenChild("Kankyo Sparkles", epoch + i * 25);
 
         temp_f20 = 1.0f - (i / (f32)this->sparkleCounter);
 
@@ -1017,7 +1017,7 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
             this->unk_150[i].unk_24 += 0x190;
         }
 
-        FrameInterpolation_RecordCloseChild();
+        // FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

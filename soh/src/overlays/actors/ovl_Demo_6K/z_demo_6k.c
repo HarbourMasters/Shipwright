@@ -564,8 +564,8 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
     Demo6K* this = (Demo6K*)thisx;
     s32 pad;
     u16 timer1 = this->timer1;
-    static u32 epoch = 0;
-    epoch++;
+    // static u32 epoch = 0;
+    // epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -586,7 +586,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
 
         for (i = 0; i < 6; i++) {
-            FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", epoch + i * 25);
+            // FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", epoch + i * 25);
     
             Matrix_RotateZ(M_PI / 3, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
@@ -596,7 +596,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetEnvColor(POLY_XLU_DISP++, colors[i][1].r, colors[i][1].g, colors[i][1].b, 255);
             gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_0022B0);
 
-            FrameInterpolation_RecordCloseChild();
+            // FrameInterpolation_RecordCloseChild();
         }
 
         // required to avoid optimizing out i
