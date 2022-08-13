@@ -13,7 +13,7 @@ typedef struct {
     /* 0x0C */ Vec3f vel;
     /* 0x18 */ s16 rotVelX;
     /* 0x1A */ s16 rotVelY;
-    /* 0x1C */ s32 epoch;
+    /* 0x1C */ u32 epoch;
 } BgJyaMegamiPiece; // size = 0x20
 
 typedef struct BgJyaMegami {

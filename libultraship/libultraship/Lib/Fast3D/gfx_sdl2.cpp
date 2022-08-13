@@ -36,8 +36,6 @@
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
-#include <time.h>
-#include "../../GameSettings.h"
 
 #define GFX_BACKEND_NAME "SDL"
 
@@ -181,6 +179,8 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
 #ifdef __SWITCH__
     // For Switch we need to set the window width before creating the window
     Ship::Switch::GetDisplaySize(&window_width, &window_height);
+    width = window_width;
+    height = window_height;
 #endif
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
@@ -195,15 +195,7 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
     flags = flags | SDL_WINDOW_OPENGL;
 #endif
 
-    wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, flags);
-
-#ifndef __SWITCH__
-    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
-
-    if (start_in_fullscreen) {
-        set_fullscreen(true, false);
-    }
-#endif
+    wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 
 #if defined(ENABLE_METAL)
     if (strcmp(gfx_api_name, "OpenGL") == 0) {
@@ -222,7 +214,13 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
         Metal_SetRenderer(renderer);
     }
 #else
+#ifndef __SWITCH__
     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+
+    if (start_in_fullscreen) {
+        set_fullscreen(true, false);
+    }
+#endif
     ctx = SDL_GL_CreateContext(wnd);
 
 #ifdef __SWITCH__
@@ -283,6 +281,9 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
     Ship::Switch::Exit();
 #endif
     Ship::ExecuteHooks<Ship::ExitGame>();
+
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
@@ -349,13 +350,11 @@ static void gfx_sdl_handle_events(void) {
             case SDL_DROPFILE:
                 CVar_SetString("gDroppedFile", event.drop.file);
                 CVar_SetS32("gNewFileDropped", 1);
-                Game::SaveSettings();
+                CVar_Save();
                 break;
             case SDL_QUIT:
-                Ship::ExecuteHooks<Ship::ExitGame>();
-                SDL_DestroyRenderer(renderer);
-                SDL_Quit(); // bandaid fix for linux window closing issue
-                exit(0);
+                is_running = false;
+                break;
         }
     }
 }

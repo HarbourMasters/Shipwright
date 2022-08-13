@@ -82,18 +82,13 @@ namespace Ship {
 				break;
 			}
 
-			//Lock.lock();
 			std::shared_ptr<File> ToLoad = FileLoadQueue.front();
 			FileLoadQueue.pop();
-			//Lock.unlock();
 
 			OTR->LoadFile(ToLoad->path, true, ToLoad);
-			//Lock.lock();
 
 			if (!ToLoad->bHasLoadError)
 				FileCache[ToLoad->path] = ToLoad->bIsLoaded && !ToLoad->bHasLoadError ? ToLoad : nullptr;
-
-			//Lock.unlock();
 
 			SPDLOG_DEBUG("Loaded File {} on ResourceMgr thread", ToLoad->path);
 
@@ -117,10 +112,8 @@ namespace Ship {
 			}
 
 			std::shared_ptr<ResourcePromise> ToLoad = nullptr;
-			//ResLock.lock();
 			ToLoad = ResourceLoadQueue.front();
 			ResourceLoadQueue.pop();
-			//ResLock.unlock();
 
 			// Wait for the underlying File to complete loading
 			{
@@ -148,9 +141,6 @@ namespace Ship {
 
 						SPDLOG_DEBUG("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
 
-						// Disabled for now because it can cause random crashes
-						//FileCache[Res->File->path] = nullptr;
-						//FileCache.erase(FileCache.find(Res->File->path));
 						Res->file = nullptr;
 					}
 					else {
@@ -159,9 +149,6 @@ namespace Ship {
 
 						SPDLOG_ERROR("Resource load FAILED {} on ResourceMgr thread", ToLoad->file->path);
 					}
-
-					//ResLock.lock();
-					//ResLock.unlock();
 				}
 			}
 			else

@@ -75,7 +75,7 @@ namespace SohImGui {
         WindowDrawFunc drawFunc;
     } CustomWindow;
 
-    extern Ship::Console* console;
+    extern std::shared_ptr<Ship::Console> console;
     extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
@@ -91,6 +91,12 @@ namespace SohImGui {
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue);
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue = 0);
+
+    void applyEnhancementPresets(void);
+    void applyEnhancementPresetDefault(void);
+    void applyEnhancementPresetVanillaPlus(void);
+    void applyEnhancementPresetEnhanced(void);
+    void applyEnhancementPresetRandomizer(void);
 
     void DrawMainMenuAndCalculateGameSize(void);
 
@@ -112,6 +118,12 @@ namespace SohImGui {
     void EndGroupPanel(float minHeight = 0.0f);
     std::string BreakTooltip(const char* text, int lineLength = 60);
     std::string BreakTooltip(const std::string& text, int lineLength = 60);
+    void InsertPadding(float extraVerticalPadding = 0.0f);
+    void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
+    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true);
+    void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
+    std::string GetWindowButtonText(const char* text, bool menuOpen);
 }
 
 #endif
