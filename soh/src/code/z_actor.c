@@ -3973,8 +3973,6 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     f32 chainsTranslateX;
     f32 chainsTranslateY;
     f32 rotZStep;
-    static u32 epoch = 0;
-    epoch++;
 
     entry = &sDoorLocksInfo[type];
     chainRotZ = entry->chainsRotZInit;
@@ -3988,7 +3986,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     chainsTranslateY = cosf(entry->chainAngle - chainRotZ) * (10 - frame) * 0.1f * entry->chainLength;
 
     for (i = 0; i < 4; i++) {
-        FrameInterpolation_RecordOpenChild(entry, epoch + i * 25);
+        FrameInterpolation_RecordOpenChild(entry, i);
         Matrix_Put(&baseMtxF);
         Matrix_RotateZ(chainRotZ, MTXMODE_APPLY);
         Matrix_Translate(chainsTranslateX, chainsTranslateY, 0.0f, MTXMODE_APPLY);
