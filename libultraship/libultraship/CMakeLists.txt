@@ -179,6 +179,11 @@ set(Source_Files__Lib__Fast3D__extra
     "Lib/Fast3D/gfx_glx.cpp"
     "Lib/Fast3D/gfx_glx.h"
 )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(Source_Files__Lib__Fast3D__extra
+    "Lib/Fast3D/gfx_metal.mm"
+    "Lib/Fast3D/gfx_metal.h"
+)
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
 
@@ -206,8 +211,13 @@ set(Source_Files__Lib__ImGui__Windows
     "Lib/ImGui/backends/imgui_impl_win32.cpp"
     "Lib/ImGui/backends/imgui_impl_win32.h"
 )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(Source_Files__Lib__ImGui__Darwin
+    "Lib/ImGui/backends/imgui_impl_metal.mm"
+    "Lib/ImGui/backends/imgui_impl_metal.h"
+)
 endif ()
-source_group("Source Files\\Lib\\ImGui" FILES ${Source_Files__Lib__ImGui} ${Source_Files__Lib__ImGui__Windows})
+source_group("Source Files\\Lib\\ImGui" FILES ${Source_Files__Lib__ImGui} ${Source_Files__Lib__ImGui__Windows} ${Source_Files__Lib__ImGui__Darwin})
 
 set(Source_Files__Lib__Mercury
     "Lib/Mercury/Mercury.cpp"
@@ -332,6 +342,7 @@ set(ALL_FILES
     ${Source_Files__Lib__Fast3D__extra}
     ${Source_Files__Lib__ImGui}
     ${Source_Files__Lib__ImGui__Windows}
+    ${Source_Files__Lib__ImGui__Darwin}
     ${Source_Files__Lib__Mercury}
     ${Source_Files__Lib__stb}
     ${Source_Files__Lib__dr_libs}
@@ -447,7 +458,19 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+		"$<$<CONFIG:Debug>:"
+				"_DEBUG"
+			">"
+			"$<$<CONFIG:Release>:"
+				"NDEBUG"
+			">"
+			"ENABLE_OPENGL;"
+            "ENABLE_METAL;"
+            "SPDLOG_ACTIVE_LEVEL=0;"
+	)
+elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
 				"_DEBUG"
@@ -558,7 +581,7 @@ if(MSVC)
     endif()
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_options(${PROJECT_NAME} PRIVATE
 		-Wall
 		-Wextra
@@ -607,6 +630,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_package(SDL2)
     find_package(GLEW)
     find_package(OpenGL QUIET)
+    find_library(METAL Metal)
+    find_library(QUARTZCORE QuartzCore)
     find_Library(OSX_FOUNDATION Foundation)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
@@ -615,9 +640,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         SDL2::SDL2
         GLEW::GLEW
         ${OPENGL_opengl_LIBRARY}
+        ${METAL}
+        ${QUARTZCORE}
         ${CMAKE_DL_LIBS}
         Threads::Threads
-	${OSX_FOUNDATION}
+        ${OSX_FOUNDATION}
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     set(THREADS_PREFER_PTHREAD_FLAG ON)
