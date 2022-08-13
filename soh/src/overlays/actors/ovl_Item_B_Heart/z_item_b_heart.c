@@ -99,10 +99,8 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        GetItem_Draw(globalCtx, ABS(Randomizer_GetRandomizedItem(GI_HEART_CONTAINER_2, this->actor.id,
-                                                                 this->actor.params, globalCtx->sceneNum)
-                                        .gi) -
-                                    1);
+        GetItem_Draw(globalCtx, ABS(Randomizer_GetRandomizedItem(
+            GI_HEART_CONTAINER_2, this->actor.id,this->actor.params, globalCtx->sceneNum).gi) - 1);
     } else {
         if (flag) {
             func_80093D84(globalCtx->state.gfxCtx);
