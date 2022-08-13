@@ -12584,13 +12584,16 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     }
                     Audio_PlayFanfare(temp1);
                 }
-            } else {
+            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
                 if (this->getItemId == RG_DOUBLE_DEFENSE || this->getItemId == RG_MAGIC_SINGLE ||
                     this->getItemId == RG_MAGIC_DOUBLE) {
                     Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
                 } else {
                     Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 }
+            } else {
+                // Just in case something weird happens with MOD_INDEX
+                Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         } else {
             if (giEntry.modIndex == MOD_NONE) {
@@ -12609,13 +12612,16 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     }
                     Audio_PlayFanfare(temp1);
                 }
-            } else {
+            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
                 if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
                     giEntry.itemId == RG_MAGIC_DOUBLE) {
                     Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
                 } else {
                     Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 }
+            } else {
+                // Just in case something weird happens with modIndex.
+                Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         }
         this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
