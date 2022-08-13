@@ -12566,7 +12566,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
         Player_SetPendingFlag(this, globalCtx);
 
-        if (this->getItemEntry.objectId != OBJECT_INVALID) {
+        if (this->getItemEntry.objectId == OBJECT_INVALID) {
+            // Use this if player does not have a getItemEntry
             if (giEntry.modIndex == MOD_NONE) {
                 if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
                     ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
@@ -12596,6 +12597,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         } else {
+            // Use this if we do have a getItemEntry
             if (giEntry.modIndex == MOD_NONE) {
                 if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                     ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
