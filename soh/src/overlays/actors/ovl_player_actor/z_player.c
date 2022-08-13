@@ -1410,7 +1410,7 @@ s32 func_808332E4(Player* this) {
 void func_808332F4(Player* this, GlobalContext* globalCtx) {
     GetItemEntry giEntry;
     if (this->getItemEntry.objectId == OBJECT_INVALID) {
-        giEntry = ItemTable_Retrieve(this->getItemId - 1);
+        giEntry = ItemTable_Retrieve(this->getItemId);
     } else {
         giEntry = this->getItemEntry;
     }
@@ -4862,7 +4862,7 @@ s32 func_8083B040(Player* this, GlobalContext* globalCtx) {
 
                         if (sp2C >= 0) {
                             if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                                giEntry = ItemTable_Retrieve(D_80854528[sp2C] - 1);
+                                giEntry = ItemTable_Retrieve(D_80854528[sp2C]);
                             } else {
                                 giEntry = this->getItemEntry;
                             }
@@ -6100,10 +6100,10 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 this->getItemId = iREG(68);
             }
 
-            if (this->getItemId < GI_MAX) {
+            if (this->getItemId < GI_MAX || (gSaveContext.n64ddFlag && this->getItemId < RG_MAX)) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                    giEntry = ItemTable_Retrieve(this->getItemId - 1);
+                    giEntry = ItemTable_Retrieve(this->getItemId);
                 } else {
                     giEntry = this->getItemEntry;
                 }
@@ -6160,7 +6160,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             if (this->getItemId != GI_NONE) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                    giEntry = ItemTable_Retrieve(-this->getItemId - 1);
+                    giEntry = ItemTable_Retrieve(-this->getItemId);
                 } else {
                     giEntry = this->getItemEntry;
                 }
@@ -6173,7 +6173,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
                         ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
                         this->getItemId = -GI_RUPEE_BLUE;
-                        giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE - 1);
+                        giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE);
                     }
                 }
 
@@ -12546,7 +12546,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
     if (this->unk_84F == 0) {
         if (this->getItemEntry.objectId == OBJECT_INVALID) {
-            giEntry = ItemTable_Retrieve(this->getItemId - 1);
+            giEntry = ItemTable_Retrieve(this->getItemId);
         } else {
             giEntry = this->getItemEntry;
         }
@@ -13192,7 +13192,7 @@ void func_8084F104(Player* this, GlobalContext* globalCtx) {
             func_80853148(globalCtx, targetActor);
         }
         else {
-            GetItemEntry giEntry = ItemTable_Retrieve(D_80854528[this->exchangeItemId - 1] - 1);
+            GetItemEntry giEntry = ItemTable_Retrieve(D_80854528[this->exchangeItemId - 1]);
 
             if (this->itemActionParam >= PLAYER_AP_LETTER_ZELDA) {
                 if (giEntry.gi >= 0) {

@@ -954,7 +954,8 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
-    RG_HINT
+    RG_HINT,
+    RG_MAX
 } RandomizerGet;
 
 typedef enum {
