@@ -1959,7 +1959,8 @@ s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
-        if (((player->heldActor != NULL) && (getItemId > GI_NONE) && (getItemId < GI_MAX)) ||
+        if (((player->heldActor != NULL) && ((getItemId > GI_NONE) && (getItemId < GI_MAX)) || 
+            (gSaveContext.n64ddFlag && (getItemId > RG_NONE) && (getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((getItemId != GI_NONE)) {
                 player->getItemId = getItemId;

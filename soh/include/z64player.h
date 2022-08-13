@@ -365,6 +365,7 @@ typedef enum {
     FLAG_SCENE_TREASURE,
     FLAG_SCENE_CLEAR,
     FLAG_SCENE_COLLECTIBLE,
+    FLAG_EVENT_CHECK_INF,
 } FlagType;
 
 typedef struct {

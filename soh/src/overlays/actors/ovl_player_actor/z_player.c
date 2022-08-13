@@ -1602,6 +1602,7 @@ void func_808337D4(GlobalContext* globalCtx, Player* this) {
         this->interactRangeActor = spawnedActor;
         this->heldActor = spawnedActor;
         this->getItemId = GI_NONE;
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         this->unk_3BC.y = spawnedActor->shape.rot.y - this->actor.shape.rot.y;
         this->stateFlags1 |= PLAYER_STATE1_11;
     }
@@ -6082,6 +6083,9 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
+        case FLAG_EVENT_CHECK_INF:
+            Flags_SetEventChkInf(globalCtx, this->pendingFlag.flagID);
+            break;
         case FLAG_NONE:
         default:
             break;
@@ -6135,6 +6139,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                          (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA))) {
                         func_8083E4C4(globalCtx, this, &giEntry);
                         this->getItemId = GI_NONE;
+                        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                         return 0;
                     }                    
 
@@ -6154,6 +6159,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 func_8083E4C4(globalCtx, this, &giEntry);
                 this->getItemId = GI_NONE;
+                this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
@@ -6586,6 +6592,7 @@ s32 func_8083F7BC(Player* this, GlobalContext* globalCtx) {
                         this->stateFlags1 |= PLAYER_STATE1_11;
                         this->interactRangeActor = &wallPolyActor->actor;
                         this->getItemId = GI_NONE;
+                        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                         this->currentYaw = this->actor.wallYaw + 0x8000;
                         func_80832224(this);
 
@@ -12525,6 +12532,7 @@ void func_8084DF6C(GlobalContext* globalCtx, Player* this) {
     this->unk_862 = 0;
     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
     this->getItemId = GI_NONE;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     func_8005B1A4(Gameplay_GetCamera(globalCtx, 0));
 }
 
@@ -12626,7 +12634,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         }
-        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+        //this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
@@ -12638,6 +12646,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 func_80852FFC(globalCtx, NULL, 8);
             }
             this->getItemId = GI_NONE;
+            this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         }
     }
 
