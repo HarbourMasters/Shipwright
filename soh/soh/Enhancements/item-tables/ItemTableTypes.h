@@ -6,11 +6,11 @@
 #define CHEST_ANIM_SHORT 0
 #define CHEST_ANIM_LONG 1
 
-#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
+#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, modIndex, getItemId) \
+    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId }
 
 #define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, 0 }
+    { ITEM_NONE, 0, 0, 0, 0, 0, 0 }
 
 typedef struct {
     /* 0x00 */ uint16_t itemId;
@@ -19,4 +19,5 @@ typedef struct {
     /* 0x03 */ uint16_t textId;
     /* 0x04 */ uint16_t objectId;
     /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
+    /* 0x08 */ uint16_t getItemId;
 } GetItemEntry;                   // size = 0x08

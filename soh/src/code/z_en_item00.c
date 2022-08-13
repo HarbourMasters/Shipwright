@@ -1335,7 +1335,6 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
@@ -1395,7 +1394,6 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = Randomizer_GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         GetItemEntry randoGetItemEntry =
             Randomizer_GetRandomizedItem(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
