@@ -149,7 +149,12 @@ namespace Ship {
 				ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
 				ImGui::Text("Deadzone");
 				ImGui::PushItemWidth(80);
-				ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[0] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
+				// The window has deadzone per stick, so we need to
+				// set the deadzone for both left stick axes here
+				// SDL_CONTROLLER_AXIS_LEFTX: 0
+				// SDL_CONTROLLER_AXIS_LEFTY: 1
+				ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[0], 1.0f, 0.0f, "%.0f");
+				profile->AxisDeadzones[1] = profile->AxisDeadzones[0];
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
@@ -180,11 +185,20 @@ namespace Ship {
 				ImGui::BeginChild("##CSInput", ImVec2(90, 85), false);
 					ImGui::Text("Deadzone");
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
+					// The window has deadzone per stick, so we need to
+					// set the deadzone for both right stick axes here
+					// SDL_CONTROLLER_AXIS_RIGHTX: 2
+					// SDL_CONTROLLER_AXIS_RIGHTY: 3
+					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2], 1.0f, 0.0f, "%.0f");
+					profile->AxisDeadzones[3] = profile->AxisDeadzones[2];
 					ImGui::PopItemWidth();
 					ImGui::Text("Sensitivity");
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2] /* This is the SDL value for right stick X axis */, 1.0f, 0.0f, "%.0f");
+					// The window has sensitivity per stick, so we need to
+					// set the sensitivity for both right stick axes here
+					// SDL_CONTROLLER_AXIS_RIGHTX: 2
+					// SDL_CONTROLLER_AXIS_RIGHTY: 3
+					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2], 1.0f, 0.0f, "%.0f");
 					profile->AxisSensitivities[3] = profile->AxisSensitivities[2];
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
