@@ -2226,6 +2226,8 @@ namespace SohImGui {
         CVar_SetS32("gPauseAnyCursor", 1);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
+        // Pull out Ocarina to Summon Scarecrow
+        CVar_SetS32("gSkipScarecrow", 0);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
