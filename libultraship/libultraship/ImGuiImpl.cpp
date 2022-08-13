@@ -976,7 +976,7 @@ namespace SohImGui {
 
                 InsertPadding();
 
-            if (ImGui::BeginMenu("Controller")) {
+                if (ImGui::BeginMenu("Controller")) {
                     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
                     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
                     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -1023,7 +1023,7 @@ namespace SohImGui {
                         int val = CVar_GetS32(cvar, 80);
                         val = MAX(MIN(val, 360), 0);
                         int fps = val;
-                        
+
                         InsertPadding();
 
                         if (fps == 0)

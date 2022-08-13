@@ -182,7 +182,9 @@ set(Source_Files__Lib__Fast3D__extra
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 set(Source_Files__Lib__Fast3D__extra
     "Lib/Fast3D/gfx_metal.mm"
+    "Lib/Fast3D/gfx_metal.cpp"
     "Lib/Fast3D/gfx_metal.h"
+    "Lib/Fast3D/gfx_metal_helper.mm"
 )
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
@@ -515,6 +517,10 @@ else()
     set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL/)
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(METAL-CPP-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../metal-cpp)
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/spdlog/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/Fast3D/U64/
@@ -522,6 +528,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${SDL2-INCLUDE}
 	${GLEW-INCLUDE}
 	${SWITCH-INCLUDE}
+    ${METAL-CPP-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/ImGui/
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
