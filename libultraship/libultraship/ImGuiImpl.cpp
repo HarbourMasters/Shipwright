@@ -976,32 +976,31 @@ namespace SohImGui {
 
                 InsertPadding();
 
-            if (ImGui::BeginMenu("Controller"))
-            {
-                EnhancementCheckbox("Use Controller Navigation", "gControlNav");
-                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-
-                EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
-                controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
-
-                ImGui::Separator();
-
-                // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                Tooltip("Allows the D-pad to be used as extra C buttons");
-                EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
-                Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
-                ImGui::Separator();
-
-                EnhancementCheckbox("Show Inputs", "gInputEnabled");
-                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-
-                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+            if (ImGui::BeginMenu("Controller")) {
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                    if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVar_GetS32("gControllerConfigurationEnabled", 0)).c_str()))
+                    {
+                        bool currentValue = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                        CVar_SetS32("gControllerConfigurationEnabled", !currentValue);
+                        needs_save = true;
+                        controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                    }
+                    ImGui::PopStyleColor(1);
+                    ImGui::PopStyleVar(3);
+                #ifndef __SWITCH__
+                    PaddedEnhancementCheckbox("Use Controller Navigation", "gControlNav", true, false);
+                    Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+                #endif
+                    PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
+                    Tooltip("Shows currently pressed inputs on the bottom right of the screen");
+                    InsertPadding();
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
+                    EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                    Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+                    ImGui::PopItemWidth();
 
                     ImGui::EndMenu();
                 }
@@ -1024,15 +1023,17 @@ namespace SohImGui {
                         int val = CVar_GetS32(cvar, 80);
                         val = MAX(MIN(val, 360), 0);
                         int fps = val;
+                        
+                        InsertPadding();
 
-                    if (fps == 0)
-                    {
-                        ImGui::Text("Jitter fix: Off");
-                    }
-                    else
-                    {
-                        ImGui::Text("Jitter fix: >= %d FPS", fps);
-                    }
+                        if (fps == 0)
+                        {
+                            ImGui::Text("Jitter fix: Off");
+                        }
+                        else
+                        {
+                            ImGui::Text("Jitter fix: >= %d FPS", fps);
+                        }
 
                         std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
                         std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
@@ -1069,7 +1070,7 @@ namespace SohImGui {
                             if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
                                 pConf->setString("Window.GfxBackend", backends[i].first);
                                 pConf->setString("Window.GfxApi", backends[i].second);
-                            lastBackendID = i;
+                                lastBackendID = i;
                             }
                         }
                         ImGui::EndCombo();
