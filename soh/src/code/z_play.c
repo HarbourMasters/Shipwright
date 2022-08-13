@@ -277,6 +277,16 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
+    if (gSaveContext.n64ddFlag && true) { // TODO: Replace true with check for entrance rando setting
+        // TODO: Can we use a map here for a constant time lookup?
+        for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
+            if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
+                gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                break;
+            }
+        }
+    }
+
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got Impa's reward
@@ -382,41 +392,11 @@ void Gameplay_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
     }
 
-     int index;
-     for (index = 0; index<250; ++index) {
-        // NOTE: this is why filling with -1 matters, sometimes gSaveContext.entranceIndex is 0 
-        if (gSaveContext.EntranceIndeces[index].index == gSaveContext.entranceIndex) {
-            Gameplay_SpawnScene(
-                globalCtx,
-                gEntranceTable[((void)0, gSaveContext.EntranceIndeces[index].overrideindex) + ((void)0,
-                gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
-                ((void)0, gSaveContext.EntranceIndeces[index].overrideindex)].spawn);
-            break;
-        } else if (index==249){
-            Gameplay_SpawnScene(
-                globalCtx,
-                gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0,
-                gSaveContext.sceneSetupIndex)].scene, gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) +
-                ((void)0, gSaveContext.entranceIndex)].spawn);
-            break;
-        }
-        else {
-            continue;
-        }
-     }
-    //if (gSaveContext.entranceIndex == 0000 || gSaveContext.entranceIndex == 0001 || gSaveContext.entranceIndex == 0002 ||
-    //    gSaveContext.entranceIndex == 0003) {
-    //    Gameplay_SpawnScene(
-    //        globalCtx,
-    //        gEntranceTable[(4) + ((void)0, gSaveContext.sceneSetupIndex)]
-    //            .scene,
-    //        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + (4)].spawn);
-    //} else {
-    //    Gameplay_SpawnScene(
-    //        globalCtx,
-    //        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene, 
-    //        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
-    //}
+    Gameplay_SpawnScene(
+        globalCtx,
+        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
+        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
     Cutscene_HandleEntranceTriggers(globalCtx);
