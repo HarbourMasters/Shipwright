@@ -1173,6 +1173,8 @@ namespace SohImGui {
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                         PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                         Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
+                        PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
+                        Tooltip("Respawn with full health instead of 3 Hearts");
                         InsertPadding();
 
                         if (ImGui::BeginMenu("Potion Values"))
@@ -1993,6 +1995,8 @@ namespace SohImGui {
         CVar_SetS32("gNoHeartDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
+        // Respawn with Full Health
+        CVar_SetS32("gFullHealthSpawn", 0);
 
         // Change Red Potion Effect
         CVar_SetS32("gRedPotionEffect", 0);

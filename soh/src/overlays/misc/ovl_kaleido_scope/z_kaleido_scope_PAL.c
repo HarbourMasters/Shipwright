@@ -4182,7 +4182,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         Gameplay_TriggerRespawn(globalCtx);
                         gSaveContext.respawnFlag = -2;
                         gSaveContext.nextTransition = 2;
-                        gSaveContext.health = 0x30;
+                        gSaveContext.health = (CVar_GetS32("gFullHealthSpawn", 0)) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
                         gSaveContext.unk_13F0 = 0;

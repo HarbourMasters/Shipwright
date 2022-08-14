@@ -506,7 +506,9 @@ void Sram_OpenSave() {
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
-    if (gSaveContext.health < 0x30) {
+    if (gSaveContext.health == 0x00 && (CVar_GetS32("gFullHealthSpawn", 0))) {
+        gSaveContext.health = gSaveContext.healthCapacity;
+    } else if (gSaveContext.health < 0x30) {
         gSaveContext.health = 0x30;
     }
 
