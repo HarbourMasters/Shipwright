@@ -6104,7 +6104,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 this->getItemId = iREG(68);
             }
 
-            if (this->getItemId < GI_MAX || (gSaveContext.n64ddFlag && this->getItemId < RG_MAX)) {
+            if (this->getItemId < GI_MAX) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(this->getItemId);
