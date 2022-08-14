@@ -230,44 +230,37 @@ typedef struct {
     }
 
 std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = {
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 3),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_DEKU, 4),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_HYLIAN, 5),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_MIRROR, 6),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_KOKIRI, 8),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_GORON, 9),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_ZORA, 10),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_KOKIRI, 12),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_IRON, 13),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0),  ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 3),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_DEKU, 4),   ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_HYLIAN, 5),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_MIRROR, 6), ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_KOKIRI, 8),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_GORON, 9),   ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_ZORA, 10),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_KOKIRI, 12), ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_IRON, 13),
     ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_HOVER, 14),
 };
+
+bool IsValidSaveFile() {
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    return validSave;
+}
 
 void DrawEquip(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
 std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_WATER, 2),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, 3),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SHADOW, 4),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_LIGHT, 5),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_KOKIRI_EMERALD, 18),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_GORON_RUBY, 19),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, 20),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_STONE_OF_AGONY, 21),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_GERUDO_CARD, 22),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_SKULL_TOKEN, 23),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0), ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_WATER, 2),  ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, 3),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SHADOW, 4), ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_LIGHT, 5),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_KOKIRI_EMERALD, 18),  ITEM_TRACKER_MAP_ENTRY(QUEST_GORON_RUBY, 19),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, 20),   ITEM_TRACKER_MAP_ENTRY(QUEST_STONE_OF_AGONY, 21),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_GERUDO_CARD, 22),     ITEM_TRACKER_MAP_ENTRY(QUEST_SKULL_TOKEN, 23),
 
 };
 
@@ -276,8 +269,8 @@ void DrawQuest(uint32_t itemId) {
     bool hasQuestItem = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
@@ -404,6 +397,10 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_LARGE, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_ADULT, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_GIANT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_DUNGEON_MAP, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_COMPASS, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_KEY_SMALL, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_KEY_BOSS, 0)
 };
 
 void DrawItem(uint32_t itemId) {
@@ -455,18 +452,29 @@ void DrawItem(uint32_t itemId) {
         }
     }
 
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem && IsValidSaveFile() ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
 
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
     int estimatedTextHeight = 10;
     ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
 
-    switch (actualItemId) {
+    if (IsValidSaveFile()) {
+        DrawItemAmmo(actualItemId);
+    } else {
+        ImGui::Text(" ");
+    }
+    ImGui::EndGroup();
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
+
+void DrawItemAmmo(int itemId) {
+    switch (itemId) {
         case ITEM_STICK:
             if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
                 if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
@@ -675,21 +683,54 @@ void DrawItem(uint32_t itemId) {
             ImGui::Text(" ");
             break;
     }
-    ImGui::EndGroup();
-
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
 void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(itemId) + bottleSlot];
     bool hasItem = actualItemId != ITEM_NONE;
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem && IsValidSaveFile() ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
+
+void DrawDungeonItem(uint32_t itemId, uint32_t scene) {
+    const ItemTrackerMapEntry& entry = itemTrackerMap[itemId];
+    uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
+    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[scene]) >= 0;
+    ImGui::BeginGroup();
+    if (itemId == ITEM_KEY_SMALL) {
+        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    }
+    else {
+        ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    }
+
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    int estimatedTextWidth = 10;
+    int estimatedTextHeight = 10;
+    ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
+
+    if (itemId == ITEM_KEY_SMALL) { // This check there for small key is necessary to get the text position properly and can't be on the same ITEM_KEY chack from the top
+        if (gSaveContext.inventory.dungeonKeys[scene] <= 0 || !IsValidSaveFile()) {
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+            ImGui::Text("0");
+            ImGui::PopStyleColor();
+         }
+         else {
+            ImGui::Text("%i", gSaveContext.inventory.dungeonKeys[scene]);
+         }  
+    }
+    ImGui::EndGroup();
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
 
 typedef struct {
     uint8_t id;
@@ -697,47 +738,52 @@ typedef struct {
     std::string nameFaded;
 } ItemTrackerUpgradeEntry;
 
-#define ITEM_TRACKER_UPGRADE_ENTRY(id)  { id, #id, #id "_Faded" }
+#define ITEM_TRACKER_UPGRADE_ENTRY(id) \
+    { id, #id, #id "_Faded" }
 
 std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTrackerMap = {
-    {UPG_STRENGTH, {
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BRACELET),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_SILVER),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_GOLD),
-    }},
-    {UPG_SCALE, {
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_SILVER),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_GOLDEN),
-    }},
-    {UPG_QUIVER, {
+    { UPG_STRENGTH,
+      {
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BRACELET),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_SILVER),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_GOLD),
+      } },
+    { UPG_SCALE,
+      {
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_SILVER),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_GOLDEN),
+      } },
+    { UPG_QUIVER,
+      {
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_30),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_40),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_50),
-      }},
-    {UPG_BULLET_BAG, {
+      } },
+    { UPG_BULLET_BAG,
+      {
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_30),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_40),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_50),
-      }},
-    {UPG_BOMB_BAG, {
+      } },
+    { UPG_BOMB_BAG,
+      {
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_20),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_30),
           ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_40),
-      }},
+      } },
 
 };
 
 void DrawUpgrade(int32_t categoryId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    if (CUR_UPG_VALUE(categoryId) == 0) {
+    if (CUR_UPG_VALUE(categoryId) == 0 || !IsValidSaveFile()) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
-        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize), ImVec2(0, 0),
+                     ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     } else {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
-        ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     }
 }
@@ -749,62 +795,670 @@ typedef struct {
     ImVec4 color;
 } ItemTrackerSongEntry;
 
-#define ITEM_TRACKER_SONG_ENTRY(id)               \
-    {                                             \
-        id, {                                     \
-            id, #id, #id "_Faded"                 \
-        }                                         \
+#define ITEM_TRACKER_SONG_ENTRY(id) \
+    {                               \
+        id, {                       \
+            id, #id, #id "_Faded"   \
+        }                           \
     }
 
 // Maps song ids to info for use in ImGui
 std::unordered_map<int32_t, ItemTrackerSongEntry> songTrackerMap = {
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),  ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),     ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),   ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE), ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE), ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
 };
 
-#define VANILLA_ITEM_TRACKER_SONG_ENTRY(id)           \
-    {                                                 \
-        id, {                                         \
-            id, #id "_Vanilla", #id "_Vanilla_Faded"  \
-        }                                             \
+#define VANILLA_ITEM_TRACKER_SONG_ENTRY(id)          \
+    {                                                \
+        id, {                                        \
+            id, #id "_Vanilla", #id "_Vanilla_Faded" \
+        }                                            \
     }
 
 // Maps song ids to info for use in ImGui
 std::unordered_map<int32_t, ItemTrackerSongEntry> vanillaSongTrackerMap = {
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),  VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),     VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),   VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE), VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE), VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
 };
 
 void DrawSong(int32_t songId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    const ItemTrackerSongEntry& entry = CVar_GetS32("gItemTrackeSongColor", 0) ?
-                                        songTrackerMap[songId] :
-                                        vanillaSongTrackerMap[songId];
+    const ItemTrackerSongEntry& entry =
+        CVar_GetS32("gItemTrackeSongColor", 0) ? songTrackerMap[songId] : vanillaSongTrackerMap[songId];
     uint32_t bitMask = 1 << entry.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
-    ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? entry.name : entry.nameFaded),
+                 ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
+}
+
+// Theme 1 Original Tracker style
+void DrawFloatingInventory(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawItem(ITEM_STICK);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawItem(ITEM_NUT);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawItem(ITEM_BOMB);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawItem(ITEM_BOW);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawItem(ITEM_ARROW_FIRE);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawItem(ITEM_DINS_FIRE);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawItem(ITEM_SLINGSHOT);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawItem(ITEM_OCARINA_FAIRY);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawItem(ITEM_BOMBCHU);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawItem(ITEM_HOOKSHOT);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawItem(ITEM_ARROW_ICE);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawItem(ITEM_FARORES_WIND);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawItem(ITEM_BOOMERANG);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawItem(ITEM_LENS);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawItem(ITEM_BEAN);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawItem(ITEM_HAMMER);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawItem(ITEM_ARROW_LIGHT);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawItem(ITEM_NAYRUS_LOVE);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawBottle(ITEM_BOTTLE, 0);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawBottle(ITEM_BOTTLE, 1);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawBottle(ITEM_BOTTLE, 2);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawBottle(ITEM_BOTTLE, 3);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
+    ImGui::EndGroup();
+}
+void DrawFloatingEquipsQuestUpgradeStones(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_SWORD_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_SWORD_MASTER);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawQuest(QUEST_STONE_OF_AGONY);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawQuest(QUEST_GERUDO_CARD);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawQuest(QUEST_SKULL_TOKEN);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_SHIELD_DEKU);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_SHIELD_HYLIAN);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_SHIELD_MIRROR);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawUpgrade(UPG_STRENGTH);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawUpgrade(UPG_SCALE);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawItem(ITEM_WALLET_ADULT);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_TUNIC_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_TUNIC_GORON);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_TUNIC_ZORA);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawItem(ITEM_HEART_CONTAINER);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawItem(ITEM_MAGIC_SMALL);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_BOOTS_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_BOOTS_IRON);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_BOOTS_HOVER);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawQuest(QUEST_KOKIRI_EMERALD);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawQuest(QUEST_GORON_RUBY);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawQuest(QUEST_ZORA_SAPPHIRE);
+    ImGui::EndGroup();
+}
+void DrawFloatingTokens(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    if (CVar_GetS32("gItemTrackerTheme", 0) == 0 || !CVar_GetS32("gItemTrackerMedallionsPlacement", 0)) {
+        DrawQuest(QUEST_MEDALLION_FOREST);
+        ImGui::SameLine(Icon_Cells_Size);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+        DrawQuest(QUEST_MEDALLION_FIRE);
+        ImGui::SameLine(Icon_Cells_Size * 2);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+        DrawQuest(QUEST_MEDALLION_WATER);
+        ImGui::SameLine(Icon_Cells_Size * 3);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+        DrawQuest(QUEST_MEDALLION_SPIRIT);
+        ImGui::SameLine(Icon_Cells_Size * 4);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+        DrawQuest(QUEST_MEDALLION_SHADOW);
+        ImGui::SameLine(Icon_Cells_Size * 5);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+        DrawQuest(QUEST_MEDALLION_LIGHT);
+    } else if (CVar_GetS32("gItemTrackerTheme", 0) != 0 && CVar_GetS32("gItemTrackerMedallionsPlacement", 0)) {
+        ImGui::BeginGroup();
+        ImGui::SameLine(Icon_Cells_Size);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 1);
+        DrawQuest(QUEST_MEDALLION_LIGHT);
+        ImGui::EndGroup();
+        ImGui::BeginGroup();
+        DrawQuest(QUEST_MEDALLION_SHADOW);
+        ImGui::SameLine(Icon_Cells_Size * 2);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+        DrawQuest(QUEST_MEDALLION_FOREST);
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+        ImGui::EndGroup();
+        ImGui::BeginGroup();
+        DrawQuest(QUEST_MEDALLION_SPIRIT);
+        ImGui::SameLine(Icon_Cells_Size * 2);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+        DrawQuest(QUEST_MEDALLION_FIRE);
+        ImGui::EndGroup();
+        ImGui::BeginGroup();
+        ImGui::NewLine();
+        ImGui::SameLine(Icon_Cells_Size);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 1);
+        DrawQuest(QUEST_MEDALLION_WATER);
+        ImGui::EndGroup();
+    }
+    ImGui::EndGroup();
+}
+
+void DrawFloatingSongs(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawSong(QUEST_SONG_LULLABY);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawSong(QUEST_SONG_EPONA);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawSong(QUEST_SONG_SARIA);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawSong(QUEST_SONG_SUN);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawSong(QUEST_SONG_TIME);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawSong(QUEST_SONG_STORMS);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawSong(QUEST_SONG_MINUET);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawSong(QUEST_SONG_BOLERO);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawSong(QUEST_SONG_SERENADE);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    DrawSong(QUEST_SONG_REQUIEM);
+    ImGui::SameLine(Icon_Cells_Size * 4);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+    DrawSong(QUEST_SONG_NOCTURNE);
+    ImGui::SameLine(Icon_Cells_Size * 5);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+    DrawSong(QUEST_SONG_PRELUDE);
+    ImGui::EndGroup();
+}
+
+// Theme 2 per cells elements
+void DrawFloatingEquipments(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_SWORD_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_SWORD_MASTER);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_SHIELD_DEKU);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_SHIELD_HYLIAN);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_SHIELD_MIRROR);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_TUNIC_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_TUNIC_GORON);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_TUNIC_ZORA);
+    ImGui::SameLine(Icon_Cells_Size * 3);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawEquip(ITEM_BOOTS_KOKIRI);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawEquip(ITEM_BOOTS_IRON);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawEquip(ITEM_BOOTS_HOVER);
+    ImGui::EndGroup();
+}
+
+void DrawFloatingUpgrades(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawUpgrade(UPG_STRENGTH);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawUpgrade(UPG_SCALE);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawItem(ITEM_WALLET_ADULT);
+    ImGui::EndGroup();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + Icon_Spacing);
+    ImGui::BeginGroup();
+    DrawItem(ITEM_HEART_CONTAINER);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawItem(ITEM_MAGIC_SMALL);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    ImGui::EndGroup();
+}
+
+void DrawFloatingQuest(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawQuest(QUEST_STONE_OF_AGONY);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawQuest(QUEST_GERUDO_CARD);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawQuest(QUEST_SKULL_TOKEN);
+    ImGui::EndGroup();
+}
+
+void DrawFloatingStones(int Icon_Cells_Size, int Icon_Spacing) {
+    ImGui::BeginGroup();
+    DrawQuest(QUEST_KOKIRI_EMERALD);
+    ImGui::SameLine(Icon_Cells_Size);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+    DrawQuest(QUEST_GORON_RUBY);
+    ImGui::SameLine(Icon_Cells_Size * 2);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+    DrawQuest(QUEST_ZORA_SAPPHIRE);
+    ImGui::EndGroup();
+}
+
+void DrawFloatingDungeons(int Icon_Cells_Size, int Icon_Spacing) {
+    if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
+        ImGui::BeginGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            ImGui::Text("DEKU");
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            ImGui::Text("DCVN");
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            ImGui::Text("JABU");
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            ImGui::Text("FRST");
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            ImGui::Text("FIRE");
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            ImGui::Text("WATR"); 
+        }
+        else {
+            ImGui::Text("FRST");
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            ImGui::Text("FIRE");
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            ImGui::Text("WATR");
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            ImGui::Text("SPRT");
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            ImGui::Text("SHDW");
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            ImGui::Text("GANON"); 
+        }
+        ImGui::EndGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_YDAN);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_DDAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_BDAN);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_MIZUSIN);
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_COMPASS, SCENE_YDAN);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_DDAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_BDAN);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_MIZUSIN);
+            ImGui::EndGroup();
+        }
+        // SMALL KEYS FOR DEKU TREE TO WATER TEMPLE
+        ImGui::BeginGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            ImGui::NewLine();
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_MIZUSIN);
+            ImGui::EndGroup();
+            // BOSS KEYS FOR DEKU TREE TO WATER TEMPLE
+            ImGui::BeginGroup();
+            ImGui::NewLine();
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_MIZUSIN);
+        } else {
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing );
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_MIZUSIN);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size *4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_GANONTIKA);
+            ImGui::EndGroup();
+            // BOSS KEYS FOR FOREST TO GANON
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_BMORI1);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HIDAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_MIZUSIN);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size *4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HAKADAN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_GANON);
+        }
+        ImGui::EndGroup();
+        ImGui::BeginGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            ImGui::Text("SPRT");
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            ImGui::Text("SHDW");
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            ImGui::Text("BOTW");
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            ImGui::Text("ICE");
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            ImGui::Text("GTG");
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            ImGui::Text("GANON");
+        } else {
+            ImGui::Text("BOTW");
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            ImGui::Text("HIDE");
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            ImGui::Text("GTG");
+        }
+        ImGui::EndGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_HAKADAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_HAKADANCH);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_DUNGEON_MAP, SCENE_ICE_DOUKUTO);
+            ImGui::SameLine(Icon_Cells_Size * 4);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 4);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_MEN);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_GANONTIKA);
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_COMPASS, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_HAKADAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_HAKADANCH);
+            ImGui::SameLine(Icon_Cells_Size * 3);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 3);
+            DrawDungeonItem(ITEM_COMPASS, SCENE_ICE_DOUKUTO);
+            ImGui::SameLine(Icon_Cells_Size * 5);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 5);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_GANON);
+            ImGui::EndGroup();
+        }
+        ImGui::BeginGroup();
+        if (CVar_GetS32("gItemTrackerDisplayMapsAndCompasses", 0)) {
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADAN);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADANCH);
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_JYASINZOU);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_KEY_BOSS, SCENE_HAKADAN);
+        } else {
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_HAKADANCH);
+            ImGui::SameLine(Icon_Cells_Size);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_GERUDOWAY);
+            ImGui::SameLine(Icon_Cells_Size * 2);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + Icon_Spacing * 2);
+            DrawDungeonItem(ITEM_KEY_SMALL, SCENE_MEN);
+        }
+        ImGui::EndGroup();
+    }
+}
+
+void DrawFloatingNotes(int Icon_Cells_Size, int Icon_Spacing) {
+    if (CVar_GetS32("gItemTrackerNotes", 0)) {
+        ImGui::BeginGroup();
+            struct ItemTrackerNotes {
+                static int TrackerNotesResizeCallback(ImGuiInputTextCallbackData* data) {
+                    if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+                        ImVector<char>* itemTrackerNotes = (ImVector<char>*)data->UserData;
+                        IM_ASSERT(itemTrackerNotes->begin() == data->Buf);
+                        itemTrackerNotes->resize(
+                            data->BufSize); // NB: On resizing calls, generally data->BufSize == data->BufTextLen + 1
+                        data->Buf = itemTrackerNotes->begin();
+                    }
+                    return 0;
+                }
+                static bool TrackerNotesInputTextMultiline(const char* label, ImVector<char>* itemTrackerNotes, const ImVec2& size = ImVec2(0, 0),
+                                                           ImGuiInputTextFlags flags = 0) {
+                    IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
+                    return ImGui::InputTextMultiline(label, itemTrackerNotes->begin(), (size_t)itemTrackerNotes->size(),
+                                                     size, flags | ImGuiInputTextFlags_CallbackResize,
+                                                     ItemTrackerNotes::TrackerNotesResizeCallback,
+                                                     (void*)itemTrackerNotes);
+                }
+            };
+            static ImVector<char> itemTrackerNotes;
+            if (itemTrackerNotes.empty()) {
+                itemTrackerNotes.push_back(0);
+            }
+            ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), ImGuiInputTextFlags_AllowTabInput);
+            ImGui::EndGroup();
+    }
+}
+
+// Windowing stuff
+ImVec4 ChromaKeyBackground = { 0, 0, 0, 1 }; // Float value, 1 = 255 in rgb value.
+void BeginFloatingWindows(std::string UniqueName) {
+    ImGuiWindowFlags FloatingWndFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing |
+                                        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking |
+                                        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse |
+                                        ImGuiWindowFlags_NoScrollbar;
+    if (!CVar_GetS32("gItemTrackerHudEditMode", 0)) {
+        FloatingWndFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing |
+                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
+                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ChromaKeyBackground);
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+    ImGui::Begin(UniqueName.c_str(), nullptr, FloatingWndFlags);
+}
+void EndFloatingWindows() {
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::End();
 }
 
 void DrawItemTracker(bool& open) {
@@ -812,208 +1466,218 @@ void DrawItemTracker(bool& open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
         return;
     }
+    int Icon_Cells_Size = CVar_GetS32("gRandoTrackIconSize", 0);
+    int Icon_Spacing = CVar_GetS32("gRandoTrackIconSpacing", 0);
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    static uint32_t ccc = 0xFF000000;
-    ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
+    if (CVar_GetS32("gItemTrackerEnabled", 0)) {
+        int ImGui_DefaultMargin = 0;
+        if (CVar_GetS32("gItemTrackerTheme", 0) == 0) { // One block tracker, original tracker style
+            BeginFloatingWindows("ItemTracker_Theme_0_Grouped");
+            DrawFloatingInventory(Icon_Cells_Size, Icon_Spacing);
+            DrawFloatingEquipsQuestUpgradeStones(Icon_Cells_Size, Icon_Spacing);
+            DrawFloatingTokens(Icon_Cells_Size, Icon_Spacing);
+            DrawFloatingSongs(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+            if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_0_Dungeons");
+                DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }
+            /*
+            if (CVar_GetS32("gItemTrackerNotes", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_0_Notes");
+                DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }*/
+        } else if (CVar_GetS32("gItemTrackerTheme", 0) == 1) { // Per groups elements N.1
+            BeginFloatingWindows("ItemTracker_Theme_1_Inventory");
+            DrawFloatingInventory(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
 
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-    if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::PopStyleColor();
+            BeginFloatingWindows("ItemTracker_Theme_1_Stuffs");
+            DrawFloatingEquipsQuestUpgradeStones(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_1_Tokens");
+            DrawFloatingTokens(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_1_Songs");
+            DrawFloatingSongs(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_1_Dungeons");
+                DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }
+            /*
+            if (CVar_GetS32("gItemTrackerNotes", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_1_Notes");
+                DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }*/
+        } else if (CVar_GetS32("gItemTrackerTheme", 0) == 2) { // Per groups elements N.2
+            BeginFloatingWindows("ItemTracker_Theme_2_Inventory");
+            DrawFloatingInventory(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Equips");
+            DrawFloatingEquipments(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Upgrade");
+            DrawFloatingUpgrades(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Quest");
+            DrawFloatingQuest(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Stones");
+            DrawFloatingStones(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Tokens");
+            DrawFloatingTokens(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            BeginFloatingWindows("ItemTracker_Theme_2_Song");
+            DrawFloatingSongs(Icon_Cells_Size, Icon_Spacing);
+            EndFloatingWindows();
+
+            if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_2_Dungeons");
+                DrawFloatingDungeons(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }
+            /*
+            if (CVar_GetS32("gItemTrackerNotes", 0)) {
+                BeginFloatingWindows("ItemTracker_Theme_2_Notes");
+                DrawFloatingNotes(Icon_Cells_Size, Icon_Spacing);
+                EndFloatingWindows();
+            }*/
+        }
+    }
+}
+
+void DrawItemTrackerOptions(bool& open) {
+    if (!open) {
+        CVar_SetS32("gItemTrackerSettingsEnabled", 0);
+        return;
+    }
+
+    ImGui::SetNextWindowSize(ImVec2(240, 285), ImGuiCond_FirstUseEver);
+
+    if (!ImGui::Begin("Item Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
 
-    if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
-        int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
+    SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
+    SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
+    SohImGui::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
 
-        if (ImGui::BeginTabItem("Item Tracker")) {
+    SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 25, 128, "", 32,
+                                   true);
+    SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gRandoTrackIconSpacing", -5, 50, "",
+                                   0, true);
+    // SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", 0, 256,
+    // ""); SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
+    // 255, "");
 
-            ImGui::BeginGroup();
-            DrawItem(ITEM_STICK);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_NUT);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BOMB);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_BOW);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_FIRE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_DINS_FIRE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawItem(ITEM_SLINGSHOT);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_OCARINA_FAIRY);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BOMBCHU);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_HOOKSHOT);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_ICE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_FARORES_WIND);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawItem(ITEM_BOOMERANG);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_LENS);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BEAN);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_HAMMER);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_LIGHT);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_NAYRUS_LOVE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawBottle(ITEM_BOTTLE, 0);
-            ImGui::SameLine(spacingX);
-            DrawBottle(ITEM_BOTTLE, 1);
-            ImGui::SameLine(spacingX * 2);
-            DrawBottle(ITEM_BOTTLE, 2);
-            ImGui::SameLine(spacingX * 3);
-            DrawBottle(ITEM_BOTTLE, 3);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_SWORD_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_SWORD_MASTER);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_STONE_OF_AGONY);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_GERUDO_CARD);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_SKULL_TOKEN);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_SHIELD_DEKU);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_SHIELD_HYLIAN);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_SHIELD_MIRROR);
-            ImGui::SameLine(spacingX * 3);
-            DrawUpgrade(UPG_STRENGTH);
-            ImGui::SameLine(spacingX * 4);
-            DrawUpgrade(UPG_SCALE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_WALLET_ADULT);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_TUNIC_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_TUNIC_GORON);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_TUNIC_ZORA);
-            ImGui::SameLine(spacingX * 3);
-            //ImGui::Dummy(ImVec2(spacingX + 48.0f, spacingY));
-            DrawItem(ITEM_HEART_CONTAINER);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_MAGIC_SMALL);
-            ImGui::SameLine(spacingX * 5);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_BOOTS_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_BOOTS_IRON);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_BOOTS_HOVER);
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_KOKIRI_EMERALD);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_GORON_RUBY);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_ZORA_SAPPHIRE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawQuest(QUEST_MEDALLION_FOREST);
-            ImGui::SameLine(spacingX);
-            DrawQuest(QUEST_MEDALLION_FIRE);
-            ImGui::SameLine(spacingX * 2);
-            DrawQuest(QUEST_MEDALLION_WATER);
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_MEDALLION_SPIRIT);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_MEDALLION_SHADOW);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_MEDALLION_LIGHT);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawSong(QUEST_SONG_LULLABY);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_EPONA);
-            ImGui::SameLine(spacingX * 2);
-            DrawSong(QUEST_SONG_SARIA);
-            ImGui::SameLine(spacingX * 3);
-            DrawSong(QUEST_SONG_SUN);
-            ImGui::SameLine(spacingX * 4);
-            DrawSong(QUEST_SONG_TIME);
-            ImGui::SameLine(spacingX * 5);
-            DrawSong(QUEST_SONG_STORMS);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawSong(QUEST_SONG_MINUET);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_BOLERO);
-            ImGui::SameLine(spacingX * 2);
-            DrawSong(QUEST_SONG_SERENADE);
-            ImGui::SameLine(spacingX * 3);
-            DrawSong(QUEST_SONG_REQUIEM);
-            ImGui::SameLine(spacingX * 4);
-            DrawSong(QUEST_SONG_NOCTURNE);
-            ImGui::SameLine(spacingX * 5);
-            DrawSong(QUEST_SONG_PRELUDE);
-            ImGui::EndGroup();
-            ImGui::EndTabItem();
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    ImGui::Text("Chroma Key");
+    auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
+    ImGui::ColorEdit4("Chroma Key Selection", (float*)&ChromaKeyBackground, flags);
+    CVar_SetFloat("gItemTrackerBgColorR", ChromaKeyBackground.x);
+    CVar_SetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
+    CVar_SetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
+    CVar_SetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
+
+    const char* ItemsTrackerTheme[3] = { "One Block", "Grouped style n.1", "Grouped style n.2" };
+    ImGui::Text("Using theme :");
+    SohImGui::EnhancementCombobox("gItemTrackerTheme", ItemsTrackerTheme, 3, 0);
+    SohImGui::EnhancementCheckbox("Edit mode HUD", "gItemTrackerHudEditMode");
+    std::string ResetButtonName = "Reset \"";
+    ResetButtonName += ItemsTrackerTheme[CVar_GetS32("gItemTrackerTheme", 0)];
+    ResetButtonName += "\" theme";
+    if (ImGui::Button(ResetButtonName.c_str())) {
+        ImVec2 OriginPosition = {
+            ImGui::GetMainViewport()->GetWorkCenter().x - 100,
+            ImGui::GetMainViewport()->GetWorkCenter().y - 220,
+        };
+        CVar_SetS32("gRandoTrackIconSize", 32);
+        CVar_SetS32("gRandoTrackIconSpacing", 0);
+        if (CVar_GetS32("gItemTrackerTheme", 0) == 0) { // One block tracker, original tracker style
+            ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
+            ImGui::SetWindowPos("ItemTracker_Theme_0_Grouped", Default_Pos_Wnd_0);
+            ImVec2 Default_Pos_Wnd_1 = { OriginPosition.x, OriginPosition.y + 175};
+            ImGui::SetWindowPos("ItemTracker_Theme_0_Dungeons", Default_Pos_Wnd_1);
+            //ImVec2 Default_Pos_Wnd_2 = { OriginPosition.x + 100, OriginPosition.y};
+            //ImGui::SetWindowPos("ItemTracker_Theme_0_Notes", Default_Pos_Wnd_2);
+        } else if (CVar_GetS32("gItemTrackerTheme", 0) == 1) { // Per groups elements N.1
+            ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Inventory", Default_Pos_Wnd_0);
+            ImVec2 Default_Pos_Wnd_1 = { OriginPosition.x, OriginPosition.y + 175 };
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Stuffs", Default_Pos_Wnd_1);
+            ImVec2 Default_Pos_Wnd_2 = { OriginPosition.x, OriginPosition.y + 340 };
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Tokens", Default_Pos_Wnd_2);
+            ImVec2 Default_Pos_Wnd_3 = { OriginPosition.x + 5, OriginPosition.y + 380 };
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Songs", Default_Pos_Wnd_3);
+            ImVec2 Default_Pos_Wnd_4 = { OriginPosition.x + 100, OriginPosition.y + 175};
+            ImGui::SetWindowPos("ItemTracker_Theme_1_Dungeons", Default_Pos_Wnd_4);
+            //ImVec2 Default_Pos_Wnd_5 = { OriginPosition.x - 100, OriginPosition.y};
+            //ImGui::SetWindowPos("ItemTracker_Theme_1_Notes", Default_Pos_Wnd_5);
+        } else if (CVar_GetS32("gItemTrackerTheme", 0) == 2) { // Per groups elements N.2
+            ImVec2 Default_Pos_Wnd_0 = { OriginPosition.x, OriginPosition.y };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Inventory", Default_Pos_Wnd_0);
+            ImVec2 Default_Pos_Wnd_1 = { OriginPosition.x, OriginPosition.y + 175 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Equips", Default_Pos_Wnd_1);
+            ImVec2 Default_Pos_Wnd_2 = { OriginPosition.x + 100, OriginPosition.y + 170 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Upgrade", Default_Pos_Wnd_2);
+            ImVec2 Default_Pos_Wnd_3 = { OriginPosition.x + 100, OriginPosition.y + 250 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Quest", Default_Pos_Wnd_3);
+            ImVec2 Default_Pos_Wnd_4 = { OriginPosition.x + 100, OriginPosition.y + 290 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Stones", Default_Pos_Wnd_4);
+            ImVec2 Default_Pos_Wnd_5 = { OriginPosition.x, OriginPosition.y + 330 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Tokens", Default_Pos_Wnd_5);
+            ImVec2 Default_Pos_Wnd_6 = { OriginPosition.x, OriginPosition.y + 368 };
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Song", Default_Pos_Wnd_6);
+            ImVec2 Default_Pos_Wnd_7 = { OriginPosition.x - 100, OriginPosition.y};
+            ImGui::SetWindowPos("ItemTracker_Theme_2_Dungeons", Default_Pos_Wnd_7);
+            //ImVec2 Default_Pos_Wnd_8 = { OriginPosition.x - 100, OriginPosition.y + 170};
+            //ImGui::SetWindowPos("ItemTracker_Theme_2_Notes", Default_Pos_Wnd_8);
         }
-        
-        if (ImGui::BeginTabItem("Options")) {
-            int minimalSpacingX;
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                minimalSpacingX = 48;
-            } else {
-                minimalSpacingX = 32;
-            }
-            SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
-            SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
-            SohImGui::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
-            SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
-
-            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
-                                           "");
-            // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
-            //                                16, "");
-            ImGui::Text("Chroma Key");
-
-            auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
-
-            if (ImGui::ColorEdit4("ColorTest", (float*)&color, flags)) {
-                ccc = ImGui::ColorConvertFloat4ToU32(color);
-            }
-
-
-            // ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
-            // //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
-            // ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-            // ImGui::PopStyleColor();
-            // */
-            ImGui::EndTabItem();
-        }
-        ImGui::EndTabBar();
     }
-    ImGui::PopStyleColor();
+    SohImGui::EnhancementCheckbox("Alternative medallions display", "gItemTrackerMedallionsPlacement");
+    SohImGui::Tooltip("Will display medallions into a placement that will be from the Quest Menu");
+    
+    SohImGui::EnhancementCheckbox("Key Tracker", "gItemTrackerDisplayDungeonItems");
+
+    if (CVar_GetS32("gItemTrackerDisplayDungeonItems", 0)) {
+    SohImGui::EnhancementCheckbox("Map and Compass Tracker", "gItemTrackerDisplayMapsAndCompasses");
+    }
+
+    // SohImGui::EnhancementCheckbox("Personal notes space", "gItemTrackerNotes");
+    // SohImGui::Tooltip("Adds a textbox under the item tracker to keep your own notes in");
+    // TODO: FIX THE NOTES SPACE SIZE ON FLOATING WINDOW, DISABLED UNTIL FIXED
+
     ImGui::End();
 }
 
 void InitItemTracker() {
+    CVar_RegisterS32("gRandoTrackIconSize", 32);
     SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
+    SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    float trackerBgR = CVar_GetFloat("gItemTrackerBgColorR", 0);
+    float trackerBgG = CVar_GetFloat("gItemTrackerBgColorG", 0);
+    float trackerBgB = CVar_GetFloat("gItemTrackerBgColorB", 0);
+    float trackerBgA = CVar_GetFloat("gItemTrackerBgColorA", 1);
+    ChromaKeyBackground = {
+        trackerBgR,
+        trackerBgG,
+        trackerBgB,
+        trackerBgA
+    }; // Float value, 1 = 255 in rgb value.
 }

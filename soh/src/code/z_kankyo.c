@@ -2101,7 +2101,7 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) &&
+                     Inventory_HatchPocketCucco(globalCtx)) &&
                     globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }

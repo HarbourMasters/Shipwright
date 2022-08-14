@@ -1726,7 +1726,15 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
+            // The freeze text cannot be manually dismissed and must be auto-dismissed.
+            // This is fine and even wanted when skull tokens are not shuffled, but when
+            // when they are shuffled we don't want to be able to manually dismiss the box.
+            // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
+            // animation until the text box auto-dismisses.
+            // RANDOTODO: Implement a way to determine if an item came from a skulltula and
+            // inject the auto-dismiss control code if it did.
+            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 &&
+                !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) > 0)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;

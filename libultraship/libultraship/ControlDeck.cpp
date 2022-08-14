@@ -9,7 +9,6 @@
 #include "Cvar.h"
 
 namespace Ship {
-    uint8_t* controllerBits;
 
     void ControlDeck::Init(uint8_t* bits) {
         ScanPhysicalDevices();
@@ -187,4 +186,9 @@ namespace Ship {
     std::shared_ptr<Controller> ControlDeck::GetPhysicalDeviceFromVirtualSlot(int slot) {
         return GetPhysicalDevice(GetVirtualDevice(slot));
     }
+
+    uint8_t* ControlDeck::GetControllerBits() {
+        return controllerBits;
+    }
+
 }

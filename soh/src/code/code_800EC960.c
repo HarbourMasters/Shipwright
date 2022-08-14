@@ -1246,6 +1246,7 @@ void Audio_StepFreqLerp(FreqLerp* lerp);
 void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
+void Audio_PlayFanfare_Rando(ItemID getItemId);
 
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
@@ -3887,6 +3888,49 @@ void Audio_ResetSfxChannelState(void) {
     sSfxChannelState[SFX_PLAYER_CHANNEL_OCARINA].unk_0C = 0;
     sPrevSeqMode = 0;
     sAudioCodeReverb = 0;
+}
+
+// Function to play "get-item" fanfares according to the type of item obtained (used in rando)
+// Longer fanfares for medallions/stones/songs are behind the Cvar
+void Audio_PlayFanfare_Rando(ItemID getItemId) {
+    s32 temp1;
+
+    if (((getItemId >= GI_RUPEE_GREEN) && (getItemId <= GI_RUPEE_RED)) ||
+        ((getItemId >= GI_RUPEE_PURPLE) && (getItemId <= GI_RUPEE_GOLD)) ||
+        ((getItemId >= GI_RUPEE_GREEN_LOSE) && (getItemId <= GI_RUPEE_PURPLE_LOSE)) || (getItemId == GI_HEART)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    } else {
+        if ((getItemId == GI_HEART_CONTAINER_2) || (getItemId == GI_HEART_CONTAINER) ||
+            ((getItemId == GI_HEART_PIECE) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+            temp1 = NA_BGM_HEART_GET | 0x900;
+        } else {
+            temp1 = (getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+        }
+        // If we get a skulltula token or the "WINNER" heart, play "get small item"
+        if (getItemId == GI_SKULL_TOKEN || getItemId == GI_HEART_PIECE_WIN) {
+            temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+        }
+        // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
+        if (getItemId == GI_HEART_PIECE_WIN && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
+            temp1 = NA_BGM_HEART_GET | 0x900;
+        }
+        // If the setting is toggled on and we get special quest items (longer fanfares):
+        if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+            // If we get a medallion, play the "get a medallion" fanfare
+            if ((getItemId >= RG_FOREST_MEDALLION) && (getItemId <= RG_LIGHT_MEDALLION)) {
+                temp1 = NA_BGM_MEDALLION_GET | 0x900;
+            }
+            // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+            if ((getItemId >= RG_KOKIRI_EMERALD) && (getItemId <= RG_ZORA_SAPPHIRE)) {
+                temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+            }
+            // If the item we're getting is a song, play the "learned a song" fanfare
+            if ((getItemId >= RG_ZELDAS_LULLABY) && (getItemId <= RG_PRELUDE_OF_LIGHT)) {
+                temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+            }
+        }
+        Audio_PlayFanfare(temp1);
+    }
 }
 
 void func_800F3F3C(u8 arg0) {

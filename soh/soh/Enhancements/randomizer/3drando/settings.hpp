@@ -34,8 +34,8 @@ typedef enum {
 
 typedef enum {
     OPENFOREST_CLOSED,
-    OPENFOREST_OPEN,
     OPENFOREST_CLOSED_DEKU,
+    OPENFOREST_OPEN,
 } OpenForestSetting;
 
 typedef enum {
@@ -44,9 +44,9 @@ typedef enum {
 } OpenKakarikoSetting;
 
 typedef enum {
-    OPENDOOROFTIME_OPEN,
-    OPENDOOROFTIME_CLOSED,
     OPENDOOROFTIME_INTENDED,
+    OPENDOOROFTIME_CLOSED,
+    OPENDOOROFTIME_OPEN,
 } OpenDoorOfTimeSetting;
 
 typedef enum {
@@ -62,8 +62,8 @@ typedef enum {
 } GerudoFortressSetting;
 
 typedef enum {
-    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_VANILLA,
+    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_STONES,
     RAINBOWBRIDGE_MEDALLIONS,
     RAINBOWBRIDGE_REWARDS,
@@ -212,9 +212,9 @@ typedef enum {
 } BossKeysanitySetting;
 
 typedef enum {
-    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_VANILLA,
     GANONSBOSSKEY_OWN_DUNGEON,
+    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_ANY_DUNGEON,
     GANONSBOSSKEY_OVERWORLD,
     GANONSBOSSKEY_ANYWHERE,
@@ -403,6 +403,7 @@ typedef struct {
     uint8_t shuffleGerudoToken;
     uint8_t shuffleMagicBeans;
     uint8_t shuffleMerchants;
+    uint8_t shuffleFrogSongRupees;
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
 
@@ -439,6 +440,7 @@ typedef struct {
     uint8_t numRequiredCuccos;
     uint8_t kingZoraSpeed;
     uint8_t completeMaskQuest;
+    uint8_t enableGlitchCutscenes;
     uint8_t quickText;
     uint8_t skipSongReplays;
     uint8_t keepFWWarpPoint;
@@ -904,6 +906,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleGerudoToken;
   extern Option ShuffleMagicBeans;
   extern Option ShuffleMerchants;
+  extern Option ShuffleFrogSongRupees;
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
 
@@ -940,6 +943,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option NumRequiredCuccos;
   extern Option KingZoraSpeed;
   extern Option CompleteMaskQuest;
+  extern Option EnableGlitchCutscenes;
   extern Option QuickText;
   extern Option SkipSongReplays;
   extern Option KeepFWWarpPoint;

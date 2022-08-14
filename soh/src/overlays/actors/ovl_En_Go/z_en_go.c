@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -961,9 +962,17 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
                 getItemId = GI_CLAIM_CHECK;
+                if (gSaveContext.n64ddFlag) {
+                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                }
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
                 getItemId = GI_PRESCRIPTION;
+                if (gSaveContext.n64ddFlag) {
+                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                }
             }
         }
 

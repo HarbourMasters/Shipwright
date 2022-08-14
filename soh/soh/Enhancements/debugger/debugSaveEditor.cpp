@@ -1,5 +1,6 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
+#include "../../OTRGlobals.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "ImGuiHelpers.h"
 
@@ -14,6 +15,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
@@ -525,6 +527,27 @@ void DrawInfoTab() {
     ImGui::PopItemWidth();
 }
 
+void DrawBGSItemFlag(uint8_t itemID) {
+    const ItemMapEntry& slotEntry = itemMapping[itemID];
+    ImGui::Image(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::SameLine();
+    int tradeIndex = itemID - ITEM_POCKET_EGG;
+    bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
+    bool shouldHaveItem = hasItem;
+    ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
+    if (hasItem != shouldHaveItem) {
+        if (shouldHaveItem) {
+            gSaveContext.adultTradeItems |= (1 << tradeIndex);
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
+                INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
+            }
+        } else {
+            gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
+            Inventory_ReplaceItem(gGlobalCtx, itemID, Randomizer_GetNextAdultTradeItem());
+        }
+    }
+}
+
 void DrawInventoryTab() {
     static bool restrictToValid = true;
 
@@ -566,6 +589,9 @@ void DrawInventoryTab() {
             if (ImGui::BeginPopup(itemPopupPicker)) {
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    if (selectedIndex == SLOT_TRADE_ADULT) {
+                        gSaveContext.adultTradeItems = 0;
+                    }
                     ImGui::CloseCurrentPopup();
                 }
                 SetLastItemHoverText("None");
@@ -596,6 +622,13 @@ void DrawInventoryTab() {
                     if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
+                        if (gSaveContext.n64ddFlag &&
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+                            selectedIndex == SLOT_TRADE_ADULT &&
+                            slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                        }
                         ImGui::CloseCurrentPopup();
                     }
                     SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
@@ -631,6 +664,16 @@ void DrawInventoryTab() {
             ImGui::PopItemWidth();
             ImGui::PopID();
         }
+    }
+    
+    // Trade quest flags are only used when shuffling the trade sequence, so
+    // don't show this if it isn't needed.
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
+        && ImGui::TreeNode("Adult trade quest items")) {
+        for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
+            DrawBGSItemFlag(i);
+        }
+        ImGui::TreePop();
     }
 }
 

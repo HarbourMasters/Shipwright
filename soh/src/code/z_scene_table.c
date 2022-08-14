@@ -23,6 +23,8 @@
 
 #include "overlays/actors/ovl_Bg_Dodoago/z_bg_dodoago.h"
 
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+
 #define ENTRANCE(scene, spawn, continueBgm, displayTitleCard, fadeIn, fadeOut)                                     \
     {                                                                                                              \
         scene, spawn,                                                                                              \
@@ -2136,7 +2138,11 @@ void func_8009EE44(GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
-    if ((globalCtx->roomCtx.unk_74[0] == 0) && (INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO)) {
+	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+        playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
+    }
+    if ((globalCtx->roomCtx.unk_74[0] == 0) && playerHasCojiro) {
         if (globalCtx->roomCtx.unk_74[1] == 50) {
             func_8002F7DC(&GET_PLAYER(globalCtx)->actor, NA_SE_EV_CHICKEN_CRY_M);
             globalCtx->roomCtx.unk_74[0] = 1;

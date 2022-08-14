@@ -18,8 +18,10 @@ namespace Ship {
 		size_t GetNumPhysicalDevices();
 		int GetVirtualDevice(int slot);
 		size_t GetNumVirtualDevices();
+		uint8_t* GetControllerBits();
 	private:
-		std::vector<int> virtualDevices;
+		std::vector<int> virtualDevices = {};
 		std::vector<std::shared_ptr<Controller>> physicalDevices = {};
+		uint8_t* controllerBits = nullptr;
 	};
 }

@@ -1663,6 +1663,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
+    // RANDOTODO: Use this for ice trap messages
     if (CustomMessage_RetrieveIfExists(globalCtx)) {
         osSyncPrintf("Found custom message");
     } else if (sTextIsCredits) {

@@ -385,6 +385,13 @@ string_view merchantsHintsDesc        = "These hints will make Medigoron and the
                                         "The Clearer Hints setting will affect how they\n" //
                                         "refer to the item.";                              //
 /*------------------------------                                                           //
+|   SHUFFLE FROG SONG RUPEES   |                                                           //
+------------------------------*/                                                           //
+string_view frogSongRupeesDesc        = "Enabling this adds 5 Purple Rupees to the item\n" //
+                                        "pool and shuffles the rewards from playing Zelda's\n"
+                                        "Lullaby, Epona's Song, Saria's Song, Sun's Song,\n"
+                                        "and Song of Time to the frogs in Zora's River.\n";//
+/*------------------------------                                                           //
 |     SHUFFLE ADULT TRADE      |                                                           //
 ------------------------------*/                                                           //
 string_view adultTradeDesc            = "Enabling this adds all of the adult trade quest\n"//
@@ -585,6 +592,13 @@ string_view kingZoraSpeedRandom       = "King Zora will move out of the way in 1
 ------------------------------*/                                                           //
 string_view completeMaskDesc          = "Once the happy mask shop is opened, all masks\n"  //
                                         "will be available to be borrowed.";               //
+/*------------------------------                                                           //
+|    ENABLE GLITCH CUTSCENES   |                                                           //
+------------------------------*/                                                           //
+string_view glitchCutscenesDesc       = "The cutscenes of the Poes in Forest Temple and\n" //
+                                        "Darunia in Fire Temple will not be skipped.\n"    //
+                                        "These cutscenes are only useful for glitched\n"   //
+                                        "gameplay and can be safely skipped otherwise.";   //
 /*------------------------------                                                           //
 |          QUICK TEXT          |                                                           //
 ------------------------------*/                                                           //

@@ -175,7 +175,7 @@ typedef struct {
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
     RandoSetting randoSettings[300];
-    ItemLocationRando itemLocations[500];
+    ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
     char childAltarText[250];
     char adultAltarText[750];
@@ -184,7 +184,9 @@ typedef struct {
     u8 seedIcons[5];
     u8 dungeonsDone[8];
     u8 trialsDone[6];
+    u8 cowsMilked[10];
     u8 temporaryWeapon;
+    u16 adultTradeItems;
 } SaveContext; // size = 0x1428
 
 typedef enum {

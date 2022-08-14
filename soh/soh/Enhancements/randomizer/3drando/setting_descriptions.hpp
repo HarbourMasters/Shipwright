@@ -126,6 +126,8 @@ extern string_view magicBeansDesc;
 extern string_view merchantsDesc;
 extern string_view merchantsHintsDesc;
 
+extern string_view frogSongRupeesDesc;
+
 extern string_view adultTradeDesc;
 
 extern string_view chestMinigameDesc;
@@ -195,6 +197,8 @@ extern string_view kingZoraSpeedVanilla;
 extern string_view kingZoraSpeedRandom;
 
 extern string_view completeMaskDesc;
+
+extern string_view glitchCutscenesDesc;
 
 extern string_view quickTextDesc0;
 extern string_view quickTextDesc1;

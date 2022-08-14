@@ -6083,8 +6083,8 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
-        case FLAG_EVENT_CHECK_INF:
-            Flags_SetEventChkInf(this->pendingFlag.flagID);
+        case FLAG_COW_MILKED:
+            gSaveContext.cowsMilked[this->pendingFlag.flagID] = 1;
             break;
         case FLAG_NONE:
         default:
@@ -10889,6 +10889,10 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     Collider_ResetQuadAC(globalCtx, &this->shieldQuad.base);
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
+
+    if (this->pendingIceTrap) {
+        GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
+    }
 }
 
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
