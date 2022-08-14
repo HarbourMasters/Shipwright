@@ -121,90 +121,20 @@ void Ship::Switch::ApplyOverclock(void) {
    }
 }
 
-struct Star {
-    SDL_Rect* rect;
-    float speed;
-    int   layer;
-    int8_t color[3];
-};
-
-std::vector<Star*> stars;
-
 void Ship::Switch::PrintErrorMessageToScreen(const char *str, ...) {
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		return;
-
-    int width, height;
-    Uint64 now, last, deltaTime;
-    GetDisplaySize(&width, &height);
-
-    SDL_Window* win        = SDL_CreateWindow("Switch-Error", 0, 0, width, height, 0);
-	SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+    consoleInit(NULL);
+    srand(time(0));
 
     va_list args;
     va_start(args, str);
     vprintf(str, args);
     va_end(args);
 
-    int layers = 9;
-
-    for(int layer = 0; layer < layers; layer++) {
-        for(int i = 0; i < 100; i++) {
-            srand(time(0));
-
-            int brightness = 50 - layer * (rand() * 5);
-            SDL_Rect rect;
-            rect.x = rand() % width;
-            rect.y = i*i;
-            rect.w = rand() % 20;
-            rect.h = rand() % 20;
-
-            stars.push_back(new Star{
-                &rect,
-                0.03f,
-                layer,
-                {
-                    120 + brightness,
-                    120 + brightness,
-                    120 + brightness
-                }
-            });
-        }
-    }
-
     while(appletMainLoop()){
-        SDL_Event e;
-		if ( SDL_PollEvent(&e) ) {
-			if (e.type == SDL_QUIT)
-				break;
-		}
-
-        last = now;
-        now = SDL_GetPerformanceCounter();
-
-        deltaTime = (double)((now - last) * 1000 / (double) SDL_GetPerformanceFrequency() );
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
-        for(int i = 0; i < stars.size(); i++){
-            Star* star = stars[i];
-
-            if(star->rect->x >= width){
-                star->rect->x = -star->rect->w;
-            }
-
-            star->rect->x += 1;
-            // star->rect->y += (cos((star->rect->x / star->layer)) * .9f ) / 16;
-            SDL_SetRenderDrawColor(renderer, star->color[0], star->color[1], star->color[2], 255);
-            SDL_RenderFillRect( renderer, star->rect );
-        }
-
-		SDL_RenderPresent(renderer);
-		SDL_Delay(0);
+        consoleUpdate(NULL);
     }
 
+    consoleExit(NULL);
 }
 
 static void on_applet_hook(AppletHookType hook, void *param) {
@@ -267,7 +197,6 @@ void DetectAppletMode() {
     if (at == AppletType_Application || at == AppletType_SystemApplication)
         return;
 
-    srand(time(0));
     Ship::Switch::PrintErrorMessageToScreen(
         "\x1b[2;2HYou've launched the Ship while in Applet mode."
         "\x1b[4;2HPlease relaunch while in full-memory mode."
