@@ -697,74 +697,79 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         if(Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-            s32 giid = Randomizer_GetItemIdFromKnownCheck(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY);
+            GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY);
+            s32 giid = getItem.getItemId;
 
-            if (giid >= RG_ZELDAS_LULLABY && giid <= RG_PRELUDE_OF_LIGHT) {
-                GiveLinkSong(giid);
-            } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
-                       giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
-                GiveLinkRupeesByGetItemId(giid);
-            } else if (giid == GI_BOMBCHUS_10 || giid == GI_BOMBCHUS_5 || giid == GI_BOMBCHUS_20) {
-                GiveLinkBombchus(giid);
-            } else if (giid == GI_STICKS_1 || giid == GI_STICKS_5 || giid == GI_STICKS_10) {
-                GiveLinkDekuSticksByGetItemId(giid);
-            } else if (giid == GI_NUTS_5 || giid == GI_NUTS_10) {
-                GiveLinkDekuNutsByGetItemId(giid);
-            } else if (giid == GI_BEAN) {
-                GiveLinkBeans();
-            } else if (giid >= RG_KOKIRI_EMERALD && giid <= RG_LIGHT_MEDALLION) {
-                GiveLinkDungeonReward(giid);
-            } else if (giid == GI_SWORD_KOKIRI) {
-                GiveLinkKokiriSword();
-            } else if (giid == GI_SWORD_BGS) {
-                GiveLinkBiggoronSword();
-            } else if (giid == GI_SWORD_KNIFE) {
-                GiveLinkGiantsKnife();
-            } else if (giid == GI_SHIELD_DEKU) {
-                GiveLinkDekuShield();
-            } else if (giid == GI_SHIELD_HYLIAN) {
-                GiveLinkHylianShield();
-            } else if (giid == GI_SHIELD_MIRROR) {
-                GiveLinkMirrorShield();
-            } else if (giid == GI_TUNIC_GORON) {
-                GiveLinkGoronTunic();
-            } else if (giid == GI_TUNIC_ZORA) {
-                GiveLinkZoraTunic();
-            } else if (giid == GI_BOOTS_IRON) {
-                GiveLinkIronBoots();
-            } else if (giid == GI_BOOTS_HOVER) {
-                GiveLinkHoverBoots();
-            } else if (giid == GI_SLINGSHOT || giid == GI_BULLET_BAG_40 || giid == GI_BULLET_BAG_50) {
-                GiveLinkBulletBagUpgrade(giid);
-            } else if (giid == GI_BOW || giid == GI_QUIVER_40 || giid == GI_QUIVER_50) {
-                GiveLinkQuiverUpgrade(giid);
-            } else if (giid == GI_BOMB_BAG_20 || giid == GI_BOMB_BAG_30 || giid == GI_BOMB_BAG_40) {
-                GiveLinkBombBagUpgrade(giid);
-            } else if (giid == GI_BRACELET || giid == GI_GAUNTLETS_SILVER || giid == GI_GAUNTLETS_GOLD) {
-                GiveLinkStrengthUpgrade(giid);
-            } else if (giid == GI_SCALE_SILVER || giid == GI_SCALE_GOLD) {
-                GiveLinkScaleUpgrade(giid);
-            } else if (giid == GI_WALLET_ADULT || giid == GI_WALLET_GIANT) {
-                GiveLinkWalletUpgrade(giid);
-            } else if (giid == GI_STONE_OF_AGONY) {
-                GiveLinkStoneOfAgony();
-            } else if (giid == GI_GERUDO_CARD) {
-                GiveLinkGerudoCard();
-            } else if (giid == GI_HEART_PIECE) {
-                GiveLinkPieceOfHeart();
-            } else if (giid == GI_HEART_CONTAINER) {
-                GiveLinkHeartContainer();
-            } else if (giid == GI_STICK_UPGRADE_20 || giid == GI_STICK_UPGRADE_30) {
-                GiveLinkDekuStickUpgrade(giid);
-            } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
-                GiveLinkDekuNutUpgrade(giid);
-            } else if (giid == RG_MAGIC_SINGLE || giid == RG_MAGIC_DOUBLE) {
-                GiveLinkMagic(giid);
-            } else if (giid == RG_DOUBLE_DEFENSE) {
-                GiveLinkDoubleDefense();
-            } else {
-                s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
-                if (iid != -1) INV_CONTENT(iid) = iid;
+            if (getItem.modIndex == MOD_NONE) {
+                if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
+                        giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
+                    GiveLinkRupeesByGetItemId(giid);
+                } else if (giid == GI_BOMBCHUS_10 || giid == GI_BOMBCHUS_5 || giid == GI_BOMBCHUS_20) {
+                    GiveLinkBombchus(giid);
+                } else if (giid == GI_STICKS_1 || giid == GI_STICKS_5 || giid == GI_STICKS_10) {
+                    GiveLinkDekuSticksByGetItemId(giid);
+                } else if (giid == GI_NUTS_5 || giid == GI_NUTS_10) {
+                    GiveLinkDekuNutsByGetItemId(giid);
+                } else if (giid == GI_BEAN) {
+                    GiveLinkBeans();
+                } else if (giid == GI_SWORD_KOKIRI) {
+                    GiveLinkKokiriSword();
+                } else if (giid == GI_SWORD_BGS) {
+                    GiveLinkBiggoronSword();
+                } else if (giid == GI_SWORD_KNIFE) {
+                    GiveLinkGiantsKnife();
+                } else if (giid == GI_SHIELD_DEKU) {
+                    GiveLinkDekuShield();
+                } else if (giid == GI_SHIELD_HYLIAN) {
+                    GiveLinkHylianShield();
+                } else if (giid == GI_SHIELD_MIRROR) {
+                    GiveLinkMirrorShield();
+                } else if (giid == GI_TUNIC_GORON) {
+                    GiveLinkGoronTunic();
+                } else if (giid == GI_TUNIC_ZORA) {
+                    GiveLinkZoraTunic();
+                } else if (giid == GI_BOOTS_IRON) {
+                    GiveLinkIronBoots();
+                } else if (giid == GI_BOOTS_HOVER) {
+                    GiveLinkHoverBoots();
+                } else if (giid == GI_SLINGSHOT || giid == GI_BULLET_BAG_40 || giid == GI_BULLET_BAG_50) {
+                    GiveLinkBulletBagUpgrade(giid);
+                } else if (giid == GI_BOW || giid == GI_QUIVER_40 || giid == GI_QUIVER_50) {
+                    GiveLinkQuiverUpgrade(giid);
+                } else if (giid == GI_BOMB_BAG_20 || giid == GI_BOMB_BAG_30 || giid == GI_BOMB_BAG_40) {
+                    GiveLinkBombBagUpgrade(giid);
+                } else if (giid == GI_BRACELET || giid == GI_GAUNTLETS_SILVER || giid == GI_GAUNTLETS_GOLD) {
+                    GiveLinkStrengthUpgrade(giid);
+                } else if (giid == GI_SCALE_SILVER || giid == GI_SCALE_GOLD) {
+                    GiveLinkScaleUpgrade(giid);
+                } else if (giid == GI_WALLET_ADULT || giid == GI_WALLET_GIANT) {
+                    GiveLinkWalletUpgrade(giid);
+                } else if (giid == GI_STONE_OF_AGONY) {
+                    GiveLinkStoneOfAgony();
+                } else if (giid == GI_GERUDO_CARD) {
+                    GiveLinkGerudoCard();
+                } else if (giid == GI_HEART_PIECE) {
+                    GiveLinkPieceOfHeart();
+                } else if (giid == GI_HEART_CONTAINER) {
+                    GiveLinkHeartContainer();
+                } else if (giid == GI_STICK_UPGRADE_20 || giid == GI_STICK_UPGRADE_30) {
+                    GiveLinkDekuStickUpgrade(giid);
+                } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
+                    GiveLinkDekuNutUpgrade(giid);
+                } else {
+                    s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
+                    if (iid != -1) INV_CONTENT(iid) = iid;
+                }
+            } else if (getItem.modIndex == MOD_RANDOMIZER) {
+                if (giid == RG_MAGIC_SINGLE || giid == RG_MAGIC_DOUBLE) {
+                    GiveLinkMagic(giid);
+                } else if (giid == RG_DOUBLE_DEFENSE) {
+                    GiveLinkDoubleDefense();
+                } else if (giid >= RG_KOKIRI_EMERALD && giid <= RG_LIGHT_MEDALLION) {
+                    GiveLinkDungeonReward(giid);
+                } else if (giid >= RG_ZELDAS_LULLABY && giid <= RG_PRELUDE_OF_LIGHT) {
+                    GiveLinkSong(giid);
+                }
             }
 
             // malon/talon back at ranch
