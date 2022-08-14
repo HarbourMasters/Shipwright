@@ -73,7 +73,7 @@ void BgSpot00Hanebasi_Init(Actor* thisx, GlobalContext* globalCtx) {
 
         if ((gSaveContext.sceneSetupIndex != 6) &&
             ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
-             (!LINK_IS_ADULT && !IS_DAY))) {
+             (!LINK_IS_ADULT && !IS_DAY && CVar_GetS32("gOpenBridge",0) == 0))) {
             this->dyna.actor.shape.rot.x = -0x4000;
         } else {
             this->dyna.actor.shape.rot.x = 0;
