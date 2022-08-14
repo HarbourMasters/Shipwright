@@ -286,14 +286,19 @@ void Gameplay_Init(GameState* thisx) {
                 gSaveContext.entranceIndex == 0x05AC || gSaveContext.entranceIndex == 0x05B0 ||
                 gSaveContext.entranceIndex == 0x05B4 || gSaveContext.entranceIndex == 0x05B8 ||
                 gSaveContext.entranceIndex == 0x05BC || gSaveContext.entranceIndex == 0x05C0 ||
-                gSaveContext.entranceIndex == 0x05C4) {
+                gSaveContext.entranceIndex == 0x05C4 || gSaveContext.entranceIndex == 0x05FC ||
+                gSaveContext.entranceIndex == 0X7FFF){
                 break;
                 }
                
-            if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
+            else if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
                 gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
                 break;
             }
+
+            else {
+                    break;
+                }
         }
     }
 
