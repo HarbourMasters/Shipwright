@@ -6163,7 +6163,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
-            if (this->getItemId != GI_NONE) {
+            if (this->getItemId != GI_NONE && this->getItemEntry.objectId != OBJECT_INVALID) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(-this->getItemId);
@@ -10891,7 +10891,8 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
 
     if (this->pendingIceTrap) {
-        GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
+        GiveItemWithoutActor(globalCtx, RG_ICE_TRAP);
+        this->getItemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP);
     }
 }
 
@@ -12791,7 +12792,7 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
 
                 if ((this->getItemId != GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
-                    (gSaveContext.n64ddFlag && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
+                    (gSaveContext.n64ddFlag && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                         this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
                     func_8083C0E8(this, globalCtx);
