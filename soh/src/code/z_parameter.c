@@ -2223,7 +2223,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 return ITEM_NONE;
             }
         }
-    } else if ((item >= RG_GERUDO_FORTRESS_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+    } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
                (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
                (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
                (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
@@ -2294,7 +2294,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 break;
         }
 
-        if ((item >= RG_GERUDO_FORTRESS_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
                 return RG_NONE;

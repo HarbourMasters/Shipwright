@@ -1843,16 +1843,16 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
     }
 }
 
-GetItemID Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    GetItemID itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
+s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    s16 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
     return itemId;
 }
 
-GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
+s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
+s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -2067,49 +2067,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-
-        case RG_DEKU_TREE_MAP:
-        case RG_DODONGOS_CAVERN_MAP:
-        case RG_JABU_JABUS_BELLY_MAP:
-        case RG_FOREST_TEMPLE_MAP:
-        case RG_FIRE_TEMPLE_MAP:
-        case RG_WATER_TEMPLE_MAP:
-        case RG_SPIRIT_TEMPLE_MAP:
-        case RG_SHADOW_TEMPLE_MAP:
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-        case RG_ICE_CAVERN_MAP:
-            return GI_MAP;
-
-        case RG_DEKU_TREE_COMPASS:
-        case RG_DODONGOS_CAVERN_COMPASS:
-        case RG_JABU_JABUS_BELLY_COMPASS:
-        case RG_FOREST_TEMPLE_COMPASS:
-        case RG_FIRE_TEMPLE_COMPASS:
-        case RG_WATER_TEMPLE_COMPASS:
-        case RG_SPIRIT_TEMPLE_COMPASS:
-        case RG_SHADOW_TEMPLE_COMPASS:
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-        case RG_ICE_CAVERN_COMPASS:
-            return GI_COMPASS;
-
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            return GI_KEY_BOSS;
-
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            return GI_KEY_SMALL;
             
         // todo test this with keys in own dungeon
         case RG_TREASURE_GAME_SMALL_KEY:
@@ -2201,6 +2158,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_RUPEE_BLUE; //todo
 
         default:
+            if (!IsItemVanilla(randoGet)) {
+                return randoGet;
+            }
             return ogItemId;
     }
 }
@@ -4575,7 +4535,7 @@ void InitRandoItemTable() {
     GetItemEntry randoGetItemTable[] = {
         GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
         GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_SINGLE),
-        GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
+        GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
         GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DOUBLE_DEFENSE),
         GET_ITEM(RG_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
         GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
