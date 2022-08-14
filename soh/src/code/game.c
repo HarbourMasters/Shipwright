@@ -426,6 +426,27 @@ void GameState_Update(GameState* gameState) {
     } else {
         CVar_SetS32("gPrevTime", -1);
     }
+   
+    //Allows Young Link to leave Castle Town at night.
+    if (CVar_GetS32("gOpenBridge", 0)) {
+        if (gGlobalCtx) {
+            if (gGlobalCtx->nextEntranceIndex == (0x0033) || gGlobalCtx->nextEntranceIndex == 0x026E ||
+                gGlobalCtx->nextEntranceIndex == 0x0276) {
+                if (IS_NIGHT) {
+                    gSaveContext.nightFlag = 0;
+                    gSaveContext.dayTime = 0x8000;
+                    wasNight = true;
+                }
+            }
+            if ((gGlobalCtx->nextEntranceIndex == (0x007E) || gGlobalCtx->nextEntranceIndex == 0x00B1 ||
+                 gGlobalCtx->nextEntranceIndex == 0x01FD) &&
+                wasNight) {
+                gSaveContext.dayTime = 0x0000;
+                gSaveContext.nightFlag = 1;
+                wasNight = false;
+            }
+        }
+    }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
     gSaveContext.language = CVar_GetS32("gLanguages", 0);
