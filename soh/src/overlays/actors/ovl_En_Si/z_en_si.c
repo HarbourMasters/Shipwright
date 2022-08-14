@@ -167,7 +167,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
             Item_Give(globalCtx, giveItemId);
         }
         Message_StartTextbox(globalCtx, textId, NULL);
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
             Audio_PlayFanfare_Rando(getItem);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
@@ -180,7 +180,7 @@ void func_80AFB950(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING &&
-        ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != GI_ICE_TRAP)) {
+        ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != RG_ICE_TRAP)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
