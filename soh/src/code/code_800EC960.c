@@ -3919,6 +3919,9 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
             Audio_PlayFanfare(temp1);
         } 
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        if ((getItemId >= RG_BOTTLE_WITH_RED_POTION && getItemId <= RG_BOTTLE_WITH_BIG_POE) || (getItemId >= RG_DEKU_TREE_MAP && getItemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        }
         // If the setting is toggled on and we get special quest items (longer fanfares):
         if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
             // If we get a medallion, play the "get a medallion" fanfare

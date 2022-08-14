@@ -123,7 +123,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 }
                 Message_StartTextbox(globalCtx, textId, NULL);
 
-                if (gSaveContext.n64ddFlag) {
+                if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
                     Audio_PlayFanfare_Rando(getItem);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
