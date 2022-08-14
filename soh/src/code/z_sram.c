@@ -800,7 +800,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = getItem.getItemId;
 
             if (getItem.modIndex == MOD_NONE) {
-                if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
+                if(getItem.itemId >= ITEM_KOKIRI_EMERALD && getItem.itemId <= ITEM_MEDALLION_LIGHT) {
+                    GiveLinkDungeonReward(getItem.getItemId);
+                } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
                         giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
                     GiveLinkRupeesByGetItemId(giid);
                 } else if (giid == GI_BOMBCHUS_10 || giid == GI_BOMBCHUS_5 || giid == GI_BOMBCHUS_20) {
