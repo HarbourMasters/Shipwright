@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 
 
 #define Path _Path
@@ -292,15 +293,69 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     return CMD_SUCCESS;
 }
 
-static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
+    if (args.size() != 3) {
         SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    std::string modId = args[1].c_str();
+    s32 getItemId = std::stoi(args[2]);
 
-    Player* player = GET_PLAYER(gGlobalCtx);
-    player->getItemId = std::stoi(args[1]);
-    func_8002F434(&player->actor, gGlobalCtx, std::stoi(args[1]), 30.0f, 40.0f);
+    if (modId == "vanilla") {
+        OTRGlobals::Instance->getItemModIndex = MOD_NONE; 
+    } else if (modId == "randomizer") {
+        OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER; 
+    } else {
+        SohImGui::console->SendErrorMessage("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
+        return CMD_FAILED;
+    }
+
+    GiveItemWithoutActor(gGlobalCtx, getItemId);
+
+    return CMD_SUCCESS;
+}
+
+static bool GetItemFromSkullHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
+    if (args.size() != 3) {
+        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+    std::string modId = args[1].c_str();
+
+    if (modId == "vanilla") {
+        OTRGlobals::Instance->getItemModIndex = MOD_NONE; 
+    } else if (modId == "randomizer") {
+        OTRGlobals::Instance->getItemModIndex = MOD_RANDOMIZER; 
+    } else {
+        SohImGui::console->SendErrorMessage("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
+        return CMD_FAILED;
+    }
+
+    GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, std::stoi(args[2]));
+    Player *player = GET_PLAYER(gGlobalCtx);
+    s32 textId = 0xB4;
+
+    if (getItemEntry.getItemId == RG_ICE_TRAP) {
+        player->pendingIceTrap = true;
+        textId = 0xF8;
+    } else {
+        textId = getItemEntry.textId;
+        if (getItemEntry.modIndex == MOD_NONE) {
+            Item_Give(gGlobalCtx, getItemEntry.itemId);
+        } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+            Randomizer_Item_Give(gGlobalCtx, getItemEntry);
+        }
+    }
+    player->getItemEntry = getItemEntry;
+    if (getItemEntry.itemId != RG_ICE_TRAP) {
+        player->actor.freezeTimer = 20;
+    }
+
+    Message_StartTextbox(gGlobalCtx, textId, NULL);
+
+    if (getItemEntry.getItemId != RG_ICE_TRAP) {
+        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+    }
 
     return CMD_SUCCESS;
 }
@@ -510,9 +565,12 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("item", { ItemHandler,
                              "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",
                            { { "slot", Ship::ArgumentType::NUMBER }, { "item id", Ship::ArgumentType::NUMBER } } });
-    CMD_REGISTER("gItem", { GiveItemHandler,
+    CMD_REGISTER("give_item", { GiveItemHandler,
                              "Gives an item to the player as if it was given from an actor",
-                           { { "item id", Ship::ArgumentType::NUMBER } } });
+                           { { "vanilla|randomizer", Ship::ArgumentType::TEXT }, { "giveItemID", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("give_item_skull", { GetItemFromSkullHandler,
+                             "Gives an item to the player as if it was dropped by a skulltula",
+                           { { "vanilla|randomizer", Ship::ArgumentType::TEXT }, { "giveItemID", Ship::ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance", { EntranceHandler,
                                "Sends player to the entered entrance (hex)",
                                { { "entrance", Ship::ArgumentType::NUMBER } } });
