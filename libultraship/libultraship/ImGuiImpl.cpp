@@ -1593,8 +1593,10 @@ namespace SohImGui {
                     }
                     Tooltip("Sets the Speed of Time Slider back to 0.");
                     char timeRate[6];
+                    char timeMsg[22] = "Speed of Time: ";
                     sprintf(timeRate, "%d", (long)CVar_GetS32("gCurrRate", 0));
-                    PaddedEnhancementSliderInt("Speed of Time", "##TimeIncrementRate", "gTimeRate", 0, 400, timeRate, 0, true, true, false);
+                    strcat(timeRate, "x");
+                    PaddedEnhancementSliderInt(strcat(timeMsg,timeRate), "##TimeIncrementRate", "gTimeRate", 0, 400, "", 0, true, true, false);
                     char time[6];
                     sprintf(time, "%d", (long)CVar_GetS32("gCurrTime",0));
                     PaddedEnhancementSliderInt("Current Time of Day", "##CURRENTTIME", "gCurrTime", 0, 0xffff, time , 0, false, true, false);
