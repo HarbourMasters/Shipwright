@@ -9,27 +9,25 @@ pipeline {
     
     stages {
         stage('Generate Assets') {
-            options {
-                timeout(time: 10)
-            }
             agent {
                 label "SoH-Asset-Builders"
             }
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: scm.branches,
-                    doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                    extensions: scm.extensions,
-                    userRemoteConfigs: scm.userRemoteConfigs
-                ])
-                sh '''
-                    cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-
-                    cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-                    cmake --build build-cmake --target ExtractAssets --config Release
-                '''
-                stash includes: 'soh/assets/**/*', name: 'assets'
+                timeout(time: 10) {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: scm.branches,
+                        doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                        extensions: scm.extensions,
+                        userRemoteConfigs: scm.userRemoteConfigs
+                    ])
+                    sh '''
+                        cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                        cmake --build build-cmake --target ExtractAssets --config Release
+                    '''
+                    stash includes: 'soh/assets/**/*', name: 'assets'
+                }
             }
             post {
                 unsuccessful {

@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "Controller.h"
-#include "VirtualController.h"
+#include "DummyController.h"
 #include "KeyboardController.h"
 #include "SDLController.h"
 #include <Utils/StringHelper.h>
@@ -28,9 +28,9 @@ namespace Ship {
             }
         }
 
-        physicalDevices.push_back(std::make_shared<VirtualController>("Auto", "Auto", true));
+        physicalDevices.push_back(std::make_shared<DummyController>("Auto", "Auto", true));
         physicalDevices.push_back(std::make_shared<KeyboardController>());
-        physicalDevices.push_back(std::make_shared<VirtualController>("Disconnected", "None", false));
+        physicalDevices.push_back(std::make_shared<DummyController>("Disconnected", "None", false));
 
         for (const auto& device : physicalDevices) {
             for (int i = 0; i < MAXCONTROLLERS; i++) {
@@ -77,7 +77,7 @@ namespace Ship {
 		}
 	}
 
-#define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), slot, __VA_ARGS__)
+#define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), virtualSlot, __VA_ARGS__)
 
     void ControlDeck::LoadControllerSettings() {
         std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
@@ -102,25 +102,40 @@ namespace Ship {
 
             std::string guid = device->GetGuid();
 
-            for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
+            for (int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
 
-                if (!(Config->rjson["Controllers"].contains(guid) && Config->rjson["Controllers"][guid].contains(StringHelper::Sprintf("Slot_%d", slot)))) continue;
+                if (!(Config->rjson["Controllers"].contains(guid) && Config->rjson["Controllers"][guid].contains(StringHelper::Sprintf("Slot_%d", virtualSlot)))) continue;
 
-                auto& profile = device->profiles[slot];
-                auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", slot)];
+                auto profile = device->getProfile(virtualSlot);
+                auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", virtualSlot)];
 
-                profile.Mappings.clear();
-                profile.Thresholds.clear();
-                profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
-                profile.RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
-                profile.UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
+                profile->Mappings.clear();
+                profile->AxisDeadzones.clear();
+                profile->AxisSensitivities.clear();
+                profile->GyroData.clear();
+                profile->Version = Config->getInt(NESTED("Version", ""));
+                profile->UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
+                profile->RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
+                profile->UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
 
-                for (auto const& val : rawProfile["Thresholds"].items()) {
-                    profile.Thresholds[static_cast<ControllerThresholds>(std::stoi(val.key()))] = val.value();
+                for (auto const& val : rawProfile["AxisDeadzones"].items()) {
+                    profile->AxisDeadzones[std::stoi(val.key())] = val.value();
+                }
+
+                for (auto const& val : rawProfile["AxisSensitivities"].items()) {
+                    profile->AxisSensitivities[std::stoi(val.key())] = val.value();
+                }
+
+                for (auto const& val : rawProfile["AxisMinimumPress"].items()) {
+                    profile->AxisMinimumPress[std::stoi(val.key())] = val.value();
+                }
+
+                for (auto const& val : rawProfile["GyroData"].items()) {
+                    profile->GyroData[std::stoi(val.key())] = val.value();
                 }
 
                 for (auto const& val : rawProfile["Mappings"].items()) {
-                    device->SetButtonMapping(slot, std::stoi(val.key().substr(4)), val.value());
+                    device->SetButtonMapping(virtualSlot, std::stoi(val.key().substr(4)), val.value());
                 }
             }
         }
@@ -136,31 +151,45 @@ namespace Ship {
 
         for (const auto& device : physicalDevices) {
 
-            int slot = 0;
+            int32_t virtualSlot = 0;
             std::string guid = device->GetGuid();
 
-            for (const auto& profile : device->profiles) {
+            for (int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
+                auto profile = device->getProfile(virtualSlot);
 
                 if (!device->Connected()) continue;
 
-                auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", slot)];
-                Config->setBool(NESTED("Rumble.Enabled", ""), profile.UseRumble);
-                Config->setFloat(NESTED("Rumble.Strength", ""), profile.RumbleStrength);
-                Config->setBool(NESTED("Gyro.Enabled", ""), profile.UseGyro);
+                auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", virtualSlot)];
+                Config->setInt(NESTED("Version", ""), profile->Version);
+                Config->setBool(NESTED("Rumble.Enabled", ""), profile->UseRumble);
+                Config->setFloat(NESTED("Rumble.Strength", ""), profile->RumbleStrength);
+                Config->setBool(NESTED("Gyro.Enabled", ""), profile->UseGyro);
 
                 for (auto const& val : rawProfile["Mappings"].items()) {
                     Config->setInt(NESTED("Mappings.%s", val.key().c_str()), -1);
                 }
 
-                for (auto const& [key, val] : profile.Thresholds) {
-                    Config->setFloat(NESTED("Thresholds.%d", key), val);
+                for (auto const& [key, val] : profile->AxisDeadzones) {
+                    Config->setFloat(NESTED("AxisDeadzones.%d", key), val);
                 }
 
-                for (auto const& [key, val] : profile.Mappings) {
+                for (auto const& [key, val] : profile->AxisSensitivities) {
+                    Config->setFloat(NESTED("AxisSensitivities.%d", key), val);
+                }
+
+                for (auto const& [key, val] : profile->AxisMinimumPress) {
+                    Config->setFloat(NESTED("AxisMinimumPress.%d", key), val);
+                }
+
+                for (auto const& [key, val] : profile->GyroData) {
+                    Config->setFloat(NESTED("GyroData.%d", key), val);
+                }
+
+                for (auto const& [key, val] : profile->Mappings) {
                     Config->setInt(NESTED("Mappings.BTN_%d", val), key);
                 }
 
-                slot++;
+                virtualSlot++;
             }
         }
 
