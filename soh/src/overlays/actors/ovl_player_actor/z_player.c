@@ -12578,67 +12578,38 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
         Player_SetPendingFlag(this, globalCtx);
 
-        if (this->getItemEntry.objectId == OBJECT_INVALID) {
-            // Use this if player does not have a getItemEntry
-            if (giEntry.modIndex == MOD_NONE) {
-                if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
-                    ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
-                    ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
-                    (this->getItemId == GI_HEART)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else {
-                    if ((this->getItemId == GI_HEART_CONTAINER_2) || (this->getItemId == GI_HEART_CONTAINER) ||
-                        ((this->getItemId == GI_HEART_PIECE) &&
-                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-                        temp1 = NA_BGM_HEART_GET | 0x900;
-                    } else {
-                        temp1 = temp2 =
-                            (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
-                    }
-                    Audio_PlayFanfare(temp1);
-                }
-            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-                if (this->getItemId == RG_DOUBLE_DEFENSE || this->getItemId == RG_MAGIC_SINGLE ||
-                    this->getItemId == RG_MAGIC_DOUBLE) {
-                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
-                } else {
-                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-                }
+        // Use this if we do have a getItemEntry
+        if (giEntry.modIndex == MOD_NONE) {
+            if (gSaveContext.n64ddFlag) {
+                Audio_PlayFanfare_Rando(this->getItemId);
+            } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
+                        ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
+                        (giEntry.itemId == ITEM_HEART)) {
+                Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             } else {
-                // Just in case something weird happens with MOD_INDEX
+                if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
+                    ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                        ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                    temp1 = NA_BGM_HEART_GET | 0x900;
+                } else {
+                    temp1 = temp2 =
+                        (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                }
+                Audio_PlayFanfare(temp1);
+            }
+        } else if (giEntry.modIndex == MOD_RANDOMIZER) {
+            if (gSaveContext.n64ddFlag) {
+                Audio_PlayFanfare_Rando(this->getItemId);
+            } else if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
+                        giEntry.itemId == RG_MAGIC_DOUBLE) {
+                Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
+            } else {
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         } else {
-            // Use this if we do have a getItemEntry
-            if (giEntry.modIndex == MOD_NONE) {
-                if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
-                    ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
-                    (giEntry.itemId == ITEM_HEART)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else {
-                    if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
-                        ((giEntry.itemId == ITEM_HEART_PIECE) &&
-                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-                        temp1 = NA_BGM_HEART_GET | 0x900;
-                    } else {
-                        temp1 = temp2 =
-                            (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
-                    }
-                    Audio_PlayFanfare(temp1);
-                }
-            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-                if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
-                    giEntry.itemId == RG_MAGIC_DOUBLE) {
-                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
-                } else {
-                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-                }
-            } else {
-                // Just in case something weird happens with modIndex.
-                Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-            }
+            // Just in case something weird happens with modIndex.
+            Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
         }
-        //this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
