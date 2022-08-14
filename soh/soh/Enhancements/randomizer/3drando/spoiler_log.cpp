@@ -315,6 +315,8 @@ static void WriteShuffledEntrance(
     int16_t originalBlueWarp = entrance->GetBlueWarp();
     int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
     int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    std::string name = entrance->getnewregion();
+    std::string name2 = entrance->GetName();
   // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
@@ -322,7 +324,9 @@ static void WriteShuffledEntrance(
         default:
             jsonData["Entrances"][std::to_string(originalIndex)] = replacementIndex;
             jsonData["Entrances"][std::to_string(replacementDestinationIndex)] = destinationIndex;
+            jsonData["EntrancesMap"][name2] = name;
             break;
+
     }
 //   tinyxml2::XMLElement* parentNode,
 //   Entrance* entrance,

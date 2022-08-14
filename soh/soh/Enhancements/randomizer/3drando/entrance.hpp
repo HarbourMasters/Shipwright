@@ -117,6 +117,10 @@ public:
         return AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
     }
 
+    std::string getnewregion() const {
+        return AreaTable(connectedRegion)->regionName;
+    }
+
     void SetName(std::string name_ = "") {
         if (name_ == "") {
           name = AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
