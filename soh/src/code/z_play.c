@@ -280,6 +280,16 @@ void Gameplay_Init(GameState* thisx) {
     if (gSaveContext.n64ddFlag && true) { // TODO: Replace true with check for entrance rando setting
         // TODO: Can we use a map here for a constant time lookup?
         for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
+            if (gSaveContext.entranceIndex == 0x003f || gSaveContext.entranceIndex == 0x0598 ||
+                gSaveContext.entranceIndex == 0x059C || gSaveContext.entranceIndex == 0x05A0 ||
+                gSaveContext.entranceIndex == 0x05A4 || gSaveContext.entranceIndex == 0x05A8 ||
+                gSaveContext.entranceIndex == 0x05AC || gSaveContext.entranceIndex == 0x05B0 ||
+                gSaveContext.entranceIndex == 0x05B4 || gSaveContext.entranceIndex == 0x05B8 ||
+                gSaveContext.entranceIndex == 0x05BC || gSaveContext.entranceIndex == 0x05C0 ||
+                gSaveContext.entranceIndex == 0x05C4) {
+                break;
+                }
+               
             if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
                 gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
                 break;
