@@ -2551,6 +2551,8 @@ namespace Settings {
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
+    BombchusInLogic.SetSelectedIndex(cvarSettings[RSK_BOMBCHUS_IN_LOGIC]);
+
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);
     

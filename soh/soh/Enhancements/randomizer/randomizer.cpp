@@ -1688,6 +1688,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_COMPLETE_MASK_QUEST:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
+                    case RSK_BOMBCHUS_IN_LOGIC:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -4169,9 +4170,9 @@ void DrawRandoEditor(bool& open) {
                         InsertHelpHoverText(
                             "Bombchus are properly considered in logic.\n"
                             "\n"
-                            "The first Bombchu pack will always be 20, and subsequent packs will be"
+                            "The first Bombchu pack will always be 20, and subsequent packs will be "
                             "5 or 10 based on how many you have.\n"
-                            "Once found, they can be replenished at the Kokiri shop, Bazaar, or Bombchu"
+                            "Once found, they can be replenished at the Kokiri shop, Bazaar, or Bombchu "
                             "shop.\n"
                             "\n"
                             "Bombchu Bowling is opened by obtaining Bombchus."
