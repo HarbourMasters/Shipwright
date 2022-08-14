@@ -199,16 +199,41 @@ void func_80ABF28C(EnOkarinaTag* this, GlobalContext* globalCtx) {
             if (player->stateFlags2 & 0x1000000) {
                 switch (this->type) {
                     case 1:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        if ((CVar_GetS32("gQuickOcarina", 0) != 0) && (CHECK_QUEST_ITEM(QUEST_SONG_LULLABY))) {
+                            player->stateFlags2 |= 0x800000;
+                            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                            this->actionFunc = func_80ABF4C8;
+                        } else {
+                            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        }
                         break;
                     case 2:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_STORMS);
+                        if ((CVar_GetS32("gQuickOcarina", 0) != 0) && (CHECK_QUEST_ITEM(QUEST_SONG_STORMS))) {
+                            player->stateFlags2 |= 0x800000;
+                            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                            this->actionFunc = func_80ABF4C8;
+                        }
+                        else {
+                            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_STORMS);
+                        }
                         break;
                     case 4:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_TIME);
+                        if ((CVar_GetS32("gQuickOcarina", 0) != 0) && (CHECK_QUEST_ITEM(QUEST_SONG_TIME))) {
+                            player->stateFlags2 |= 0x800000;
+                            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                            this->actionFunc = func_80ABF4C8;
+                        } else {
+                            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_TIME);
+                        }
                         break;
                     case 6:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        if ((CVar_GetS32("gQuickOcarina", 0) != 0) && (CHECK_QUEST_ITEM(QUEST_SONG_LULLABY))) {
+                            player->stateFlags2 |= 0x800000;
+                            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                            this->actionFunc = func_80ABF4C8;
+                        } else {
+                            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        }
                         break;
                     default:
                         // "Ocarina Invisible-kun demo start check error source"
