@@ -1452,6 +1452,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+    { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -2229,7 +2230,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_RUPEE_BLUE;
         
         case RG_PROGRESSIVE_BOMBCHUS:
-            return GI_BOMBCHUS_20; //todo progressive?
+        	if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                return GI_BOMBCHUS_20;
+            }
+            if (AMMO(ITEM_BOMBCHU) < 5) {
+                return GI_BOMBCHUS_10;
+            }
+            return GI_BOMBCHUS_5;
         
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
@@ -3540,6 +3547,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
+    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -4152,6 +4160,21 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "This setting does not effect the item earned from playing\n"
                             "the Song of Storms and the frog song minigame."
+                        );
+                        PaddedSeparator();
+
+                        // Bombchus in Logic
+                        // TODO: add to world settings after entrance rando gets merged
+                        SohImGui::EnhancementCheckbox(Settings::BombchusInLogic.GetName().c_str(), "gRandomizeBombchusInLogic");
+                        InsertHelpHoverText(
+                            "Bombchus are properly considered in logic.\n"
+                            "\n"
+                            "The first Bombchu pack will always be 20, and subsequent packs will be"
+                            "5 or 10 based on how many you have.\n"
+                            "Once found, they can be replenished at the Kokiri shop, Bazaar, or Bombchu"
+                            "shop.\n"
+                            "\n"
+                            "Bombchu Bowling is opened by obtaining Bombchus."
                         );
                     }
                     ImGui::PopItemWidth();
