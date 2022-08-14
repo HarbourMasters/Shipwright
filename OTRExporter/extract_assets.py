@@ -33,10 +33,11 @@ def BuildOTR(xmlPath, rom, zapd_exe=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-z", "--zapd", help="Path to ZAPD executable", dest="zapd_exe", type=str)
+    parser.add_argument("rom", help="Path to the rom", type=str, nargs="?")
 
     args = parser.parse_args()
 
-    rom_path = rom_chooser.chooseROM()
+    rom_path = args.rom if args.rom else rom_chooser.chooseROM()
     rom = Z64Rom(rom_path)
 
     if (os.path.exists("Extract")):
