@@ -183,7 +183,7 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->epoch++;
 
     // Skip Poe Intro Cutscene
-    if (gSaveContext.n64ddFlag && thisx->params == 4124) {
+    if (gSaveContext.n64ddFlag && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
         Flags_SetSwitch(globalCtx, 0x1B);
         Actor_Kill(thisx);
     }

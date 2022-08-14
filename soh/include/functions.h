@@ -1055,6 +1055,7 @@ s32 Inventory_HasEmptyBottle(void);
 s32 Inventory_HasSpecificBottle(u8 bottleItem);
 void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 cButton);
 s32 Inventory_ConsumeFairy(GlobalContext* globalCtx);
+bool Inventory_HatchPocketCucco(GlobalContext* globalCtx);
 void Interface_SetDoAction(GlobalContext* globalCtx, u16 action);
 void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState);
 void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action);
