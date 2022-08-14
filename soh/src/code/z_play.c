@@ -280,6 +280,9 @@ void Gameplay_Init(GameState* thisx) {
     if (gSaveContext.n64ddFlag && true) { // TODO: Replace true with check for entrance rando setting
         // TODO: Can we use a map here for a constant time lookup?
         for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
+            if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
+                break;
+                }
                
             if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
                 gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
@@ -293,7 +296,7 @@ void Gameplay_Init(GameState* thisx) {
                     continue;
                 }
         }
-    }
+    } 
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
