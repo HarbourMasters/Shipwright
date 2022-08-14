@@ -113,7 +113,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                         }
                     }
                     player->getItemEntry = getItem;
-                    player->getItemId = getItemId;
+                    //player->getItemId = getItemId;
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
@@ -160,7 +160,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
                     Randomizer_Item_Give(globalCtx, getItem);
                 }
             }
-            player->getItemId = getItemId;
+            //player->getItemId = getItemId;
             player->getItemEntry = getItem;
         } else {
             Item_Give(globalCtx, giveItemId);

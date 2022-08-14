@@ -1667,7 +1667,13 @@ extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetIte
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
 
-extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
+    s16 giid;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        giid = player->getItemEntry.getItemId;
+    } else {
+        giid = player->getItemId;
+    }
     const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
@@ -1682,7 +1688,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             messageEntry =
-                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+                Randomizer_GetCustomGetItemMessage(GET_PLAYER(globalCtx));
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
