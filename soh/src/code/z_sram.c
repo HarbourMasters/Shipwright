@@ -417,7 +417,7 @@ void GiveLinkDungeonReward(uint16_t getItemId) {
 }
 
 void GiveLinksPocketMedallion() {
-    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+    RandomizerGet getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
     GiveLinkDungeonReward(getItemId);
 }
@@ -761,15 +761,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     if (iid != -1) INV_CONTENT(iid) = iid;
                 }
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
-                if (giid == RG_MAGIC_SINGLE || giid == RG_MAGIC_DOUBLE) {
-                    GiveLinkMagic(giid);
-                } else if (giid == RG_DOUBLE_DEFENSE) {
-                    GiveLinkDoubleDefense();
-                } else if (giid >= RG_KOKIRI_EMERALD && giid <= RG_LIGHT_MEDALLION) {
-                    GiveLinkDungeonReward(giid);
-                } else if (giid >= RG_ZELDAS_LULLABY && giid <= RG_PRELUDE_OF_LIGHT) {
-                    GiveLinkSong(giid);
-                }
+                Randomizer_Item_Give(NULL, getItem);
             }
 
             // malon/talon back at ranch
