@@ -21,6 +21,7 @@ void func_80AFB950(EnSi* this, GlobalContext* globalCtx);
 s32 textId = 0xB4;
 s32 giveItemId = ITEM_SKULL_TOKEN;
 s32 getItemId;
+GetItemEntry getItem;
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -98,7 +99,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (gSaveContext.n64ddFlag) {
-                    GetItemEntry getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                    getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
                     getItemId = getItem.getItemId;
                     if (getItem.getItemId == RG_ICE_TRAP) {
                         player->pendingIceTrap = true;
@@ -123,7 +124,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 Message_StartTextbox(globalCtx, textId, NULL);
 
                 if (gSaveContext.n64ddFlag) {
-                    Audio_PlayFanfare_Rando(getItemId);
+                    Audio_PlayFanfare_Rando(getItem);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
@@ -146,7 +147,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
-            GetItemEntry getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             getItemId = getItem.getItemId;
             if (getItemId == RG_ICE_TRAP) {
                 player->pendingIceTrap = true;
@@ -167,7 +168,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
         }
         Message_StartTextbox(globalCtx, textId, NULL);
         if (gSaveContext.n64ddFlag) {
-            Audio_PlayFanfare_Rando(getItemId);
+            Audio_PlayFanfare_Rando(getItem);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
@@ -205,7 +206,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
-            GetItemEntry getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItem);
             if (getItem.itemId != ITEM_SKULL_TOKEN) {
                 f32 mtxScale = 1.5f;

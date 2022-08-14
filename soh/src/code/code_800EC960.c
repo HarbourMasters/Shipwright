@@ -1246,7 +1246,7 @@ void Audio_StepFreqLerp(FreqLerp* lerp);
 void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
-void Audio_PlayFanfare_Rando(ItemID getItemId);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {

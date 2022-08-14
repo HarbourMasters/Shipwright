@@ -12581,7 +12581,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
             if (gSaveContext.n64ddFlag) {
-                Audio_PlayFanfare_Rando(this->getItemId);
+                Audio_PlayFanfare_Rando(giEntry);
             } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                         ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
                         (giEntry.itemId == ITEM_HEART)) {
@@ -12599,7 +12599,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             }
         } else if (giEntry.modIndex == MOD_RANDOMIZER) {
             if (gSaveContext.n64ddFlag) {
-                Audio_PlayFanfare_Rando(this->getItemId);
+                Audio_PlayFanfare_Rando(giEntry);
             } else if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
                         giEntry.itemId == RG_MAGIC_DOUBLE) {
                 Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
