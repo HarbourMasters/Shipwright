@@ -24,7 +24,8 @@ struct GameAsset {
 namespace SohImGui {
     enum class Backend {
         DX11,
-        SDL
+        SDL,
+        GX2,
     };
 
     enum class SDLGfxApi {
@@ -51,6 +52,10 @@ namespace SohImGui {
                 void* context;
                 SDLGfxApi gfx_api;
             } sdl;
+            struct {
+                uint32_t width;
+                uint32_t height;
+            } gx2;
         };
     } WindowImpl;
 
@@ -64,6 +69,9 @@ namespace SohImGui {
         struct {
             void* event;
         } sdl;
+        struct {
+            void* input;
+        } gx2;
     } EventImpl;
 
     extern WindowImpl impl;

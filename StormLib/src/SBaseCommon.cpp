@@ -2005,7 +2005,7 @@ void ConvertTMPQHeader(void *header, uint16_t version)
 	TMPQHeader * theHeader = (TMPQHeader *)header;
 
     // Swap header part version 1
-    if(version == MPQ_FORMAT_VERSION_1)
+    if(version >= MPQ_FORMAT_VERSION_1)
     {
 	    theHeader->dwID = SwapUInt32(theHeader->dwID);
 	    theHeader->dwHeaderSize = SwapUInt32(theHeader->dwHeaderSize);
@@ -2018,21 +2018,21 @@ void ConvertTMPQHeader(void *header, uint16_t version)
 	    theHeader->dwBlockTableSize = SwapUInt32(theHeader->dwBlockTableSize);
     }
 
-	if(version == MPQ_FORMAT_VERSION_2)
+	if(version >= MPQ_FORMAT_VERSION_2)
 	{
 		theHeader->HiBlockTablePos64 = SwapUInt64(theHeader->HiBlockTablePos64);
         theHeader->wHashTablePosHi = SwapUInt16(theHeader->wHashTablePosHi);
 		theHeader->wBlockTablePosHi = SwapUInt16(theHeader->wBlockTablePosHi);
     }
 
-    if(version == MPQ_FORMAT_VERSION_3)
+    if(version >= MPQ_FORMAT_VERSION_3)
     {
         theHeader->ArchiveSize64 = SwapUInt64(theHeader->ArchiveSize64);
         theHeader->BetTablePos64 = SwapUInt64(theHeader->BetTablePos64);
         theHeader->HetTablePos64 = SwapUInt64(theHeader->HetTablePos64);
     }
 
-    if(version == MPQ_FORMAT_VERSION_4)
+    if(version >= MPQ_FORMAT_VERSION_4)
 	{
         theHeader->HashTableSize64    = SwapUInt64(theHeader->HashTableSize64);
         theHeader->BlockTableSize64   = SwapUInt64(theHeader->BlockTableSize64);
