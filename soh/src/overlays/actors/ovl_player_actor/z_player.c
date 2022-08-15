@@ -6104,14 +6104,14 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 this->getItemId = iREG(68);
             }
 
-            if (this->getItemId < GI_MAX) {
-                GetItemEntry giEntry;
-                if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                    giEntry = ItemTable_Retrieve(this->getItemId);
-                } else {
-                    giEntry = this->getItemEntry;
-                }
-
+            GetItemEntry giEntry;
+            if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                giEntry = ItemTable_Retrieve(this->getItemId);
+            } else {
+                giEntry = this->getItemEntry;
+            }
+            if ((giEntry.modIndex == MOD_NONE && this->getItemId < GI_MAX) || 
+                (giEntry.modIndex == MOD_RANDOMIZER && this->getItemId < RG_MAX)) {
                 if ((interactedActor != &this->actor) && !iREG(67)) {
                     interactedActor->parent = &this->actor;
                 }
