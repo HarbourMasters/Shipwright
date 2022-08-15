@@ -1207,7 +1207,7 @@ namespace SohImGui {
                         PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                         PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
-                        Tooltip("Skip learning the Scarecrow Song. Pierre appears when Ocarina is pulled out."); 
+                        Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song."); 
                         PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
