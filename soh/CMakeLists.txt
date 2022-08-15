@@ -1696,9 +1696,20 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
-endif()
-
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+	target_compile_definitions(${PROJECT_NAME} PRIVATE
+		"$<$<CONFIG:Debug>:"
+				"_DEBUG"
+		">"
+		"$<$<CONFIG:Release>:"
+			"NDEBUG"
+		">"
+        "SPDLOG_ACTIVE_LEVEL=3;"
+		"SPDLOG_NO_THREAD_ID;"
+        "SPDLOG_NO_TLS;"
+		"STBI_NO_THREAD_LOCALS;"
+	)
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
 				"_DEBUG"
@@ -1825,6 +1836,26 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
         )
+    elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -O2
+
+            # disable some warnings to not clutter output
+            -Wno-multichar
+            -Wno-return-type
+            -Wno-narrowing
+            -Wno-switch-outside-range
+            $<$<COMPILE_LANGUAGE:C>:
+                -Wno-incompatible-pointer-types
+                -Wno-discarded-array-qualifiers
+                -Wno-discarded-qualifiers
+                -Wno-int-conversion
+                -Wno-implicit-function-declaration
+                -Wno-builtin-declaration-mismatch
+                -Wno-switch-unreachable
+                -Wno-stringop-overflow
+            >
+        )
     else()
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 		set(CPU_OPTION -msse2 -mfpmath=sse)
@@ -1908,6 +1939,18 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
         -lglad
         Threads::Threads
     )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+    find_package(SDL2 REQUIRED)
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "ZAPDUtils;"
+        SDL2::SDL2-static
+
+        "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
+    )
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${DEVKITPRO}/portlibs/wiiu/include/
+    )
 else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -1961,7 +2004,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endif()
 endif()
 
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 endif()
 
@@ -1970,7 +2013,7 @@ execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
-elseif(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoSwitch")
+elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()
 
@@ -1982,9 +2025,9 @@ install(CODE "
     ")
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     if (NOT TARGET pathconf)
-        add_library(pathconf OBJECT switch/pathconf.c)
+        add_library(pathconf OBJECT platform/pathconf.c)
     endif()
     target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
 else()
@@ -2005,5 +2048,11 @@ nx_create_nro(soh
 )
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.nro DESTINATION . COMPONENT ship)
+
+elseif(CMAKE_SYSTEM_NAME MATCHES "CafeOS")
+
+wut_create_rpx(${PROJECT_NAME})
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx DESTINATION . COMPONENT ship)
 
 endif()
