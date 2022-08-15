@@ -184,7 +184,6 @@ static void pop_buffer_and_wait_to_requeue(MTL::CommandBuffer* command_buffer) {
     mctx.buffer_pool.pop();
 
     command_buffer->addCompletedHandler(^void( MTL::CommandBuffer* cmd_buf ){
-        SPDLOG_TRACE("Metal: buffer pool size: {}", mctx.buffer_pool.size());
         if (mctx.buffer_pool.size() <= kMaxBufferPoolSize) {
             mctx.buffer_pool.push(buffer);
         }
@@ -853,8 +852,6 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 static void gfx_metal_on_resize(void) {}
 
 static void gfx_metal_start_frame(void) {
-    SPDLOG_TRACE("Metal: Start frame");
-
     mctx.frame_uniforms.frameCount++;
     if (mctx.frame_uniforms.frameCount > 150) {
         // No high values, as noise starts to look ugly
@@ -871,7 +868,6 @@ static void gfx_metal_start_frame(void) {
 }
 
 void gfx_metal_end_frame(void) {
-    SPDLOG_TRACE("Metal: End frame");
     std::set<int>::iterator it = mctx.drawn_framebuffers.begin();
     it++;
 
@@ -881,7 +877,6 @@ void gfx_metal_end_frame(void) {
         if (!framebuffer.has_ended_encoding)
             framebuffer.command_encoder->endEncoding();
 
-        SPDLOG_TRACE("End encoding for framebuffer: {}", *it);
         pop_buffer_and_wait_to_requeue(framebuffer.command_buffer);
         framebuffer.command_buffer->commit();
         framebuffer.command_buffer->waitUntilCompleted();
@@ -891,7 +886,6 @@ void gfx_metal_end_frame(void) {
 
     auto screen_framebuffer = mctx.framebuffers[0];
     screen_framebuffer.command_encoder->endEncoding();
-    SPDLOG_TRACE("End encoding for framebuffer: {}", 0);
 
     screen_framebuffer.command_buffer->presentDrawable(mctx.current_drawable);
 
@@ -1002,7 +996,6 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
 }
 
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
-    SPDLOG_TRACE("Being asked to update framebuffer params: {} - msaa: {} x {}", fb_id, CVar_GetS32("gMSAAValue", 1), msaa_level);
 
     // Screen framebuffer is handled separately on a frame by frame basis
     // see `gfx_metal_setup_screen_framebuffer`.
@@ -1143,7 +1136,6 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     mctx.current_framebuffer = fb_id;
     mctx.drawn_framebuffers.insert(fb_id);
-    SPDLOG_TRACE("Being asked to draw to framebuffer: {}", fb_id);
 
     if (fb.render_target && fb.command_buffer == nullptr && fb.command_encoder == nullptr) {
         fb.command_buffer = mctx.command_queue->commandBuffer();
@@ -1256,10 +1248,6 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
 }
 
 void *gfx_metal_get_framebuffer_texture_id(int fb_id) {
-    if (fb_id != 0) {
-        auto texture = mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
-        SPDLOG_TRACE("Being asked for texture framebuffer: {}", fb_id);
-    }
     return (void*)mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
 }
 
