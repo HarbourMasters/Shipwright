@@ -130,7 +130,11 @@ cmake --build build-cmake --target ExtractAssets
 # Compile the project
 cmake --build build-cmake # --config Release (if you're packaging)
 
-# Now you can run the executable in ./build-cmake/soh/soh-macos
+# Copy oot.otr into the Application Support directory
+cp build-cmake/soh/oot.otr ~/Library/Application\ Support/com.shipofharkinian.soh/
+
+# Now you can run the executable file:
+./build-cmake/soh/soh-macos
 # To develop the project open the repository in VSCode (or your preferred editor)
 
 # If you need to clean the project you can run
