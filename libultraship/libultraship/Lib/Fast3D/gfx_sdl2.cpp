@@ -15,7 +15,7 @@
 #include "SDL_opengl.h"
 #elif __APPLE__
 #include <SDL.h>
-#include "gfx_metal.h"
+#include "gfx_metal.hpp"
 #elif __SWITCH__
 #include <SDL2/SDL.h>
 #include <switch.h>

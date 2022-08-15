@@ -182,9 +182,9 @@ set(Source_Files__Lib__Fast3D__extra
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 set(Source_Files__Lib__Fast3D__extra
     "Lib/Fast3D/gfx_metal.cpp"
-    "Lib/Fast3D/gfx_metal.h"
-    "Lib/Fast3D/gfx_metal_helper.mm"
-    "Lib/Fast3D/gfx_metal_helper.h"
+    "Lib/Fast3D/gfx_metal.hpp"
+    "Lib/Fast3D/gfx_metal_bridge.mm"
+    "Lib/Fast3D/gfx_metal_bridge.hpp"
 )
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})

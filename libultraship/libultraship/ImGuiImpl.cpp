@@ -41,7 +41,7 @@
 #endif
 
 #ifdef ENABLE_METAL
-#include "Lib/Fast3D/gfx_metal.h"
+#include "Lib/Fast3D/gfx_metal.hpp"
 #include "Lib/ImGui/backends/imgui_impl_metal.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
 #endif

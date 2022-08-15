@@ -1,7 +1,7 @@
 #ifdef ENABLE_METAL
 
-#ifndef GFX_METAL_HELPER_H
-#define GFX_METAL_HELPER_H
+#ifndef gfx_metal_bridge_hpp
+#define gfx_metal_bridge_hpp
 
 void set_layer_pixel_format(void* layer);
 void set_layer_drawable_size(void* layer, uint32_t width, uint32_t height);

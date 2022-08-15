@@ -4,7 +4,7 @@
 #include "Lib/Fast3D/gfx_dxgi.h"
 #include "Lib/Fast3D/gfx_glx.h"
 #include "Lib/Fast3D/gfx_opengl.h"
-#include "Lib/Fast3D/gfx_metal.h"
+#include "Lib/Fast3D/gfx_metal.hpp"
 #include "Lib/Fast3D/gfx_direct3d11.h"
 #include "Lib/Fast3D/gfx_direct3d12.h"
 #include "Lib/Fast3D/gfx_window_manager_api.h"

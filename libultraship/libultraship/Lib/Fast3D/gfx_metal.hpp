@@ -1,7 +1,7 @@
 #ifdef ENABLE_METAL
 
-#ifndef GFX_METAL_H
-#define GFX_METAL_H
+#ifndef gfx_metal_hpp
+#define gfx_metal_hpp
 
 #include "gfx_rendering_api.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"

@@ -20,7 +20,8 @@
 #include <Foundation/Foundation.hpp>
 #include <Metal/Metal.hpp>
 #include <QuartzCore/QuartzCore.hpp>
-#include "gfx_metal_helper.h"
+
+#include "gfx_metal_bridge.hpp"
 
 #include "Lib/ImGui/backends/imgui_impl_metal.h"
 #include "Lib/SDL/SDL2/SDL_render.h"
@@ -54,15 +55,6 @@ struct hash_pair_shader_ids {
     }
 };
 
-struct hash_tuple_pipeline_state {
-    size_t operator()(const std::tuple<uint64_t, uint32_t, int> &p ) const {
-        auto value0 = std::get<0>(p);
-        auto value1 = std::get<1>(p);
-        auto value2 = std::get<2>(p);
-        return cantor(value0, cantor(value1, value2));
-    }
-};
-
 // MARK: - Structs
 
 struct ShaderProgramMetal {
@@ -72,6 +64,9 @@ struct ShaderProgramMetal {
     uint8_t num_inputs;
     uint8_t num_floats;
     bool used_textures[2];
+
+    // hashed by msaa_level
+    std::unordered_map<int, MTL::RenderPipelineState*> pipeline_state_variants;
 };
 
 struct FrameUniforms {
@@ -123,7 +118,6 @@ static struct {
 
     std::queue<MTL::Buffer*> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
-    std::unordered_map<std::tuple<uint64_t, uint32_t, int>, MTL::RenderPipelineState*, hash_tuple_pipeline_state> pipeline_state_cache;
 
     std::vector<struct TextureDataMetal> textures;
     std::vector<FramebufferMetal> framebuffers;
@@ -308,7 +302,6 @@ void Metal_NewFrame() {
     int width, height;
     SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
     set_layer_drawable_size(mctx.layer, width, height);
-
     gfx_metal_setup_screen_framebuffer(width, height);
 
     MTL::RenderPassDescriptor* current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
@@ -619,7 +612,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         pipeline_descriptor->colorAttachments()->object(0)->setWriteMask(MTL::ColorWriteMaskAll);
     }
 
-    struct ShaderProgramMetal *prg = (struct ShaderProgramMetal *)calloc(1, sizeof(struct ShaderProgramMetal));
+    struct ShaderProgramMetal* prg = &mctx.shader_program_pool[std::make_pair(shader_id0, shader_id1)];
     prg->shader_id0 = shader_id0;
     prg->shader_id1 = shader_id1;
     prg->used_textures[0] = cc_features.used_textures[0];
@@ -642,12 +635,11 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
                 SPDLOG_ERROR("Failed to create pipeline state, error {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
             }
 
-            mctx.pipeline_state_cache.insert({ std::make_tuple(shader_id0, shader_id1, msaa_level), pipeline_state });
+            prg->pipeline_state_variants[msaa_level] = pipeline_state;
         }
     }
 
     gfx_metal_load_shader((struct ShaderProgram *)prg);
-    mctx.shader_program_pool.insert({std::make_pair(shader_id0, shader_id1), *prg});
 
     autorelease_pool->release();
 
@@ -822,9 +814,8 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     if (current_framebuffer.last_shader_program != mctx.shader_program) {
         current_framebuffer.last_shader_program = mctx.shader_program;
 
-        MTL::RenderPipelineState* pipeline_state = mctx.pipeline_state_cache.find(
-                                                                                  std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, current_framebuffer.msaa_level)
-                                                                                  )->second;
+        MTL::RenderPipelineState* pipeline_state = mctx.shader_program->pipeline_state_variants
+            .find(current_framebuffer.msaa_level)->second;
 
         current_framebuffer.command_encoder->setRenderPipelineState(pipeline_state);
     }
