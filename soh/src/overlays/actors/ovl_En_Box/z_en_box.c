@@ -305,8 +305,10 @@ void func_809C9700(EnBox* this, GlobalContext* globalCtx) {
             func_8010BD58(globalCtx, OCARINA_ACTION_FREE_PLAY);
             this->unk_1FB = ENBOX_STATE_2;
         } else if (this->unk_1FB == ENBOX_STATE_2 && globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
-            if ((globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_LULLABY && this->type == ENBOX_TYPE_9) ||
-                (globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS && this->type == ENBOX_TYPE_10)) {
+            if (((globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_LULLABY && this->type == ENBOX_TYPE_9) || 
+                ((CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_LULLABY)))) ||
+                ((globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS && this->type == ENBOX_TYPE_10) || 
+                (CVar_GetS32("gQuickOcarina",0)!=0 && CHECK_QUEST_ITEM(QUEST_SONG_SUN)))){
                 this->dyna.actor.flags &= ~ACTOR_FLAG_25;
                 EnBox_SetupAction(this, EnBox_AppearInit);
                 OnePointCutscene_Attention(globalCtx, &this->dyna.actor);

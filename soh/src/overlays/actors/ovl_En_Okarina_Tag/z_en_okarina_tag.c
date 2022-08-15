@@ -127,8 +127,31 @@ void func_80ABEF2C(EnOkarinaTag* this, GlobalContext* globalCtx) {
                         ocarinaSong = 0xA;
                     }
                     player->stateFlags2 |= 0x800000;
-                    func_8010BD58(globalCtx, ocarinaSong + OCARINA_ACTION_CHECK_SARIA);
-                    this->actionFunc = func_80ABF0CC;
+                    bool hasSong = false;
+                    if (ocarinaSong == 0 && CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
+                        hasSong = true;
+                    } else if (ocarinaSong == 1 && CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+                        hasSong = true;
+                    } else if (ocarinaSong == 2 && CHECK_QUEST_ITEM(QUEST_SONG_LULLABY)) {
+                        hasSong = true;
+                    } else if (ocarinaSong == 3 && CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+                        hasSong = true;
+                    } else if (ocarinaSong == 4 && CHECK_QUEST_ITEM(QUEST_SONG_TIME)) {
+                        hasSong = true;
+                    } else if (ocarinaSong == 5 && CHECK_QUEST_ITEM(QUEST_SONG_STORMS)) {
+                        hasSong = true;
+                    } else {
+                        hasSong = false;
+                    }
+                    if (hasSong && (CVar_GetS32("gQuickOcarina",0)!=0)) {
+                        hasSong = false;
+                        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                        this->actionFunc = func_80ABF0CC;
+                    } else {
+                        gSaveContext.dayTime = 0x0000;
+                        func_8010BD58(globalCtx, ocarinaSong + OCARINA_ACTION_CHECK_SARIA);
+                        this->actionFunc = func_80ABF0CC;
+                    }
                 } else if ((this->actor.xzDistToPlayer < (50.0f + this->interactRange) &&
                             ((fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 40.0f)))) {
                     this->unk_15A = 0;

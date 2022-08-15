@@ -251,28 +251,37 @@ void func_809DF8FC(EnCow* this, GlobalContext* globalCtx) {
 }
 
 void func_809DF96C(EnCow* this, GlobalContext* globalCtx) {
-    if ((globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_00) || (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
-        if (DREG(53) != 0) {
-            if (this->unk_276 & 4) {
-                this->unk_276 &= ~0x4;
-                DREG(53) = 0;
-            } else {
-                if ((this->actor.xzDistToPlayer < 150.0f) &&
-                    (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
+    if (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && globalCtx->msgCtx.ocarinaAction == 1 &&
+        ((this->actor.xzDistToPlayer < 150.0f) && (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8))) {
+        this->actionFunc = func_809DF8FC;
+        this->actor.flags |= ACTOR_FLAG_16;
+        func_8002F2CC(&this->actor, globalCtx, 170.0f);
+        this->actor.textId = 0x2006;
+        func_809DF494(this, globalCtx);
+    } else {
+        if ((globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_00) || (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
+            if (DREG(53) != 0) {
+                if (this->unk_276 & 4) {
+                    this->unk_276 &= ~0x4;
                     DREG(53) = 0;
-                    this->actionFunc = func_809DF8FC;
-                    this->actor.flags |= ACTOR_FLAG_16;
-                    func_8002F2CC(&this->actor, globalCtx, 170.0f);
-                    this->actor.textId = 0x2006;
                 } else {
-                    this->unk_276 |= 4;
+                    if ((this->actor.xzDistToPlayer < 150.0f) &&
+                        (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
+                        DREG(53) = 0;
+                        this->actionFunc = func_809DF8FC;
+                        this->actor.flags |= ACTOR_FLAG_16;
+                        func_8002F2CC(&this->actor, globalCtx, 170.0f);
+                        this->actor.textId = 0x2006;
+                    } else {
+                        this->unk_276 |= 4;
+                    }
                 }
+            } else {
+                this->unk_276 &= ~0x4;
             }
-        } else {
-            this->unk_276 &= ~0x4;
         }
+        func_809DF494(this, globalCtx);
     }
-    func_809DF494(this, globalCtx);
 }
 
 void func_809DFA84(EnCow* this, GlobalContext* globalCtx) {

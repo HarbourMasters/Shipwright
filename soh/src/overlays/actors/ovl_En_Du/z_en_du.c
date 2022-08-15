@@ -322,10 +322,17 @@ void func_809FE3C0(EnDu* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (player->stateFlags2 & 0x1000000) {
-        func_8010BD88(globalCtx, OCARINA_ACTION_CHECK_SARIA);
-        player->stateFlags2 |= 0x2000000;
-        player->unk_6A8 = &this->actor;
-        EnDu_SetupAction(this, func_809FE4A4);
+        if (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
+            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+            player->stateFlags2 |= 0x2000000;
+            player->unk_6A8 = &this->actor;
+            EnDu_SetupAction(this, func_809FE4A4);
+        } else {
+            func_8010BD88(globalCtx, OCARINA_ACTION_CHECK_SARIA);
+            player->stateFlags2 |= 0x2000000;
+            player->unk_6A8 = &this->actor;
+            EnDu_SetupAction(this, func_809FE4A4);
+        }
         return;
     }
     if (this->unk_1F4.unk_00 == 2) {

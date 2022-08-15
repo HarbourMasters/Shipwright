@@ -909,8 +909,13 @@ void EnSkj_WaitInRange(EnSkj* this, GlobalContext* globalCtx) {
         player->actor.world.pos.y = sSmallStumpSkullKid.skullkid->actor.world.pos.y;
         player->actor.world.pos.z = sSmallStumpSkullKid.skullkid->actor.world.pos.z;
         EnSkj_TurnPlayer(sSmallStumpSkullKid.skullkid, player);
-        func_8010BD88(globalCtx, OCARINA_ACTION_CHECK_SARIA);
-        EnSkj_SetupWaitForSong(this);
+        if (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
+            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+            EnSkj_SetupWaitForSong(this);
+        } else {
+            func_8010BD88(globalCtx, OCARINA_ACTION_CHECK_SARIA);
+            EnSkj_SetupWaitForSong(this);
+        }
     } else if (D_80B01EA0 != 0) {
         player->actor.world.pos.x = sSmallStumpSkullKid.skullkid->actor.world.pos.x;
         player->actor.world.pos.y = sSmallStumpSkullKid.skullkid->actor.world.pos.y;

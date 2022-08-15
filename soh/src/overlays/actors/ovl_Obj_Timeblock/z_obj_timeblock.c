@@ -185,12 +185,15 @@ s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, GlobalContext* globalCtx) {
     if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->songObserverFunc = ObjTimeblock_WaitForOcarina;
     }
-    if (globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
+    if (globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
+        (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_TIME) &&
+         globalCtx->msgCtx.ocarinaAction == 1)) {
         if (this->unk_172 == 254) {
             this->songEndTimer = 110;
         } else {
             this->songEndTimer--;
-            if (this->songEndTimer == 0) {
+            if (this->songEndTimer == 0) || (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_TIME) &&
+                globalCtx->msgCtx.ocarinaAction == 1)) {
                 return true;
             }
         }

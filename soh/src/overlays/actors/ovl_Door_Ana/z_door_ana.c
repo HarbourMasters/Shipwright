@@ -98,7 +98,9 @@ void DoorAna_WaitClosed(DoorAna* this, GlobalContext* globalCtx) {
 
     if (!(this->actor.params & 0x200)) {
         // opening with song of storms
-        if (this->actor.xyzDistToPlayerSq < 40000.0f && Flags_GetEnv(globalCtx, 5)) {
+        if (this->actor.xyzDistToPlayerSq < 40000.0f && (Flags_GetEnv(globalCtx, 5) || 
+            (CVar_GetS32("gQuickOcarina",0)!=0 && CHECK_QUEST_ITEM(QUEST_SONG_STORMS) 
+            && globalCtx->msgCtx.ocarinaAction == 1))) {
             openGrotto = true;
             this->actor.flags &= ~ACTOR_FLAG_4;
         }

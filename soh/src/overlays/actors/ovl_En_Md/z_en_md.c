@@ -759,8 +759,13 @@ void func_80AAB948(EnMd* this, GlobalContext* globalCtx) {
         if (player->stateFlags2 & 0x1000000) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
-            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_SARIA);
-            this->actionFunc = func_80AABC10;
+            if (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
+                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+                this->actionFunc = func_80AABC10;
+            } else {
+                func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_SARIA);
+                this->actionFunc = func_80AABC10;
+            }
             return;
         }
 
