@@ -105,8 +105,13 @@ struct FramebufferMetal {
     bool has_bounded_vertex_buffer;
     bool has_bounded_fragment_buffer;
 
+    struct ShaderProgramMetal* last_shader_program = nullptr;
     MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
     MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
+
+    int8_t last_depth_test = -1;
+    int8_t last_depth_mask = -1;
+    int8_t last_zmode_decal = -1;
 };
 
 static struct {
@@ -144,12 +149,6 @@ static struct {
     int8_t depth_test;
     int8_t depth_mask;
     int8_t zmode_decal;
-
-    // Previous states (to prevent setting states needlessly)
-    struct ShaderProgramMetal* last_shader_program = nullptr;
-    int8_t last_depth_test = -1;
-    int8_t last_depth_mask = -1;
-    int8_t last_zmode_decal = -1;
 } mctx;
 
 // MARK: - Shader, Sampler & String Helpers
@@ -768,9 +767,9 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
     auto& current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
 
-    if (mctx.last_depth_test != mctx.depth_test || mctx.last_depth_mask != mctx.depth_mask) {
-        mctx.last_depth_test = mctx.depth_test;
-        mctx.last_depth_mask = mctx.depth_mask;
+    if (current_framebuffer.last_depth_test != mctx.depth_test || current_framebuffer.last_depth_mask != mctx.depth_mask) {
+        current_framebuffer.last_depth_test = mctx.depth_test;
+        current_framebuffer.last_depth_mask = mctx.depth_mask;
 
         MTL::DepthStencilDescriptor* depth_descriptor = MTL::DepthStencilDescriptor::alloc()->init();
         depth_descriptor->setDepthWriteEnabled(mctx.depth_mask);
@@ -780,8 +779,8 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
         current_framebuffer.command_encoder->setDepthStencilState(depth_stencil_state);
     }
 
-    if (mctx.last_zmode_decal != mctx.zmode_decal) {
-        mctx.last_zmode_decal = mctx.zmode_decal;
+    if (current_framebuffer.last_zmode_decal != mctx.zmode_decal) {
+        current_framebuffer.last_zmode_decal = mctx.zmode_decal;
 
         current_framebuffer.command_encoder->setTriangleFillMode(MTL::TriangleFillModeFill);
         current_framebuffer.command_encoder->setCullMode(MTL::CullModeNone);
@@ -820,12 +819,11 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     }
 
 
-    if (mctx.last_shader_program != mctx.shader_program) {
-        mctx.last_shader_program = mctx.shader_program;
+    if (current_framebuffer.last_shader_program != mctx.shader_program) {
+        current_framebuffer.last_shader_program = mctx.shader_program;
 
-        FramebufferMetal fb = mctx.framebuffers[mctx.current_framebuffer];
         MTL::RenderPipelineState* pipeline_state = mctx.pipeline_state_cache.find(
-                                                                                  std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level)
+                                                                                  std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, current_framebuffer.msaa_level)
                                                                                   )->second;
 
         current_framebuffer.command_encoder->setRenderPipelineState(pipeline_state);
@@ -888,11 +886,10 @@ void gfx_metal_end_frame(void) {
     mctx.drawn_framebuffers.clear();
 
     // Cleanup states
-    mctx.last_shader_program = nullptr;
-
     for (int fb_id = 0; fb_id < (int)mctx.framebuffers.size(); fb_id++) {
         FramebufferMetal& fb = mctx.framebuffers[fb_id];
 
+        fb.last_shader_program = nullptr;
         fb.command_buffer = nullptr;
         fb.command_encoder = nullptr;
         fb.has_ended_encoding = false;
@@ -902,6 +899,9 @@ void gfx_metal_end_frame(void) {
         fb.last_bound_textures[1] = nullptr;
         fb.last_bound_samplers[0] = nullptr;
         fb.last_bound_samplers[1] = nullptr;
+        fb.last_depth_test = -1;
+        fb.last_depth_mask = -1;
+        fb.last_zmode_decal = -1;
     }
 
     mctx.frame_autorelease_pool->release();
@@ -1138,11 +1138,6 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
         fb.command_encoder->setLabel(string_with_format("Framebuffer (%d) Render Pass", fb_id));
         fb.command_encoder->setDepthClipMode(MTL::DepthClipModeClamp);
     }
-
-    // Reset states
-    mctx.last_depth_test = -1;
-    mctx.last_depth_mask = -1;
-    mctx.last_zmode_decal = -1;
 
     if (noise_scale != 0.0f) {
         mctx.frame_uniforms.noiseScale = 1.0f / noise_scale;
