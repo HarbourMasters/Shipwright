@@ -21,7 +21,9 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
 		ReadFromSource(virtualSlot);
 
+#ifndef __WIIU__
 		SDL_PumpEvents();
+#endif
 
 		// Button Inputs
 		pad->button |= getPressedButtons(virtualSlot) & 0xFFFF;
