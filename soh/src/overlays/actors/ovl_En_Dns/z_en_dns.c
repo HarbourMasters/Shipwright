@@ -372,7 +372,7 @@ void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
     if (this->actor.params == 0x9) {
         if (gSaveContext.n64ddFlag) {
             GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_STICK_UPGRADE_30, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 130.0f, 100.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
         } else if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
             func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
         } else {
@@ -381,7 +381,7 @@ void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
     } else if (this->actor.params == 0xA) {
         if (gSaveContext.n64ddFlag) {
             GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_NUT_UPGRADE_40, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 130.0f, 100.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
         } else if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
             func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
         } else {
@@ -392,7 +392,7 @@ void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, this->dnsItemEntry->getItemId, 130.0f, 100.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(this->dnsItemEntry->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 130.0f, 100.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
         }
     }
 }

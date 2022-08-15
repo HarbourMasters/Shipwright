@@ -77,7 +77,7 @@ void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx
         Flags_SetTreasure(globalCtx, this->fountainType + 1);
         Actor_Kill(&this->actor);
     } else if (!Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
-        func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     }
 }
 

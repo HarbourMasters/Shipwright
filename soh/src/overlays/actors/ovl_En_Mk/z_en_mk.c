@@ -202,7 +202,7 @@ void func_80AACFA0(EnMk* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }
@@ -214,7 +214,7 @@ void func_80AAD014(EnMk* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
         }
     }
 

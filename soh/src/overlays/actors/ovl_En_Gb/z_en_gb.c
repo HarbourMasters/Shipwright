@@ -357,7 +357,7 @@ void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
             func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            func_8002F434(&this->dyna.actor, globalCtx, getItemEntry.getItemId, 100.0f, 10.0f);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
         }
         this->actionFunc = func_80A2FBB0;
     }
@@ -372,7 +372,7 @@ void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
             func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            func_8002F434(&this->dyna.actor, globalCtx, getItemEntry.getItemId, 100.0f, 10.0f);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
         }
     }
 }

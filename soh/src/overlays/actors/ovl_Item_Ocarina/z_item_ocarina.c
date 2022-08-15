@@ -194,7 +194,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 30.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
         }
 
         if ((globalCtx->gameplayFrames & 13) == 0) {

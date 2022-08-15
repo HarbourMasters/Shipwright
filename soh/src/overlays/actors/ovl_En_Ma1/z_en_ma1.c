@@ -338,11 +338,11 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
-        if (gSaveContext.n64ddFlag) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 120.0f, 10.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 10.0f);
         }
     }
 }
@@ -367,7 +367,7 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Randomiz
         // (confirmed via breakpoints in a vanilla save).
         malon->actionFunc = func_80AA0D88;
     } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-        func_8002F434(&malon->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&malon->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     }
     // make malon sing again after giving the item.
     malon->unk_1E8.unk_00 = 0;

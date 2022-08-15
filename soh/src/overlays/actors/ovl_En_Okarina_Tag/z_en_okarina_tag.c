@@ -328,7 +328,7 @@ void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, 
         Flags_SetTreasure(globalCtx, 0x1F);
     } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        func_8002F434(&song->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&song->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     }
 }
 

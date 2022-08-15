@@ -63,7 +63,7 @@ void ItemBHeart_Update(Actor* thisx, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 30.0f, 40.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 40.0f);
         }
     }
 }

@@ -5002,6 +5002,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                  (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) &&
                 Message_ShouldAdvance(globalCtx)) {
                 s32 getItemId;
+                GetItemEntry getItemEntry;
 
                 Message_CloseTextbox(globalCtx);
 
@@ -5059,7 +5060,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                                 if (!gSaveContext.n64ddFlag) {
                                     getItemId = GI_HEART_PIECE;
                                 } else {
-                                    getItemId = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE).getItemId;
+                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
+                                    getItemId = getItemEntry.getItemId;
                                 }
                             }
                         }
@@ -5071,7 +5073,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                                 if (!gSaveContext.n64ddFlag) {
                                     getItemId = GI_SCALE_GOLD;
                                 } else {
-                                    getItemId = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD).getItemId;
+                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                                    getItemId = getItemEntry.getItemId;
                                 }
                             }
                         }
@@ -5082,7 +5085,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 }
 
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+                if (!gSaveContext.n64ddFlag) {
+                    func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+                } else {
+                    GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
+                }
                 this->unk_15C = 23;
             }
             break;
@@ -5147,7 +5154,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                     func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
-                    func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 2000.0f, 1000.0f);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
                 }
             }
             break;

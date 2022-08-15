@@ -552,7 +552,7 @@ void func_809FEC70(EnDu* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         }
     }
 }

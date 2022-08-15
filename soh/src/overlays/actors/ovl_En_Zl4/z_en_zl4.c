@@ -234,7 +234,7 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, Ran
     } else if (!Flags_GetTreasure(globalCtx, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
                (globalCtx->msgCtx.textId == 0x703C || globalCtx->msgCtx.textId == 0x703D)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        func_8002F434(&zelda->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&zelda->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     } else if (Flags_GetTreasure(globalCtx, 0x1E) && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         gSaveContext.unk_13EE = 0x32;
         gSaveContext.eventChkInf[4] |= 1;

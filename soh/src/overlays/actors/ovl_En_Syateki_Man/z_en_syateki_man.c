@@ -336,7 +336,8 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                     this->actor.parent = NULL;
                     if (!LINK_IS_ADULT) {
                         if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1E)) {
-                            this->getItemId = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50).getItemId;
+                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
+                            this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(globalCtx, 0x1E);
                         } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
@@ -351,7 +352,8 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                         }
                     } else {
                         if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
-                            this->getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50).getItemId;
+                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
+                            this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(globalCtx, 0x1F);
                         } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
@@ -371,7 +373,11 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }
-                    func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+                    if (!gSaveContext.n64ddFlag) {
+                        func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+                    } else {
+                        GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);
+                    }
                     this->actionFunc = EnSyatekiMan_GivePrize;
                     break;
                 case SYATEKI_RESULT_ALMOST:
@@ -400,7 +406,11 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);
+        }
     }
 }
 

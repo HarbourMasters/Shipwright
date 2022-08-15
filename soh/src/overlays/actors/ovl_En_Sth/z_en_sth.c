@@ -239,27 +239,29 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, GlobalContext* globalCtx) {
 
 void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
     u16 getItemId = sGetItemIds[this->actor.params];
+    GetItemEntry getItemEntry;
     
     if (gSaveContext.n64ddFlag) {
         switch (getItemId) {
             case GI_RUPEE_GOLD:
                 break;
             case GI_WALLET_ADULT:
-                getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT).getItemId;
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);
                 break;
             case GI_STONE_OF_AGONY:
-                getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY).getItemId;
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY);
                 break;
             case GI_WALLET_GIANT:
-                getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT).getItemId;
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT);
                 break;
             case GI_BOMBCHUS_10:
-                getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10).getItemId;
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10);
                 break;
             case GI_HEART_PIECE:
-                getItemId = Randomizer_GetItemFromKnownCheck(RC_KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE).getItemId;
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE);
                 break;
         }
+        getItemId = getItemEntry.getItemId;
     } else {
         switch (this->actor.params) {
             case 1:
@@ -277,7 +279,11 @@ void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
         }
     }
 
-    func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
+    } else {
+        GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+    }
 }
 
 void EnSth_GiveReward(EnSth* this, GlobalContext* globalCtx) {

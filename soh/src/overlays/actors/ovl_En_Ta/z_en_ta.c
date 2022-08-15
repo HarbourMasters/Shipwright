@@ -890,7 +890,7 @@ void func_80B15F54(EnTa* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }

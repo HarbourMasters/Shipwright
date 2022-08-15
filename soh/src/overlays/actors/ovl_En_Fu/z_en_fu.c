@@ -155,7 +155,7 @@ void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, GlobalContext* globalC
         windmillGuy->actionFunc = func_80A1DBD4;
     } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_STORMS);
-        func_8002F434(&windmillGuy->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&windmillGuy->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     }
 }
 

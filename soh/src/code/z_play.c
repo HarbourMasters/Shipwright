@@ -202,7 +202,7 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-        GiveItemWithoutActor(globalCtx, getItemEntry.getItemId);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
@@ -217,7 +217,7 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
-        GiveItemWithoutActor(globalCtx, getItemEntry.getItemId);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         Flags_SetEventChkInf(0xAA);
     }
 }
@@ -229,7 +229,7 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
             !Player_InBlockingCsMode(globalCtx, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-            GiveItemWithoutActor(globalCtx, getItemEntry.getItemId);
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
             Flags_SetEventChkInf(0xAC);
         }
     }
@@ -243,8 +243,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (player->pendingFlag.flagType == FLAG_NONE && GiveItemWithoutActor(globalCtx, getItem.getItemId)) {
-            player->getItemEntry = getItem;
+        if (player->pendingFlag.flagType == FLAG_NONE && GiveItemEntryWithoutActor(globalCtx, getItem)) {
             player->pendingFlag.flagID = 0x1E;
             player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
         }
@@ -258,7 +257,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
 
         if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemEntry.getItemId && getItemEntry.getItemId != GI_ICE_TRAP)) &&
             player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
-            GiveItemWithoutActor(globalCtx, getItemEntry.getItemId);
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
             Flags_SetEventChkInf(0xC1);
         }
     }

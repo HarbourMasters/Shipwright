@@ -905,7 +905,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, Randomizer
         !Flags_GetTreasure(globalCtx, 0x1F)) {
         Flags_SetTreasure(globalCtx, 0x1F);
     } else if (!Flags_GetTreasure(globalCtx, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-        func_8002F434(impa, globalCtx, getItemEntry.getItemId, 75.0f, 50.0f);
+        GiveItemEntryFromActor(impa, globalCtx, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         gSaveContext.eventChkInf[5] |= 0x200;
         globalCtx->sceneLoadFlag = 0x14;

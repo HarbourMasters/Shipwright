@@ -946,6 +946,7 @@ void func_80A40B1C(EnGo* this, GlobalContext* globalCtx) {
 void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
     f32 xzDist;
     f32 yDist;
+    GetItemEntry getItemEntry;
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
@@ -956,7 +957,12 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
         this->unk_20C = 0;
         if ((this->actor.params & 0xF0) == 0x90) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
-                getItemId = gSaveContext.n64ddFlag ? Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS).getItemId : GI_SWORD_BGS;
+                if (!gSaveContext.n64ddFlag) {
+                    getItemId = GI_SWORD_BGS;
+                } else {
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
+                    getItemId = getItemEntry.getItemId;
+                }
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
@@ -973,7 +979,11 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
 
         yDist = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzDist = this->actor.xzDistToPlayer + 1.0f;
-        func_8002F434(&this->actor, globalCtx, getItemId, xzDist, yDist);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, getItemId, xzDist, yDist);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzDist, yDist);
+        }
     }
 }
 
