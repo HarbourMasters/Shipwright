@@ -6110,9 +6110,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             } else {
                 giEntry = this->getItemEntry;
             }
-            if ((giEntry.modIndex == MOD_NONE && (this->getItemId < GI_MAX ||
-                (giEntry.getItemId >= RG_KOKIRI_EMERALD && giEntry.getItemId <= RG_LIGHT_MEDALLION))) || 
-                (giEntry.modIndex == MOD_RANDOMIZER && this->getItemId < RG_MAX)) {
+            if (giEntry.collectable) {
                 if ((interactedActor != &this->actor) && !iREG(67)) {
                     interactedActor->parent = &this->actor;
                 }
