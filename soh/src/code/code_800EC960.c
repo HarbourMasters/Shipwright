@@ -3916,26 +3916,26 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
             if (getItemId == GI_HEART_PIECE_WIN && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
                 temp1 = NA_BGM_HEART_GET | 0x900;
             }
+            // If the setting is toggled on and we get special quest items (longer fanfares):
+            if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+                // If we get a medallion, play the "get a medallion" fanfare
+                if ((getItemId >= RG_FOREST_MEDALLION) && (getItemId <= RG_LIGHT_MEDALLION)) {
+                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                }
+                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                if ((getItemId >= RG_KOKIRI_EMERALD) && (getItemId <= RG_ZORA_SAPPHIRE)) {
+                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                }
+                // If the item we're getting is a song, play the "learned a song" fanfare
+                if ((getItemId >= RG_ZELDAS_LULLABY) && (getItemId <= RG_PRELUDE_OF_LIGHT)) {
+                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                }
+            }
             Audio_PlayFanfare(temp1);
         } 
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
         if ((getItemId >= RG_BOTTLE_WITH_RED_POTION && getItemId <= RG_BOTTLE_WITH_BIG_POE) || (getItemId >= RG_DEKU_TREE_MAP && getItemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
             temp1 = NA_BGM_ITEM_GET | 0x900;
-        }
-        // If the setting is toggled on and we get special quest items (longer fanfares):
-        if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
-            // If we get a medallion, play the "get a medallion" fanfare
-            if ((getItemId >= RG_FOREST_MEDALLION) && (getItemId <= RG_LIGHT_MEDALLION)) {
-                temp1 = NA_BGM_MEDALLION_GET | 0x900;
-            }
-            // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
-            if ((getItemId >= RG_KOKIRI_EMERALD) && (getItemId <= RG_ZORA_SAPPHIRE)) {
-                temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
-            }
-            // If the item we're getting is a song, play the "learned a song" fanfare
-            if ((getItemId >= RG_ZELDAS_LULLABY) && (getItemId <= RG_PRELUDE_OF_LIGHT)) {
-                temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
-            }
         }
         Audio_PlayFanfare(temp1);
     }
