@@ -4730,63 +4730,63 @@ void Rando_Init(void) {
 CustomMessageMinimal NaviMessages[NaviMsgCount] = { 
     
     { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
-      "%cGerman tip about playing rando! 0", 
+      "%cFehlt dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!", 
       "%cFrench tip about playing rando! 0" }, 
 
     { "%cSometimes you can use the %rMegaton&Hammer %cinstead of bombs!", 
-      "%cGerman tip about playing rando! 1",
+      "%cManchmal kannst du den %rStahlhammer&%cstatt Bomben verwenden!",
       "%cFrench tip about playing rando! 1" }, 
 
     { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do&you know where they are?",
-      "%cGerman tip about playing rando! 2",
+      "%cEs gibt drei %gDeku-Händler %cin Hyrule&die mysteriöse Gegenstände&verkaufen. Weißt du wo Sie sind?",
       "%cFrench tip about playing rando! 2" },
 
     { "%cStuck on this seed? You could &throw in the towel and check the&%wspoiler log%c...",
-      "%cGerman tip about playing rando! 3",
+      "%cHängst du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
       "%cFrench tip about playing rando! 3" },
 
     { "%cDid you know that the %yHover&Boots %ccan be used to cross&quicksand?", 
-      "%cGerman tip about playing rando! 4",
+      "%cWusstest du, dass du mit den&%yGleitstiefeln %cTreibsand überqueren&kannst?",
       "%cFrench tip about playing rando! 4" },
 
     { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!", 
-      "%cGerman tip about playing rando! 5",
+      "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem du von&der Baustelle aus mit einem %rHuhn&%cspringst!",
       "%cFrench tip about playing rando! 5" },
 
     { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?", 
-      "%cGerman tip about playing rando! 6",
+      "%cDie %yGeister-Prüfung %cin %pGanons&Schloss %chat irgendwo eine&%wversteckte Kiste%c. Weißt du schon&wo?",
       "%cFrench tip about playing rando! 6" },
 
     { "%cYou know the %wBombchu Bowling&Alley%c? I heard %wonly two of the &prizes %care worthwhile. The rest &is junk!", 
-      "%cGerman tip about playing rando! 7",
+      "%cKennst du die %wMinenbowlingbahn%c?&Ich habe gehört dass sich nur &%wzwei der Preise%c lohnen. Der Rest&ist Krimskrams!",
       "%cFrench tip about playing rando! 7" },
 
     { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
-      "%cGerman tip about playing rando! 8",
+      "%cBenutzt du auch genügend %wDeku&Nüsse%c? Ich habe mal gesehen dass&man damit %rKrabbelminen %cdetonieren&kann!",
       "%cFrench tip about playing rando! 8" },
 
     { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your safety!", 
-      "%cGerman tip about playing rando! 9",
+      "%cVielleicht verbleibt dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. Dies&ist zu deiner Sicherheit!",
       "%cFrench tip about playing rando! 9" },
 
     { "%cIf you can't pick up a %rbomb&flower %cwith your hands, you can&still detonate it with %rfire %cor&with %warrows%c!", 
-      "%cGerman tip about playing rando! 10",
+      "%cNur weil du eine %rDonnerblume&%cnicht hochheben kannst, so kannst&du sie immernoch mit %rFeuer %coder&%wPfeilen %cdetonieren!",
       "%cFrench tip about playing rando! 10" },
 
     { "%cEven an adult can't push large&blocks without some %wextra&strength%c!", 
-      "%cGerman tip about playing rando! 11",
+      "%cSelbst ein Erwachsener kann ohne&etwas %wzusätzliche Kraft %ckeine&großen Blöcke verschieben!",
       "%cFrench tip about playing rando! 11" },
 
     { "%cI've heard that %rFlare Dancer&%cis weak to the Master Sword!&Have you tried it?", 
-      "%cGerman tip about playing rando! 12",
+      "%cIch habe gehört dass der&%rFlammenderwisch %ceine Schwäche für&das Masterschwert aufweist. Hast du&es schonmal versucht einzusetzen?",
       "%cFrench tip about playing rando! 12" },
 
     { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!", 
-      "%cGerman tip about playing rando! 13",
+      "%cFehlt dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuch&Sie mit einem %wKrug %cabzuwerfen!",
       "%cFrench tip about playing rando! 13" },
 
     { "%cI hear the patch of %wsoft soil&%cin %bZora's River %cis the only one&that isn't home to a %rspider%c!", 
-      "%cGerman tip about playing rando! 14",
+      "%cIch habe gehört dass die Stelle&%wfeuchten Bodens %cim %bZora-Fluss %cals&einzige keine %rSkulltula %cbeherbergt.",
       "%cFrench tip about playing rando! 14" },
 
 };
