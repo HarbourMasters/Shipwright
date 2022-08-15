@@ -434,6 +434,8 @@ void GameState_Update(GameState* gameState) {
             if (gGlobalCtx->nextEntranceIndex == (0x0033) || gGlobalCtx->nextEntranceIndex == 0x026E ||
                 gGlobalCtx->nextEntranceIndex == 0x0276) {
                 if (IS_NIGHT) {
+                    Audio_SetGameVolume(0, 0);
+                    Audio_SetGameVolume(3, 0);
                     gSaveContext.nightFlag = 0;
                     gSaveContext.dayTime = 0x8000;
                     wasNight = true;
@@ -442,6 +444,8 @@ void GameState_Update(GameState* gameState) {
             if ((gGlobalCtx->nextEntranceIndex == (0x007E) || gGlobalCtx->nextEntranceIndex == 0x00B1 ||
                  gGlobalCtx->nextEntranceIndex == 0x01FD) &&
                 wasNight) {
+                Audio_SetGameVolume(0, CVar_GetFloat("gMainMusicVolume", 1));
+                Audio_SetGameVolume(3, CVar_GetFloat("gMainMusicVolume", 1));
                 gSaveContext.dayTime = 0x0000;
                 gSaveContext.nightFlag = 1;
                 wasNight = false;
