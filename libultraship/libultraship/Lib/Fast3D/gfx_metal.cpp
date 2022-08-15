@@ -104,6 +104,9 @@ struct FramebufferMetal {
     bool has_ended_encoding;
     bool has_bounded_vertex_buffer;
     bool has_bounded_fragment_buffer;
+
+    MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
+    MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
 };
 
 static struct {
@@ -144,8 +147,6 @@ static struct {
 
     // Previous states (to prevent setting states needlessly)
     struct ShaderProgramMetal* last_shader_program = nullptr;
-    //    MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
-    //    MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
     int8_t last_depth_test = -1;
     int8_t last_depth_mask = -1;
     int8_t last_zmode_decal = -1;
@@ -765,7 +766,7 @@ static void gfx_metal_set_use_alpha(bool use_alpha) {
 static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t buf_vbo_num_tris) {
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
 
-    auto current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
+    auto& current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
 
     if (mctx.last_depth_test != mctx.depth_test || mctx.last_depth_mask != mctx.depth_mask) {
         mctx.last_depth_test = mctx.depth_test;
@@ -792,7 +793,6 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     memcpy((char *)vertex_buffer->contents() + mctx.current_vertex_buffer_offset, buf_vbo, sizeof(float) * buf_vbo_len);
 
 
-    // For performance reasons: only bind buffer once to the command encoder
     if (!current_framebuffer.has_bounded_vertex_buffer) {
         current_framebuffer.command_encoder->setVertexBuffer(vertex_buffer, 0, 0);
         current_framebuffer.has_bounded_vertex_buffer = true;
@@ -800,7 +800,6 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
     current_framebuffer.command_encoder->setVertexBufferOffset(mctx.current_vertex_buffer_offset, 0);
 
-    // For performance reasons: only bind buffer once to the command encoder
     if (!current_framebuffer.has_bounded_fragment_buffer) {
         current_framebuffer.command_encoder->setFragmentBuffer(mctx.frame_uniform_buffer, 0, 0);
         current_framebuffer.has_bounded_fragment_buffer = true;
@@ -808,8 +807,15 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
     for (int i = 0; i < 2; i++) {
         if (mctx.shader_program->used_textures[i]) {
-            current_framebuffer.command_encoder->setFragmentTexture(mctx.textures[mctx.current_texture_ids[i]].texture, i);
-            current_framebuffer.command_encoder->setFragmentSamplerState(mctx.textures[mctx.current_texture_ids[i]].sampler, i);
+            if (current_framebuffer.last_bound_textures[i] != mctx.textures[mctx.current_texture_ids[i]].texture) {
+                current_framebuffer.last_bound_textures[i] = mctx.textures[mctx.current_texture_ids[i]].texture;
+                current_framebuffer.command_encoder->setFragmentTexture(mctx.textures[mctx.current_texture_ids[i]].texture, i);
+
+                if (current_framebuffer.last_bound_samplers[i] != mctx.textures[mctx.current_texture_ids[i]].sampler) {
+                    current_framebuffer.last_bound_samplers[i] = mctx.textures[mctx.current_texture_ids[i]].sampler;
+                    current_framebuffer.command_encoder->setFragmentSamplerState(mctx.textures[mctx.current_texture_ids[i]].sampler, i);
+                }
+            }
         }
     }
 
@@ -892,6 +898,10 @@ void gfx_metal_end_frame(void) {
         fb.has_ended_encoding = false;
         fb.has_bounded_vertex_buffer = false;
         fb.has_bounded_fragment_buffer = false;
+        fb.last_bound_textures[0] = nullptr;
+        fb.last_bound_textures[1] = nullptr;
+        fb.last_bound_samplers[0] = nullptr;
+        fb.last_bound_samplers[1] = nullptr;
     }
 
     mctx.frame_autorelease_pool->release();
