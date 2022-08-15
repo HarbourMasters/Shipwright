@@ -21,6 +21,7 @@ namespace Ship {
             return false;
         }
 
+        supportsGyro = false;
         if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO)) {
             SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
             supportsGyro = true;
