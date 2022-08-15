@@ -114,6 +114,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
+                player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                 this->actionFunc = func_80AFB950;
             } else {
                 Collider_UpdateCylinder(&this->actor, &this->collider);
@@ -125,6 +126,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 }
 
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
     Math_SmoothStepToF(&this->actor.scale.x, 0.25f, 0.4f, 1.0f, 0.0f);
     Actor_SetScale(&this->actor, this->actor.scale.x);
     this->actor.shape.rot.y += 0x400;
@@ -141,6 +143,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
+        player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         this->actionFunc = func_80AFB950;
     }
 }
