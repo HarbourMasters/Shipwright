@@ -1923,6 +1923,8 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
 
         case RG_ZELDAS_LETTER:
             return GI_LETTER_ZELDA;
+        case RG_RUTOS_LETTER:
+            return GI_LETTER_RUTO;
 
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
@@ -2192,6 +2194,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_MAGIC_BEAN:
         case RG_WEIRD_EGG: 
         case RG_ZELDAS_LETTER:
+        case RG_RUTOS_LETTER:
         case RG_POCKET_EGG:
         case RG_COJIRO:
         case RG_ODD_MUSHROOM:
