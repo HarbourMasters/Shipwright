@@ -724,7 +724,7 @@ static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint3
     sampler_descriptor->setMinFilter(filter);
     sampler_descriptor->setMagFilter(filter);
     sampler_descriptor->setSAddressMode(gfx_cm_to_metal(cms));
-    sampler_descriptor->setTAddressMode(gfx_cm_to_metal(cms));
+    sampler_descriptor->setTAddressMode(gfx_cm_to_metal(cmt));
     sampler_descriptor->setRAddressMode(MTL::SamplerAddressModeRepeat);
 
     texture_data->sampler = mctx.device->newSamplerState(sampler_descriptor);
@@ -1155,7 +1155,7 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
     MTL::BlitCommandEncoder* blit_encoder = source_framebuffer.command_buffer->blitCommandEncoder();
     blit_encoder->setLabel(NS::String::string("MSAA Copy Encoder", NS::UTF8StringEncoding));
 
-    // // Copy over the source framebuffer's texture to the target!
+    // Copy over the source framebuffer's texture to the target!
     int source_texture_id = mctx.framebuffers[fb_id_source].texture_id;
     MTL::Texture* source_texture = mctx.textures[source_texture_id].texture;
 
