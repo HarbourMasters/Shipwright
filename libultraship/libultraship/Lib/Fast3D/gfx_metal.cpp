@@ -92,7 +92,6 @@ struct FramebufferMetal {
     MTL::CommandBuffer* command_buffer;
     MTL::RenderPassDescriptor* render_pass_descriptor;
     MTL::RenderCommandEncoder* command_encoder;
-    bool has_ended_encoding;
 
     MTL::Texture* depth_texture;
     MTL::Texture* msaa_depth_texture;
@@ -100,6 +99,11 @@ struct FramebufferMetal {
     bool has_depth_buffer;
     uint32_t msaa_level;
     bool render_target;
+
+    // State
+    bool has_ended_encoding;
+    bool has_bounded_vertex_buffer;
+    bool has_bounded_fragment_buffer;
 };
 
 static struct {
@@ -785,9 +789,21 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     MTL::Buffer* vertex_buffer = next_available_buffer();
     memcpy((char *)vertex_buffer->contents() + mctx.current_vertex_buffer_offset, buf_vbo, sizeof(float) * buf_vbo_len);
 
-    mctx.current_command_encoder->setVertexBuffer(vertex_buffer, 0, 0);
+    auto& current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
+
+    // For performance reasons: only bind buffer once to the command encoder
+    if (!current_framebuffer.has_bounded_vertex_buffer) {
+        mctx.current_command_encoder->setVertexBuffer(vertex_buffer, 0, 0);
+        current_framebuffer.has_bounded_vertex_buffer = true;
+    }
+
     mctx.current_command_encoder->setVertexBufferOffset(mctx.current_vertex_buffer_offset, 0);
-    mctx.current_command_encoder->setFragmentBuffer(mctx.frame_uniform_buffer, 0, 0);
+
+    // For performance reasons: only bind buffer once to the command encoder
+    if (!current_framebuffer.has_bounded_fragment_buffer) {
+        mctx.current_command_encoder->setFragmentBuffer(mctx.frame_uniform_buffer, 0, 0);
+        current_framebuffer.has_bounded_fragment_buffer = true;
+    }
 
     for (int i = 0; i < 2; i++) {
         if (mctx.shader_program->used_textures[i]) {
@@ -874,6 +890,8 @@ void gfx_metal_end_frame(void) {
         fb.command_buffer = nullptr;
         fb.command_encoder = nullptr;
         fb.has_ended_encoding = false;
+        fb.has_bounded_vertex_buffer = false;
+        fb.has_bounded_fragment_buffer = false;
     }
 
     mctx.frame_autorelease_pool->release();
@@ -900,6 +918,7 @@ int gfx_metal_create_framebuffer(void) {
 }
 
 static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) {
+    mctx.current_drawable = nullptr;
     mctx.current_drawable = get_layer_next_drawable(mctx.layer);
 
     bool msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
@@ -1023,7 +1042,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
                 render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
             } else {
                 render_pass_descriptor->colorAttachments()->object(0)->setTexture(tex.texture);
-                render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(fb_id != 3 ? MTL::LoadActionLoad : MTL::LoadActionClear); // TODO: Just clear?
+                render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
                 render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
                 render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
             }
