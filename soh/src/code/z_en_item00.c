@@ -335,6 +335,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
+    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
@@ -509,8 +510,9 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        func_8002F554(&this->actor, globalCtx, getItemId);
+        getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        func_8002F554(&this->actor, globalCtx, getItem.getItemId);
+        GET_PLAYER(globalCtx)->getItemEntry = getItem;
     }
 
     EnItem00_SetupAction(this, func_8001E5C8);
@@ -702,6 +704,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s16* params;
     Actor* dynaActor;
     s32 getItemId = GI_NONE;
+    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
     s16 sp3A = 0;
     s16 i;
     u32* temp;
@@ -881,9 +884,10 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            GET_PLAYER(globalCtx)->getItemEntry = getItem;
         }
-        func_8002F554(&this->actor, globalCtx, getItemId);
+        func_8002F554(&this->actor, globalCtx, getItem.getItemId);
     }
 
     switch (*params) {

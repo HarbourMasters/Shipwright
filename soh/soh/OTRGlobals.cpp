@@ -1610,7 +1610,8 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    return ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+    return giEntry;
 }
 
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
