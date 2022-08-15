@@ -123,10 +123,14 @@ static struct {
     std::vector<FramebufferMetal> framebuffers;
     FrameUniforms frame_uniforms;
     MTL::Buffer* frame_uniform_buffer = nullptr;
-    MTL::Buffer* coord_buffer;
-    size_t coord_buffer_size;
 
     uint32_t msaa_num_quality_levels[METAL_MAX_MULTISAMPLE_SAMPLE_COUNT];
+
+    // Depth querying
+    MTL::Buffer* coord_buffer;
+    MTL::Buffer* depth_value_output_buffer;
+    size_t coord_buffer_size;
+    MTL::Function* depth_compute_function;
 
     // Current state
     struct ShaderProgramMetal* shader_program;
@@ -335,6 +339,28 @@ static void gfx_metal_init(void) {
             mctx.msaa_num_quality_levels[sample_count - 1] = 0;
         }
     }
+
+    // Compute shader for retrieving depth values
+    const char* depth_shader = R"(
+        #include <metal_stdlib>
+        using namespace metal;
+        
+        kernel void depthKernel(depth2d<float, access::read> depth_texture [[ texture(0) ]],
+                                     device uint2* query_coords [[ buffer(0) ]],
+                                     device float* output_values [[ buffer(1) ]],
+                                     uint2 thread_position [[ thread_position_in_grid ]]) {
+            uint2 coord = query_coords[thread_position.x];
+            output_values[thread_position.x] = depth_texture.read(coord);
+        }
+    )";
+
+    NS::Error* error = nullptr;
+    MTL::Library* library = mctx.device->newLibrary(NS::String::string(depth_shader, NS::UTF8StringEncoding), nullptr, &error);
+
+    if (error != nullptr)
+        SPDLOG_ERROR("Failed to compile shader library, error {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
+
+    mctx.depth_compute_function = library->newFunction(NS::String::string("depthKernel", NS::UTF8StringEncoding));
 }
 
 static struct GfxClipParameters gfx_metal_get_clip_parameters() {
@@ -419,7 +445,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
     append_line(buf, &len, "};");
     // end vertex struct
 
-    // fragment output struct
+    // vertex output struct
     append_line(buf, &len, "struct ProjectedVertex {");
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
@@ -443,7 +469,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
     }
     append_line(buf, &len, "    float4 position [[position]];");
     append_line(buf, &len, "};");
-    // end fragment output struct
+    // end vertex output struct
 
     // vertex shader
     append_line(buf, &len, "vertex ProjectedVertex vertexShader(Vertex in [[stage_in]]) {");
@@ -1157,50 +1183,73 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
 
 std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     auto framebuffer = mctx.framebuffers[fb_id];
-    auto texture = mctx.textures[framebuffer.texture_id];
 
-    size_t pixel_count = texture.width * texture.height;
-    if (4 * pixel_count > mctx.coord_buffer_size) {
-        mctx.coord_buffer_size = 4 * pixel_count;
-
+    if (coordinates.size() > mctx.coord_buffer_size) {
         if (mctx.coord_buffer != nullptr)
-            mctx.coord_buffer->release(); // TODO: Missing from ObjC version
+            mctx.coord_buffer->release();
 
-        mctx.coord_buffer = mctx.device->newBuffer(mctx.coord_buffer_size, MTL::ResourceOptionCPUCacheModeDefault);
+        if (mctx.depth_value_output_buffer != nullptr)
+            mctx.depth_value_output_buffer->release();
+
+        mctx.coord_buffer = mctx.device->newBuffer(sizeof(simd::uint2) * coordinates.size(), MTL::ResourceOptionCPUCacheModeDefault);
+        mctx.coord_buffer->setLabel(NS::String::string("Input Coord buffer", NS::UTF8StringEncoding));
+
+        mctx.depth_value_output_buffer = mctx.device->newBuffer(sizeof(float) * coordinates.size(), MTL::ResourceOptionCPUCacheModeDefault);
+        mctx.depth_value_output_buffer->setLabel(NS::String::string("Depth output buffer", NS::UTF8StringEncoding));
+
+        mctx.coord_buffer_size = coordinates.size();
+    }
+
+    // zero out the buffer
+    memset(mctx.coord_buffer->contents(), 0, sizeof(simd::uint2) * coordinates.size());
+    memset(mctx.depth_value_output_buffer->contents(), 0, sizeof(float) * coordinates.size());
+
+    NS::UInteger tex_height = framebuffer.depth_texture->height();
+    simd::uint2 *coord_cb = (simd::uint2 *)mctx.coord_buffer->contents();
+    {
+        size_t i = 0;
+        for (const auto& coord : coordinates) {
+            coord_cb[i].x = coord.first;
+            // We invert y because the gfx_pc assumes OpenGL coordinates (bottom-left corner is origin), while Metal's origin is top-left corner
+            coord_cb[i].y = tex_height - 1 - coord.second;
+            ++i;
+        }
     }
 
     auto command_buffer = mctx.command_queue->commandBuffer();
-    command_buffer->setLabel(NS::String::string("Depth Copy Command Buffer", NS::UTF8StringEncoding));
+    command_buffer->setLabel(NS::String::string("Depth Shader Command Buffer", NS::UTF8StringEncoding));
 
-    MTL::BlitCommandEncoder* blit_encoder = command_buffer->blitCommandEncoder();
-    blit_encoder->copyFromTexture(framebuffer.depth_texture, 0, 0, { 0, 0, 0 }, { texture.width, texture.height, 1 }, mctx.coord_buffer, 0, 4 * texture.width, mctx.coord_buffer_size, MTL::BlitOptionDepthFromDepthStencil);
-    blit_encoder->endEncoding();
+    NS::Error* error = nullptr;
+    MTL::ComputePipelineState* compute_pipeline_state = mctx.device->newComputePipelineState(mctx.depth_compute_function, &error);
+
+    MTL::ComputeCommandEncoder* compute_encoder = command_buffer->computeCommandEncoder();
+    compute_encoder->setComputePipelineState(compute_pipeline_state);
+    compute_encoder->setTexture(framebuffer.depth_texture, 0);
+    compute_encoder->setBuffer(mctx.coord_buffer, 0, 0);
+    compute_encoder->setBuffer(mctx.depth_value_output_buffer, 0, 1);
+
+    MTL::Size thread_group_size = MTL::Size::Make(1, 1, 1);
+    MTL::Size thread_group_count = MTL::Size::Make(coordinates.size(), 1, 1);
+
+    compute_encoder->dispatchThreads(thread_group_count, thread_group_size);
+    compute_encoder->endEncoding();
 
     command_buffer->commit();
     command_buffer->waitUntilCompleted();
 
     // Now the depth values can be accessed in the buffer.
-    float* depth_values = (float*)mctx.coord_buffer->contents();
+    float* depth_values = (float*)mctx.depth_value_output_buffer->contents();
 
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
-    for (const auto& coord : coordinates) {
-        // bug? coordinates sometimes read from oob
-        if ((coord.first < 0.0f) || (coord.first > (float) texture.width)
-            || (coord.second < 0.0f) || (coord.second > (float) texture.height)) {
-            res.emplace(coord, 0);
-            continue;
+    {
+        size_t i = 0;
+        for (const auto& coord : coordinates) {
+            float depthValue = depth_values[i];
+            res.emplace(coord, depth_values[i++] * 65532.0f);
         }
-
-        // We invert y because the gfx_pc assumes OpenGL coordinates (bottom-left corner is origin), while Metal's origin is top-left corner
-        auto y = texture.height - 1 - coord.second;
-        auto x = coord.first;
-
-        auto depth_value = depth_values[(int)(y * texture.width + x)];
-        SPDLOG_DEBUG("Depth value at {}, {} is {}", x, y, depth_value);
-        res.emplace(coord, depth_value * 65532.0);
     }
 
-    blit_encoder->release();
+    compute_encoder->release();
     command_buffer->release();
 
     return res;
