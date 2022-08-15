@@ -693,8 +693,6 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames = globalCtx->state.frames;
     s32 i;
-    static u32 epoch = 0;
-    epoch++;
 
     if ((i = (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[1] != NULL)) &&
         (globalCtx->csCtx.npcActions[1]->action != 1)) {
@@ -705,7 +703,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
         for (i = 0; i < 16; i++) {
-            FrameInterpolation_RecordOpenChild("Demo6K 809688C4", epoch + i * 25);
+            FrameInterpolation_RecordOpenChild("Demo6K 809688C4", i);
 
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_274[i]].r, sEnvColors[this->unk_274[i]].g,
