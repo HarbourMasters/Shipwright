@@ -511,7 +511,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        func_8002F554(&this->actor, globalCtx, getItem.getItemId);
+        getItemId = getItem.getItemId;
+        func_8002F554(&this->actor, globalCtx, getItemId);
         GET_PLAYER(globalCtx)->getItemEntry = getItem;
     }
 
@@ -886,8 +887,9 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
             GET_PLAYER(globalCtx)->getItemEntry = getItem;
+            getItemId = getItem.getItemId;
         }
-        func_8002F554(&this->actor, globalCtx, getItem.getItemId);
+        func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
     switch (*params) {
