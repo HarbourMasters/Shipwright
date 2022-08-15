@@ -128,7 +128,6 @@ static struct {
 
     // Current state
     struct ShaderProgramMetal* shader_program;
-    MTL::RenderCommandEncoder* current_command_encoder = nullptr;
     CA::MetalDrawable* current_drawable;
     std::set<int> drawn_framebuffers;
     NS::AutoreleasePool* frame_autorelease_pool = nullptr;
@@ -743,19 +742,20 @@ static void gfx_metal_set_zmode_decal(bool zmode_decal) {
 }
 
 static void gfx_metal_set_viewport(int x, int y, int width, int height) {
-    mctx.current_command_encoder->setViewport({ x, y, width, height, 0.0, 1.0 });
+    auto current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
+    current_framebuffer.command_encoder->setViewport({ x, y, width, height, 0.0, 1.0 });
 }
 
 static void gfx_metal_set_scissor(int x, int y, int width, int height) {
-    FramebufferMetal& fb = mctx.framebuffers[mctx.current_framebuffer];
-    TextureDataMetal& tex = mctx.textures[fb.texture_id];
+    FramebufferMetal fb = mctx.framebuffers[mctx.current_framebuffer];
+    TextureDataMetal tex = mctx.textures[fb.texture_id];
 
     // clamp to viewport size as metal does not support larger values than viewport size
     x = std::max(0, std::min<int>(x, tex.width));
     y = std::max(0, std::min<int>(y, tex.height));
     width = std::max(0, std::min<int>(width,  tex.width));
     height = std::max(0, std::min<int>(height, tex.height));
-    mctx.current_command_encoder->setScissorRect({ x, y, width, height });
+    fb.command_encoder->setScissorRect({ x, y, width, height });
 }
 
 static void gfx_metal_set_use_alpha(bool use_alpha) {
@@ -764,6 +764,8 @@ static void gfx_metal_set_use_alpha(bool use_alpha) {
 
 static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t buf_vbo_num_tris) {
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
+    auto current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
 
     if (mctx.last_depth_test != mctx.depth_test || mctx.last_depth_mask != mctx.depth_mask) {
         mctx.last_depth_test = mctx.depth_test;
@@ -774,41 +776,40 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
         depth_descriptor->setDepthCompareFunction(mctx.depth_test ? MTL::CompareFunctionLessEqual : MTL::CompareFunctionAlways);
 
         MTL::DepthStencilState* depth_stencil_state = mctx.device->newDepthStencilState(depth_descriptor);
-        mctx.current_command_encoder->setDepthStencilState(depth_stencil_state);
+        current_framebuffer.command_encoder->setDepthStencilState(depth_stencil_state);
     }
 
     if (mctx.last_zmode_decal != mctx.zmode_decal) {
         mctx.last_zmode_decal = mctx.zmode_decal;
 
-        mctx.current_command_encoder->setTriangleFillMode(MTL::TriangleFillModeFill);
-        mctx.current_command_encoder->setCullMode(MTL::CullModeNone);
-        mctx.current_command_encoder->setFrontFacingWinding(MTL::WindingCounterClockwise);
-        mctx.current_command_encoder->setDepthBias(0, mctx.zmode_decal ? -2 : 0, 0);
+        current_framebuffer.command_encoder->setTriangleFillMode(MTL::TriangleFillModeFill);
+        current_framebuffer.command_encoder->setCullMode(MTL::CullModeNone);
+        current_framebuffer.command_encoder->setFrontFacingWinding(MTL::WindingCounterClockwise);
+        current_framebuffer.command_encoder->setDepthBias(0, mctx.zmode_decal ? -2 : 0, 0);
     }
 
     MTL::Buffer* vertex_buffer = next_available_buffer();
     memcpy((char *)vertex_buffer->contents() + mctx.current_vertex_buffer_offset, buf_vbo, sizeof(float) * buf_vbo_len);
 
-    auto& current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
 
     // For performance reasons: only bind buffer once to the command encoder
     if (!current_framebuffer.has_bounded_vertex_buffer) {
-        mctx.current_command_encoder->setVertexBuffer(vertex_buffer, 0, 0);
+        current_framebuffer.command_encoder->setVertexBuffer(vertex_buffer, 0, 0);
         current_framebuffer.has_bounded_vertex_buffer = true;
     }
 
-    mctx.current_command_encoder->setVertexBufferOffset(mctx.current_vertex_buffer_offset, 0);
+    current_framebuffer.command_encoder->setVertexBufferOffset(mctx.current_vertex_buffer_offset, 0);
 
     // For performance reasons: only bind buffer once to the command encoder
     if (!current_framebuffer.has_bounded_fragment_buffer) {
-        mctx.current_command_encoder->setFragmentBuffer(mctx.frame_uniform_buffer, 0, 0);
+        current_framebuffer.command_encoder->setFragmentBuffer(mctx.frame_uniform_buffer, 0, 0);
         current_framebuffer.has_bounded_fragment_buffer = true;
     }
 
     for (int i = 0; i < 2; i++) {
         if (mctx.shader_program->used_textures[i]) {
-            mctx.current_command_encoder->setFragmentTexture(mctx.textures[mctx.current_texture_ids[i]].texture, i);
-            mctx.current_command_encoder->setFragmentSamplerState(mctx.textures[mctx.current_texture_ids[i]].sampler, i);
+            current_framebuffer.command_encoder->setFragmentTexture(mctx.textures[mctx.current_texture_ids[i]].texture, i);
+            current_framebuffer.command_encoder->setFragmentSamplerState(mctx.textures[mctx.current_texture_ids[i]].sampler, i);
         }
     }
 
@@ -821,10 +822,10 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
                                                                                   std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level)
                                                                                   )->second;
 
-        mctx.current_command_encoder->setRenderPipelineState(pipeline_state);
+        current_framebuffer.command_encoder->setRenderPipelineState(pipeline_state);
     }
 
-    mctx.current_command_encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0.f, buf_vbo_num_tris * 3);
+    current_framebuffer.command_encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0.f, buf_vbo_num_tris * 3);
     mctx.current_vertex_buffer_offset += sizeof(float) * buf_vbo_len;
 
     autorelease_pool->release();
@@ -882,7 +883,6 @@ void gfx_metal_end_frame(void) {
 
     // Cleanup states
     mctx.last_shader_program = nullptr;
-    mctx.current_command_encoder = nullptr;
 
     for (int fb_id = 0; fb_id < (int)mctx.framebuffers.size(); fb_id++) {
         FramebufferMetal& fb = mctx.framebuffers[fb_id];
@@ -1117,6 +1117,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     mctx.current_framebuffer = fb_id;
+    mctx.drawn_framebuffers.insert(fb_id);
     SPDLOG_TRACE("Being asked to draw to framebuffer: {}", fb_id);
 
     if (fb.render_target && fb.command_buffer == nullptr && fb.command_encoder == nullptr) {
@@ -1132,9 +1133,6 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     mctx.last_depth_test = -1;
     mctx.last_depth_mask = -1;
     mctx.last_zmode_decal = -1;
-
-    mctx.current_command_encoder = mctx.framebuffers[mctx.current_framebuffer].command_encoder;
-    mctx.drawn_framebuffers.insert(fb_id);
 
     if (noise_scale != 0.0f) {
         mctx.frame_uniforms.noiseScale = 1.0f / noise_scale;
