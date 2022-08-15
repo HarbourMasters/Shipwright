@@ -194,6 +194,7 @@ typedef struct {
     u8 cowsMilked[10];
     u8 temporaryWeapon;
     u16 adultTradeItems;
+    u8 isyounglinkfountain;
 } SaveContext; // size = 0x1428
 
 typedef enum {

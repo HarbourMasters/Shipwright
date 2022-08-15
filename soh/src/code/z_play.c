@@ -282,11 +282,46 @@ void Gameplay_Init(GameState* thisx) {
         for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
             if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
                 break;
+            }
+
+            else if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
+                if (gSaveContext.EntranceIndeces[i].overrideindex == 0x0578) {
+                    gSaveContext.isyounglinkfountain = 1;
+                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    break;//continue?
+
+                } 
+                else if (gSaveContext.EntranceIndeces[i].overrideindex == 0x04C2) {
+                    gSaveContext.isyounglinkfountain = 0;
+                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    break;
                 }
-               
-            if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
-                gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
-                break;
+                else if (gSaveContext.entranceIndex == 0x00340) {
+                    if (gSaveContext.isyounglinkfountain == 1) {
+                        gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                        break;
+                    }
+
+                    else {
+                        for (i = 0; i < 250; i++) {
+                            if (gSaveContext.EntranceIndeces[i].index == 0x03E8) {
+                                gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                                break;
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        break;
+                    }
+
+                } 
+                else {
+                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    break;
+                }
+
+                
             }
 
             else if (i == 249) {
