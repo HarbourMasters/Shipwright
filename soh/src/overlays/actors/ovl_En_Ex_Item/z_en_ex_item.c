@@ -406,7 +406,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         if (gSaveContext.n64ddFlag) {
             GET_PLAYER(globalCtx)->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
-            getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            getItemId = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50).getItemId;
         } else {
             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
                 getItemId = GI_BULLET_BAG_40;
@@ -426,7 +426,7 @@ void EnExItem_TargetPrizeGive(EnExItem* this, GlobalContext* globalCtx) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
         if (gSaveContext.n64ddFlag) {
-            getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            getItemId = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50).getItemId;
         } else {
             getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
         }

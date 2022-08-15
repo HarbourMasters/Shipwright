@@ -464,10 +464,10 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
     } else {
         if (gSaveContext.n64ddFlag) {
             if (this->isTrading) {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                getItemId = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG).getItemId;
                 Flags_SetTreasure(globalCtx, 0x1F);
             } else {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+                getItemId = Randomizer_GetItemFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA).getItemId;
             }
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;

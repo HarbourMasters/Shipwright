@@ -346,7 +346,7 @@ s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
                     if(!gSaveContext.n64ddFlag) {
                         bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;    
                     } else {
-                        bombBagUpgrade = Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
+                        bombBagUpgrade = Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40).getItemId;
                     }
                     EnGo2_GetItem(this, globalCtx, bombBagUpgrade);
                     Message_CloseTextbox(globalCtx);
@@ -542,7 +542,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
                 }
                 
                 gSaveContext.infTable[16] |= 0x200;
-                EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                EnGo2_GetItem(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON).getItemId);
                 this->actionFunc = EnGo2_SetupGetItem;
                 Flags_SetTreasure(globalCtx, 0x1F);
                 return 2;
@@ -621,7 +621,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
                         return 0;
                     }
 
-                    EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    EnGo2_GetItem(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS).getItemId);
                     Flags_SetTreasure(globalCtx, 0x1F);
                 } else {
                     EnGo2_GetItem(this, globalCtx, GI_SWORD_BGS);

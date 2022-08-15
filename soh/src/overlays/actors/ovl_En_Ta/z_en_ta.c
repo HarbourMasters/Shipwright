@@ -886,7 +886,12 @@ void func_80B15F54(EnTa* this, GlobalContext* globalCtx) {
         Message_CloseTextbox(globalCtx);
         this->unk_2E0 &= ~0x2;
         func_80B13AA0(this, func_80B15E80, func_80B16938);
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE) : GI_MILK_BOTTLE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 10000.0f, 50.0f);
+        }
     }
 }
 

@@ -417,9 +417,9 @@ void GiveLinkDungeonReward(uint16_t getItemId) {
 }
 
 void GiveLinksPocketMedallion() {
-    RandomizerGet getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
-    GiveLinkDungeonReward(getItemId);
+    GiveLinkDungeonReward(getItemEntry.getItemId);
 }
 
 /**

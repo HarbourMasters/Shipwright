@@ -133,11 +133,11 @@ void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
         }
         Actor_Kill(&this->actor);
     } else {
-        if (gSaveContext.n64ddFlag) {
-            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
-            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 30.0f, 50.0f);
         }
     }
 }
@@ -156,11 +156,11 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
     } else {
         if (0) {} // Necessary to match
 
-        if (gSaveContext.n64ddFlag) {
-            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
-            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 30.0f, 50.0f);
         }
 
         if ((globalCtx->gameplayFrames & 0xD) == 0) {

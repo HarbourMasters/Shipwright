@@ -185,15 +185,13 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
-                this->getItemId =
-                    Randomizer_GetItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                this->getItemId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20).getItemId;
                 break;
             case EXITEM_HEART_PIECE_BOWLING:
-                this->getItemId =
-                    Randomizer_GetItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+                this->getItemId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE).getItemId;
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemId = Randomizer_GetItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+                this->getItemId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).getItemId;
                 break;
         }
     }

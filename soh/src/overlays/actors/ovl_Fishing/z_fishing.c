@@ -5056,9 +5056,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE) :
-                                                GI_HEART_PIECE; 
+                                if (!gSaveContext.n64ddFlag) {
+                                    getItemId = GI_HEART_PIECE;
+                                } else {
+                                    getItemId = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE).getItemId;
+                                }
                             }
                         }
                     } else {
@@ -5066,9 +5068,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD) :
-                                                GI_SCALE_GOLD; 
+                                if (!gSaveContext.n64ddFlag) {
+                                    getItemId = GI_SCALE_GOLD;
+                                } else {
+                                    getItemId = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD).getItemId;
+                                }
                             }
                         }
                     }
@@ -5142,9 +5146,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
-                    func_8002F434(&this->actor, globalCtx,
-                                  Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD), 2000.0f,
-                                  1000.0f);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                    func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 2000.0f, 1000.0f);
                 }
             }
             break;
