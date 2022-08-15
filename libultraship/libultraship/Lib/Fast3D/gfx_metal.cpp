@@ -688,15 +688,18 @@ static void gfx_metal_upload_texture(const uint8_t *rgba32_buf, uint32_t width, 
     texture_descriptor->setStorageMode(MTL::StorageModeShared);
 
     MTL::Region region = MTL::Region::Make2D(0, 0, width, height);
-    MTL::Texture* texture = mctx.device->newTexture(texture_descriptor);
+
+    MTL::Texture* texture = texture_data->texture;
+    if (texture_data->texture == nullptr || texture_data->texture->width() != width || texture_data->texture->height() != height) {
+        if (texture_data->texture != nullptr)
+            texture_data->texture->release();
+
+        texture = mctx.device->newTexture(texture_descriptor);
+    }
+
     NS::UInteger bytes_per_pixel = 4;
     NS::UInteger bytes_per_row = bytes_per_pixel * width;
     texture->replaceRegion(region, 0, rgba32_buf, bytes_per_row);
-
-    // TODO: Can we just replace the existing texture instead of making a new one (if the sizes are equal)?
-    if (texture_data->texture != nullptr)
-        texture_data->texture->release();
-
     texture_data->texture = texture;
 
     autorelease_pool->release();
