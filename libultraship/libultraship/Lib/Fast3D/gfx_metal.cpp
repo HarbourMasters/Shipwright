@@ -66,7 +66,7 @@ struct ShaderProgramMetal {
     bool used_textures[2];
 
     // hashed by msaa_level
-    std::unordered_map<int, MTL::RenderPipelineState*> pipeline_state_variants;
+    MTL::RenderPipelineState* pipeline_state_variants[9];
 };
 
 struct FrameUniforms {
@@ -622,7 +622,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
 
     // Prepoluate pipeline state cache with program and available msaa levels
     for (int i = 0; i < ARRAY_COUNT(mctx.msaa_num_quality_levels); i++) {
-        if (mctx.msaa_num_quality_levels[i] == true) {
+        if (mctx.msaa_num_quality_levels[i] == 1) {
             int msaa_level = i + 1;
             pipeline_descriptor->setSampleCount(msaa_level);
             MTL::RenderPipelineState* pipeline_state = mctx.device->newRenderPipelineState(pipeline_descriptor, &error);
@@ -814,9 +814,7 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     if (current_framebuffer.last_shader_program != mctx.shader_program) {
         current_framebuffer.last_shader_program = mctx.shader_program;
 
-        MTL::RenderPipelineState* pipeline_state = mctx.shader_program->pipeline_state_variants
-            .find(current_framebuffer.msaa_level)->second;
-
+        MTL::RenderPipelineState* pipeline_state = mctx.shader_program->pipeline_state_variants[current_framebuffer.msaa_level];
         current_framebuffer.command_encoder->setRenderPipelineState(pipeline_state);
     }
 
