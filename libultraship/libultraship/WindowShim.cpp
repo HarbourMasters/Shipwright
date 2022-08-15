@@ -6,6 +6,8 @@
 #include "Lib/Fast3D/gfx_opengl.h"
 #include "Lib/Fast3D/gfx_direct3d11.h"
 #include "Lib/Fast3D/gfx_direct3d12.h"
+#include "Lib/Fast3D/gfx_wiiu.h"
+#include "Lib/Fast3D/gfx_gx2.h"
 #include "Lib/Fast3D/gfx_window_manager_api.h"
 
 #include <string>
@@ -37,6 +39,10 @@ void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI
 #ifdef ENABLE_DX11
     *RenderingApi = &gfx_direct3d11_api;
     *WmApi = &gfx_dxgi_api;
+#endif
+#ifdef __WIIU__
+    *RenderingApi = &gfx_gx2_api;
+    *WmApi = &gfx_wiiu;
 #endif
 
     // Config can override

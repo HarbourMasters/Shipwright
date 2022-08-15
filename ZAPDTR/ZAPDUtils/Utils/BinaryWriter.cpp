@@ -107,7 +107,13 @@ void BinaryWriter::Write(uint64_t value)
 void BinaryWriter::Write(float value)
 {
 	if (endianness != Endianness::Native)
-		value = BitConverter::ToFloatBE((uint8_t*)&value, 0);
+	{
+		float tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&value;
+		dst[3] = src[0]; dst[2] = src[1]; dst[1] = src[2]; dst[0] = src[3];
+		value = tmp;
+	}
 
 	stream->Write((char*)&value, sizeof(float));
 }
@@ -115,7 +121,14 @@ void BinaryWriter::Write(float value)
 void BinaryWriter::Write(double value)
 {
 	if (endianness != Endianness::Native)
-		value = BitConverter::ToDoubleBE((uint8_t*)&value, 0);
+	{
+		double tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&value;
+		dst[7] = src[0]; dst[6] = src[1]; dst[5] = src[2]; dst[4] = src[3];
+		dst[3] = src[4]; dst[2] = src[5]; dst[1] = src[6]; dst[0] = src[7];
+		value = tmp;
+	}
 
 	stream->Write((char*)&value, sizeof(double));
 }
