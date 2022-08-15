@@ -438,6 +438,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 		)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES 
+    )
 endif()
 ################################################################################
 # MSVC runtime library

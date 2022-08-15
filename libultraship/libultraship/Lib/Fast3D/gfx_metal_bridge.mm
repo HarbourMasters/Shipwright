@@ -9,25 +9,25 @@
 
 void set_layer_pixel_format(void* layer)
 {
-    CAMetalLayer* metalLayer = (CAMetalLayer*) layer;
+    CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
     metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
 }
 
 void set_layer_drawable_size(void* layer, uint32_t width, uint32_t height)
 {
-    CAMetalLayer* metalLayer = (CAMetalLayer*) layer;
+    CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
     metalLayer.drawableSize = CGSizeMake(width, height);
 }
 
 MTL::Device* get_layer_device(void* layer)
 {
-    CAMetalLayer* metalLayer = (CAMetalLayer*) layer;
+    CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
     return (__bridge MTL::Device*)metalLayer.device;
 }
 
 CA::MetalDrawable* get_layer_next_drawable(void* layer)
 {
-  CAMetalLayer* metalLayer = (CAMetalLayer*) layer;
+  CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
   id <CAMetalDrawable> metalDrawable = [metalLayer nextDrawable];
   CA::MetalDrawable* metalCppDrawable = (__bridge CA::MetalDrawable*)metalDrawable;
   return metalCppDrawable;
@@ -38,9 +38,9 @@ NS::String* string_with_format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    NSString* string = [[[NSString alloc] initWithFormat:@(format) arguments:args] autorelease];
+    NSString* string = [[NSString alloc] initWithFormat:@(format) arguments:args];
     va_end(args);
-    return (__bridge NS::String*)string;
+    return (__bridge_retained NS::String*)string;
 }
 
 #endif

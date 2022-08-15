@@ -290,11 +290,15 @@ void Metal_SetRenderer(SDL_Renderer* renderer) {
 }
 
 bool Metal_Init() {
+    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
     mctx.layer = SDL_RenderGetMetalLayer(mctx.renderer);
     set_layer_pixel_format(mctx.layer);
 
     mctx.device = get_layer_device(mctx.layer);
     mctx.command_queue = mctx.device->newCommandQueue();
+
+    autorelease_pool->release();
 
     return ImGui_ImplMetal_Init(mctx.device);
 }
@@ -353,6 +357,8 @@ static void gfx_metal_init(void) {
         }
     )";
 
+    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
     NS::Error* error = nullptr;
     MTL::Library* library = mctx.device->newLibrary(NS::String::string(depth_shader, NS::UTF8StringEncoding), nullptr, &error);
 
@@ -360,6 +366,7 @@ static void gfx_metal_init(void) {
         SPDLOG_ERROR("Failed to compile shader library, error {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
 
     mctx.depth_compute_function = library->newFunction(NS::String::string("depthKernel", NS::UTF8StringEncoding));
+    autorelease_pool->release();
 }
 
 static struct GfxClipParameters gfx_metal_get_clip_parameters() {
