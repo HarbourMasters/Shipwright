@@ -1536,11 +1536,12 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, GlobalContext* globalCtx) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->actor, globalCtx,
-                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
-                          ? Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE).getItemId
-                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
-                      26.0f, 26.0f);
+        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 26.0f, 26.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        }
 
         this->actionFunc = EnSkj_GiveOcarinaGameReward;
     }
@@ -1551,11 +1552,12 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        func_8002F434(&this->actor, globalCtx,
-                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
-                          ? Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE).getItemId
-                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
-                      26.0f, 26.0f);
+        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 26.0f, 26.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        }
     }
 }
 
