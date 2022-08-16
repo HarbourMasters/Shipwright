@@ -87,6 +87,11 @@ namespace GameControlEditor {
 
     void DrawUI(bool&);
 
+	void Tooltip(const char* text) {
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("%s", text);
+    }
+
     void Init() {
         SohImGui::AddWindow("Enhancements", "Game Control Editor", DrawUI);
 
@@ -224,12 +229,16 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+		Tooltip("Inverts the Camera X Axis in:\n-Free-Camera\n-C-Up Camera\n-Weapon Aiming");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+		Tooltip("Inverts the Camera Y Axis in:\n-Free-Camera\n-C-Up view\n-Weapon Aiming");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::EnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+		Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		SohImGui::EnhancementCheckbox("Auto-Center First Person View (C-Up)", "gAutoCenterView");
+		SohImGui::EnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
+		Tooltip("Prevents the C-Up view from\nauto-centering, allowing\nfor Gyro Aiming");
 	}
 	
 	void DrawUI(bool& open) {
