@@ -1162,10 +1162,27 @@ namespace SohImGui {
                 PaddedSeparator();
 
                 if (ImGui::BeginMenu("Controls")) {
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                    float availableWidth = ImGui::GetContentRegionAvail().x;
+                    if (ImGui::Button(
+                        GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(),
+                        ImVec2(availableWidth, 0)
+                    )) {
+                        bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
+                        CVar_SetS32("gGameControlEditorEnabled", !currentValue);
+                        needs_save = true;
+                        customWindows["Game Control Editor"].enabled = CVar_GetS32("gGameControlEditorEnabled", 0);
+                    }
+                    ImGui::PopStyleVar(3);
+                    ImGui::PopStyleColor(1);
+
                     // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
-                    EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                    PaddedEnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                     Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                    PaddedEnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText", true, false);
+                    PaddedEnhancementCheckbox("D-pad Support in Text Choice", "gDpadText", true, false);
                     PaddedEnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop", true, false);
                     PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
                     Tooltip("Allows the D-pad to be used as extra C buttons");
@@ -1188,8 +1205,8 @@ namespace SohImGui {
                         PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, false, false, true);
                         EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3);
                         Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
-                        PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0);
-                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0, false, false, true);
+                        PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, false, false, true);
                         PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                         Tooltip("Speeds up lifting silver rocks and obelisks");
                         PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
@@ -2103,6 +2120,21 @@ namespace SohImGui {
     }
 
     void applyEnhancementPresetDefault(void) {
+        // D-pad Support on Pause and File Select
+        CVar_SetS32("gDpadPauseName", 0);
+        // D-pad Support in Ocarina and Text Choice
+        CVar_SetS32("gDpadOcarinaText", 0);
+        // D-pad Support for Browsing Shop Items
+        CVar_SetS32("gDpadShop", 0);
+        // D-pad as Equip Items
+        CVar_SetS32("gDpadEquips", 0);
+        // Allow the cursor to be on any slot
+        CVar_SetS32("gPauseAnyCursor", 0);
+        // Prevent Dropped Ocarina Inputs
+        CVar_SetS32("gDpadNoDropOcarinaInput", 0);
+        // Answer Navi Prompt with L Button
+        CVar_SetS32("gNaviOnL", 0);
+
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);
         // King Zora Speed (1 to 5)
@@ -2111,8 +2143,10 @@ namespace SohImGui {
         CVar_SetS32("gForgeTime", 3);
         // Vine/Ladder Climb speed (+0 to +12)
         CVar_SetS32("gClimbSpeed", 0);
-        // Faster Block Push
+        // Faster Block Push (+0 to +5)
         CVar_SetS32("gFasterBlockPush", 0);
+        // Faster Heavy Block Lift
+        CVar_SetS32("gFasterHeavyBlockLift", 0);
         // No Forced Navi
         CVar_SetS32("gNoForcedNavi", 0);
         // No Skulltula Freeze
@@ -2127,12 +2161,14 @@ namespace SohImGui {
         CVar_SetS32("gBetterOwl", 0);
         // Fast Ocarina Playback
         CVar_SetS32("gFastOcarinaPlayback", 0);
-        // Prevent Dropped Ocarina Inputs
-        CVar_SetS32("gDpadNoDropOcarinaInput", 0);
         // Instant Putaway
         CVar_SetS32("gInstantPutaway", 0);
+        // Instant Boomerang Recall
+        CVar_SetS32("gFastBoomerang", 0);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 0);
+        // Remember Save Location
+        CVar_SetS32("gRememberSaveLocation", 0);
 
         // Damage Multiplier (0 to 8)
         CVar_SetS32("gDamageMul", 0);
@@ -2214,14 +2250,14 @@ namespace SohImGui {
         CVar_SetS32("gVisualAgony", 0);
         // Assignable Tunics and Boots
         CVar_SetS32("gAssignableTunicsAndBoots", 0);
+        // Equipment Toggle
+        CVar_SetS32("gEquipmentCanBeRemoved", 0);
         // Link's Cow in Both Time Periods
         CVar_SetS32("gCowOfTime", 0);
         // Enable visible guard vision
         CVar_SetS32("gGuardVision", 0);
         // Enable passage of time on file select
         CVar_SetS32("gTimeFlowFileSelect", 0);
-        // Allow the cursor to be on any slot
-        CVar_SetS32("gPauseAnyCursor", 0);
         // Count Golden Skulltulas
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
@@ -2274,19 +2310,29 @@ namespace SohImGui {
         CVar_SetS32("gN64WeirdFrames", 0);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 0);
+
+        // Autosave
+        CVar_SetS32("gAutosave", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
+        // D-pad Support in Ocarina and Text Choice
+        CVar_SetS32("gDpadOcarinaText", 1);
+        // D-pad Support for Browsing Shop Items
+        CVar_SetS32("gDpadShop", 1);
+        // D-pad as Equip Items
+        CVar_SetS32("gDpadEquips", 1);
+        // Prevent Dropped Ocarina Inputs
+        CVar_SetS32("gDpadNoDropOcarinaInput", 1);
+
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 5);
         // King Zora Speed (1 to 5)
         CVar_SetS32("gMweepSpeed", 2);
-        // Faster Block Push
-        CVar_SetS32("gFasterBlockPush", 1);
+        // Faster Block Push (+0 to +5)
+        CVar_SetS32("gFasterBlockPush", 5);
         // Better Owl
         CVar_SetS32("gBetterOwl", 1);
-        // Prevent Dropped Ocarina Inputs
-        CVar_SetS32("gDpadNoDropOcarinaInput", 1);
 
         // Assignable Tunics and Boots
         CVar_SetS32("gAssignableTunicsAndBoots", 1);
@@ -2331,6 +2377,8 @@ namespace SohImGui {
         CVar_SetS32("gForgeTime", 0);
         // Vine/Ladder Climb speed (+0 to +12)
         CVar_SetS32("gClimbSpeed", 1);
+        // Faster Heavy Block Lift
+        CVar_SetS32("gFasterHeavyBlockLift", 1);
         // No Forced Navi
         CVar_SetS32("gNoForcedNavi", 1);
         // No Skulltula Freeze
@@ -2345,12 +2393,16 @@ namespace SohImGui {
         CVar_SetS32("gFastOcarinaPlayback", 1);
         // Instant Putaway
         CVar_SetS32("gInstantPutaway", 1);
+        // Instant Boomerang Recall
+        CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
 
+        // Equipment Toggle
+        CVar_SetS32("gEquipmentCanBeRemoved", 1);
         // Count Golden Skulltulas
         CVar_SetS32("gInjectSkulltulaCount", 1);
 
@@ -2362,6 +2414,9 @@ namespace SohImGui {
     }
 
     void applyEnhancementPresetRandomizer(void) {
+        // Allow the cursor to be on any slot
+        CVar_SetS32("gPauseAnyCursor", 1);
+
         // Instant Fishing
         CVar_SetS32("gInstantFishing", 1);
         // Guarantee Bite
@@ -2373,8 +2428,6 @@ namespace SohImGui {
 
         // Visual Stone of Agony
         CVar_SetS32("gVisualAgony", 1);
-        // Allow the cursor to be on any slot
-        CVar_SetS32("gPauseAnyCursor", 1);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
 
