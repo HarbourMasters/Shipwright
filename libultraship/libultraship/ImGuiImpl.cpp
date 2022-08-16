@@ -1205,8 +1205,8 @@ namespace SohImGui {
                         PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, false, false, true);
                         EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3);
                         Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
-                        PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0);
-                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0, false, false, true);
+                        PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, false, false, true);
                         PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                         Tooltip("Speeds up lifting silver rocks and obelisks");
                         PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
@@ -2093,7 +2093,7 @@ namespace SohImGui {
         CVar_SetS32("gForgeTime", 3);
         // Vine/Ladder Climb speed (+0 to +12)
         CVar_SetS32("gClimbSpeed", 0);
-        // Faster Block Push
+        // Faster Block Push (+0 to +5)
         CVar_SetS32("gFasterBlockPush", 0);
         // No Forced Navi
         CVar_SetS32("gNoForcedNavi", 0);
@@ -2263,8 +2263,8 @@ namespace SohImGui {
         CVar_SetS32("gTextSpeed", 5);
         // King Zora Speed (1 to 5)
         CVar_SetS32("gMweepSpeed", 2);
-        // Faster Block Push
-        CVar_SetS32("gFasterBlockPush", 1);
+        // Faster Block Push (+0 to +5)
+        CVar_SetS32("gFasterBlockPush", 5);
         // Better Owl
         CVar_SetS32("gBetterOwl", 1);
         // Prevent Dropped Ocarina Inputs
