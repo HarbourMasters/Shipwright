@@ -1,3 +1,10 @@
+//
+//  gfx_metal_bridge.mm
+//  libultraship
+//
+//  Created by David Chavez on 16.08.22.
+//
+
 #ifdef ENABLE_METAL
 
 #include <Foundation/Foundation.hpp>

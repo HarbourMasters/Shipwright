@@ -1,3 +1,10 @@
+//
+//  gfx_metal.hpp
+//  libultraship
+//
+//  Created by David Chavez on 16.08.22.
+//
+
 #ifdef ENABLE_METAL
 
 #ifndef gfx_metal_hpp

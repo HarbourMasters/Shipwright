@@ -196,6 +196,8 @@ set(Source_Files__Lib__Fast3D__extra
     "Lib/Fast3D/gfx_metal.hpp"
     "Lib/Fast3D/gfx_metal_bridge.mm"
     "Lib/Fast3D/gfx_metal_bridge.hpp"
+    "Lib/Fast3D/gfx_metal_shader.cpp"
+    "Lib/Fast3D/gfx_metal_shader.hpp"
 )
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 set(Source_Files__Lib__Fast3D__extra
