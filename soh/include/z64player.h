@@ -356,7 +356,7 @@ typedef struct {
     /* 0x00 */ s32 active;
     /* 0x04 */ Vec3f tip;
     /* 0x10 */ Vec3f base;
-} WeaponInfo; // size = 0x1C\
+} WeaponInfo; // size = 0x1C
 
 typedef enum {
     FLAG_NONE,
