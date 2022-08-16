@@ -314,7 +314,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx) {
+    if (gGlobalCtx != nullptr) {
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
             gSaveContext.respawnFlag = 1;
@@ -330,7 +330,7 @@ static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx) {
+    if (gGlobalCtx != nullptr) {
         gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
         gGlobalCtx->sceneLoadFlag = 0x14;
         gGlobalCtx->fadeTransition = 11;
@@ -343,7 +343,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx) {
+    if (gGlobalCtx != nullptr) {
         if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
                 gGlobalCtx->sceneLoadFlag = 0x14;
                 gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
@@ -361,7 +361,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
 }
 
 static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx) {
+    if (gGlobalCtx != nullptr) {
         SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, FileChooseContext);
         gGlobalCtx->state.running = 0;
     } else {
