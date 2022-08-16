@@ -1783,6 +1783,11 @@ namespace SohImGui {
                         ImGui::PopStyleVar(1);
                     }
                 }
+		    
+                if (ImGui::Button("Change Age")) {
+                    CVar_SetS32("gSwitchAge", 1);
+                }
+                Tooltip("Switches links age and reloads the area.");   
 
                 ImGui::EndMenu();
             }
