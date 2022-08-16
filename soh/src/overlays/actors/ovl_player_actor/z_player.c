@@ -11411,8 +11411,8 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 			this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
 		}
 
-		if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-			this->actor.focus.rot.y += (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.y += (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
 		}
 	}
 
