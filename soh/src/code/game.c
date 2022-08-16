@@ -426,6 +426,27 @@ void GameState_Update(GameState* gameState) {
     } else {
         CVar_SetS32("gPrevTime", -1);
     }
+    
+    //Switches Link's age and respawns him at the last entrance he entered.
+    if (CVar_GetS32("gSwitchAge", 0) != 0) {
+        CVar_SetS32("gSwitchAge", 0);
+        if (gGlobalCtx) {
+            if (gGlobalCtx->linkAgeOnLoad == 1) {
+                gGlobalCtx->linkAgeOnLoad = 0;
+                //Note: All logic below can be replaced with console ReloadHandler once it's merged with main.
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            } else {
+                gGlobalCtx->linkAgeOnLoad = 1;
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            }
+        }
+    }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
     gSaveContext.language = CVar_GetS32("gLanguages", 0);
