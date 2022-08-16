@@ -512,8 +512,11 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         getItemId = getItem.getItemId;
-        func_8002F554(&this->actor, globalCtx, getItemId);
-        GET_PLAYER(globalCtx)->getItemEntry = getItem;
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F554(&this->actor, globalCtx, getItemId);
+        } else {
+            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
+        }
     }
 
     EnItem00_SetupAction(this, func_8001E5C8);
@@ -884,12 +887,13 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        if (gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F554(&this->actor, globalCtx, getItemId);
+        } else {
             getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-            GET_PLAYER(globalCtx)->getItemEntry = getItem;
             getItemId = getItem.getItemId;
+            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
-        func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
     switch (*params) {
