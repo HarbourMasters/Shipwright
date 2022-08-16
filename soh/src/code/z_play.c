@@ -284,6 +284,15 @@ void Gameplay_Init(GameState* thisx) {
                 break;
             }
 
+            else if (gSaveContext.isfirstindex == 0) {
+                gSaveContext.isfirstindex = 1;
+                break;
+            }
+
+            else if (gSaveContext.isvoidoutordie == 1) {
+                gSaveContext.isvoidoutordie = 0;
+                break;
+            }
             else if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
                 if (gSaveContext.EntranceIndeces[i].overrideindex == 0x0578) {
                     gSaveContext.isyounglinkfountain = 1;
@@ -291,6 +300,7 @@ void Gameplay_Init(GameState* thisx) {
                     break;//continue?
 
                 } 
+
                 else if (gSaveContext.EntranceIndeces[i].overrideindex == 0x04C2) {
                     gSaveContext.isyounglinkfountain = 0;
                     gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
@@ -1964,6 +1974,10 @@ void Gameplay_TriggerVoidOut(GlobalContext* globalCtx) {
     globalCtx->sceneLoadFlag = 0x14;
     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
     globalCtx->fadeTransition = 2;
+    if (globalCtx->sceneNum != 0x5c) {
+        gSaveContext.isvoidoutordie = 1;
+    }
+    
 }
 
 void Gameplay_LoadToLastEntrance(GlobalContext* globalCtx) {
@@ -1987,6 +2001,9 @@ void Gameplay_LoadToLastEntrance(GlobalContext* globalCtx) {
 void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
     Gameplay_SetupRespawnPoint(globalCtx, RESPAWN_MODE_DOWN, 0xDFF);
     Gameplay_LoadToLastEntrance(globalCtx);
+    if (globalCtx->sceneNum != 0x5c) {
+        gSaveContext.isvoidoutordie = 1;
+    }
 }
 
 s32 func_800C0CB8(GlobalContext* globalCtx) {

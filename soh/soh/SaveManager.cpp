@@ -95,6 +95,8 @@ void SaveManager::LoadRandomizerVersion1() {
     }
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    gSaveContext.isfirstindex = 0;
 }
 
 void SaveManager::SaveRandomizer() {
