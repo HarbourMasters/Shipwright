@@ -45,6 +45,9 @@ namespace Ship {
 			if(btn != -1) {
 				backend->SetButtonMapping(CurrentPort, n64Btn, btn);
 				BtnReading = -1;
+
+				// avoid immediately triggering another button during gamepad nav
+				ImGui::SetKeyboardFocusHere(0);
 			}
 		}
 
@@ -90,10 +93,11 @@ namespace Ship {
 
 		if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
 			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
-				if (ControllerName != "Keyboard" && ControllerName != "Auto") {
-					ControllerName += "##"+std::to_string(i);
+				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
+				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
+					DeviceName += "##"+std::to_string(i);
 				}
-				if (ImGui::Selectable(ControllerName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
+				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
 					controlDeck->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
@@ -145,10 +149,23 @@ namespace Ship {
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 
+#ifdef __WIIU__
+				ImGui::BeginChild("##MSInput", ImVec2(90 * 2, 50 * 2), false);
+#else
 				ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
+#endif
 				ImGui::Text("Deadzone");
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(80 * 2);
+			#else
 				ImGui::PushItemWidth(80);
-				ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[0] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
+			#endif
+				// The window has deadzone per stick, so we need to
+				// set the deadzone for both left stick axes here
+				// SDL_CONTROLLER_AXIS_LEFTX: 0
+				// SDL_CONTROLLER_AXIS_LEFTY: 1
+				ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[0], 1.0f, 0.0f, "%.0f");
+				profile->AxisDeadzones[1] = profile->AxisDeadzones[0];
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
@@ -176,14 +193,35 @@ namespace Ship {
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+#ifdef __WIIU__
+				ImGui::BeginChild("##CSInput", ImVec2(90 * 2, 85 * 2), false);
+#else
 				ImGui::BeginChild("##CSInput", ImVec2(90, 85), false);
+#endif
 					ImGui::Text("Deadzone");
+			#ifdef __WIIU__
+					ImGui::PushItemWidth(80 * 2);
+			#else
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2] /* This is the SDL value for left stick X axis */, 1.0f, 0.0f, "%.0f");
+			#endif
+					// The window has deadzone per stick, so we need to
+					// set the deadzone for both right stick axes here
+					// SDL_CONTROLLER_AXIS_RIGHTX: 2
+					// SDL_CONTROLLER_AXIS_RIGHTY: 3
+					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2], 1.0f, 0.0f, "%.0f");
+					profile->AxisDeadzones[3] = profile->AxisDeadzones[2];
 					ImGui::PopItemWidth();
 					ImGui::Text("Sensitivity");
+			#ifdef __WIIU__
+					ImGui::PushItemWidth(80 * 2);
+			#else
 					ImGui::PushItemWidth(80);
-					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2] /* This is the SDL value for right stick X axis */, 1.0f, 0.0f, "%.0f");
+			#endif
+					// The window has sensitivity per stick, so we need to
+					// set the sensitivity for both right stick axes here
+					// SDL_CONTROLLER_AXIS_RIGHTX: 2
+					// SDL_CONTROLLER_AXIS_RIGHTY: 3
+					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2], 1.0f, 0.0f, "%.0f");
 					profile->AxisSensitivities[3] = profile->AxisSensitivities[2];
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
@@ -195,15 +233,20 @@ namespace Ship {
 		}
 
 		if(Backend->CanGyro()) {
+		#ifndef __WIIU__
 			ImGui::SameLine();
-
+		#endif
 			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
 				float cursorX = ImGui::GetCursorPosX() + 5;
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::Checkbox("Enable Gyro", &profile->UseGyro);
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile->GyroData[GYRO_SENSITIVITY]));
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(135.0f * 2);
+			#else
 				ImGui::PushItemWidth(135.0f);
+			#endif
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::SliderFloat("##GSensitivity", &profile->GyroData[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
 				ImGui::PopItemWidth();
@@ -218,13 +261,25 @@ namespace Ship {
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			#ifdef __WIIU__
+				ImGui::BeginChild("##GyInput", ImVec2(90 * 2, 85 * 2), false);
+			#else
 				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+			#endif
 				ImGui::Text("Drift X");
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(80 * 2);
+			#else
 				ImGui::PushItemWidth(80);
+			#endif
 				ImGui::InputFloat("##GDriftX", &profile->GyroData[DRIFT_X], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::Text("Drift Y");
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(80 * 2);
+			#else
 				ImGui::PushItemWidth(80);
+			#endif
 				ImGui::InputFloat("##GDriftY", &profile->GyroData[DRIFT_Y], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
@@ -250,6 +305,8 @@ namespace Ship {
 		ImGui::SetCursorPosX(cursor.x);
 	#ifdef __SWITCH__
 		ImGui::SetCursorPosY(cursor.y + 167);
+	#elif defined(__WIIU__)
+		ImGui::SetCursorPosY(cursor.y + 120 * 2);
 	#else
 		ImGui::SetCursorPosY(cursor.y + 120);
 	#endif
@@ -261,7 +318,11 @@ namespace Ship {
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100.0f * profile->RumbleStrength));
 				ImGui::SetCursorPosX(cursorX);
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(135.0f * 2);
+			#else
 				ImGui::PushItemWidth(135.0f);
+			#endif
 				ImGui::SliderFloat("##RStrength", &profile->RumbleStrength, 0.0f, 1.0f, "");
 				ImGui::PopItemWidth();
 			}
@@ -279,6 +340,9 @@ namespace Ship {
 #ifdef __SWITCH__
 		ImVec2 minSize = ImVec2(641, 250);
 		ImVec2 maxSize = ImVec2(2200, 505);
+#elif defined(__WIIU__)
+		ImVec2 minSize = ImVec2(641 * 2, 250 * 2);
+		ImVec2 maxSize = ImVec2(1200 * 2, 290 * 2);
 #else
 		ImVec2 minSize = ImVec2(641, 250);
 		ImVec2 maxSize = ImVec2(1200, 290);
