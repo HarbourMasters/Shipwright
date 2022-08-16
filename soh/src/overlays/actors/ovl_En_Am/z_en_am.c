@@ -667,10 +667,11 @@ void EnAm_Statue(EnAm* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     f32 temp158f = this->dyna.unk_158;
     s16 moveDir = 0;
+    s32 blockSpeed = CVar_GetS32("gFasterBlockPush", 0);
 
     if (this->unk_258 == 0) {
         if (this->dyna.unk_150 != 0.0f) {
-            this->unk_258 = 0x8000;
+            this->unk_258 = 0x8000 - (blockSpeed * 0x1000);
         }
     } else {
         this->unk_258 -= 0x800;
@@ -696,7 +697,12 @@ void EnAm_Statue(EnAm* this, GlobalContext* globalCtx) {
         }
 
         this->dyna.actor.world.rot.y = this->dyna.unk_158;
-        this->dyna.actor.speedXZ = Math_SinS(this->unk_258) * (this->dyna.unk_150 * 0.5f);
+        this->dyna.actor.speedXZ = Math_SinS(this->unk_258 * 8 / (8 - blockSpeed)) * (this->dyna.unk_150 * 0.5f) +
+            (blockSpeed == 5 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.25681 : 
+                (blockSpeed == 4 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.18305 :
+                    (blockSpeed == 3 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.14222 :
+                        (blockSpeed == 2 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.11625 :
+                            (blockSpeed == 1 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.09828 : 0)))));
     }
 
     if (this->dyna.actor.bgCheckFlags & 2) {

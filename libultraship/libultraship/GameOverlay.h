@@ -37,6 +37,4 @@ namespace Ship {
 		void CleanupNotifications();
 		void LoadFont(const std::string& name, const std::string& path, float fontSize);
 	};
-
-	bool OverlayCommand(const std::vector<std::string>& args);
 }

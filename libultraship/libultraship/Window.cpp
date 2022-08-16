@@ -33,6 +33,7 @@ extern "C" {
     int32_t osContInit(OSMesgQueue* mq, uint8_t* controllerBits, OSContStatus* status) {
         *controllerBits = 0;
 
+#ifndef __WIIU__
         if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) {
             SPDLOG_ERROR("Failed to initialize SDL game controllers ({})", SDL_GetError());
             exit(EXIT_FAILURE);
@@ -47,6 +48,7 @@ extern "C" {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
         }
     #endif
+#endif
 
         Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->Init(controllerBits);
 
@@ -61,8 +63,8 @@ extern "C" {
         pad->button = 0;
         pad->stick_x = 0;
         pad->stick_y = 0;
-        pad->cam_x = 0;
-        pad->cam_y = 0;
+        pad->right_stick_x = 0;
+        pad->right_stick_y = 0;
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;

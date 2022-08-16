@@ -118,6 +118,7 @@ bool CustomMessageManager::ClearMessageTable(std::string tableID) {
     }
     auto& messageTable = foundMessageTable->second;
     messageTable.clear();
+    return true;
 }
 
 bool CustomMessageManager::AddCustomMessageTable(std::string tableID) { 
