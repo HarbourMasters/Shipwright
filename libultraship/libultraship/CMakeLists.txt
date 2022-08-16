@@ -645,7 +645,7 @@ endif()
 # Link with other targets.
 
 cmake_dependent_option(NO_GLEW "Build without using libGLEW" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
-cmake_dependent_option(NO_GLEW "Build without PulseAudio, using only SDLAudio" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+cmake_dependent_option(NO_PULSE "Build without PulseAudio, using only SDLAudio" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
 cmake_dependent_option(USE_OPENGLES "Build targetting OpenGLESv2 instead of full OpenGL" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
 cmake_dependent_option(USE_X11 "Build with X11/GLX support" ON "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
 
