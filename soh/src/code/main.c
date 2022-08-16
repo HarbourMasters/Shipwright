@@ -70,7 +70,7 @@ void Main(void* arg) {
     Fault_Init();
     SysCfb_Init(0);
     Heaps_Alloc();
-    sysHeap = gSystemHeap;
+    sysHeap = (uintptr_t)gSystemHeap;
     fb = SysCfb_GetFbPtr(0);
     gSystemHeapSize = 1024 * 1024 * 4;
     // "System heap initalization"

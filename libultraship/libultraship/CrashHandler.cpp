@@ -1,7 +1,8 @@
 #include "spdlog/spdlog.h"
 #include "Utils/StringHelper.h"
+#include "CrashHandler.h"
 
-#if defined(_linux_)
+#if defined(__linux__)
 #include <csignal>
 #include <cstdio>
 #include <cxxabi.h>  // for __cxa_demangle

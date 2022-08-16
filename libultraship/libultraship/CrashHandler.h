@@ -1,7 +1,7 @@
 #ifndef CRASH_HANDLER_H
 #define CRASH_HANDLER_H
 
-#ifdef _linux_
+#ifdef __linux__
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,6 +14,6 @@ void SetupHandlerLinux(void);
 }
 #endif
 
-#endif // _linux)
+#endif // __linux__
 
 #endif // CRASH_HANDLER_H
