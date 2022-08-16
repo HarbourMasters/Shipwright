@@ -502,7 +502,7 @@ void EnGe1_SetupWait_Archery(EnGe1* this, GlobalContext* globalCtx) {
 }
 
 void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
-    GetItemEntry getItemEntry;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
@@ -546,7 +546,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
             }
         }
 
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId != GI_NONE) {
             func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
@@ -555,7 +555,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
 }
 
 void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx) {
-    GetItemEntry getItemEntry;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
@@ -587,7 +587,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId != GI_NONE) {
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);

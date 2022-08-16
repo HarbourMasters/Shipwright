@@ -169,6 +169,7 @@ void EnSyatekiMan_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->blinkFunc = EnSyatekiMan_BlinkWait;
     this->actor.colChkInfo.cylRadius = 100;
     this->actionFunc = EnSyatekiMan_Start;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 }
 
 void EnSyatekiMan_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -373,7 +374,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }
-                    if (!gSaveContext.n64ddFlag) {
+                    if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
                         func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
                     } else {
                         GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);
@@ -406,7 +407,7 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);

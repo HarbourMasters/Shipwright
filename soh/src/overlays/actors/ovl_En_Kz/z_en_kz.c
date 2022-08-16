@@ -453,7 +453,7 @@ void EnKz_Wait(EnKz* this, GlobalContext* globalCtx) {
 }
 
 void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
-    GetItemEntry getItemEntry;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
     f32 xzRange;
     f32 yRange;
@@ -477,7 +477,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
         }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, globalCtx, getItemId, xzRange, yRange);
         } else {
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzRange, yRange);

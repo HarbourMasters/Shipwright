@@ -666,6 +666,7 @@ s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
                             func_80A6F7CC(this, globalCtx, GI_HEART_PIECE);
                         } else {
                             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
+                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
                             this->unkGetItemId = getItemEntry.getItemId;
                             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }

@@ -5002,7 +5002,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                  (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) &&
                 Message_ShouldAdvance(globalCtx)) {
                 s32 getItemId;
-                GetItemEntry getItemEntry;
+                GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
                 Message_CloseTextbox(globalCtx);
 
@@ -5085,7 +5085,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 }
 
                 this->actor.parent = NULL;
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
                     func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
