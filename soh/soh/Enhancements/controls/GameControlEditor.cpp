@@ -229,7 +229,7 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-		Tooltip("Inverts the Camera X Axis in:\n-Free-Camera\n-C-Up Camera\n-Weapon Aiming");
+		Tooltip("Inverts the Camera X Axis in:\n-Free-Camera\n-C-Up View\n-Weapon Aiming");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
 		Tooltip("Inverts the Camera Y Axis in:\n-Free-Camera\n-C-Up view\n-Weapon Aiming");
