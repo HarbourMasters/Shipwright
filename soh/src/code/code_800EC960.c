@@ -1304,10 +1304,9 @@ void Audio_GetOcaInput(void) {
     sCurOcaStick.x = input->rel.stick_x;
     sCurOcaStick.y = input->rel.stick_y;
 
-    f32 rstick_x = input->cur.cam_x;
-    f32 rstick_y = input->cur.cam_y;
-    printf("%f %f\n", rstick_x, rstick_y);
-    const f32 sensitivity = 500;
+    s8 rstick_x = input->cur.right_stick_x;
+    s8 rstick_y = input->cur.right_stick_y;
+    const s8 sensitivity = 64;
     if (rstick_x > sensitivity) {
         sCurOcarinaBtnPress |= RSTICK_RIGHT;
     }
