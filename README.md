@@ -4,7 +4,7 @@ A PC port of OoT allowing you to enjoy the game with modern controls, widescreen
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
-## Quick Start
+## Quick Start (Windows)
 
 1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
 2) Requires a supported copy of the game (See supported games below).
