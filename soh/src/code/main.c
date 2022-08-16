@@ -40,8 +40,10 @@ void Main_LogSystemHeap(void) {
 
 int main(int argc, char** argv)
 {
-    signal(SIGSEGV, ErrorHandler);
-	signal(SIGABRT, ErrorHandler);
+#ifdef __linux__
+    SetupHandlerLinux();
+#endif
+    
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
