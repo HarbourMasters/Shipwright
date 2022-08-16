@@ -139,13 +139,15 @@ void EnDntDemo_Judge(EnDntDemo* this, GlobalContext* globalCtx) {
             switch (Player_GetMask(globalCtx)) {
                 case PLAYER_MASK_SKULL:
                     if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-                        GiveItemWithoutActor(globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30));
+                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
+                        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
                         Flags_SetTreasure(globalCtx, 0x1F);
                     }
                     break;
                 case PLAYER_MASK_TRUTH:
                     if (!Flags_GetTreasure(globalCtx, 0x1E)) {
-                        GiveItemWithoutActor(globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40));
+                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
+                        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
                         Flags_SetTreasure(globalCtx, 0x1E);
                     }
                     break;

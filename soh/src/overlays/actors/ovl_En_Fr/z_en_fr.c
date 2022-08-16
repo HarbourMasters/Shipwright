@@ -602,6 +602,7 @@ void EnFr_Idle(EnFr* this, GlobalContext* globalCtx) {
         player->actor.world.pos.z = this->actor.world.pos.z; // z = -1220.0f
         player->currentYaw = player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y;
         this->reward = GI_NONE;
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         this->actionFunc = EnFr_Activate;
     } else if (EnFr_IsAboveAndWithin30DistXZ(player, this)) {
         player->unk_6A8 = &this->actor;
@@ -837,6 +838,7 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, GlobalContext* globalCtx) {
 void EnFr_OcarinaMistake(EnFr* this, GlobalContext* globalCtx) {
     Message_CloseTextbox(globalCtx);
     this->reward = GI_NONE;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     func_80078884(NA_SE_SY_OCARINA_ERROR);
     Audio_OcaSetInstrument(0);
     sEnFrPointers.flags = 12;
@@ -945,6 +947,7 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     songIndex = this->songIndex;
     this->actionFunc = EnFr_Deactivate;
     this->reward = GI_NONE;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
@@ -962,7 +965,8 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {
-                this->reward = Randomizer_GetItemIdFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
+                this->reward = this->getItemEntry.getItemId;
             }
         } else {
             this->reward = GI_RUPEE_BLUE;
@@ -973,7 +977,8 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {
-                this->reward = Randomizer_GetItemIdFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
+                this->reward = this->getItemEntry.getItemId;
             }
         } else {
             this->reward = GI_RUPEE_PURPLE;
@@ -1024,7 +1029,11 @@ void EnFr_Deactivate(EnFr* this, GlobalContext* globalCtx) {
         this->actionFunc = EnFr_Idle;
     } else {
         this->actionFunc = EnFr_GiveReward;
-        func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 30.0f, 100.0f);
+        }
     }
 }
 
@@ -1033,7 +1042,11 @@ void EnFr_GiveReward(EnFr* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 30.0f, 100.0f);
+        }
     }
 }
 

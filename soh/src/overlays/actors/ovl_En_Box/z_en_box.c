@@ -447,41 +447,42 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
             sItem = Randomizer_GetRandomizedItem(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
-            GetItemEntry blueRupeeEntry = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
+            GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                 if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(globalCtx, 0x1B)) {
-                            sItem = blueRupeeEntry;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
                         if(Flags_GetCollectible(globalCtx, 0x1C)) {
-                            sItem = blueRupeeEntry;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
                         if(Flags_GetCollectible(globalCtx, 0x1D)) {
-                            sItem = blueRupeeEntry;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
                         if(Flags_GetCollectible(globalCtx, 0x1E)) {
-                            sItem = blueRupeeEntry;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
                         if(Flags_GetCollectible(globalCtx, 0x1F)) {
-                            sItem = blueRupeeEntry;
+                            sItem = blueRupee;
                         }
                     }
                 }
             }
-
-            func_8002F554(&this->dyna.actor, globalCtx, 0 - sItem.getItemId);
-            player->getItemEntry = sItem;
+            // Chests need to have a negative getItemId in order to not immediately give their item
+            // when approaching.
+            sItem.getItemId = 0 - sItem.getItemId;
+            GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);

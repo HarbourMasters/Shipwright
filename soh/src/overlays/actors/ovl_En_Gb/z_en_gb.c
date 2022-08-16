@@ -353,7 +353,12 @@ void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
 
 void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+        }
         this->actionFunc = func_80A2FBB0;
     }
 }
@@ -363,7 +368,12 @@ void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+        }
     }
 }
 
