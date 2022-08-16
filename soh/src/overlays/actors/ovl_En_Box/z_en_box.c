@@ -446,7 +446,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            sItem = Randomizer_GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            sItem = Randomizer_GetRandomizedItem(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum).getItemId;
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {

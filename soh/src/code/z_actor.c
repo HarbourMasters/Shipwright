@@ -1955,15 +1955,16 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
-s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
-        if (((player->heldActor != NULL) && ((getItemId > GI_NONE) && (getItemId < GI_MAX)) || 
-            (gSaveContext.n64ddFlag && (getItemId > RG_NONE) && (getItemId < RG_MAX))) ||
+        if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
+            (gSaveContext.n64ddFlag && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & 0x20000800))) {
-            if ((getItemId != GI_NONE)) {
-                player->getItemId = getItemId;
+            if ((getItemEntry.getItemId != GI_NONE)) {
+                player->getItemEntry = getItemEntry;
+                player->getItemId = getItemEntry.getItemId;
                 player->interactRangeActor = &player->actor;
                 player->getItemDirection = player->actor.shape.rot.y;
                 return true;
@@ -1974,6 +1975,38 @@ s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
     return false;
 }
 
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+            ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
+                (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+                    (!(player->stateFlags1 & 0x20000800))) {
+            if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
+                s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
+                s32 absYawDiff = ABS(yawDiff);
+
+                if ((getItemEntry.getItemId != GI_NONE) || (player->getItemDirection < absYawDiff)) {
+                    player->getItemEntry = getItemEntry;
+                    player->getItemId = getItemEntry.getItemId;
+                    player->interactRangeActor = actor;
+                    player->getItemDirection = absYawDiff;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    GiveItemEntryFromActor(actor, globalCtx, getItemEntry, 50.0f, 10.0f);
+}
+
+// TODO: Rename to GiveItemIdFromActor or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -1998,6 +2031,8 @@ s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzR
     return false;
 }
 
+// TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId) {
     func_8002F434(actor, globalCtx, getItemId, 50.0f, 10.0f);
 }
