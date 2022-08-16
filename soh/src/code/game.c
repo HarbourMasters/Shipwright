@@ -448,29 +448,57 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gTimeRate", 0);
     }
     
-    //Modifiers to set the daytime to a given time.
-    if (CVar_GetS32("gSetDawn", 0) == 1) {
-        CVar_SetS32("gSetDawn", 0);
-        gSaveContext.dayTime = 0x4000;
-        gSaveContext.skyboxTime = gSaveContext.dayTime;
-    }
+    // Modifiers to set the daytime to a given time.
+    //Note: The logic for respawing link can be replaced with the console ReloadHandler command once
+    // it is merged with main.
+    if (gGlobalCtx) {
+        if (CVar_GetS32("gSetDawn", 0) == 1) {
+            CVar_SetS32("gSetDawn", 0);
+            gSaveContext.dayTime = 0x4000;
+            gSaveContext.skyboxTime = gSaveContext.dayTime;
+            if (CVar_GetS32("gCurrRate", 0) == 0) {
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            }
+        }
 
-    if (CVar_GetS32("gSetNoon", 0) == 1){
-        CVar_SetS32("gSetNoon", 0);
-        gSaveContext.dayTime = 0x8000;
-        gSaveContext.skyboxTime = gSaveContext.dayTime;
-    }
+        if (CVar_GetS32("gSetNoon", 0) == 1) {
+            CVar_SetS32("gSetNoon", 0);
+            gSaveContext.dayTime = 0x8000;
+            gSaveContext.skyboxTime = gSaveContext.dayTime;
+            if (CVar_GetS32("gCurrRate", 0) == 0) {
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            }
+        }
 
-    if (CVar_GetS32("gSetSunset", 0) == 1){
-        CVar_SetS32("gSetSunset", 0);
-        gSaveContext.dayTime = 0xC001;
-        gSaveContext.skyboxTime = gSaveContext.dayTime;
-    }
+        if (CVar_GetS32("gSetSunset", 0) == 1) {
+            CVar_SetS32("gSetSunset", 0);
+            gSaveContext.dayTime = 0xC001;
+            gSaveContext.skyboxTime = gSaveContext.dayTime;
+            if (CVar_GetS32("gCurrRate", 0) == 0) {
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            }
+        }
 
-    if (CVar_GetS32("gSetMidnight", 0) == 1){
-        CVar_SetS32("gSetMidnight", 0);
-        gSaveContext.dayTime = 0;
-        gSaveContext.skyboxTime = gSaveContext.dayTime;
+        if (CVar_GetS32("gSetMidnight", 0) == 1) {
+            CVar_SetS32("gSetMidnight", 0);
+            gSaveContext.dayTime = 0;
+            gSaveContext.skyboxTime = gSaveContext.dayTime;
+            if (CVar_GetS32("gCurrRate", 0) == 0) {
+                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->fadeTransition = 11;
+                gSaveContext.nextTransition = 11;
+            }
+        }
     }
    
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
