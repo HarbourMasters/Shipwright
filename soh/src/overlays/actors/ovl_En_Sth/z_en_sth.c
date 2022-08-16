@@ -239,7 +239,7 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, GlobalContext* globalCtx) {
 
 void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
     u16 getItemId = sGetItemIds[this->actor.params];
-    GetItemEntry getItemEntry;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     
     if (gSaveContext.n64ddFlag) {
         switch (getItemId) {
@@ -279,7 +279,7 @@ void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);

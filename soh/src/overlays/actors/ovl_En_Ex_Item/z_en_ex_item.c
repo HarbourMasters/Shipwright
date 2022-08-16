@@ -399,6 +399,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
             this->actor.world.pos.z += (tmpf3 / tmpf4) * 5.0f;
         }
     } else {
+        GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         s32 getItemId;
 
         this->actor.draw = NULL;
@@ -406,7 +407,8 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         if (gSaveContext.n64ddFlag) {
             GET_PLAYER(globalCtx)->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
-            getItemId = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50).getItemId;
+            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            getItemId = getItemEntry.getItemId;
         } else {
             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
                 getItemId = GI_BULLET_BAG_40;
@@ -414,24 +416,28 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
                 getItemId = GI_BULLET_BAG_50;
             }
         }
-        func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
+        }
         this->actionFunc = EnExItem_TargetPrizeGive;
     }
 }
 
 void EnExItem_TargetPrizeGive(EnExItem* this, GlobalContext* globalCtx) {
-    s32 getItemId;
-
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
-        if (gSaveContext.n64ddFlag) {
-            getItemId = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50).getItemId;
+        if (!gSaveContext.n64ddFlag) {
+            s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+            func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
         } else {
-            getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
         }
 
-        func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
     }
 }
 

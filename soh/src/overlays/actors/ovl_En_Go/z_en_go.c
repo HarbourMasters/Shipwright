@@ -946,7 +946,7 @@ void func_80A40B1C(EnGo* this, GlobalContext* globalCtx) {
 void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
     f32 xzDist;
     f32 yDist;
-    GetItemEntry getItemEntry;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
@@ -979,7 +979,7 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
 
         yDist = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzDist = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, globalCtx, getItemId, xzDist, yDist);
         } else {
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzDist, yDist);
