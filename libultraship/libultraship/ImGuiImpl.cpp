@@ -484,12 +484,7 @@ namespace SohImGui {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
 
-    #ifdef __SWITCH__
-        bool enableControllerNavigation = true;
-    #else
-        bool enableControllerNavigation = CVar_GetS32("gControlNav", 0);
-    #endif
-        if (enableControllerNavigation && CVar_GetS32("gOpenMenuBar", 0)) {
+        if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
             io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
         } else {
             io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
@@ -929,12 +924,7 @@ namespace SohImGui {
             GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
             GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
-        #ifdef __SWITCH__
-            bool enableControllerNavigation = true;
-        #else
-            bool enableControllerNavigation = CVar_GetS32("gControlNav", 0);
-        #endif
-            if (enableControllerNavigation && CVar_GetS32("gOpenMenuBar", 0)) {
+            if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
                 io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
             } else {
                 io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
