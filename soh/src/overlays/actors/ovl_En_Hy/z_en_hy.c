@@ -665,10 +665,10 @@ s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
                         if (!gSaveContext.n64ddFlag) {
                             func_80A6F7CC(this, globalCtx, GI_HEART_PIECE);
                         } else {
-                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
+                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
                             // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
-                            this->unkGetItemId = getItemEntry.getItemId;
-                            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+                            this->unkGetItemId = this->getItemEntry.getItemId;
+                            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }
                     }
                     this->actionFunc = func_80A714C4;
@@ -894,6 +894,7 @@ void EnHy_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     }
 
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     this->actionFunc = EnHy_InitImpl;
 }
 
@@ -1061,8 +1062,11 @@ void func_80A714C4(EnHy* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = func_80A71530;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
-                      fabsf(this->actor.yDistToPlayer) + 1.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        }
     }
 }
 

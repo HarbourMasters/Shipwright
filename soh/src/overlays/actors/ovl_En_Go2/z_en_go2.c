@@ -288,6 +288,7 @@ void EnGo2_GetItem(EnGo2* this, GlobalContext* globalCtx, s32 getItemId) {
 
 void EnGo2_GetItemEntry(EnGo2* this, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     this->getItemId = getItemEntry.getItemId;
+    this->getItemEntry = getItemEntry;
     GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, this->actor.xzDistToPlayer + 1.0f,
                   fabsf(this->actor.yDistToPlayer) + 1.0f);
 }
@@ -1572,6 +1573,7 @@ void EnGo2_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_216 = this->actor.shape.rot.z;
     this->unk_26E = 1;
     this->path = Path_GetByIndex(globalCtx, (this->actor.params & 0x3E0) >> 5, 0x1F);
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     switch (this->actor.params & 0x1F) {
         case GORON_CITY_ENTRANCE:
         case GORON_CITY_ISLAND:
@@ -1811,8 +1813,11 @@ void EnGo2_SetupGetItem(EnGo2* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnGo2_SetGetItem;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, this->actor.xzDistToPlayer + 1.0f,
-                      fabsf(this->actor.yDistToPlayer) + 1.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        }
     }
 }
 
