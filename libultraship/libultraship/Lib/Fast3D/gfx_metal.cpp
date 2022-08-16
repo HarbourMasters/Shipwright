@@ -48,6 +48,7 @@
 
 static constexpr size_t kMaxBufferPoolSize = 5;
 static constexpr NS::UInteger METAL_MAX_MULTISAMPLE_SAMPLE_COUNT = 8;
+static constexpr NS::UInteger MAX_PIXEL_DEPTH_COORDS = 1024;
 
 // MARK: - Hashing Helpers
 
@@ -82,6 +83,10 @@ struct FrameUniforms {
     simd::float1 noiseScale;
 };
 
+struct CoordUniforms {
+    simd::uint2 coords[MAX_PIXEL_DEPTH_COORDS];
+};
+
 struct TextureDataMetal {
     MTL::Texture* texture;
     MTL::Texture* msaaTexture;
@@ -108,9 +113,9 @@ struct FramebufferMetal {
     bool has_bounded_vertex_buffer;
     bool has_bounded_fragment_buffer;
 
-    struct ShaderProgramMetal* last_shader_program = nullptr;
-    MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
-    MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
+    struct ShaderProgramMetal* last_shader_program;
+    MTL::Texture* last_bound_textures[2];
+    MTL::SamplerState* last_bound_samplers[2];
 
     int8_t last_depth_test = -1;
     int8_t last_depth_mask = -1;
@@ -119,10 +124,10 @@ struct FramebufferMetal {
 
 static struct {
     // Elements that only need to be setup once
-    SDL_Renderer* renderer = nullptr;
-    void* layer = nullptr; // CA::MetalLayer*
-    MTL::Device* device = nullptr;
-    MTL::CommandQueue* command_queue = nullptr;
+    SDL_Renderer* renderer;
+    void* layer; // CA::MetalLayer*
+    MTL::Device* device;
+    MTL::CommandQueue* command_queue;
 
     std::queue<MTL::Buffer*> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
@@ -130,12 +135,13 @@ static struct {
     std::vector<struct TextureDataMetal> textures;
     std::vector<FramebufferMetal> framebuffers;
     FrameUniforms frame_uniforms;
-    MTL::Buffer* frame_uniform_buffer = nullptr;
+    CoordUniforms coord_uniforms;
+    MTL::Buffer* frame_uniform_buffer;
 
     uint32_t msaa_num_quality_levels[METAL_MAX_MULTISAMPLE_SAMPLE_COUNT];
 
     // Depth querying
-    MTL::Buffer* coord_buffer;
+    MTL::Buffer* coord_uniform_buffer;
     MTL::Buffer* depth_value_output_buffer;
     size_t coord_buffer_size;
     MTL::Function* depth_compute_function;
@@ -144,7 +150,7 @@ static struct {
     struct ShaderProgramMetal* shader_program;
     CA::MetalDrawable* current_drawable;
     std::set<int> drawn_framebuffers;
-    NS::AutoreleasePool* frame_autorelease_pool = nullptr;
+    NS::AutoreleasePool* frame_autorelease_pool;
 
     int current_tile;
     uint32_t current_texture_ids[2];
@@ -157,7 +163,7 @@ static struct {
     int8_t zmode_decal;
 } mctx;
 
-// MARK: - Shader, Sampler & String Helpers
+// MARK: - Helpers
 
 static MTL::SamplerAddressMode gfx_cm_to_metal(uint32_t val) {
     switch (val) {
@@ -262,12 +268,16 @@ static void gfx_metal_init(void) {
     const char* depth_shader = R"(
         #include <metal_stdlib>
         using namespace metal;
+
+        struct CoordUniforms {
+            uint2 coords[1024];
+        };
         
         kernel void depthKernel(depth2d<float, access::read> depth_texture [[ texture(0) ]],
-                                     device uint2* query_coords [[ buffer(0) ]],
+                                     constant CoordUniforms& query_coords [[ buffer(0) ]],
                                      device float* output_values [[ buffer(1) ]],
                                      uint2 thread_position [[ thread_position_in_grid ]]) {
-            uint2 coord = query_coords[thread_position.x];
+            uint2 coord = query_coords.coords[thread_position.x];
             output_values[thread_position.x] = depth_texture.read(coord);
         }
     )";
@@ -556,6 +566,9 @@ static void gfx_metal_start_frame(void) {
 
     if (!mctx.frame_uniform_buffer) {
         mctx.frame_uniform_buffer = mctx.device->newBuffer(sizeof(FrameUniforms), MTL::ResourceCPUCacheModeDefaultCache);
+    }
+    if (!mctx.coord_uniform_buffer) {
+        mctx.coord_uniform_buffer = mctx.device->newBuffer(sizeof(CoordUniforms), MTL::ResourceCPUCacheModeDefaultCache);
     }
 
     mctx.current_vertex_buffer_offset = 0;
@@ -871,16 +884,11 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
 
 std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     auto framebuffer = mctx.framebuffers[fb_id];
+    SPDLOG_TRACE("Getting depth of coordinate size: {}",  coordinates.size());
 
     if (coordinates.size() > mctx.coord_buffer_size) {
-        if (mctx.coord_buffer != nullptr)
-            mctx.coord_buffer->release();
-
         if (mctx.depth_value_output_buffer != nullptr)
             mctx.depth_value_output_buffer->release();
-
-        mctx.coord_buffer = mctx.device->newBuffer(sizeof(simd::uint2) * coordinates.size(), MTL::ResourceOptionCPUCacheModeDefault);
-        mctx.coord_buffer->setLabel(NS::String::string("Input Coord buffer", NS::UTF8StringEncoding));
 
         mctx.depth_value_output_buffer = mctx.device->newBuffer(sizeof(float) * coordinates.size(), MTL::ResourceOptionCPUCacheModeDefault);
         mctx.depth_value_output_buffer->setLabel(NS::String::string("Depth output buffer", NS::UTF8StringEncoding));
@@ -889,20 +897,19 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
     }
 
     // zero out the buffer
-    memset(mctx.coord_buffer->contents(), 0, sizeof(simd::uint2) * coordinates.size());
+    memset(mctx.coord_uniform_buffer->contents(), 0, sizeof(CoordUniforms));
     memset(mctx.depth_value_output_buffer->contents(), 0, sizeof(float) * coordinates.size());
 
-    NS::UInteger tex_height = framebuffer.depth_texture->height();
-    simd::uint2 *coord_cb = (simd::uint2 *)mctx.coord_buffer->contents();
-    {
-        size_t i = 0;
-        for (const auto& coord : coordinates) {
-            coord_cb[i].x = coord.first;
-            // We invert y because the gfx_pc assumes OpenGL coordinates (bottom-left corner is origin), while Metal's origin is top-left corner
-            coord_cb[i].y = tex_height - 1 - coord.second;
-            ++i;
-        }
+    // map coordinates to right y axis
+    size_t i = 0;
+    for (const auto& coord : coordinates) {
+        mctx.coord_uniforms.coords[i].x = coord.first;
+        mctx.coord_uniforms.coords[i].y = framebuffer.depth_texture->height() - 1 - coord.second;
+        ++i;
     }
+
+    // set uniform values
+    memcpy(mctx.coord_uniform_buffer->contents(), &mctx.coord_uniforms, sizeof(CoordUniforms));
 
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
 
@@ -915,7 +922,7 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
     MTL::ComputeCommandEncoder* compute_encoder = command_buffer->computeCommandEncoder();
     compute_encoder->setComputePipelineState(compute_pipeline_state);
     compute_encoder->setTexture(framebuffer.depth_texture, 0);
-    compute_encoder->setBuffer(mctx.coord_buffer, 0, 0);
+    compute_encoder->setBuffer(mctx.coord_uniform_buffer, 0, 0);
     compute_encoder->setBuffer(mctx.depth_value_output_buffer, 0, 1);
 
     MTL::Size thread_group_size = MTL::Size::Make(1, 1, 1);
@@ -934,7 +941,6 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
     {
         size_t i = 0;
         for (const auto& coord : coordinates) {
-            float depthValue = depth_values[i];
             res.emplace(coord, depth_values[i++] * 65532.0f);
         }
     }
