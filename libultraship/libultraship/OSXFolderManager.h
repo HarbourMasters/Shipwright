@@ -52,8 +52,15 @@ namespace Ship {
 
     class FolderManager {
         public:
+
+        FolderManager();
+        ~FolderManager();
+
         const char *pathForDirectory(SearchPathDirectory directory, SearchPathDomainMask domainMask);
         const char *pathForDirectoryAppropriateForItemAtPath(SearchPathDirectory directory, SearchPathDomainMask domainMask, const char *itemPath, bool create = false);
+
+    private:
+        void *m_autoreleasePool;
     };
 };
 

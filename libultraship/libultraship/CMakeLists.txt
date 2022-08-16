@@ -356,6 +356,7 @@ set(Source_Files__Darwin
     "OSXFolderManager.h"
 )
 source_group("Source Files\\Darwin" FILES ${Source_Files__Darwin})
+set_source_files_properties("OSXFolderManager.mm" PROPERTIES COMPILE_FLAGS -fno-objc-arc)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
