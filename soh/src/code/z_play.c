@@ -1997,7 +1997,7 @@ void Gameplay_TriggerVoidOut(GlobalContext* globalCtx) {
     globalCtx->sceneLoadFlag = 0x14;
     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
     globalCtx->fadeTransition = 2;
-    if (globalCtx->sceneNum != 0x5c) {
+    if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
         gSaveContext.isvoidoutordie = 1;
     }
     
@@ -2024,7 +2024,7 @@ void Gameplay_LoadToLastEntrance(GlobalContext* globalCtx) {
 void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
     Gameplay_SetupRespawnPoint(globalCtx, RESPAWN_MODE_DOWN, 0xDFF);
     Gameplay_LoadToLastEntrance(globalCtx);
-    if (globalCtx->sceneNum != 0x5c) {
+    if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
         gSaveContext.isvoidoutordie = 1;
     }
 }
