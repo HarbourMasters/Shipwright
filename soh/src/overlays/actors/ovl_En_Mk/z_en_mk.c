@@ -99,24 +99,28 @@ void func_80AACA94(EnMk* this, GlobalContext* globalCtx) {
             gSaveContext.eventInf[1] &= ~1;
         }
     } else {
-        s32 getItemID = GI_EYEDROPS;
         if (gSaveContext.n64ddFlag) {
-            getItemID = Randomizer_GetItemIdFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_FROG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        } else {
+            s32 getItemID = GI_EYEDROPS;
+            func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
         }
-        func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
     }
 }
 
 void func_80AACB14(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         this->actionFunc = func_80AACA94;
-        s32 getItemID = GI_EYEDROPS;
         if (gSaveContext.n64ddFlag) {
-            getItemID = Randomizer_GetItemIdFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_FROG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        } else {
+            s32 getItemID = GI_EYEDROPS;
+            func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
         }
-        func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
     }
 }
 

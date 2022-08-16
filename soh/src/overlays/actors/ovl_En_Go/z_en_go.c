@@ -967,17 +967,21 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                getItemId = GI_CLAIM_CHECK;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    getItemId = getItemEntry.getItemId;
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                } else {
+                    getItemId = GI_CLAIM_CHECK;
                 }
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                getItemId = GI_PRESCRIPTION;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                    getItemId = getItemEntry.getItemId;
+                } else {
+                    getItemId = GI_PRESCRIPTION;
                 }
             }
         }

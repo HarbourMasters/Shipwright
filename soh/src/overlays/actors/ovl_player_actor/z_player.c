@@ -10890,8 +10890,8 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
 
     if (this->pendingIceTrap) {
-        GiveItemWithoutActor(globalCtx, RG_ICE_TRAP);
         this->getItemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP);
+        GiveItemEntryWithoutActor(globalCtx, this->getItemEntry);
     }
 }
 

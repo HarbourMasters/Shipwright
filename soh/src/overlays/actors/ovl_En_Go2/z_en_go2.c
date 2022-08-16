@@ -657,12 +657,14 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
             if (Message_ShouldAdvance(globalCtx)) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (globalCtx->msgCtx.choiceIndex == 0) {
-                        u32 getItemId = GI_PRESCRIPTION;
                         if (gSaveContext.n64ddFlag) {
-                            getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                            EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                        } else {
+                            u32 getItemId = GI_PRESCRIPTION;
+                            EnGo2_GetItem(this, globalCtx, getItemId);
                         }
-                        EnGo2_GetItem(this, globalCtx, getItemId);
                         this->actionFunc = EnGo2_SetupGetItem;
                         return 2;
                     }
@@ -1895,12 +1897,14 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, GlobalContext* globalCtx) {
                 this->unk_26E = 2;
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
-                u32 getItemId = GI_CLAIM_CHECK;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                    EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                } else {
+                    u32 getItemId = GI_CLAIM_CHECK;
+                    EnGo2_GetItem(this, globalCtx, getItemId);
                 }
-                EnGo2_GetItem(this, globalCtx, getItemId);
                 this->actionFunc = EnGo2_SetupGetItem;
                 this->goronState = 0;
             }

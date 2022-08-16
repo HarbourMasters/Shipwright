@@ -954,7 +954,7 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
-                this->reward = Randomizer_GetItemIdFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
             }
         } else {
             this->reward = GI_RUPEE_BLUE;

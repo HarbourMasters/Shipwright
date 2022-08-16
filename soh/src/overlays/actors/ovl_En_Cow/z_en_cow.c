@@ -343,8 +343,8 @@ bool EnCow_HasBeenMilked(EnCow* this, GlobalContext* globalCtx) {
 void EnCow_GivePlayerRandomizedItem(EnCow* this, GlobalContext* globalCtx) {
     if (!EnCow_HasBeenMilked(this, globalCtx)) {
         CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
-        GetItemID itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
-        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
+        GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 100.0f);
     } else {
         // once we've gotten the rando reward from the cow,
         // return them to the their default action function

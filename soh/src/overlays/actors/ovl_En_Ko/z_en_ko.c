@@ -1230,12 +1230,14 @@ void func_80A99504(EnKo* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A99560;
     } else {
-        s32 itemId = GI_SAW;
         if (gSaveContext.n64ddFlag) {
-            itemId = Randomizer_GetItemIdFromKnownCheck(RC_LW_TRADE_ODD_POTION, GI_SAW);
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_ODD_POTION, GI_SAW);
             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_ODD_POTION);
+            GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 120.0f, 10.0f);
+        } else {
+            s32 itemId = GI_SAW;
+            func_8002F434(&this->actor, globalCtx, itemId, 120.0f, 10.0f);
         }
-        func_8002F434(&this->actor, globalCtx, itemId, 120.0f, 10.0f);
     }
 }
 

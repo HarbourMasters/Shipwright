@@ -460,11 +460,12 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
             if (gSaveContext.n64ddFlag) {
                 if (getItemId == GI_POCKET_EGG) {
                     // TODO: get-item-rework Adult trade sequence
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
+                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
                 } else {
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_POCKET_CUCCO);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
                 }
             }
         }
