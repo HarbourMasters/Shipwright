@@ -1,4 +1,4 @@
 #!/bin/bash
 
-make setup -C soh -j$(nproc) OPTFLAGS=-O2 DEBUG=0
-make -f Makefile.switch -j$(nproc)
+cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+cmake --build build-switch --target soh_nro

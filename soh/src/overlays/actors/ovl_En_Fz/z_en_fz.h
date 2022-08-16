@@ -21,7 +21,7 @@ typedef struct {
     /* 0x0030 */ f32 xyScale; // 
     /* 0x0034 */ f32 xyScaleTarget; 
     /* 0x0038 */ u8 isTimerMod8; // conditional, used to run CollisionCheck_SetAT 
-                 s32 epoch;
+                 u32 epoch;
 } EnFzEffectSsIceSmoke; // size = 0x3C
 
 typedef struct EnFz {

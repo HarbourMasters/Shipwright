@@ -90,7 +90,7 @@ typedef struct {
     /* 0x32 */ s16 timer;
     /* 0x34 */ u8 shouldDraw;
     /* 0x38 */ f32 drawDistance;
-    s32 epoch;
+    u32 epoch;
 } FishingProp; // size = 0x3C
 
 typedef enum {
@@ -116,7 +116,7 @@ typedef struct {
     /* 0x40 */ s16 unk_40;
     /* 0x42 */ s16 unk_42;
     /* 0x44 */ u8 shouldDraw;
-    s32 epoch;
+    u32 epoch;
 } FishingGroupFish; // size = 0x48
 
 #define LINE_SEG_COUNT 200
@@ -1766,7 +1766,7 @@ static f32 sSinkingLureSizes[] = {
 void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
     s16 i;
     f32 scale;
-    static s32 epoch = 0;
+    static u32 epoch = 0;
     epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
