@@ -183,7 +183,7 @@ static void pop_buffer_and_wait_to_requeue(MTL::CommandBuffer* command_buffer) {
     MTL::Buffer* buffer = mctx.buffer_pool.front();
     mctx.buffer_pool.pop();
 
-    command_buffer->addCompletedHandler(^void( MTL::CommandBuffer* cmd_buf ){
+    command_buffer->addCompletedHandler(^void( MTL::CommandBuffer* cmd_buf ) {
         if (mctx.buffer_pool.size() <= kMaxBufferPoolSize) {
             mctx.buffer_pool.push(buffer);
         }
@@ -952,12 +952,12 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
     FramebufferMetal& fb = mctx.framebuffers[0];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
 
-    if (tex.texture)
+    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
+    if (tex.texture != nullptr)
         tex.texture->release();
 
     tex.texture = mctx.current_drawable->texture();
-
-    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
 
     MTL::RenderPassDescriptor* render_pass_descriptor = MTL::RenderPassDescriptor::renderPassDescriptor();
     MTL::ClearColor clear_color = MTL::ClearColor::Make(0, 0, 0, 1);
@@ -1215,6 +1215,8 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
         }
     }
 
+    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
     auto command_buffer = mctx.command_queue->commandBuffer();
     command_buffer->setLabel(NS::String::string("Depth Shader Command Buffer", NS::UTF8StringEncoding));
 
@@ -1248,8 +1250,7 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
         }
     }
 
-    compute_encoder->release();
-    command_buffer->release();
+    autorelease_pool->release();
 
     return res;
 }
