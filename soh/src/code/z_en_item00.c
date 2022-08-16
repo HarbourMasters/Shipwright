@@ -671,10 +671,15 @@ void func_8001E304(EnItem00* this, GlobalContext* globalCtx) {
 
 void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
+    GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
 
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, globalCtx)) {
-            func_8002F434(&this->actor, globalCtx, this->getItemId, 50.0f, 80.0f);
+            if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+                func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, 50.0f, 80.0f);
+            } else {
+                GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 50.0f, 80.0f);
+            }
             this->unk_15A++;
         } else {
             this->getItemId = GI_NONE;

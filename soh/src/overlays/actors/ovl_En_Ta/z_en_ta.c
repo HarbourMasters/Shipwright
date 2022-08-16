@@ -876,7 +876,12 @@ void func_80B15E80(EnTa* this, GlobalContext* globalCtx) {
     } else if (this->unk_2E0 & 2) {
         func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 50.0f);
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        }
     }
     this->unk_2E0 |= 1;
 }
