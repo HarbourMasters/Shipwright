@@ -313,6 +313,69 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gSaveContext.nextTransition = 11;
 }
 
+static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
+            gSaveContext.respawnFlag = 1;
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
+            gGlobalCtx->fadeTransition = 2;
+            gSaveContext.nextTransition = 2;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx) {
+        gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+        gGlobalCtx->sceneLoadFlag = 0x14;
+        gGlobalCtx->fadeTransition = 11;
+        gSaveContext.nextTransition = 11;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx) {
+        if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
+                gGlobalCtx->fadeTransition = 5;
+        } else {
+            SohImGui::console->SendErrorMessage("Farore's wind not set!");
+        }
+    }
+    else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    
+    return CMD_SUCCESS;
+}
+
+static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx) {
+        SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, FileChooseContext);
+        gGlobalCtx->state.running = 0;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    gGlobalCtx->state.running = 0;
+    return CMD_SUCCESS;
+}
+
 static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
@@ -500,6 +563,11 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("entrance", { EntranceHandler,
                                "Sends player to the entered entrance (hex)",
                                { { "entrance", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("void", {VoidHandler, "Voids out of the current map.",});
+    CMD_REGISTER("reload", {ReloadHandler, "Reloads the current map.",});
+    CMD_REGISTER("file_select", {FileSelectHandler, "Returns to the file select.",});
+    CMD_REGISTER("fw", {FWHandler,"Spawns the player where Farore's Wind is set.", });
+    CMD_REGISTER("quit", {QuitHandler, "Quits the game.",});
 
     CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
     CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
