@@ -30,6 +30,8 @@ private:
 #endif
 
 #ifndef __cplusplus
+void InitOTR(void);
+void DeinitOTR(void);
 void OTRAudio_Init();
 void InitAudio();
 void Graph_StartFrame();

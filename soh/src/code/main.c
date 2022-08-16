@@ -3,6 +3,8 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
+#include "../libultraship/CrashHandler.h"
+
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -38,6 +40,8 @@ void Main_LogSystemHeap(void) {
 
 int main(int argc, char** argv)
 {
+    signal(SIGSEGV, ErrorHandler);
+	signal(SIGABRT, ErrorHandler);
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
@@ -69,9 +73,9 @@ void Main(void* arg) {
     gSystemHeapSize = 1024 * 1024 * 4;
     // "System heap initalization"
     osSyncPrintf("システムヒープ初期化 %08x-%08x %08x\n", sysHeap, fb, gSystemHeapSize);
-    SystemHeap_Init(sysHeap, gSystemHeapSize); // initializes the system heap
+    SystemHeap_Init((void*)sysHeap, gSystemHeapSize); // initializes the system heap
     if (osMemSize >= 0x800000) {
-        debugHeap = SysCfb_GetFbEnd();
+        debugHeap = (void*)SysCfb_GetFbEnd();
         debugHeapSize = (0x80600000 - (uintptr_t)debugHeap);
     } else {
         debugHeapSize = 0x400;
