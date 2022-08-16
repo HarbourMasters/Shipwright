@@ -2114,6 +2114,8 @@ namespace SohImGui {
         CVar_SetS32("gN64WeirdFrames", 0);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 0);
+
+        CVar_SetS32("gGsCutscene", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
