@@ -105,6 +105,7 @@ bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, Get
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 #endif
 
 #endif
