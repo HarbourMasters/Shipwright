@@ -196,6 +196,8 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 isyounglinkfountain;
+    u8 isfirstindex;
+    u8 isvoidoutordie;
 } SaveContext; // size = 0x1428
 
 typedef enum {

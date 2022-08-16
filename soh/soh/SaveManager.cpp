@@ -167,6 +167,8 @@ void SaveManager::LoadRandomizerVersion2() {
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
+    gSaveContext.isfirstindex = 0;
+
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     size_t merchantPricesSize = 0;
