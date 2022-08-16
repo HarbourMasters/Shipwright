@@ -108,15 +108,15 @@ typedef struct {
 } OSContStatus; // size = 0x04
 
 typedef struct {
-    /* 0x00 */ u16 button;
-    /* 0x02 */ s8 stick_x;
-    /* 0x03 */ s8 stick_y;
-    /* 0x04 */ u8 err_no;
-    /* 0x05 */ f32 gyro_x;
-    /* 0x09 */ f32 gyro_y;
-    /* 0x1C */ f32 cam_x;
-    /* 0x20 */ f32 cam_y;
-} OSContPad; // size = 0x24
+    /* 0x00 */ uint16_t button;
+    /* 0x02 */ int8_t stick_x;
+    /* 0x03 */ int8_t stick_y;
+    /* 0x04 */ uint8_t err_no;
+    /* 0x05 */ float gyro_x;
+    /* 0x09 */ float gyro_y;
+    /* 0x1C */ int8_t right_stick_x;
+    /* 0x20 */ int8_t right_stick_y;
+} OSContPad; // size = 0x22
 
 typedef struct {
     /* 0x00 */ u8 rumble;
