@@ -11,22 +11,6 @@ namespace Ship {
 
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
-	bool needs_save = false;
-
-	void EnhancementCheckbox(const char* text, const char* cvarName)
-	{
-		bool val = (bool)CVar_GetS32(cvarName, 0);
-		if (ImGui::Checkbox(text, &val)) {
-			CVar_SetS32(cvarName, val);
-			needs_save = true;
-		}
-	}
-
-	void Tooltip(const char* text) {
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("%s", text);
-	}
-
 	void InputEditor::Init() {
 		BtnReading = -1;
 	}
@@ -134,8 +118,6 @@ namespace Ship {
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 116.0f);
-=======
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
 	#else
@@ -148,7 +130,6 @@ namespace Ship {
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 162.0f);
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
 	#else
@@ -188,15 +169,8 @@ namespace Ship {
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
-				ImGui::PushItemWidth(135.0f);
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 2);
-				EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-				Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 2);
-				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+				ImGui::Dummy(ImVec2(0, 6));
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 16.0f : 92.0f);
 		#ifdef __SWITCH__
 			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
 		#else
@@ -251,17 +225,6 @@ namespace Ship {
 					profile->AxisSensitivities[3] = profile->AxisSensitivities[2];
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				ImGui::PushItemWidth(135.0f);
-				EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-				Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				EnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-				Tooltip("Allows you to use the right stick when:\n-Aiming with weapons\n-In the C-Up first-person view");
-			SohImGui::EndGroupPanel(13.0f);
 		#ifdef __SWITCH__
 			SohImGui::EndGroupPanel(43.0f);
 		#else
@@ -296,19 +259,6 @@ namespace Ship {
 				ImGui::SetCursorPosX(cursorX);
 				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
 
-			ImGui::SameLine();
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
-			ImGui::Text("Drift X");
-			ImGui::PushItemWidth(80);
-			ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
-			ImGui::PopItemWidth();
-			ImGui::Text("Drift Y");
-			ImGui::PushItemWidth(80);
-			ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
-			ImGui::PopItemWidth();
-			ImGui::EndChild();
-			SohImGui::EndGroupPanel(83.0f);
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			#ifdef __WIIU__
@@ -377,7 +327,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 69.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
 	}
 
 	void InputEditor::DrawHud() {
@@ -387,7 +337,6 @@ namespace Ship {
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 360));
 #ifdef __SWITCH__
 		ImVec2 minSize = ImVec2(641, 250);
 		ImVec2 maxSize = ImVec2(2200, 505);
