@@ -1039,7 +1039,7 @@ void EnSkj_SariaSongTalk(EnSkj* this, GlobalContext* globalCtx) {
                 func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             } else {
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-                func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+                GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             }
         }
     }
@@ -1058,7 +1058,7 @@ void func_80AFFE44(EnSkj* this, GlobalContext* globalCtx) {
             func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-            func_8002F434(&this->actor, globalCtx, getItemEntry.getItemId, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         }
     }
 }
