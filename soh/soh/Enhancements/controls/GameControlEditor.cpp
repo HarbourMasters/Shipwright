@@ -216,7 +216,23 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
-    void DrawUI(bool& open) {
+    void DrawCameraControlPanel() {
+		if (!ImGui::CollapsingHeader("Camera Controls")) {
+            return;
+        }
+        
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        SohImGui::EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::EnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::EnhancementCheckbox("Auto-Center First Person View (C-Up)", "gAutoCenterView");
+	}
+	
+	void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;
@@ -225,6 +241,7 @@ namespace GameControlEditor {
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &open)) {
             DrawOcarinaControlPanel();
+			DrawCameraControlPanel();
         }
         ImGui::End();
     }
