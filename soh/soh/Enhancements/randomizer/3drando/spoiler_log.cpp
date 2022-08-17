@@ -328,25 +328,6 @@ static void WriteShuffledEntrance(
             break;
 
     }
-//   tinyxml2::XMLElement* parentNode,
-//   Entrance* entrance,
-//   const bool withPadding = false
-// ) {
-//   auto node = parentNode->InsertNewChildElement("entrance");
-//   node->SetAttribute("name", entrance->GetName().c_str());
-//   auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
-//   node->SetText(text.c_str());
-
-//   if (withPadding) {
-//     constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
-
-//     //Insert padding so we get a kind of table in the XML document
-//     int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
-//     if (requiredPadding > 0) {
-//       std::string padding(requiredPadding, ' ');
-//       node->SetAttribute("_", padding.c_str());
-//     }
-//   }
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
@@ -563,29 +544,10 @@ static void WritePlaythrough() {
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
-    // // if (!Settings::ShuffleEntrances || noRandomEntrances) {
-    // //     return;
-    // // }
-
-    //auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
-
-    // for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-    //     auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-    //     sphereNode->SetAttribute("level", i + 1);
-
-    //     for (Entrance* entrance : playthroughEntrances[i]) {
-    //         WriteShuffledEntrance(sphereNode, entrance, true);
-    //     }
-    // }
   for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-    // auto sphereNode = std::to_string(i);
-    // std::string sphereString =  "sphere ";
-    // if (sphereNode.length() == 1) sphereString += "0";
-    // sphereString += sphereNode;
     for (Entrance* entrance : playthroughEntrances[i]) {
       WriteShuffledEntrance(entrance, true);
     }
-    //spoilerLog.RootElement()->InsertEndChild(playthroughNode);
 }
 }
 

@@ -1582,8 +1582,8 @@ void Randomizer::LoadEntranceOverrides(const char* spoilerFileName, bool silent)
         ParseEntranceDataFile(spoilerFileName, silent);
     }    
 
-    for (auto EntranceOverride : gSaveContext.EntranceIndeces) {
-        this->EntranceIndeces[EntranceOverride.index] = EntranceOverride.overrideindex;
+    for (auto EntranceOverride : gSaveContext.entranceOverrides) {
+        this->entranceOverrides[EntranceOverride.vanillaIndex] = EntranceOverride.randomizedIndex;
     }
 }
 
@@ -2054,10 +2054,10 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 
     // set all the entrances to be -1 since 0 is a valid index
     EntranceIndexRando unusedIndex;
-    unusedIndex.index = -1;
-    unusedIndex.overrideindex = -1;
-    for (int i = 0; i < (ARRAY_COUNT(gSaveContext.EntranceIndeces)); i++) {
-        gSaveContext.EntranceIndeces[i] = unusedIndex;
+    unusedIndex.vanillaIndex = -1;
+    unusedIndex.randomizedIndex = -1;
+    for (int i = 0; i < (ARRAY_COUNT(gSaveContext.entranceOverrides)); i++) {
+        gSaveContext.entranceOverrides[i] = unusedIndex;
     }
 
     try {
@@ -2068,9 +2068,9 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
         int index = 0;
         for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it) {
             EntranceIndexRando indexEntry;
-            indexEntry.index = stoi(it.key());
-            indexEntry.overrideindex = it.value();
-            gSaveContext.EntranceIndeces[index] = indexEntry;
+            indexEntry.vanillaIndex = stoi(it.key());
+            indexEntry.randomizedIndex = it.value();
+            gSaveContext.entranceOverrides[index] = indexEntry;
 
             index++;
         }
@@ -4846,10 +4846,10 @@ void CreateScrubMessages() {
     for (u8 price : prices) {
         customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-              "\x12\x38\x82\\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
             // RANDTODO: Translate the below string to German.
-              "\x12\x38\x82\\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
               "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
                   std::to_string(price) + " Rubis%w!\x07\x10\xA3"

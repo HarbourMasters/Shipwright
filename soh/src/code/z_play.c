@@ -303,29 +303,29 @@ void Gameplay_Init(GameState* thisx) {
                 gSaveContext.isvoidoutordie = 0;
                 break;
             }
-            else if (gSaveContext.EntranceIndeces[i].index == gSaveContext.entranceIndex) {
-                if (gSaveContext.EntranceIndeces[i].overrideindex == 0x0578) {
+            else if (gSaveContext.entranceOverrides[i].vanillaIndex == gSaveContext.entranceIndex) {
+                if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x0578) {
                     gSaveContext.isyounglinkfountain = 1;
-                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;//continue?
 
                 } 
 
-                else if (gSaveContext.EntranceIndeces[i].overrideindex == 0x04C2) {
+                else if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x04C2) {
                     gSaveContext.isyounglinkfountain = 0;
-                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
                 }
                 else if (gSaveContext.entranceIndex == 0x00340) {
                     if (gSaveContext.isyounglinkfountain == 1) {
-                        gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                        gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                         break;
                     }
 
                     else {
                         for (i = 0; i < 250; i++) {
-                            if (gSaveContext.EntranceIndeces[i].index == 0x03E8) {
-                                gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                            if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x03E8) {
+                                gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                                 break;
                             }
                             else {
@@ -337,7 +337,7 @@ void Gameplay_Init(GameState* thisx) {
 
                 } 
                 else {
-                    gSaveContext.entranceIndex = gSaveContext.EntranceIndeces[i].overrideindex;
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
                 }
 

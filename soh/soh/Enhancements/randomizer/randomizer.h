@@ -2,7 +2,6 @@
 
 #include <unordered_map>
 #include <string>
-#include <list>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
 #include <memory>
@@ -12,7 +11,7 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    std::unordered_map<s32, s32> EntranceIndeces;
+    std::unordered_map<s32, s32> entranceOverrides;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
@@ -47,8 +46,6 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    std::list<s32> EntranceOverrideIndex;
-    std::list<s32> EntranceOverrideNewIndex;
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
