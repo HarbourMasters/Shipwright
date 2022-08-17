@@ -1876,8 +1876,6 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
 
     Matrix_Push();
     for (i = 0; i < 18; i++, tempMat++) {
-        FrameInterpolation_RecordOpenChild(tempMat, i);
-
         segIndex = (this->work[BFD_LEAD_BODY_SEG] + sBodyIndex[i + 1]) % 100;
         Matrix_Translate(this->bodySegsPos[segIndex].x, this->bodySegsPos[segIndex].y, this->bodySegsPos[segIndex].z,
                          MTXMODE_NEW);
@@ -1903,6 +1901,8 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
             f32 padD8;
 
             if (this->bodyFallApart[i] < 2) {
+                FrameInterpolation_RecordOpenChild(tempMat, i);
+
                 f32 spD4 = 0.1f;
 
                 temp_float = 0.1f;
@@ -1935,13 +1935,13 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
                     bones->actor.scale.y = this->actor.scale.y * spD4;
                     bones->actor.scale.z = this->actor.scale.z * 0.1f;
                 }
+
+                FrameInterpolation_RecordCloseChild();
             }
         }
         if (i > 0) {
             Collider_UpdateSpheres(i + 1, &this->collider);
         }
-        
-        FrameInterpolation_RecordCloseChild();
     }
     Matrix_Pop();
     osSyncPrintf("BH\n");
