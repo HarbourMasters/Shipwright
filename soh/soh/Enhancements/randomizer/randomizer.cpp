@@ -4463,16 +4463,20 @@ void DrawRandoEditor(bool& open) {
 
             if (ImGui::BeginTabItem("Locations")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+
+                static ImGuiTextFilter locationSearch;
+                locationSearch.Draw();
+
                 if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Included Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Excluded Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
                     ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
-                    // COLUMN 1 - EXCLUDE LOCATIONS
+                    // COLUMN 1 - INCLUDED LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
@@ -4487,10 +4491,16 @@ void DrawRandoEditor(bool& open) {
                     PaddedSeparator();
                     SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
 
-                    // COLUMN 2 - EXCLUDE LOCATIONS
+                    // COLUMN 2 - EXCLUDED LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-                    
+
+                    const char* lines[] = { "aaa1.c", "bbb1.c", "ccc1.c", "aaa2.cpp", "bbb2.cpp", "ccc2.cpp", "abc.h", "hello, world" };
+                    for (int i = 0; i < IM_ARRAYSIZE(lines); i++) {
+                        if (locationSearch.PassFilter(lines[i])) {
+                            ImGui::BulletText("%s", lines[i]);
+                        }
+                    }                    
 
                     ImGui::EndTable();
                 }
