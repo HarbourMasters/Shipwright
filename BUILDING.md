@@ -60,7 +60,7 @@ To build you'll need to follow the instructions from the building section.
 
 _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
-_Experimental: You can also use another build system entirely rathen than MSVC like [Ninja](https://ninja-build.org/) for possibly better performance._
+_Experimental: You can also use another build system entirely rather than MSVC like [Ninja](https://ninja-build.org/) for possibly better performance._
 
 
 ### Generating the distributable
