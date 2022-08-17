@@ -4731,62 +4731,62 @@ CustomMessageMinimal NaviMessages[NaviMsgCount] = {
     
     { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
       "%cFehlt dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!", 
-      "%cFrench tip about playing rando! 0" }, 
+      "%cIl te manque une %wPetite Clé %cdans&un donjon? C'est peut-être le %rboss&%cqui l'a!" }, 
 
     { "%cSometimes you can use the %rMegaton&Hammer %cinstead of bombs!", 
       "%cManchmal kannst du den %rStahlhammer&%cstatt Bomben verwenden!",
-      "%cFrench tip about playing rando! 1" }, 
+      "%cParfois, tu peux utiliser la %rMasse&des Titans %cau lieu de tes bombes!" }, 
 
     { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do&you know where they are?",
       "%cEs gibt drei %gDeku-Händler %cin Hyrule&die mysteriöse Gegenstände&verkaufen. Weißt du wo Sie sind?",
-      "%cFrench tip about playing rando! 2" },
+      "%cIl y a trois %gPestes Marchandes%c en&Hyrule qui vendent des %wobjets&mystérieux%c. Tu sais où elles sont?" },
 
     { "%cStuck on this seed? You could &throw in the towel and check the&%wspoiler log%c...",
       "%cHängst du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
-      "%cFrench tip about playing rando! 3" },
+      "%cSi tu es coincé sur cette seed,&tu peux toujours jeter l'éponge&et regader le %wSpoiler log%c..." },
 
-    { "%cDid you know that the %yHover&Boots %ccan be used to cross&quicksand?", 
-      "%cWusstest du, dass du mit den&%yGleitstiefeln %cTreibsand überqueren&kannst?",
-      "%cFrench tip about playing rando! 4" },
+    { "%cDid you know that the %yHover&Boots %ccan be used to cross&%wquicksand?", 
+      "%cWusstest du, dass du mit den&%yGleitstiefeln %cTreibsand %wüberqueren&kannst%c?",
+      "%cEst-ce que tu savais que les %rBottes&des airs %cpouvaient être utilisées&pour traverser les %wsables mouvants%c?" },
 
     { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!", 
       "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem du von&der Baustelle aus mit einem %rHuhn&%cspringst!",
-      "%cFrench tip about playing rando! 5" },
+      "%cTu peux atteindre l'arrière de la&%wMaison d'Impa %cen sautant depuis la&maison en construction avec une&%rcocotte%c!" },
 
     { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?", 
       "%cDie %yGeister-Prüfung %cin %pGanons&Schloss %chat irgendwo eine&%wversteckte Kiste%c. Weißt du schon&wo?",
-      "%cFrench tip about playing rando! 6" },
+      "%cL'%yÉpreuve de l'Esprit%c dans le %pChâteau&de Ganon %ca un coffre caché quelque&part.&Je suppose que tu&le savais déjà?" },
 
     { "%cYou know the %wBombchu Bowling&Alley%c? I heard %wonly two of the &prizes %care worthwhile. The rest &is junk!", 
       "%cKennst du die %wMinenbowlingbahn%c?&Ich habe gehört dass sich nur &%wzwei der Preise%c lohnen. Der Rest&ist Krimskrams!",
-      "%cFrench tip about playing rando! 7" },
+      "%cEst-ce que tu savais qu'au %wBowling&Teigneux%c, il n'y a que les %wdeux&premiers prix %cqui sont intéréssant?" },
 
     { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
       "%cBenutzt du auch genügend %wDeku&Nüsse%c? Ich habe mal gesehen dass&man damit %rKrabbelminen %cdetonieren&kann!",
-      "%cFrench tip about playing rando! 8" },
+      "%cTu es sûr d'utiliser tes %wNoix Mojo &%ccorrectement? J'en ai déjà vu&exploser des %rChoux-Péteurs%c!" },
 
     { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your safety!", 
       "%cVielleicht verbleibt dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. Dies&ist zu deiner Sicherheit!",
-      "%cFrench tip about playing rando! 9" },
+      "%cIl se peut que tu aies une %wPetite&Clé %cen trop dans le %bTemple de l'Eau&%cou le %rTemple du Feu%c. C'est pour ta&propre sécurité!" },
 
     { "%cIf you can't pick up a %rbomb&flower %cwith your hands, you can&still detonate it with %rfire %cor&with %warrows%c!", 
       "%cNur weil du eine %rDonnerblume&%cnicht hochheben kannst, so kannst&du sie immernoch mit %rFeuer %coder&%wPfeilen %cdetonieren!",
-      "%cFrench tip about playing rando! 10" },
+      "%cSi tu ne peux pas ramasser&un %rChoux-Péteur %cavec tes mains, tu&peux toujours le faire exploser&avec du %rFeu %cou avec des %wflèches%c!" },
 
     { "%cEven an adult can't push large&blocks without some %wextra&strength%c!", 
       "%cSelbst ein Erwachsener kann ohne&etwas %wzusätzliche Kraft %ckeine&großen Blöcke verschieben!",
-      "%cFrench tip about playing rando! 11" },
+      "%cMême un adulte ne peut pas pousser&de grands blocs sans un petit %wgain&de force%c!" },
 
     { "%cI've heard that %rFlare Dancer&%cis weak to the Master Sword!&Have you tried it?", 
       "%cIch habe gehört dass der&%rFlammenderwisch %ceine Schwäche für&das Masterschwert aufweist. Hast du&es schonmal versucht einzusetzen?",
-      "%cFrench tip about playing rando! 12" },
+      "%cJ'ai entendu dire que les %rDanse-&Flammes %csont faîble face à l'%wÉpée de&Légende%c! Est-ce que tu as essayé?" },
 
     { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!", 
       "%cFehlt dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuch&Sie mit einem %wKrug %cabzuwerfen!",
-      "%cFrench tip about playing rando! 13" },
+      "%cSi tu n'as pas d'arme pour tuer&une %raraignée%c, pourquoi n'essayerais&-tu pas de lui jetter une %wjarre&%cà la figure?" },
 
     { "%cI hear the patch of %wsoft soil&%cin %bZora's River %cis the only one&that isn't home to a %rspider%c!", 
       "%cIch habe gehört dass die Stelle&%wfeuchten Bodens %cim %bZora-Fluss %cals&einzige keine %rSkulltula %cbeherbergt.",
-      "%cFrench tip about playing rando! 14" },
+      "%cJ'ai entendu dire que la %wterre meuble&%cqui se trouve à la %bRivière Zora %cest&la seule qui ne contienne pas&d'%raraignée%c." },
 
 };
