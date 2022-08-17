@@ -4416,8 +4416,6 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 scaleFactor;
     s16 tailIdx;
     s16 i;
-    static u32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -4428,7 +4426,7 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 20, 0, (s8)this->workf[TAIL_ALPHA]);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
             for (i = 9; i >= 0; i--) {
-                FrameInterpolation_RecordOpenChild("Twinrova Fire Blast", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Twinrova Fire Blast", i);
 
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
@@ -4456,7 +4454,7 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, (s8)this->workf[TAIL_ALPHA]);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
             for (i = 9; i >= 0; i--) {
-                FrameInterpolation_RecordOpenChild("Twinrova Ice Blast", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Twinrova Ice Blast", i);
 
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
