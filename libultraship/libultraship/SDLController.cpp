@@ -89,9 +89,6 @@ namespace Ship {
             ay *= scale;
         }
 
-        ax *= profile->AxisSensitivities[axisX];
-        ay *= profile->AxisSensitivities[axisY];
-
         if (axisX == SDL_CONTROLLER_AXIS_LEFTX) {
             getLeftStickX(virtualSlot) = +ax;
             getLeftStickY(virtualSlot) = -ay;
@@ -194,7 +191,7 @@ namespace Ship {
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
             const auto Axis = static_cast<SDL_GameControllerAxis>(i);
-            const auto PosScancode = i + AXIS_SCANCODE_BIT;
+            const auto PosScancode = i | AXIS_SCANCODE_BIT;
             const auto NegScancode = -PosScancode;
             const auto AxisDeadzone = profile->AxisDeadzones[i];
             const auto AxisMinimumPress = profile->AxisMinimumPress[i];
@@ -217,8 +214,13 @@ namespace Ship {
                 PosButton == BTN_STICKLEFT || PosButton == BTN_STICKRIGHT ||
                 PosButton == BTN_STICKUP || PosButton == BTN_STICKDOWN ||
                 NegButton == BTN_STICKLEFT || NegButton == BTN_STICKRIGHT ||
-                NegButton == BTN_STICKUP || NegButton == BTN_STICKDOWN)) {
+                NegButton == BTN_STICKUP || NegButton == BTN_STICKDOWN ||
+                PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT ||
+                PosButton == BTN_VSTICKUP || PosButton == BTN_VSTICKDOWN ||
+                NegButton == BTN_VSTICKLEFT || NegButton == BTN_VSTICKRIGHT ||
+                NegButton == BTN_VSTICKUP || NegButton == BTN_VSTICKDOWN)) {
 
+                // The axis is being treated as a "button"
                 if (AxisValue > AxisMinimumPress) {
                     getPressedButtons(virtualSlot) |= PosButton;
                     getPressedButtons(virtualSlot) &= ~NegButton;
@@ -231,8 +233,10 @@ namespace Ship {
                     getPressedButtons(virtualSlot) &= ~PosButton;
                     getPressedButtons(virtualSlot) &= ~NegButton;
                 }
-            }
-            else {
+            } else {
+                // The axis is being treated as a "stick"
+
+                // Left stick
                 if (PosButton == BTN_STICKLEFT || PosButton == BTN_STICKRIGHT) {
                     if (LStickAxisX != SDL_CONTROLLER_AXIS_INVALID && LStickAxisX != Axis) {
                         SPDLOG_TRACE("Invalid PosStickX configured. Neg was {} and Pos is {}", LStickAxisX, Axis);
@@ -284,30 +288,8 @@ namespace Ship {
                     LStickDeadzone = AxisDeadzone;
                     LStickAxisY = Axis;
                 }
-            }
 
-            // Right Stick
-            // If the axis is NOT mapped to the control stick.
-            if (!(
-                PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT ||
-                PosButton == BTN_VSTICKUP || PosButton == BTN_VSTICKDOWN ||
-                NegButton == BTN_VSTICKLEFT || NegButton == BTN_VSTICKRIGHT ||
-                NegButton == BTN_VSTICKUP || NegButton == BTN_VSTICKDOWN)) {
-
-                if (AxisValue > AxisMinimumPress) {
-                    getPressedButtons(virtualSlot) |= PosButton;
-                    getPressedButtons(virtualSlot) &= ~NegButton;
-                }
-                else if (AxisValue < -AxisMinimumPress) {
-                    getPressedButtons(virtualSlot) &= ~PosButton;
-                    getPressedButtons(virtualSlot) |= NegButton;
-                }
-                else {
-                    getPressedButtons(virtualSlot) &= ~PosButton;
-                    getPressedButtons(virtualSlot) &= ~NegButton;
-                }
-
-            } else {
+                // Right Stick
                 if (PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT) {
                     if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisX != Axis) {
                         SPDLOG_TRACE("Invalid PosStickX configured. Neg was {} and Pos is {}", RStickAxisX, Axis);
@@ -359,15 +341,15 @@ namespace Ship {
                     RStickDeadzone = AxisDeadzone;
                     RStickAxisY = Axis;
                 }
-
-                if (LStickAxisX != SDL_CONTROLLER_AXIS_INVALID && LStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
-                    NormalizeStickAxis(LStickAxisX, LStickAxisY, LStickDeadzone, virtualSlot);
-                }
-
-                if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
-                    NormalizeStickAxis(RStickAxisX, RStickAxisY, RStickDeadzone, virtualSlot);
-                }
             }
+        }
+
+        if (LStickAxisX != SDL_CONTROLLER_AXIS_INVALID && LStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
+            NormalizeStickAxis(LStickAxisX, LStickAxisY, LStickDeadzone, virtualSlot);
+        }
+
+        if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
+            NormalizeStickAxis(RStickAxisX, RStickAxisY, RStickDeadzone, virtualSlot);
         }
     }
 
@@ -431,7 +413,11 @@ namespace Ship {
     void SDLController::CreateDefaultBinding(int32_t virtualSlot) {
         auto profile = getProfile(virtualSlot);
         profile->Mappings.clear();
+        profile->AxisDeadzones.clear();
+        profile->AxisMinimumPress.clear();
+        profile->GyroData.clear();
 
+        profile->Version = DEVICE_PROFILE_CURRENT_VERSION;
         profile->UseRumble = true;
         profile->RumbleStrength = 1.0f;
         profile->UseGyro = false;
@@ -456,7 +442,6 @@ namespace Ship {
         profile->Mappings[SDL_CONTROLLER_BUTTON_A] = BTN_A;
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
-            profile->AxisSensitivities[i] = 1.0f;
             profile->AxisDeadzones[i] = 16.0f;
             profile->AxisMinimumPress[i] = 7680.0f;
         }
