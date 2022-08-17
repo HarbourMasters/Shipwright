@@ -6294,7 +6294,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                     Player_SetPendingFlag(this, globalCtx);
-                    return;
+                    return 1;
                 }
 
                 s32 drop = giEntry->objectId;
