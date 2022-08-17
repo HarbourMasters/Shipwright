@@ -56,12 +56,13 @@ RUN \
 	echo "deb [signed-by=/usr/local/share/keyring/devkitpro-pub.gpg] https://apt.devkitpro.org stable main" > /etc/apt/sources.list.d/devkitpro.list && \
 	apt-get update -y && \
 	apt-get install -y devkitpro-pacman && \
-	yes | dkp-pacman -Syu switch-dev switch-portlibs --noconfirm
+	yes | dkp-pacman -Syu switch-dev switch-portlibs wiiu-dev wiiu-portlibs --noconfirm
 
 ENV DEVKITPRO=/opt/devkitpro
 ENV DEVKITARM=/opt/devkitpro/devkitARM
 ENV DEVKITPPC=/opt/devkitpro/devkitPPC
-ENV PATH=$PATH:/opt/devkitpro/portlibs/switch/bin/
+ENV PATH=$PATH:/opt/devkitpro/portlibs/switch/bin/:$DEVKITPPC/bin
+ENV WUT_ROOT=$DEVKITPRO/wut
 
 RUN mkdir /soh
 WORKDIR /soh

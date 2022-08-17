@@ -11,7 +11,7 @@
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);
-s32 Camera_CheckWater(Camera* camera);
+s32 Camera_UpdateWater(Camera* camera);
 
 #define RELOAD_PARAMS \
     (camera->animState == 0 || camera->animState == 0xA || camera->animState == 0x14 || R_RELOAD_CAM_PARAMS)
@@ -27,6 +27,12 @@ s32 Camera_CheckWater(Camera* camera);
 
 #define FLG_ADJSLOPE (1 << 0)
 #define FLG_OFFGROUND (1 << 7)
+
+#define DISTORTION_HOT_ROOM (1 << 0)
+#define DISTORTION_UNDERWATER_WEAK (1 << 1)
+#define DISTORTION_UNDERWATER_MEDIUM (1 << 2)
+#define DISTORTION_UNDERWATER_STRONG (1 << 3)
+#define DISTORTION_UNDERWATER_FISHING (1 << 4)
 
 #include "z_camera_data.inc"
 
@@ -972,7 +978,7 @@ s32 func_80045B08(Camera* camera, VecSph* eyeAtDir, f32 yExtra, s16 arg3) {
     f32 phi_f2;
     Vec3f posOffsetTarget;
     Vec3f atTarget;
-    f32 sp38; // unused
+    f32 pad;
     f32 temp_ret;
     PosRot* playerPosRot = &camera->playerPosRot;
 
@@ -1410,8 +1416,8 @@ s32 Camera_Noop(Camera* camera) {
 }
 
 s32 SetCameraManual(Camera* camera) {
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
 
     if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
         camera->globalCtx->manualCamera = true;
@@ -1479,8 +1485,8 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 1;
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
 
     camera->globalCtx->camX += newCamX;
     camera->globalCtx->camY += newCamY;
@@ -7004,19 +7010,20 @@ void func_80057FC4(Camera* camera) {
     if (camera != &camera->globalCtx->mainCamera) {
         camera->prevSetting = camera->setting = CAM_SET_FREE0;
         camera->unk_14C &= ~0x4;
-    } else if (camera->globalCtx->roomCtx.curRoom.mesh->polygon.type != 1) {
-        switch (camera->globalCtx->roomCtx.curRoom.unk_03) {
-            case 1:
+    } else if (camera->globalCtx->roomCtx.curRoom.meshHeader->base.type != 1) {
+        switch (camera->globalCtx->roomCtx.curRoom.behaviorType1) {
+            case ROOM_BEHAVIOR_TYPE1_1:
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_DUNGEON0;
                 break;
-            case 0:
+            case ROOM_BEHAVIOR_TYPE1_0:
                 osSyncPrintf("camera: room type: default set field\n");
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 break;
             default:
-                osSyncPrintf("camera: room type: default set etc (%d)\n", camera->globalCtx->roomCtx.curRoom.unk_03);
+                osSyncPrintf("camera: room type: default set etc (%d)\n",
+                             camera->globalCtx->roomCtx.curRoom.behaviorType1);
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 camera->unk_14C |= 4;
@@ -7095,7 +7102,7 @@ void Camera_InitPlayerSettings(Camera* camera, Player* player) {
     osSyncPrintf(VT_FGCOL(BLUE) "camera: personalize ---" VT_RST "\n");
 
     if (camera->thisIdx == MAIN_CAM) {
-        Camera_CheckWater(camera);
+        Camera_UpdateWater(camera);
     }
 }
 
@@ -7203,7 +7210,7 @@ void Camera_PrintSettings(Camera* camera) {
     }
 }
 
-s32 Camera_CheckWater(Camera* camera) {
+s32 Camera_UpdateWater(Camera* camera) {
     f32 waterY;
     s16 newQuakeId;
     s32 waterLightsIndex;
@@ -7280,7 +7287,7 @@ s32 Camera_CheckWater(Camera* camera) {
             camera->unk_14C |= 0x100;
             osSyncPrintf("kankyo changed water, sound on\n");
             Environment_EnableUnderwaterLights(camera->globalCtx, waterLightsIndex);
-            camera->unk_150 = 0x50;
+            camera->waterDistortionTimer = 80;
         }
 
         Audio_SetExtraFilter(0x20);
@@ -7299,13 +7306,13 @@ s32 Camera_CheckWater(Camera* camera) {
             }
         }
 
-        if (camera->unk_150 > 0) {
-            camera->unk_150--;
-            camera->unk_152 |= 8;
-        } else if (camera->globalCtx->sceneNum == 0x49) {
-            camera->unk_152 |= 0x10;
+        if (camera->waterDistortionTimer > 0) {
+            camera->waterDistortionTimer--;
+            camera->distortionFlags |= DISTORTION_UNDERWATER_STRONG;
+        } else if (camera->globalCtx->sceneNum == SCENE_TURIBORI) {
+            camera->distortionFlags |= DISTORTION_UNDERWATER_FISHING;
         } else {
-            camera->unk_152 |= 2;
+            camera->distortionFlags |= DISTORTION_UNDERWATER_WEAK;
         }
     } else {
         if (camera->unk_14C & 0x100) {
@@ -7315,21 +7322,18 @@ s32 Camera_CheckWater(Camera* camera) {
             if (*quakeId != 0) {
                 Quake_RemoveFromIdx(*quakeId);
             }
-            camera->unk_150 = 0;
-            camera->unk_152 = 0;
+            camera->waterDistortionTimer = 0;
+            camera->distortionFlags = 0;
         }
         Audio_SetExtraFilter(0);
     }
     //! @bug: doesn't always return a value, but sometimes does.
 }
 
-/**
- * Sets the room to be hot camera quake flag
- */
-s32 Camera_SetRoomHotFlag(Camera* camera) {
-    camera->unk_152 &= ~1;
-    if (camera->globalCtx->roomCtx.curRoom.unk_02 == 3) {
-        camera->unk_152 |= 1;
+s32 Camera_UpdateHotRoom(Camera* camera) {
+    camera->distortionFlags &= ~DISTORTION_HOT_ROOM;
+    if (camera->globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) {
+        camera->distortionFlags |= DISTORTION_HOT_ROOM;
     }
 
     return 1;
@@ -7364,80 +7368,87 @@ s32 Camera_DbgChangeMode(Camera* camera) {
     return true;
 }
 
-s16 D_8011DB08 = 0x3F0;
-s16 D_8011DB0C = 0x156;
-void func_80058E8C(Camera* camera) {
-    s32 pad3;
-    f32 sp60;
-    s32 pad;
-    s32 pad1;
-    s32 pad4;
-    f32 phi_f2;
-    s32 pad2;
-    f32 phi_f0;
-    f32 phi_f20;
-    f32 sp40;
-    f32 sp3C;
-    f32 sp38;
-    f32 sp34;
+s16 depthPhase = 0x3F0;
+s16 screenPlanePhase = 0x156;
+void Camera_UpdateDistortion(Camera* camera) {
+    f32 scaleFactor;
+    f32 speedFactor;
+    f32 depthPhaseStep;
+    f32 screenPlanePhaseStep;
+    s32 pad[5];
+    f32 xScale;
+    f32 yScale;
+    f32 zScale;
+    f32 speed;
 
-    if (camera->unk_152 != 0) {
-        if (camera->unk_152 & 4) {
-            phi_f0 = 0.0f;
-            phi_f2 = 170.0f;
-            sp3C = 0.01f;
-            sp40 = -0.01f;
-            sp38 = 0.0f;
-            sp34 = 0.6f;
-            phi_f20 = camera->unk_150 / 60.0f;
-            sp60 = 1.0f;
-        } else if (camera->unk_152 & 8) {
-            phi_f0 = 248.0f;
-            phi_f2 = -90.0f;
-            sp38 = 0.2f;
-            sp34 = 0.2f;
-            sp40 = -0.3f;
-            sp3C = 0.3f;
-            phi_f20 = camera->unk_150 / 80.0f;
-            sp60 = 1.0f;
-        } else if (camera->unk_152 & 2) {
-            phi_f0 = 359.2f;
-            phi_f2 = -18.5f;
-            sp40 = 0.09f;
-            sp38 = 0.01f;
-            sp3C = 0.09f;
-            sp34 = 0.08f;
-            phi_f20 =
+    if (camera->distortionFlags != 0) {
+        if (camera->distortionFlags & DISTORTION_UNDERWATER_MEDIUM) {
+            depthPhaseStep = 0.0f;
+            screenPlanePhaseStep = 170.0f;
+
+            xScale = -0.01f;
+            yScale = 0.01f;
+            zScale = 0.0f;
+
+            speed = 0.6f;
+            scaleFactor = camera->waterDistortionTimer / 60.0f;
+            speedFactor = 1.0f;
+        } else if (camera->distortionFlags & DISTORTION_UNDERWATER_STRONG) {
+            depthPhaseStep = 248.0f;
+            screenPlanePhaseStep = -90.0f;
+
+            xScale = -0.3f;
+            yScale = 0.3f;
+            zScale = 0.2f;
+
+            speed = 0.2f;
+            scaleFactor = camera->waterDistortionTimer / 80.0f;
+            speedFactor = 1.0f;
+        } else if (camera->distortionFlags & DISTORTION_UNDERWATER_WEAK) {
+            depthPhaseStep = 359.2f;
+            screenPlanePhaseStep = -18.5f;
+
+            xScale = 0.09f;
+            yScale = 0.09f;
+            zScale = 0.01f;
+
+            speed = 0.08f;
+            scaleFactor =
                 (((camera->waterYPos - camera->eye.y) > 150.0f ? 1.0f : (camera->waterYPos - camera->eye.y) / 150.0f) *
                  0.45f) +
                 (camera->speedRatio * 0.45f);
-            sp60 = phi_f20;
-        } else if (camera->unk_152 & 1) {
-            // hot room flag
-            phi_f2 = 150.0f;
-            phi_f0 = 0.0f;
-            sp3C = 0.01f;
-            sp38 = 0.01f;
-            sp40 = -0.01f;
-            sp34 = 0.6f;
-            sp60 = 1.0f;
-            phi_f20 = 1.0f;
+            speedFactor = scaleFactor;
+        } else if (camera->distortionFlags & DISTORTION_HOT_ROOM) {
+            // Gives the hot-room a small mirage-like appearance
+            depthPhaseStep = 0.0f;
+            screenPlanePhaseStep = 150.0f;
 
+            xScale = -0.01f;
+            yScale = 0.01f;
+            zScale = 0.01f;
+
+            speed = 0.6f;
+            speedFactor = 1.0f;
+            scaleFactor = 1.0f;
         } else {
+            // DISTORTION_UNDERWATER_FISHING
             return;
         }
-        D_8011DB08 += DEGF_TO_BINANG(phi_f0);
-        D_8011DB0C += DEGF_TO_BINANG(phi_f2);
-        Math_CosS(D_8011DB08);
-        Math_SinS(D_8011DB08);
-        Math_SinS(D_8011DB0C);
-        func_800AA76C(&camera->globalCtx->view, 0.0f, 0.0f, 0.0f);
-        func_800AA78C(&camera->globalCtx->view, Math_SinS(D_8011DB0C) * (sp40 * phi_f20) + 1.0f,
-                      Math_CosS(D_8011DB0C) * (sp3C * phi_f20) + 1.0f, Math_CosS(D_8011DB08) * (sp38 * phi_f20) + 1.0f);
-        func_800AA7AC(&camera->globalCtx->view, sp34 * sp60);
+
+        depthPhase += DEGF_TO_BINANG(depthPhaseStep);
+        screenPlanePhase += DEGF_TO_BINANG(screenPlanePhaseStep);
+
+        View_SetDistortionOrientation(&camera->globalCtx->view, Math_CosS(depthPhase) * 0.0f, Math_SinS(depthPhase) * 0.0f,
+                                 Math_SinS(screenPlanePhase) * 0.0f);
+        View_SetDistortionScale(&camera->globalCtx->view, Math_SinS(screenPlanePhase) * (xScale * scaleFactor) + 1.0f,
+                                Math_CosS(screenPlanePhase) * (yScale * scaleFactor) + 1.0f,
+                                Math_CosS(depthPhase) * (zScale * scaleFactor) + 1.0f);
+        View_SetDistortionSpeed(&camera->globalCtx->view, speed * speedFactor);
+
         camera->unk_14C |= 0x40;
+
     } else if (camera->unk_14C & 0x40) {
-        func_800AA814(&camera->globalCtx->view);
+        View_ClearDistortion(&camera->globalCtx->view);
         camera->unk_14C &= ~0x40;
     }
 }
@@ -7506,8 +7517,8 @@ Vec3s Camera_Update(Camera* camera) {
 
         if (sOOBTimer < 200) {
             if (camera->status == CAM_STAT_ACTIVE) {
-                Camera_CheckWater(camera);
-                Camera_SetRoomHotFlag(camera);
+                Camera_UpdateWater(camera);
+                Camera_UpdateHotRoom(camera);
             }
 
             if (!(camera->unk_14C & 4)) {
@@ -7647,7 +7658,8 @@ Vec3s Camera_Update(Camera* camera) {
 
     camera->skyboxOffset = quake.eyeOffset;
 
-    func_80058E8C(camera);
+    Camera_UpdateDistortion(camera);
+
     if ((camera->globalCtx->sceneNum == SCENE_SPOT00) && (camera->fov < 59.0f)) {
         View_SetScale(&camera->globalCtx->view, 0.79f);
     } else {
@@ -7844,7 +7856,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     func_80078884(0);
                     break;
                 case 2:
-                    if (camera->globalCtx->roomCtx.curRoom.unk_03 == 1) {
+                    if (camera->globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_1) {
                         func_80078884(NA_SE_SY_ATTENTION_URGENCY);
                     } else {
                         func_80078884(NA_SE_SY_ATTENTION_ON);

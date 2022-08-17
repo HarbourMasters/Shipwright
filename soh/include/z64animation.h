@@ -23,7 +23,7 @@ typedef enum {
     /* 3 */ ANIMMODE_ONCE_INTERP,
     /* 4 */ ANIMMODE_LOOP_PARTIAL,
     /* 5 */ ANIMMODE_LOOP_PARTIAL_INTERP
-} AnimationModes;
+} AnimationMode;
 
 typedef enum { 
     /* -1 */ ANIMTAPER_DECEL = -1, 
@@ -241,21 +241,21 @@ typedef s32 (*AnimUpdateFunc)();
 
 typedef struct SkelAnime {
     /* 0x00 */ u8 limbCount;      // Number of limbs in the skeleton
-    /* 0x01 */ u8 mode;           // 0: loop, 2: play once, 4: partial loop. +1 to interpolate between frames.
+    /* 0x01 */ u8 mode;           // See `AnimationMode`
     /* 0x02 */ u8 dListCount;     // Number of display lists in a flexible skeleton
     /* 0x03 */ s8 taper;          // Tapering to use when morphing between animations. Only used by Door_Warp1.
     /* 0x04 */ void** skeleton;   // An array of pointers to limbs. Can be StandardLimb, LodLimb, or SkinLimb.
     /* 0x08 */ void* animation;   // Can be an AnimationHeader or LinkAnimationHeader.
-    /* 0x0C */ f32 startFrame;    // In mode 4, start of partial loop.
-    /* 0x10 */ f32 endFrame;      // In mode 2, Update returns true when curFrame is equal to this. In mode 4, end of partial loop.
-    /* 0x14 */ f32 animLength;    // Total number of frames in the current animation's file.
+    /* 0x0C */ f32 startFrame;    // In mode ANIMMODE_LOOP_PARTIAL*, start of partial loop.
+    /* 0x10 */ f32 endFrame;      // In mode ANIMMODE_ONCE*, Update returns true when curFrame is equal to this. In mode ANIMMODE_LOOP_PARTIAL*, end of partial loop.
+    /* 0x14 */ f32 animLength;    // Total number of frames in the current animation.
     /* 0x18 */ f32 curFrame;      // Current frame in the animation
     /* 0x1C */ f32 playSpeed;     // Multiplied by R_UPDATE_RATE / 3 to get the animation's frame rate.
     /* 0x20 */ Vec3s* jointTable; // Current translation of model and rotations of all limbs
     /* 0x24 */ Vec3s* morphTable; // Table of values used to morph between animations
     /* 0x28 */ f32 morphWeight;   // Weight of the current animation morph as a fraction in [0,1]
     /* 0x2C */ f32 morphRate;     // Reciprocal of the number of frames in the morph
-    /* 0x30 */ s32 (*update)();   // Can be Loop, Partial loop, Play once, Morph, or Tapered morph. Link only has Loop, Play once, and Morph
+    /* 0x30 */ s32 (*update)();   // Can be Loop, Partial loop, Play once, Morph, or Tapered morph. Link only has Loop, Play once, and Morph.
     /* 0x34 */ s8 initFlags;      // Flags used when initializing Link's skeleton
     /* 0x35 */ u8 moveFlags;      // Flags used for animations that move the actor in worldspace.
     /* 0x36 */ s16 prevRot;       // Previous rotation in worldspace.
