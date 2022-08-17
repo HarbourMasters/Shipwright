@@ -194,10 +194,11 @@ typedef struct {
     u8 cowsMilked[10];
     u8 temporaryWeapon;
     u16 adultTradeItems;
-    u8 isyounglinkfountain;
+    u8 isyounglinkfountain;//TODO change to camel case
     u8 isfirstindex;
     u8 isvoidoutordie;
     u8 isdebugwarp;
+    u8 issunsongload;
 } SaveContext; // size = 0x1428
 
 typedef enum {

@@ -5987,6 +5987,7 @@ void Interface_Update(GlobalContext* globalCtx) {
 
             gSaveContext.respawnFlag = -2;
             globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+            gSaveContext.issunsongload = 1;
             globalCtx->sceneLoadFlag = 0x14;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);
