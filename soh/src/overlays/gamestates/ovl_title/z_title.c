@@ -130,11 +130,11 @@ void Title_Calc(TitleContext* this) {
     this->ult++;
 
     if (gSkipLogoTest || gLoadFileSelect) {
-        this->exit = 1;
+        this->exit = true;
     }
 
 #else
-    this->exit = 1;
+    this->exit = true;
 #endif
 }
 
