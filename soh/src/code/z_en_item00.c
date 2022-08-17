@@ -557,6 +557,7 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
 
     if (gSaveContext.n64ddFlag && this->actor.params == ITEM00_SMALL_KEY) {
         this->actor.shape.yOffset = 600.0f;
+        this->actor.shape.rot.y += 960;
     }
 
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.5f, 0.0f);
@@ -709,15 +710,17 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
     if (CVar_GetS32("gNewDrops", 0)) { //set the rotation system on selected model only :)
-
         if ((this->actor.params == ITEM00_RUPEE_GREEN) || (this->actor.params == ITEM00_RUPEE_BLUE) ||
             (this->actor.params == ITEM00_RUPEE_RED) || (this->actor.params == ITEM00_ARROWS_SINGLE) || 
             (this->actor.params == ITEM00_ARROWS_SMALL) || (this->actor.params == ITEM00_ARROWS_MEDIUM) ||
             (this->actor.params == ITEM00_ARROWS_LARGE) || (this->actor.params == ITEM00_BOMBS_A) || 
             (this->actor.params == ITEM00_BOMBS_B) || (this->actor.params == ITEM00_NUTS) || 
-            (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) || 
-            (this->actor.params == ITEM00_SMALL_KEY) ||  (this->actor.params == ITEM00_MAGIC_LARGE) || 
-            (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL) || this->actor.params == ITEM00_HEART_PIECE) {
+            (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) ||  
+            (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || 
+            (this->actor.params == ITEM00_BOMBS_SPECIAL) || this->actor.params == ITEM00_HEART_PIECE) {
+            this->actor.shape.rot.y += 960;
+        }
+        if (this->actor.params == ITEM00_SMALL_KEY && !gSaveContext.n64ddFlag) {
             this->actor.shape.rot.y += 960;
         }
     }
@@ -1180,16 +1183,19 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->actor.world.rot.x = 0x4000;
                     this->actor.shape.shadowScale = 0.5f;
                     GetItem_Draw(globalCtx, GID_KEY_SMALL);
+                    break;
                 } else {
                     Actor_SetScale(&this->actor, 0.03f);
                     this->scale = 0.03f;
                     this->actor.shape.yOffset = 320.0f;
                     this->actor.shape.shadowScale = 6.0f;
-                    this->actor.world.rot.x = 0;
-                    this->actor.shape.rot.y = 0;
+                    if (!gSaveContext.n64ddFlag) {
+                        this->actor.world.rot.x = 0;
+                        this->actor.shape.rot.y = 0;
+                    }
                     EnItem00_DrawCollectible(this, globalCtx);
+                    break;
                 }
-                break;
             case ITEM00_SHIELD_DEKU:
                 GetItem_Draw(globalCtx, GID_SHIELD_DEKU);
                 break;

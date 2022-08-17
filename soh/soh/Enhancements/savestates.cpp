@@ -85,8 +85,8 @@ typedef struct SaveStateInfo {
     OnePointCsFull D_8011D8DC_copy[3];
     OnePointCsFull D_8011D954_copy[4];
     OnePointCsFull D_8011D9F4_copy[3];
-    int16_t D_8011DB08_copy;
-    int16_t D_8011DB0C_copy;
+    int16_t depthPhase_copy;
+    int16_t screenPlanePhase_copy;
     int32_t sOOBTimer_copy;
     f32 D_8015CE50_copy;
     f32 D_8015CE54_copy;
@@ -437,8 +437,8 @@ void SaveState::BackupCameraData(void) {
     memcpy(info->D_8011D8DC_copy, D_8011D8DC, sizeof(info->D_8011D8DC_copy));
     memcpy(info->D_8011D954_copy, D_8011D954, sizeof(info->D_8011D954_copy));
     memcpy(info->D_8011D9F4_copy, D_8011D9F4, sizeof(info->D_8011D9F4_copy));
-    info->D_8011DB08_copy = D_8011DB08;
-    info->D_8011DB0C_copy = D_8011DB0C;
+    info->depthPhase_copy = depthPhase;
+    info->screenPlanePhase_copy = screenPlanePhase;
     info->sOOBTimer_copy = sOOBTimer;
     info->D_8015CE50_copy = D_8015CE50;
     info->D_8015CE54_copy = D_8015CE54;
@@ -465,8 +465,8 @@ void SaveState::LoadCameraData(void) {
     memcpy(D_8011D8DC, info->D_8011D8DC_copy, sizeof(info->D_8011D8DC_copy));
     memcpy(D_8011D954, info->D_8011D954_copy, sizeof(info->D_8011D954_copy));
     memcpy(D_8011D9F4, info->D_8011D9F4_copy, sizeof(info->D_8011D9F4_copy));
-    D_8011DB08 = info->D_8011DB08_copy;
-    D_8011DB0C = info->D_8011DB0C_copy;
+    depthPhase = info->depthPhase_copy;
+    screenPlanePhase = info->screenPlanePhase_copy;
     sOOBTimer = info->sOOBTimer_copy;
     D_8015CE50 = info->D_8015CE50_copy;
     D_8015CE54 = info->D_8015CE54_copy;
