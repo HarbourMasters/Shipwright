@@ -1002,6 +1002,7 @@ namespace SohImGui {
                     BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
                     InsertPadding();
                     BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
+
                     ImGui::EndMenu();
                 }
 
@@ -1032,6 +1033,7 @@ namespace SohImGui {
                     EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                     Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                     ImGui::PopItemWidth();
+
                     ImGui::EndMenu();
                 }
 
@@ -1190,11 +1192,12 @@ namespace SohImGui {
                     PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
                     Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
                     PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
-                    Tooltip("Hold the assigned button to change the maximum walking speed");
+                    Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, click Customize Game Controls");
                     if (CVar_GetS32("gEnableWalkModify", 0)) {
                         EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
                         EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
                     }
+
                     ImGui::EndMenu();
                 }
 
