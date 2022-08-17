@@ -13,6 +13,7 @@
 #include <PR/ultra64/pi.h>
 #include <PR/ultra64/message.h>
 #include "../../soh/include/z64audio.h"
+#include "../../soh/soh/util.h"
 #include "Archive.h"
 #include "Console.h"
 #include "Hooks.h"
@@ -1694,16 +1695,148 @@ namespace SohImGui {
 
                     ImGui::EndMenu();
                 }
-		    
-                if (ImGui::BeginMenu("Warp to...")) {
-                    if (ImGui::Button("Kokiri Forest")) {
-                        CVar_SetS32("gKokiriWarp", 1);
+		
+               if (ImGui::BeginMenu("Warp to...")) {
+                    for (int32_t i = 1; i < 21; i++) {
+                        int32_t warpInd = 80 + i;
+                        if (i == 20) {
+                            warpInd = 67;
+                        }
+                        if (ImGui::Button(SohUtils::GetSceneName(warpInd).c_str())) {
+                            CVar_SetS32("gWarpCheat", i);
+                        }
                     }
-                    if (ImGui::Button("Lost Woods")) {
-                        CVar_SetS32("gLostWoodsWarp", 1);
+                    if (ImGui::BeginMenu("Dungeons...")) {
+                        int32_t warpInd = 0;
+                        for (int32_t i = 0; i < 12; i++) {
+                            if (i < 4) {
+                                warpInd = 66 + (i * 2);
+                            }
+                            else if (i < 7) {
+                                warpInd = 77 + ((i - 4) * 2);
+                            }
+                            else if (i < 9) {
+                                warpInd = 75 - (i - 7);
+                            }
+                            else if (i < 11) {
+                                warpInd = 86 + ((i - 9) * 2);
+                            }
+                            else {
+                                warpInd = 65;
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
+                                CVar_SetS32("gWarpCheat", warpInd);
+                            }
+                        }
+                        ImGui::EndMenu();
                     }
+
+                    if (ImGui::BeginMenu("Grottos...")) {
+		    	if (ImGui::Button("Fairy Fountain")) {
+                            CVar_SetS32("gWarpGrottoCheat", 1);
+                        }
+                        if (ImGui::Button("Hyrule Field near Kakariko")) {
+                            CVar_SetS32("gWarpGrottoCheat", 3);
+                        }
+                        if (ImGui::Button("Kakariko near tree")) {
+                            CVar_SetS32("gWarpGrottoCheat", 5);
+                        }
+                        if (ImGui::Button("Hyrule Field near Gerudo Valley under boulder")) {
+                            CVar_SetS32("gWarpGrottoCheat", 7);
+                        }
+                        if (ImGui::Button("Under boulder in Gerudo Canyon")) {
+                            CVar_SetS32("gWarpGrottoCheat", 8);
+                        }
+                        if (ImGui::Button("Sacred Forest Wolfoes Grotto")) {
+                            CVar_SetS32("gWarpGrottoCheat", 10);
+                        }
+                        if (ImGui::Button("Tree near Hyrule Castle Courtyard")) {
+                            CVar_SetS32("gWarpGrottoCheat", 11);
+                        }
+                        if (ImGui::Button("Tektite Grotto between Castle Town and Gerudo Valley")) {
+                            CVar_SetS32("gWarpGrottoCheat", 13);
+                        }
+                        if (ImGui::Button("Deku Theater in Lost Woods")) {
+                            CVar_SetS32("gWarpGrottoCheat", 14);
+                        }
+                        if (ImGui::Button("Death Mountain Trail Cow Grotto")) {
+                            CVar_SetS32("gWarpGrottoCheat", 15);
+                        }
+                        if (ImGui::BeginMenu("Chest Grottos...")) {
+                            if (ImGui::Button(SohUtils::GetSceneName(85).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat",21);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 22);
+                            }
+                            char temp[30];
+                            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+                            strcat(temp, ": Near Market");
+                            if (ImGui::Button(temp)) {
+                                CVar_SetS32("gWarpGrottoCheat", 23);
+                            }
+                            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+                            strcat(temp, ": Open Grotto");
+                            if (ImGui::Button(temp)) {
+                                CVar_SetS32("gWarpGrottoCheat", 24);
+                            }
+                            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+                            strcat(temp, ": SE Boulder");
+                            if (ImGui::Button(temp)) {
+                                CVar_SetS32("gWarpGrottoCheat", 25);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(82).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 26);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(96).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 27);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 28);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 29);
+                            }
+                            ImGui::EndMenu();
+                            }
+                        if (ImGui::BeginMenu("Scrub Grottos...")) {
+                            if (ImGui::Button(SohUtils::GetSceneName(81).c_str())) {
+                                CVar_SetS32("gWarpGrottoCheat", 4);
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) { //ZR
+                                CVar_SetS32("gWarpGrottoCheat", 31);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(86).c_str())) { //Sacred Forest
+                                CVar_SetS32("gWarpGrottoCheat", 32);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(87).c_str())) { //lake Hylia
+                                CVar_SetS32("gWarpGrottoCheat", 33);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(90).c_str())) { //Gerudo Valley
+                                CVar_SetS32("gWarpGrottoCheat", 34);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) { //Lost woods
+                                CVar_SetS32("gWarpGrottoCheat", 35);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) { //Death Mountain Crater
+                                CVar_SetS32("gWarpGrottoCheat", 36);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(93).c_str())) { //Gerudo Fortress
+                                CVar_SetS32("gWarpGrottoCheat", 37);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(99).c_str())) { //Lon Lon Ranch
+                                CVar_SetS32("gWarpGrottoCheat", 38);
+                            }
+                            else if (ImGui::Button(SohUtils::GetSceneName(92).c_str())) { //Desert Colossus.
+                                CVar_SetS32("gWarpGrottoCheat", 39);
+                            }
+                            ImGui::EndMenu();
+                        }
+                        ImGui::EndMenu();
+                    }
+
                     ImGui::EndMenu();
-                }   
+                }
 
                 PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
                 Tooltip("Allows you to walk through walls");

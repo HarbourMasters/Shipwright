@@ -1,6 +1,7 @@
 #include <string.h>
 #include "global.h"
 #include "vt.h"
+#include "../overlays/gamestates/ovl_select/z_select.c"
 
 SpeedMeter D_801664D0;
 struct_801664F0 D_801664F0;
@@ -23,16 +24,6 @@ void GameState_FaultPrint(void) {
         if (sLastButtonPressed & (1 << i)) {
             FaultDrawer_DrawText((i * 8) + 0x78, 0xBE, "%c", sBtnChars[i]);
         }
-    }
-}
-
-void warpLogic(char* warpName, int warpAddress) {
-    if (gGlobalCtx) {
-        CVar_SetS32(warpName, 0);
-        gGlobalCtx->nextEntranceIndex = warpAddress;
-        gGlobalCtx->sceneLoadFlag = 0x14;
-        gGlobalCtx->fadeTransition = 11;
-        gSaveContext.nextTransition = 11;
     }
 }
 
@@ -437,13 +428,101 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gPrevTime", -1);
     }
     
+    //Warp Logic
     if (gGlobalCtx) {
-        // Warp Logic
-        if (CVar_GetS32("gKokiriWarp", 0) != 0) {
-            warpLogic("gKokiriWarp", 0x020D);
+
+        //Logic for General Warping
+        if (CVar_GetS32("gWarpCheat", 0) != 0) {
+            int temp = CVar_GetS32("gWarpCheat", 0);
+            gGlobalCtx->nextEntranceIndex = sScenes[CVar_GetS32("gWarpCheat", 0) - 1].entranceIndex;
+            CVar_SetS32("gWarpCheat", 0);
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
         }
-        if (CVar_GetS32("gLostWoodsWarp", 0) != 0) {
-            warpLogic("gLostWoodsWarp", 0x011E);
+
+        //Logic for Grotto Warping
+        if (CVar_GetS32("gWarpGrottoCheat", 0) != 0) {
+            //0 = Fairy Fountain - Leaving this out for now since they aren't necessary for progression. Can be added in later.
+            //1 = Single Treasure Chest.(Covered in gWarpChestGrottoCheat)
+            //2 = 1 skultulla, one gold skultulla. (HF near Kakoriko Village)
+            //3 = 1 Deku scrub. Water puddles. (Only in HF between fences to lake hylia)
+            //4 = 2 redeads. watery walls. (Only in Kakoriko closed grotto near tree)
+            //5 = 3 Dekus.
+            //6 = Spiderwebs on 3 walls. (Near Gerudo Valley, HF)
+            //7 = Water with single octorok. (Gerudo Canyon)
+            //8 = 2 Deku Scrubs (closest on left)
+            //9 = Metalic room with wolfoes. (Only in Sacred Meadow)
+            //10 = Rocky room with 3 bombable walls. (Only near Hyrule Castle Courtyard)
+            //11 = 2 Deku Scrubs (closest on right)
+            //12 = Tektite grotto. (Only in HF near tree between Hyrule Castle and Gerudo Valley.)
+            //13 = Deku Theater. (Only in lost Woods)
+            //14 = Single cow and a few puddles. (Only on Death Mountain Trail)
+
+            //Chest Grottos
+            if (CVar_GetS32("gWarpGrottoCheat", 0) == 21) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 44; // Kokiri Forest
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 22) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 20; // Lost Woods
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 23) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 0; // HF near Marketplace
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 24) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 23; // HF Open Grotto
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 25) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 34; // HF SE Boulder
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 26) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 40; // Kakoriko open grotto
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 27) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 87; // Death mountain trail SoS grotto
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 28) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 122; // Death Mountain Crater
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 29) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = 41; // Zora River
+                gGlobalCtx->nextEntranceIndex = entrances[1];
+                //Scrub Grottos
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 31) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xEB & ((1 << 8) - 1));  //Zora River
+                gGlobalCtx->nextEntranceIndex = entrances[11];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 32) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xEE & ((1 << 8) - 1)); //Sacred Forest
+                gGlobalCtx->nextEntranceIndex = entrances[11];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 33) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xEF & ((1 << 8) - 1)); //Lake Hylia
+                gGlobalCtx->nextEntranceIndex = entrances[5];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 34) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xF0 & ((1 << 8) - 1)); //Gerudo Valley
+                gGlobalCtx->nextEntranceIndex = entrances[11];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 35) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xF5 & ((1 << 8) - 1)); //Lost Woods
+                gGlobalCtx->nextEntranceIndex = entrances[8];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 36) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xF9 & ((1 << 8) - 1)); //Death Mountain Crater
+                gGlobalCtx->nextEntranceIndex = entrances[5];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 37) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xFB & ((1 << 8) - 1)); //Gerudo Fortress
+                gGlobalCtx->nextEntranceIndex = entrances[5];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 38) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xFC & ((1 << 8) - 1)); //Lon Lon Ranch
+                gGlobalCtx->nextEntranceIndex = entrances[5];
+            } else if (CVar_GetS32("gWarpGrottoCheat", 0) == 39) {
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (0xFD & ((1 << 8) - 1)); //Desert Colossus
+                gGlobalCtx->nextEntranceIndex = entrances[11];
+            } else {
+                gGlobalCtx->nextEntranceIndex = entrances[CVar_GetS32("gWarpGrottoCheat", 0) - 1];
+            }
+            CVar_SetS32("gWarpGrottoCheat", 0);
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
+            Gameplay_SetupRespawnPoint(gGlobalCtx, RESPAWN_MODE_RETURN, 0x4FF);
         }
     }
 
