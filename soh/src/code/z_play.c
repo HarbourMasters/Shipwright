@@ -293,6 +293,11 @@ void Gameplay_Init(GameState* thisx) {
                 break;
             }
 
+            else if (gSaveContext.isdebugwarp == 1) {
+                gSaveContext.isdebugwarp = 0;
+                break;
+            }
+
             else if (gSaveContext.isvoidoutordie == 1) {
                 gSaveContext.isvoidoutordie = 0;
                 break;
