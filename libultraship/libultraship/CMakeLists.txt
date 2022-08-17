@@ -138,8 +138,6 @@ set(Source_Files__Globals
     "LUSMacros.h"
     "Window.cpp"
     "Window.h"
-    "WindowShim.cpp"
-    "WindowShim.h"
 )
 source_group("Source Files\\Globals" FILES ${Source_Files__Globals})
 
