@@ -1551,7 +1551,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (textId >= 0x0140 && textId <= 0x015F) {
             messageEntry = Randomizer_GetNaviMessage();
         }
-
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
