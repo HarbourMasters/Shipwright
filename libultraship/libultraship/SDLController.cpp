@@ -413,7 +413,11 @@ namespace Ship {
     void SDLController::CreateDefaultBinding(int32_t virtualSlot) {
         auto profile = getProfile(virtualSlot);
         profile->Mappings.clear();
+        profile->AxisDeadzones.clear();
+        profile->AxisMinimumPress.clear();
+        profile->GyroData.clear();
 
+        profile->Version = DEVICE_PROFILE_CURRENT_VERSION;
         profile->UseRumble = true;
         profile->RumbleStrength = 1.0f;
         profile->UseGyro = false;

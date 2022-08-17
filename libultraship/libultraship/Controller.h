@@ -12,16 +12,20 @@
 #define AXIS_SCANCODE_BIT (1 << 9)
 
 namespace Ship {
-
-
-
-	enum GyroDataV0 {
+	enum GyroData {
 		DRIFT_X,
 		DRIFT_Y,
 		GYRO_SENSITIVITY
 	};
 
-	struct DeviceProfileV0 {
+	enum DeviceProfileVersion {
+		DEVICE_PROFILE_VERSION_V0 = 0,
+		DEVICE_PROFILE_VERSION_V1 = 1
+	};
+
+	#define DEVICE_PROFILE_CURRENT_VERSION DEVICE_PROFILE_VERSION_V1
+
+	struct DeviceProfile {
 		int32_t Version = 0;
 		bool UseRumble = false;
 		bool UseGyro = false;
@@ -54,7 +58,7 @@ namespace Ship {
 		int32_t& getPressedButtons(int32_t virtualSlot);
 		float& getGyroX(int32_t virtualSlot);
 		float& getGyroY(int32_t virtualSlot);
-		std::shared_ptr<DeviceProfileV0> getProfile(int32_t virtualSlot);
+		std::shared_ptr<DeviceProfile> getProfile(int32_t virtualSlot);
 		bool IsRumbling() { return isRumbling; }
 		std::string GetGuid() { return GUID; }
 		virtual const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) = 0;
@@ -78,7 +82,7 @@ namespace Ship {
 				float gyroY = 0.0f;
 			};
 
-			std::unordered_map<int32_t, std::shared_ptr<DeviceProfileV0>> profiles;
+			std::unordered_map<int32_t, std::shared_ptr<DeviceProfile>> profiles;
 			std::unordered_map<int32_t, std::shared_ptr<Buttons>> ButtonData = {};
 	};
 }
