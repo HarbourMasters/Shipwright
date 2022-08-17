@@ -513,7 +513,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
     target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
 				"_DEBUG"
