@@ -4777,9 +4777,9 @@ CustomMessageMinimal NaviMessages[NaviMsgCount] = {
       "%cSelbst ein Erwachsener kann ohne&etwas %wzusätzliche Kraft %ckeine&großen Blöcke verschieben!",
       "%cMême un adulte ne peut pas pousser&de grands blocs sans un petit %wgain&de force%c!" },
 
-    { "%cI've heard that %rFlare Dancer&%cis weak to the Master Sword!&Have you tried it?", 
-      "%cIch habe gehört dass der&%rFlammenderwisch %ceine Schwäche für&das Masterschwert aufweist. Hast du&es schonmal versucht einzusetzen?",
-      "%cJ'ai entendu dire que les %rDanse-&Flammes %csont faîble face à l'%wÉpée de&Légende%c! Est-ce que tu as essayé?" },
+    { "%cI've heard that %rFlare Dancer&%cis weak to the %wMaster Sword%c!&Have you tried it?", 
+      "%cIch habe gehört dass der&%rFlammenderwisch %ceine Schwäche für&das %wMasterschwert %caufweist. Hast du&es schonmal versucht einzusetzen?",
+      "%cJ'ai entendu dire que les %rDanse-&Flammes %csont faîbles face à l'%wÉpée de&Légende%c! Est-ce que tu as essayé?" },
 
     { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!", 
       "%cFehlt dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuch&Sie mit einem %wKrug %cabzuwerfen!",
