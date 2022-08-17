@@ -406,14 +406,6 @@ namespace Ship {
             x *= scale;
             y *= scale;
         }
-
-        if (isRightStick) {
-            getRightStickX(virtualSlot) = x * profile->AxisSensitivities[2];
-            getRightStickY(virtualSlot) = y * profile->AxisSensitivities[3];
-        } else {
-            getLeftStickX(virtualSlot) = x * profile->AxisSensitivities[0];
-            getLeftStickY(virtualSlot) = y * profile->AxisSensitivities[1];
-        }
     }
 
     void WiiUController::CreateDefaultBinding(int32_t virtualSlot) {
@@ -484,8 +476,8 @@ namespace Ship {
         }
 
         for (int i = 0; i < 4; i++) {
-            profile->AxisSensitivities[i] = 1.0f;
             profile->AxisDeadzones[i] = 0.0f;
+            profile->AxisMinimumPress[i] = 7680.0f;
         }
     }
 

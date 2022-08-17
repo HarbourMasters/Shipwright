@@ -138,8 +138,6 @@ set(Source_Files__Globals
     "LUSMacros.h"
     "Window.cpp"
     "Window.h"
-    "WindowShim.cpp"
-    "WindowShim.h"
 )
 source_group("Source Files\\Globals" FILES ${Source_Files__Globals})
 
@@ -492,7 +490,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"ENABLE_DX11;"
 			"ENABLE_OPENGL;"
-			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -511,7 +508,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"ENABLE_OPENGL;"
 			"ENABLE_DX11;"
-			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -583,8 +579,10 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
 elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     find_package(SDL2)
 else()
-    set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/)
-    set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL/)
+    find_package(SDL2)
+    find_package(GLEW)
+    set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -692,13 +690,13 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_link_libraries(${PROJECT_NAME}
-            "glew32s;"
+            "GLEW::GLEW;"
             "opengl32;"
             "storm;"
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_libraries(${PROJECT_NAME}
-            "glew32s;"
+            "GLEW::GLEW;"
             "opengl32;"
             "storm;"
         )
@@ -750,20 +748,4 @@ else()
         ${X11_LIBRARIES}
         storm
     )
-endif()
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-        add_library(glew32s STATIC IMPORTED )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib  )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib)
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-        add_library(glew32s STATIC IMPORTED )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib  )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib)
-    endif()
 endif()

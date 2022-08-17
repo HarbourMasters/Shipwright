@@ -157,6 +157,11 @@ set(Header_Files__soh__Enhancements
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
+set(Header_Files__soh__Enhancements__controls
+    "soh/Enhancements/controls/GameControlEditor.h"
+)
+source_group("Header Files\\soh\\Enhancements\\controls" FILES ${Header_Files__soh__Enhancements__controls})
+
 set(Header_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 )
@@ -248,6 +253,11 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/savestates.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
+
+set(Source_Files__soh__Enhancements__controls
+    "soh/Enhancements/controls/GameControlEditor.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\controls" FILES ${Source_Files__soh__Enhancements__controls})
 
 set(Source_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.cpp"
@@ -1543,6 +1553,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${Header_Files__soh__Enhancements}
+    ${Header_Files__soh__Enhancements__controls}
     ${Header_Files__soh__Enhancements__cosmetics}
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
@@ -1550,6 +1561,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
+    ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__soh__Enhancements__randomizer}
@@ -1635,12 +1647,8 @@ endif()
 ################################################################################
 # Compile definitions
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    find_package(SDL2)
-    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
-else()
-    set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/)
-endif()
+find_package(SDL2)
+set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -1670,7 +1678,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			">"
 			"INCLUDE_GAME_PRINTF;"
 			"_CONSOLE;"
-			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1687,7 +1694,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"INCLUDE_GAME_PRINTF;"
 				"NDEBUG;"
-				"%(PreprocessorDefinitions)GLEW_STATIC"
 			">"
 			"WIN32;"
 			"_CONSOLE;"
@@ -1906,9 +1912,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"libultraship;"
 			"ZAPDUtils;"
 			"glu32;"
-			"SDL2;"
-			"SDL2main;"
-			"glfw3dll;"
+			"SDL2::SDL2;"
+			"SDL2::SDL2main;"
+			"glfw;"
 			"winmm;"
 			"imm32;"
 			"version;"
@@ -1919,9 +1925,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"libultraship;"
 			"ZAPDUtils;"
 			"glu32;"
-			"SDL2;"
-			"SDL2main;"
-			"glfw3dll;"
+			"SDL2::SDL2;"
+			"SDL2::SDL2main;"
+			"glfw;"
 			"winmm;"
 			"imm32;"
 			"version;"
@@ -1962,46 +1968,6 @@ else()
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
-endif()
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-        add_library( SDL2 STATIC IMPORTED )
-        set_property(TARGET SDL2 PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2.lib  )
-        set_property(TARGET SDL2 PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2.lib)
-
-        add_library( SDL2main STATIC IMPORTED )
-        set_property(TARGET SDL2main PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2main.lib  )
-        set_property(TARGET SDL2main PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2main.lib)
-
-        add_library(glfw3dll  STATIC IMPORTED )
-        set_property(TARGET glfw3dll PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib  )
-        set_property(TARGET glfw3dll PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
-
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-	    add_library( SDL2 STATIC IMPORTED )
-	    set_property(TARGET SDL2 PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib  )
-	    set_property(TARGET SDL2 PROPERTY
-            IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib)
-
-	    add_library( SDL2main STATIC IMPORTED )
-	    set_property(TARGET SDL2main PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib  )
-	    set_property(TARGET SDL2main PROPERTY
-            IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib)
-
-	    add_library(glfw3dll  STATIC IMPORTED )
-	    set_property(TARGET glfw3dll PROPERTY
-			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib  )
-	    set_property(TARGET glfw3dll PROPERTY
-            IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
-
-    endif()
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")

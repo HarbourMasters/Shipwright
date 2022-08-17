@@ -27,12 +27,12 @@
 #include <Foundation/Foundation.hpp>
 #include <Metal/Metal.hpp>
 #include <QuartzCore/QuartzCore.hpp>
+#include <SDL_render.h>
 
 #include "gfx_metal_bridge.hpp"
 #include "gfx_metal_shader.hpp"
 
 #include "Lib/ImGui/backends/imgui_impl_metal.h"
-#include "Lib/SDL/SDL2/SDL_render.h"
 
 #include "PR/ultra64/gbi.h"
 #include "PR/ultra64/abi.h"
