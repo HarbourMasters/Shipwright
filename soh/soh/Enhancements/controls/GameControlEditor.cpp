@@ -91,7 +91,6 @@ namespace GameControlEditor {
 
     void Init() {
         SohImGui::AddWindow("Enhancements", "Game Control Editor", DrawUI);
-        BtnReading = -1;
 
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
