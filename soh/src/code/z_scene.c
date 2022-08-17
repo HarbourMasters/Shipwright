@@ -168,11 +168,11 @@ s32 Scene_ExecuteCommands(GlobalContext* globalCtx, SceneCmd* sceneCmd) {
         osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1,
                      sceneCmd->base.data2);
 
-        if (cmdCode == 0x14) {
+        if (cmdCode == SCENE_CMD_ID_END) {
             break;
         }
 
-        if (cmdCode <= 0x19) {
+        if (cmdCode < ARRAY_COUNT(gSceneCmdHandlers)) {
             gSceneCmdHandlers[cmdCode](globalCtx, sceneCmd);
         } else {
             osSyncPrintf(VT_FGCOL(RED));
@@ -184,7 +184,7 @@ s32 Scene_ExecuteCommands(GlobalContext* globalCtx, SceneCmd* sceneCmd) {
     return 0;
 }
 
-void func_80098508(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandSpawnList(GlobalContext* globalCtx, SceneCmd* cmd) {
     ActorEntry* linkEntry = globalCtx->linkActorEntry = (ActorEntry*)SEGMENTED_TO_VIRTUAL(cmd->spawnList.segment) +
                                                         globalCtx->setupEntranceList[globalCtx->curSpawn].spawn;
     s16 linkObjectId;
@@ -197,19 +197,16 @@ void func_80098508(GlobalContext* globalCtx, SceneCmd* cmd) {
     Object_Spawn(&globalCtx->objectCtx, linkObjectId);
 }
 
-// Scene Command 0x01: Actor List
-void func_800985DC(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandActorList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->numSetupActors = cmd->actorList.num;
     globalCtx->setupActorList = SEGMENTED_TO_VIRTUAL(cmd->actorList.segment);
 }
 
-// Scene Command 0x02: Unused 02
-void func_80098630(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandUnused2(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->unk_11DFC = SEGMENTED_TO_VIRTUAL(cmd->unused02.segment);
 }
 
-// Scene Command 0x03: Collision Header
-void func_80098674(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandCollisionHeader(GlobalContext* globalCtx, SceneCmd* cmd) {
     CollisionHeader* colHeader = SEGMENTED_TO_VIRTUAL(cmd->colHeader.segment);
 
     colHeader->vtxList = SEGMENTED_TO_VIRTUAL(colHeader->vtxList);
@@ -221,19 +218,16 @@ void func_80098674(GlobalContext* globalCtx, SceneCmd* cmd) {
     BgCheck_Allocate(&globalCtx->colCtx, globalCtx, colHeader);
 }
 
-// Scene Command 0x04: Room List
-void func_800987A4(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandRoomList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->numRooms = cmd->roomList.num;
     globalCtx->roomList = SEGMENTED_TO_VIRTUAL(cmd->roomList.segment);
 }
 
-// Scene Command 0x06: Entrance List
-void func_800987F8(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandEntranceList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->setupEntranceList = SEGMENTED_TO_VIRTUAL(cmd->entranceList.segment);
 }
 
-// Scene Command 0x07: Special Files
-void func_8009883C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandSpecialFiles(GlobalContext* globalCtx, SceneCmd* cmd) {
     if (cmd->specialFiles.keepObjectId != OBJECT_INVALID) {
         globalCtx->objectCtx.subKeepIndex = Object_Spawn(&globalCtx->objectCtx, cmd->specialFiles.keepObjectId);
         gSegments[5] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.subKeepIndex].segment);
@@ -244,21 +238,18 @@ void func_8009883C(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-// Scene Command 0x08: Room Behavior
-void func_80098904(GlobalContext* globalCtx, SceneCmd* cmd) {
-    globalCtx->roomCtx.curRoom.unk_03 = cmd->roomBehavior.gpFlag1;
-    globalCtx->roomCtx.curRoom.unk_02 = cmd->roomBehavior.gpFlag2 & 0xFF;
-    globalCtx->roomCtx.curRoom.showInvisActors = (cmd->roomBehavior.gpFlag2 >> 8) & 1;
+void Scene_CommandRoomBehavior(GlobalContext* globalCtx, SceneCmd* cmd) {
+    globalCtx->roomCtx.curRoom.behaviorType1 = cmd->roomBehavior.gpFlag1;
+    globalCtx->roomCtx.curRoom.behaviorType2 = cmd->roomBehavior.gpFlag2 & 0xFF;
+    globalCtx->roomCtx.curRoom.lensMode = (cmd->roomBehavior.gpFlag2 >> 8) & 1;
     globalCtx->msgCtx.disableWarpSongs = (cmd->roomBehavior.gpFlag2 >> 0xA) & 1;
 }
 
-// Scene Command 0x0A: Mesh Header
-void func_80098958(GlobalContext* globalCtx, SceneCmd* cmd) {
-    globalCtx->roomCtx.curRoom.mesh = SEGMENTED_TO_VIRTUAL(cmd->mesh.segment);
+void Scene_CommandMeshHeader(GlobalContext* globalCtx, SceneCmd* cmd) {
+    globalCtx->roomCtx.curRoom.meshHeader = SEGMENTED_TO_VIRTUAL(cmd->mesh.segment);
 }
 
-// Scene Command 0x0B: Object List
-void func_8009899C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandObjectList(GlobalContext* globalCtx, SceneCmd* cmd) {
     s32 i;
     s32 j;
     s32 k;
@@ -307,8 +298,7 @@ void func_8009899C(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->objectCtx.num = i;
 }
 
-// Scene Command 0x0C: Light List
-void func_80098B74(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandLightList(GlobalContext* globalCtx, SceneCmd* cmd) {
     s32 i;
     LightInfo* lightInfo = SEGMENTED_TO_VIRTUAL(cmd->lightList.segment);
 
@@ -318,13 +308,11 @@ void func_80098B74(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-// Scene Command 0x0D: Path List
-void func_80098C24(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandPathList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->setupPathList = SEGMENTED_TO_VIRTUAL(cmd->pathList.segment);
 }
 
-// Scene Command 0x0E: Transition Actor List
-void func_80098C68(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandTransitionActorList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->transiActorCtx.numActors = cmd->transiActorList.num;
     globalCtx->transiActorCtx.list = SEGMENTED_TO_VIRTUAL(cmd->transiActorList.segment);
 }
@@ -333,27 +321,23 @@ void TransitionActor_InitContext(GameState* state, TransitionActorContext* trans
     transiActorCtx->numActors = 0;
 }
 
-// Scene Command 0x0F: Light Setting List
-void func_80098CC8(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandLightSettingsList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->envCtx.numLightSettings = cmd->lightSettingList.num;
     globalCtx->envCtx.lightSettingsList = SEGMENTED_TO_VIRTUAL(cmd->lightSettingList.segment);
 }
 
-// Scene Command 0x11: Skybox Settings
-void func_80098D1C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandSkyboxSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->skyboxId = cmd->skyboxSettings.skyboxId;
     globalCtx->envCtx.unk_17 = globalCtx->envCtx.unk_18 = cmd->skyboxSettings.unk_05;
     globalCtx->envCtx.indoors = cmd->skyboxSettings.unk_06;
 }
 
-// Scene Command 0x12: Skybox Disables
-void func_80098D5C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandSkyboxDisables(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->envCtx.skyboxDisabled = cmd->skyboxDisables.unk_04;
     globalCtx->envCtx.sunMoonDisabled = cmd->skyboxDisables.unk_05;
 }
 
-// Scene Command 0x10: Time Settings
-void func_80098D80(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandTimeSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     if ((cmd->timeSettings.hour != 0xFF) && (cmd->timeSettings.min != 0xFF)) {
         gSaveContext.skyboxTime = gSaveContext.dayTime =
             ((cmd->timeSettings.hour + (cmd->timeSettings.min / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
@@ -388,8 +372,7 @@ void func_80098D80(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-// Scene Command 0x05: Wind Settings
-void func_80099090(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandWindSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     s8 x = cmd->windSettings.x;
     s8 y = cmd->windSettings.y;
     s8 z = cmd->windSettings.z;
@@ -401,17 +384,14 @@ void func_80099090(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->envCtx.windSpeed = cmd->windSettings.unk_07;
 }
 
-// Scene Command 0x13: Exit List
-void func_800990F0(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandExitList(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->setupExitList = SEGMENTED_TO_VIRTUAL(cmd->exitList.segment);
 }
 
-// Scene Command 0x09: Undefined
-void func_80099134(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandUndefined9(GlobalContext* globalCtx, SceneCmd* cmd) {
 }
 
-// Scene Command 0x15: Sound Settings
-void func_80099140(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandSoundSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->sequenceCtx.seqId = cmd->soundSettings.seqId;
     globalCtx->sequenceCtx.natureAmbienceId = cmd->soundSettings.natureAmbienceId;
 
@@ -420,13 +400,11 @@ void func_80099140(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-// Scene Command 0x16: Echo Setting
-void func_8009918C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandEchoSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     globalCtx->roomCtx.curRoom.echo = cmd->echoSettings.echo;
 }
 
-// Scene Command 0x18: Alternate Headers
-void func_800991A0(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, SceneCmd* cmd) {
     s32 pad;
     SceneCmd* altHeader;
 
@@ -439,7 +417,7 @@ void func_800991A0(GlobalContext* globalCtx, SceneCmd* cmd) {
 
         if (altHeader != NULL) {
             Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));
-            (cmd + 1)->base.code = 0x14;
+            (cmd + 1)->base.code = SCENE_CMD_ID_END;
         } else {
             // "Coughh! There is no specified dataaaaa!"
             osSyncPrintf("\nげぼはっ！ 指定されたデータがないでええっす！");
@@ -453,21 +431,20 @@ void func_800991A0(GlobalContext* globalCtx, SceneCmd* cmd) {
 
                 if (altHeader != NULL) {
                     Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));
-                    (cmd + 1)->base.code = 0x14;
+                    (cmd + 1)->base.code = SCENE_CMD_ID_END;
                 }
             }
         }
     }
 }
 
-// Scene Command 0x17: Cutscene Data
-void func_8009934C(GlobalContext* globalCtx, SceneCmd* cmd) {
+void Scene_CommandCutsceneData(GlobalContext* globalCtx, SceneCmd* cmd) {
     osSyncPrintf("\ngame_play->demo_play.data=[%x]", globalCtx->csCtx.segment);
     globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(cmd->cutsceneData.segment);
 }
 
-// Scene Command 0x19: Misc. Settings (Camera & World Map Area)
-void func_800993C0(GlobalContext* globalCtx, SceneCmd* cmd) {
+// Camera & World Map Area
+void Scene_CommandMiscSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     YREG(15) = cmd->miscSettings.cameraMovement;
     gSaveContext.worldMapArea = cmd->miscSettings.area;
 
@@ -487,11 +464,33 @@ void func_800993C0(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-void (*gSceneCmdHandlers[])(GlobalContext*, SceneCmd*) = {
-    func_80098508, func_800985DC, func_80098630, func_80098674, func_800987A4, func_80099090, func_800987F8,
-    func_8009883C, func_80098904, func_80099134, func_80098958, func_8009899C, func_80098B74, func_80098C24,
-    func_80098C68, func_80098CC8, func_80098D80, func_80098D1C, func_80098D5C, func_800990F0, NULL,
-    func_80099140, func_8009918C, func_8009934C, func_800991A0, func_800993C0,
+void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(GlobalContext*, SceneCmd*) = {
+    Scene_CommandSpawnList,           // SCENE_CMD_ID_SPAWN_LIST
+    Scene_CommandActorList,           // SCENE_CMD_ID_ACTOR_LIST
+    Scene_CommandUnused2,             // SCENE_CMD_ID_UNUSED_2
+    Scene_CommandCollisionHeader,     // SCENE_CMD_ID_COLLISION_HEADER
+    Scene_CommandRoomList,            // SCENE_CMD_ID_ROOM_LIST
+    Scene_CommandWindSettings,        // SCENE_CMD_ID_WIND_SETTINGS
+    Scene_CommandEntranceList,        // SCENE_CMD_ID_ENTRANCE_LIST
+    Scene_CommandSpecialFiles,        // SCENE_CMD_ID_SPECIAL_FILES
+    Scene_CommandRoomBehavior,        // SCENE_CMD_ID_ROOM_BEHAVIOR
+    Scene_CommandUndefined9,          // SCENE_CMD_ID_UNDEFINED_9
+    Scene_CommandMeshHeader,          // SCENE_CMD_ID_MESH_HEADER
+    Scene_CommandObjectList,          // SCENE_CMD_ID_OBJECT_LIST
+    Scene_CommandLightList,           // SCENE_CMD_ID_LIGHT_LIST
+    Scene_CommandPathList,            // SCENE_CMD_ID_PATH_LIST
+    Scene_CommandTransitionActorList, // SCENE_CMD_ID_TRANSITION_ACTOR_LIST
+    Scene_CommandLightSettingsList,   // SCENE_CMD_ID_LIGHT_SETTINGS_LIST
+    Scene_CommandTimeSettings,        // SCENE_CMD_ID_TIME_SETTINGS
+    Scene_CommandSkyboxSettings,      // SCENE_CMD_ID_SKYBOX_SETTINGS
+    Scene_CommandSkyboxDisables,      // SCENE_CMD_ID_SKYBOX_DISABLES
+    Scene_CommandExitList,            // SCENE_CMD_ID_EXIT_LIST
+    NULL,                             // SCENE_CMD_ID_END
+    Scene_CommandSoundSettings,       // SCENE_CMD_ID_SOUND_SETTINGS
+    Scene_CommandEchoSettings,        // SCENE_CMD_ID_ECHO_SETTINGS
+    Scene_CommandCutsceneData,        // SCENE_CMD_ID_CUTSCENE_DATA
+    Scene_CommandAlternateHeaderList, // SCENE_CMD_ID_ALTERNATE_HEADER_LIST
+    Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
 RomFile sNaviMsgFiles[] = {

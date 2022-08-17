@@ -114,7 +114,7 @@ void BgYdanSp_Init(Actor* thisx, GlobalContext* globalCtx) {
         tri[1].x = tri[0].x;
         tri[1].z = tri[2].z;
         Collider_SetTrisVertices(&this->trisCollider, 1, &tri[0], &tri[2], &tri[1]);
-        this->unk16C = 0.0f;
+        this->unk_16C = 0.0f;
     } else {
         CollisionHeader_GetVirtual(&gDTWebWallCol, &colHeader);
         this->actionFunc = BgYdanSp_WallWebIdle;
@@ -251,7 +251,7 @@ void BgYdanSp_FloorWebBreaking(BgYdanSp* this, GlobalContext* globalCtx) {
         this->timer--;
     }
 
-    this->dyna.actor.world.pos.y = (sinf((f32)this->timer * (M_PI / 20)) * this->unk16C) + this->dyna.actor.home.pos.y;
+    this->dyna.actor.world.pos.y = (sinf((f32)this->timer * (M_PI / 20)) * this->unk_16C) + this->dyna.actor.home.pos.y;
     if (this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 190.0f) {
         func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
         this->timer = 40;
@@ -295,7 +295,7 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
         sqrtFallDistance = sqrtf(CLAMP_MIN(player->fallDistance, 0.0f));
         if (player->fallDistance > 750.0f) {
             if (this->dyna.actor.xzDistToPlayer < 80.0f) {
-                this->unk16C = 200.0f;
+                this->unk_16C = 200.0f;
                 this->dyna.actor.room = -1;
                 this->dyna.actor.flags |= ACTOR_FLAG_4;
                 this->timer = 40;
@@ -305,20 +305,20 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
             }
         }
         unk = sqrtFallDistance + sqrtFallDistance;
-        if (this->unk16C < unk) {
+        if (this->unk_16C < unk) {
             if (unk > 2.0f) {
-                this->unk16C = unk;
+                this->unk_16C = unk;
                 this->timer = 14;
             }
         }
         if (player->actor.speedXZ != 0.0f) {
-            if (this->unk16C < 0.1f) {
+            if (this->unk_16C < 0.1f) {
                 this->timer = 14;
             }
-            if (this->unk16C < 2.0f) {
-                this->unk16C = 2.0f;
+            if (this->unk_16C < 2.0f) {
+                this->unk_16C = 2.0f;
             } else {
-                this->unk16C = this->unk16C;
+                this->unk_16C = this->unk_16C;
             }
         }
     }
@@ -328,10 +328,10 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
     if (this->timer == 0) {
         this->timer = 14;
     }
-    this->dyna.actor.world.pos.y = sinf((f32)this->timer * (M_PI / 7)) * this->unk16C + this->dyna.actor.home.pos.y;
-    Math_ApproachZeroF(&this->unk16C, 1.0f, 0.8f);
+    this->dyna.actor.world.pos.y = sinf((f32)this->timer * (M_PI / 7)) * this->unk_16C + this->dyna.actor.home.pos.y;
+    Math_ApproachZeroF(&this->unk_16C, 1.0f, 0.8f);
     if (this->timer == 13) {
-        if (this->unk16C > 3.0f) {
+        if (this->unk_16C > 3.0f) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WEB_VIBRATION);
         } else {
             Audio_StopSfxById(NA_SE_EV_WEB_VIBRATION);
