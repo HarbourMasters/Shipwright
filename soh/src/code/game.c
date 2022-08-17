@@ -26,6 +26,16 @@ void GameState_FaultPrint(void) {
     }
 }
 
+void warpLogic(char* warpName, int warpAddress) {
+    if (gGlobalCtx) {
+        CVar_SetS32(warpName, 0);
+        gGlobalCtx->nextEntranceIndex = warpAddress;
+        gGlobalCtx->sceneLoadFlag = 0x14;
+        gGlobalCtx->fadeTransition = 11;
+        gSaveContext.nextTransition = 11;
+    }
+}
+
 void GameState_SetFBFilter(Gfx** gfx) {
     Gfx* gfxP;
     gfxP = *gfx;
@@ -425,6 +435,16 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.dayTime = prevTime;
     } else {
         CVar_SetS32("gPrevTime", -1);
+    }
+    
+    if (gGlobalCtx) {
+        // Warp Logic
+        if (CVar_GetS32("gKokiriWarp", 0) != 0) {
+            warpLogic("gKokiriWarp", 0x020D);
+        }
+        if (CVar_GetS32("gLostWoodsWarp", 0) != 0) {
+            warpLogic("gLostWoodsWarp", 0x011E);
+        }
     }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
