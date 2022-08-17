@@ -1,4 +1,6 @@
 #include "GameControlEditor.h"
+#include "Controller.h"
+#include "Window.h"
 
 #include <string>
 #include <list>
@@ -89,6 +91,7 @@ namespace GameControlEditor {
 
     void Init() {
         SohImGui::AddWindow("Enhancements", "Game Control Editor", DrawUI);
+        BtnReading = -1;
 
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
@@ -216,6 +219,83 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
+    // Copied from InputEditor::DrawButton
+    // CurrentPort is indexed started at 1 here due to the Generic tab
+    void DrawButton(const char* label, int n64Btn) {
+        auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
+        float size = 40;
+        bool readingMode = BtnReading == n64Btn;
+        bool disabled = (BtnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
+        ImVec2 len = ImGui::CalcTextSize(label);
+        ImVec2 pos = ImGui::GetCursorPos();
+        ImGui::SetCursorPosY(pos.y + len.y / 4);
+        ImGui::SetCursorPosX(pos.x + abs(len.x - size));
+        ImGui::Text("%s", label);
+        ImGui::SameLine();
+        ImGui::SetCursorPosY(pos.y);
+
+        if (disabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
+
+        if (readingMode) {
+            const int32_t btn = backend->ReadRawPress();
+
+            if (btn != -1) {
+                backend->SetButtonMapping(CurrentPort - 1, n64Btn, btn);
+                BtnReading = -1;
+
+                // avoid immediately triggering another button during gamepad nav
+                ImGui::SetKeyboardFocusHere(0);
+            }
+        }
+
+        const std::string BtnName = backend->GetButtonName(CurrentPort - 1, n64Btn);
+
+        if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName.c_str(), n64Btn).c_str())) {
+            BtnReading = n64Btn;
+            backend->ClearRawPress();
+        }
+
+        if (disabled) {
+            ImGui::PopItemFlag();
+            ImGui::PopStyleVar();
+        }
+    }
+
+    // Controller dropdown copied from InputEditor::DrawControllerSchema
+    void DrawCustomButtons() {
+        auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
+        auto profile = backend->getProfile(CurrentPort - 1);
+        bool IsKeyboard = backend->GetGuid() == "Keyboard" || backend->GetGuid() == "Auto" || !backend->Connected();
+        std::string ControllerName = backend->GetControllerName();
+
+        if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
+            for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
+                std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
+                if (DeviceName != "Keyboard" && DeviceName != "Auto") {
+                    DeviceName += "##" + std::to_string(i);
+                }
+                if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort - 1))) {
+                    controlDeck->SetPhysicalDevice(CurrentPort - 1, i);
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Refresh")) {
+            controlDeck->ScanPhysicalDevices();
+        }
+
+        DrawButton("Modifier 1", BTN_MODIFIER1);
+        DrawButton("Modifier 2", BTN_MODIFIER2);
+    }
+
     void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
@@ -224,7 +304,26 @@ namespace GameControlEditor {
 
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &open)) {
-            DrawOcarinaControlPanel();
+            ImGui::BeginTabBar("##CustomControllers");
+            if (ImGui::BeginTabItem("Generic")) {
+                CurrentPort = 0;
+                ImGui::EndTabItem();
+            }
+
+            for (int i = 1; i <= 4; i++) {
+                if (ImGui::BeginTabItem(StringHelper::Sprintf("Port %d", i).c_str())) {
+                    CurrentPort = i;
+                    ImGui::EndTabItem();
+                }
+            }
+
+            ImGui::EndTabBar();
+
+            if (CurrentPort == 0) {
+                DrawOcarinaControlPanel();
+            } else {
+                DrawCustomButtons();
+            }
         }
         ImGui::End();
     }
