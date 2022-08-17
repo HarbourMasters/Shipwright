@@ -192,7 +192,7 @@ s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, GlobalContext* globalCtx) {
             this->songEndTimer = 110;
         } else {
             this->songEndTimer--;
-            if (this->songEndTimer == 0) || (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_TIME) &&
+            if ((this->songEndTimer == 0) || (CVar_GetS32("gQuickOcarina", 0) != 0 && CHECK_QUEST_ITEM(QUEST_SONG_TIME) &&
                 globalCtx->msgCtx.ocarinaAction == 1)) {
                 return true;
             }
