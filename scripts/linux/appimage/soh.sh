@@ -6,7 +6,7 @@ export LD_LIBRARY_PATH="$HERE"/usr/lib:"$LD_LIBRARY_PATH"
 export ZENITY=$(command -v zenity)
 
 if [ -z ${SHIP_HOME+x} ]; then
-export SHIP_HOME=.
+export SHIP_HOME=$PWD
 fi
 
 while [[ ! -e "$SHIP_HOME"/oot.otr ]]; do
