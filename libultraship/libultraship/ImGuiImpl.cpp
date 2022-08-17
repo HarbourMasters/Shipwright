@@ -128,12 +128,14 @@ namespace SohImGui {
     std::pair<const char*, const char*> backends[] = {
 #ifdef _WIN32
         { "dx11", "DirectX" },
-#elif defined(__APPLE__) && defined(ENABLE_METAL)
-        { "sdl", "Metal" }
-#elif !defined(__WIIU__)
-        { "sdl", "OpenGL" }
+#endif
+#if defined(__APPLE__) && defined(ENABLE_METAL)
+        { "sdl", "Metal" },
+#endif
+#ifndef __WIIU__
+        { "sdl", "OpenGL" },
 #else
-        { "wiiu", "GX2" }
+        { "wiiu", "GX2" },
 #endif
     };
 
