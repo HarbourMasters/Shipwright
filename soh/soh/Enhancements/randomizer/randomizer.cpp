@@ -4745,7 +4745,7 @@ CustomMessageMinimal NaviMessages[NaviMsgCount] = {
       "%cHängst du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
       "%cSi tu es coincé sur cette seed,&tu peux toujours jeter l'éponge&et regader le %wSpoiler log%c..." },
 
-    { "%cDid you know that the %yHover&Boots %ccan be used to cross&%wquicksand?", 
+    { "%cDid you know that the %yHover&Boots %ccan be used to cross&%wquicksand%c?", 
       "%cWusstest du, dass du mit den&%yGleitstiefeln %cTreibsand %wüberqueren&kannst%c?",
       "%cEst-ce que tu savais que les %rBottes&des airs %cpouvaient être utilisées&pour traverser les %wsables mouvants%c?" },
 
