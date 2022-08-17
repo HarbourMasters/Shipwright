@@ -28,7 +28,6 @@ namespace Ship {
 		float RumbleStrength = 1.0f;
 		std::unordered_map<int32_t, float> AxisDeadzones;
 		std::unordered_map<int32_t, float> AxisMinimumPress;
-		std::unordered_map<int32_t, float> AxisSensitivities;
 		std::unordered_map<int32_t, float> GyroData;
 		std::map<int32_t, int32_t> Mappings;
 	};

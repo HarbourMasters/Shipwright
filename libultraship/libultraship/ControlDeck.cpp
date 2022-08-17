@@ -132,7 +132,6 @@ namespace Ship {
 
                 profile->Mappings.clear();
                 profile->AxisDeadzones.clear();
-                profile->AxisSensitivities.clear();
                 profile->GyroData.clear();
                 profile->Version = Config->getInt(NESTED("Version", ""));
                 profile->UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
@@ -141,10 +140,6 @@ namespace Ship {
 
                 for (auto const& val : rawProfile["AxisDeadzones"].items()) {
                     profile->AxisDeadzones[std::stoi(val.key())] = val.value();
-                }
-
-                for (auto const& val : rawProfile["AxisSensitivities"].items()) {
-                    profile->AxisSensitivities[std::stoi(val.key())] = val.value();
                 }
 
                 for (auto const& val : rawProfile["AxisMinimumPress"].items()) {
@@ -192,10 +187,6 @@ namespace Ship {
 
                 for (auto const& [key, val] : profile->AxisDeadzones) {
                     Config->setFloat(NESTED("AxisDeadzones.%d", key), val);
-                }
-
-                for (auto const& [key, val] : profile->AxisSensitivities) {
-                    Config->setFloat(NESTED("AxisSensitivities.%d", key), val);
                 }
 
                 for (auto const& [key, val] : profile->AxisMinimumPress) {

@@ -89,9 +89,6 @@ namespace Ship {
             ay *= scale;
         }
 
-        ax *= profile->AxisSensitivities[axisX];
-        ay *= profile->AxisSensitivities[axisY];
-
         if (axisX == SDL_CONTROLLER_AXIS_LEFTX) {
             getLeftStickX(virtualSlot) = +ax;
             getLeftStickY(virtualSlot) = -ay;
@@ -292,6 +289,7 @@ namespace Ship {
                     LStickAxisY = Axis;
                 }
 
+                // Right Stick
                 if (PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT) {
                     if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisX != Axis) {
                         SPDLOG_TRACE("Invalid PosStickX configured. Neg was {} and Pos is {}", RStickAxisX, Axis);
@@ -440,7 +438,6 @@ namespace Ship {
         profile->Mappings[SDL_CONTROLLER_BUTTON_A] = BTN_A;
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
-            profile->AxisSensitivities[i] = 1.0f;
             profile->AxisDeadzones[i] = 16.0f;
             profile->AxisMinimumPress[i] = 7680.0f;
         }

@@ -189,7 +189,7 @@ namespace Ship {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 				// 2 is the SDL value for right stick X axis
 				// 3 is the SDL value for right stick Y axis.
-				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort) / profile->AxisSensitivities[2], Backend->getRightStickY(CurrentPort) / profile->AxisSensitivities[2]));
+				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort), Backend->getRightStickY(CurrentPort)));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -210,19 +210,6 @@ namespace Ship {
 					// SDL_CONTROLLER_AXIS_RIGHTY: 3
 					ImGui::InputFloat("##MDZone", &profile->AxisDeadzones[2], 1.0f, 0.0f, "%.0f");
 					profile->AxisDeadzones[3] = profile->AxisDeadzones[2];
-					ImGui::PopItemWidth();
-					ImGui::Text("Sensitivity");
-			#ifdef __WIIU__
-					ImGui::PushItemWidth(80 * 2);
-			#else
-					ImGui::PushItemWidth(80);
-			#endif
-					// The window has sensitivity per stick, so we need to
-					// set the sensitivity for both right stick axes here
-					// SDL_CONTROLLER_AXIS_RIGHTX: 2
-					// SDL_CONTROLLER_AXIS_RIGHTY: 3
-					ImGui::InputFloat("##MSensitivity", &profile->AxisSensitivities[2], 1.0f, 0.0f, "%.0f");
-					profile->AxisSensitivities[3] = profile->AxisSensitivities[2];
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
