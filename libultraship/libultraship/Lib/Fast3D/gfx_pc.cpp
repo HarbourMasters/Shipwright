@@ -2134,7 +2134,7 @@ static void gfx_run_dl(Gfx* cmd) {
 
         switch (opcode) {
             // RSP commands:
-		case G_LOAD_UCODE:
+        case G_LOAD_UCODE:
             rsp.fog_mul = 0;
             rsp.fog_offset = 0;
             break;
