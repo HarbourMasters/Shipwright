@@ -4645,7 +4645,7 @@ void CreateRupeeMessages() {
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
                 "You found" + rupeeText + " !",
                 "Du fandest" + rupeeText + " !",
-                "Tu as trouvé" + rupeeText + " !"
+                "Vous obtenez" + rupeeText + " !"
         });
     }
 }
