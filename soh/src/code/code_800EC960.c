@@ -3895,46 +3895,47 @@ void Audio_ResetSfxChannelState(void) {
 void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
     s32 temp1;
     s16 getItemId = getItem.getItemId;
+    s16 itemId = getItem.itemId;
 
     if (getItem.modIndex == MOD_NONE) {
-        if (((getItemId >= GI_RUPEE_GREEN) && (getItemId <= GI_RUPEE_RED)) ||
-            ((getItemId >= GI_RUPEE_PURPLE) && (getItemId <= GI_RUPEE_GOLD)) ||
-            ((getItemId >= GI_RUPEE_GREEN_LOSE) && (getItemId <= GI_RUPEE_PURPLE_LOSE)) || (getItemId == GI_HEART)) {
+        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
             Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
-            if ((getItemId == GI_HEART_CONTAINER_2) || (getItemId == GI_HEART_CONTAINER) ||
-                ((getItemId == GI_HEART_PIECE) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+            if (itemId == ITEM_HEART_CONTAINER ||
+                ((itemId == ITEM_HEART_PIECE_2) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
                 temp1 = NA_BGM_HEART_GET | 0x900;
             } else {
-                temp1 = (getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                temp1 = (itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
             // If we get a skulltula token or the "WINNER" heart, play "get small item"
-            if (getItemId == GI_SKULL_TOKEN || getItemId == GI_HEART_PIECE_WIN) {
+            // Also make sure "WINNER" heart is not the 4th heart piece.
+            if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
+                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
-            }
-            // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
-            if (getItemId == GI_HEART_PIECE_WIN && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
-                temp1 = NA_BGM_HEART_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
             if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
                 // If we get a medallion, play the "get a medallion" fanfare
-                if ((getItemId >= RG_FOREST_MEDALLION) && (getItemId <= RG_LIGHT_MEDALLION)) {
+                if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
                     temp1 = NA_BGM_MEDALLION_GET | 0x900;
                 }
                 // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
-                if ((getItemId >= RG_KOKIRI_EMERALD) && (getItemId <= RG_ZORA_SAPPHIRE)) {
+                if ((itemId >= ITEM_KOKIRI_EMERALD) && (itemId <= ITEM_ZORA_SAPPHIRE)) {
                     temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
                 }
                 // If the item we're getting is a song, play the "learned a song" fanfare
-                if ((getItemId >= RG_ZELDAS_LULLABY) && (getItemId <= RG_PRELUDE_OF_LIGHT)) {
+                if ((itemId >= ITEM_SONG_MINUET) && (itemId <= ITEM_SONG_STORMS)) {
                     temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
                 }
             }
             Audio_PlayFanfare(temp1);
         } 
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
-        if ((getItemId >= RG_BOTTLE_WITH_RED_POTION && getItemId <= RG_BOTTLE_WITH_BIG_POE) || (getItemId >= RG_DEKU_TREE_MAP && getItemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+            (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        } else {
+            // Just in case nothing else matches.
             temp1 = NA_BGM_ITEM_GET | 0x900;
         }
         Audio_PlayFanfare(temp1);
