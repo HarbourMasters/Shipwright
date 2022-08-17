@@ -1641,12 +1641,12 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
-extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+extern "C" u32 Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
     return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
          Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 
-extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" u32 Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 

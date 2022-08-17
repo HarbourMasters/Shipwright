@@ -218,7 +218,7 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-        GetItem_Draw(globalCtx, ABS(randoGetItem.gi) - 1);
+        GetItem_Draw(globalCtx, randoGetItem.gid);
         return;
     }
 
