@@ -2,7 +2,6 @@
 
 #include <unordered_map>
 #include <string>
-#include <list>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
 #include <memory>
@@ -16,7 +15,7 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    std::unordered_map<s32, s32> EntranceIndeces;
+    std::unordered_map<s32, s32> entranceOverrides;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
@@ -66,8 +65,6 @@ class Randomizer {
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
-    std::list<s32> EntranceOverrideIndex;
-    std::list<s32> EntranceOverrideNewIndex;
     GetItemID GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId);
     GetItemID GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);

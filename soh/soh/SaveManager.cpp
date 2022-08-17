@@ -127,9 +127,9 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.itemLocations[i].get);
     });
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.EntranceIndeces); i++) {
-        SaveManager::Instance->LoadData("index" + std::to_string(i), gSaveContext.EntranceIndeces[i].index);
-        SaveManager::Instance->LoadData("overrideindex" + std::to_string(i), gSaveContext.EntranceIndeces[i].overrideindex);
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.entranceOverrides); i++) {
+        SaveManager::Instance->LoadData("index" + std::to_string(i), gSaveContext.entranceOverrides[i].vanillaIndex);
+        SaveManager::Instance->LoadData("overrideindex" + std::to_string(i), gSaveContext.entranceOverrides[i].randomizedIndex);
     }
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
@@ -198,9 +198,9 @@ void SaveManager::SaveRandomizer() {
         SaveManager::Instance->SaveData("", gSaveContext.itemLocations[i].get);
     });
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.EntranceIndeces); i++) {
-        SaveManager::Instance->SaveData("index" + std::to_string(i), gSaveContext.EntranceIndeces[i].index);
-        SaveManager::Instance->SaveData("overrideindex" + std::to_string(i), gSaveContext.EntranceIndeces[i].overrideindex);
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.entranceOverrides); i++) {
+        SaveManager::Instance->SaveData("index" + std::to_string(i), gSaveContext.entranceOverrides[i].vanillaIndex);
+        SaveManager::Instance->SaveData("overrideindex" + std::to_string(i), gSaveContext.entranceOverrides[i].randomizedIndex);
     }
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {

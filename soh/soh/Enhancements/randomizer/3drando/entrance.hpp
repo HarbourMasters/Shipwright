@@ -81,14 +81,6 @@ enum class EntranceType {
 class Entrance {
 public:
 
-    // typedef struct {
-    //     int16_t index;
-    //     int16_t destination;
-    //     int16_t blueWarp;
-    //     int16_t override;
-    //     int16_t overrideDestination;
-    // } EntranceOverridelistspolier;
-
 
     Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
         : connectedRegion(connectedRegion_) {
@@ -329,7 +321,6 @@ int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
 EntranceTrackingData* GetEntranceTrackingData();
 
-Entrance* Entrances(uint32_t EntrKey);
 
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
