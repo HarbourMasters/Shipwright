@@ -2923,15 +2923,13 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
 
             if (actionParam == PLAYER_AP_LENS) {
                 if (func_80087708(globalCtx, 0, 3)) {
-                    if (globalCtx->actorCtx.unk_03 != 0) {
-                        func_800304B0(globalCtx);
+                    if (globalCtx->actorCtx.lensActive) {
+                        Actor_DisableLens(globalCtx);
+                    } else {
+                        globalCtx->actorCtx.lensActive = true;
                     }
-                    else {
-                        globalCtx->actorCtx.unk_03 = 1;
-                    }
-                    func_80078884((globalCtx->actorCtx.unk_03 != 0) ? NA_SE_SY_GLASSMODE_ON : NA_SE_SY_GLASSMODE_OFF);
-                }
-                else {
+                    func_80078884((globalCtx->actorCtx.lensActive) ? NA_SE_SY_GLASSMODE_ON : NA_SE_SY_GLASSMODE_OFF);
+                } else {
                     func_80078884(NA_SE_SY_ERROR);
                 }
                 return;
@@ -4474,7 +4472,7 @@ s32 func_80839800(Player* this, GlobalContext* globalCtx) {
                         .sides[(doorDirection > 0) ? 0 : 1]
                         .effects;
 
-                    func_800304B0(globalCtx);
+                    Actor_DisableLens(globalCtx);
                 }
             }
             else {
@@ -4532,7 +4530,7 @@ s32 func_80839800(Player* this, GlobalContext* globalCtx) {
 
                 if (this->doorType != PLAYER_DOORTYPE_FAKE) {
                     this->stateFlags1 |= PLAYER_STATE1_29;
-                    func_800304B0(globalCtx);
+                    Actor_DisableLens(globalCtx);
 
                     if (((doorActor->params >> 7) & 7) == 3) {
                         sp4C.x = doorActor->world.pos.x - (sp6C * sp74);
@@ -5369,8 +5367,8 @@ void func_8083BCD0(Player* this, GlobalContext* globalCtx, s32 arg2) {
 s32 func_8083BDBC(Player* this, GlobalContext* globalCtx) {
     s32 sp2C;
 
-    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && (globalCtx->roomCtx.curRoom.unk_03 != 2) &&
-        (D_808535E4 != 7) &&
+    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) &&
+        (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) && (D_808535E4 != 7) &&
         (SurfaceType_GetSlope(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId) != 1)) {
         sp2C = this->unk_84B[this->unk_846];
 
@@ -5569,7 +5567,8 @@ s32 func_8083C544(Player* this, GlobalContext* globalCtx) {
 }
 
 s32 func_8083C61C(GlobalContext* globalCtx, Player* this) {
-    if ((globalCtx->roomCtx.curRoom.unk_03 != 2) && (this->actor.bgCheckFlags & 1) && (AMMO(ITEM_NUT) != 0)) {
+    if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+        (this->actor.bgCheckFlags & 1) && (AMMO(ITEM_NUT) != 0)) {
         func_80835C58(globalCtx, this, func_8084E604, 0);
         func_80832264(globalCtx, this, &gPlayerAnim_003048);
         this->unk_6AD = 0;
@@ -6192,7 +6191,7 @@ s32 func_8083E0FC(Player* this, GlobalContext* globalCtx) {
         func_80832F54(globalCtx, this, 0x9B);
         this->actor.parent = this->rideActor;
         func_80832224(this);
-        func_800304B0(globalCtx);
+        Actor_DisableLens(globalCtx);
         return 1;
     }
 
@@ -6325,7 +6324,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                     Player_SetPendingFlag(this, globalCtx);
-                    return;
+                    return 1;
                 }
 
                 s32 drop = giEntry->objectId;
@@ -7192,9 +7191,8 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
         this->stateFlags2 |= PLAYER_STATE2_28;
         if (this->stateFlags1 & PLAYER_STATE1_11) {
             anim = func_80833338(this);
-        }
-        else {
-            sp38 = globalCtx->roomCtx.curRoom.unk_02;
+        } else {
+            sp38 = globalCtx->roomCtx.curRoom.behaviorType2;
             if (heathIsCritical) {
                 if (this->unk_6AC >= 0) {
                     sp38 = 7;
@@ -8432,7 +8430,7 @@ static struct_80832924 D_808545F0[] = {
 
 void func_80843CEC(Player* this, GlobalContext* globalCtx) {
     if (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) {
-        if ((globalCtx->roomCtx.curRoom.unk_02 == 3) || (D_808535E4 == 9) ||
+        if ((globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) || (D_808535E4 == 9) ||
             ((func_80838144(D_808535E4) >= 0) &&
                 !SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
             func_8083821C(this);
@@ -9613,7 +9611,7 @@ void func_80846A68(GlobalContext* globalCtx, Player* this) {
     this->stateFlags1 |= PLAYER_STATE1_29;
 }
 
-static InitChainEntry D_80854708[] = {
+static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 500, ICHAIN_STOP),
 };
 
@@ -9626,7 +9624,7 @@ static Vec3s D_80854730 = { -57, 3377, 0 };
 
 void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeader* skelHeader) {
     this->ageProperties = &sAgeProperties[gSaveContext.linkAge];
-    Actor_ProcessInitChain(&this->actor, D_80854708);
+    Actor_ProcessInitChain(&this->actor, sInitChain);
     this->swordEffectIndex = TOTAL_EFFECT_COUNT;
     this->currentYaw = this->actor.world.rot.y;
     func_80834644(globalCtx, this);
@@ -9953,13 +9951,13 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 else if (!sp1C && (!(this->stateFlags1 & PLAYER_STATE1_22) || func_80833BCC(this) ||
                     !Player_IsChildWithHylianShield(this))) {
                     if ((!(this->stateFlags1 & PLAYER_STATE1_14) && (sp20 <= 0) &&
-                        (func_8008E9C4(this) ||
-                            ((D_808535E4 != 7) &&
-                                (func_80833B2C(this) || ((globalCtx->roomCtx.curRoom.unk_03 != 2) &&
-                                    !(this->stateFlags1 & PLAYER_STATE1_22) && (sp20 == 0))))))) {
+                         (func_8008E9C4(this) ||
+                          ((D_808535E4 != 7) && (func_80833B2C(this) ||
+                                                 ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+                                                  !(this->stateFlags1 & PLAYER_STATE1_22) && (sp20 == 0))))))) {
                         doAction = DO_ACTION_ATTACK;
-                    }
-                    else if ((globalCtx->roomCtx.curRoom.unk_03 != 2) && func_80833BCC(this) && (sp20 > 0)) {
+                    } else if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+                               func_80833BCC(this) && (sp20 > 0)) {
                         doAction = DO_ACTION_JUMP;
                     }
                     else if ((this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER) ||

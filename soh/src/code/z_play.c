@@ -306,7 +306,7 @@ void Gameplay_Init(GameState* thisx) {
     Audio_SetExtraFilter(0);
     Quake_Init();
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(globalCtx->cameraPtrs); i++) {
         globalCtx->cameraPtrs[i] = NULL;
     }
 
@@ -1932,7 +1932,7 @@ void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
 }
 
 s32 func_800C0CB8(GlobalContext* globalCtx) {
-    return (globalCtx->roomCtx.curRoom.mesh->polygon.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
+    return (globalCtx->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
            (YREG(15) != 0x40) && (globalCtx->sceneNum != SCENE_HAIRAL_NIWA);
 }
 
