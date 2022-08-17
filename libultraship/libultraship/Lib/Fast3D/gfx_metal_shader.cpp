@@ -131,6 +131,7 @@ MTL::VertexDescriptor* gfx_metal_build_shader(char buf[4096], size_t& num_floats
     vertex_descriptor->attributes()->object(vertex_index)->setFormat(MTL::VertexFormatFloat4);
     vertex_descriptor->attributes()->object(vertex_index)->setBufferIndex(0);
     vertex_descriptor->attributes()->object(vertex_index++)->setOffset(0);
+    num_floats += 4;
 
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
@@ -251,6 +252,11 @@ MTL::VertexDescriptor* gfx_metal_build_shader(char buf[4096], size_t& num_floats
         append_line(buf, &len, "}");
     }
 
+    append_line(buf, &len, "float random(float3 value) {");
+    append_line(buf, &len, "    float random = dot(sin(value), float3(12.9898, 78.233, 37.719));");
+    append_line(buf, &len, "    return fract(sin(random) * 143758.5453);");
+    append_line(buf, &len, "}");
+
     append_str(buf, &len, "fragment float4 fragmentShader(ProjectedVertex in [[stage_in]], constant FrameUniforms &frameUniforms [[buffer(0)]]");
 
     if (cc_features.used_textures[0]) {
@@ -313,7 +319,7 @@ MTL::VertexDescriptor* gfx_metal_build_shader(char buf[4096], size_t& num_floats
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len,     "texel.w *= floor(fast::clamp(random(float3(floor(in.position.xy * frameUniforms.noiseScale), float(frameUniforms.frameCount))) + texel.w, 0.0, 1.0));");
+        append_line(buf, &len, "    texel.w *= floor(fast::clamp(random(float3(floor(in.position.xy * frameUniforms.noiseScale), float(frameUniforms.frameCount))) + texel.w, 0.0, 1.0));");
     }
 
     if (cc_features.opt_grayscale) {

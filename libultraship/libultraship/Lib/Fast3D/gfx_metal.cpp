@@ -276,7 +276,7 @@ static void gfx_metal_init(void) {
         kernel void depthKernel(depth2d<float, access::read> depth_texture [[ texture(0) ]],
                                      constant CoordUniforms& query_coords [[ buffer(0) ]],
                                      device float* output_values [[ buffer(1) ]],
-                                     uint2 thread_position [[ thread_position_in_grid ]]) {
+                                     ushort2 thread_position [[ thread_position_in_grid ]]) {
             uint2 coord = query_coords.coords[thread_position.x];
             output_values[thread_position.x] = depth_texture.read(coord);
         }
@@ -308,7 +308,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
     CCFeatures cc_features;
     gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
 
-    size_t num_floats = 4;
+    size_t num_floats = 0;
     char buf[4096];
 
     memset(buf, 0, sizeof(buf));
@@ -884,7 +884,6 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
 
 std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     auto framebuffer = mctx.framebuffers[fb_id];
-    SPDLOG_TRACE("Getting depth of coordinate size: {}",  coordinates.size());
 
     if (coordinates.size() > mctx.coord_buffer_size) {
         if (mctx.depth_value_output_buffer != nullptr)
