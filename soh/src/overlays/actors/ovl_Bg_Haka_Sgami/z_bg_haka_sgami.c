@@ -260,7 +260,7 @@ void BgHakaSgami_Spin(BgHakaSgami* this, GlobalContext* globalCtx) {
                                  &scytheVertices[2]);
     }
 
-    if ((this->unk_151 == 0) || (globalCtx->actorCtx.unk_03 != 0)) {
+    if ((this->unk_151 == 0) || globalCtx->actorCtx.lensActive) {
         scytheVertices[0].x = this->actor.world.pos.x + blureEffectVertices1[this->actor.params].z * actorRotYSin +
                               blureEffectVertices1[this->actor.params].x * actorRotYCos;
         scytheVertices[0].y = this->actor.world.pos.y + blureEffectVertices1[this->actor.params].y;

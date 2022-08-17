@@ -3,10 +3,16 @@
 #include "Window.h"
 #include "Controller.h"
 #include "DummyController.h"
-#include "KeyboardController.h"
-#include "SDLController.h"
 #include <Utils/StringHelper.h>
 #include "Cvar.h"
+
+#ifndef __WIIU__
+#include "KeyboardController.h"
+#include "SDLController.h"
+#else
+#include "WiiUGamepad.h"
+#include "WiiUController.h"
+#endif
 
 namespace Ship {
 
@@ -20,7 +26,8 @@ namespace Ship {
         virtualDevices.clear();
         physicalDevices.clear();
 
-        for (int i = 0; i < SDL_NumJoysticks(); i++) {
+#ifndef __WIIU__
+        for (int32_t i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 auto sdl = std::make_shared<SDLController>(i);
                 sdl->Open();
@@ -30,22 +37,36 @@ namespace Ship {
 
         physicalDevices.push_back(std::make_shared<DummyController>("Auto", "Auto", true));
         physicalDevices.push_back(std::make_shared<KeyboardController>());
+#else
+        physicalDevices.push_back(std::make_shared<DummyController>("Auto", "Auto", true));
+
+        auto gamepad = std::make_shared<Ship::WiiUGamepad>();
+        gamepad->Open();
+        physicalDevices.push_back(gamepad);
+
+        for (int32_t i = 0; i < 4; i++) {
+            auto controller = std::make_shared<Ship::WiiUController>((WPADChan) i);
+            controller->Open();
+            physicalDevices.push_back(controller);
+        }
+#endif
+
         physicalDevices.push_back(std::make_shared<DummyController>("Disconnected", "None", false));
 
-        for (const auto& device : physicalDevices) {
-            for (int i = 0; i < MAXCONTROLLERS; i++) {
+        for (const auto device : physicalDevices) {
+            for (int32_t i = 0; i < MAXCONTROLLERS; i++) {
                 device->CreateDefaultBinding(i);
             }
         }
 
-        for (int i = 0; i < MAXCONTROLLERS; i++) {
+        for (int32_t i = 0; i < MAXCONTROLLERS; i++) {
             virtualDevices.push_back(i == 0 ? 0 : static_cast<int>(physicalDevices.size()) - 1);
         }
 
         LoadControllerSettings();
     }
 
-    void ControlDeck::SetPhysicalDevice(int slot, int deviceSlot) {
+    void ControlDeck::SetPhysicalDevice(int32_t slot, int32_t deviceSlot) {
         const std::shared_ptr<Controller> backend = physicalDevices[deviceSlot];
         virtualDevices[slot] = deviceSlot;
         *controllerBits |= (backend->Connected()) << slot;
@@ -83,7 +104,7 @@ namespace Ship {
         std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
 
         for (auto const& val : Config->rjson["Controllers"]["Deck"].items()) {
-            int slot = std::stoi(val.key().substr(5));
+            int32_t slot = std::stoi(val.key().substr(5));
 
             for (size_t dev = 0; dev < physicalDevices.size(); dev++) {
                 std::string guid = physicalDevices[dev]->GetGuid();
@@ -98,7 +119,7 @@ namespace Ship {
             Config->setString(StringHelper::Sprintf("Controllers.Deck.Slot_%d", (int)i), backend->GetGuid());
         }
 
-        for (const auto& device : physicalDevices) {
+        for (const auto device : physicalDevices) {
 
             std::string guid = device->GetGuid();
 
@@ -107,35 +128,59 @@ namespace Ship {
                 if (!(Config->rjson["Controllers"].contains(guid) && Config->rjson["Controllers"][guid].contains(StringHelper::Sprintf("Slot_%d", virtualSlot)))) continue;
 
                 auto profile = device->getProfile(virtualSlot);
-                auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", virtualSlot)];
+                auto rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", virtualSlot)];
 
                 profile->Mappings.clear();
                 profile->AxisDeadzones.clear();
-                profile->AxisSensitivities.clear();
+                profile->AxisDeadzones.clear();
                 profile->GyroData.clear();
-                profile->Version = Config->getInt(NESTED("Version", ""));
-                profile->UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
-                profile->RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
-                profile->UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
 
-                for (auto const& val : rawProfile["AxisDeadzones"].items()) {
-                    profile->AxisDeadzones[std::stoi(val.key())] = val.value();
-                }
+                profile->Version = Config->getInt(NESTED("Version", ""), DEVICE_PROFILE_VERSION_V0);
 
-                for (auto const& val : rawProfile["AxisSensitivities"].items()) {
-                    profile->AxisSensitivities[std::stoi(val.key())] = val.value();
-                }
+                switch (profile->Version) {
 
-                for (auto const& val : rawProfile["AxisMinimumPress"].items()) {
-                    profile->AxisMinimumPress[std::stoi(val.key())] = val.value();
-                }
+                case DEVICE_PROFILE_VERSION_V0:
 
-                for (auto const& val : rawProfile["GyroData"].items()) {
-                    profile->GyroData[std::stoi(val.key())] = val.value();
-                }
+                    // Load up defaults for the things we can't load.
+                    device->CreateDefaultBinding(virtualSlot);
 
-                for (auto const& val : rawProfile["Mappings"].items()) {
-                    device->SetButtonMapping(virtualSlot, std::stoi(val.key().substr(4)), val.value());
+                    profile->UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
+                    profile->RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
+                    profile->UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
+
+                    for (auto const& val : rawProfile["Mappings"].items()) {
+                        device->SetButtonMapping(virtualSlot, std::stoi(val.key().substr(4)), val.value());
+                    }
+
+                    break;
+
+                case DEVICE_PROFILE_VERSION_V1:
+                    profile->UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
+                    profile->RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
+                    profile->UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
+
+                    for (auto const& val : rawProfile["AxisDeadzones"].items()) {
+                        profile->AxisDeadzones[std::stoi(val.key())] = val.value();
+                    }
+
+                    for (auto const& val : rawProfile["AxisMinimumPress"].items()) {
+                        profile->AxisMinimumPress[std::stoi(val.key())] = val.value();
+                    }
+
+                    for (auto const& val : rawProfile["GyroData"].items()) {
+                        profile->GyroData[std::stoi(val.key())] = val.value();
+                    }
+
+                    for (auto const& val : rawProfile["Mappings"].items()) {
+                        device->SetButtonMapping(virtualSlot, std::stoi(val.key().substr(4)), val.value());
+                    }
+
+                    break;
+
+                // Version is invalid.
+                default:
+                    device->CreateDefaultBinding(virtualSlot);
+                    break;
                 }
             }
         }
@@ -173,10 +218,6 @@ namespace Ship {
                     Config->setFloat(NESTED("AxisDeadzones.%d", key), val);
                 }
 
-                for (auto const& [key, val] : profile->AxisSensitivities) {
-                    Config->setFloat(NESTED("AxisSensitivities.%d", key), val);
-                }
-
                 for (auto const& [key, val] : profile->AxisMinimumPress) {
                     Config->setFloat(NESTED("AxisMinimumPress.%d", key), val);
                 }
@@ -196,7 +237,7 @@ namespace Ship {
         Config->save();
     }
 
-    std::shared_ptr<Controller> ControlDeck::GetPhysicalDevice(int deviceSlot) {
+    std::shared_ptr<Controller> ControlDeck::GetPhysicalDevice(int32_t deviceSlot) {
         return physicalDevices[deviceSlot];
     }
 
@@ -204,7 +245,7 @@ namespace Ship {
         return physicalDevices.size();
     }
 
-    int ControlDeck::GetVirtualDevice(int slot) {
+    int32_t ControlDeck::GetVirtualDevice(int32_t slot) {
         return virtualDevices[slot];
     }
 
@@ -212,7 +253,7 @@ namespace Ship {
         return virtualDevices.size();
     }
 
-    std::shared_ptr<Controller> ControlDeck::GetPhysicalDeviceFromVirtualSlot(int slot) {
+    std::shared_ptr<Controller> ControlDeck::GetPhysicalDeviceFromVirtualSlot(int32_t slot) {
         return GetPhysicalDevice(GetVirtualDevice(slot));
     }
 

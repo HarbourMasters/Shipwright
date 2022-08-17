@@ -1804,7 +1804,7 @@ void EnTest_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->actor.params == STALFOS_TYPE_INVISIBLE) {
-        if (globalCtx->actorCtx.unk_03 != 0) {
+        if (globalCtx->actorCtx.lensActive) {
             this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_7;
             this->actor.shape.shadowDraw = ActorShadow_DrawFeet;
         } else {
@@ -1877,7 +1877,7 @@ void EnTest_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, V
         Matrix_MultVec3f(&D_80864670, &sp64);
 
         if ((this->swordState >= 1) &&
-            ((this->actor.params != STALFOS_TYPE_INVISIBLE) || (globalCtx->actorCtx.unk_03 != 0))) {
+            ((this->actor.params != STALFOS_TYPE_INVISIBLE) || globalCtx->actorCtx.lensActive)) {
             EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &sp70, &sp64);
         } else if (this->swordState >= 0) {
             EffectBlure_AddSpace(Effect_GetByIndex(this->effectIndex));
@@ -1897,7 +1897,7 @@ void EnTest_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, V
             if ((this->unk_7C8 == 0x15) || (this->unk_7C8 == 0x16)) {
                 if (this->actor.speedXZ != 0.0f) {
                     Matrix_MultVec3f(&D_80864658, &sp64);
-                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 0x64, 0xF, 0);
+                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 100, 15, false);
                 }
             }
         }

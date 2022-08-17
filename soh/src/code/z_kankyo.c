@@ -36,8 +36,8 @@ typedef struct {
 } LightningBolt; // size = 0x20
 
 typedef struct {
-    /* 0x00 */ s32 unk0;
-    /* 0x04 */ s32 unk1;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
 } Struct_8011FAF0; // size = 0x8
 
 Struct_8011FAF0 D_8011FAF0[] = {
@@ -215,7 +215,7 @@ u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
 s32 func_8006F0A0(s32 a0) {
-    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk0) + D_8011FAF0[a0 >> 15 & 7].unk1;
+    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 
     return ret;
 }
@@ -2454,7 +2454,7 @@ void Environment_AdjustLights(GlobalContext* globalCtx, f32 arg1, f32 arg2, f32 
     f32 temp;
     s32 i;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5 && func_800C0CB8(globalCtx)) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5 && func_800C0CB8(globalCtx)) {
         arg1 = CLAMP_MIN(arg1, 0.0f);
         arg1 = CLAMP_MAX(arg1, 1.0f);
 
