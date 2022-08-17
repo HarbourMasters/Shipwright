@@ -131,6 +131,10 @@ static inline int32_t GX2GetPixelUniformVarOffset(const GX2PixelShader *shader, 
     return uniform ? uniform->offset : -1;
 }
 
+static const char* gfx_gx2_get_name() {
+    return "GX2";
+}
+
 static void gfx_gx2_init_framebuffer(struct Framebuffer *buffer, uint32_t width, uint32_t height) {
     memset(&buffer->color_buffer, 0, sizeof(GX2ColorBuffer));
     buffer->color_buffer.surface.use = GX2_SURFACE_USE_TEXTURE_COLOR_BUFFER_TV;
@@ -789,6 +793,7 @@ ImGui_ImplGX2_Texture* gfx_gx2_texture_for_imgui(uint32_t texture_id) {
 }
 
 struct GfxRenderingAPI gfx_gx2_api = {
+    gfx_gx2_get_name,
     gfx_gx2_get_clip_parameters,
     gfx_gx2_unload_shader,
     gfx_gx2_load_shader,

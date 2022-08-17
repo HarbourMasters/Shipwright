@@ -411,7 +411,7 @@ namespace Ship {
         // First set default
 #ifdef ENABLE_OPENGL
         RenderingApi = &gfx_opengl_api;
-#elifdef ENABLE_METAL
+#elif defined(ENABLE_METAL)
         RenderingApi = &gfx_metal_api;
 #if defined(__linux__) && defined(X11_SUPPORTED)
         // LINUX_TODO:
@@ -446,7 +446,7 @@ namespace Ship {
             if (gfxApi == "OpenGL") {
                 RenderingApi = &gfx_opengl_api;
             }
-#ifdef ENABLE_METAL
+#if defined(ENABLE_METAL)
             else {
                 RenderingApi = &gfx_metal_api;
             }
