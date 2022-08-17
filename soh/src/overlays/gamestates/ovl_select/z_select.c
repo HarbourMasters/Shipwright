@@ -179,6 +179,7 @@ void Select_UpdateMenu(SelectContext* this) {
     if (this->verticalInputAccumulator == 0) {
         if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
             selectedScene = &this->scenes[this->currentScene];
+            gSaveContext.isdebugwarp = 1;
             if (selectedScene->loadFunc != NULL) {
                 selectedScene->loadFunc(this, selectedScene->entranceIndex);
             }

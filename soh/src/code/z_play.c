@@ -283,6 +283,10 @@ void Gameplay_Init(GameState* thisx) {
             if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
                 break;
             }
+            //} else if (gSaveContext.entranceIndex == 205) {
+            //    gSaveContext.isfirstindex = 1;
+            //    break;
+            //}
 
             else if (gSaveContext.isfirstindex == 0) {
                 gSaveContext.isfirstindex = 1;
