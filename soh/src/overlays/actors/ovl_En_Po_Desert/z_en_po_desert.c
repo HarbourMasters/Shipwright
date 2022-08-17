@@ -133,7 +133,7 @@ void EnPoDesert_UpdateSpeedModifier(EnPoDesert* this) {
 
 void EnPoDesert_WaitForPlayer(EnPoDesert* this, GlobalContext* globalCtx) {
     func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
-    if (this->actor.xzDistToPlayer < 200.0f && (this->currentPathPoint != 2 || globalCtx->actorCtx.unk_03)) {
+    if (this->actor.xzDistToPlayer < 200.0f && (this->currentPathPoint != 2 || globalCtx->actorCtx.lensActive)) {
         if (this->currentPathPoint == 2) {
             if (Gameplay_InCsMode(globalCtx)) {
                 this->actor.shape.rot.y += 0x800;
@@ -198,7 +198,7 @@ void EnPoDesert_Update(Actor* thisx, GlobalContext* globalCtx) {
     Actor_SetFocus(&this->actor, 42.0f);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    if (globalCtx->actorCtx.unk_03) {
+    if (globalCtx->actorCtx.lensActive) {
         this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_7;
         this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
     } else {
