@@ -79,7 +79,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ DamageTable* damageTable;
-    /* 0x04 */ Vec3f displacement; // Amount to correct velocity (0x5C) by when colliding into a body
+    /* 0x04 */ Vec3f displacement; // Amount to correct actor velocity by when colliding into a body
     /* 0x10 */ s16 cylRadius; // Used for various purposes
     /* 0x12 */ s16 cylHeight; // Used for various purposes
     /* 0x14 */ s16 cylYShift; // Unused. Purpose inferred from Cylinder16 and CollisionCheck_CylSideVsLineSeg
@@ -158,7 +158,7 @@ typedef struct Actor {
     /* 0x084 */ f32 yDistToWater; // Distance to the surface of active waterbox. Negative value means above water
     /* 0x088 */ u16 bgCheckFlags; // See comments below actor struct for wip docs. TODO: macros for these flags
     /* 0x08A */ s16 yawTowardsPlayer; // Y rotation difference between the actor and the player
-    /* 0x08C */ f32 xyzDistToPlayerSq; // Squared distance between the actor and the player in the x,y,z axis
+    /* 0x08C */ f32 xyzDistToPlayerSq; // Squared distance between the actor and the player
     /* 0x090 */ f32 xzDistToPlayer; // Distance between the actor and the player in the XZ plane
     /* 0x094 */ f32 yDistToPlayer; // Dist is negative if the actor is above the player
     /* 0x098 */ CollisionCheckInfo colChkInfo; // Variables related to the Collision Check system
@@ -338,7 +338,8 @@ typedef enum {
     /* 0x08 */ ACTORCAT_MISC,
     /* 0x09 */ ACTORCAT_BOSS,
     /* 0x0A */ ACTORCAT_DOOR,
-    /* 0x0B */ ACTORCAT_CHEST
+    /* 0x0B */ ACTORCAT_CHEST,
+    /* 0x0C */ ACTORCAT_MAX
 } ActorCategory;
 
 //#define DEFINE_ACTOR(_0, enum, _2) enum,
