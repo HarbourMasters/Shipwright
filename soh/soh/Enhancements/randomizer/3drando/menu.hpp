@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <set>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 #define MAIN_MENU 0
@@ -45,7 +46,7 @@ void PrintResetToDefaultsMenu();
 void PrintGenerateMenu();
 void ClearDescription();
 void PrintOptionDescription();
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings);
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSetting, std::set<RandomizerCheck> excludedLocations);
 std::string GetInput(const char* hintText);
 
 extern void MenuInit();

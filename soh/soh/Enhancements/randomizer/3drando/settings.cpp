@@ -2483,7 +2483,7 @@ namespace Settings {
   }
 
   //Function to set flags depending on settings
-  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
+  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
 
     // RANDTODO: Switch this back once all logic options are implemented
     // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);

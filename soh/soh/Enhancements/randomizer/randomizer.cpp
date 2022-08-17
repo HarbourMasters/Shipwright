@@ -3587,7 +3587,9 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
-    RandoMain::GenerateRando(cvarSettings);
+    std::set<RandomizerCheck> excludedLocations = { RC_UNKNOWN_CHECK };
+
+    RandoMain::GenerateRando(cvarSettings, excludedLocations);
 
     CVar_SetS32("gRandoGenerating", 0);
     CVar_Save();
