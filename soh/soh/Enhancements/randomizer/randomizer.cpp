@@ -1923,8 +1923,6 @@ std::string AltarIconString(char iconChar) {
 std::string FormatJsonHintText(std::string jsonHint) {
     std::string formattedHintMessage = jsonHint;
 
-    CustomMessageManager::Instance->FormatCustomMessage(formattedHintMessage);
-
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
         std::string textToReplace = "$";
