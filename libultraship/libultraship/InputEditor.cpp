@@ -180,7 +180,7 @@ namespace Ship {
 
 		if (!IsKeyboard) {
 			ImGui::SameLine();
-			SohImGui::BeginGroupPanel("Camera Stick", ImVec2(150, 20));
+			SohImGui::BeginGroupPanel("Right Stick", ImVec2(150, 20));
 				DrawButton("Up", BTN_VSTICKUP);
 				DrawButton("Down", BTN_VSTICKDOWN);
 				DrawButton("Left", BTN_VSTICKLEFT);
@@ -189,7 +189,7 @@ namespace Ship {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 				// 2 is the SDL value for right stick X axis
 				// 3 is the SDL value for right stick Y axis.
-				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort), Backend->getRightStickY(CurrentPort)));
+				DrawVirtualStick("##RightVirtualStick", ImVec2(Backend->getRightStickX(CurrentPort), Backend->getRightStickY(CurrentPort)));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
