@@ -298,7 +298,7 @@ void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, Rando
             }
         } else if (check != RC_SHEIK_AT_TEMPLE) {
             if (GiveItemEntryFromActor(&sheik->actor, globalCtx, getItemEntry, 10000.0f, 100.0f)) {
-                player->pendingFlag.flagID = 0x55;
+                player->pendingFlag.flagID = (0x5 << 4) | (sheikType & 0xF) >> 1;
                 player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
             }
         }
