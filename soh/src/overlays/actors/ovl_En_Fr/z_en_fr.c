@@ -955,6 +955,7 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
+                this->reward = this->getItemEntry.getItemId;
             }
         } else {
             this->reward = GI_RUPEE_BLUE;
@@ -1051,7 +1052,7 @@ void EnFr_GiveReward(EnFr* this, GlobalContext* globalCtx) {
 }
 
 void EnFr_SetIdle(EnFr* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && this->reward == GI_ICE_TRAP)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }
