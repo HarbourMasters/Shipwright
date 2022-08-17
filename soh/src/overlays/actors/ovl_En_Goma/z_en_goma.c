@@ -831,11 +831,11 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
             break;
 
         case ENGOMA_BOSSLIMB:
-            if (this->bossLimbDl != NULL) {
+            if (this->bossLimbDL != NULL) {
                 gSPSegment(POLY_OPA_DISP++, 0x08, EnGoma_NoBackfaceCullingDlist(globalCtx->state.gfxCtx));
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, this->bossLimbDl);
+                gSPDisplayList(POLY_OPA_DISP++, this->bossLimbDL);
             }
             break;
     }
