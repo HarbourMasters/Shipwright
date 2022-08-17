@@ -1694,6 +1694,16 @@ namespace SohImGui {
 
                     ImGui::EndMenu();
                 }
+		    
+                if (ImGui::BeginMenu("Warp to...")) {
+                    if (ImGui::Button("Kokiri Forest")) {
+                        CVar_SetS32("gKokiriWarp", 1);
+                    }
+                    if (ImGui::Button("Lost Woods")) {
+                        CVar_SetS32("gLostWoodsWarp", 1);
+                    }
+                    ImGui::EndMenu();
+                }   
 
                 PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
                 Tooltip("Allows you to walk through walls");
