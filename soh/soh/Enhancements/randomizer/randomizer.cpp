@@ -4644,7 +4644,7 @@ void CreateRupeeMessages() {
         customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
                 "You found" + rupeeText + " !",
-                "Du fandest" + rupeeText + " !",
+                "Du hast" + rupeeText + "  gefunden!",
                 "Vous obtenez" + rupeeText + " !"
         });
     }

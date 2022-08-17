@@ -1449,12 +1449,13 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
 
 extern "C" std::string Randomizer_InsertRupeeName(std::string message, int language) {
     std::string replaceWith;
-    const char* englishRupeeNames[20] = { 
-        "Rupees", "BitCoin", "Bananas", "Cornflakes", "Gummybears", "Floopies", "Dollars", "Pokémon", "Emeralds", "Bucks",
-        "Rubles", "Diamonds", "Moons", "Stars", "Mana", "Doll Hairs", "DogeCoins", "Mushrooms", "Experience", "Friends"
+    const char* englishRupeeNames[30] = { 
+        "Rupees", "Bitcoin", "Bananas", "Cornflakes", "Gummybears", "Floopies", "Dollars", "Lemmings", "Emeralds", "Bucks",
+        "Rubles", "Diamonds", "Moons", "Stars", "Mana", "Doll Hairs", "Dogecoin", "Mushrooms", "Experience", "Friends",
+        "Coins", "Rings", "Gil", "Pokédollars", "Bells", "Orbs", "Bottle Caps", "Simoleons", "Pokémon", "Toys"
     };
-    const char* germanRupeeNames[1] = { "Rupees" };
-    const char* frenchRupeeNames[1] = { "Rupees" };
+    const char* germanRupeeNames[1] = { "Rubine" };
+    const char* frenchRupeeNames[1] = { "Rubis" };
     int randomIndex;
     switch (language) {
         case LANGUAGE_ENG:
