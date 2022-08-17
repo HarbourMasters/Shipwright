@@ -27,6 +27,7 @@ u8 generated;
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
+const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -4620,6 +4621,35 @@ void CreateScrubMessages() {
     }
 }
 
+void CreateRupeeMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);
+    const std::vector<u8> rupees = { TEXT_BLUE_RUPEE, TEXT_RED_RUPEE, TEXT_PURPLE_RUPEE, TEXT_HUGE_RUPEE };
+    std::string rupeeText = " ";
+    for (u8 rupee : rupees) {
+        switch (rupee) {
+            case TEXT_BLUE_RUPEE:
+                rupeeText = "\x05\x03 5 BitCoin\x05\x00 ";
+                break;
+            case TEXT_RED_RUPEE:
+                rupeeText = "\x05\x01 20 Moneys\x05\x00 ";
+                break;
+            case TEXT_PURPLE_RUPEE:
+                rupeeText = "\x05\x05 50 Gummybears\x05\x00 ";
+                break;
+            case TEXT_HUGE_RUPEE:
+                rupeeText = "\x05\x06 200 Cornflakes\x05\x00 ";
+                break;
+        }
+        customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+                "You found" + rupeeText + "!",
+                "You found" + rupeeText + "!",
+                "You found" + rupeeText + "!"
+        });
+    }
+}
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
@@ -4695,6 +4725,7 @@ void Randomizer::CreateCustomMessages() {
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();
+    CreateRupeeMessages();
 }
 
 void InitRando() {
