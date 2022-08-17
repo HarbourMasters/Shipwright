@@ -4530,11 +4530,12 @@ void func_8083A434(GlobalContext* globalCtx, Player* this) {
     if (this->getItemId == GI_HEART_CONTAINER_2) {
         this->unk_850 = 20;
     }
-    else if (this->getItemId >= 0) {
+    else if (this->getItemId >= 0 || this->getItemEntry.getItemId >= 0) {
         this->unk_850 = 1;
     }
     else {
         this->getItemId = -this->getItemId;
+        this->getItemEntry.getItemId = -this->getItemEntry.getItemId;
     }
 }
 
@@ -6064,7 +6065,7 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
         Item_Give(globalCtx, giEntry->itemId);
     }
 
-    func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
+    func_80078884((this->getItemId < 0 || this->getItemEntry.getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
 // Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
@@ -9685,14 +9686,12 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                     (interactRangeActor != NULL) &&
                     ((!sp1C && (this->getItemId == GI_NONE)) ||
-                        ((this->getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
-                    if (this->getItemId < 0) {
+                        ((this->getItemId < 0 || this->getItemEntry.getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
+                    if (this->getItemId < 0 || this->getItemEntry.getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
-                    }
-                    else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
+                    } else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
                         doAction = DO_ACTION_DROP;
-                    }
-                    else {
+                    } else {
                         doAction = DO_ACTION_GRAB;
                     }
                 }
@@ -9744,7 +9743,7 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     }
                 }
                 else if (!(this->stateFlags1 & PLAYER_STATE1_27) && func_8083A0D4(this) &&
-                    (this->getItemId < GI_MAX)) {
+                    ((!gSaveContext.n64ddFlag && this->getItemId < GI_MAX) || (gSaveContext.n64ddFlag && this->getItemEntry.getItemId < RG_MAX))) {
                     doAction = DO_ACTION_GRAB;
                 }
                 else if (this->stateFlags2 & PLAYER_STATE2_11) {
