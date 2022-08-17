@@ -1447,8 +1447,32 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
+extern "C" std::string Randomizer_InsertRupeeName(std::string message, int language) {
+    std::string replaceWith;
+    switch (language) { 
+        case LANGUAGE_ENG:
+            replaceWith = "Bananas";
+            break;
+        case LANGUAGE_GER:
+            replaceWith = "Sauerkraut";
+            break;
+        case LANGUAGE_FRA:
+            replaceWith = "Baguettes";
+            break;
+    }
+    std::string replaceString = "%RUPEE%";
+    size_t pos = message.find(replaceString);
+    size_t len = replaceString.length();
+    message.replace(pos, len, replaceWith);
+    return message;
+}
+
 extern "C" CustomMessageEntry Randomizer_GetRupeeMessage(u16 rupeeTextId) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    messageEntry.english = Randomizer_InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
+    messageEntry.german = Randomizer_InsertRupeeName(messageEntry.german, LANGUAGE_GER);
+    messageEntry.french = Randomizer_InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
+    return messageEntry;
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
@@ -1576,7 +1600,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =
