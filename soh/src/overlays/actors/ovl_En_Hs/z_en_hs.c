@@ -79,14 +79,25 @@ void EnHs_Init(Actor* thisx, GlobalContext* globalCtx) {
         // "chicken shop (adult era)"
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
-        bool shouldDespawn;
+        bool shouldSpawn;
         bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
-        if (gSaveContext.n64ddFlag) {
-            shouldDespawn = tradedMushroom && !(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_COJIRO));
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            // To explain the logic because Fado and Grog are linked:
+            // - If you have Cojiro, then spawn Grog and not Fado.
+            // - If you don't have Cojiro but do have Odd Potion, spawn Fado and not Grog.
+            // - If you don't have either, spawn Grog if you haven't traded the Odd Mushroom.
+            // - If you don't have either but have traded the mushroom, don't spawn either.
+            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+                shouldSpawn = true;
+            } else if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION)) {
+                shouldSpawn = false;
+            } else {
+                shouldSpawn = !tradedMushroom;
+            }
         } else {
-            shouldDespawn = tradedMushroom;
+            shouldSpawn = !tradedMushroom;
         }
-        if (shouldDespawn) {
+        if (!shouldSpawn) {
             // "chicken shop closed"
             osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコ屋閉店 \n" VT_RST);
             Actor_Kill(&this->actor);

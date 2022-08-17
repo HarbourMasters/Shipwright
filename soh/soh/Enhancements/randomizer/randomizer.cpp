@@ -1440,13 +1440,14 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
+    { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
-    { "Shuffle Dungeon Items:Start with Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
+    { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
@@ -1463,6 +1464,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
     { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE },
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
+    { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1677,12 +1679,14 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
+                    case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_RANDOM_TRIALS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_COMPLETE_MASK_QUEST:
+                    case RSK_ENABLE_GLITCH_CUTSCENES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -2045,18 +2049,18 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return ogItemId;
 
         case RG_KOKIRI_SWORD:
-            return GI_SWORD_KOKIRI;
+            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? GI_SWORD_KOKIRI : GI_RUPEE_BLUE;
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return GI_SWORD_BGS;
+            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
         case RG_HYLIAN_SHIELD:
             return GI_SHIELD_HYLIAN;
         case RG_MIRROR_SHIELD:
-            return GI_SHIELD_MIRROR;
+            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? GI_SHIELD_MIRROR : GI_RUPEE_BLUE;
 
         case RG_GORON_TUNIC:
             return GI_TUNIC_GORON;
@@ -2064,35 +2068,35 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_TUNIC_ZORA;
 
         case RG_IRON_BOOTS:
-            return GI_BOOTS_IRON;
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? GI_BOOTS_IRON : GI_RUPEE_BLUE;
         case RG_HOVER_BOOTS:
-            return GI_BOOTS_HOVER;
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? GI_BOOTS_HOVER : GI_RUPEE_BLUE;
 
         case RG_BOOMERANG:
-            return GI_BOOMERANG;
+            return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? GI_BOOMERANG : GI_RUPEE_BLUE;
 
         case RG_LENS_OF_TRUTH:
-            return GI_LENS;
+            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? GI_LENS : GI_RUPEE_BLUE;
 
         case RG_MEGATON_HAMMER:
-            return GI_HAMMER;
+            return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? GI_HAMMER : GI_RUPEE_BLUE;
 
         case RG_STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
 
         case RG_DINS_FIRE:
-            return GI_DINS_FIRE;
+            return INV_CONTENT(ITEM_DINS_FIRE) == ITEM_NONE ? GI_DINS_FIRE : GI_RUPEE_BLUE;
         case RG_FARORES_WIND:
-            return GI_FARORES_WIND;
+            return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? GI_FARORES_WIND : GI_RUPEE_BLUE;
         case RG_NAYRUS_LOVE:
-            return GI_NAYRUS_LOVE;
+            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? GI_NAYRUS_LOVE : GI_RUPEE_BLUE;
 
         case RG_FIRE_ARROWS:
-            return GI_ARROW_FIRE;
+            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE ? GI_ARROW_FIRE : GI_RUPEE_BLUE;
         case RG_ICE_ARROWS:
-            return GI_ARROW_ICE;
+            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? GI_ARROW_ICE : GI_RUPEE_BLUE;
         case RG_LIGHT_ARROWS:
-            return GI_ARROW_LIGHT;
+            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? GI_ARROW_LIGHT : GI_RUPEE_BLUE;
 
         case RG_GERUDO_MEMBERSHIP_CARD:
             return GI_GERUDO_CARD;
@@ -2103,7 +2107,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BEAN; //todo make it 10 of them
 
         case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
+            return !gSaveContext.doubleDefense ? GI_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
@@ -3581,6 +3585,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
     cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
+    cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
@@ -4175,6 +4180,24 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
                     PaddedSeparator();
 
+                    // Maps & Compasses
+                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
+                            "\n"
+                            "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+                            "\n"
+                            "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+                            "\n"
+                            "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                            "\n"
+                            "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                            "\n"
+                            "Anywhere - Maps & Compasses can appear anywhere in the world."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
+                    PaddedSeparator();
+
                     // Keysanity
                     ImGui::Text(Settings::Keysanity.GetName().c_str());
                     InsertHelpHoverText(
@@ -4241,24 +4264,6 @@ void DrawRandoEditor(bool& open) {
                         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
-                    PaddedSeparator();
-
-                    // Start with Maps & Compasses
-                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
-                        "\n"
-                        "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                        "\n"
-                        "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                        "\n"
-                        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Maps & Compasses can appear anywhere in the world."
-                    );  
-                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
@@ -4345,6 +4350,14 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(), "gRandomizeCompleteMaskQuest");
                     InsertHelpHoverText(
                         "Once the happy mask shop is opened, all masks will be available to be borrowed."
+                    );
+                    PaddedSeparator();
+
+                    // Enable Glitch-Useful Cutscenes
+                    SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(), "gRandomizeEnableGlitchCutscenes");
+                    InsertHelpHoverText(
+                        "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
+                        "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise."
                     );
 
                     // COLUMN 2 - HINT SETTINGS
@@ -4615,64 +4628,72 @@ void Randomizer::CreateCustomMessages() {
     const std::vector<GetItemMessage> getItemMessages = {
         GIMESSAGE(GI_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
                   "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
-                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
-        GIMESSAGE_UNTRANSLATED(
-            GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(
-            GI_BOTTLE_WITH_FISH, ITEM_FISH,
-            "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
-                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
-                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+                               "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", 
+                               "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+                                "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+                                "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+                                "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+                                "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+                               "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, 
+                                "You got a %rFairy in a Bottle%w!&Use it wisely!",
+                                "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+                               "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+                               "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_POE, ITEM_POE,
+                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+                               "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE_UNTRANSLATED(GI_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training Grounds &%wSmall Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!"),
+        GIMESSAGE_NO_GERMAN(GI_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
+        GIMESSAGE_NO_GERMAN(GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+        GIMESSAGE_NO_GERMAN(GI_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
 
-        GIMESSAGE_UNTRANSLATED(GI_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!"),
-        GIMESSAGE_UNTRANSLATED(GI_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!"),
+        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(GI_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
+        
+        GIMESSAGE_NO_GERMAN(GI_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!", "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(GI_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!", "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(GI_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!", "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!", "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(GI_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!", "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
 
-        GIMESSAGE_UNTRANSLATED(GI_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!"),
-        GIMESSAGE_UNTRANSLATED(GI_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!"),
-
-        GIMESSAGE_UNTRANSLATED(GI_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!"),
-        GIMESSAGE_UNTRANSLATED(GI_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!"),
+        GIMESSAGE_NO_GERMAN(GI_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!", "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(GI_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(GI_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!", "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(GI_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();

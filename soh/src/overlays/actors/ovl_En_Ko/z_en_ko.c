@@ -1026,7 +1026,20 @@ s32 EnKo_CanSpawn(EnKo* this, GlobalContext* globalCtx) {
             }
 
         case SCENE_SPOT10:
-            return (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_ODD_POTION) ? true : false;
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+                // To explain the logic because Fado and Grog are linked:
+                // - If you have Cojiro, then spawn Grog and not Fado.
+                // - If you don't have Cojiro but do have Odd Potion, spawn Fado and not Grog.
+                // - If you don't have either, spawn Grog if you haven't traded the Odd Mushroom.
+                // - If you don't have either but have traded the mushroom, don't spawn either.
+                if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+                    return false;
+                } else {
+                    return PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION);
+                }
+            } else {
+                return (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_ODD_POTION) ? true : false;
+            }
         default:
             return false;
     }

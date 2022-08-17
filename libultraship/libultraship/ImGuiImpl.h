@@ -69,7 +69,7 @@ namespace SohImGui {
         WindowDrawFunc drawFunc;
     } CustomWindow;
 
-    extern Ship::Console* console;
+    extern std::shared_ptr<Ship::Console> console;
     extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
