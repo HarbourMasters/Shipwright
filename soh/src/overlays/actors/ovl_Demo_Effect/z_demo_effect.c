@@ -141,6 +141,9 @@ f32 DemoEffect_InterpolateCsFrames(GlobalContext* globalCtx, s32 csActionId) {
  */
 void DemoEffect_InitJewel(GlobalContext* globalCtx, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
+    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_BDAN) {
+        this->initDrawFunc = DemoEffect_DrawGetItem;
+    }
     if (!LINK_IS_ADULT) {
         this->initUpdateFunc = DemoEffect_UpdateJewelChild;
     } else {
@@ -152,7 +155,7 @@ void DemoEffect_InitJewel(GlobalContext* globalCtx, DemoEffect* this) {
         Actor_SetScale(&this->actor, 0.10f);
     }
     this->csActionId = 1;
-    this->actor.shape.rot.x = 16384;
+    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_BDAN) ? 0 : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;
@@ -2082,6 +2085,10 @@ void DemoEffect_DrawGetItem(Actor* thisx, GlobalContext* globalCtx) {
         if (!this->getItem.isLoaded) {
             this->getItem.isLoaded = 1;
             return;
+        }
+        if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_BDAN) {
+            GetItemID getItemID = Randomizer_GetItemIdFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+            this->getItem.drawId = Randomizer_GetItemModelFromId(getItemID);
         }
         func_8002EBCC(thisx, globalCtx, 0);
         func_8002ED80(thisx, globalCtx, 0);
