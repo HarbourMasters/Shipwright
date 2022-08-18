@@ -3748,14 +3748,25 @@ void DrawRandoEditor(bool& open) {
                     
                     ImGui::BeginChild("ChildRandomizedLocations");
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
-                        // todo fix this, it's hacky and we shouldn't need to iterate through so many times
+                        // todo fix this, it's hacky and copypasta
                         bool hasItems = false;
                         for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
                             if (!excludedLocations.count(locationIt.second.rc) &&
+                                locationIt.second.vOrMQ != RCVORMQ_MQ && //disable all MQ checks until we support them
+                                locationIt.second.rcType != RCTYPE_SHOP && //disable shops until we have shopsanity
+                                locationIt.second.rcType != RCTYPE_GOSSIP_STONE &&
+                                locationIt.second.rcType != RCTYPE_LINKS_POCKET &&
+                                locationIt.second.rcType != RCTYPE_CHEST_GAME &&
+                                ((locationIt.second.rcType != RCTYPE_SKULL_TOKEN) ||
+                                 (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
+                                 ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(areaIt.first)) || // overworld tokens
+                                 ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(areaIt.first)) // dungeon tokens
+                                ) &&
                                 locationIt.second.rcArea == areaIt.first &&
                                 locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
-                                    hasItems = true;
-                                    break;
+
+                                hasItems = true;
+                                break;
                             }
                         }
 
@@ -3764,8 +3775,19 @@ void DrawRandoEditor(bool& open) {
                             if (ImGui::TreeNode(areaIt.second.c_str())) {
                                 for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
                                     if (!excludedLocations.count(locationIt.second.rc) &&
+                                        locationIt.second.vOrMQ != RCVORMQ_MQ && //disable all MQ checks until we support them
+                                        locationIt.second.rcType != RCTYPE_SHOP && //disable shops until we have shopsanity
+                                        locationIt.second.rcType != RCTYPE_GOSSIP_STONE &&
+                                        locationIt.second.rcType != RCTYPE_LINKS_POCKET &&
+                                        locationIt.second.rcType != RCTYPE_CHEST_GAME &&
+                                        ((locationIt.second.rcType != RCTYPE_SKULL_TOKEN) ||
+                                        (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
+                                        ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(areaIt.first)) || // overworld tokens
+                                        ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(areaIt.first)) // dungeon tokens
+                                        ) &&
                                         locationIt.second.rcArea == areaIt.first &&
                                         locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
+
                                         if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Right)) {
                                             excludedLocations.insert(locationIt.first);
                                         }

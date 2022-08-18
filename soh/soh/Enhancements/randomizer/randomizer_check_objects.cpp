@@ -14,7 +14,7 @@ typedef struct {
 } RandomizerCheckObject;
 */
 std::unordered_map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
-    { RC_UNKNOWN_CHECK, {RC_UNKNOWN_CHECK, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Invalid Location", "Invalid Location"}},
+    { RC_UNKNOWN_CHECK, {RC_UNKNOWN_CHECK, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_INVALID, "Invalid Location", "Invalid Location"}},
     { RC_KF_KOKIRI_SWORD_CHEST, {RC_KF_KOKIRI_SWORD_CHEST, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Kokiri Sword Chest", "KF Kokiri Sword Chest"}},
     { RC_KF_MIDOS_TOP_LEFT_CHEST, {RC_KF_MIDOS_TOP_LEFT_CHEST, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Mido Top Left Chest", "KF Mido Top Left Chest"}},
     { RC_KF_MIDOS_TOP_RIGHT_CHEST, {RC_KF_MIDOS_TOP_RIGHT_CHEST, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Mido Top Right Chest", "KF Mido Top Right Chest"}},
@@ -782,6 +782,25 @@ std::map<RandomizerCheckArea, std::string> rcAreas = {
    { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds"},
    { RCAREA_GANONS_CASTLE, "Ganon's Castle"},
  };
+
+bool RandomizerCheckObjects::AreaIsDungeon(RandomizerCheckArea area) {
+    return area == RCAREA_GANONS_CASTLE ||
+           area == RCAREA_GERUDO_TRAINING_GROUND ||
+           area == RCAREA_ICE_CAVERN ||
+           area == RCAREA_BOTTOM_OF_THE_WELL ||
+           area == RCAREA_SHADOW_TEMPLE ||
+           area == RCAREA_SPIRIT_TEMPLE ||
+           area == RCAREA_WATER_TEMPLE ||
+           area == RCAREA_FIRE_TEMPLE ||
+           area == RCAREA_FOREST_TEMPLE ||
+           area == RCAREA_JABU_JABUS_BELLY ||
+           area == RCAREA_DODONGOS_CAVERN ||
+           area == RCAREA_DEKU_TREE;
+}
+
+bool RandomizerCheckObjects::AreaIsOverworld(RandomizerCheckArea area) {
+    return !AreaIsDungeon(area);
+}
 
 std::map<RandomizerCheckArea, std::string> RandomizerCheckObjects::GetAllRCAreas() {
     return rcAreas;

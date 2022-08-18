@@ -60,7 +60,8 @@ typedef enum {
     RCAREA_BOTTOM_OF_THE_WELL,
     RCAREA_ICE_CAVERN,
     RCAREA_GERUDO_TRAINING_GROUND,
-    RCAREA_GANONS_CASTLE
+    RCAREA_GANONS_CASTLE,
+    RCAREA_INVALID
 } RandomizerCheckArea;
 
 typedef struct {
@@ -73,8 +74,9 @@ typedef struct {
 } RandomizerCheckObject;
 
 namespace RandomizerCheckObjects {
+    bool AreaIsDungeon(RandomizerCheckArea area);
+    bool AreaIsOverworld(RandomizerCheckArea area);
     std::map<RandomizerCheckArea, std::string> GetAllRCAreas();
     std::unordered_map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     RandomizerCheckObject GetRCObject(RandomizerCheck check);
-
 }
