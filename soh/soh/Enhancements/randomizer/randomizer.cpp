@@ -3747,37 +3747,35 @@ void DrawRandoEditor(bool& open) {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
                     ImGui::BeginChild("ChildRandomizedLocations");
-                    for (auto it : SpoilerfileCheckNameToEnum) {
-                        if (!excludedLocations.count(it.second) && locationSearch.PassFilter(it.first.c_str())) {
-                            if (ImGui::ArrowButton(std::to_string(it.second).c_str(), ImGuiDir_Right)) {
-                                excludedLocations.insert(it.second);
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
+                        // todo fix this, it's hacky and we shouldn't need to iterate through so many times
+                        bool hasItems = false;
+                        for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                            if (!excludedLocations.count(locationIt.second.rc) &&
+                                locationIt.second.rcArea == areaIt.first &&
+                                locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
+                                    hasItems = true;
+                                    break;
                             }
-                            ImGui::SameLine();
-                            ImGui::Text("%s", it.first.c_str());
                         }
 
-                        /* Checkbox UI
-
-                            if (locationSearch.PassFilter(it.first.c_str())) {
-                            // we need the part from ## on to make each button unique in imgui
-                            std::string buttonKey = "->##" + std::to_string(it.second);
-                            // if (ImGui::SmallButton(buttonKey.c_str())) {
-                            //     excludedLocations.insert(it.second);
-                            // }
-                            auto elfound = excludedLocations.find(it.second);
-                            bool varTheImguiCheckboxNeeds = elfound == excludedLocations.end();
-                            if (ImGui::Checkbox(it.first.c_str(), &varTheImguiCheckboxNeeds)) {
-                                if (elfound != excludedLocations.end()) {
-                                    excludedLocations.erase(elfound);
-                                } else {
-                                    excludedLocations.insert(it.second);
+                        if (hasItems) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(areaIt.second.c_str())) {
+                                for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                                    if (!excludedLocations.count(locationIt.second.rc) &&
+                                        locationIt.second.rcArea == areaIt.first &&
+                                        locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Right)) {
+                                            excludedLocations.insert(locationIt.first);
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(locationIt.second.rcShortName.c_str());
+                                    }
                                 }
+                                ImGui::TreePop();
                             }
-                            // ImGui::SameLine();
-                            // ImGui::Text("%s", it.first.c_str());
                         }
-
-                        */
                     }
                     ImGui::EndChild();
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "randomizerTypes.h"
 #include <string>
+#include <map>
 #include <unordered_map>
 
 // Check types based on main settings
@@ -72,6 +73,7 @@ typedef struct {
 } RandomizerCheckObject;
 
 namespace RandomizerCheckObjects {
+    std::map<RandomizerCheckArea, std::string> GetAllRCAreas();
     std::unordered_map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     RandomizerCheckObject GetRCObject(RandomizerCheck check);
 
