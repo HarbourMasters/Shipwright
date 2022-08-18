@@ -3735,9 +3735,6 @@ void DrawRandoEditor(bool& open) {
                     RandomizerCheckObjects::UpdateImGuiVisibility();
                 }
 
-                static ImGuiTextFilter locationSearch;
-                locationSearch.Draw();
-
                 if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Randomized", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3751,6 +3748,9 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
+                    static ImGuiTextFilter locationSearch;
+                    locationSearch.Draw();
+
                     ImGui::BeginChild("ChildRandomizedLocations");
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
                         // todo fix this, it's hacky and copypasta
@@ -3770,8 +3770,8 @@ void DrawRandoEditor(bool& open) {
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                             if (ImGui::TreeNode(areaIt.second.c_str())) {
                                 for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                                    if (!excludedLocations.count(locationIt.second.rc) &&
-                                        locationIt.second.visibleInImgui &&
+                                    if (locationIt.second.visibleInImgui &&
+                                        !excludedLocations.count(locationIt.second.rc) &&
                                         locationIt.second.rcArea == areaIt.first &&
                                         locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
@@ -3793,14 +3793,37 @@ void DrawRandoEditor(bool& open) {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
                     ImGui::BeginChild("ChildVanillaLocations");
-                    for (auto it : SpoilerfileCheckNameToEnum) {
-                        auto elfound = excludedLocations.find(it.second);
-                        if (elfound != excludedLocations.end() && locationSearch.PassFilter(it.first.c_str())) {
-                            if (ImGui::ArrowButton(std::to_string(it.second).c_str(), ImGuiDir_Left)) {
-                                excludedLocations.erase(elfound);
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
+                        // todo fix this, it's hacky and copypasta
+                        bool hasItems = false;
+                        for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                            if (locationIt.second.visibleInImgui &&
+                                excludedLocations.count(locationIt.second.rc) &&
+                                locationIt.second.rcArea == areaIt.first) {
+
+                                hasItems = true;
+                                break;
                             }
-                            ImGui::SameLine();
-                            ImGui::Text("%s", it.first.c_str());
+                        }
+
+                        if (hasItems) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(areaIt.second.c_str())) {
+                                for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                                    auto elfound = excludedLocations.find(locationIt.first);
+                                    if (locationIt.second.visibleInImgui &&
+                                        elfound != excludedLocations.end() &&
+                                        locationIt.second.rcArea == areaIt.first) {
+
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Left)) {
+                                            excludedLocations.erase(elfound);
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(locationIt.second.rcShortName.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
                         }
                     }
                     ImGui::EndChild();                 
@@ -3808,7 +3831,6 @@ void DrawRandoEditor(bool& open) {
                     ImGui::EndTable();
                 }
                 ImGui::PopStyleVar(1);
-                PaddedSeparator();
                 ImGui::EndTabItem();
             } else {
                 locationsTabOpen = false;
