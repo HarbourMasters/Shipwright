@@ -1,5 +1,7 @@
 #include "randomizer_check_objects.h"
 #include <unordered_map>
+#include <map>
+#include <string>
 
 /*
 typedef struct {
@@ -680,14 +682,14 @@ std::unordered_map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     { RC_MARKET_BAZAAR_ITEM_6, {RC_MARKET_BAZAAR_ITEM_6, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 6", "MK Bazaar Item 6"}},
     { RC_MARKET_BAZAAR_ITEM_7, {RC_MARKET_BAZAAR_ITEM_7, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 7", "MK Bazaar Item 7"}},
     { RC_MARKET_BAZAAR_ITEM_8, {RC_MARKET_BAZAAR_ITEM_8, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 8", "MK Bazaar Item 8"}},
-    { RC_KAK_BAZAAR_ITEM_1, {RC_KAK_BAZAAR_ITEM_1, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 1", "Kak Bazaar Item 1"}},
-    { RC_KAK_BAZAAR_ITEM_2, {RC_KAK_BAZAAR_ITEM_2, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 2", "Kak Bazaar Item 2"}},
-    { RC_KAK_BAZAAR_ITEM_3, {RC_KAK_BAZAAR_ITEM_3, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 3", "Kak Bazaar Item 3"}},
-    { RC_KAK_BAZAAR_ITEM_4, {RC_KAK_BAZAAR_ITEM_4, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 4", "Kak Bazaar Item 4"}},
-    { RC_KAK_BAZAAR_ITEM_5, {RC_KAK_BAZAAR_ITEM_5, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 5", "Kak Bazaar Item 5"}},
-    { RC_KAK_BAZAAR_ITEM_6, {RC_KAK_BAZAAR_ITEM_6, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 6", "Kak Bazaar Item 6"}},
-    { RC_KAK_BAZAAR_ITEM_7, {RC_KAK_BAZAAR_ITEM_7, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 7", "Kak Bazaar Item 7"}},
-    { RC_KAK_BAZAAR_ITEM_8, {RC_KAK_BAZAAR_ITEM_8, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_MARKET, "Bazaar Item 8", "Kak Bazaar Item 8"}},
+    { RC_KAK_BAZAAR_ITEM_1, {RC_KAK_BAZAAR_ITEM_1, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 1", "Kak Bazaar Item 1"}},
+    { RC_KAK_BAZAAR_ITEM_2, {RC_KAK_BAZAAR_ITEM_2, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 2", "Kak Bazaar Item 2"}},
+    { RC_KAK_BAZAAR_ITEM_3, {RC_KAK_BAZAAR_ITEM_3, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 3", "Kak Bazaar Item 3"}},
+    { RC_KAK_BAZAAR_ITEM_4, {RC_KAK_BAZAAR_ITEM_4, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 4", "Kak Bazaar Item 4"}},
+    { RC_KAK_BAZAAR_ITEM_5, {RC_KAK_BAZAAR_ITEM_5, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 5", "Kak Bazaar Item 5"}},
+    { RC_KAK_BAZAAR_ITEM_6, {RC_KAK_BAZAAR_ITEM_6, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 6", "Kak Bazaar Item 6"}},
+    { RC_KAK_BAZAAR_ITEM_7, {RC_KAK_BAZAAR_ITEM_7, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 7", "Kak Bazaar Item 7"}},
+    { RC_KAK_BAZAAR_ITEM_8, {RC_KAK_BAZAAR_ITEM_8, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, "Bazaar Item 8", "Kak Bazaar Item 8"}},
     { RC_ZD_SHOP_ITEM_1, {RC_ZD_SHOP_ITEM_1, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, "Shop Item 1", "ZD Shop Item 1"}},
     { RC_ZD_SHOP_ITEM_2, {RC_ZD_SHOP_ITEM_2, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, "Shop Item 2", "ZD Shop Item 2"}},
     { RC_ZD_SHOP_ITEM_3, {RC_ZD_SHOP_ITEM_3, RCVORMQ_VANILLA, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, "Shop Item 3", "ZD Shop Item 3"}},
@@ -745,6 +747,45 @@ std::unordered_map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     { RC_ZR_NEAR_GROTTOS_GOSSIP_STONE, {RC_ZR_NEAR_GROTTOS_GOSSIP_STONE, RCVORMQ_VANILLA, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_RIVER, "Near Grottos Gossip Stone", "ZR Near Grottos Gossip Stone"}},
     { RC_ZR_OPEN_GROTTO_GOSSIP_STONE, {RC_ZR_OPEN_GROTTO_GOSSIP_STONE, RCVORMQ_VANILLA, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_RIVER, "Open Grotto Gossip Stone", "ZR Open Grotto Gossip Stone"}},
 };
+
+std::map<RandomizerCheckArea, std::string> rcAreas = {
+   { RCAREA_KOKIRI_FOREST, "Kokiri Forest"},
+   { RCAREA_LOST_WOODS, "Lost Woods"},
+   { RCAREA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow"},
+   { RCAREA_HYRULE_FIELD, "Hyrule Field"},
+   { RCAREA_LAKE_HYLIA, "Lake Hylia"},
+   { RCAREA_GERUDO_VALLEY, "Gerudo Valley"},
+   { RCAREA_GERUDO_FORTRESS, "Gerudo Fortress"},
+   { RCAREA_WASTELAND, "Desert Wasteland"},
+   { RCAREA_DESERT_COLOSSUS, "Desert Colossus"},
+   { RCAREA_MARKET, "Hyrule Market"},
+   { RCAREA_HYRULE_CASTLE, "Hyrule Castle"},
+   { RCAREA_KAKARIKO_VILLAGE, "Kakariko Village"},
+   { RCAREA_GRAVEYARD, "Graveyard"},
+   { RCAREA_DEATH_MOUNTAIN_TRAIL, "Death Mountain Trail"},
+   { RCAREA_GORON_CITY, "Goron City"},
+   { RCAREA_DEATH_MOUNTAIN_CRATER, "Death Mountain Crater"},
+   { RCAREA_ZORAS_RIVER, "Zora's River"},
+   { RCAREA_ZORAS_DOMAIN, "Zora's Domain"},
+   { RCAREA_ZORAS_FOUNTAIN, "Zora's Fountain"},
+   { RCAREA_LON_LON_RANCH, "Lon Lon Ranch"},
+   { RCAREA_DEKU_TREE, "Deku Tree"},
+   { RCAREA_DODONGOS_CAVERN, "Dodongo's Cavern"},
+   { RCAREA_JABU_JABUS_BELLY, "Jabu Jabu's Belly"},
+   { RCAREA_FOREST_TEMPLE, "Forest Temple"},
+   { RCAREA_FIRE_TEMPLE, "Fire Temple"},
+   { RCAREA_WATER_TEMPLE, "Water Temple"},
+   { RCAREA_SPIRIT_TEMPLE, "Spirit Temple"},
+   { RCAREA_SHADOW_TEMPLE, "Shadow Temple"},
+   { RCAREA_BOTTOM_OF_THE_WELL, "Bottom of the Well"},
+   { RCAREA_ICE_CAVERN, "Ice Cavern"},
+   { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds"},
+   { RCAREA_GANONS_CASTLE, "Ganon's Castle"},
+ };
+
+std::map<RandomizerCheckArea, std::string> RandomizerCheckObjects::GetAllRCAreas() {
+    return rcAreas;
+}
 
 std::unordered_map<RandomizerCheck, RandomizerCheckObject> RandomizerCheckObjects::GetAllRCObjects() {
     return rcObjects;
