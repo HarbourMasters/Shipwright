@@ -1912,6 +1912,10 @@ namespace SohImGui {
                         "(medallions/stones/songs). Note that these fanfares\n"
                         "are longer than usual."
                     );
+                    PaddedEnhancementCheckbox("Disable Random Rupee Names", "gRandoDisableRandomRupeeNames", true, false);
+                    Tooltip(
+                        "Disables the random rupee names in the textbox when obtaining rupees."
+                    );
                     ImGui::EndMenu();
                 }
 

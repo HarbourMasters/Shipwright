@@ -1455,23 +1455,27 @@ extern "C" std::string Randomizer_InsertRupeeName(std::string message, int langu
         "Coins", "Rings", "Gil", "Pokédollars", "Bells", "Orbs", "Bottle Caps", "Simoleons", "Pokémon", "Toys",
         "Smackaroos", "Zorkmids", "Zenny", "Bones"
     };
-    const char* germanRupeeNames[1] = { "Rubine" };
-    const char* frenchRupeeNames[36] = { "Rubis", "Bitcoin", "Bananes", "Euros", "Dollars", "Émeraudes", "Joyaux",
-     "Diamants", "Balles", "Pokémon", "Pièces", "Lunes", "Étoiles", "Dogecoin", "Anneaux", "Radis", "Pokédollars",
-      "Zennies", "Pépètes", "Mailles", "Éthers", "Clochettes", "Capsules", "Gils", "Champignons", "Blés", "Halos",
-      "Munnies", "Orens", "Florens", "Crédits", "Galds", "Bling", "Orbes", "Baguettes", "Croissants" };
+    const char* germanRupeeNames[1] = {
+        "Rubine"
+    };
+    const char* frenchRupeeNames[36] = {
+        "Rubis", "Bitcoin", "Bananes", "Euros", "Dollars", "Émeraudes", "Joyaux",
+        "Diamants", "Balles", "Pokémon", "Pièces", "Lunes", "Étoiles", "Dogecoin", "Anneaux", "Radis", "Pokédollars",
+        "Zennies", "Pépètes", "Mailles", "Éthers", "Clochettes", "Capsules", "Gils", "Champignons", "Blés", "Halos",
+        "Munnies", "Orens", "Florens", "Crédits", "Galds", "Bling", "Orbes", "Baguettes", "Croissants"
+    };
     int randomIndex;
     switch (language) {
         case LANGUAGE_ENG:
-            randomIndex = gSaveContext.naviTimer % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
+            randomIndex = rand() % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
             replaceWith = englishRupeeNames[randomIndex];
             break;
         case LANGUAGE_GER:
-            randomIndex = gSaveContext.naviTimer % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
+            randomIndex = rand() % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
             replaceWith = germanRupeeNames[randomIndex];
             break;
         case LANGUAGE_FRA:
-            randomIndex = gSaveContext.naviTimer % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
+            randomIndex = rand() % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
             replaceWith = frenchRupeeNames[randomIndex];
             break;
     }
@@ -1479,6 +1483,7 @@ extern "C" std::string Randomizer_InsertRupeeName(std::string message, int langu
     size_t pos = message.find(replaceString);
     size_t len = replaceString.length();
     message.replace(pos, len, replaceWith);
+    CustomMessageManager::Instance->FormatCustomMessage(message);
     return message;
 }
 
@@ -1583,8 +1588,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
-        } else if (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
-                   textId == TEXT_HUGE_RUPEE) {
+        } else if (!CVar_GetS32("gRandoDisableRandomRupeeNames", 0) &&
+                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
+                   textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer_GetRupeeMessage(textId);
         }
     }
