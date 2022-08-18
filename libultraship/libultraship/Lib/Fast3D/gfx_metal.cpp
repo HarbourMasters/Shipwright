@@ -677,21 +677,24 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
     tex.width = width;
     tex.height = height;
 
-    if (fb.depth_texture != nullptr)
-        fb.depth_texture->release();
+    // recreate depth texture only if necessary (size changed)
+    if (fb.depth_texture == nullptr || (fb.depth_texture->width() != width || fb.depth_texture->height() != height)) {
+        if (fb.depth_texture != nullptr)
+            fb.depth_texture->release();
 
-    // If possible, we eventually we want to disable this when msaa is enabled since we don't need this depth texture
-    // However, problem is if the user switches to msaa during game, we need a way to then generate it before drawing.
-    MTL::TextureDescriptor* depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
+        // If possible, we eventually we want to disable this when msaa is enabled since we don't need this depth texture
+        // However, problem is if the user switches to msaa during game, we need a way to then generate it before drawing.
+        MTL::TextureDescriptor* depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
 
-    depth_tex_desc->setTextureType(MTL::TextureType2D);
-    depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
-    depth_tex_desc->setSampleCount(1);
-    depth_tex_desc->setArrayLength(1);
-    depth_tex_desc->setMipmapLevelCount(1);
-    depth_tex_desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
+        depth_tex_desc->setTextureType(MTL::TextureType2D);
+        depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
+        depth_tex_desc->setSampleCount(1);
+        depth_tex_desc->setArrayLength(1);
+        depth_tex_desc->setMipmapLevelCount(1);
+        depth_tex_desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
 
-    fb.depth_texture = mctx.device->newTexture(depth_tex_desc);
+        fb.depth_texture = mctx.device->newTexture(depth_tex_desc);
+    }
 
     fb.render_pass_descriptor->depthAttachment()->setTexture(fb.depth_texture);
     fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionClear);
@@ -821,12 +824,12 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         if (msaa_level > 1) {
             fb.render_pass_descriptor->depthAttachment()->setTexture(fb.msaa_depth_texture);
             fb.render_pass_descriptor->depthAttachment()->setResolveTexture(fb.depth_texture);
-            fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionClear);
+            fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionDontCare);
             fb.render_pass_descriptor->depthAttachment()->setStoreAction(MTL::StoreActionMultisampleResolve);
             fb.render_pass_descriptor->depthAttachment()->setClearDepth(1);
         } else {
             fb.render_pass_descriptor->depthAttachment()->setTexture(fb.depth_texture);
-            fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionClear);
+            fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionDontCare);
             fb.render_pass_descriptor->depthAttachment()->setStoreAction(MTL::StoreActionStore);
             fb.render_pass_descriptor->depthAttachment()->setClearDepth(1);
         }
