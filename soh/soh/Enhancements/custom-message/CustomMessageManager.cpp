@@ -80,8 +80,6 @@ bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t tex
     return messageInsertResult.second;
 }
 
-
-
 bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messageEntry) {
     FormatCustomMessage(messageEntry.english, iid);
     FormatCustomMessage(messageEntry.german, iid);

@@ -4629,23 +4629,23 @@ void CreateRupeeMessages() {
     for (u8 rupee : rupees) {
         switch (rupee) {
             case TEXT_BLUE_RUPEE:
-                rupeeText = "\x05\x03 5 %RUPEE%\x05\x00";
+                rupeeText = "\x05\x03 5 %RUPEE% \x05\x00";
                 break;
             case TEXT_RED_RUPEE:
-                rupeeText = "\x05\x01 20 %RUPEE%\x05\x00";
+                rupeeText = "\x05\x01 20 %RUPEE% \x05\x00";
                 break;
             case TEXT_PURPLE_RUPEE:
-                rupeeText = "\x05\x05 50 %RUPEE%\x05\x00";
+                rupeeText = "\x05\x05 50 %RUPEE% \x05\x00";
                 break;
             case TEXT_HUGE_RUPEE:
-                rupeeText = "\x05\x06 200 %RUPEE%\x05\x00";
+                rupeeText = "\x05\x06 200 %RUPEE% \x05\x00";
                 break;
         }
         customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                "You found" + rupeeText + " !",
-                "Du hast" + rupeeText + "  gefunden!",
-                "Vous obtenez" + rupeeText + " !"
+                "You found" + rupeeText + "!",
+                "Du hast" + rupeeText + " gefunden!",
+                "Vous obtenez" + rupeeText + "!"
         });
     }
 }
