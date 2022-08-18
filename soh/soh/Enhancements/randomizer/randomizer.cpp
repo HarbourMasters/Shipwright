@@ -3727,8 +3727,13 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
+            static bool locationsTabOpen = false;
             if (ImGui::BeginTabItem("Locations")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (!locationsTabOpen) {
+                    locationsTabOpen = true;
+                    RandomizerCheckObjects::UpdateImGuiVisibility();
+                }
 
                 static ImGuiTextFilter locationSearch;
                 locationSearch.Draw();
@@ -3751,17 +3756,8 @@ void DrawRandoEditor(bool& open) {
                         // todo fix this, it's hacky and copypasta
                         bool hasItems = false;
                         for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                            if (!excludedLocations.count(locationIt.second.rc) &&
-                                locationIt.second.vOrMQ != RCVORMQ_MQ && //disable all MQ checks until we support them
-                                locationIt.second.rcType != RCTYPE_SHOP && //disable shops until we have shopsanity
-                                locationIt.second.rcType != RCTYPE_GOSSIP_STONE &&
-                                locationIt.second.rcType != RCTYPE_LINKS_POCKET &&
-                                locationIt.second.rcType != RCTYPE_CHEST_GAME &&
-                                ((locationIt.second.rcType != RCTYPE_SKULL_TOKEN) ||
-                                 (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
-                                 ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(areaIt.first)) || // overworld tokens
-                                 ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(areaIt.first)) // dungeon tokens
-                                ) &&
+                            if (locationIt.second.visibleInImgui &&
+                                !excludedLocations.count(locationIt.second.rc) &&
                                 locationIt.second.rcArea == areaIt.first &&
                                 locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
@@ -3775,16 +3771,7 @@ void DrawRandoEditor(bool& open) {
                             if (ImGui::TreeNode(areaIt.second.c_str())) {
                                 for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
                                     if (!excludedLocations.count(locationIt.second.rc) &&
-                                        locationIt.second.vOrMQ != RCVORMQ_MQ && //disable all MQ checks until we support them
-                                        locationIt.second.rcType != RCTYPE_SHOP && //disable shops until we have shopsanity
-                                        locationIt.second.rcType != RCTYPE_GOSSIP_STONE &&
-                                        locationIt.second.rcType != RCTYPE_LINKS_POCKET &&
-                                        locationIt.second.rcType != RCTYPE_CHEST_GAME &&
-                                        ((locationIt.second.rcType != RCTYPE_SKULL_TOKEN) ||
-                                        (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
-                                        ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(areaIt.first)) || // overworld tokens
-                                        ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(areaIt.first)) // dungeon tokens
-                                        ) &&
+                                        locationIt.second.visibleInImgui &&
                                         locationIt.second.rcArea == areaIt.first &&
                                         locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
@@ -3823,6 +3810,8 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopStyleVar(1);
                 PaddedSeparator();
                 ImGui::EndTabItem();
+            } else {
+                locationsTabOpen = false;
             }
 
             if (ImGui::BeginTabItem("Tricks/Glitches")) {

@@ -68,6 +68,7 @@ typedef struct {
     RandomizerCheckVanillaOrMQ vOrMQ;
     RandomizerCheckType rcType;
     RandomizerCheckArea rcArea;
+    bool visibleInImgui;
     std::string rcShortName;
     std::string rcSpoilerName;
 } RandomizerCheckObject;
@@ -77,5 +78,6 @@ namespace RandomizerCheckObjects {
     bool AreaIsOverworld(RandomizerCheckArea area);
     std::map<RandomizerCheckArea, std::string> GetAllRCAreas();
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
+    void UpdateImGuiVisibility(); 
     RandomizerCheckObject GetRCObject(RandomizerCheck check);
 }
