@@ -261,6 +261,36 @@ void Title_Destroy(GameState* thisx) {
     Sram_InitSram(&this->state);
 }
 
+void Title_LoadRando() {
+    bool fileSelectSpoilerFileLoaded;
+    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
+        CVar_SetString("gSpoilerLog", "");
+        fileSelectSpoilerFileLoaded = false;
+    }
+    if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+        (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
+        (!fileSelectSpoilerFileLoaded &&
+            SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+        if (CVar_GetS32("gNewFileDropped", 0) != 0) {
+            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
+        }
+        bool silent = true;
+        if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+            (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+            silent = false;
+        }
+        CVar_SetS32("gNewSeedGenerated", 0);
+        CVar_SetS32("gNewFileDropped", 0);
+        CVar_SetString("gDroppedFile", "");
+        fileSelectSpoilerFileLoaded = false;
+        const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+        Randomizer_LoadSettings(fileLoc);
+        Randomizer_LoadHintLocations(fileLoc);
+        Randomizer_LoadItemLocations(fileLoc, silent);
+        fileSelectSpoilerFileLoaded = true;
+    }
+}
+
 void Title_Init(GameState* thisx) {
     //u32 size = 0;
     TitleContext* this = (TitleContext*)thisx;
@@ -300,6 +330,7 @@ void Title_Init(GameState* thisx) {
             if (Save_Exist(selectedfile) == true) { //The file exist load it
                 saveloading = true;
                 gSaveContext.fileNum = selectedfile;
+                Title_LoadRando();
                 Sram_OpenSave();
                 gSaveContext.gameMode = 0;
                 gSaveContext.magic = gSaveContext.magic;
