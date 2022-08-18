@@ -748,6 +748,13 @@ void DrawFlagsTab() {
             }
             SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
 
+            if (ImGui::Button("Clear Flags")) {
+                act->flags.swch = 0;
+                act->flags.clear = 0;
+                act->flags.collect = 0;
+                act->flags.chest = 0;
+            }
+
             ImGui::EndGroup();
         } else {
             ImGui::Text("Current game state does not have an active scene");
