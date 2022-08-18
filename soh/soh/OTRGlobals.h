@@ -102,6 +102,7 @@ s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemI
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
+void Overlay_DisplayText(float duration, const char* text);
 #endif
 
 #endif

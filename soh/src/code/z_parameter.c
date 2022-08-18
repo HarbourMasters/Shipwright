@@ -1594,6 +1594,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.magicAcquired = true;
         gSaveContext.unk_13F6 = 0x30;
         Magic_Fill(globalCtx);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_DOUBLE_MAGIC) {
         if (!gSaveContext.magicAcquired) {
@@ -1603,6 +1604,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.unk_13F6 = 0x60;
         gSaveContext.magicLevel = 0;
         Magic_Fill(globalCtx);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     }
 
@@ -1610,6 +1612,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.doubleDefense = true;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthAccumulator = 0x140;
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     }
 
@@ -1649,6 +1652,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 }
 
                 gSaveContext.inventory.items[temp + i] = item;
+                PerformAutosave(globalCtx, item);
                 return ITEM_NONE;
             }
         }
@@ -1665,6 +1669,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             func_8006D0AC(globalCtx);
         }
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET];
@@ -1676,6 +1681,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                      gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET], gBitFlags[item - ITEM_SONG_MINUET]);
         osSyncPrintf(VT_RST);
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_ZORA_SAPPHIRE)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
@@ -1684,6 +1690,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         osSyncPrintf("精霊石 = %x\n", gSaveContext.inventory.questItems); // "Spiritual Stones = %x"
         osSyncPrintf(VT_RST);
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item == ITEM_STONE_OF_AGONY) || (item == ITEM_GERUDO_CARD)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_STONE_OF_AGONY + QUEST_STONE_OF_AGONY];
@@ -1692,6 +1699,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         osSyncPrintf("アイテム = %x\n", gSaveContext.inventory.questItems); // "Items = %x"
         osSyncPrintf(VT_RST);
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_SKULL_TOKEN) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SKULL_TOKEN + QUEST_SKULL_TOKEN];
@@ -1702,6 +1710,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         osSyncPrintf("Ｎコイン = %x(%d)\n", gSaveContext.inventory.questItems, gSaveContext.inventory.gsTokens);
         osSyncPrintf(VT_RST);
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
@@ -1725,15 +1734,19 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             Interface_LoadItemIcon1(globalCtx, 0);
         }
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         // Boss Key, Compass, and Dungeon Map exceptions for rando.
@@ -1748,6 +1761,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         } else {
             gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
         // Small key exceptions for rando.
@@ -1755,9 +1769,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
                 if (gSaveContext.inventory.dungeonKeys[13] < 0) {
                     gSaveContext.inventory.dungeonKeys[13] = 1;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 } else {
                     gSaveContext.inventory.dungeonKeys[13]++;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 }
             }
@@ -1765,9 +1781,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
                 if (gSaveContext.inventory.dungeonKeys[6] < 0) {
                     gSaveContext.inventory.dungeonKeys[6] = 1;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 } else {
                     gSaveContext.inventory.dungeonKeys[6]++;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 }
             }
@@ -1775,9 +1793,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
@@ -1785,6 +1805,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
             INV_CONTENT(ITEM_BOW) = ITEM_BOW;
             AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 1);
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOW)++;
@@ -1795,24 +1816,29 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if (item == ITEM_QUIVER_40) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 2);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_QUIVER_50) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 3);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BULLET_BAG_50) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BOMB_BAG_20) {
         if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 0) {
             Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
             INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
             AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 1);
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMB)++;
@@ -1823,37 +1849,46 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if (item == ITEM_BOMB_BAG_30) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BOMB_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BRACELET) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_GAUNTLETS_SILVER) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_GAUNTLETS_GOLD) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_SCALE_SILVER) {
         Inventory_ChangeUpgrade(UPG_SCALE, 1);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_SCALE_GOLDEN) {
         Inventory_ChangeUpgrade(UPG_SCALE, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1861,6 +1896,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_STICK_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1868,6 +1904,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_NUT_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1875,6 +1912,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 2);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 2);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_NUT_UPGRADE_40) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1882,6 +1920,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 3);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 3);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
@@ -1909,6 +1948,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 }
             }
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_STICK) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1961,34 +2001,40 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         if ((AMMO(ITEM_BOMB) += 1) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item >= ITEM_BOMBS_5) && (item <= ITEM_BOMBS_30)) {
         if ((AMMO(ITEM_BOMB) += sAmmoRefillCounts[item - ITEM_BOMBS_5]) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BOMBCHU) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 10;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
     } else if ((item == ITEM_BOMBCHUS_5) || (item == ITEM_BOMBCHUS_20)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
@@ -2000,11 +2046,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         osSyncPrintf("%d本  Item_MaxGet=%d\n", AMMO(ITEM_BOW), CUR_CAPACITY(UPG_QUIVER));
 
+        PerformAutosave(globalCtx, item);
         return ITEM_BOW;
     } else if (item == ITEM_SLINGSHOT) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
         INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
         AMMO(ITEM_SLINGSHOT) = 30;
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_SEEDS) {
         AMMO(ITEM_SLINGSHOT) += 5;
@@ -2015,9 +2063,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (!(gSaveContext.itemGetInf[1] & 8)) {
             gSaveContext.itemGetInf[1] |= 8;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
 
+        PerformAutosave(globalCtx, item);
         return ITEM_SEEDS;
     } else if (item == ITEM_SEEDS_30) {
         AMMO(ITEM_SLINGSHOT) += 30;
@@ -2028,12 +2078,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (!(gSaveContext.itemGetInf[1] & 8)) {
             gSaveContext.itemGetInf[1] |= 8;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
 
+        PerformAutosave(globalCtx, item);
         return ITEM_SEEDS;
     } else if (item == ITEM_OCARINA_FAIRY) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_OCARINA_TIME) {
         INV_CONTENT(ITEM_OCARINA_TIME) = ITEM_OCARINA_TIME;
@@ -2062,6 +2115,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 }
             }
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BEAN) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -2072,17 +2126,21 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             AMMO(ITEM_BEAN)++;
             BEANS_BOUGHT++;
         }
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_HEART_CONTAINER) {
         gSaveContext.healthCapacity += 0x10;
         gSaveContext.health += 0x10;
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
         Health_ChangeBy(globalCtx, 0x10);
+        PerformAutosave(globalCtx, item);
         return item;
     } else if (item == ITEM_MAGIC_SMALL) {
         if (gSaveContext.unk_13F0 != 10) {
@@ -2093,9 +2151,11 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
 
+        PerformAutosave(globalCtx, item);
         return item;
     } else if (item == ITEM_MAGIC_LARGE) {
         if (gSaveContext.unk_13F0 != 10) {
@@ -2106,12 +2166,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
+            PerformAutosave(globalCtx, item);
             return ITEM_NONE;
         }
 
+        PerformAutosave(globalCtx, item);
         return item;
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
         Rupees_ChangeBy(sAmmoRefillCounts[item - ITEM_RUPEE_GREEN + 10]);
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_BOTTLE) {
         temp = SLOT(item);
@@ -2119,6 +2182,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         for (i = 0; i < 4; i++) {
             if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                 gSaveContext.inventory.items[temp + i] = item;
+                PerformAutosave(globalCtx, item);
                 return ITEM_NONE;
             }
         }
@@ -2148,6 +2212,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 }
             }
@@ -2155,6 +2220,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 }
             }
@@ -2176,11 +2242,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
                     }
+                    PerformAutosave(globalCtx, item);
                     return ITEM_NONE;
                 }
             }
         }
 
+        PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     }
 
@@ -2188,52 +2256,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;
 
-    // Autosave after getting items by default (cvars are not shown in the UI)
-    if (CVar_GetS32("gAutosave", 0)) {
-        if (CVar_GetS32("gAutosaveAllItems", 1)) {
-            Gameplay_PerformSave(globalCtx);
-        }
-        else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
-            switch (item) {
-                case ITEM_STICK:
-                case ITEM_NUT:
-                case ITEM_BOMB:
-                case ITEM_BOW:
-                case ITEM_SEEDS:
-                case ITEM_FISHING_POLE:
-                case ITEM_MAGIC_SMALL:
-                case ITEM_MAGIC_LARGE:
-                case ITEM_INVALID_4:
-                case ITEM_INVALID_5:
-                case ITEM_INVALID_6:
-                case ITEM_INVALID_7:
-                case ITEM_HEART:
-                case ITEM_RUPEE_GREEN:
-                case ITEM_RUPEE_BLUE:
-                case ITEM_RUPEE_RED:
-                case ITEM_RUPEE_PURPLE:
-                case ITEM_RUPEE_GOLD:
-                case ITEM_INVALID_8:
-                case ITEM_STICKS_5:
-                case ITEM_STICKS_10:
-                case ITEM_NUTS_5:
-                case ITEM_NUTS_10:
-                case ITEM_BOMBS_5:
-                case ITEM_BOMBS_10:
-                case ITEM_BOMBS_20:
-                case ITEM_BOMBS_30:
-                case ITEM_ARROWS_SMALL:
-                case ITEM_ARROWS_MEDIUM:
-                case ITEM_ARROWS_LARGE:
-                case ITEM_SEEDS_30:
-                    break;
-                default:
-                    Gameplay_PerformSave(globalCtx);
-                    break;
-            }
-        }
-    }
-
+    PerformAutosave(globalCtx, item);
     return temp;
 }
 
@@ -2371,6 +2394,52 @@ u8 Item_CheckObtainability(u8 item) {
     }
 
     return gSaveContext.inventory.items[slot];
+}
+
+void PerformAutosave(GlobalContext* globalCtx, u8 item) {
+    if (CVar_GetS32("gAutosave", 0)) {
+        if (CVar_GetS32("gAutosaveAllItems", 0)) {
+            Gameplay_PerformSave(globalCtx);
+        } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
+            switch (item) {
+                case ITEM_STICK:
+                case ITEM_NUT:
+                case ITEM_BOMB:
+                case ITEM_BOW:
+                case ITEM_SEEDS:
+                case ITEM_FISHING_POLE:
+                case ITEM_MAGIC_SMALL:
+                case ITEM_MAGIC_LARGE:
+                case ITEM_INVALID_4:
+                case ITEM_INVALID_5:
+                case ITEM_INVALID_6:
+                case ITEM_INVALID_7:
+                case ITEM_HEART:
+                case ITEM_RUPEE_GREEN:
+                case ITEM_RUPEE_BLUE:
+                case ITEM_RUPEE_RED:
+                case ITEM_RUPEE_PURPLE:
+                case ITEM_RUPEE_GOLD:
+                case ITEM_INVALID_8:
+                case ITEM_STICKS_5:
+                case ITEM_STICKS_10:
+                case ITEM_NUTS_5:
+                case ITEM_NUTS_10:
+                case ITEM_BOMBS_5:
+                case ITEM_BOMBS_10:
+                case ITEM_BOMBS_20:
+                case ITEM_BOMBS_30:
+                case ITEM_ARROWS_SMALL:
+                case ITEM_ARROWS_MEDIUM:
+                case ITEM_ARROWS_LARGE:
+                case ITEM_SEEDS_30:
+                    break;
+                default:
+                    Gameplay_PerformSave(globalCtx);
+                    break;
+            }
+        }
+    }
 }
 
 void Inventory_DeleteItem(u16 item, u16 invSlot) {

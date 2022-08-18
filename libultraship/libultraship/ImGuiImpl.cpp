@@ -1517,7 +1517,8 @@ namespace SohImGui {
 
                 PaddedEnhancementCheckbox("Autosave", "gAutosave", true, false);
                 Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
-                    "To disable saving when obtaining an item, manually set gAutosaveAllItems and gAutosaveMajorItems to 0\n"
+                    "To disable saving when obtaining a major item, manually set gAutosaveMajorItems to 0\n"
+                    "To enable saving when obtaining any item, manually set gAutosaveAllItems to 1\n"
                     "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
                     "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
 
@@ -2376,6 +2377,9 @@ namespace SohImGui {
 
         // Fix Anubis fireballs
         CVar_SetS32("gAnubisFix", 1);
+
+        // Autosave
+        CVar_SetS32("gAutosave", 1);
     }
 
     void applyEnhancementPresetRandomizer(void) {

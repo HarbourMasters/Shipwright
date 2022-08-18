@@ -57,6 +57,7 @@
 #include <Audio.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include <functions.h>
+#include <ImGuiImpl.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -1569,4 +1570,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         }
     }
     return false;
+}
+
+extern "C" void Overlay_DisplayText(float duration, const char* text) {
+    SohImGui::overlay->TextDrawNotification(duration, true, text);
 }
