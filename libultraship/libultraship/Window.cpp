@@ -12,14 +12,23 @@
 #include "AudioPlayer.h"
 #include "Hooks.h"
 #include "UltraController.h"
-#include "Lib/Fast3D/gfx_pc.h"
-#include "Lib/Fast3D/gfx_sdl.h"
-#include "Lib/Fast3D/gfx_opengl.h"
 #include <SDL2/SDL.h>
 #include <string>
 #include <chrono>
 #include "Console.h"
 #include "ImGuiImpl.h"
+#include "PR/ultra64/gbi.h"
+#include "Lib/Fast3D/gfx_pc.h"
+#include "Lib/Fast3D/gfx_sdl.h"
+#include "Lib/Fast3D/gfx_dxgi.h"
+#include "Lib/Fast3D/gfx_glx.h"
+#include "Lib/Fast3D/gfx_opengl.h"
+#include "Lib/Fast3D/gfx_direct3d11.h"
+#include "Lib/Fast3D/gfx_direct3d12.h"
+#include "Lib/Fast3D/gfx_wiiu.h"
+#include "Lib/Fast3D/gfx_gx2.h"
+#include "Lib/Fast3D/gfx_window_manager_api.h"
+#include <string>
 
 #include <iostream>
 
@@ -206,12 +215,7 @@ extern "C" {
     }
 }
 
-extern GfxWindowManagerAPI gfx_sdl;
-void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend);
-
 namespace Ship {
-
-    int32_t Window::lastScancode;
 
     Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr), ControllerApi(nullptr) {
         WmApi = nullptr;
@@ -265,8 +269,8 @@ namespace Ship {
         }
 
         dwMenubar = pConf->getBool("Window.Options", false);
-        const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
-        SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
+        gfxBackend = pConf->getString("Window.GfxBackend");
+        InitializeWindowManager();
 
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
@@ -332,12 +336,7 @@ namespace Ship {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
 
-        // OTRTODO: Rig with Kirito's console?
-        //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
-        //    ToggleConsole();
-        //}
-
-        lastScancode = -1;
+        GlobalCtx2::GetInstance()->GetWindow()->SetLastScancode(-1);
 
         bool bIsProcessed = false;
         auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
@@ -361,7 +360,7 @@ namespace Ship {
             }
         }
 
-        lastScancode = dwScancode;
+        GlobalCtx2::GetInstance()->GetWindow()->SetLastScancode(dwScancode);
 
         return bIsProcessed;
     }
@@ -402,6 +401,52 @@ namespace Ship {
         APlayer = std::make_shared<PulseAudioPlayer>();
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
+#endif
+    }
+
+    void Window::InitializeWindowManager() {
+        // First set default
+#ifdef ENABLE_OPENGL
+        RenderingApi = &gfx_opengl_api;
+#if defined(__linux__) && defined(X11_SUPPORTED)
+        // LINUX_TODO:
+        // *WmApi = &gfx_glx;
+        WmApi = &gfx_sdl;
+#else
+        WmApi = &gfx_sdl;
+#endif
+#endif
+#ifdef ENABLE_DX12
+    	RenderingApi = &gfx_direct3d12_api;
+        WmApi = &gfx_dxgi_api;
+#endif
+#ifdef ENABLE_DX11
+    	RenderingApi = &gfx_direct3d11_api;
+        WmApi = &gfx_dxgi_api;
+#endif
+#ifdef __WIIU__
+        RenderingApi = &gfx_gx2_api;
+        WmApi = &gfx_wiiu;
+#endif
+
+        // Config can override
+#ifdef ENABLE_DX11
+        if (gfxBackend == "dx11") {
+            RenderingApi = &gfx_direct3d11_api;
+            WmApi = &gfx_dxgi_api;
+        }
+#endif
+#ifdef ENABLE_OPENGL
+        if (gfxBackend == "sdl") {
+            RenderingApi = &gfx_opengl_api;
+            WmApi = &gfx_sdl;
+        }
+#if defined(__linux__) && defined(X11_SUPPORTED)
+        if (gfxBackend == "glx") {
+            RenderingApi = &gfx_opengl_api;
+            WmApi = &gfx_glx;
+        }
+#endif
 #endif
     }
 

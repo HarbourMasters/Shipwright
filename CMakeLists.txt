@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
@@ -18,13 +18,13 @@ set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-include(cmake/automate-vcpkg.cmake)
+include(CMake/automate-vcpkg.cmake)
 
 set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng)
+vcpkg_install_packages(zlib bzip2 libpng SDL2 GLEW glfw3)
 endif()
 
 ################################################################################
@@ -138,15 +138,15 @@ find_package(Python3 COMPONENTS Interpreter)
 
 add_custom_target(
     ExtractAssets
-    COMMAND ${CMAKE_COMMAND} -Dprogram=$<TARGET_FILE:ZAPD> -P ${CMAKE_SOURCE_DIR}/CMake/genscript.cmake
-    COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f oot.otr
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>"
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_SOURCE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_BINARY_DIR}/soh
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
-    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
