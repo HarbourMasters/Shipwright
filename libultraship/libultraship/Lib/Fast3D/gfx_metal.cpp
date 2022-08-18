@@ -440,8 +440,6 @@ static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint3
     // state before setting the actual one.
     texture_data->sampler->release();
 
-    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
-
     MTL::SamplerDescriptor* sampler_descriptor = MTL::SamplerDescriptor::alloc()->init();
     MTL::SamplerMinMagFilter filter = linear_filter && mctx.current_filter_mode == FILTER_LINEAR ? MTL::SamplerMinMagFilterLinear : MTL::SamplerMinMagFilterNearest;
     sampler_descriptor->setMinFilter(filter);
@@ -451,8 +449,7 @@ static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint3
     sampler_descriptor->setRAddressMode(MTL::SamplerAddressModeRepeat);
 
     texture_data->sampler = mctx.device->newSamplerState(sampler_descriptor);
-
-    autorelease_pool->release();
+    sampler_descriptor->release();
 }
 
 static void gfx_metal_set_depth_test_and_mask(bool depth_test, bool depth_mask) {
@@ -500,6 +497,8 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
         MTL::DepthStencilState* depth_stencil_state = mctx.device->newDepthStencilState(depth_descriptor);
         current_framebuffer.command_encoder->setDepthStencilState(depth_stencil_state);
+
+        depth_descriptor->release();
     }
 
     if (current_framebuffer.last_zmode_decal != mctx.zmode_decal) {

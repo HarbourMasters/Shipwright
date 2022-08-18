@@ -271,7 +271,7 @@ MTL::VertexDescriptor* gfx_metal_build_shader(char buf[4096], size_t& num_floats
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
 
-            len += sprintf(buf + len, "    float2 texSize%d = float2(int2(uTex%d.get_width(), uTex%d.get_height()));\n", i, i, i);
+            len += sprintf(buf + len, "    float2 texSize%d = float2(uTex%d.get_width(), uTex%d.get_height());\n", i, i, i);
 
             if (!s && !t) {
                 len += sprintf(buf + len, "    float4 texVal%d = hookTexture2D(uTex%d, uTex%dSmplr, in.texCoord%d, texSize%d);\n", i, i, i, i, i);

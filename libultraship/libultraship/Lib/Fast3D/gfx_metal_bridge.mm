@@ -45,9 +45,9 @@ NS::String* string_with_format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    NSString* string = [[NSString alloc] initWithFormat:@(format) arguments:args];
+    NSString* string = [NSString stringWithFormat:@(format), args];
     va_end(args);
-    return (__bridge_retained NS::String*)string;
+    return (__bridge NS::String*)string;
 }
 
 #endif
