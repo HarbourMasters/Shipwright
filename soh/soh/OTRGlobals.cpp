@@ -1456,7 +1456,10 @@ extern "C" std::string Randomizer_InsertRupeeName(std::string message, int langu
         "Smackaroos", "Zorkmids", "Zenny", "Bones"
     };
     const char* germanRupeeNames[1] = { "Rubine" };
-    const char* frenchRupeeNames[1] = { "Rubis" };
+    const char* frenchRupeeNames[36] = { "Rubis", "Bitcoin", "Bananes", "Euros", "Dollars", "Émeraudes", "Joyaux",
+     "Diamants", "Balles", "Pokémon", "Pièces", "Lunes", "Étoiles", "Dogecoin", "Anneaux", "Radis", "Pokédollars",
+      "Zennies", "Pépètes", "Mailles", "Éthers", "Clochettes", "Capsules", "Gils", "Champignons", "Blés", "Halos",
+      "Munnies", "Orens", "Florens", "Crédits", "Galds", "Bling", "Orbes", "Baguettes", "Croissants" };
     int randomIndex;
     switch (language) {
         case LANGUAGE_ENG:
