@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 SNAME="$(dirname $0)"
 export DATA_SHARE="$HOME/Library/Application Support/com.shipofharkinian.soh"
