@@ -1696,15 +1696,19 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 		
-               if (ImGui::BeginMenu("Warp to...")) {
-                    for (int32_t i = 1; i < 21; i++) {
-                        int32_t warpInd = 80 + i;
-                        if (i == 20) {
-                            warpInd = 67;
+
+                if (ImGui::BeginMenu("Warp to...")) {
+                    if (ImGui::BeginMenu("Overworld...")) {
+                        for (int32_t i = 1; i < 21; i++) {
+                            int32_t warpInd = 80 + i;
+                            if (i == 20) {
+                                warpInd = 67;
+                            }
+                            if (ImGui::Button(SohUtils::GetSceneName(warpInd).c_str())) {
+                                CVar_SetS32("gWarpCheat", i);
+                            }
                         }
-                        if (ImGui::Button(SohUtils::GetSceneName(warpInd).c_str())) {
-                            CVar_SetS32("gWarpCheat", i);
-                        }
+                        ImGui::EndMenu();
                     }
                     if (ImGui::BeginMenu("Dungeons...")) {
                         int32_t warpInd = 0;
@@ -1731,8 +1735,24 @@ namespace SohImGui {
                         ImGui::EndMenu();
                     }
 
+                    if (ImGui::BeginMenu("Shops...")) {
+                        for (int32_t i = 44; i < 49; i++) {
+                            if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
+                                CVar_SetS32("gWarpCheat", i+13);
+                            }
+                        }
+                        if (ImGui::BeginMenu("Child Link Only...")) {
+                            for (int32_t i = 49; i < 51; i++) {
+                                if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
+                                    CVar_SetS32("gWarpCheat", i + 13);
+                                }
+                            }
+                            ImGui::EndMenu();
+                        }
+                        ImGui::EndMenu();
+                    }
                     if (ImGui::BeginMenu("Grottos...")) {
-		    	if (ImGui::Button("Fairy Fountain")) {
+                        if (ImGui::Button("Fairy Fountain")) {
                             CVar_SetS32("gWarpGrottoCheat", 1);
                         }
                         if (ImGui::Button("Hyrule Field near Kakariko")) {
@@ -1837,7 +1857,7 @@ namespace SohImGui {
 
                     ImGui::EndMenu();
                 }
-
+		
                 PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
                 Tooltip("Allows you to walk through walls");
                 PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
