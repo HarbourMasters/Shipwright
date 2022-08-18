@@ -2,7 +2,6 @@
 #include "randomizerTypes.h"
 #include <string>
 #include <map>
-#include <unordered_map>
 
 // Check types based on main settings
 typedef enum {
@@ -77,6 +76,6 @@ namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);
     bool AreaIsOverworld(RandomizerCheckArea area);
     std::map<RandomizerCheckArea, std::string> GetAllRCAreas();
-    std::unordered_map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
+    std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     RandomizerCheckObject GetRCObject(RandomizerCheck check);
 }

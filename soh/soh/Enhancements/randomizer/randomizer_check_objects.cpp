@@ -1,5 +1,4 @@
 #include "randomizer_check_objects.h"
-#include <unordered_map>
 #include <map>
 #include <string>
 
@@ -13,7 +12,7 @@ typedef struct {
     std::string rcSpoilerName;
 } RandomizerCheckObject;
 */
-std::unordered_map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
+std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     { RC_UNKNOWN_CHECK, {RC_UNKNOWN_CHECK, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_INVALID, "Invalid Location", "Invalid Location"}},
     { RC_KF_KOKIRI_SWORD_CHEST, {RC_KF_KOKIRI_SWORD_CHEST, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Kokiri Sword Chest", "KF Kokiri Sword Chest"}},
     { RC_KF_MIDOS_TOP_LEFT_CHEST, {RC_KF_MIDOS_TOP_LEFT_CHEST, RCVORMQ_VANILLA, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, "Mido Top Left Chest", "KF Mido Top Left Chest"}},
@@ -806,7 +805,7 @@ std::map<RandomizerCheckArea, std::string> RandomizerCheckObjects::GetAllRCAreas
     return rcAreas;
 }
 
-std::unordered_map<RandomizerCheck, RandomizerCheckObject> RandomizerCheckObjects::GetAllRCObjects() {
+std::map<RandomizerCheck, RandomizerCheckObject> RandomizerCheckObjects::GetAllRCObjects() {
     return rcObjects;
 }
 
