@@ -1065,7 +1065,12 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->canBuyFunc = itemEntry->canBuyFunc;
         this->itemGiveFunc = itemEntry->itemGiveFunc;
         this->buyEventFunc = itemEntry->buyEventFunc;
-        this->basePrice = itemEntry->price;
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+            this->getItemId == GI_BOMBCHUS_10) {
+            this->basePrice = 99;
+        } else {
+            this->basePrice = itemEntry->price;
+        }
         this->itemCount = itemEntry->count;
         this->hiliteFunc = itemEntry->hiliteFunc;
         this->giDrawId = itemEntry->giDrawId;

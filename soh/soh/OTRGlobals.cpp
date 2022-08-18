@@ -1540,6 +1540,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
+        } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+                   (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
