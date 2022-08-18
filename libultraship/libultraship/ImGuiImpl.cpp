@@ -1696,7 +1696,6 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 		
-
                 if (ImGui::BeginMenu("Warp to...")) {
                     if (ImGui::BeginMenu("Overworld...")) {
                         for (int32_t i = 1; i < 21; i++) {
@@ -1711,25 +1710,10 @@ namespace SohImGui {
                         ImGui::EndMenu();
                     }
                     if (ImGui::BeginMenu("Dungeons...")) {
-                        int32_t warpInd = 0;
-                        for (int32_t i = 0; i < 12; i++) {
-                            if (i < 4) {
-                                warpInd = 66 + (i * 2);
-                            }
-                            else if (i < 7) {
-                                warpInd = 77 + ((i - 4) * 2);
-                            }
-                            else if (i < 9) {
-                                warpInd = 75 - (i - 7);
-                            }
-                            else if (i < 11) {
-                                warpInd = 86 + ((i - 9) * 2);
-                            }
-                            else {
-                                warpInd = 65;
-                            }
-                            if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
-                                CVar_SetS32("gWarpCheat", warpInd);
+                        for (int i = 21; i < 33; i++) {
+                            int32_t sceneInd = i - 21;
+                            if (ImGui::Button(SohUtils::GetSceneName(sceneInd).c_str())) {
+                                CVar_SetS32("gWarpCheat", i);
                             }
                         }
                         ImGui::EndMenu();
@@ -1738,13 +1722,13 @@ namespace SohImGui {
                     if (ImGui::BeginMenu("Shops...")) {
                         for (int32_t i = 44; i < 49; i++) {
                             if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
-                                CVar_SetS32("gWarpCheat", i+13);
+                                CVar_SetS32("gWarpCheat", i - 11);
                             }
                         }
                         if (ImGui::BeginMenu("Child Link Only...")) {
                             for (int32_t i = 49; i < 51; i++) {
                                 if (ImGui::Button(SohUtils::GetSceneName(i).c_str())) {
-                                    CVar_SetS32("gWarpCheat", i + 13);
+                                    CVar_SetS32("gWarpCheat", i - 11);
                                 }
                             }
                             ImGui::EndMenu();
@@ -1823,31 +1807,31 @@ namespace SohImGui {
                             if (ImGui::Button(SohUtils::GetSceneName(81).c_str())) {
                                 CVar_SetS32("gWarpGrottoCheat", 4);
                             }
-                            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) { //ZR
+                            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 31);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(86).c_str())) { //Sacred Forest
+                            else if (ImGui::Button(SohUtils::GetSceneName(86).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 32);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(87).c_str())) { //lake Hylia
+                            else if (ImGui::Button(SohUtils::GetSceneName(87).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 33);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(90).c_str())) { //Gerudo Valley
+                            else if (ImGui::Button(SohUtils::GetSceneName(90).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 34);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) { //Lost woods
+                            else if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 35);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) { //Death Mountain Crater
+                            else if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 36);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(93).c_str())) { //Gerudo Fortress
+                            else if (ImGui::Button(SohUtils::GetSceneName(93).c_str())) {
                                 CVar_SetS32("gWarpGrottoCheat", 37);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(99).c_str())) { //Lon Lon Ranch
+                            else if (ImGui::Button(SohUtils::GetSceneName(99).c_str())) { 
                                 CVar_SetS32("gWarpGrottoCheat", 38);
                             }
-                            else if (ImGui::Button(SohUtils::GetSceneName(92).c_str())) { //Desert Colossus.
+                            else if (ImGui::Button(SohUtils::GetSceneName(92).c_str())) {
                                 CVar_SetS32("gWarpGrottoCheat", 39);
                             }
                             ImGui::EndMenu();

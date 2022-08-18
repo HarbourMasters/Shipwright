@@ -1,7 +1,6 @@
 #include <string.h>
 #include "global.h"
 #include "vt.h"
-#include "../overlays/gamestates/ovl_select/z_select.c"
 
 SpeedMeter D_801664D0;
 struct_801664F0 D_801664F0;
@@ -428,22 +427,29 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gPrevTime", -1);
     }
     
+    //Note: These can be removed in the future, I put them here due to linker errors I kept having.
+    static s16 entrances[] = {
+        0x036D, 0x003F, 0x0598, 0x059C, 0x05A0, 0x05A4, 0x05A8, 0x05AC,
+        0x05B0, 0x05B4, 0x05B8, 0x05BC, 0x05C0, 0x05C4, 0x05FC,
+    };
+
+    int16_t sScenes[41] = { 0x00CD, 0x00DB, 0x00E4, 0x00EA, 0x00EE, 0x00FC, 0x0102, 0x0108, 0x010E, 0x0117,
+                            0x011E, 0x0123, 0x0129, 0x0130, 0x0138, 0x013D, 0x0147, 0x014D, 0x0157, 0x0053,
+                            0x0000, 0x0004, 0x0028, 0x0169, 0x0165, 0x0010, 0x0082, 0x0037, 0x0098, 0x0088,
+                            0x0467, 0x0008, 0x00B7, 0x00C1, 0x037C, 0x0380, 0x0384, 0x0388, 0x0390};
     //Warp Logic
     if (gGlobalCtx) {
-
-        //Logic for General Warping
         if (CVar_GetS32("gWarpCheat", 0) != 0) {
             int temp = CVar_GetS32("gWarpCheat", 0);
-            gGlobalCtx->nextEntranceIndex = sScenes[CVar_GetS32("gWarpCheat", 0) - 1].entranceIndex;
+            gGlobalCtx->nextEntranceIndex = sScenes[CVar_GetS32("gWarpCheat", 0) - 1];
             CVar_SetS32("gWarpCheat", 0);
             gGlobalCtx->sceneLoadFlag = 0x14;
             gGlobalCtx->fadeTransition = 11;
             gSaveContext.nextTransition = 11;
         }
 
-        //Logic for Grotto Warping
         if (CVar_GetS32("gWarpGrottoCheat", 0) != 0) {
-            //0 = Fairy Fountain - Leaving this out for now since they aren't necessary for progression. Can be added in later.
+            //0 = Fairy Fountain
             //1 = Single Treasure Chest.(Covered in gWarpChestGrottoCheat)
             //2 = 1 skultulla, one gold skultulla. (HF near Kakoriko Village)
             //3 = 1 Deku scrub. Water puddles. (Only in HF between fences to lake hylia)
