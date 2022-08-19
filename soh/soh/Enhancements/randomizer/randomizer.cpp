@@ -67,6 +67,8 @@ Randomizer::Randomizer() {
         for (auto locationIt : areaIt.second) {
             SpoilerfileCheckNameToEnum[locationIt.rcSpoilerName] = locationIt.rc;
         }
+        SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
+        SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
     }
 }
 
@@ -2828,13 +2830,6 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
-    cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak10SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak20SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak30SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak40SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak50SkullReward", 0);
-
     // RANDOTODO implement chest minigame shuffle with keysanity
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
