@@ -525,6 +525,582 @@ void DrawInfoTab() {
     ImGui::PopItemWidth();
 }
 
+struct warps {
+    const char* category;
+    const char* locations[20];
+    const int32_t indexes[20];
+
+    int32_t getSize() {
+        int i = 0;
+        while (locations[i] != NULL) {
+            i = i + 1;
+        }
+        return (i);
+    }
+
+    int32_t* getIndexSub(char* index) {
+        static int32_t returnVals[20];
+        int j = 0;
+        for (int i = 0; i < getSize(); i++) {
+            std::string temp(locations[i]);
+            
+            if (temp.find(index) != -1) {
+                returnVals[j] = indexes[i];
+                j++;
+            }
+        }
+        return (returnVals);
+    }
+    bool getInd(char* index, int32_t i) {
+        static int32_t returnVal;
+        std::string temp(locations[i]); 
+        if (temp.find(index) != -1) {
+            return true;
+        }
+        return false;
+    }
+
+    int32_t getIndex(char* index) {
+        for (int i = 0; i < getSize(); i++) {
+            if (index == locations[i]) {
+                return indexes[i];
+            }
+        }
+        return 0;
+    }
+    char* getLocation(int32_t index) {
+        static char* returnVal;
+        for (int i = 0; i < getSize(); i++) {
+            if (index == indexes[i]) {
+                returnVal = (char*)locations[i];
+                return returnVal;
+            }
+        }
+        return (char*)"NONE";
+    }
+ };
+
+struct warps warpMap[] = {
+    { "Kokiri Forest",
+      { "From Deku Tree", "From Bridge", "From Links House", "From Kokiri Shop", "From Know-It-All Brothers House",
+        "From Lost Woods", "From Twins House", "From Midos House", "From Sarias House", "On Links House",
+        "Cutscene Entrance", "After Deku Tree Death Scene" },
+      { 0x0209, 0x020D, 0x0211, 0x0266, 0x026A, 0x0286, 0x033C, 0x0443, 0x0447, 0x0338, 0x00EE, 0x0457 } },
+    { "Kokiri Buildings",
+      { "Kokiri Shop", "Twins House", "Know-It-All Brothers House", "Links House", "Links Bed", "Midos House",
+        "Sarias House" },
+      { 0x00C1, 0x009C, 0x00C9, 0x0272, 0x00BB, 0x0433, 0x0437 } },
+    { "Lost Woods",
+      { "From Kokiri Forest", "From Sacred Meadow", "From Goron City", "From Zora River",
+        "Entrance Opposite Main Entrance", "Near Skull Kid", "Owl Cutscene" },
+      { 0x011E, 0x01A9, 0x04D6, 0x04DA, 0x01B1, 0x01AD, 0x04D2 } },
+    { "Lost Woods - Bridge", { "From Hyrule Field", "From Kokiri Forest" }, { 0x04DE, 0x05E0 } },
+    { "Sacred Forest Meadow",
+      { "From Lost Woods", "From Forest Temple", "Minuet of Forest Warp", "SBlue Warp from Phantom Ganon" },
+      { 0x00FC, 0x0215, 0x0600, 0x0608 } },
+    { "Hyrule Field",
+      { "From Kakariko Village", "From Zora River (Land)", "From Zora River (Water)", "From Lost Woods",
+        "From Lake Hylia", "From Gerudo Valley", "From Lon Lon Ranch", "From Market Entrance",
+        "Owl Drop From Lake Hylia", "Lon Lon Ranch Horse Jump (SOUTH)", "Lon Lon Ranch Horse Jump (WEST)",
+        "Lon Lon Ranch Horse Jump (EAST)", "Lon Lon Ranch Horse Jump (FRONT)", "Ocarina of Time Scene",
+        "After Learning Zeldas Lullaby", "After Zelda Escapes w/ Impa" },
+      { 0x017D, 0x0181, 0x0311, 0x0185, 0x0189, 0x018D, 0x01F9, 0x01FD, 0x027E, 0x028A, 0x028E, 0x0292, 0x0292, 0x050F,
+        0x0594, 0x00CD } },
+    { "Lon Lon Ranch",
+      { "From Hyrule Field", "From Ranch House", "From Stables", "Epona Song Cutscene", "South Gate", "West Gate",
+        "Inside Horse Track", "Horse Race Minigame" },
+      { 0x0157, 0x0378, 0x042F, 0x02AE, 0x02E2, 0x02E6, 0x04CA, 0x04CE } },
+     { "Lon Lon Ranch Buildings",
+       { "Ranch House", "Stables", "Back Tower", "Chicken Minigame" },
+       { 0x004F, 0x02F9, 0x05D0, 0x05E4 } },
+    { "Castle Town",
+      { "From Entrance", "From Shooting Gallery", "From Happy Mask Shop", "From Treasure Box", "From Castle",
+        "From Temple of Time", "From Back Alley (Right)", "From Back Alley (Left)", "From Potion Shop (Castle Town)", "From Bazaar Shop (Castle Town)",
+        "From bomchu Bowling" },
+      { 0x00B1, 0x01CD, 0x01D1, 0x01D5, 0x025A, 0x025E, 0x0262, 0x029E, 0x02A2, 0x03B8, 0x03BC } },
+    { "Market Entrance", { "From Market", "From Pot House", "From Hyrule Field" }, { 0x0033, 0x026E, 0x0276 } },
+    { "Back Alley (Right)", { "From Market", "From Alley House" }, { 0x00AD, 0x0067 } },
+    { "Back Alley (Left)", { "From Market", "From Dog House", "From Bombchu Shop" }, { 0x029A, 0x038C, 0x03C0 } },
+    { "Castle Town Buildings",
+      { "Pot House", "Shooting Gallery Minigame (Castle Town)", "Treasure Box Minigame", "Potion Shop (Castle Town)", "Bombchu Bowling Minigame", "Bazaar Shop (Castle Town)",
+        "Happy Mask Shop", "Bombchu Shop", "Dog House", "Alley House" },
+      { 0x007E, 0x016D, 0x0063, 0x0388, 0x0507, 0x052C, 0x0530, 0x0528, 0x0398, 0x043B } },
+    { "Temple of Time",
+      { "From Outside", "From Master Sword Pedestal", "From First Master Sword Pull", "Prelude of Light Warp",
+        "In Front of Spiritual Stones", "After Light Arrow Cutscene", "Outside Temple of Time - From Market",
+        "Outside Temple of Time - From Temple of Time" },
+      { 0x0053, 0x02CA, 0x0324, 0x05F4, 0x0320, 0x058C, 0x0171, 0x0472 } },
+    { "Hyrule Castle",
+      { "From Market", "From Castle Courtyard", "From Great Fairy", "From Courtyard Guard Capture", "Great Fairy" },
+      { 0x0138, 0x023D, 0x0340, 0x04FA, 0x04C2 } },
+    { "Courtyard",
+      { "From Crawlspace", "From Zelda", "Zeldas Courtyard", "Zeldas Courtyard after Cutscene" },
+      { 0x007A, 0x0296, 0x0400, 0x05F0 } },
+    { "Kakariko Village",
+      { "From Hyrule Field", "From Death Mountain", "From Graveyard", "From Bazaar (Kakariko)", "From Bottom of Well",
+        "From Bosss House", "From Potion Shop (Kakariko)", "From Potion Shop (Kakariko - Back Entrance)", "From Grannys Potion Shop",
+        "From Impas House", "From Impas House (Cow)", "From Windmill", "From Shooting Gallery", "From Skulltula House",
+        "Owl Drop Spot from Death Mountain", "After Sheik Cutscene" },
+      { 0x00DB, 0x0191, 0x0195, 0x0201, 0x02A6, 0x0349, 0x044B, 0x04FF, 0x034D, 0x0345, 0x05DC, 0x0351, 0x0463, 0x04EE,
+        0x0554, 0x0513 } },
+    { "Kakariko Buildings",
+      { "Shooting Gallery Minigame (Kakariko)", "Grannys Potion Shop", "Bazaar Shop (Kakariko)", "Potion Shop (Kakariko)", "Potion Shop (Kakariko- Back Entrance)", "Impas House",
+        "Impas House (Cow)", "Bosss House", "Windmill", "Skulltula House" },
+      { 0x003B, 0x0072, 0x00B7, 0x0384, 0x03EC, 0x039C, 0x05C8, 0x02FD, 0x0453, 0x0550 } },
+    { "Graveyard",
+      { "From Kakariko", "From Shadow Temple", "From Gravekeepers Hut", "From Dampes Grave", "From Shield Grave",
+        "From Redead Grave", "From Royal Familys Tomb", "Nocturne of Shadow Warp", "Blue Warp from Bongo Bongo" },
+      { 0x00E4, 0x0205, 0x0355, 0x0359, 0x035D, 0x0361, 0x050B, 0x0568, 0x0580 } },
+    { "Graves",
+      { "Dampes Grave Minigame", "Royal Familys Tomb", "Royal Familys Tomb, Suns Song Cutscene" },
+      { 0x044F, 0x002D, 0x0574 } },
+    { "Death Mountain",
+      { "From Kakariko Village", "From Goron City", "From Death Mountain Crater", "From Dodongos Cavern",
+        "From Great Fairy", "Great Fairy", "Goron Ruby Cutscene" },
+      { 0x013D, 0x01B9, 0x01BD, 0x0242, 0x045B, 0x0315, 0x047A } },
+    { "Goron City",
+      { "From Death Mountain Trail", "From Death Mountain Crater", "From Goron City Shop", "From Lost Woods",
+        "Goron City Shop" },
+      { 0x014D, 0x01C1, 0x03FC, 0x04E2, 0x037C } },
+    { "Death Mountain Crater",
+      { "From Death Mountain Trail", "From Goron City", "From Fire Temple", "From Fairy Fountain", "Great Fairy",
+        "Bolero of Fire Warp", "Blue Warp from Volvagia" },
+      { 0x0147, 0x0246, 0x024A, 0x0482, 0x04BE, 0x04F6, 0x0564 } },
+    { "Zora River",
+      { "From Hyrule Field (Land)", "From Hyrule Field (Water)", "From Zoras Fountain", "From Zoras Domain",
+        "From Lost Woods" },
+      { 0x00EA, 0x01D9, 0x0199, 0x019D, 0x01DD } },
+    { "Zoras Domain",
+      { "From Zora River", "From Zoras Fountain", "From Lake Hylia", "From Zora Shop", "Zora Shop" },
+      { 0x0108, 0x01A1, 0x0328, 0x03C4, 0x0380 } },
+    { "Zoras Fountain",
+      { "From Zoras Domain", "From Jabu Jabu", "From Ice Cavern", "From Fairy Fountain", "Great Fairy",
+        "Facing Fallen Tree", "Saphire Cutscene" },
+      { 0x0225, 0x0221, 0x03D4, 0x0394, 0x0371, 0x03D8, 0x010E } },
+    { "Lake Hylia",
+      { "From Hyrule Field", "From Gerudo Valley", "From Water Temple", "From Fishing Pond", "From Laboratory",
+        "From Zoras Domain", "Sheik After Water Temple Cutscene", "Serenade Of Water Warp", "Blue Warp from Morpha" },
+      { 0x0102, 0x0219, 0x021D, 0x0309, 0x03CC, 0x0560, 0x04E6, 0x0604, 0x060C } },
+    { "Lake Hylia Buildings", { "Laboratory", "Fishing Pond Minigame" }, { 0x0043, 0x045F } },
+    { "Gerudo Valley",
+      { "From Hyrule Field", "From Gerudo Fortress", "Thrown out of Fortress", "Fortress loading zone" },
+      { 0x0117, 0x022D, 0x01A5, 0x0229 } },
+    { "Gerudo Fortress",
+      { "From Gerudo Valley", "From Traning Grounds", "From Haunted Wasteland", "From Thieves Hideout (1)",
+        "From Thieves Hideout (2)", "From Thieves Hideout (3)", "From Thieves Hideout (4)", "From Thieves Hideout (5)",
+        "From Thieves Hideout (6)", "From Thieves Hideout (7)", "From Thieves Hideout (8)", "From Thieves Hideout (9)",
+        "From Thieves Hideout (10)", "From Thieves Hideout (11)", "From Thieves Hideout (12)",
+        "From Thieves Hideout (13)", "Horseback Riding Minigame", "Captured First Time", "Captured Second Time" },
+      { 0x0129, 0x03A8, 0x03AC, 0x0231, 0x0235, 0x0239, 0x02AA, 0x02BA, 0x02BE, 0x02C2, 0x02C6, 0x02D2, 0x02D6, 0x02DA,
+        0x02DE, 0x03A4, 0x03B0, 0x03B4, 0x05F8 } },
+    { "Thieves Hideout",
+      { "From Gerudo Fortress (1)", "From Gerudo Fortress (2)", "From Gerudo Fortress (3)", "From Gerudo Fortress (4)",
+        "From Gerudo Fortress (5)", "From Gerudo Fortress (6)", "From Gerudo Fortress (7)", "From Gerudo Fortress (8)",
+        "From Gerudo Fortress (9)", "From Gerudo Fortress (10)", "From Gerudo Fortress (11)",
+        "From Gerudo Fortress (12)", "From Gerudo Fortress (13)" },
+      { 0x0486, 0x048A, 0x048E, 0x0492, 0x0496, 0x049A, 0x049E, 0x04A2, 0x04A6, 0x04AA, 0x04AE, 0x04B2, 0x0570 } },
+    { "Haunted Wasteland", { "From Gerudo Fortress", "From Desert Colossus" }, { 0x0130, 0x0365 } },
+    { "Desert Colossus",
+      { "From Haunted Wasteland", "From Spirit Temple", "From Spirit Temple (Left Hand)",
+        "From Spirit Temple (Right Hand)", "From Fairy Fountain", "Great Fairy", "After Sheik Cutscene",
+        "Naboora Capture Cutscene", "Requiem of Spirit Warp", "Blue Warp from Twinrova" },
+      { 0x0123, 0x01E1, 0x01E5, 0x01E9, 0x057C, 0x0588, 0x01ED, 0x01F5, 0x01F1, 0x0610 } },
+    { "Deku Tree",
+      { "Deku Tree - Entrance", "Deku Tree - Before Gohma", "Deku Tree - Gohma Fight" },
+      { 0x0001, 0x0252, 0x040F } },
+    { "Dodongos Cavern",
+      { "Dodongos Cavern - Entrance", "Dodongos Cavern - Before King Dodongo", "Dodongos Cavern - King Dodongo" },
+      { 0x0004, 0x00C5, 0x040B } },
+    { "Jabu Jabu",
+      { "Jabu Jabu - Entrance", "Jabu Jabu - Skulltula Water Room", "Jabu Jabu - Barinade Fight" },
+      { 0x0028, 0x0407, 0x0301 } },
+    { "Child Link Misc",
+      { "Bottom of Well - Entrancee", "Spirit Temple - Entrance", "Spirit Temple - From Left Hand" },
+      { 0x0098, 0x0082, 0x03F0 } },
+    { "Forest Temple",
+      { "Forest Temple - Entrance", "Forest Temple - Crushing Room", "Forest Temple - Before Phantom Ganon" },
+      { 0x0169, 0x0584, 0x024E } },
+    { "Fire Temple",
+      { "Fire Temple - Entrance", "Fire Temple - Before Volvagia", "Fire Temple - Volvagia" },
+      { 0x0165, 0x0175, 0x0305 } },
+    { "Water Temple", { "Water Temple - Entrance", "Water Temple - Barinade" }, { 0x0010, 0x0417 } },
+    { "Shadow Temple",
+      { "Shadow Temple - Entrance", "Shadow Temple - Outside Bongo Bongo", "Shadow Temple - Bongo Bongo" },
+      { 0x0037, 0x02B2, 0x0413 } },
+    { "Spirit Temple",
+      { "Spirit Temple - Entrance", "Spirit Temple - From Left Hand", "Spirit Temple - From Right Hand",
+        "Spirit Temple - Before Twinrova", "Spirit Temple - Naboora Fight", "Spirit Temple - Twinrova" },
+      { 0x0082, 0x03F0, 0x03F4, 0x02F5, 0x008D, 0x05EC } },
+    { "Ganons Castle",
+      { "Ganons Castle - Entrance", "Ganons Castle - Forest Clear", "Ganons Castle - Fire Clear",
+        "Ganons Castle - Water Clear", "Ganons Castle - Shadow Clear", "Ganons Castle - Light Clear",
+        "Ganons Castle - Spirit Clear", "Ganons Castle - From Climbing Tower", "Ganons Tower - From Castle Entrance",
+        "Ganons Tower - Outside Boss (1)", "Ganons Tower - Outside Boss (2)" },
+      { 0x0467, 0x0538, 0x0544, 0x053C, 0x0540, 0x0548, 0x054C, 0x0534, 0x041B, 0x0427, 0x042B } },
+    { "Collapsing Castle",
+      { "Interior (1)", "Interior (2)", "Interior (3)", "Interior (4)", "Interior (5)", "Interior (6)", "Interior (7)",
+        "Interior (8)", "Interior (9)", "Interior - Exit", "Exterior (1)", "Exterior (2)", "Exterior (3)",
+        "Exterior (4)", "Exterior (5)", "Exterior (6)", "Ganon Battle", "Ganon Death Cutscene" },
+      { 0x0134, 0x0179, 0x01B5, 0x0256, 0x03DC, 0x03E0, 0x03E4, 0x04B6, 0x04BA, 0x056C, 0x01C9, 0x032C, 0x0330, 0x0334,
+        0x051C, 0x0524, 0x0517, 0x043F } },
+    { "Adult Link Misc", { "Ice Cavern", "Gerudo Training Grounds" }, { 0x0088, 0x0008 } }
+};
+
+bool warped = false;
+
+void DrawWarpTab() {
+    
+    ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
+
+    if (ImGui::Button("Custom Warp Set")) {
+        CVar_SetFloat("gCustomWarpZ", GET_PLAYER(gGlobalCtx)->actor.world.pos.z);
+        CVar_SetFloat("gCustomWarpY", GET_PLAYER(gGlobalCtx)->actor.world.pos.y);
+        CVar_SetFloat("gCustomWarpX", GET_PLAYER(gGlobalCtx)->actor.world.pos.x);
+        CVar_SetS32("gCustomWarpYaw", GET_PLAYER(gGlobalCtx)->actor.shape.rot.y);
+        CVar_SetS32("gCustomWarpEntrance", gSaveContext.entranceIndex);
+        CVar_Save();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Go To Custom Warp")) {
+        gGlobalCtx->nextEntranceIndex = CVar_GetS32("gCustomWarpEntrance", gSaveContext.entranceIndex);
+        gGlobalCtx->sceneLoadFlag = 0x14;
+        gGlobalCtx->fadeTransition = 11;
+        gSaveContext.nextTransition = 11;
+        warped = true;
+    }
+    float temp = CVar_GetFloat("gCustomWarpX", 0.0);
+    ImGui::InputScalar("X Index: ", ImGuiDataType_Float,&temp);
+    temp = CVar_GetFloat("gCustomWarpY", 0.0);
+    ImGui::InputScalar("Y Index: ", ImGuiDataType_Float, &temp);
+    temp = CVar_GetFloat("gCustomWarpZ", 0.0);
+    ImGui::InputScalar("Z Index: ", ImGuiDataType_Float, &temp);
+
+
+    if (warped && gGlobalCtx->sceneLoadFlag != 0x14 && gSaveContext.nextTransition == 255) {
+        GET_PLAYER(gGlobalCtx)->actor.world.pos = {
+        CVar_GetFloat("gCustomWarpX", GET_PLAYER(gGlobalCtx)->actor.world.pos.x),
+        CVar_GetFloat("gCustomWarpY", GET_PLAYER(gGlobalCtx)->actor.world.pos.y),
+        CVar_GetFloat("gCustomWarpZ", GET_PLAYER(gGlobalCtx)->actor.world.pos.z)
+    };
+        GET_PLAYER(gGlobalCtx)->actor.shape.rot.y =
+            CVar_GetS32("gCustomWarpYaw", GET_PLAYER(gGlobalCtx)->actor.shape.rot.y);
+        warped = false;
+    }
+
+    if (ImGui::Button("Child Warp")) {
+        CVar_SetS32("gWarpConfig", 1);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Adult Warp")) {
+        CVar_SetS32("gWarpConfig", 2);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Day Warp")) {
+        CVar_SetS32("gWarpConfig", 3);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Night Warp")) {
+        CVar_SetS32("gWarpConfig", 4);
+    }
+
+    for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
+        if (i == 0 || i == 2 || i == 6 || i == 8 || i == 14 || i == 16 || i == 20 || i == 23 || i == 26 || i == 28 ||
+            i == 33 || i == 37) {
+            if (i == 33 || i==37) {
+                int32_t max = 0;
+                const char* title;
+                if (i == 33) {
+                    title = "Child Link Dungeons";
+                    max = 4;
+                } else {
+                    title = "Adult Link Dungeons";
+                    max = 8;                
+                }
+                if (ImGui::TreeNode(title)) {
+                    for (int k = 0; k < max; k++) {
+                        if (ImGui::TreeNode(warpMap[i + k].category)) {
+                            for (int j = 0; j < warpMap[i + k].getSize(); j++) {
+                                if (ImGui::Button(warpMap[i + k].locations[j])) {
+                                    CVar_SetS32("gDebugWarp", warpMap[i + k].indexes[j]);
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+            }
+            else {
+                if (ImGui::TreeNode(warpMap[i].category)) {
+                    for (int j = 0; j < warpMap[i].getSize(); j++) {
+                        if (ImGui::Button(warpMap[i].locations[j])) {
+                            CVar_SetS32("gDebugWarp", warpMap[i].indexes[j]);
+                        }
+                    }
+                    int32_t max = 0;
+                    if (i == 6 || i == 0 || i == 14 || i == 26) {
+                        max = 2;
+                    } else if (i == 2 || i == 20 || i == 23) {
+                        max = 3;
+                    } else if (i == 16) {
+                        max = 4;
+                    } else if (i == 28) {
+                        max = 5;
+                    } else if (i == 8) {
+                        max = 6;
+                    }
+                    for (int k = 1; k < max; k++) {
+                        if (ImGui::TreeNode(warpMap[i + k].category)) {
+                            for (int j = 0; j < warpMap[i + k].getSize(); j++) {
+                                if (ImGui::Button(warpMap[i + k].locations[j])) {
+                                    CVar_SetS32("gDebugWarp", warpMap[i + k].indexes[j]);
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                ImGui::TreePop();
+                }
+            }
+        }
+    }
+    if (ImGui::TreeNode("Grottos")) {
+        if (ImGui::TreeNode("Unique Grottos")) {
+            if (ImGui::Button("Fairy Fountain")) {
+                CVar_SetS32("gWarpGrottoCheat", 1);
+            }
+            if (ImGui::Button("Hyrule Field near Kakariko")) {
+                CVar_SetS32("gWarpGrottoCheat", 3);
+            }
+            if (ImGui::Button("Kakariko near tree")) {
+                CVar_SetS32("gWarpGrottoCheat", 5);
+            }
+            if (ImGui::Button("Hyrule Field near Gerudo Valley under boulder")) {
+                CVar_SetS32("gWarpGrottoCheat", 7);
+            }
+            if (ImGui::Button("Under boulder in Gerudo Canyon")) {
+                CVar_SetS32("gWarpGrottoCheat", 8);
+            }
+            if (ImGui::Button("Sacred Forest Wolfoes Grotto")) {
+                CVar_SetS32("gWarpGrottoCheat", 10);
+            }
+            if (ImGui::Button("Tree near Hyrule Castle Courtyard")) {
+                CVar_SetS32("gWarpGrottoCheat", 11);
+            }
+            if (ImGui::Button("Tektite Grotto between Castle Town and Gerudo Valley")) {
+                CVar_SetS32("gWarpGrottoCheat", 13);
+            }
+            if (ImGui::Button("Deku Theater in Lost Woods")) {
+                CVar_SetS32("gWarpGrottoCheat", 14);
+            }
+            if (ImGui::Button("Death Mountain Trail Cow Grotto")) {
+                CVar_SetS32("gWarpGrottoCheat", 15);
+            }
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Treasure Chest Grottos")) {
+            if (ImGui::Button(SohUtils::GetSceneName(85).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 21);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 22);
+            }
+            char temp[30];
+            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+            strcat(temp, ": Near Market");
+            if (ImGui::Button(temp)) {
+                CVar_SetS32("gWarpGrottoCheat", 23);
+            }
+            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+            strcat(temp, ": Open Grotto");
+            if (ImGui::Button(temp)) {
+                CVar_SetS32("gWarpGrottoCheat", 24);
+            }
+            sprintf(temp, SohUtils::GetSceneName(81).c_str());
+            strcat(temp, ": SE Boulder");
+            if (ImGui::Button(temp)) {
+                CVar_SetS32("gWarpGrottoCheat", 25);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(82).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 26);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(96).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 27);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 28);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 29);
+            }
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Deku Scrub Grottos")) {
+            if (ImGui::Button(SohUtils::GetSceneName(81).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 4);
+            }
+            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 31);
+            } else if (ImGui::Button(SohUtils::GetSceneName(86).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 32);
+            } else if (ImGui::Button(SohUtils::GetSceneName(87).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 33);
+            } else if (ImGui::Button(SohUtils::GetSceneName(90).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 34);
+            } else if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 35);
+            } else if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 36);
+            } else if (ImGui::Button(SohUtils::GetSceneName(93).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 37);
+            } else if (ImGui::Button(SohUtils::GetSceneName(99).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 38);
+            } else if (ImGui::Button(SohUtils::GetSceneName(92).c_str())) {
+                CVar_SetS32("gWarpGrottoCheat", 39);
+            }
+            ImGui::TreePop();
+        }
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Shops")) {
+        for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
+            for (int j = 0; j < 20; j++) {
+                if (warpMap[i].getIndexSub((char*)"Shop")[j] != 0) {
+                    std::string temp(warpMap[i].getLocation(warpMap[i].getIndexSub((char*)"Shop")[j]));
+                    if (temp != "NONE" && temp.find("From")==-1) {
+                        if (ImGui::Button(warpMap[i].getLocation(warpMap[i].getIndexSub((char*)"Shop")[j]))) {
+                            CVar_SetS32("gDebugWarp", (warpMap[i].getIndexSub((char*)"Shop")[j]));
+                        }
+                    }
+                }
+            }
+        }
+        ImGui::TreePop(); 
+    } 
+    if (ImGui::TreeNode("Fairy Fountains")) {
+        for (int i = 0; i < sizeof(warpMap) / sizeof(warpMap[0]); i++) {
+            if (warpMap[i].getIndex((char*)"Great Fairy") != 0) {
+                if (ImGui::Button(warpMap[i].category)) {
+                    CVar_SetS32("gDebugWarp", warpMap[i].getIndex((char*)"Great Fairy"));
+                }
+            }
+        }
+        ImGui::TreePop();
+    } 
+    if (ImGui::TreeNode("Minigames")) {
+        for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
+            for (int j = 0; j < 20; j++) {
+                if (warpMap[i].getIndexSub((char*)"Minigame")[j] != 0) {
+                    std::string temp(warpMap[i].getLocation(warpMap[i].getIndexSub((char*)"Minigame")[j]));
+                    if (temp != "NONE" && temp.find("From") == -1) {
+                        if (ImGui::Button(warpMap[i].getLocation(warpMap[i].getIndexSub((char*)"Minigame")[j]))) {
+                            CVar_SetS32("gDebugWarp", (warpMap[i].getIndexSub((char*)"Minigame")[j]));
+                        }
+                    }
+                }
+            }
+        }
+        ImGui::TreePop();
+    }
+    static char text[128] = "";
+    ImGui::InputText("Search For Warp/Area", text, IM_ARRAYSIZE(text));
+
+
+    if (ImGui::TreeNode("Search Results (Entrances)")) {
+        for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
+            for (int j = 0; j < warpMap[i].getSize(); j++) {
+                if (warpMap[i].getInd(text, j)) {
+                    std::string title(warpMap[i].category);
+                    title = title + ": " + std::string(warpMap[i].locations[j]);
+                    if (ImGui::Button(title.c_str())) {
+                        CVar_SetS32("gDebugWarp", warpMap[i].indexes[j]);
+                    }
+                }
+            }
+        }
+        ImGui::TreePop();
+    }
+
+    if (ImGui::TreeNode("Search Results (Areas)")) {
+        for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
+            std::string temp = warpMap[i].category;
+            if (temp.find(text) != -1) {
+                if (i == 0 || i == 2 || i == 6 || i == 8 || i == 14 || i == 16 || i == 20 || i == 23 || i == 26 ||
+                    i == 28 || i == 33 || i == 37) {
+                    if (i == 33 || i == 37) {
+                        int32_t max = 0;
+                        const char* title;
+                        if (i == 33) {
+                            title = "Child Link Dungeons";
+                            max = 4;
+                        } else {
+                            title = "Adult Link Dungeons";
+                            max = 8;
+                        }
+                        if (ImGui::TreeNode(title)) {
+                            for (int k = 0; k < max; k++) {
+                                if (ImGui::TreeNode(warpMap[i + k].category)) {
+                                    for (int j = 0; j < warpMap[i + k].getSize(); j++) {
+                                        if (ImGui::Button(warpMap[i + k].locations[j])) {
+                                            CVar_SetS32("gDebugWarp", warpMap[i + k].indexes[j]);
+                                        }
+                                    }
+                                    ImGui::TreePop();
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    } else {
+                        if (ImGui::TreeNode(warpMap[i].category)) {
+                            for (int j = 0; j < warpMap[i].getSize(); j++) {
+                                if (ImGui::Button(warpMap[i].locations[j])) {
+                                    CVar_SetS32("gDebugWarp", warpMap[i].indexes[j]);
+                                }
+                            }
+                            int32_t max = 0;
+                            if (i == 6 || i == 0 || i == 14 || i == 26) {
+                                max = 2;
+                            } else if (i == 2 || i == 20 || i == 23) {
+                                max = 3;
+                            } else if (i == 16) {
+                                max = 4;
+                            } else if (i == 28) {
+                                max = 5;
+                            } else if (i == 8) {
+                                max = 6;
+                            }
+                            for (int k = 1; k < max; k++) {
+                                if (ImGui::TreeNode(warpMap[i + k].category)) {
+                                    for (int j = 0; j < warpMap[i + k].getSize(); j++) {
+                                        if (ImGui::Button(warpMap[i + k].locations[j])) {
+                                            CVar_SetS32("gDebugWarp", warpMap[i + k].indexes[j]);
+                                        }
+                                    }
+                                    ImGui::TreePop();
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                } else {
+                    if (ImGui::TreeNode(warpMap[i].category)) {
+                        for (int j = 0; j < warpMap[i].getSize(); j++) {
+                            if (ImGui::Button(warpMap[i].locations[j])) {
+                                CVar_SetS32("gDebugWarp", warpMap[i].indexes[j]);
+                            }
+                        }
+                        ImGui::TreePop();
+                    }
+                }
+            }
+        }
+        ImGui::TreePop();
+    } 
+    ImGui::PopItemWidth();
+}
+
+
 void DrawInventoryTab() {
     static bool restrictToValid = true;
 
@@ -1595,6 +2171,11 @@ void DrawSaveEditor(bool& open) {
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Info")) {
             DrawInfoTab();
+            ImGui::EndTabItem();
+        }
+        
+        if (ImGui::BeginTabItem("Warp")) {
+            DrawWarpTab();
             ImGui::EndTabItem();
         }
 
