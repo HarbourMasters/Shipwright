@@ -19,7 +19,7 @@ typedef struct {
     /* 0x03 */ uint16_t textId;
     /* 0x04 */ uint16_t objectId;
     /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
-    /* 0x08 */ uint16_t getItemId;
+    /* 0x08 */ int16_t getItemId;
     /* 0x0A */ uint16_t gid; // Stores the GID value unmodified for future reference.
     /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
 } GetItemEntry;                   // size = 0x0F

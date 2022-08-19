@@ -481,8 +481,12 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
             }
             // Chests need to have a negative getItemId in order to not immediately give their item
             // when approaching.
-            sItem.getItemId = 0 - sItem.getItemId;
-            GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
+            if (gSaveContext.n64ddFlag) {
+                sItem.getItemId = 0 - sItem.getItemId;
+                GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
+            } else {
+                func_8002F554(&this->dyna.actor, globalCtx, -(this->dyna.actor.params >> 5 & 0x7F));
+            }
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
@@ -594,7 +598,7 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && sItem.getItemId == RG_ICE_TRAP)) && 
+         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
         this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }
