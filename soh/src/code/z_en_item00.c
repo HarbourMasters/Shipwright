@@ -70,7 +70,7 @@ static void* sItemDropTex[] = {
     gDropRecoveryHeartTex, gDropBombTex,       gDropArrows1Tex,   gDropArrows2Tex,
     gDropArrows3Tex,       gDropBombTex,       gDropDekuNutTex,   gDropDekuStickTex,
     gDropMagicLargeTex,    gDropMagicSmallTex, gDropDekuSeedsTex, gDropKeySmallTex,
-    gDropBombchuTex,
+    // OTRTODO: use 2D bombchu texture
 };
 
 static u8 sItemDropIds[] = {
@@ -716,7 +716,8 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
 
-    if (CVar_GetS32("gNewDrops", 0)) { //set the rotation system on selected model only :)
+	// OTRTODO: remove special case for bombchu when its 2D drop is implemented
+    if (CVar_GetS32("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU) { //set the rotation system on selected model only :)
         if ((this->actor.params == ITEM00_RUPEE_GREEN) || (this->actor.params == ITEM00_RUPEE_BLUE) ||
             (this->actor.params == ITEM00_RUPEE_RED) || (this->actor.params == ITEM00_ARROWS_SINGLE) || 
             (this->actor.params == ITEM00_ARROWS_SMALL) || (this->actor.params == ITEM00_ARROWS_MEDIUM) ||
@@ -1096,16 +1097,6 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     break;
                 }
             case ITEM00_BOMBS_SPECIAL:
-            case ITEM00_BOMBCHU:
-                if (CVar_GetS32("gNewDrops", 0)) {
-                    Actor_SetScale(&this->actor, 0.2f);
-                    this->scale = 0.2f;
-                    this->actor.shape.yOffset = 50.0f;
-                    this->actor.world.rot.x = 0x4000;
-                    this->actor.shape.shadowScale = 0.3f;
-                    GetItem_Draw(globalCtx, GID_BOMBCHU);
-                    break;
-                }
             case ITEM00_ARROWS_SINGLE:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
@@ -1217,6 +1208,15 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     EnItem00_DrawCollectible(this, globalCtx);
                     break;
                 }
+            case ITEM00_BOMBCHU:
+            	// OTRTODO: Stop forcing chu drops to be 3D when the texture is added
+                Actor_SetScale(&this->actor, 0.2f);
+                this->scale = 0.2f;
+                this->actor.shape.yOffset = 50.0f;
+                this->actor.world.rot.x = 0x4000;
+                this->actor.shape.shadowScale = 0.3f;
+                GetItem_Draw(globalCtx, GID_BOMBCHU);
+                break;
             case ITEM00_SHIELD_DEKU:
                 GetItem_Draw(globalCtx, GID_SHIELD_DEKU);
                 break;
@@ -1359,8 +1359,9 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
 
         if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
             texIndex = 1;
-        } else if (this->actor.params == ITEM00_BOMBCHU) {
-            texIndex = 12;
+        // OTRTODO: 2D bombchu drops
+        //} else if (this->actor.params == ITEM00_BOMBCHU) {
+        //    texIndex = 12;
         } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
             texIndex -= 3;
         }
