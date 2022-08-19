@@ -2505,7 +2505,6 @@ namespace Settings {
         location->GetExcludedOption()->SetSelectedIndex(0);
       }
     }
-    auto blarg = excludeLocationsOptionsVector.size();
 
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
