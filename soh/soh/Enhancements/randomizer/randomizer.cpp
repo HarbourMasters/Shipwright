@@ -4650,12 +4650,13 @@ void CreateRupeeMessages() {
 }
 
 std::string Randomizer::Randomizer_InsertRupeeName(std::string message, int language) {
-    const char* englishRupeeNames[40] = {
-        "Rupees",   "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
-        "Emeralds", "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
-        "Dogecoin", "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
-        "Bells",    "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
-        "Zenny",    "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold"
+    const char* englishRupeeNames[44] = {
+        "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
+        "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
+        "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
+        "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
+        "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
+        "Shillings", "Pounds",    "Glimmer",     "Potch"
     };
     const char* germanRupeeNames[1] = { "Rubine" };
     const char* frenchRupeeNames[36] = {
