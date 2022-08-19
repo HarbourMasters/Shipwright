@@ -17,6 +17,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "randomizer_check_objects.h"
+#include <sstream>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -3735,6 +3736,13 @@ void DrawRandoEditor(bool& open) {
                 if (!locationsTabOpen) {
                     locationsTabOpen = true;
                     RandomizerCheckObjects::UpdateImGuiVisibility();
+                    // todo: this efficently when we build out cvar array support
+                    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+                    std::string excludedLocationString;
+                    excludedLocations.clear();
+                    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
+                        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+                    }
                 }
 
                 if (ImGui::BeginTable("tableRandoLocations", 2,
@@ -3776,6 +3784,14 @@ void DrawRandoEditor(bool& open) {
 
                                         if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
                                             excludedLocations.insert(locationIt.rc);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string excludedLocationString = "";
+                                            for (auto excludedLocationIt : excludedLocations) {
+                                                excludedLocationString += std::to_string(excludedLocationIt);
+                                                excludedLocationString += ",";
+                                            }
+                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                            SohImGui::needs_save = true;
                                         }
                                         ImGui::SameLine();
                                         ImGui::Text(locationIt.rcShortName.c_str());
@@ -3809,6 +3825,14 @@ void DrawRandoEditor(bool& open) {
                                     if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
                                         if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
                                             excludedLocations.erase(elfound);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string excludedLocationString = "";
+                                            for (auto excludedLocationIt : excludedLocations) {
+                                                excludedLocationString += std::to_string(excludedLocationIt);
+                                                excludedLocationString += ",";
+                                            }
+                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                            SohImGui::needs_save = true;
                                         }
                                         ImGui::SameLine();
                                         ImGui::Text(locationIt.rcShortName.c_str());
