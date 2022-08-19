@@ -887,6 +887,10 @@
         <DList Name="gItemDropDL" Offset="0x3F070"/>
         <Texture Name="gDropKeySmallTex" OutName="drop_key_small" Format="rgba16" Width="32" Height="32" Offset="0x3F140"/>
         <Texture Name="gDropMagicSmallTex" OutName="drop_magic_small" Format="rgba16" Width="32" Height="32" Offset="0x3F940"/>
+
+		<!--Unused bombchu pickup graphic seems to be somewhere else if it exists. See GC_NMQ_D/obgects/gameplay_keep.xml-->
+        <Texture Name="gDropBombchuTex" OutName="drop_bombchu" Format="rgba16" Width="32" Height="32" Offset="0x3FD80"/>
+        
         <Texture Name="gDropDekuNutTex" OutName="drop_deku_nut" Format="rgba16" Width="32" Height="32" Offset="0x40140"/>
         <Texture Name="gDropDekuSeedsTex" OutName="drop_deku_seeds" Format="rgba16" Width="32" Height="32" Offset="0x40940"/>
         <Texture Name="gDropDekuStickTex" OutName="drop_deku_stick" Format="rgba16" Width="32" Height="32" Offset="0x41140"/>

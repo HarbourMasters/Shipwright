@@ -70,6 +70,7 @@ static void* sItemDropTex[] = {
     gDropRecoveryHeartTex, gDropBombTex,       gDropArrows1Tex,   gDropArrows2Tex,
     gDropArrows3Tex,       gDropBombTex,       gDropDekuNutTex,   gDropDekuStickTex,
     gDropMagicLargeTex,    gDropMagicSmallTex, gDropDekuSeedsTex, gDropKeySmallTex,
+    gDropBombchuTex,
 };
 
 static u8 sItemDropIds[] = {
@@ -389,6 +390,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
         case ITEM00_RUPEE_ORANGE:
         case ITEM00_RUPEE_PURPLE:
         case ITEM00_FLEXIBLE:
+        case ITEM00_BOMBCHU:
             yOffset = 500.0f;
             Actor_SetScale(&this->actor, 0.01f);
             this->scale = 0.01f;
@@ -506,6 +508,9 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
         case ITEM00_TUNIC_GORON:
         case ITEM00_BOMBS_SPECIAL:
             break;
+        case ITEM00_BOMBCHU:
+            Item_Give(globalCtx, ITEM_BOMBCHUS_5);
+            break;
     }
 
     if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
@@ -530,7 +535,8 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
             (this->actor.params == ITEM00_HEART_PIECE)) {
             this->actor.shape.rot.y += 960;
         } else {
-            if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL)) {
+            if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL) &&
+                (this->actor.params != ITEM00_BOMBCHU)) {
                 if (this->unk_15A == -1) {
                     if (Math_SmoothStepToS(&this->actor.shape.rot.x, this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
                         0) {
@@ -633,7 +639,8 @@ void func_8001E304(EnItem00* this, GlobalContext* globalCtx) {
 
     if (this->actor.params <= ITEM00_RUPEE_RED) {
         this->actor.shape.rot.y += 960;
-    } else if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL)) {
+    } else if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL) &&
+               (this->actor.params != ITEM00_BOMBCHU)) {
         this->actor.world.rot.x -= 700;
         this->actor.shape.rot.y += 400;
         this->actor.shape.rot.x = this->actor.world.rot.x - 0x4000;
@@ -717,7 +724,8 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
             (this->actor.params == ITEM00_BOMBS_B) || (this->actor.params == ITEM00_NUTS) || 
             (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) ||  
             (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || 
-            (this->actor.params == ITEM00_BOMBS_SPECIAL) || this->actor.params == ITEM00_HEART_PIECE) {
+            (this->actor.params == ITEM00_BOMBS_SPECIAL) || this->actor.params == ITEM00_HEART_PIECE ||
+            (this->actor.params == ITEM00_BOMBCHU)) {
             this->actor.shape.rot.y += 960;
         }
         if (this->actor.params == ITEM00_SMALL_KEY && !gSaveContext.n64ddFlag) {
@@ -877,6 +885,9 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
             getItemId = GI_TUNIC_GORON;
             break;
         case ITEM00_BOMBS_SPECIAL:
+            break;
+        case ITEM00_BOMBCHU:
+            Item_Give(globalCtx, ITEM_BOMBCHUS_5);
             break;
     }
 
@@ -1085,6 +1096,16 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     break;
                 }
             case ITEM00_BOMBS_SPECIAL:
+            case ITEM00_BOMBCHU:
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_BOMBCHU);
+                    break;
+                }
             case ITEM00_ARROWS_SINGLE:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
@@ -1338,6 +1359,8 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
 
         if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
             texIndex = 1;
+        } else if (this->actor.params == ITEM00_BOMBCHU) {
+            texIndex = 12;
         } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
             texIndex -= 3;
         }
@@ -1406,6 +1429,38 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
 }
 
 /**
+ * If the given drop type ID is a bomb, and bombchu drops are enabled, sometimes convert it into a bombchu.
+ * Returns the new drop type ID.
+ */
+s16 EnItem00_ConvertBombDropToBombchu(s16 dropId) {
+    if (!CVar_GetS32("gBombchuDrops", 0) ||
+        INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE ||
+        (dropId != ITEM00_BOMBS_A && dropId != ITEM00_BOMBS_B && dropId != ITEM00_BOMBS_SPECIAL)) {
+        return dropId;
+    }
+
+    if (INV_CONTENT(ITEM_BOMB) == ITEM_NONE) {
+        return ITEM00_BOMBCHU;
+    }
+
+    if (AMMO(ITEM_BOMB) <= 15) {
+        // Player needs bombs and might need chus, so drop whichever has less
+        if (AMMO(ITEM_BOMB) <= AMMO(ITEM_BOMBCHU)) {
+            return dropId;
+        } else {
+            return ITEM00_BOMBCHU;
+        }
+    } else {
+        // Player has enough bombs, so drop chus if they need some, else it's 50/50
+        if (AMMO(ITEM_BOMBCHU) <= 15) {
+            return ITEM00_BOMBCHU;
+        } else {
+            return Rand_Next() % 2 ? dropId : ITEM00_BOMBCHU;
+        }
+    }
+}
+
+/**
  * Converts a given drop type ID based on link's current age, health and owned items.
  * Returns a new drop type ID or -1 to cancel the drop.
  */
@@ -1421,6 +1476,8 @@ s16 func_8001F404(s16 dropId) {
             dropId = ITEM00_SEEDS;
         }
     }
+
+    dropId = EnItem00_ConvertBombDropToBombchu(dropId);
 
     // This is convoluted but it seems like it must be a single condition to match
     // clang-format off
