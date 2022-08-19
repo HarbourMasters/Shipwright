@@ -3751,7 +3751,7 @@ void DrawRandoEditor(bool& open) {
                     static ImGuiTextFilter locationSearch;
                     locationSearch.Draw();
 
-                    ImGui::BeginChild("ChildRandomizedLocations");
+                    ImGui::BeginChild("ChildRandomizedLocations", ImVec2(0, -8));
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
                         // todo fix this, it's hacky and copypasta
                         bool hasItems = false;
@@ -3792,14 +3792,14 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
-                    ImGui::BeginChild("ChildVanillaLocations");
+                    ImGui::BeginChild("ChildVanillaLocations", ImVec2(0, -8));
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
                         // todo fix this, it's hacky and copypasta
                         bool hasItems = false;
                         for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
                             if (locationIt.second.visibleInImgui &&
-                                excludedLocations.count(locationIt.second.rc) &&
-                                locationIt.second.rcArea == areaIt.first) {
+                                locationIt.second.rcArea == areaIt.first &&
+                                excludedLocations.count(locationIt.second.rc)) {
 
                                 hasItems = true;
                                 break;
@@ -3812,8 +3812,8 @@ void DrawRandoEditor(bool& open) {
                                 for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
                                     auto elfound = excludedLocations.find(locationIt.first);
                                     if (locationIt.second.visibleInImgui &&
-                                        elfound != excludedLocations.end() &&
-                                        locationIt.second.rcArea == areaIt.first) {
+                                        locationIt.second.rcArea == areaIt.first &&
+                                        elfound != excludedLocations.end()) {
 
                                         if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Left)) {
                                             excludedLocations.erase(elfound);
