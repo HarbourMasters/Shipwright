@@ -1,6 +1,7 @@
 #pragma once
 #include "randomizerTypes.h"
 #include <string>
+#include <vector>
 #include <map>
 
 // Check types based on main settings
@@ -76,8 +77,7 @@ typedef struct {
 namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);
     bool AreaIsOverworld(RandomizerCheckArea area);
-    std::map<RandomizerCheckArea, std::string> GetAllRCAreas();
-    std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
-    void UpdateImGuiVisibility(); 
-    RandomizerCheckObject GetRCObject(RandomizerCheck check);
+    std::string GetRCAreaName(RandomizerCheckArea area);
+    std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> GetAllRCObjects();
+    void UpdateImGuiVisibility();
 }

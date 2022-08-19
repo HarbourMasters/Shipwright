@@ -62,8 +62,10 @@ Randomizer::Randomizer() {
     Sprite ootOcarinaSprite = { dgOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
 
-    for (auto it : RandomizerCheckObjects::GetAllRCObjects()) {
-        SpoilerfileCheckNameToEnum[it.second.rcSpoilerName] = it.first;
+    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+        for (auto locationIt : areaIt.second) {
+            SpoilerfileCheckNameToEnum[locationIt.rcSpoilerName] = locationIt.rc;
+        }
     }
 }
 
@@ -3752,14 +3754,12 @@ void DrawRandoEditor(bool& open) {
                     locationSearch.Draw();
 
                     ImGui::BeginChild("ChildRandomizedLocations", ImVec2(0, -8));
-                    for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
-                        // todo fix this, it's hacky and copypasta
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
                         bool hasItems = false;
-                        for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                            if (locationIt.second.visibleInImgui &&
-                                !excludedLocations.count(locationIt.second.rc) &&
-                                locationIt.second.rcArea == areaIt.first &&
-                                locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
+                        for (auto locationIt : areaIt.second) {
+                            if (locationIt.visibleInImgui &&
+                                !excludedLocations.count(locationIt.rc) &&
+                                locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
 
                                 hasItems = true;
                                 break;
@@ -3768,18 +3768,17 @@ void DrawRandoEditor(bool& open) {
 
                         if (hasItems) {
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(areaIt.second.c_str())) {
-                                for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                                    if (locationIt.second.visibleInImgui &&
-                                        !excludedLocations.count(locationIt.second.rc) &&
-                                        locationIt.second.rcArea == areaIt.first &&
-                                        locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
+                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                                for (auto locationIt : areaIt.second) {
+                                    if (locationIt.visibleInImgui &&
+                                        !excludedLocations.count(locationIt.rc) &&
+                                        locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
 
-                                        if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Right)) {
-                                            excludedLocations.insert(locationIt.first);
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
+                                            excludedLocations.insert(locationIt.rc);
                                         }
                                         ImGui::SameLine();
-                                        ImGui::Text(locationIt.second.rcShortName.c_str());
+                                        ImGui::Text(locationIt.rcShortName.c_str());
                                     }
                                 }
                                 ImGui::TreePop();
@@ -3793,13 +3792,12 @@ void DrawRandoEditor(bool& open) {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
                     ImGui::BeginChild("ChildVanillaLocations", ImVec2(0, -8));
-                    for (auto areaIt : RandomizerCheckObjects::GetAllRCAreas()) {
-                        // todo fix this, it's hacky and copypasta
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
                         bool hasItems = false;
-                        for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                            if (locationIt.second.visibleInImgui &&
-                                locationIt.second.rcArea == areaIt.first &&
-                                excludedLocations.count(locationIt.second.rc)) {
+                        for (auto locationIt : areaIt.second) {
+                            if (locationIt.visibleInImgui &&
+                                excludedLocations.count(locationIt.rc) &&
+                                locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
 
                                 hasItems = true;
                                 break;
@@ -3808,18 +3806,18 @@ void DrawRandoEditor(bool& open) {
 
                         if (hasItems) {
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(areaIt.second.c_str())) {
-                                for (auto locationIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                                    auto elfound = excludedLocations.find(locationIt.first);
-                                    if (locationIt.second.visibleInImgui &&
-                                        locationIt.second.rcArea == areaIt.first &&
-                                        elfound != excludedLocations.end()) {
+                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                                for (auto locationIt : areaIt.second) {
+                                    auto elfound = excludedLocations.find(locationIt.rc);
+                                    if (locationIt.visibleInImgui &&
+                                        elfound != excludedLocations.end() &&
+                                        locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
 
-                                        if (ImGui::ArrowButton(std::to_string(locationIt.first).c_str(), ImGuiDir_Left)) {
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
                                             excludedLocations.erase(elfound);
                                         }
                                         ImGui::SameLine();
-                                        ImGui::Text(locationIt.second.rcShortName.c_str());
+                                        ImGui::Text(locationIt.rcShortName.c_str());
                                     }
                                 }
                                 ImGui::TreePop();
