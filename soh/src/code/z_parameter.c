@@ -3875,21 +3875,23 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         Y_Margins_CD = 0;
     }
     if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+
         if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
         Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
     } else {
         X_Margins_DPad_Items = 0;
         Y_Margins_DPad_Items = 0;
     }
-    float ItemsScale_offset[8] = {
-        100.0f, //B
-        100.0f, //C L 
-        159.0f, //C D
-        100.0f, //C R
-        100.0f, //Dpad ^
-        100.0f, //Dpad V
-        100.0f, //Dpad <
-        100.0f  //Dpad >
+    const float ItemsScale_offset[8][2] = {
+        // Y      X
+        { 104.0f, 144.0f }, //B
+        { 108.0f, 148.0f }, //C L 
+        { 108.0f, 148.0f }, //C D
+        { 108.0f, 148.0f }, //C R
+        { 112.0f, 152.0f }, //Dpad ^
+        { 112.0f, 152.0f }, //Dpad V
+        { 112.0f, 152.0f }, //Dpad <
+        { 112.0f, 152.0f }  //Dpad >
     };
     float ItemScale_ori[8] = {
         1.0f, //B BTN
@@ -3897,14 +3899,14 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         0.6f, 0.6f, 0.6f, 0.6f //Dpad U/D/L/R
     };
     const s16 ItemIconPos_ori[8][2] = {
-        { B_BUTTON_X-ItemsScale_offset[0]+X_Margins_BtnB, B_BUTTON_Y+Y_Margins_BtnB },
-        { C_LEFT_BUTTON_X-ItemsScale_offset[1]+X_Margins_CL-ItemScale_ori[1], C_LEFT_BUTTON_Y+Y_Margins_CL },
-        { C_DOWN_BUTTON_X-ItemsScale_offset[2]+X_Margins_CD-ItemScale_ori[2], C_DOWN_BUTTON_Y+Y_Margins_CD },
-        { C_RIGHT_BUTTON_X-ItemsScale_offset[3]+X_Margins_CR-ItemScale_ori[3], C_RIGHT_BUTTON_Y+Y_Margins_CR },
-        { DPAD_UP_X-ItemsScale_offset[4]+X_Margins_DPad_Items, DPAD_UP_Y+Y_Margins_DPad_Items },
-        { DPAD_DOWN_X-ItemsScale_offset[5]+X_Margins_DPad_Items, DPAD_DOWN_Y+Y_Margins_DPad_Items }, 
-        { DPAD_LEFT_X-ItemsScale_offset[6]+X_Margins_DPad_Items, DPAD_LEFT_Y+Y_Margins_DPad_Items }, 
-        { DPAD_RIGHT_X-ItemsScale_offset[7]+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
+        { B_BUTTON_X+X_Margins_BtnB-ItemsScale_offset[0][1], B_BUTTON_Y+Y_Margins_BtnB-ItemsScale_offset[0][0] },
+        { C_LEFT_BUTTON_X+X_Margins_CL-ItemsScale_offset[1][1], C_LEFT_BUTTON_Y+Y_Margins_CL-ItemsScale_offset[1][0] },
+        { C_DOWN_BUTTON_X+X_Margins_CD-ItemsScale_offset[2][1], C_DOWN_BUTTON_Y+Y_Margins_CD-ItemsScale_offset[2][0] },
+        { C_RIGHT_BUTTON_X+X_Margins_CR-ItemsScale_offset[3][1], C_RIGHT_BUTTON_Y+Y_Margins_CR-ItemsScale_offset[3][0] },
+        { DPAD_UP_X+X_Margins_DPad_Items-ItemsScale_offset[4][1], DPAD_UP_Y+Y_Margins_DPad_Items-ItemsScale_offset[4][0] },
+        { DPAD_DOWN_X+X_Margins_DPad_Items-ItemsScale_offset[5][1], DPAD_DOWN_Y+Y_Margins_DPad_Items-ItemsScale_offset[5][0] }, 
+        { DPAD_LEFT_X+X_Margins_DPad_Items-ItemsScale_offset[6][1], DPAD_LEFT_Y+Y_Margins_DPad_Items-ItemsScale_offset[6][0] }, 
+        { DPAD_RIGHT_X+X_Margins_DPad_Items-ItemsScale_offset[7][1], DPAD_RIGHT_Y+Y_Margins_DPad_Items-ItemsScale_offset[7][0] }
     };
     float ItemScale[8] = {
         CVar_GetFloat("gBBtnScale", 1.0f),
@@ -3916,7 +3918,6 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         CVar_GetFloat("gDPadScale", 0.425f),
         CVar_GetFloat("gDPadScale", 0.425f),
     };
-    float ItemsScale_offset_custom[8];
     float ItemScaleCurrent[8]; //Hold the array with modified scale
     u16 ItemsSlotsAlpha[8] = {
         interfaceCtx->bAlpha,
@@ -3985,15 +3986,15 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     //B Button
     if (CVar_GetS32("gBBtnPosType", 0) != 0) {
         ItemScaleCurrent[0] = ItemScale[0];
-        ItemIconPos[0][1] = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB;
+        ItemIconPos[0][1] = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB-ItemsScale_offset[0][0];
         if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB-ItemsScale_offset[0][1]);
         } else if (CVar_GetS32("gBBtnPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB-ItemsScale_offset[0][1]);
         } else if (CVar_GetS32("gBBtnPosType", 0) == 3) {//Anchor None
-            ItemIconPos[0][0] = CVar_GetS32("gBBtnPosX", 0);
+            ItemIconPos[0][0] = CVar_GetS32("gBBtnPosX", 0)-ItemsScale_offset[0][1];
         } else if (CVar_GetS32("gBBtnPosType", 0) == 4) {//Hidden
            ItemIconPos[0][0] = -9999;
         }
@@ -4005,15 +4006,15 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     //C button Left
     if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
         ItemScaleCurrent[1] = ItemScale[1];
-        ItemIconPos[1][1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+        ItemIconPos[1][1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL-ItemsScale_offset[1][0];
         if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL-ItemsScale_offset[1][1]);
         } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL-ItemsScale_offset[1][1]);
         } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
-            ItemIconPos[1][0] = CVar_GetS32("gCBtnLPosX", 0);
+            ItemIconPos[1][0] = CVar_GetS32("gCBtnLPosX", 0)-ItemsScale_offset[1][1];
         } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
             ItemIconPos[1][0] = -9999;
         }
@@ -4025,15 +4026,15 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     //C Button down
     if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
         ItemScaleCurrent[2] = ItemScale[2];
-        ItemIconPos[2][1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+        ItemIconPos[2][1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD-ItemsScale_offset[2][0];
         if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD-ItemsScale_offset[2][1]);
         } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD-ItemsScale_offset[2][1]);
         } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
-            ItemIconPos[2][0] = CVar_GetS32("gCBtnDPosX", 0);
+            ItemIconPos[2][0] = CVar_GetS32("gCBtnDPosX", 0)-ItemsScale_offset[2][1];
         } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
             ItemIconPos[2][0] = -9999;
         }
@@ -4045,15 +4046,15 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     //C button Right
     if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
         ItemScaleCurrent[3] = ItemScale[3];
-        ItemIconPos[3][1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+        ItemIconPos[3][1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR-ItemsScale_offset[3][0];
         if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
             if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR-ItemsScale_offset[3][1]);
         } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
             if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR-ItemsScale_offset[3][1]);
         } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
-            ItemIconPos[3][0] = CVar_GetS32("gCBtnRPosX", 0);
+            ItemIconPos[3][0] = CVar_GetS32("gCBtnRPosX", 0)-ItemsScale_offset[3][1];
         } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
             ItemIconPos[3][0] = -9999;
         }
@@ -4072,8 +4073,8 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, ItemsSlotsAlpha[button]);
     gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
     Matrix_Translate(
-        ItemIconPos[button][0] - ItemsScale_offset[button],
-        ItemIconPos[button][1], 1.0f, MTXMODE_NEW);
+        ItemIconPos[button][0],
+        ItemIconPos[button][1] * -1, 1.0f, MTXMODE_NEW);
 
     Matrix_Scale(
         ItemScaleCurrent[button]/1, 

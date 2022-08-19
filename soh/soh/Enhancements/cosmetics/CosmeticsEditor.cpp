@@ -286,7 +286,8 @@ void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX
 void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     std::string InvisibleLabel = "##"+CvarName;
     std::string CvarLabel = CvarName+"Scale";
-    SohImGui::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
+    //Disabled for now. feature not done and several fixes needed to be merged.
+    //SohImGui::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
 }
 void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
     for (s16 i = 0; i < SectionSize; i++) {
