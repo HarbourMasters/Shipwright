@@ -9,6 +9,7 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+int32_t warpTime = 0;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
@@ -427,7 +428,22 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gPrevTime", -1);
     }
     
-    //Note: These can be removed in the future, I put them here due to linker errors I kept having.
+   // Sets age or time of warp destination.
+    if (CVar_GetS32("gWarpConfig", 0) != 0) {
+        if (gGlobalCtx) {
+            if (CVar_GetS32("gWarpConfig", 0) == 1) {
+                gGlobalCtx->linkAgeOnLoad = 1;
+            } else if (CVar_GetS32("gWarpConfig", 0) == 2) {
+                gGlobalCtx->linkAgeOnLoad = 0;
+            } else if (CVar_GetS32("gWarpConfig", 0) == 3) {
+                warpTime = 0x8000;
+            } else {
+                warpTime = 0x0001;
+            }
+            CVar_SetS32("gWarpConfig", 0);
+        }
+    }
+    
     static s16 entrances[] = {
         0x036D, 0x003F, 0x0598, 0x059C, 0x05A0, 0x05A4, 0x05A8, 0x05AC,
         0x05B0, 0x05B4, 0x05B8, 0x05BC, 0x05C0, 0x05C4, 0x05FC,
@@ -437,12 +453,15 @@ void GameState_Update(GameState* gameState) {
                             0x011E, 0x0123, 0x0129, 0x0130, 0x0138, 0x013D, 0x0147, 0x014D, 0x0157, 0x0053,
                             0x0000, 0x0004, 0x0028, 0x0169, 0x0165, 0x0010, 0x0082, 0x0037, 0x0098, 0x0088,
                             0x0467, 0x0008, 0x00B7, 0x00C1, 0x037C, 0x0380, 0x0384, 0x0388, 0x0390};
-    //Warp Logic
+
     if (gGlobalCtx) {
         if (CVar_GetS32("gWarpCheat", 0) != 0) {
-            int temp = CVar_GetS32("gWarpCheat", 0);
             gGlobalCtx->nextEntranceIndex = sScenes[CVar_GetS32("gWarpCheat", 0) - 1];
             CVar_SetS32("gWarpCheat", 0);
+            if (warpTime != 0) {
+                gSaveContext.dayTime = warpTime;
+                warpTime = 0;
+            }
             gGlobalCtx->sceneLoadFlag = 0x14;
             gGlobalCtx->fadeTransition = 11;
             gSaveContext.nextTransition = 11;
@@ -525,10 +544,26 @@ void GameState_Update(GameState* gameState) {
                 gGlobalCtx->nextEntranceIndex = entrances[CVar_GetS32("gWarpGrottoCheat", 0) - 1];
             }
             CVar_SetS32("gWarpGrottoCheat", 0);
+            if (warpTime != 0) {
+                warpTime = 0;
+                gSaveContext.dayTime = warpTime;
+            }
             gGlobalCtx->sceneLoadFlag = 0x14;
             gGlobalCtx->fadeTransition = 11;
             gSaveContext.nextTransition = 11;
             Gameplay_SetupRespawnPoint(gGlobalCtx, RESPAWN_MODE_RETURN, 0x4FF);
+        }
+
+        if (CVar_GetS32("gDebugWarp", 0) != 0) {
+            gGlobalCtx->nextEntranceIndex = CVar_GetS32("gDebugWarp",0);
+            CVar_SetS32("gDebugWarp", 0);
+            if (warpTime != 0) {
+                gSaveContext.dayTime = warpTime;
+                warpTime = 0;
+            }
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
         }
     }
 
