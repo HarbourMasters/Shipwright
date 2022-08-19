@@ -6,6 +6,7 @@
 #include "../../../include/z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 class Randomizer {
   private:
@@ -47,6 +48,8 @@ class Randomizer {
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
+    std::string Randomizer_InsertRupeeName(std::string message, int language);
+    CustomMessageEntry Randomizer_GetRupeeMessage(u16 rupeeTextId);
 };
 
 #ifdef __cplusplus

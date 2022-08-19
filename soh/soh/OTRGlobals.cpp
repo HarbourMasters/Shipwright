@@ -33,6 +33,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include <soh/Enhancements/randomizer/randomizer.h>
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
@@ -1447,54 +1448,6 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
-extern "C" std::string Randomizer_InsertRupeeName(std::string message, int language) {
-    const char* englishRupeeNames[40] = { 
-        "Rupees", "Bitcoin", "Bananas", "Cornflakes", "Gummybears", "Floopies", "Dollars", "Lemmings", "Emeralds", "Bucks",
-        "Rubles", "Diamonds", "Moons", "Stars", "Mana", "Doll Hairs", "Dogecoin", "Mushrooms", "Experience", "Friends",
-        "Coins", "Rings", "Gil", "Pokédollars", "Bells", "Orbs", "Bottle Caps", "Simoleons", "Pokémon", "Toys",
-        "Smackaroos", "Zorkmids", "Zenny", "Bones", "Souls", "Studs", "Munny", "Rubies", "Gald", "Gold"
-    };
-    const char* germanRupeeNames[1] = {
-        "Rubine"
-    };
-    const char* frenchRupeeNames[36] = {
-        "Rubis", "Bitcoin", "Bananes", "Euros", "Dollars", "Émeraudes", "Joyaux",
-        "Diamants", "Balles", "Pokémon", "Pièces", "Lunes", "Étoiles", "Dogecoin", "Anneaux", "Radis", "Pokédollars",
-        "Zennies", "Pépètes", "Mailles", "Éthers", "Clochettes", "Capsules", "Gils", "Champignons", "Blés", "Halos",
-        "Munnies", "Orens", "Florens", "Crédits", "Galds", "Bling", "Orbes", "Baguettes", "Croissants"
-    };
-    int randomIndex;
-    std::string replaceWith;
-    switch (language) {
-        case LANGUAGE_ENG:
-            randomIndex = rand() % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
-            replaceWith = englishRupeeNames[randomIndex];
-            break;
-        case LANGUAGE_GER:
-            randomIndex = rand() % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
-            replaceWith = germanRupeeNames[randomIndex];
-            break;
-        case LANGUAGE_FRA:
-            randomIndex = rand() % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
-            replaceWith = frenchRupeeNames[randomIndex];
-            break;
-    }
-    std::string replaceString = "%RUPEE%";
-    size_t pos = message.find(replaceString);
-    size_t len = replaceString.length();
-    message.replace(pos, len, replaceWith);
-    CustomMessageManager::Instance->FormatCustomMessage(message);
-    return message;
-}
-
-extern "C" CustomMessageEntry Randomizer_GetRupeeMessage(u16 rupeeTextId) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.english = Randomizer_InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
-    messageEntry.german = Randomizer_InsertRupeeName(messageEntry.german, LANGUAGE_GER);
-    messageEntry.french = Randomizer_InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
-    return messageEntry;
-}
-
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
@@ -1591,7 +1544,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (!CVar_GetS32("gRandoDisableRandomRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
-            messageEntry = Randomizer_GetRupeeMessage(textId);
+            Randomizer randomizerInstance;
+            messageEntry = randomizerInstance.Randomizer_GetRupeeMessage(textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

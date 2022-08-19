@@ -14,7 +14,6 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 using json = nlohmann::json;
@@ -4629,25 +4628,74 @@ void CreateRupeeMessages() {
     for (u8 rupee : rupees) {
         switch (rupee) {
             case TEXT_BLUE_RUPEE:
-                rupeeText = "\x05\x03 5 %RUPEE% \x05\x00";
+                rupeeText = "\x05\x03 5 %RUPEE%\x05\x00";
                 break;
             case TEXT_RED_RUPEE:
-                rupeeText = "\x05\x01 20 %RUPEE% \x05\x00";
+                rupeeText = "\x05\x01 20 %RUPEE%\x05\x00";
                 break;
             case TEXT_PURPLE_RUPEE:
-                rupeeText = "\x05\x05 50 %RUPEE% \x05\x00";
+                rupeeText = "\x05\x05 50 %RUPEE%\x05\x00";
                 break;
             case TEXT_HUGE_RUPEE:
-                rupeeText = "\x05\x06 200 %RUPEE% \x05\x00";
+                rupeeText = "\x05\x06 200 %RUPEE%\x05\x00";
                 break;
         }
         customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                "You found" + rupeeText + "!",
-                "Du hast" + rupeeText + " gefunden!",
-                "Vous obtenez" + rupeeText + "!"
+                "You found" + rupeeText + " !",
+                "Du hast" + rupeeText + "  gefunden!",
+                "Vous obtenez" + rupeeText + " !"
         });
     }
+}
+
+std::string Randomizer::Randomizer_InsertRupeeName(std::string message, int language) {
+    const char* englishRupeeNames[40] = {
+        "Rupees",   "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
+        "Emeralds", "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
+        "Dogecoin", "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
+        "Bells",    "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
+        "Zenny",    "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold"
+    };
+    const char* germanRupeeNames[1] = { "Rubine" };
+    const char* frenchRupeeNames[36] = {
+        "Rubis",       "Bitcoin", "Bananes",   "Euros",     "Dollars", "Émeraudes",  "Joyaux",   "Diamants",
+        "Balles",      "Pokémon", "Pièces",    "Lunes",     "Étoiles", "Dogecoin",   "Anneaux",  "Radis",
+        "Pokédollars", "Zennies", "Pépètes",   "Mailles",   "Éthers",  "Clochettes", "Capsules", "Gils",
+        "Champignons", "Blés",    "Halos",     "Munnies",   "Orens",   "Florens",    "Crédits",  "Galds",
+        "Bling",       "Orbes",   "Baguettes", "Croissants"
+    };
+    int randomIndex;
+    std::string replaceWith;
+    switch (language) {
+        case LANGUAGE_ENG:
+            randomIndex = rand() % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
+            replaceWith = englishRupeeNames[randomIndex];
+            break;
+        case LANGUAGE_GER:
+            randomIndex = rand() % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
+            replaceWith = germanRupeeNames[randomIndex];
+            break;
+        case LANGUAGE_FRA:
+            randomIndex = rand() % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
+            replaceWith = frenchRupeeNames[randomIndex];
+            break;
+    }
+    std::string replaceString = "%RUPEE%";
+    size_t pos = message.find(replaceString);
+    size_t len = replaceString.length();
+    message.replace(pos, len, replaceWith);
+    CustomMessageManager::Instance->FormatCustomMessage(message);
+    return message;
+}
+
+CustomMessageEntry Randomizer::Randomizer_GetRupeeMessage(u16 rupeeTextId) {
+    CustomMessageEntry messageEntry =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    messageEntry.english = Randomizer::Randomizer_InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
+    messageEntry.german = Randomizer::Randomizer_InsertRupeeName(messageEntry.german, LANGUAGE_GER);
+    messageEntry.french = Randomizer::Randomizer_InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
+    return messageEntry;
 }
 
 void Randomizer::CreateCustomMessages() {
