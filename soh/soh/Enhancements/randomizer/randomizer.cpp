@@ -3795,10 +3795,7 @@ void DrawRandoEditor(bool& open) {
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
                         bool hasItems = false;
                         for (auto locationIt : areaIt.second) {
-                            if (locationIt.visibleInImgui &&
-                                excludedLocations.count(locationIt.rc) &&
-                                locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
-
+                            if (locationIt.visibleInImgui && excludedLocations.count(locationIt.rc)) {
                                 hasItems = true;
                                 break;
                             }
@@ -3809,10 +3806,7 @@ void DrawRandoEditor(bool& open) {
                             if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
                                 for (auto locationIt : areaIt.second) {
                                     auto elfound = excludedLocations.find(locationIt.rc);
-                                    if (locationIt.visibleInImgui &&
-                                        elfound != excludedLocations.end() &&
-                                        locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
-
+                                    if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
                                         if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
                                             excludedLocations.erase(elfound);
                                         }
