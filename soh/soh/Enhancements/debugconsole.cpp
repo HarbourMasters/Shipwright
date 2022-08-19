@@ -1,7 +1,3 @@
-#ifdef _MSC_VER
-#define NOGDI
-#endif
-
 #include "debugconsole.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "savestates.h"

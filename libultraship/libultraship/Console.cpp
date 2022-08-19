@@ -1,7 +1,6 @@
 #include "Console.h"
 
 #include "Cvar.h"
-#include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui.h"
 #include "Utils/StringHelper.h"
