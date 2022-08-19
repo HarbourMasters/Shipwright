@@ -2854,7 +2854,13 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
-    std::set<RandomizerCheck> excludedLocations = { RC_UNKNOWN_CHECK };
+    // todo: this efficently when we build out cvar array support
+    std::set<RandomizerCheck> excludedLocations;
+    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+    std::string excludedLocationString;
+    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
+        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+    }
 
     RandoMain::GenerateRando(cvarSettings, excludedLocations);
 

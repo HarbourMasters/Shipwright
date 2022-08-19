@@ -168,6 +168,10 @@ public:
         return key;
     }
 
+    RandomizerCheck GetRandomizerCheck() const {
+      return rc;
+    }
+
     SpoilerCollectionCheck GetCollectionCheck() const {
       return collectionCheck;
     }
