@@ -1387,6 +1387,8 @@ namespace SohImGui {
                         PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                         Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                     }
+                    PaddedEnhancementCheckbox("Fix credits timing", "gCreditsFix", true, false);
+                    Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
 
                     ImGui::EndMenu();
                 }
@@ -2112,6 +2114,8 @@ namespace SohImGui {
         CVar_SetS32("gCrouchStabHammerFix", 0);
         // Fix all crouch stab
         CVar_SetS32("gCrouchStabFix", 0);
+        // Fix credits timing
+        CVar_SetS32("gCreditsFix", 1);
 
         // Red Ganon blood
         CVar_SetS32("gRedGanonBlood", 0);
