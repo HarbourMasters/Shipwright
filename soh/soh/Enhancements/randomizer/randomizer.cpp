@@ -16,11 +16,15 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include "randomizer_check_objects.h"
+#include <sstream>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
 std::unordered_map<uint8_t, Sprite> gSeedTextures;
+std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
+std::set<RandomizerCheck> excludedLocations;
 
 u8 generated;
 
@@ -58,6 +62,14 @@ Randomizer::Randomizer() {
 
     Sprite ootOcarinaSprite = { dgOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
+
+    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+        for (auto locationIt : areaIt.second) {
+            SpoilerfileCheckNameToEnum[locationIt.rcSpoilerName] = locationIt.rc;
+        }
+        SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
+        SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
+    }
 }
 
 Sprite* Randomizer::GetSeedTexture(uint8_t index) {
@@ -68,749 +80,6 @@ Randomizer::~Randomizer() {
     this->randoSettings.clear();
     this->itemLocations.clear();
 }
-
-std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
-    { "Invalid Location", RC_UNKNOWN_CHECK },
-    { "KF Kokiri Sword Chest", RC_KF_KOKIRI_SWORD_CHEST },
-    { "KF Mido Top Left Chest", RC_KF_MIDOS_TOP_LEFT_CHEST },
-    { "KF Mido Top Right Chest", RC_KF_MIDOS_TOP_RIGHT_CHEST },
-    { "KF Mido Bottom Left Chest", RC_KF_MIDOS_BOTTOM_LEFT_CHEST },
-    { "KF Mido Bottom Right Chest", RC_KF_MIDOS_BOTTOM_RIGHT_CHEST },
-    { "KF Storms Grotto Chest", RC_KF_STORMS_GROTTO_CHEST },
-    { "LW Near Shortcuts Grotto Chest", RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST },
-    { "LW Skull Kid", RC_LW_SKULL_KID },
-    { "LW Trade Cojiro", RC_LW_TRADE_COJIRO },
-    { "LW Trade Odd Potion", RC_LW_TRADE_ODD_POTION },
-    { "LW Ocarina Memory Game", RC_LW_OCARINA_MEMORY_GAME },
-    { "LW Target in Woods", RC_LW_TARGET_IN_WOODS },
-    { "LW Deku Scrub Near Deku Theater Right", RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT },
-    { "LW Deku Scrub Near Deku Theater Left", RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT },
-    { "LW Deku Scrub Near Bridge", RC_LW_DEKU_SCRUB_NEAR_BRIDGE },
-    { "LW Deku Scrub Grotto Rear", RC_LW_DEKU_SCRUB_GROTTO_REAR },
-    { "LW Deku Scrub Grotto Front", RC_LW_DEKU_SCRUB_GROTTO_FRONT },
-    { "Deku Theater Skull Mask", RC_DEKU_THEATER_SKULL_MASK },
-    { "Deku Theater Mask of Truth", RC_DEKU_THEATER_MASK_OF_TRUTH },
-    { "SFM Wolfos Grotto Chest", RC_SFM_WOLFOS_GROTTO_CHEST },
-    { "SFM Deku Scrub Grotto Rear", RC_SFM_DEKU_SCRUB_GROTTO_REAR },
-    { "SFM Deku Scrub Grotto Front", RC_SFM_DEKU_SCRUB_GROTTO_FRONT },
-    { "HF Southeast Grotto Chest", RC_HF_SOUTHEAST_GROTTO_CHEST },
-    { "HF Open Grotto Chest", RC_HF_OPEN_GROTTO_CHEST },
-    { "HF Near Market Grotto Chest", RC_HF_NEAR_MARKET_GROTTO_CHEST },
-    { "HF Ocarina of Time Item", RC_HF_OCARINA_OF_TIME_ITEM },
-    { "HF Tektite Grotto Freestanding PoH", RC_HF_TEKTITE_GROTTO_FREESTANDING_POH },
-    { "HF Deku Scrub Grotto", RC_HF_DEKU_SCRUB_GROTTO },
-    { "LH Child Fishing", RC_LH_CHILD_FISHING },
-    { "LH Adult Fishing", RC_LH_ADULT_FISHING },
-    { "LH Lab Dive", RC_LH_LAB_DIVE },
-    { "LH Lab Trade Eyeball Frog", RC_LH_TRADE_FROG },
-    { "LH Underwater Item", RC_LH_UNDERWATER_ITEM },
-    { "LH Sun", RC_LH_SUN },
-    { "LH Freestanding PoH", RC_LH_FREESTANDING_POH },
-    { "LH Deku Scrub Grotto Left", RC_LH_DEKU_SCRUB_GROTTO_LEFT },
-    { "LH Deku Scrub Grotto Right", RC_LH_DEKU_SCRUB_GROTTO_RIGHT },
-    { "LH Deku Scrub Grotto Center", RC_LH_DEKU_SCRUB_GROTTO_CENTER },
-    { "GV Chest", RC_GV_CHEST },
-    { "GV Trade Saw", RC_GV_TRADE_SAW },
-    { "GV Waterfall Freestanding PoH", RC_GV_WATERFALL_FREESTANDING_POH },
-    { "GV Crate Freestanding PoH", RC_GV_CRATE_FREESTANDING_POH },
-    { "GV Deku Scrub Grotto Rear", RC_GV_DEKU_SCRUB_GROTTO_REAR },
-    { "GV Deku Scrub Grotto Front", RC_GV_DEKU_SCRUB_GROTTO_FRONT },
-    { "GF Chest", RC_GF_CHEST },
-    { "GF HBA 1000 Points", RC_GF_HBA_1000_POINTS },
-    { "GF HBA 1500 Points", RC_GF_HBA_1500_POINTS },
-    { "GF Gerudo Membership Card", RC_GF_GERUDO_MEMBERSHIP_CARD },
-    { "GF North F1 Carpenter", RC_GF_NORTH_F1_CARPENTER },
-    { "GF North F2 Carpenter", RC_GF_NORTH_F2_CARPENTER },
-    { "GF South F1 Carpenter", RC_GF_SOUTH_F1_CARPENTER },
-    { "GF South F2 Carpenter", RC_GF_SOUTH_F2_CARPENTER },
-    { "Wasteland Chest", RC_WASTELAND_CHEST },
-    { "Wasteland Carpet Salesman", RC_WASTELAND_BOMBCHU_SALESMAN },
-    { "Colossus Freestanding PoH", RC_COLOSSUS_FREESTANDING_POH },
-    { "Colossus Deku Scrub Grotto Rear", RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR },
-    { "Colossus Deku Scrub Grotto Front", RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT },
-    { "MK Treasure Chest Game Reward", RC_MARKET_TREASURE_CHEST_GAME_REWARD },
-    { "MK Bombchu Bowling First Prize", RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE },
-    { "MK Bombchu Bowling Second Prize", RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE },
-    { "MK Bombchu Bowling Bombchus", RC_UNKNOWN_CHECK },
-    { "MK Lost Dog", RC_MARKET_LOST_DOG },
-    { "MK Shooting Gallery", RC_MARKET_SHOOTING_GALLERY_REWARD },
-    { "MK 10 Big Poes", RC_MARKET_10_BIG_POES },
-    { "MK Chest Game First Room Chest", RC_MARKET_TREASURE_CHEST_GAME_ITEM_1 },
-    { "MK Chest Game Second Room Chest", RC_MARKET_TREASURE_CHEST_GAME_ITEM_2 },
-    { "MK Chest Game Third Room Chest", RC_MARKET_TREASURE_CHEST_GAME_ITEM_3 },
-    { "MK Chest Game Fourth Room Chest", RC_MARKET_TREASURE_CHEST_GAME_ITEM_4 },
-    { "MK Chest Game Fifth Room Chest", RC_MARKET_TREASURE_CHEST_GAME_ITEM_5 },
-    { "HC Malon Egg", RC_HC_MALON_EGG },
-    { "HC Zeldas Letter", RC_HC_ZELDAS_LETTER },
-    { "Kak Redead Grotto Chest", RC_KAK_REDEAD_GROTTO_CHEST },
-    { "Kak Open Grotto Chest", RC_KAK_OPEN_GROTTO_CHEST },
-    { "Kak 10 Gold Skulltula Reward", RC_KAK_10_GOLD_SKULLTULA_REWARD },
-    { "Kak 20 Gold Skulltula Reward", RC_KAK_20_GOLD_SKULLTULA_REWARD },
-    { "Kak 30 Gold Skulltula Reward", RC_KAK_30_GOLD_SKULLTULA_REWARD },
-    { "Kak 40 Gold Skulltula Reward", RC_KAK_40_GOLD_SKULLTULA_REWARD },
-    { "Kak 50 Gold Skulltula Reward", RC_KAK_50_GOLD_SKULLTULA_REWARD },
-    { "Kak Man on Roof", RC_KAK_MAN_ON_ROOF },
-    { "Kak Shooting Gallery Reward", RC_KAK_SHOOTING_GALLERY_REWARD },
-    { "Kak Trade Odd Mushroom", RC_KAK_TRADE_ODD_MUSHROOM },
-    { "Kak Anju as Adult", RC_KAK_ANJU_AS_ADULT },
-    { "Kak Anju as Child", RC_KAK_ANJU_AS_CHILD },
-    { "Kak Trade Pocket Cucco", RC_KAK_TRADE_POCKET_CUCCO },
-    { "Kak Impas House Freestanding PoH", RC_KAK_IMPAS_HOUSE_FREESTANDING_POH },
-    { "Kak Windmill Freestanding PoH", RC_KAK_WINDMILL_FREESTANDING_POH },
-    { "GY Shield Grave Chest", RC_GRAVEYARD_SHIELD_GRAVE_CHEST },
-    { "GY Heart Piece Grave Chest", RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST },
-    { "GY Composers Grave Chest", RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST },
-    { "GY Hookshot Chest", RC_GRAVEYARD_HOOKSHOT_CHEST },
-    { "GY Dampe Race Freestanding PoH", RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH },
-    { "GY Freestanding PoH", RC_GRAVEYARD_FREESTANDING_POH },
-    { "GY Dampe Gravedigging Tour", RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR },
-    { "DMT Chest", RC_DMT_CHEST },
-    { "DMT Storms Grotto Chest", RC_DMT_STORMS_GROTTO_CHEST },
-    { "DMT Trade Broken Sword", RC_DMT_TRADE_BROKEN_SWORD },
-    { "DMT Trade Eyedrops", RC_DMT_TRADE_EYEDROPS },
-    { "DMT Trade Claim Check", RC_DMT_TRADE_CLAIM_CHECK },
-    { "DMT Freestanding PoH", RC_DMT_FREESTANDING_POH },
-    { "GC Maze Left Chest", RC_GC_MAZE_LEFT_CHEST },
-    { "GC Maze Right Chest", RC_GC_MAZE_RIGHT_CHEST },
-    { "GC Maze Center Chest", RC_GC_MAZE_CENTER_CHEST },
-    { "GC Rolling Goron as Child", RC_GC_ROLLING_GORON_AS_CHILD },
-    { "GC Rolling Goron as Adult", RC_GC_ROLLING_GORON_AS_ADULT },
-    { "GC Darunias Joy", RC_GC_DARUNIAS_JOY },
-    { "GC Pot Freestanding PoH", RC_GC_POT_FREESTANDING_POH },
-    { "GC Deku Scrub Grotto Left", RC_GC_DEKU_SCRUB_GROTTO_LEFT },
-    { "GC Deku Scrub Grotto Right", RC_GC_DEKU_SCRUB_GROTTO_RIGHT },
-    { "GC Deku Scrub Grotto Center", RC_GC_DEKU_SCRUB_GROTTO_CENTER },
-    { "GC Medigoron", RC_GC_MEDIGORON },
-    { "DMC Upper Grotto Chest", RC_DMC_UPPER_GROTTO_CHEST },
-    { "DMC Wall Freestanding PoH", RC_DMC_WALL_FREESTANDING_POH },
-    { "DMC Volcano Freestanding PoH", RC_DMC_VOLCANO_FREESTANDING_POH },
-    { "DMC Deku Scrub", RC_DMC_DEKU_SCRUB },
-    { "DMC Deku Scrub Grotto Left", RC_DMC_DEKU_SCRUB_GROTTO_LEFT },
-    { "DMC Deku Scrub Grotto Right", RC_DMC_DEKU_SCRUB_GROTTO_RIGHT },
-    { "DMC Deku Scrub Grotto Center", RC_DMC_DEKU_SCRUB_GROTTO_CENTER },
-    { "ZR Open Grotto Chest", RC_ZR_OPEN_GROTTO_CHEST },
-    { "ZR Magic Bean Salesman", RC_ZR_MAGIC_BEAN_SALESMAN },
-    { "ZR Frogs Zelda's Lullaby", RC_ZR_FROGS_ZELDAS_LULLABY },
-    { "ZR Frogs Epona's Song", RC_ZR_FROGS_EPONAS_SONG },
-    { "ZR Frogs Saria's Song", RC_ZR_FROGS_SARIAS_SONG },
-    { "ZR Frogs Sun's Song", RC_ZR_FROGS_SUNS_SONG },
-    { "ZR Frogs Song of Time", RC_ZR_FROGS_SONG_OF_TIME },
-    { "ZR Frogs in the Rain", RC_ZR_FROGS_IN_THE_RAIN },
-    { "ZR Frogs Ocarina Game", RC_ZR_FROGS_OCARINA_GAME },
-    { "ZR Near Open Grotto Freestanding PoH", RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH },
-    { "ZR Near Domain Freestanding PoH", RC_ZR_NEAR_DOMAIN_FREESTANDING_POH },
-    { "ZR Deku Scrub Grotto Rear", RC_ZR_DEKU_SCRUB_GROTTO_REAR },
-    { "ZR Deku Scrub Grotto Front", RC_ZR_DEKU_SCRUB_GROTTO_FRONT },
-    { "ZD Chest", RC_ZD_CHEST },
-    { "ZD Diving Minigame", RC_ZD_DIVING_MINIGAME },
-    { "ZD King Zora Thawed", RC_ZD_KING_ZORA_THAWED },
-    { "ZD Trade Prescription", RC_ZD_TRADE_PRESCRIPTION },
-    { "ZF Iceberg Freestanding PoH", RC_ZF_ICEBERC_FREESTANDING_POH },
-    { "ZF Bottom Freestanding PoH", RC_ZF_BOTTOM_FREESTANDING_POH },
-    { "LLR Talons Chickens", RC_LLR_TALONS_CHICKENS },
-    { "LLR Freestanding PoH", RC_LLR_FREESTANDING_POH },
-    { "LLR Deku Scrub Grotto Left", RC_LLR_DEKU_SCRUB_GROTTO_LEFT },
-    { "LLR Deku Scrub Grotto Right", RC_LLR_DEKU_SCRUB_GROTTO_RIGHT },
-    { "LLR Deku Scrub Grotto Center", RC_LLR_DEKU_SCRUB_GROTTO_CENTER },
-    { "Deku Tree Map Chest", RC_DEKU_TREE_MAP_CHEST },
-    { "Deku Tree Compass Chest", RC_DEKU_TREE_COMPASS_CHEST },
-    { "Deku Tree Compass Room Side Chest", RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST },
-    { "Deku Tree Basement Chest", RC_DEKU_TREE_BASEMENT_CHEST },
-    { "Deku Tree Slingshot Chest", RC_DEKU_TREE_SLINGSHOT_CHEST },
-    { "Deku Tree Slingshot Room Side Chest", RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST },
-    { "Deku Tree MQ Map Chest", RC_DEKU_TREE_MQ_MAP_CHEST },
-    { "Deku Tree MQ Compass Chest", RC_DEKU_TREE_MQ_COMPASS_CHEST },
-    { "Deku Tree MQ Slingshot Chest", RC_DEKU_TREE_MQ_SLINGSHOT_CHEST },
-    { "Deku Tree MQ Slingshot Room Back Chest", RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST },
-    { "Deku Tree MQ Basement Chest", RC_DEKU_TREE_MQ_BASEMENT_CHEST },
-    { "Deku Tree MQ Before Spinning Log Chest", RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST },
-    { "Deku Tree MQ After Spinning Log Chest", RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST },
-    { "Deku Tree MQ Deku Scrub", RC_DEKU_TREE_MQ_DEKU_SCRUB },
-    { "Dodongos Cavern Boss Room Chest", RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST },
-    { "Dodongos Cavern Map Chest", RC_DODONGOS_CAVERN_MAP_CHEST },
-    { "Dodongos Cavern Compass Chest", RC_DODONGOS_CAVERN_COMPASS_CHEST },
-    { "Dodongos Cavern Bomb Flower Platform Chest", RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST },
-    { "Dodongos Cavern Bomb Bag Chest", RC_DODONGOS_CAVERN_BOMB_BAG_CHEST },
-    { "Dodongos Cavern End Of Bridge Chest", RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST },
-    { "Dodongos Cavern Deku Scrub Near Bomb Bag Left", RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT },
-    { "Dodongos Cavern Deku Scrub Side Room Near Dodongos", RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS },
-    { "Dodongos Cavern Deku Scrub Near Bomb Bag Right", RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT },
-    { "Dodongos Cavern Deku Scrub Lobby", RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY },
-    { "Dodongos Cavern MQ Map Chest", RC_DODONGOS_CAVERN_MQ_MAP_CHEST },
-    { "Dodongos Cavern MQ Bomb Bag Chest", RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST },
-    { "Dodongos Cavern MQ Compass Chest", RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST },
-    { "Dodongos Cavern MQ Larvae Room Chest", RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST },
-    { "Dodongos Cavern MQ Torch Puzzle Room Chest", RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST },
-    { "Dodongos Cavern MQ Under Grave Chest", RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST },
-    { "Dodongos Cavern Deku Scrub Lobby Rear", RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR },
-    { "Dodongos Cavern Deku Scrub Lobby Front", RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT },
-    { "Dodongos Cavern Deku Scrub Staircase", RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE },
-    { "Dodongos Cavern Deku Scrub Side Room Near Lower Lizalfos",
-      RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS },
-    { "Jabu Jabus Belly Map Chest", RC_JABU_JABUS_BELLY_MAP_CHEST },
-    { "Jabu Jabus Belly Compass Chest", RC_JABU_JABUS_BELLY_COMPASS_CHEST },
-    { "Jabu Jabus Belly Boomerang Chest", RC_JABU_JABUS_BELLY_BOOMERANG_CHEST },
-    { "Jabu Jabus Belly Deku Scrub", RC_JABU_JABUS_BELLY_DEKU_SCRUB },
-    { "Jabu Jabus Belly MQ First Room Side Chest", RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST },
-    { "Jabu Jabus Belly MQ Map Chest", RC_JABU_JABUS_BELLY_MQ_MAP_CHEST },
-    { "Jabu Jabus Belly MQ Second Room Lower Chest", RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST },
-    { "Jabu Jabus Belly MQ Compass Chest", RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST },
-    { "Jabu Jabus Belly MQ Second Room Upper Chest", RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST },
-    { "Jabu Jabus Belly MQ Basement Near Switches Chest", RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST },
-    { "Jabu Jabus Belly MQ Basement Near Vines Chest", RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST },
-    { "Jabu Jabus Belly MQ Near Boss Chest", RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST },
-    { "Jabu Jabus Belly MQ Falling Like Like Room Chest", RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST },
-    { "Jabu Jabus Belly MQ Boomerang Room Small Chest", RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST },
-    { "Jabu Jabus Belly MQ Boomerang Chest", RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST },
-    { "Forest Temple First Room Chest", RC_FOREST_TEMPLE_FIRST_ROOM_CHEST },
-    { "Forest Temple First Stalfos Chest", RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST },
-    { "Forest Temple Raised Island Courtyard Chest", RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST },
-    { "Forest Temple Map Chest", RC_FOREST_TEMPLE_MAP_CHEST },
-    { "Forest Temple Well Chest", RC_FOREST_TEMPLE_WELL_CHEST },
-    { "Forest Temple Falling Ceiling Room Chest", RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST },
-    { "Forest Temple Eye Switch Chest", RC_FOREST_TEMPLE_EYE_SWITCH_CHEST },
-    { "Forest Temple Boss Key Chest", RC_FOREST_TEMPLE_BOSS_KEY_CHEST },
-    { "Forest Temple Floormaster Chest", RC_FOREST_TEMPLE_FLOORMASTER_CHEST },
-    { "Forest Temple Bow Chest", RC_FOREST_TEMPLE_BOW_CHEST },
-    { "Forest Temple Red Poe Chest", RC_FOREST_TEMPLE_RED_POE_CHEST },
-    { "Forest Temple Blue Poe Chest", RC_FOREST_TEMPLE_BLUE_POE_CHEST },
-    { "Forest Temple Basement Chest", RC_FOREST_TEMPLE_BASEMENT_CHEST },
-    { "Forest Temple MQ First Room Chest", RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST },
-    { "Forest Temple MQ Wolfos Chest", RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST },
-    { "Forest Temple MQ Bow Chest", RC_FOREST_TEMPLE_MQ_BOW_CHEST },
-    { "Forest Temple MQ Raised Island Courtyard Lower Chest", RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST },
-    { "Forest Temple MQ Raised Island Courtyard Upper Chest", RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST },
-    { "Forest Temple MQ Well Chest", RC_FOREST_TEMPLE_MQ_WELL_CHEST },
-    { "Forest Temple MQ Map Chest", RC_FOREST_TEMPLE_MQ_MAP_CHEST },
-    { "Forest Temple MQ Compass Chest", RC_FOREST_TEMPLE_MQ_COMPASS_CHEST },
-    { "Forest Temple MQ Falling Ceiling Room Chest", RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST },
-    { "Forest Temple MQ Basement Chest", RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST },
-    { "Forest Temple MQ Redead Chest", RC_FOREST_TEMPLE_MQ_REDEAD_CHEST },
-    { "Forest Temple MQ Boss Key Chest", RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST },
-    { "Fire Temple Near Boss Chest", RC_FIRE_TEMPLE_NEAR_BOSS_CHEST },
-    { "Fire Temple Flare Dancer Chest", RC_FIRE_TEMPLE_FLARE_DANCER_CHEST },
-    { "Fire Temple Boss Key Chest", RC_FIRE_TEMPLE_BOSS_KEY_CHEST },
-    { "Fire Temple Big Lava Room Blocked Door Chest", RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST },
-    { "Fire Temple Big Lava Room Lower Open Door Chest", RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST },
-    { "Fire Temple Boulder Maze Lower Chest", RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST },
-    { "Fire Temple Boulder Maze Upper Chest", RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST },
-    { "Fire Temple Boulder Maze Side Room Chest", RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST },
-    { "Fire Temple Boulder Maze Shortcut Chest", RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST },
-    { "Fire Temple Scarecrow Chest", RC_FIRE_TEMPLE_SCARECROW_CHEST },
-    { "Fire Temple Map Chest", RC_FIRE_TEMPLE_MAP_CHEST },
-    { "Fire Temple Compass Chest", RC_FIRE_TEMPLE_COMPASS_CHEST },
-    { "Fire Temple Highest Goron Chest", RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST },
-    { "Fire Temple Megaton Hammer Chest", RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST },
-    { "Fire Temple MQ Near Boss Chest", RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST },
-    { "Fire Temple MQ Megaton Hammer Chest", RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST },
-    { "Fire Temple MQ Compass Chest", RC_FIRE_TEMPLE_MQ_COMPASS_CHEST },
-    { "Fire Temple MQ Lizalfos Maze Lower Chest", RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST },
-    { "Fire Temple MQ Lizalfos Maze Upper Chest", RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST },
-    { "Fire Temple MQ Chest on Fire", RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE },
-    { "Fire Temple MQ Map Room Side Chest", RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST },
-    { "Fire Temple MQ Map Chest", RC_FIRE_TEMPLE_MQ_MAP_CHEST },
-    { "Fire Temple MQ Boss Key Chest", RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST },
-    { "Fire Temple MQ Big Lava Room Blocked Door Chest", RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST },
-    { "Fire Temple MQ Lizalfos Maze Side Room Chest", RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST },
-    { "Fire Temple MQ Freestanding Key", RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY },
-    { "Water Temple Map Chest", RC_WATER_TEMPLE_MAP_CHEST },
-    { "Water Temple Compass Chest", RC_WATER_TEMPLE_COMPASS_CHEST },
-    { "Water Temple Torches Chest", RC_WATER_TEMPLE_TORCHES_CHEST },
-    { "Water Temple Dragon Chest", RC_WATER_TEMPLE_DRAGON_CHEST },
-    { "Water Temple Central Bow Target Chest", RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST },
-    { "Water Temple Central Pillar Chest", RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST },
-    { "Water Temple Cracked Wall Chest", RC_WATER_TEMPLE_CRACKED_WALL_CHEST },
-    { "Water Temple Boss Key Chest", RC_WATER_TEMPLE_BOSS_KEY_CHEST },
-    { "Water Temple Longshot Chest", RC_WATER_TEMPLE_LONGSHOT_CHEST },
-    { "Water Temple River Chest", RC_WATER_TEMPLE_RIVER_CHEST },
-    { "Water Temple MQ Central Pillar Chest", RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST },
-    { "Water Temple MQ Boss Key Chest", RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST },
-    { "Water Temple MQ Longshot Chest", RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST },
-    { "Water Temple MQ Compass Chest", RC_WATER_TEMPLE_MQ_COMPASS_CHEST },
-    { "Water Temple MQ Map Chest", RC_WATER_TEMPLE_MQ_MAP_CHEST },
-    { "Water Temple MQ Freestanding Key", RC_WATER_TEMPLE_MQ_FREESTANDING_KEY },
-    { "Spirit Temple Silver Gauntlets Chest", RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST },
-    { "Spirit Temple Mirror Shield Chest", RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST },
-    { "Spirit Temple Child Bridge Chest", RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST },
-    { "Spirit Temple Child Early Torches Chest", RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST },
-    { "Spirit Temple Compass Chest", RC_SPIRIT_TEMPLE_COMPASS_CHEST },
-    { "Spirit Temple Early Adult Right Chest", RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST },
-    { "Spirit Temple First Mirror Left Chest", RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST },
-    { "Spirit Temple First Mirror Right Chest", RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST },
-    { "Spirit Temple Map Chest", RC_SPIRIT_TEMPLE_MAP_CHEST },
-    { "Spirit Temple Child Climb North Chest", RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST },
-    { "Spirit Temple Child Climb East Chest", RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST },
-    { "Spirit Temple Sun Block Room Chest", RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST },
-    { "Spirit Temple Statue Room Hand Chest", RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST },
-    { "Spirit Temple Statue Room Northeast Chest", RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST },
-    { "Spirit Temple Near Four Armos Chest", RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST },
-    { "Spirit Temple Hallway Right Invisible Chest", RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST },
-    { "Spirit Temple Hallway Left Invisible Chest", RC_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST },
-    { "Spirit Temple Boss Key Chest", RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST },
-    { "Spirit Temple Topmost Chest", RC_SPIRIT_TEMPLE_TOPMOST_CHEST },
-    { "Spirit Temple MQ Entrance Front Left Chest", RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST },
-    { "Spirit Temple MQ Entrance Back Right Chest", RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST },
-    { "Spirit Temple MQ Entrance Front Right Chest", RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST },
-    { "Spirit Temple MQ Entrance Back Left Chest", RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST },
-    { "Spirit Temple MQ Child Hammer Switch Chest", RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST },
-    { "Spirit Temple MQ Map Chest", RC_SPIRIT_TEMPLE_MQ_MAP_CHEST },
-    { "Spirit Temple MQ Map Room Enemy Chest", RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST },
-    { "Spirit Temple MQ Child Climb North Chest", RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST },
-    { "Spirit Temple MQ Child Climb South Chest", RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST },
-    { "Spirit Temple MQ Compass Chest", RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST },
-    { "Spirit Temple MQ Statue Room Lullaby Chest", RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST },
-    { "Spirit Temple MQ Statue Room Invisible Chest", RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST },
-    { "Spirit Temple MQ Silver Block Hallway Chest", RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST },
-    { "Spirit Temple MQ Sun Block Room Chest", RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST },
-    { "Spirit Temple MQ Symphony Room Chest", RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST },
-    { "Spirit Temple MQ Leever Room Chest", RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST },
-    { "Spirit Temple MQ Beamos Room Chest", RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST },
-    { "Spirit Temple MQ Chest Switch Chest", RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST },
-    { "Spirit Temple MQ Boss Key Chest", RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST },
-    { "Spirit Temple MQ Mirror Puzzle Invisible Chest", RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST },
-    { "Shadow Temple Map Chest", RC_SHADOW_TEMPLE_MAP_CHEST },
-    { "Shadow Temple Hover Boots Chest", RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST },
-    { "Shadow Temple Compass Chest", RC_SHADOW_TEMPLE_COMPASS_CHEST },
-    { "Shadow Temple Early Silver Rupee Chest", RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST },
-    { "Shadow Temple Invisible Blades Visible Chest", RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST },
-    { "Shadow Temple Invisible Blades Invisible Chest", RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST },
-    { "Shadow Temple Falling Spikes Lower Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST },
-    { "Shadow Temple Falling Spikes Upper Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST },
-    { "Shadow Temple Falling Spikes Switch Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST },
-    { "Shadow Temple Invisible Spikes Chest", RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST },
-    { "Shadow Temple Wind Hint Chest", RC_SHADOW_TEMPLE_WIND_HINT_CHEST },
-    { "Shadow Temple After Wind Enemy Chest", RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST },
-    { "Shadow Temple After Wind Hidden Chest", RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST },
-    { "Shadow Temple Spike Walls Left Chest", RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST },
-    { "Shadow Temple Boss Key Chest", RC_SHADOW_TEMPLE_BOSS_KEY_CHEST },
-    { "Shadow Temple Invisible Floormaster Chest", RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST },
-    { "Shadow Temple Freestanding Key", RC_SHADOW_TEMPLE_FREESTANDING_KEY },
-    { "Shadow Temple MQ Compass Chest", RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST },
-    { "Shadow Temple MQ Hover Boots Chest", RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST },
-    { "Shadow Temple MQ Early Gibdos Chest", RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST },
-    { "Shadow Temple MQ Map Chest", RC_SHADOW_TEMPLE_MQ_MAP_CHEST },
-    { "Shadow Temple MQ Beamos Silver Rupees Chest", RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST },
-    { "Shadow Temple MQ Falling Spikes Switch Chest", RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST },
-    { "Shadow Temple MQ Falling Spikes Lower Chest", RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST },
-    { "Shadow Temple MQ Falling Spikes Upper Chest", RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST },
-    { "Shadow Temple MQ Invisible Spikes Chest", RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST },
-    { "Shadow Temple MQ Boss Key Chest", RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST },
-    { "Shadow Temple MQ Spike Walls Left Chest", RC_SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST },
-    { "Shadow Temple MQ Stalfos Room Chest", RC_SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST },
-    { "Shadow Temple MQ Invisible Blades Invisible Chest", RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST },
-    { "Shadow Temple MQ Invisible Blades Visible Chest", RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST },
-    { "Shadow Temple MQ Bomb Flower Chest", RC_SHADOW_TEMPLE_MQ_BOMB_FLOWER_CHEST },
-    { "Shadow Temple MQ Wind Hint Chest", RC_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST },
-    { "Shadow Temple MQ After Wind Hidden Chest", RC_SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST },
-    { "Shadow Temple MQ After Wind Enemy Chest", RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST },
-    { "Shadow Temple MQ Near Ship Invisible Chest", RC_SHADOW_TEMPLE_MQ_NEAR_SHIP_INVISIBLE_CHEST },
-    { "Shadow Temple MQ Freestanding Key", RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY },
-    { "Bottom of the Well Front Left Fake Wall Chest", RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST },
-    { "Bottom of the Well Front Center Bombable Chest", RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST },
-    { "Bottom of the Well Right Bottom Fake Wall Chest", RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST },
-    { "Bottom of the Well Compass Chest", RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST },
-    { "Bottom of the Well Center Skulltula Chest", RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST },
-    { "Bottom of the Well Back Left Bombable Chest", RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST },
-    { "Bottom of the Well Lens of Truth Chest", RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST },
-    { "Bottom of the Well Invisible Chest", RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST },
-    { "Bottom of the Well Underwater Front Chest", RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST },
-    { "Bottom of the Well Underwater Left Chest", RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST },
-    { "Bottom of the Well Map Chest", RC_BOTTOM_OF_THE_WELL_MAP_CHEST },
-    { "Bottom of the Well Fire Keese Chest", RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST },
-    { "Bottom of the Well Like Like Chest", RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST },
-    { "Bottom of the Well Freestanding Key", RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY },
-    { "Bottom of the Well MQ Map Chest", RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST },
-    { "Bottom of the Well MQ Lens of Truth Chest", RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST },
-    { "Bottom of the Well MQ Compass Chest", RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST },
-    { "Bottom of the Well MQ Dead Hand Freestanding Key", RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY },
-    { "Bottom of the Well MQ East Inner Room Freestanding Key",
-      RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY },
-    { "Ice Cavern Map Chest", RC_ICE_CAVERN_MAP_CHEST },
-    { "Ice Cavern Compass Chest", RC_ICE_CAVERN_COMPASS_CHEST },
-    { "Ice Cavern Iron Boots Chest", RC_ICE_CAVERN_IRON_BOOTS_CHEST },
-    { "Ice Cavern Freestanding PoH", RC_ICE_CAVERN_FREESTANDING_POH },
-    { "Ice Cavern MQ Iron Boots Chest", RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST },
-    { "Ice Cavern MQ Compass Chest", RC_ICE_CAVERN_MQ_COMPASS_CHEST },
-    { "Ice Cavern MQ Map Chest", RC_ICE_CAVERN_MQ_MAP_CHEST },
-    { "Ice Cavern MQ Freestanding PoH", RC_ICE_CAVERN_MQ_FREESTANDING_POH },
-    { "Gerudo Training Grounds Lobby Left Chest", RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST },
-    { "Gerudo Training Grounds Lobby Right Chest", RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST },
-    { "Gerudo Training Grounds Stalfos Chest", RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST },
-    { "Gerudo Training Grounds Beamos Chest", RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST },
-    { "Gerudo Training Grounds Hidden Ceiling Chest", RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST },
-    { "Gerudo Training Grounds Maze Path First Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST },
-    { "Gerudo Training Grounds Maze Path Second Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST },
-    { "Gerudo Training Grounds Maze Path Third Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST },
-    { "Gerudo Training Grounds Maze Path Final Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST },
-    { "Gerudo Training Grounds Maze Right Central Chest", RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST },
-    { "Gerudo Training Grounds Maze Right Side Chest", RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST },
-    { "Gerudo Training Grounds Underwater Silver Rupee Chest",
-      RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST },
-    { "Gerudo Training Grounds Hammer Room Clear Chest", RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST },
-    { "Gerudo Training Grounds Hammer Room Switch Chest", RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST },
-    { "Gerudo Training Grounds Eye Statue Chest", RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST },
-    { "Gerudo Training Grounds Near Scarecrow Chest", RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST },
-    { "Gerudo Training Grounds Before Heavy Block Chest", RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST },
-    { "Gerudo Training Grounds Heavy Block First Chest", RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST },
-    { "Gerudo Training Grounds Heavy Block Second Chest", RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST },
-    { "Gerudo Training Grounds Heavy Block Third Chest", RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST },
-    { "Gerudo Training Grounds Heavy Block Fourth Chest", RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST },
-    { "Gerudo Training Grounds Freestanding Key", RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY },
-    { "Gerudo Training Grounds MQ Lobby Right Chest", RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST },
-    { "Gerudo Training Grounds MQ Lobby Left Chest", RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST },
-    { "Gerudo Training Grounds MQ First Iron Knuckle Chest", RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST },
-    { "Gerudo Training Grounds MQ Before Heavy Block Chest", RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST },
-    { "Gerudo Training Grounds MQ Eye Statue Chest", RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST },
-    { "Gerudo Training Grounds MQ Flame Circle Chest", RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST },
-    { "Gerudo Training Grounds MQ Second Iron Knuckle Chest", RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST },
-    { "Gerudo Training Grounds MQ Dinolfos Chest", RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST },
-    { "Gerudo Training Grounds MQ Ice Arrows Chest", RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST },
-    { "Gerudo Training Grounds MQ Maze Right Central Chest", RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST },
-    { "Gerudo Training Grounds MQ Maze Path First Chest", RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST },
-    { "Gerudo Training Grounds MQ Maze Right Side Chest", RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST },
-    { "Gerudo Training Grounds MQ Maze Path Third Chest", RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST },
-    { "Gerudo Training Grounds MQ Maze Path Second Chest", RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST },
-    { "Gerudo Training Grounds MQ Hidden Ceiling Chest", RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST },
-    { "Gerudo Training Grounds MQ Underwater Silver Rupee Chest",
-      RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST },
-    { "Gerudo Training Grounds MQ Heavy Block Chest", RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST },
-    { "Ganon's Tower Boss Key Chest", RC_GANONS_TOWER_BOSS_KEY_CHEST },
-    { "Ganon's Castle Forest Trial Chest", RC_GANONS_CASTLE_FOREST_TRIAL_CHEST },
-    { "Ganon's Castle Water Trial Left Chest", RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST },
-    { "Ganon's Castle Water Trial Right Chest", RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST },
-    { "Ganon's Castle Shadow Trial Front Chest", RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST },
-    { "Ganon's Castle Shadow Trial Golden Gauntlets Chest", RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST },
-    { "Ganon's Castle Spirit Trial Crystal Switch Chest", RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST },
-    { "Ganon's Castle Spirit Trial Invisible Chest", RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST },
-    { "Ganon's Castle Light Trial First Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST },
-    { "Ganon's Castle Light Trial Second Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST },
-    { "Ganon's Castle Light Trial Third Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST },
-    { "Ganon's Castle Light Trial First Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST },
-    { "Ganon's Castle Light Trial Second Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST },
-    { "Ganon's Castle Light Trial Third Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST },
-    { "Ganon's Castle Light Trial Invisible Enemies Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST },
-    { "Ganon's Castle Light Trial Lullaby Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST },
-    { "Ganon's Castle Deku Scrub Center-Left", RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT },
-    { "Ganon's Castle Deku Scrub Center-Right", RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT },
-    { "Ganon's Castle Deku Scrub Right", RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT },
-    { "Ganon's Castle Deku Scrub Left", RC_GANONS_CASTLE_DEKU_SCRUB_LEFT },
-    { "Ganon's Castle MQ Water Trial Chest", RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST },
-    { "Ganon's Castle MQ Forest Trial Eye Switch Chest", RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST },
-    { "Ganon's Castle MQ Forest Trial Frozen Eye Switch Chest",
-      RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST },
-    { "Ganon's Castle MQ Light Trial Lullaby Chest", RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST },
-    { "Ganon's Castle MQ Shadow Trial Bomb Flower Chest", RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST },
-    { "Ganon's Castle MQ Shadow Trial Eye Switch Chest", RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST },
-    { "Ganon's Castle MQ Spirit Trial Golden Gauntlets Chest",
-      RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST },
-    { "Ganon's Castle MQ Spirit Trial Sun Back Right Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST },
-    { "Ganon's Castle MQ Spirit Trial Sun Back Left Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST },
-    { "Ganon's Castle MQ Spirit Trial Sun Front Left Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST },
-    { "Ganon's Castle MQ Spirit Trial First Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST },
-    { "Ganon's Castle MQ Spirit Trial Invisible Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST },
-    { "Ganon's Castle MQ Forest Trial Freestanding Key", RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY },
-    { "Ganon's Castle MQ Deku Scrub Right", RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT },
-    { "Ganon's Castle MQ Deku Scrub Center-Left", RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT },
-    { "Ganon's Castle MQ Deku Scrub Center", RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER },
-    { "Ganon's Castle MQ Deku Scrub Center-Right", RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT },
-    { "Ganon's Castle MQ Deku Scrub Left", RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT },
-    { "Deku Tree GS Basement Back Room", RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM },
-    { "Deku Tree GS Basement Gate", RC_DEKU_TREE_GS_BASEMENT_GATE },
-    { "Deku Tree GS Basement Vines", RC_DEKU_TREE_GS_BASEMENT_VINES },
-    { "Deku Tree GS Compass Room", RC_DEKU_TREE_GS_COMPASS_ROOM },
-    { "Deku Tree MQ GS Lobby", RC_DEKU_TREE_MQ_GS_LOBBY },
-    { "Deku Tree MQ GS Compass Room", RC_DEKU_TREE_MQ_GS_COMPASS_ROOM },
-    { "Deku Tree MQ GS Basement Graves Room", RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM },
-    { "Deku Tree MQ GS Basement Back Room", RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM },
-    { "Dodongos Cavern GS Vines Above Stairs", RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS },
-    { "Dodongos Cavern GS Scarecrow", RC_DODONGOS_CAVERN_GS_SCARECROW },
-    { "Dodongos Cavern GS Alcove Above Stairs", RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS },
-    { "Dodongos Cavern GS Back Room", RC_DODONGOS_CAVERN_GS_BACK_ROOM },
-    { "Dodongos Cavern GS Side Room Near Lower Lizalfos", RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS },
-    { "Dodongos Cavern MQ GS Scrub Room", RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM },
-    { "Dodongos Cavern MQ GS Song of Time Block Room", RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM },
-    { "Dodongos Cavern MQ GS Lizalfos Room", RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM },
-    { "Dodongos Cavern MQ GS Larvae Room", RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM },
-    { "Dodongos Cavern MQ GS Back Room", RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA },
-    { "Jabu Jabus Belly GS Lobby Basement Lower", RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER },
-    { "Jabu Jabus Belly GS Lobby Basement Upper", RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER },
-    { "Jabu Jabus Belly GS Near Boss", RC_JABU_JABUS_BELLY_GS_NEAR_BOSS },
-    { "Jabu Jabus Belly GS Water Switch Room", RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM },
-    { "Jabu Jabus Belly MQ GS Tail Parasan Room", RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM },
-    { "Jabu Jabus Belly MQ GS Invisible Enemies Room", RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM },
-    { "Jabu Jabus Belly MQ GS Boomerang Chest Room", RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM },
-    { "Jabu Jabus Belly MQ GS Near Boss", RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS },
-    { "Forest Temple GS Raised Island Courtyard", RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD },
-    { "Forest Temple GS First Room", RC_FOREST_TEMPLE_GS_FIRST_ROOM },
-    { "Forest Temple GS Level Island Courtyard", RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD },
-    { "Forest Temple GS Lobby", RC_FOREST_TEMPLE_GS_LOBBY },
-    { "Forest Temple GS Basement", RC_FOREST_TEMPLE_GS_BASEMENT },
-    { "Forest Temple MQ GS First Hallway", RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY },
-    { "Forest Temple MQ GS Block Push Room", RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM },
-    { "Forest Temple MQ GS Raised Island Courtyard", RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD },
-    { "Forest Temple MQ GS Level Island Courtyard", RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD },
-    { "Forest Temple MQ GS Well", RC_FOREST_TEMPLE_MQ_GS_WELL },
-    { "Fire Temple GS Song of Time Room", RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM },
-    { "Fire Temple GS Boss Key Loop", RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP },
-    { "Fire Temple GS Boulder Maze", RC_FIRE_TEMPLE_GS_BOULDER_MAZE },
-    { "Fire Temple GS Scarecrow Top", RC_FIRE_TEMPLE_GS_SCARECROW_TOP },
-    { "Fire Temple GS Scarecrow Climb", RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB },
-    { "Fire Temple MQ GS Above Fire Wall Maze", RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE },
-    { "Fire Temple MQ GS Fire Wall Maze Center", RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER },
-    { "Fire Temple MQ GS Big Lava Room Open Door", RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR },
-    { "Fire Temple MQ GS Fire Wall Maze Side Room", RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM },
-    { "Fire Temple MQ GS Skull on Fire", RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE },
-    { "Water Temple GS Behind Gate", RC_WATER_TEMPLE_GS_BEHIND_GATE },
-    { "Water Temple GS Falling Platform Room", RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM },
-    { "Water Temple GS Central Pillar", RC_WATER_TEMPLE_GS_CENTRAL_PILLAR },
-    { "Water Temple GS Near Boss Key Chest", RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST },
-    { "Water Temple GS River", RC_WATER_TEMPLE_GS_RIVER },
-    { "Water Temple MQ GS Before Upper Water Switch", RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH },
-    { "Water Temple MQ GS Freestanding Key Area", RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA },
-    { "Water Temple MQ GS Lizalfos Hallway", RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY },
-    { "Water Temple MQ GS River", RC_WATER_TEMPLE_MQ_GS_RIVER },
-    { "Water Temple MQ GS Triple Wall Torch", RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH },
-    { "Spirit Temple GS Hall After Sun Block Room", RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM },
-    { "Spirit Temple GS Boulder Room", RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM },
-    { "Spirit Temple GS Lobby", RC_SPIRIT_TEMPLE_GS_LOBBY },
-    { "Spirit Temple GS Sun on Floor Room", RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM },
-    { "Spirit Temple GS Metal Fence", RC_SPIRIT_TEMPLE_GS_METAL_FENCE },
-    { "Spirit Temple MQ GS Symphony Room", RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM },
-    { "Spirit Temple MQ GS Leever Room", RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM },
-    { "Spirit Temple MQ GS Nine Thrones Room West", RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST },
-    { "Spirit Temple MQ GS Nine Thrones Room North", RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH },
-    { "Spirit Temple MQ GS Sun Block Room", RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM },
-    { "Shadow Temple GS Single Giant Pot", RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT },
-    { "Shadow Temple GS Falling Spikes Room", RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM },
-    { "Shadow Temple GS Triple Giant Pot", RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT },
-    { "Shadow Temple GS Like Like Room", RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM },
-    { "Shadow Temple GS Near Ship", RC_SHADOW_TEMPLE_GS_NEAR_SHIP },
-    { "Shadow Temple MQ GS Falling Spikes Room", RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM },
-    { "Shadow Temple MQ GS Wind Hint Room", RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM },
-    { "Shadow Temple MQ GS After Wind", RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND },
-    { "Shadow Temple MQ GS After Ship", RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP },
-    { "Shadow Temple MQ GS Near Boss", RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS },
-    { "Bottom of the Well GS Like Like Cage", RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE },
-    { "Bottom of the Well GS East Inner Room", RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM },
-    { "Bottom of the Well GS West Inner Room", RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM },
-    { "Bottom of the Well MQ GS Basement", RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT },
-    { "Bottom of the Well MQ GS Coffin Room", RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM },
-    { "Bottom of the Well MQ GS West Inner Room", RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM },
-    { "Ice Cavern GS Push Block Room", RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM },
-    { "Ice Cavern GS Spinning Scythe Room", RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM },
-    { "Ice Cavern GS Heart Piece Room", RC_ICE_CAVERN_GS_HEART_PIECE_ROOM },
-    { "Ice Cavern MQ GS Scarecrow", RC_ICE_CAVERN_MQ_GS_SCARECROW },
-    { "Ice Cavern MQ GS Ice Block", RC_ICE_CAVERN_MQ_GS_ICE_BLOCK },
-    { "Ice Cavern MQ GS Red Ice", RC_ICE_CAVERN_MQ_GS_RED_ICE },
-    { "KF GS Bean Patch", RC_KF_GS_BEAN_PATCH },
-    { "KF GS Know It All House", RC_KF_GS_KNOW_IT_ALL_HOUSE },
-    { "KF GS House of Twins", RC_KF_GS_HOUSE_OF_TWINS },
-    { "LW GS Bean Patch Near Bridge", RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE },
-    { "LW GS Bean Patch Near Theater", RC_LW_GS_BEAN_PATCH_NEAR_THEATER },
-    { "LW GS Above Theater", RC_LW_GS_ABOVE_THEATER },
-    { "SFM GS", RC_SFM_GS },
-    { "HF GS Cow Grotto", RC_HF_GS_COW_GROTTO },
-    { "HF GS Near Kak Grotto", RC_HF_GS_NEAR_KAK_GROTTO },
-    { "LH GS Bean Patch", RC_LH_GS_BEAN_PATCH },
-    { "LH GS Small Island", RC_LH_GS_SMALL_ISLAND },
-    { "LH GS Lab Wall", RC_LH_GS_LAB_WALL },
-    { "LH GS Lab Crate", RC_LH_GS_LAB_CRATE },
-    { "LH GS Tree", RC_LH_GS_TREE },
-    { "GV GS Bean Patch", RC_GV_GS_BEAN_PATCH },
-    { "GV GS Small Bridge", RC_GV_GS_SMALL_BRIDGE },
-    { "GV GS Pillar", RC_GV_GS_PILLAR },
-    { "GV GS Behind Tent", RC_GV_GS_BEHIND_TENT },
-    { "GF GS Archery Range", RC_GF_GS_ARCHERY_RANGE },
-    { "GF GS Top Floor", RC_GF_GS_TOP_FLOOR },
-    { "Wasteland GS", RC_WASTELAND_GS },
-    { "Colossus GS Bean Patch", RC_COLOSSUS_GS_BEAN_PATCH },
-    { "Colossus GS Hill", RC_COLOSSUS_GS_HILL },
-    { "Colossus GS Tree", RC_COLOSSUS_GS_TREE },
-    { "OGC GS", RC_OGC_GS },
-    { "HC GS Storms Grotto", RC_HC_GS_STORMS_GROTTO },
-    { "HC GS Tree", RC_HC_GS_TREE },
-    { "Market GS Guard House", RC_MARKET_GS_GUARD_HOUSE },
-    { "Kak GS House Under Construction", RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION },
-    { "Kak GS Skulltula House", RC_KAK_GS_SKULLTULA_HOUSE },
-    { "Kak GS Guards House", RC_KAK_GS_GUARDS_HOUSE },
-    { "Kak GS Tree", RC_KAK_GS_TREE },
-    { "Kak GS Watchtower", RC_KAK_GS_WATCHTOWER },
-    { "Kak GS Above Impas House", RC_KAK_GS_ABOVE_IMPAS_HOUSE },
-    { "Graveyard GS Wall", RC_GRAVEYARD_GS_WALL },
-    { "Graveyard GS Bean Patch", RC_GRAVEYARD_GS_BEAN_PATCH },
-    { "DMC GS Bean Patch", RC_DMC_GS_BEAN_PATCH },
-    { "DMC GS Crate", RC_DMC_GS_CRATE },
-    { "DMT GS Bean Patch", RC_DMT_GS_BEAN_PATCH },
-    { "DMT GS Near Kak", RC_DMT_GS_NEAR_KAK },
-    { "DMT GS Above Dodongos Cavern", RC_DMT_GS_ABOVE_DODONGOS_CAVERN },
-    { "DMT GS Falling Rocks Path", RC_DMT_GS_FALLING_ROCKS_PATH },
-    { "GC GS Center Platform", RC_GC_GS_CENTER_PLATFORM },
-    { "GC GS Boulder Maze", RC_GC_GS_BOULDER_MAZE },
-    { "ZR GS Ladder", RC_ZR_GS_LADDER },
-    { "ZR GS Tree", RC_ZR_GS_TREE },
-    { "ZR GS Above Bridge", RC_ZR_GS_ABOVE_BRIDGE },
-    { "ZR GS Near Raised Grottos", RC_ZR_GS_NEAR_RAISED_GROTTOS },
-    { "ZD GS Frozen Waterfall", RC_ZD_GS_FROZEN_WATERFALL },
-    { "ZF GS Above The Log", RC_ZF_GS_ABOVE_THE_LOG },
-    { "ZF GS Hidden Cave", RC_ZF_GS_HIDDEN_CAVE },
-    { "ZF GS Tree", RC_ZF_GS_TREE },
-    { "LLR GS Back Wall", RC_LLR_GS_BACK_WALL },
-    { "LLR GS Rain Shed", RC_LLR_GS_RAIN_SHED },
-    { "LLR GS House Window", RC_LLR_GS_HOUSE_WINDOW },
-    { "LLR GS Tree", RC_LLR_GS_TREE },
-    { "Link's Pocket", RC_LINKS_POCKET },
-    { "Queen Gohma", RC_QUEEN_GOHMA },
-    { "King Dodongo", RC_KING_DODONGO },
-    { "Barinade", RC_BARINADE },
-    { "Phantom Ganon", RC_PHANTOM_GANON },
-    { "Volvagia", RC_VOLVAGIA },
-    { "Morpha", RC_MORPHA },
-    { "Twinrova", RC_TWINROVA },
-    { "Bongo Bongo", RC_BONGO_BONGO },
-    { "Ganon", RC_UNKNOWN_CHECK },
-    { "Deku Tree Queen Gohma Heart Container", RC_DEKU_TREE_QUEEN_GOHMA_HEART },
-    { "Dodongos Cavern King Dodongo Heart Container", RC_DODONGOS_CAVERN_KING_DODONGO_HEART },
-    { "Jabu Jabus Belly Barinade Heart Container", RC_JABU_JABUS_BELLY_BARINADE_HEART },
-    { "Forest Temple Phantom Ganon Heart Container", RC_FOREST_TEMPLE_PHANTOM_GANON_HEART },
-    { "Fire Temple Volvagia Heart Container", RC_FIRE_TEMPLE_VOLVAGIA_HEART },
-    { "Water Temple Morpha Heart Container", RC_WATER_TEMPLE_MORPHA_HEART },
-    { "Spirit Temple Twinrova Heart Container", RC_SPIRIT_TEMPLE_TWINROVA_HEART },
-    { "Shadow Temple Bongo Bongo Heart Container", RC_SHADOW_TEMPLE_BONGO_BONGO_HEART },
-    { "ToT Light Arrow Cutscene", RC_TOT_LIGHT_ARROWS_CUTSCENE },
-    { "LW Gift From Saria", RC_LW_GIFT_FROM_SARIA },
-    { "ZF Great Fairy Reward", RC_ZF_GREAT_FAIRY_REWARD },
-    { "HC Great Fairy Reward", RC_HC_GREAT_FAIRY_REWARD },
-    { "Colossus Great Fairy Reward", RC_COLOSSUS_GREAT_FAIRY_REWARD },
-    { "DMT Great Fairy Reward", RC_DMT_GREAT_FAIRY_REWARD },
-    { "DMC Great Fairy Reward", RC_DMC_GREAT_FAIRY_REWARD },
-    { "OGC Great Fairy Reward", RC_OGC_GREAT_FAIRY_REWARD },
-    { "Sheik in Forest", RC_SHEIK_IN_FOREST },
-    { "Sheik in Crater", RC_SHEIK_IN_CRATER },
-    { "Sheik in Ice Cavern", RC_SHEIK_IN_ICE_CAVERN },
-    { "Sheik at Colossus", RC_SHEIK_AT_COLOSSUS },
-    { "Sheik in Kakariko", RC_SHEIK_IN_KAKARIKO },
-    { "Sheik at Temple", RC_SHEIK_AT_TEMPLE },
-    { "Song from Impa", RC_SONG_FROM_IMPA },
-    { "Song from Malon", RC_SONG_FROM_MALON },
-    { "Song from Saria", RC_SONG_FROM_SARIA },
-    { "Song from Composers Grave", RC_SONG_FROM_ROYAL_FAMILYS_TOMB },
-    { "Song from Ocarina of Time", RC_SONG_FROM_OCARINA_OF_TIME },
-    { "Song from Windmill", RC_SONG_FROM_WINDMILL },
-    { "KF Links House Cow", RC_KF_LINKS_HOUSE_COW },
-    { "HF Cow Grotto Cow", RC_HF_COW_GROTTO_COW },
-    { "LLR Stables Left Cow", RC_LLR_STABLES_LEFT_COW },
-    { "LLR Stables Right Cow", RC_LLR_STABLES_RIGHT_COW },
-    { "LLR Tower Left Cow", RC_LLR_TOWER_LEFT_COW },
-    { "LLR Tower Right Cow", RC_LLR_TOWER_RIGHT_COW },
-    { "Kak Impas House Cow", RC_KAK_IMPAS_HOUSE_COW },
-    { "DMT Cow Grotto Cow", RC_DMT_COW_GROTTO_COW },
-    { "GV Cow", RC_GV_COW },
-    { "Jabu Jabus Belly MQ Cow", RC_JABU_JABUS_BELLY_MQ_COW },
-    { "KF Shop Item 1", RC_KF_SHOP_ITEM_1 },
-    { "KF Shop Item 2", RC_KF_SHOP_ITEM_2 },
-    { "KF Shop Item 3", RC_KF_SHOP_ITEM_3 },
-    { "KF Shop Item 4", RC_KF_SHOP_ITEM_4 },
-    { "KF Shop Item 5", RC_KF_SHOP_ITEM_5 },
-    { "KF Shop Item 6", RC_KF_SHOP_ITEM_6 },
-    { "KF Shop Item 7", RC_KF_SHOP_ITEM_7 },
-    { "KF Shop Item 8", RC_KF_SHOP_ITEM_8 },
-    { "Kak Potion Shop Item 1", RC_KAK_POTION_SHOP_ITEM_1 },
-    { "Kak Potion Shop Item 2", RC_KAK_POTION_SHOP_ITEM_2 },
-    { "Kak Potion Shop Item 3", RC_KAK_POTION_SHOP_ITEM_3 },
-    { "Kak Potion Shop Item 4", RC_KAK_POTION_SHOP_ITEM_4 },
-    { "Kak Potion Shop Item 5", RC_KAK_POTION_SHOP_ITEM_5 },
-    { "Kak Potion Shop Item 6", RC_KAK_POTION_SHOP_ITEM_6 },
-    { "Kak Potion Shop Item 7", RC_KAK_POTION_SHOP_ITEM_7 },
-    { "Kak Potion Shop Item 8", RC_KAK_POTION_SHOP_ITEM_8 },
-    { "MK Bombchu Shop Item 1", RC_MARKET_BOMBCHU_SHOP_ITEM_1 },
-    { "MK Bombchu Shop Item 2", RC_MARKET_BOMBCHU_SHOP_ITEM_2 },
-    { "MK Bombchu Shop Item 3", RC_MARKET_BOMBCHU_SHOP_ITEM_3 },
-    { "MK Bombchu Shop Item 4", RC_MARKET_BOMBCHU_SHOP_ITEM_4 },
-    { "MK Bombchu Shop Item 5", RC_MARKET_BOMBCHU_SHOP_ITEM_5 },
-    { "MK Bombchu Shop Item 6", RC_MARKET_BOMBCHU_SHOP_ITEM_6 },
-    { "MK Bombchu Shop Item 7", RC_MARKET_BOMBCHU_SHOP_ITEM_7 },
-    { "MK Bombchu Shop Item 8", RC_MARKET_BOMBCHU_SHOP_ITEM_8 },
-    { "MK Potion Shop Item 1", RC_MARKET_POTION_SHOP_ITEM_1 },
-    { "MK Potion Shop Item 2", RC_MARKET_POTION_SHOP_ITEM_2 },
-    { "MK Potion Shop Item 3", RC_MARKET_POTION_SHOP_ITEM_3 },
-    { "MK Potion Shop Item 4", RC_MARKET_POTION_SHOP_ITEM_4 },
-    { "MK Potion Shop Item 5", RC_MARKET_POTION_SHOP_ITEM_5 },
-    { "MK Potion Shop Item 6", RC_MARKET_POTION_SHOP_ITEM_6 },
-    { "MK Potion Shop Item 7", RC_MARKET_POTION_SHOP_ITEM_7 },
-    { "MK Potion Shop Item 8", RC_MARKET_POTION_SHOP_ITEM_8 },
-    { "MK Bazaar Item 1", RC_MARKET_BAZAAR_ITEM_1 },
-    { "MK Bazaar Item 2", RC_MARKET_BAZAAR_ITEM_2 },
-    { "MK Bazaar Item 3", RC_MARKET_BAZAAR_ITEM_3 },
-    { "MK Bazaar Item 4", RC_MARKET_BAZAAR_ITEM_4 },
-    { "MK Bazaar Item 5", RC_MARKET_BAZAAR_ITEM_5 },
-    { "MK Bazaar Item 6", RC_MARKET_BAZAAR_ITEM_6 },
-    { "MK Bazaar Item 7", RC_MARKET_BAZAAR_ITEM_7 },
-    { "MK Bazaar Item 8", RC_MARKET_BAZAAR_ITEM_8 },
-    { "Kak Bazaar Item 1", RC_KAK_BAZAAR_ITEM_1 },
-    { "Kak Bazaar Item 2", RC_KAK_BAZAAR_ITEM_2 },
-    { "Kak Bazaar Item 3", RC_KAK_BAZAAR_ITEM_3 },
-    { "Kak Bazaar Item 4", RC_KAK_BAZAAR_ITEM_4 },
-    { "Kak Bazaar Item 5", RC_KAK_BAZAAR_ITEM_5 },
-    { "Kak Bazaar Item 6", RC_KAK_BAZAAR_ITEM_6 },
-    { "Kak Bazaar Item 7", RC_KAK_BAZAAR_ITEM_7 },
-    { "Kak Bazaar Item 8", RC_KAK_BAZAAR_ITEM_8 },
-    { "ZD Shop Item 1", RC_ZD_SHOP_ITEM_1 },
-    { "ZD Shop Item 2", RC_ZD_SHOP_ITEM_2 },
-    { "ZD Shop Item 3", RC_ZD_SHOP_ITEM_3 },
-    { "ZD Shop Item 4", RC_ZD_SHOP_ITEM_4 },
-    { "ZD Shop Item 5", RC_ZD_SHOP_ITEM_5 },
-    { "ZD Shop Item 6", RC_ZD_SHOP_ITEM_6 },
-    { "ZD Shop Item 7", RC_ZD_SHOP_ITEM_7 },
-    { "ZD Shop Item 8", RC_ZD_SHOP_ITEM_8 },
-    { "GC Shop Item 1", RC_GC_SHOP_ITEM_1 },
-    { "GC Shop Item 2", RC_GC_SHOP_ITEM_2 },
-    { "GC Shop Item 3", RC_GC_SHOP_ITEM_3 },
-    { "GC Shop Item 4", RC_GC_SHOP_ITEM_4 },
-    { "GC Shop Item 5", RC_GC_SHOP_ITEM_5 },
-    { "GC Shop Item 6", RC_GC_SHOP_ITEM_6 },
-    { "GC Shop Item 7", RC_GC_SHOP_ITEM_7 },
-    { "GC Shop Item 8", RC_GC_SHOP_ITEM_8 },
-    { "Colossus Gossip Stone", RC_COLOSSUS_GOSSIP_STONE },
-    { "DMC Gossip Stone", RC_DMC_GOSSIP_STONE },
-    { "DMC Upper Grotto Gossip Stone", RC_DMC_UPPER_GROTTO_GOSSIP_STONE },
-    { "DMT Gossip Stone", RC_DMT_GOSSIP_STONE },
-    { "DMT Storms Grotto Gossip Stone", RC_DMT_STORMS_GROTTO_GOSSIP_STONE },
-    { "Dodongo's Cavern Gossip Stone", RC_DODONGOS_CAVERN_GOSSIP_STONE },
-    { "Fairy Gossip Stone", RC_FAIRY_GOSSIP_STONE },
-    { "GC Maze Gossip Stone", RC_GC_MAZE_GOSSIP_STONE },
-    { "GC Medigoron Gossip Stone", RC_GC_MEDIGORON_GOSSIP_STONE },
-    { "GV Gossip Stone", RC_GV_GOSSIP_STONE },
-    { "GY Gossip Stone", RC_GY_GOSSIP_STONE },
-    { "HC Malon Gossip Stone", RC_HC_MALON_GOSSIP_STONE },
-    { "HC Rock Wall Gossip Stone", RC_HC_ROCK_WALL_GOSSIP_STONE },
-    { "HC Storms Grotto Gossip Stone", RC_HC_STORMS_GROTTO_GOSSIP_STONE },
-    { "HF Cow Grotto Gossip Stone", RC_HF_COW_GROTTO_GOSSIP_STONE },
-    { "HF Near Market Gossip Stone", RC_HF_NEAR_MARKET_GOSSIP_STONE },
-    { "HF Open Grotto Gossip Stone", RC_HF_OPEN_GROTTO_GOSSIP_STONE },
-    { "HF Southeast Gossip Stone", RC_HF_SOUTHEAST_GOSSIP_STONE },
-    { "Jabu Gossip Stone", RC_JABU_GOSSIP_STONE },
-    { "KF Deku Tree Left Gossip Stone", RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE },
-    { "KF Deku Tree Right Gossip Stone", RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE },
-    { "KF Gossip Stone", RC_KF_GOSSIP_STONE },
-    { "KF Storms Gossip Stone", RC_KF_STORMS_GOSSIP_STONE },
-    { "Kak Open Grotto Gossip Stone", RC_KAK_OPEN_GROTTO_GOSSIP_STONE },
-    { "LH Lab Gossip Stone", RC_LH_LAB_GOSSIP_STONE },
-    { "LH Southeast Gossip Stone", RC_LH_SOUTHEAST_GOSSIP_STONE },
-    { "LH Southwest Gossip Stone", RC_LH_SOUTHWEST_GOSSIP_STONE },
-    { "LW Gossip Stone", RC_LW_GOSSIP_STONE },
-    { "LW Near Shortcuts Gossip Stone", RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE },
-    { "SFM Maze Lower Gossip Stone", RC_SFM_MAZE_LOWER_GOSSIP_STONE },
-    { "SFM Maze Upper Gossip Stone", RC_SFM_MAZE_UPPER_GOSSIP_STONE },
-    { "SFM Saria Gossip Stone", RC_SFM_SARIA_GOSSIP_STONE },
-    { "ToT Left Center Gossip Stone", RC_TOT_LEFT_CENTER_GOSSIP_STONE },
-    { "ToT Left Gossip Stone", RC_TOT_LEFT_GOSSIP_STONE },
-    { "ToT Right Center Gossip Stone", RC_TOT_RIGHT_CENTER_GOSSIP_STONE },
-    { "ToT Right Gossip Stone", RC_TOT_RIGHT_GOSSIP_STONE },
-    { "ZD Gossip Stone", RC_ZD_GOSSIP_STONE },
-    { "ZR Near Domain Gossip Stone", RC_ZR_NEAR_DOMAIN_GOSSIP_STONE },
-    { "ZR Near Grottos Gossip Stone", RC_ZR_NEAR_GROTTOS_GOSSIP_STONE },
-    { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
-};
 
 std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_BOW, ITEM_BOW },
@@ -3561,13 +2830,6 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
-    cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak10SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak20SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak30SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak40SkullReward", 0);
-    cvarSettings[RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak50SkullReward", 0);
-
     // RANDOTODO implement chest minigame shuffle with keysanity
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
@@ -3587,7 +2849,15 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
-    RandoMain::GenerateRando(cvarSettings);
+    // todo: this efficently when we build out cvar array support
+    std::set<RandomizerCheck> excludedLocations;
+    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+    std::string excludedLocationString;
+    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
+        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+    }
+
+    RandoMain::GenerateRando(cvarSettings, excludedLocations);
 
     CVar_SetS32("gRandoGenerating", 0);
     CVar_Save();
@@ -4461,41 +3731,126 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
+            static bool locationsTabOpen = false;
             if (ImGui::BeginTabItem("Locations")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (!locationsTabOpen) {
+                    locationsTabOpen = true;
+                    RandomizerCheckObjects::UpdateImGuiVisibility();
+                    // todo: this efficently when we build out cvar array support
+                    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+                    std::string excludedLocationString;
+                    excludedLocations.clear();
+                    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
+                        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+                    }
+                }
+
                 if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
                     ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
-                    // COLUMN 1 - EXCLUDE LOCATIONS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
-
-                    // COLUMN 2 - EXCLUDE LOCATIONS
+                    // COLUMN 1 - INCLUDED LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
+                    static ImGuiTextFilter locationSearch;
+                    locationSearch.Draw();
+
+                    ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                        bool hasItems = false;
+                        for (auto locationIt : areaIt.second) {
+                            if (locationIt.visibleInImgui &&
+                                !excludedLocations.count(locationIt.rc) &&
+                                locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                                hasItems = true;
+                                break;
+                            }
+                        }
+
+                        if (hasItems) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                                for (auto locationIt : areaIt.second) {
+                                    if (locationIt.visibleInImgui &&
+                                        !excludedLocations.count(locationIt.rc) &&
+                                        locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
+                                            excludedLocations.insert(locationIt.rc);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string excludedLocationString = "";
+                                            for (auto excludedLocationIt : excludedLocations) {
+                                                excludedLocationString += std::to_string(excludedLocationIt);
+                                                excludedLocationString += ",";
+                                            }
+                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                            SohImGui::needs_save = true;
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(locationIt.rcShortName.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
+
+                    // COLUMN 2 - EXCLUDED LOCATIONS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                    ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
+                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                        bool hasItems = false;
+                        for (auto locationIt : areaIt.second) {
+                            if (locationIt.visibleInImgui && excludedLocations.count(locationIt.rc)) {
+                                hasItems = true;
+                                break;
+                            }
+                        }
+
+                        if (hasItems) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                                for (auto locationIt : areaIt.second) {
+                                    auto elfound = excludedLocations.find(locationIt.rc);
+                                    if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
+                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
+                                            excludedLocations.erase(elfound);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string excludedLocationString = "";
+                                            for (auto excludedLocationIt : excludedLocations) {
+                                                excludedLocationString += std::to_string(excludedLocationIt);
+                                                excludedLocationString += ",";
+                                            }
+                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                            SohImGui::needs_save = true;
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(locationIt.rcShortName.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
+                        }
+                    }
+                    ImGui::EndChild();                 
 
                     ImGui::EndTable();
                 }
                 ImGui::PopStyleVar(1);
                 ImGui::EndTabItem();
+            } else {
+                locationsTabOpen = false;
             }
 
             if (ImGui::BeginTabItem("Tricks/Glitches")) {
