@@ -180,7 +180,7 @@ static DWORD LoadAttributesFile(TMPQArchive * ha, LPBYTE pbAttrFile, DWORD cbAtt
         if((pbAttrPtr + cbArraySize) > pbAttrFileEnd)
             return ERROR_FILE_CORRUPT;
 
-        BSWAP_ARRAY32_UNSIGNED(ArrayCRC32, cbCRC32Size);
+        BSWAP_ARRAY32_UNSIGNED(ArrayCRC32, cbArraySize);
         for(i = 0; i < dwAttributesEntries; i++)
             ha->pFileTable[i].dwCrc32 = ArrayCRC32[i];
         pbAttrPtr += cbArraySize;
@@ -196,7 +196,7 @@ static DWORD LoadAttributesFile(TMPQArchive * ha, LPBYTE pbAttrFile, DWORD cbAtt
         if((pbAttrPtr + cbArraySize) > pbAttrFileEnd)
             return ERROR_FILE_CORRUPT;
 
-        BSWAP_ARRAY64_UNSIGNED(ArrayFileTime, cbFileTimeSize);
+        BSWAP_ARRAY64_UNSIGNED(ArrayFileTime, cbArraySize);
         for(i = 0; i < dwAttributesEntries; i++)
             ha->pFileTable[i].FileTime = ArrayFileTime[i];
         pbAttrPtr += cbArraySize;

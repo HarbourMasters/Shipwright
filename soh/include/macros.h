@@ -233,7 +233,11 @@ extern GraphicsContext* __gfxCtx;
 
 #define VTX_T(x,y,z,s,t,cr,cg,cb,a) { { x, y, z }, 0, { s, t }, { cr, cg, cb, a } }
 
+#ifdef __WIIU__
+#define ASSERT(expression) (void)((!!(expression)) || (_assert(#expression, __FILE__, (unsigned)(__LINE__)), 0))
+#else
 #define ASSERT(expression) (void)((!!(expression)) || (__assert(#expression, __FILE__, (unsigned)(__LINE__)), 0))
+#endif
 
 #define gDPSetTileCustom(pkt, fmt, siz, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt)                    \
     do {                                                                                                               \

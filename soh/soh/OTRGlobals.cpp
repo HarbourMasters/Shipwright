@@ -29,6 +29,7 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
@@ -49,6 +50,8 @@
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
 #endif
 
 #include <Audio.h>
@@ -312,6 +315,8 @@ extern "C" void OTRExtScanner() {
 extern "C" void InitOTR() {
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
+#elif defined(__WIIU__)
+    Ship::WiiU::Init();
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -329,6 +334,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
+    GameControlEditor::Init();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -378,9 +384,10 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern "C" void Graph_StartFrame() {
+#ifndef __WIIU__
     // Why -1?
-    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->GetLastScancode();
+    OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
 
     switch (dwScancode - 1) {
         case SDL_SCANCODE_F5: {
@@ -435,6 +442,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
     }
+#endif
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
@@ -507,16 +515,6 @@ extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
     return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
-}
-
-extern "C" int32_t OTRGetLastScancode()
-{
-    return OTRGlobals::Instance->context->GetWindow()->lastScancode;
-}
-
-extern "C" void OTRResetScancode()
-{
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion()

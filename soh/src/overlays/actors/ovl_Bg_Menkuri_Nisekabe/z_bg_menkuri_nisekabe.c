@@ -41,7 +41,7 @@ void BgMenkuriNisekabe_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void BgMenkuriNisekabe_Update(Actor* thisx, GlobalContext* globalCtx) {
     BgMenkuriNisekabe* this = (BgMenkuriNisekabe*)thisx;
 
-    if (globalCtx->actorCtx.unk_03 != 0) {
+    if (globalCtx->actorCtx.lensActive) {
         this->actor.flags |= ACTOR_FLAG_7;
     } else {
         this->actor.flags &= ~ACTOR_FLAG_7;

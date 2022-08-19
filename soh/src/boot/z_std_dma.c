@@ -11,7 +11,7 @@ s32 sDmaMgrCurFileLine;
 
 u32 D_80009460 = 0;
 u32 gDmaMgrDmaBuffSize = 0x2000;
-u32 sDmaMgrDataExistError = 0;
+u32 sDmaMgrIsRomCompressed = false;
 
 // dmadata filenames
 #define DEFINE_DMA_ENTRY(name) #name,
@@ -289,7 +289,7 @@ void DmaMgr_ProcessMsg(DmaRequest* req) {
     }
 
     if (!found) {
-        if (sDmaMgrDataExistError) {
+        if (sDmaMgrIsRomCompressed) {
             DmaMgr_Error(req, NULL, "DATA DON'T EXIST", "該当するデータが存在しません");
             return;
         }
@@ -385,14 +385,14 @@ void DmaMgr_Init(void) {
                        //(uintptr_t)(_dmadataSegmentRomEnd - _dmadataSegmentRomStart));
     osSyncPrintf("dma_rom_ad[]\n");
 
-    sDmaMgrDataExistError = 0;
+    sDmaMgrIsRomCompressed = false;
     name = sDmaMgrFileNames;
     iter = gDmaDataTable;
     idx = 0;
 
     while (iter->vromEnd != 0) {
         if (iter->romEnd != 0) {
-            sDmaMgrDataExistError = 1;
+            sDmaMgrIsRomCompressed = true;
         }
 
         osSyncPrintf(

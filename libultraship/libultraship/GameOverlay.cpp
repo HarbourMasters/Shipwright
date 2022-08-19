@@ -9,7 +9,7 @@
 #include "Utils/StringHelper.h"
 
 namespace Ship {
-	bool OverlayCommand(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+	bool GameOverlay::OverlayCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		if (args.size() < 3) {
 			return CMD_FAILED;
 		}
