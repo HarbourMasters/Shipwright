@@ -10,28 +10,49 @@
 #include <execinfo.h>
 #include <unistd.h>
 
+extern "C" void DeinitOTR(void);
+
 
 static void PrintRegisters(ucontext_t* ctx) {
+	char regbuffer[1024];
 #if defined(__x86_64__)
 	SPDLOG_CRITICAL("Registers:");
-	SPDLOG_CRITICAL("RAX: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]));
-	SPDLOG_CRITICAL("RDI: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]));
-	SPDLOG_CRITICAL("RSI: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RSI]));
-	SPDLOG_CRITICAL("RDX: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RDX]));
-	SPDLOG_CRITICAL("RCX: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RCX]));
-	SPDLOG_CRITICAL("R8 : {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R8]));
-	SPDLOG_CRITICAL("R9 : {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R9]));
-	SPDLOG_CRITICAL("R10: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R10]));
-	SPDLOG_CRITICAL("R11: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R11]));
-	SPDLOG_CRITICAL("RSP: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]));
-	SPDLOG_CRITICAL("RBX: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RBX]));
-	SPDLOG_CRITICAL("RBP: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RBP]));
-	SPDLOG_CRITICAL("R12: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R12]));
-	SPDLOG_CRITICAL("R13: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R13]));
-	SPDLOG_CRITICAL("R14: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R14]));
-	SPDLOG_CRITICAL("R15: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_R15]));
-	SPDLOG_CRITICAL("RIP: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_RIP]));
-	SPDLOG_CRITICAL("EFLAGS: {} ", StringHelper::Sprintf("0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]));
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]);
+	SPDLOG_CRITICAL("RAX: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]);
+	SPDLOG_CRITICAL("RDI: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RSI]);
+	SPDLOG_CRITICAL("RSI: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RDX]);
+	SPDLOG_CRITICAL("RDX: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RCX]);
+	SPDLOG_CRITICAL("RCX: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R8]);
+	SPDLOG_CRITICAL("R8 : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R9]);
+	SPDLOG_CRITICAL("R9 : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R10]);
+	SPDLOG_CRITICAL("R10: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R11]);
+	SPDLOG_CRITICAL("R11: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]);
+	SPDLOG_CRITICAL("RSP: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RBX]);
+	SPDLOG_CRITICAL("RBX: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RBP]);
+	SPDLOG_CRITICAL("RBP: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R12]);
+	SPDLOG_CRITICAL("R12: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R13]);
+	SPDLOG_CRITICAL("R13: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R14]);
+	SPDLOG_CRITICAL("R14: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R15]);
+	SPDLOG_CRITICAL("R15: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RIP]);
+	SPDLOG_CRITICAL("RIP: {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
+	SPDLOG_CRITICAL("EFLAGS: {} ", regbuffer);
 #endif
 }
 
@@ -43,7 +64,22 @@ static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data)
 	size_t size = backtrace(arr.data(), nMaxFrames);
 	char** symbols = backtrace_symbols(arr.data(), nMaxFrames);
 
-	SPDLOG_CRITICAL("(Signal: %i)\n", sig);
+	SPDLOG_CRITICAL("(Signal: {})\n", sig);
+
+	switch (sig) {
+		case SIGILL:
+			SPDLOG_CRITICAL("ILLEGAL INSTRUCTION");
+			break;
+		case SIGABRT:
+			SPDLOG_CRITICAL("ABORT");
+			break;
+		case SIGFPE:
+			SPDLOG_CRITICAL("ERRONEUS ARITHEMETIC OPERATION");
+			break;
+		case SIGSEGV:
+			SPDLOG_CRITICAL("INVALID ACCESS TO STORAGE");
+			break;
+	}
 
 	PrintRegisters(ctx);
 
@@ -51,7 +87,7 @@ static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data)
 	for (size_t i = 1; i < size; i++)
 	{
 		Dl_info info;
-		uint32_t gotAddress = dladdr(arr[i], &info);
+		int gotAddress = dladdr(arr[i], &info);
 		std::string functionName(symbols[i]);
 
 		if (gotAddress != 0 && info.dli_sname != nullptr)
@@ -82,18 +118,34 @@ static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data)
 	}
 
 	free(symbols);
+	DeinitOTR();
+	exit(1);
+}
+
+static void ShutdownHandler(int sig, siginfo_t* sigInfo, void* data) {
+	DeinitOTR();
 	exit(1);
 }
 
 extern "C" void SetupHandlerLinux() {
 	struct sigaction action;
+	struct sigaction shutdownAction;
+
 	action.sa_flags = SA_SIGINFO;
 	action.sa_sigaction = ErrorHandler;
-	/*
-	signal(SIGSEGV, ErrorHandler);
-			signal(SIGABRT, ErrorHandler);*/
-	sigaction(SIGSEGV, &action, nullptr);
+
+	sigaction(SIGILL, &action, nullptr);
 	sigaction(SIGABRT, &action, nullptr);
+	sigaction(SIGFPE, &action, nullptr);
+	sigaction(SIGSEGV, &action, nullptr);
+
+	shutdownAction.sa_flags = SA_SIGINFO;
+	shutdownAction.sa_sigaction = ShutdownHandler;
+	sigaction(SIGINT, &shutdownAction, nullptr);
+	sigaction(SIGTERM, &shutdownAction, nullptr);
+	sigaction(SIGQUIT, &shutdownAction, nullptr);
+	sigaction(SIGKILL, &shutdownAction, nullptr);
+
 
 }
 #endif
