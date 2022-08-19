@@ -1914,7 +1914,7 @@ namespace SohImGui {
                     );
                     PaddedEnhancementCheckbox("Disable Random Rupee Names", "gRandoDisableRandomRupeeNames", true, false);
                     Tooltip(
-                        "Disables the random rupee names in the textbox when obtaining rupees."
+                        "Reverts textboxes for collecting rupees to their default state, disabling the randomization of rupee names."
                     );
                     ImGui::EndMenu();
                 }
