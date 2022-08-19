@@ -2,11 +2,9 @@
 #include <memory>
 #include "PR/ultra64/gbi.h"
 #include "Lib/Fast3D/gfx_pc.h"
-#include "UltraController.h"
 #include "Controller.h"
 #include "GlobalCtx2.h"
 #include "ControlDeck.h"
-#include <string>
 
 #include "Lib/Fast3D/gfx_window_manager_api.h"
 
@@ -15,8 +13,6 @@ namespace Ship {
 
 	class Window {
 		public:
-			static int32_t lastScancode;
-
 			Window(std::shared_ptr<GlobalCtx2> Context);
 			~Window();
 			void CreateDefaults();
@@ -40,6 +36,8 @@ namespace Ship {
 			std::shared_ptr<GlobalCtx2> GetContext() { return Context.lock(); }
 			std::shared_ptr<AudioPlayer> GetAudioPlayer() { return APlayer; }
 			const char* GetKeyName(int scancode) { return WmApi->get_key_name(scancode); }
+			int32_t GetLastScancode() { return lastScancode;  };
+			void SetLastScancode(int32_t scanCode) { lastScancode = scanCode; };
 
 		protected:
 		private:
@@ -47,12 +45,15 @@ namespace Ship {
 			static bool KeyUp(int32_t dwScancode);
 			static void AllKeysUp(void);
 			static void OnFullscreenChanged(bool bIsNowFullscreen);
+
 			void InitializeControlDeck();
 			void InitializeAudioPlayer();
+			void InitializeWindowManager();
 
 			std::weak_ptr<GlobalCtx2> Context;
 			std::shared_ptr<AudioPlayer> APlayer;
 			std::shared_ptr<ControlDeck> ControllerApi;
+			std::string gfxBackend;
 
 			GfxRenderingAPI* RenderingApi;
 			GfxWindowManagerAPI* WmApi;
@@ -60,5 +61,6 @@ namespace Ship {
 			uint32_t dwWidth;
 			uint32_t dwHeight;
 			uint32_t dwMenubar;
+			int32_t lastScancode;
 	};
 }

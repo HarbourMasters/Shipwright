@@ -255,6 +255,34 @@
 #endif
 
 //-----------------------------------------------------------------------------
+// Defines for Wii U platform
+
+#if !defined(STORMLIB_PLATFORM_DEFINED) && defined(__WIIU__)
+
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #include <unistd.h>
+  #include <stdint.h>
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <stdarg.h>
+  #include <string.h>
+  #include <strings.h>
+  #include <ctype.h>
+  #include <assert.h>
+  #include <errno.h>
+  #include <malloc.h>
+
+  #undef STORMLIB_LITTLE_ENDIAN                     // Wii U is always big endian
+
+  #define STORMLIB_MAC                              // Use Mac compatible code
+  #define STORMLIB_WIIU
+  #define STORMLIB_PLATFORM_DEFINED
+
+#endif
+
+//-----------------------------------------------------------------------------
 // Assumption: If the platform is not defined, assume a Linux-like platform
 
 #if !defined(STORMLIB_PLATFORM_DEFINED)

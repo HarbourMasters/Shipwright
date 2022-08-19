@@ -720,9 +720,9 @@ void ThrowIfFailed(HRESULT res, HWND h_wnd, const char *message) {
 }
 
 const char* gfx_dxgi_get_key_name(int scancode) {
-    TCHAR* Text = new TCHAR[64];
-    GetKeyNameText(scancode << 16, Text, 64);
-    return (char*) Text;
+    static char text[64];
+    GetKeyNameTextA(scancode << 16, text, 64);
+    return text;
 }
 
 extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {

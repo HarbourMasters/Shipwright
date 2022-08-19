@@ -443,7 +443,7 @@ void func_80896950(BgJyaCobra* this, GlobalContext* globalCtx) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->unk_168++;
-        if (this->unk_168 >= CVar_GetS32("gFasterBlockPush", 0) != 0 ? 5 : 15) {
+        if (this->unk_168 >= (15 - CVar_GetS32("gFasterBlockPush", 0) * 2)) {
             func_808969F8(this, globalCtx);
         }
     } else {
@@ -476,18 +476,17 @@ void func_808969F8(BgJyaCobra* this, GlobalContext* globalCtx) {
     this->unk_174.x = player->actor.world.pos.x - this->dyna.actor.world.pos.x;
     this->unk_174.y = player->actor.world.pos.y - this->dyna.actor.world.pos.y;
     this->unk_174.z = player->actor.world.pos.z - this->dyna.actor.world.pos.z;
-    this->unk_170 = this->unk_16E = 0;
+    this->unk_170 = 0;
     this->unk_172 = true;
+    this->unk_16E = CVar_GetS32("gFasterBlockPush", 0) * 20;
 }
 
 void func_80896ABC(BgJyaCobra* this, GlobalContext* globalCtx) {
     s16 temp_v0;
     Player* player = GET_PLAYER(globalCtx);
-    if (CVar_GetS32("gFasterBlockPush", 0) != 0)
-        this->unk_16E = 150.0f;
 
     temp_v0 = (s16)((this->unk_16C * 0x2000) + this->dyna.actor.home.rot.y) - this->dyna.actor.world.rot.y;
-    if (ABS(temp_v0) < CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3712 : 7424) {
+    if (ABS(temp_v0) < 7424) {
         Math_StepToS(&this->unk_16E, 106, 4);
     } else {
         Math_StepToS(&this->unk_16E, 21, 10);

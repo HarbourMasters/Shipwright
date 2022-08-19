@@ -13,7 +13,7 @@ namespace Ship {
 		Attachment = nullptr;
 
 		for(int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
-			profiles[virtualSlot] = std::make_shared<DeviceProfileV0>();
+			profiles[virtualSlot] = std::make_shared<DeviceProfile>();
 			ButtonData[virtualSlot] = std::make_shared<Buttons>();
 		}
 	}
@@ -21,7 +21,9 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
 		ReadFromSource(virtualSlot);
 
+#ifndef __WIIU__
 		SDL_PumpEvents();
+#endif
 
 		// Button Inputs
 		pad->button |= getPressedButtons(virtualSlot) & 0xFFFF;
@@ -107,7 +109,7 @@ namespace Ship {
 		return ButtonData[virtualSlot]->gyroY;
 	}
 
-	std::shared_ptr<DeviceProfileV0> Controller::getProfile(int32_t virtualSlot) {
+	std::shared_ptr<DeviceProfile> Controller::getProfile(int32_t virtualSlot) {
 		return profiles[virtualSlot];
 	}
 }

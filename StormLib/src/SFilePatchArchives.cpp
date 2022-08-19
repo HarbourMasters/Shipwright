@@ -480,7 +480,7 @@ static bool IsMatchingPatchFile(
         {
             // Load the patch header
             SFileReadFile(hFile, &PatchHeader, sizeof(MPQ_PATCH_HEADER), &dwTransferred, NULL);
-            BSWAP_ARRAY32_UNSIGNED(pPatchHeader, sizeof(DWORD) * 6);
+            BSWAP_ARRAY32_UNSIGNED(&PatchHeader, sizeof(DWORD) * 6);
 
             // If the file contains an incremental patch,
             // compare the "MD5 before patching" with the base file MD5

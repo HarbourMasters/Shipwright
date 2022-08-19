@@ -601,8 +601,9 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    // Completed Dodongo's Cavern
-    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !(gSaveContext.eventChkInf[2] & 0x20)) {
+    // Don't kill bombchu shop actor in rando, making it so the shop is immediately open
+    // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
+    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !(gSaveContext.eventChkInf[2] & 0x20) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -1469,7 +1470,10 @@ void EnOssan_HandleCanBuyBombs(GlobalContext* globalCtx, EnOssan* this) {
 
 void EnOssan_BuyGoronCityBombs(GlobalContext* globalCtx, EnOssan* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        if (!(gSaveContext.eventChkInf[2] & 0x20)) {
+        // Let players buy the right side of the goron shop in rando regardless of DC completion
+        // Players will still need a bomb bag to buy bombs (handled by vanilla behaviour)
+        // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
+        if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[2] & 0x20)) {
             if (gSaveContext.infTable[15] & 0x1000) {
                 EnOssan_SetStateCantGetItem(globalCtx, this, 0x302E);
             } else {
