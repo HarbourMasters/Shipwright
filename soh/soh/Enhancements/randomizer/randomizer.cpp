@@ -3748,21 +3748,21 @@ void DrawRandoEditor(bool& open) {
 
                 if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Randomized", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Vanilla", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
                     ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
-                    // COLUMN 1 - RANDOMIZED LOCATIONS
+                    // COLUMN 1 - INCLUDED LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
                     static ImGuiTextFilter locationSearch;
                     locationSearch.Draw();
 
-                    ImGui::BeginChild("ChildRandomizedLocations", ImVec2(0, -8));
+                    ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
                         bool hasItems = false;
                         for (auto locationIt : areaIt.second) {
@@ -3804,11 +3804,11 @@ void DrawRandoEditor(bool& open) {
                     }
                     ImGui::EndChild();
 
-                    // COLUMN 2 - VANILLA LOCATIONS
+                    // COLUMN 2 - EXCLUDED LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
-                    ImGui::BeginChild("ChildVanillaLocations", ImVec2(0, -8));
+                    ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
                     for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
                         bool hasItems = false;
                         for (auto locationIt : areaIt.second) {

@@ -2496,6 +2496,17 @@ namespace Settings {
             break;
     }
 
+    AddExcludedOptions();
+    for (auto locationKey : everyPossibleLocation) {
+      auto location = Location(locationKey);
+      if (excludedLocations.count(location->GetRandomizerCheck())) {
+        location->GetExcludedOption()->SetSelectedIndex(1);
+      } else {
+        location->GetExcludedOption()->SetSelectedIndex(0);
+      }
+    }
+    auto blarg = excludeLocationsOptionsVector.size();
+
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
     ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
@@ -2581,31 +2592,6 @@ namespace Settings {
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
-    
-    AddExcludedOptions();
-    for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
-      for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
-        // RANDOTODO implement the ability to exclude any location
-        if (location->GetName() == "Deku Theater Mask of\n Truth") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH]);
-        }
-        if (location->GetName() == "Kak 10 Gold Skulltula\n Reward") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD]);
-        }
-        if (location->GetName() == "Kak 20 Gold Skulltula\n Reward") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD]);
-        }
-        if (location->GetName() == "Kak 30 Gold Skulltula\n Reward") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD]);
-        }
-        if (location->GetName() == "Kak 40 Gold Skulltula\n Reward") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD]);
-        }
-        if (location->GetName() == "Kak 50 Gold Skulltula\n Reward") {
-          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD]);
-        }
-      }
-    }
 
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
