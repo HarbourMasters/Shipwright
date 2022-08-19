@@ -2087,8 +2087,8 @@ void DemoEffect_DrawGetItem(Actor* thisx, GlobalContext* globalCtx) {
             return;
         }
         if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_BDAN) {
-            GetItemID getItemID = Randomizer_GetItemIdFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
-            this->getItem.drawId = Randomizer_GetItemModelFromId(getItemID);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+            this->getItem.drawId = getItemEntry.gid;
         }
         func_8002EBCC(thisx, globalCtx, 0);
         func_8002ED80(thisx, globalCtx, 0);
