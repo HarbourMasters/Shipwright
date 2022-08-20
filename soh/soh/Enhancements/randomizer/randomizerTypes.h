@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -758,6 +760,7 @@ typedef enum {
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
+    RC_GANONDORF_HINT,
     RC_MAX
 } RandomizerCheck;
 
@@ -1001,13 +1004,7 @@ typedef enum {
     RSK_SKIP_CHILD_ZELDA,
     RSK_STARTING_CONSUMABLES,
     RSK_FULL_WALLETS,
-    RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH,
     RSK_LANGUAGE,
-    RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD,
     RSK_SHUFFLE_CHEST_MINIGAME,
     RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
