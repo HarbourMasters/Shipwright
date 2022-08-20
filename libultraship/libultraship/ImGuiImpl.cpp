@@ -2515,6 +2515,12 @@ namespace SohImGui {
             return gfx_metal_get_texture_by_id(id);
         }
 #endif
+#ifdef __WIIU__
+        if (impl.backend == Backend::GX2)
+        {
+            return gfx_gx2_texture_for_imgui(id);
+        }
+#endif
         return reinterpret_cast<ImTextureID>(id);
     }
 
