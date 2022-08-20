@@ -323,13 +323,9 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, RandomizerCheck check) {
-    if (song->actor.parent != NULL && song->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
-        !Flags_GetTreasure(globalCtx, 0x1F)) {
-        Flags_SetTreasure(globalCtx, 0x1F);
-    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        GiveItemEntryFromActor(&song->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
-    }
+    Flags_SetTreasure(globalCtx, 0x1F);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
+    GiveItemEntryFromActor(&song->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
 }
 
 void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
