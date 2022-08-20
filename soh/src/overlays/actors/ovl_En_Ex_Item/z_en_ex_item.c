@@ -139,9 +139,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 this->unk_17C = func_8002EBCC;
                 if (gSaveContext.n64ddFlag) {
                     this->giDrawId =
-                        ABS(Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20)
-                                .gi) -
-                        1;
+                        Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20).gid;
                 } else {
                     this->giDrawId = GID_BOMB_BAG_30;
                 }
@@ -175,8 +173,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
                 if (gSaveContext.n64ddFlag) {
-                    this->giDrawId =
-                        ABS(Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gi) - 1;
+                    this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
                 } else {
                     this->giDrawId = GID_BOMBCHU;
                 }
