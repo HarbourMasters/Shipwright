@@ -78,15 +78,6 @@ struct ShaderProgramMetal {
     MTL::RenderPipelineState* pipeline_state_variants[9];
 };
 
-struct FrameUniforms {
-    simd::int1 frameCount;
-    simd::float1 noiseScale;
-};
-
-struct CoordUniforms {
-    simd::uint2 coords[MAX_PIXEL_DEPTH_COORDS];
-};
-
 struct TextureDataMetal {
     MTL::Texture* texture;
     MTL::Texture* msaaTexture;
@@ -122,12 +113,27 @@ struct FramebufferMetal {
     int8_t last_zmode_decal = -1;
 };
 
+struct FrameUniforms {
+    simd::int1 frameCount;
+    simd::float1 noiseScale;
+};
+
+struct CoordUniforms {
+    simd::uint2 coords[MAX_PIXEL_DEPTH_COORDS];
+};
+
+struct TextureVertex {
+    simd::float2 position;
+    simd::float2 texcoord;
+};
+
 static struct {
     // Elements that only need to be setup once
     SDL_Renderer* renderer;
     void* layer; // CA::MetalLayer*
     MTL::Device* device;
     MTL::CommandQueue* command_queue;
+    MTL::RenderPipelineState* drawable_render_pipeline;
 
     std::queue<MTL::Buffer*> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
@@ -284,6 +290,48 @@ static void gfx_metal_init(void) {
             uint2 coord = query_coords.coords[thread_position.x];
             output_values[thread_position.x] = depth_texture.read(coord);
         }
+
+        // Vertex shader outputs and fragment shader inputs for texturing pipeline.
+        struct TexturePipelineRasterizerData
+        {
+            float4 position [[position]];
+            float2 texcoord;
+        };
+
+        struct TextureVertex {
+            float2 position;
+            float2 texcoord;
+        };
+
+        // Vertex shader which adjusts positions by an aspect ratio and passes texture
+        // coordinates through to the rasterizer.
+        vertex TexturePipelineRasterizerData
+        textureVertexShader(const uint vertexID [[ vertex_id ]],
+                            const device TextureVertex *vertices [[ buffer(0) ]])
+        {
+            TexturePipelineRasterizerData out;
+
+            out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
+
+            out.position.x = vertices[vertexID].position.x;
+            out.position.y = vertices[vertexID].position.y;
+
+            out.texcoord = vertices[vertexID].texcoord;
+
+            return out;
+        }
+        // Fragment shader that samples a texture and outputs the sampled color.
+        fragment float4 textureFragmentShader(TexturePipelineRasterizerData in      [[stage_in]],
+                                              texture2d<float>              texture [[texture(0)]])
+        {
+            sampler simpleSampler;
+
+            // Sample data from the texture.
+            float4 colorSample = texture.sample(simpleSampler, in.texcoord);
+
+            // Return the color sample as the final color.
+            return colorSample;
+        }
     )";
 
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
@@ -292,9 +340,24 @@ static void gfx_metal_init(void) {
     MTL::Library* library = mctx.device->newLibrary(NS::String::string(depth_shader, NS::UTF8StringEncoding), nullptr, &error);
 
     if (error != nullptr)
-        SPDLOG_ERROR("Failed to compile shader library, error {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
+        SPDLOG_ERROR("Failed to compile shader library: {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
 
     mctx.depth_compute_function = library->newFunction(NS::String::string("depthKernel", NS::UTF8StringEncoding));
+
+    // Setup drawable render pipeline
+    MTL::RenderPipelineDescriptor* pipeline_state_descriptor = MTL::RenderPipelineDescriptor::alloc()->init();
+    pipeline_state_descriptor->setLabel(NS::String::string("Drawable Render Pipeline", NS::UTF8StringEncoding));
+    pipeline_state_descriptor->setSampleCount(1);
+    pipeline_state_descriptor->setVertexFunction(library->newFunction(NS::String::string("textureVertexShader", NS::UTF8StringEncoding)));
+    pipeline_state_descriptor->setFragmentFunction(library->newFunction(NS::String::string("textureFragmentShader", NS::UTF8StringEncoding)));
+    pipeline_state_descriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
+    pipeline_state_descriptor->vertexBuffers()->object(0)->setMutability(MTL::MutabilityImmutable);
+
+    mctx.drawable_render_pipeline = mctx.device->newRenderPipelineState(pipeline_state_descriptor, &error);
+
+    if (error != nullptr)
+        SPDLOG_ERROR("Failed to create pipeline state to render to screen: {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
+
     autorelease_pool->release();
 }
 
@@ -602,23 +665,46 @@ void gfx_metal_end_frame(void) {
             framebuffer.command_encoder->endEncoding();
 
         framebuffer.command_buffer->commit();
-
         it++;
     }
 
     auto screen_framebuffer = mctx.framebuffers[0];
     screen_framebuffer.command_encoder->endEncoding();
 
-    CA::MetalDrawable* drawable = get_layer_next_drawable(mctx.layer);
-    MTL::BlitCommandEncoder* blit_encoder = screen_framebuffer.command_buffer->blitCommandEncoder();
-    blit_encoder->setLabel(NS::String::string("Render Screen Command Encoder", NS::UTF8StringEncoding));
 
-    // Copy over the 0 framebuffer's texture to the drawable!
+    // Do second render pass to copy framebuffer 0 to screen
+    CA::MetalDrawable* drawable = get_layer_next_drawable(mctx.layer);
+
+    auto drawable_render_pass_descriptor = MTL::RenderPassDescriptor::alloc()->init();
+    drawable_render_pass_descriptor->colorAttachments()->object(0)->setTexture(drawable->texture());
+    drawable_render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+    drawable_render_pass_descriptor->colorAttachments()->object(0)->setClearColor({ 0, 0, 0, 1 });
+    drawable_render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
+
+    // quad_vertex_buffer is a fullscreen quad of 6 vertices so we can use it for the render pass
+    static const TextureVertex quad_vertices[] =
+    {
+        // Positions     , Texture coordinates
+        { {  1,  -1 },  { 1.0, 1.0 } },
+        { { -1,  -1 },  { 0.0, 1.0 } },
+        { { -1,   1 },  { 0.0, 0.0 } },
+
+        { {  1,  -1 },  { 1.0, 1.0 } },
+        { { -1,   1 },  { 0.0, 0.0 } },
+        { {  1,   1 },  { 1.0, 0.0 } },
+    };
+
+    MTL::RenderCommandEncoder* render_encoder = screen_framebuffer.command_buffer->renderCommandEncoder(drawable_render_pass_descriptor);
+    render_encoder->setLabel(NS::String::string("Drawable Render Pass", NS::UTF8StringEncoding));
+    render_encoder->setRenderPipelineState(mctx.drawable_render_pipeline);
+    render_encoder->setVertexBytes(&quad_vertices, sizeof(quad_vertices), 0);
+
     int texture_id = mctx.framebuffers[0].texture_id;
     MTL::Texture* tex_to_copy = mctx.textures[texture_id].texture;
 
-    blit_encoder->copyFromTexture(tex_to_copy, drawable->texture());
-    blit_encoder->endEncoding();
+    render_encoder->setFragmentTexture(tex_to_copy, 0);
+    render_encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0.f, 6);
+    render_encoder->endEncoding();
 
     screen_framebuffer.command_buffer->presentDrawable(drawable);
 
