@@ -148,7 +148,6 @@ static struct {
 
     // Current state
     struct ShaderProgramMetal* shader_program;
-    CA::MetalDrawable* current_drawable;
     std::set<int> drawn_framebuffers;
     NS::AutoreleasePool* frame_autorelease_pool;
 
@@ -228,13 +227,7 @@ bool Metal_Init() {
     return ImGui_ImplMetal_Init(mctx.device);
 }
 
-static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height);
-
 void Metal_NewFrame() {
-    int width, height;
-    SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
-    gfx_metal_setup_screen_framebuffer(width, height);
-
     MTL::RenderPassDescriptor* current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 }
@@ -244,10 +237,10 @@ void Metal_RenderDrawData(ImDrawData* draw_data) {
     auto framebuffer = mctx.framebuffers[0];
 
     // Workaround for detecting when transitioning to/from full screen mode.
-    MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
-    int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
-    int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
-    if (screen_texture->width() != fb_width || screen_texture->height() != fb_height) return;
+//    MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
+//    int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
+//    int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
+//    if (screen_texture->width() != fb_width || screen_texture->height() != fb_height) return;
 
     ImGui_ImplMetal_RenderDrawData(draw_data, framebuffer.command_buffer, framebuffer.command_encoder);
 }
@@ -576,7 +569,7 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 }
 
 static void gfx_metal_on_resize(void) {
-    mctx.is_resizing = true;
+//    mctx.is_resizing = true;
 }
 
 static void gfx_metal_start_frame(void) {
@@ -616,7 +609,18 @@ void gfx_metal_end_frame(void) {
     auto screen_framebuffer = mctx.framebuffers[0];
     screen_framebuffer.command_encoder->endEncoding();
 
-    screen_framebuffer.command_buffer->presentDrawable(mctx.current_drawable);
+    CA::MetalDrawable* drawable = get_layer_next_drawable(mctx.layer);
+    MTL::BlitCommandEncoder* blit_encoder = screen_framebuffer.command_buffer->blitCommandEncoder();
+    blit_encoder->setLabel(NS::String::string("Render Screen Command Encoder", NS::UTF8StringEncoding));
+
+    // Copy over the 0 framebuffer's texture to the drawable!
+    int texture_id = mctx.framebuffers[0].texture_id;
+    MTL::Texture* tex_to_copy = mctx.textures[texture_id].texture;
+
+    blit_encoder->copyFromTexture(tex_to_copy, drawable->texture());
+    blit_encoder->endEncoding();
+
+    screen_framebuffer.command_buffer->presentDrawable(drawable);
 
     pop_buffer_and_wait_to_requeue(screen_framebuffer.command_buffer);
     screen_framebuffer.command_buffer->commit();
@@ -665,80 +669,7 @@ int gfx_metal_create_framebuffer(void) {
     return (int)index;
 }
 
-static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) {
-    mctx.current_drawable = nullptr;
-    mctx.current_drawable = get_layer_next_drawable(mctx.layer);
-
-    bool msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
-
-    FramebufferMetal& fb = mctx.framebuffers[0];
-    TextureDataMetal& tex = mctx.textures[fb.texture_id];
-
-    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
-
-    if (tex.texture != nullptr)
-        tex.texture->release();
-
-    tex.texture = mctx.current_drawable->texture();
-
-    MTL::RenderPassDescriptor* render_pass_descriptor = MTL::RenderPassDescriptor::renderPassDescriptor();
-    MTL::ClearColor clear_color = MTL::ClearColor::Make(0, 0, 0, 1);
-    render_pass_descriptor->colorAttachments()->object(0)->setTexture(tex.texture);
-    render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(msaa_enabled ? MTL::LoadActionLoad : MTL::LoadActionClear);
-    render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
-    render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
-
-    if (fb.render_pass_descriptor != nullptr)
-        fb.render_pass_descriptor->release();
-
-    fb.render_pass_descriptor = render_pass_descriptor;
-    fb.render_pass_descriptor->retain();
-
-    tex.width = width;
-    tex.height = height;
-
-    // recreate depth texture only if necessary (size changed)
-    if (fb.depth_texture == nullptr || (fb.depth_texture->width() != width || fb.depth_texture->height() != height)) {
-        if (fb.depth_texture != nullptr)
-            fb.depth_texture->release();
-
-        // If possible, we eventually we want to disable this when msaa is enabled since we don't need this depth texture
-        // However, problem is if the user switches to msaa during game, we need a way to then generate it before drawing.
-        MTL::TextureDescriptor* depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
-
-        depth_tex_desc->setTextureType(MTL::TextureType2D);
-        depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
-        depth_tex_desc->setSampleCount(1);
-        depth_tex_desc->setArrayLength(1);
-        depth_tex_desc->setMipmapLevelCount(1);
-        depth_tex_desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
-
-        fb.depth_texture = mctx.device->newTexture(depth_tex_desc);
-    }
-
-    fb.render_pass_descriptor->depthAttachment()->setTexture(fb.depth_texture);
-    fb.render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionClear);
-    fb.render_pass_descriptor->depthAttachment()->setStoreAction(MTL::StoreActionStore);
-    fb.render_pass_descriptor->depthAttachment()->setClearDepth(1);
-
-    fb.render_target = true;
-    fb.has_depth_buffer = true;
-
-    autorelease_pool->release();
-}
-
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
-
-    // Screen framebuffer is handled separately on a frame by frame basis
-    // see `gfx_metal_setup_screen_framebuffer`.
-    if (fb_id == 0) {
-        int width, height;
-        SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
-        set_layer_drawable_size(mctx.layer, width, height);
-
-        return;
-    }
-
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
 
@@ -753,6 +684,12 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
 
     if (diff || (fb.render_pass_descriptor != nullptr) != render_target) {
+        if (diff && fb_id == 0) {
+            int width, height;
+            SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
+            set_layer_drawable_size(mctx.layer, width, height);
+        }
+
         MTL::TextureDescriptor* tex_descriptor = MTL::TextureDescriptor::alloc()->init();
         tex_descriptor->setTextureType(MTL::TextureType2D);
         tex_descriptor->setWidth(width);
@@ -786,10 +723,11 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         if (render_target) {
             MTL::RenderPassDescriptor* render_pass_descriptor = MTL::RenderPassDescriptor::renderPassDescriptor();
 
-            bool msaa_enabled = (msaa_level > 1);
+            bool fb_msaa_enabled = (msaa_level > 1);
+            bool game_msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
             MTL::ClearColor clear_color = MTL::ClearColor::Make(0.0, 0.0, 0.0, 1.0);
 
-            if (msaa_enabled) {
+            if (fb_msaa_enabled) {
                 render_pass_descriptor->colorAttachments()->object(0)->setTexture(tex.msaaTexture);
                 render_pass_descriptor->colorAttachments()->object(0)->setResolveTexture(tex.texture);
                 render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
@@ -797,7 +735,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
                 render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
             } else {
                 render_pass_descriptor->colorAttachments()->object(0)->setTexture(tex.texture);
-                render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+                render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(fb_id == 0 && game_msaa_enabled ? MTL::LoadActionLoad : MTL::LoadActionClear);
                 render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
                 render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
             }
@@ -901,11 +839,11 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
     MTL::Texture* source_texture = mctx.textures[source_texture_id].texture;
 
     int target_texture_id = mctx.framebuffers[fb_id_target].texture_id;
-    MTL::Texture* target_texture = target_texture_id == 0 ? mctx.current_drawable->texture() : mctx.textures[target_texture_id].texture;
+    MTL::Texture* target_texture = mctx.textures[target_texture_id].texture;
 
-    // Workaround for detecting when transitioning to/from full screen mode.
-    if (source_texture->width() != target_texture->width() || source_texture->height() != target_texture->height())
-        return;
+//     Workaround for detecting when transitioning to/from full screen mode.
+//    if (source_texture->width() != target_texture->width() || source_texture->height() != target_texture->height())
+//        return;
 
     // Copy over the source framebuffer's texture to the target
     auto& source_framebuffer = mctx.framebuffers[fb_id_source];
