@@ -154,6 +154,8 @@ static struct {
 
     int current_tile;
     uint32_t current_texture_ids[2];
+
+    uint32_t render_target_height;
     int current_framebuffer;
     size_t current_vertex_buffer_offset;
     FilteringMode current_filter_mode = FILTER_THREE_POINT;
@@ -462,20 +464,30 @@ static void gfx_metal_set_zmode_decal(bool zmode_decal) {
 }
 
 static void gfx_metal_set_viewport(int x, int y, int width, int height) {
+    MTL::Viewport viewport;
+    viewport.originX = x;
+    viewport.originY = mctx.render_target_height - y - height;
+    viewport.width = width;
+    viewport.height = height;
+    viewport.znear = 0;
+    viewport.zfar = 1;
+
     auto current_framebuffer = mctx.framebuffers[mctx.current_framebuffer];
-    current_framebuffer.command_encoder->setViewport({ x, y, width, height, 0.0, 1.0 });
+    current_framebuffer.command_encoder->setViewport(viewport);
 }
 
 static void gfx_metal_set_scissor(int x, int y, int width, int height) {
     FramebufferMetal fb = mctx.framebuffers[mctx.current_framebuffer];
     TextureDataMetal tex = mctx.textures[fb.texture_id];
 
+    MTL::ScissorRect rect;
     // clamp to viewport size as metal does not support larger values than viewport size
-    x = std::max(0, std::min<int>(x, tex.width));
-    y = std::max(0, std::min<int>(y, tex.height));
-    width = std::max(0, std::min<int>(width,  tex.width));
-    height = std::max(0, std::min<int>(height, tex.height));
-    fb.command_encoder->setScissorRect({ x, y, width, height });
+    rect.x = std::max(0, std::min<int>(x, tex.width));
+    rect.y = std::max(0, std::min<int>(mctx.render_target_height - y - height, tex.height));
+    rect.width = std::max(0, std::min<int>(x + width,  tex.width));
+    rect.height = std::max(0, std::min<int>(height, tex.height));
+
+    fb.command_encoder->setScissorRect(rect);
 }
 
 static void gfx_metal_set_use_alpha(bool use_alpha) {
@@ -843,6 +855,8 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 
 void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
+    mctx.render_target_height = mctx.textures[fb.texture_id].height;
+
     mctx.current_framebuffer = fb_id;
     mctx.drawn_framebuffers.insert(fb_id);
 
