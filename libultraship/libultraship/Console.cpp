@@ -6,6 +6,7 @@
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Utils.h"
+#include <sstream>
 
 namespace Ship {
 	std::string BuildUsage(const CommandEntry& entry) {
