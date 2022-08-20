@@ -240,15 +240,14 @@ void Metal_NewFrame() {
 }
 
 void Metal_RenderDrawData(ImDrawData* draw_data) {
+    if (mctx.is_resizing) return;
     auto framebuffer = mctx.framebuffers[0];
 
     // Workaround for detecting when transitioning to/from full screen mode.
     MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
     int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
     int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
-    mctx.is_resizing = screen_texture->width() != fb_width || screen_texture->height() != fb_height;
-
-    if (mctx.is_resizing) return;
+    if (screen_texture->width() != fb_width || screen_texture->height() != fb_height) return;
 
     ImGui_ImplMetal_RenderDrawData(draw_data, framebuffer.command_buffer, framebuffer.command_encoder);
 }
