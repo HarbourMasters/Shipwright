@@ -163,19 +163,20 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
 #if defined(ENABLE_METAL)
-    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+    bool metal_enabled = true;
+#else
+    bool metal_enabled = false;
+#endif
+
+    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     } else {
         SDL_SetHint(SDL_HINT_RENDER_DRIVER, "metal");
     }
-#else
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-#endif
 
 #if defined(__APPLE__)
-     if (strcmp(gfx_api_name, "OpenGL") == 0) {
+     if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -203,22 +204,28 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
 
-#if defined(ENABLE_METAL)
-    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
         flags = flags | SDL_WINDOW_OPENGL;
     } else {
         flags = flags | SDL_WINDOW_METAL;
     }
-#else
-    flags = flags | SDL_WINDOW_OPENGL;
-#endif
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 
-#if defined(ENABLE_METAL)
-    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
+#ifndef __SWITCH__
         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+
+        if (start_in_fullscreen) {
+            set_fullscreen(true, false);
+        }
+#endif
         ctx = SDL_GL_CreateContext(wnd);
+#ifdef __SWITCH__
+        if(!gladLoadGLLoader(SDL_GL_GetProcAddress)){
+            printf("Failed to initialize glad\n");
+        }
+#endif
         SDL_GL_SetSwapInterval(1);
     } else {
         renderer  = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -230,24 +237,6 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
         SDL_GetRendererOutputSize(renderer, &window_width, &window_height);
         Metal_SetRenderer(renderer);
     }
-#else
-#ifndef __SWITCH__
-    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
-
-    if (start_in_fullscreen) {
-        set_fullscreen(true, false);
-    }
-#endif
-    ctx = SDL_GL_CreateContext(wnd);
-
-#ifdef __SWITCH__
-    if(!gladLoadGLLoader(SDL_GL_GetProcAddress)){
-        printf("Failed to initialize glad\n");
-    }
-#endif
-
-    SDL_GL_SetSwapInterval(1);
-#endif
 
     SDL_AddEventWatch(resizingEventWatcher, wnd);
 
