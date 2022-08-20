@@ -516,12 +516,12 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
     // if a blank seed was entered, make a random one
     srand(time(NULL));
     Settings::seed = std::to_string(rand());
 
-    int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings);
+    int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings, excludedLocations);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
