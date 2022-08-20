@@ -525,7 +525,7 @@ void DrawInfoTab() {
     ImGui::PopItemWidth();
 }
 
- struct warps {
+struct warps {
     const char* category;
     const char* locations[20];
     const int32_t indexes[20];
@@ -746,41 +746,45 @@ struct warps warpMap[] = {
     { "Adult Link Misc", { "Ice Cavern", "Gerudo Training Grounds" }, { 0x0088, 0x0008 } }
 };
 
-int32_t customWarpEntrance;
-_Vec3f pos;
-int16_t yaw;
 bool warped = false;
-
-int32_t getSize(int32_t array[]) {
-    int i = 0;
-    while (array[i] != 0) {
-        i = i + 1;
-    }
-    return (i);
-}
 
 void DrawWarpTab() {
     
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
     if (ImGui::Button("Custom Warp Set")) {
-        pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
-        yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
-        customWarpEntrance = gSaveContext.entranceIndex;
+        CVar_SetFloat("gCustomWarpZ", GET_PLAYER(gGlobalCtx)->actor.world.pos.z);
+        CVar_SetFloat("gCustomWarpY", GET_PLAYER(gGlobalCtx)->actor.world.pos.y);
+        CVar_SetFloat("gCustomWarpX", GET_PLAYER(gGlobalCtx)->actor.world.pos.x);
+        CVar_SetS32("gCustomWarpYaw", GET_PLAYER(gGlobalCtx)->actor.shape.rot.y);
+        CVar_SetS32("gCustomWarpEntrance", gSaveContext.entranceIndex);
+        CVar_Save();
     }
 
     ImGui::SameLine();
     if (ImGui::Button("Go To Custom Warp")) {
-        gGlobalCtx->nextEntranceIndex = customWarpEntrance;
+        gGlobalCtx->nextEntranceIndex = CVar_GetS32("gCustomWarpEntrance", gSaveContext.entranceIndex);
         gGlobalCtx->sceneLoadFlag = 0x14;
         gGlobalCtx->fadeTransition = 11;
         gSaveContext.nextTransition = 11;
         warped = true;
     }
+    float temp = CVar_GetFloat("gCustomWarpX", 0.0);
+    ImGui::InputScalar("X Index: ", ImGuiDataType_Float,&temp);
+    temp = CVar_GetFloat("gCustomWarpY", 0.0);
+    ImGui::InputScalar("Y Index: ", ImGuiDataType_Float, &temp);
+    temp = CVar_GetFloat("gCustomWarpZ", 0.0);
+    ImGui::InputScalar("Z Index: ", ImGuiDataType_Float, &temp);
+
 
     if (warped && gGlobalCtx->sceneLoadFlag != 0x14 && gSaveContext.nextTransition == 255) {
-        GET_PLAYER(gGlobalCtx)->actor.world.pos = pos;
-        GET_PLAYER(gGlobalCtx)->actor.shape.rot.y = yaw;
+        GET_PLAYER(gGlobalCtx)->actor.world.pos = {
+        CVar_GetFloat("gCustomWarpX", GET_PLAYER(gGlobalCtx)->actor.world.pos.x),
+        CVar_GetFloat("gCustomWarpY", GET_PLAYER(gGlobalCtx)->actor.world.pos.y),
+        CVar_GetFloat("gCustomWarpZ", GET_PLAYER(gGlobalCtx)->actor.world.pos.z)
+    };
+        GET_PLAYER(gGlobalCtx)->actor.shape.rot.y =
+            CVar_GetS32("gCustomWarpYaw", GET_PLAYER(gGlobalCtx)->actor.shape.rot.y);
         warped = false;
     }
 
@@ -897,11 +901,6 @@ void DrawWarpTab() {
         }
         if (ImGui::TreeNode("Treasure Chest Grottos")) {
             if (ImGui::Button(SohUtils::GetSceneName(85).c_str())) {
-                //respawnData->entranceIndex = 646;
-                //respawnData->roomIndex = 11264;
-                //respawnData->playerParams = 0x4FF;
-                //respawnData->pos = { -510.587, 380.000, -1223.780 };
-                //respawnData->yaw = 16384;
                 CVar_SetS32("gWarpGrottoCheat", 21);
             }
             if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
@@ -1100,6 +1099,7 @@ void DrawWarpTab() {
     } 
     ImGui::PopItemWidth();
 }
+
 
 void DrawInventoryTab() {
     static bool restrictToValid = true;
