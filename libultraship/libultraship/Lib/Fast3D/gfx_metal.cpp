@@ -358,6 +358,7 @@ static void gfx_metal_init(void) {
     if (error != nullptr)
         SPDLOG_ERROR("Failed to create pipeline state to render to screen: {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
 
+    pipeline_state_descriptor->release();
     autorelease_pool->release();
 }
 
@@ -439,6 +440,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
 
     gfx_metal_load_shader((struct ShaderProgram *)prg);
 
+    pipeline_descriptor->release();
     autorelease_pool->release();
 
     return (struct ShaderProgram *)prg;
@@ -732,6 +734,7 @@ void gfx_metal_end_frame(void) {
         fb.last_zmode_decal = -1;
     }
 
+    drawable_render_pass_descriptor->release();
     mctx.frame_autorelease_pool->release();
 }
 
@@ -791,19 +794,14 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         tex.texture = mctx.device->newTexture(tex_descriptor);
 
         if (msaa_level > 1) {
-            MTL::TextureDescriptor* msaa_tex_descriptor = MTL::TextureDescriptor::alloc()->init();
-            msaa_tex_descriptor->setTextureType(MTL::TextureType2DMultisample);
-            msaa_tex_descriptor->setWidth(width);
-            msaa_tex_descriptor->setHeight(height);
-            msaa_tex_descriptor->setSampleCount(msaa_level);
-            msaa_tex_descriptor->setMipmapLevelCount(1);
-            msaa_tex_descriptor->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
-            msaa_tex_descriptor->setStorageMode(MTL::StorageModePrivate);
-            msaa_tex_descriptor->setUsage(render_target ? MTL::TextureUsageRenderTarget : 0);
+            tex_descriptor->setTextureType(MTL::TextureType2DMultisample);
+            tex_descriptor->setSampleCount(msaa_level);
+            tex_descriptor->setStorageMode(MTL::StorageModePrivate);
+            tex_descriptor->setUsage(render_target ? MTL::TextureUsageRenderTarget : 0);
 
             if (tex.msaaTexture != nullptr)
                 tex.msaaTexture->release();
-            tex.msaaTexture = mctx.device->newTexture(msaa_tex_descriptor);
+            tex.msaaTexture = mctx.device->newTexture(tex_descriptor);
         }
 
         if (render_target) {
@@ -839,7 +837,6 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 
     if (has_depth_buffer && (diff || !fb.has_depth_buffer || (fb.depth_texture != nullptr) != can_extract_depth)) {
         MTL::TextureDescriptor *depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
-
         depth_tex_desc->setTextureType(MTL::TextureType2D);
         depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
         depth_tex_desc->setSampleCount(1);
@@ -853,19 +850,13 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         fb.depth_texture = mctx.device->newTexture(depth_tex_desc);
 
         if (msaa_level > 1) {
-            MTL::TextureDescriptor *msaa_depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
-
-            msaa_depth_tex_desc->setTextureType(MTL::TextureType2DMultisample);
-            msaa_depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
-            msaa_depth_tex_desc->setSampleCount(msaa_level);
-            msaa_depth_tex_desc->setArrayLength(1);
-            msaa_depth_tex_desc->setMipmapLevelCount(1);
-            msaa_depth_tex_desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
+            depth_tex_desc->setTextureType(MTL::TextureType2DMultisample);
+            depth_tex_desc->setSampleCount(msaa_level);
 
             if (fb.msaa_depth_texture != nullptr)
                 fb.msaa_depth_texture->release();
 
-            fb.msaa_depth_texture = mctx.device->newTexture(msaa_depth_tex_desc);
+            fb.msaa_depth_texture = mctx.device->newTexture(depth_tex_desc);
         }
     }
 
