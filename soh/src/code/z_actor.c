@@ -6078,7 +6078,7 @@ s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
     GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, globalCtx);
 
     if (randoGetItem.itemId != RG_NONE) {
-        return ABS(randoGetItem.gi) - 1;
+        return randoGetItem.gid;
     }
 
     return ogDrawId;

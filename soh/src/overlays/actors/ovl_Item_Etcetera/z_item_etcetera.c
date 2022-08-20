@@ -232,7 +232,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
             GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-            if (randoGetItem.itemId != RG_NONE) {
+            if (randoGetItem.itemId != ITEM_NONE) {
                 GetItem_Draw(globalCtx, randoGetItem.gid);
                 return;
             }
