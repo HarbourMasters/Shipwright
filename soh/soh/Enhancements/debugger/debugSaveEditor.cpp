@@ -525,7 +525,7 @@ void DrawInfoTab() {
     ImGui::PopItemWidth();
 }
 
-struct warps {
+ struct warps {
     const char* category;
     const char* locations[20];
     const int32_t indexes[20];
@@ -649,11 +649,12 @@ struct warps warpMap[] = {
       { 0x003B, 0x0072, 0x00B7, 0x0384, 0x03EC, 0x039C, 0x05C8, 0x02FD, 0x0453, 0x0550 } },
     { "Graveyard",
       { "From Kakariko", "From Shadow Temple", "From Gravekeepers Hut", "From Dampes Grave", "From Shield Grave",
-        "From Redead Grave", "From Royal Familys Tomb", "Nocturne of Shadow Warp", "Blue Warp from Bongo Bongo" },
-      { 0x00E4, 0x0205, 0x0355, 0x0359, 0x035D, 0x0361, 0x050B, 0x0568, 0x0580 } },
+        "From Redead Grave", "From Royal Familys Tomb", "Inside Dampe's Hut", "Nocturne of Shadow Warp", "Blue Warp from Bongo Bongo" },
+       { 0x00E4, 0x0205, 0x0355, 0x0359, 0x035D, 0x0361, 0x050B, 0x030D, 0x0568, 0x0580 } },
     { "Graves",
-      { "Dampes Grave Minigame", "Royal Familys Tomb", "Royal Familys Tomb, Suns Song Cutscene" },
-      { 0x044F, 0x002D, 0x0574 } },
+       { "Dampes Grave Minigame", "Royal Familys Tomb", "Royal Familys Tomb, Suns Song Cutscene",
+         "Treasure Chest Grave", "ReDead Grave" },
+       { 0x044F, 0x002D, 0x0574, 0x004B, 0x031C } },
     { "Death Mountain",
       { "From Kakariko Village", "From Goron City", "From Death Mountain Crater", "From Dodongos Cavern",
         "From Great Fairy", "Great Fairy", "Goron Ruby Cutscene" },
@@ -683,8 +684,8 @@ struct warps warpMap[] = {
       { 0x0102, 0x0219, 0x021D, 0x0309, 0x03CC, 0x0560, 0x04E6, 0x0604, 0x060C } },
     { "Lake Hylia Buildings", { "Laboratory", "Fishing Pond Minigame" }, { 0x0043, 0x045F } },
     { "Gerudo Valley",
-      { "From Hyrule Field", "From Gerudo Fortress", "Thrown out of Fortress", "Fortress loading zone" },
-      { 0x0117, 0x022D, 0x01A5, 0x0229 } },
+       { "From Hyrule Field", "From Gerudo Fortress", "From Carpenter's Tent", "Carpenter's Tent/ Running Man Minigame", "Thrown out of Fortress", "Fortress loading zone" },
+       { 0x0117, 0x022D, 0x03D0, 0x03A0, 0x01A5, 0x0229 } },
     { "Gerudo Fortress",
       { "From Gerudo Valley", "From Traning Grounds", "From Haunted Wasteland", "From Thieves Hideout (1)",
         "From Thieves Hideout (2)", "From Thieves Hideout (3)", "From Thieves Hideout (4)", "From Thieves Hideout (5)",
@@ -746,6 +747,79 @@ struct warps warpMap[] = {
     { "Adult Link Misc", { "Ice Cavern", "Gerudo Training Grounds" }, { 0x0088, 0x0008 } }
 };
 
+struct grottos {
+    const int32_t type;
+    const char* names[10];
+    int16_t entranceIndex[10];
+    uint8_t roomIndex[10];
+    _Vec3f pos[10];
+    int8_t respawnData[10];
+};
+
+struct grottos grottoMap[] = { { 0x036D,
+                                    { "Sacred Forest Meadow", "Hyrule Field", "Zora River", "Zora's Domain" },
+                                    { 533, 509, 409, 264 },
+                                    { -256, -256, -6656, -255 },
+                                    { { 46.529, 0.000, 219.245 }, { -4461.467, -300.000, -417.155 }, 
+                                    { 662.552, 570.000, -363.069 },
+                                    { -855.830, 14.000, -476.772 } },
+                                    { 255, 255, 230, 255 } },
+                                { 0x003F,
+                                   { "Kokiri Forest", "Lost Woods", "Hyrule Field: Near Market",
+                                   "Hyrule Field: Open Grotto", "Hyrule Field: SE Boulder", "Kakariko",
+                                   "Death Mountain Trail", "Death Mountain Crater", "Zora River" },
+                                   { 646, 286, 509, 393, 393, 1279, 441, 582, 409 },
+                                   { 11264, 5122, 0, 768, 8704, 10240, 22272, 31233, 10496 },
+                                   { { -510.587, 380.000, -1223.780 },
+                                   { 914.666, 0.0, -916.199 },
+                                   { -1419.706, 0.0, 808.017 },
+                                   { -4025.085, -700.000, 13853.534 },
+                                   { -274.450, -500.000, 12347.488 },
+                                   { 858.826, 80.000, -261.524 },
+                                   { -378.777, 1386.000, -1217.882 }, 
+                                   { 37.962, 1233.000, 1777.115 },
+                                   { 369.031, 570.000, 129.179 } },
+                                 { 44, 20, 0, 23, 34, 40, 87, 122, 41 } },
+                               { 0x0598, { "Hyrule Field near Kakariko" }, { 381 }, { -6912 }, { { 2060.814, 20.000, -171.970 } } },
+                               { 0x059C, { "Hyrule Field" }, { 393 }, { -6656 },
+                                   { { -4983.926, -700.000, 13818.590 } } },
+                               { 0x05A0, { "Kakariko near tree" }, { 219 }, { -6400 }, { { -399.668, 0.000, 404.494 } } },
+                               { 0x05A4,
+                                   { "Death Mountain Crater", "Goron City", "Lon Lon Ranch", "Lake Hylia" },
+                                   { 582, 333, 738, 1540 },
+                                   { -1791, -1277, -1024, -4352 },
+                                   { { -1699.344, 722.000, -467.503 },
+                                   { 1102.208, 580.000, -1188.441 },
+                                   { 1793.786, 0.000, 1497.339 },
+                                   { -3035.978, -1033.000, 6069.333 } },
+                                   {249, 251, 252, 239} },
+                               { 0x05A8,
+                                 { "Hyrule Field near Gerudo Valley under boulder" },
+                                 { 397 },
+                                 { -7168 },
+                                 { { -7871.223, -300.000, 6916.010 } } },
+                               { 0x05AC, { "Under boulder in Gerudo Canyon" }, { 421 }, { -3584 }, 
+                                 { { 277.334, -555.000, 1465.875 } } },
+                               { 0x05B0, { "Lost Woods" }, { 425 }, { -2808 }, { { 668.981, 0.000, -2518.035 } } },
+                               { 0x05B4, { "Sacred Forest Wolfoes Grotto" }, { 252 }, { -4864 }, 
+                                 { { -209.413, 0.000, 1899.728 } } },
+                               { 0x05B8, { "Tree near Hyrule Castle Courtyard" }, { 1274 }, { -2560 }, 
+                                 { { 1000.189, 1571.000, 841.529 } } },
+                               { 0x05BC,
+                                 { "Zora River", "Sacred Forest Meadow", "Gerudo Valley", "Desert Colossus" },
+                                   { 234, 1536, 421, 497 },
+                                   { -5376, -4608, -4096, -768 },
+                                   { { -1639.243, 100.000, -134.499 },
+                                   { 301.944, 480.000, -2303.557 },
+                                   { -1323.050, 15.000, -973.440 },
+                                   { 62.092, -32.000, -1300.619 } },
+                                   { 235, 238, 240, 253 } },
+                               { 0x05C0, { "Tektite Grotto" }, { 397 }, { -7936 }, { { -4940.595, -300.000, 2835.603 } } },
+                               { 0x05C4, { "Deku Theater in Lost Woods" }, { 1242 }, { -3322 }, 
+                                     { { 82.553, -20.000, -1594.632 } } },
+                               { 0x05FC, { "Death Mountain Trail Cow Grotto" }, { 441 }, { -2048 }, { { -681.177, 1946.000, -275.077 } } }
+    };
+
 bool warped = false;
 
 void DrawWarpTab() {
@@ -769,12 +843,6 @@ void DrawWarpTab() {
         gSaveContext.nextTransition = 11;
         warped = true;
     }
-    float temp = CVar_GetFloat("gCustomWarpX", 0.0);
-    ImGui::InputScalar("X Index: ", ImGuiDataType_Float,&temp);
-    temp = CVar_GetFloat("gCustomWarpY", 0.0);
-    ImGui::InputScalar("Y Index: ", ImGuiDataType_Float, &temp);
-    temp = CVar_GetFloat("gCustomWarpZ", 0.0);
-    ImGui::InputScalar("Z Index: ", ImGuiDataType_Float, &temp);
 
 
     if (warped && gGlobalCtx->sceneLoadFlag != 0x14 && gSaveContext.nextTransition == 255) {
@@ -805,7 +873,7 @@ void DrawWarpTab() {
     }
 
     for (int i = 0; i < (sizeof(warpMap) / sizeof(warpMap[0])); i++) {
-        if (i == 0 || i == 2 || i == 6 || i == 8 || i == 14 || i == 16 || i == 20 || i == 23 || i == 26 || i == 28 ||
+        if (i == 0 || i == 2 || i == 5 || i == 6 || i == 8 || i == 14 ||  i == 16 || i == 20 || i == 23 || i == 26 || i == 28 ||
             i == 33 || i == 37) {
             if (i == 33 || i==37) {
                 int32_t max = 0;
@@ -838,7 +906,7 @@ void DrawWarpTab() {
                             CVar_SetS32("gDebugWarp", warpMap[i].indexes[j]);
                         }
                     }
-                    int32_t max = 0;
+                    int32_t max = 1;
                     if (i == 6 || i == 0 || i == 14 || i == 26) {
                         max = 2;
                     } else if (i == 2 || i == 20 || i == 23) {
@@ -866,98 +934,84 @@ void DrawWarpTab() {
         }
     }
     if (ImGui::TreeNode("Grottos")) {
+        RespawnData* respawnData = &gSaveContext.respawn[RESPAWN_MODE_RETURN];
         if (ImGui::TreeNode("Unique Grottos")) {
-            if (ImGui::Button("Fairy Fountain")) {
-                CVar_SetS32("gWarpGrottoCheat", 1);
-            }
-            if (ImGui::Button("Hyrule Field near Kakariko")) {
-                CVar_SetS32("gWarpGrottoCheat", 3);
-            }
-            if (ImGui::Button("Kakariko near tree")) {
-                CVar_SetS32("gWarpGrottoCheat", 5);
-            }
-            if (ImGui::Button("Hyrule Field near Gerudo Valley under boulder")) {
-                CVar_SetS32("gWarpGrottoCheat", 7);
-            }
-            if (ImGui::Button("Under boulder in Gerudo Canyon")) {
-                CVar_SetS32("gWarpGrottoCheat", 8);
-            }
-            if (ImGui::Button("Sacred Forest Wolfoes Grotto")) {
-                CVar_SetS32("gWarpGrottoCheat", 10);
-            }
-            if (ImGui::Button("Tree near Hyrule Castle Courtyard")) {
-                CVar_SetS32("gWarpGrottoCheat", 11);
-            }
-            if (ImGui::Button("Tektite Grotto between Castle Town and Gerudo Valley")) {
-                CVar_SetS32("gWarpGrottoCheat", 13);
-            }
-            if (ImGui::Button("Deku Theater in Lost Woods")) {
-                CVar_SetS32("gWarpGrottoCheat", 14);
-            }
-            if (ImGui::Button("Death Mountain Trail Cow Grotto")) {
-                CVar_SetS32("gWarpGrottoCheat", 15);
+            for (int i = 0; i < 15; i++) {
+                if (i != 0 && i != 1 && i != 3 && i != 5 && i != 8 && i != 11) {
+                    if (ImGui::Button(grottoMap[i].names[0])) {
+                        respawnData->entranceIndex = grottoMap[i].entranceIndex[0];
+                        respawnData->roomIndex = grottoMap[i].roomIndex[0];
+                        respawnData->playerParams = 0x4ff;
+                        respawnData->pos = grottoMap[i].pos[0];
+                        CVar_SetS32("gWarpGrottoCheat", grottoMap[i].type);
+                    }
+                }
             }
             ImGui::TreePop();
         }
         if (ImGui::TreeNode("Treasure Chest Grottos")) {
-            if (ImGui::Button(SohUtils::GetSceneName(85).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 21);
-            }
-            if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 22);
-            }
-            char temp[30];
-            sprintf(temp, SohUtils::GetSceneName(81).c_str());
-            strcat(temp, ": Near Market");
-            if (ImGui::Button(temp)) {
-                CVar_SetS32("gWarpGrottoCheat", 23);
-            }
-            sprintf(temp, SohUtils::GetSceneName(81).c_str());
-            strcat(temp, ": Open Grotto");
-            if (ImGui::Button(temp)) {
-                CVar_SetS32("gWarpGrottoCheat", 24);
-            }
-            sprintf(temp, SohUtils::GetSceneName(81).c_str());
-            strcat(temp, ": SE Boulder");
-            if (ImGui::Button(temp)) {
-                CVar_SetS32("gWarpGrottoCheat", 25);
-            }
-            if (ImGui::Button(SohUtils::GetSceneName(82).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 26);
-            }
-            if (ImGui::Button(SohUtils::GetSceneName(96).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 27);
-            }
-            if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 28);
-            }
-            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 29);
+            for (int i = 0; i < 9; i++) {
+                if (ImGui::Button(grottoMap[1].names[i])) {
+                    gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grottoMap[1].respawnData[i];
+                    respawnData->entranceIndex = grottoMap[1].entranceIndex[i];
+                    respawnData->roomIndex = grottoMap[1].roomIndex[i];
+                    respawnData->playerParams = 0x4ff;
+                    respawnData->pos = grottoMap[1].pos[i];
+                    CVar_SetS32("gWarpGrottoCheat", grottoMap[1].type);
+                }
             }
             ImGui::TreePop();
         }
         if (ImGui::TreeNode("Deku Scrub Grottos")) {
-            if (ImGui::Button(SohUtils::GetSceneName(81).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 4);
+            ImGui::Text("One Deku Scrub");
+            if (ImGui::Button(grottoMap[3].names[0])) {
+                respawnData->entranceIndex = grottoMap[3].entranceIndex[0];
+                respawnData->roomIndex = grottoMap[3].roomIndex[0];
+                respawnData->playerParams = 0x4ff;
+                respawnData->pos = grottoMap[3].pos[0];
+                CVar_SetS32("gWarpGrottoCheat", grottoMap[3].type);
             }
-            if (ImGui::Button(SohUtils::GetSceneName(84).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 31);
-            } else if (ImGui::Button(SohUtils::GetSceneName(86).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 32);
-            } else if (ImGui::Button(SohUtils::GetSceneName(87).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 33);
-            } else if (ImGui::Button(SohUtils::GetSceneName(90).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 34);
-            } else if (ImGui::Button(SohUtils::GetSceneName(91).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 35);
-            } else if (ImGui::Button(SohUtils::GetSceneName(97).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 36);
-            } else if (ImGui::Button(SohUtils::GetSceneName(93).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 37);
-            } else if (ImGui::Button(SohUtils::GetSceneName(99).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 38);
-            } else if (ImGui::Button(SohUtils::GetSceneName(92).c_str())) {
-                CVar_SetS32("gWarpGrottoCheat", 39);
+            ImGui::Text("Two Deku Scrubs");
+            if (ImGui::Button(grottoMap[8].names[0])) {
+                respawnData->entranceIndex = grottoMap[8].entranceIndex[0];
+                respawnData->roomIndex = grottoMap[8].roomIndex[0];
+                respawnData->playerParams = 0x4ff;
+                respawnData->pos = grottoMap[8].pos[0];
+                CVar_SetS32("gWarpGrottoCheat", grottoMap[8].type);
+            }
+            for (int i = 0; i < 4; i++) {
+                if (ImGui::Button(grottoMap[11].names[i])) {
+                    gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grottoMap[11].respawnData[i];
+                    respawnData->entranceIndex = grottoMap[11].entranceIndex[i];
+                    respawnData->roomIndex = grottoMap[11].roomIndex[i];
+                    respawnData->playerParams = 0x4ff;
+                    respawnData->pos = grottoMap[11].pos[i];
+                    CVar_SetS32("gWarpGrottoCheat", grottoMap[11].type);
+                }
+            }
+            ImGui::Text("Three Deku Scrubs");
+            for (int i = 0; i < 4; i++) {
+                if (ImGui::Button(grottoMap[5].names[i])) {
+                    gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grottoMap[5].respawnData[i];
+                    respawnData->entranceIndex = grottoMap[5].entranceIndex[i];
+                    respawnData->roomIndex = grottoMap[5].roomIndex[i];
+                    respawnData->playerParams = 0x4ff;
+                    respawnData->pos = grottoMap[5].pos[i];
+                    CVar_SetS32("gWarpGrottoCheat", grottoMap[5].type);
+                }
+            }
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Fairy Grottos")) {
+            for (int i = 0; i < 4; i++) {
+                if (ImGui::Button(grottoMap[0].names[i])) {
+                    gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grottoMap[0].respawnData[i];
+                    respawnData->entranceIndex = grottoMap[0].entranceIndex[i];
+                    respawnData->roomIndex = grottoMap[0].roomIndex[i];
+                    respawnData->playerParams = 0x4ff;
+                    respawnData->pos = grottoMap[0].pos[i];
+                    CVar_SetS32("gWarpGrottoCheat", grottoMap[0].type);
+                }
             }
             ImGui::TreePop();
         }
@@ -1099,7 +1153,6 @@ void DrawWarpTab() {
     } 
     ImGui::PopItemWidth();
 }
-
 
 void DrawInventoryTab() {
     static bool restrictToValid = true;
