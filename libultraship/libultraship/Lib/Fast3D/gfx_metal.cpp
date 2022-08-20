@@ -168,8 +168,6 @@ static struct {
     int8_t depth_test;
     int8_t depth_mask;
     int8_t zmode_decal;
-
-    bool is_resizing;
 } mctx;
 
 // MARK: - Helpers
@@ -239,14 +237,13 @@ void Metal_NewFrame() {
 }
 
 void Metal_RenderDrawData(ImDrawData* draw_data) {
-    if (mctx.is_resizing) return;
     auto framebuffer = mctx.framebuffers[0];
 
     // Workaround for detecting when transitioning to/from full screen mode.
-//    MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
-//    int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
-//    int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
-//    if (screen_texture->width() != fb_width || screen_texture->height() != fb_height) return;
+    MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
+    int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
+    int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
+    if (screen_texture->width() != fb_width || screen_texture->height() != fb_height) return;
 
     ImGui_ImplMetal_RenderDrawData(draw_data, framebuffer.command_buffer, framebuffer.command_encoder);
 }
@@ -633,9 +630,7 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     autorelease_pool->release();
 }
 
-static void gfx_metal_on_resize(void) {
-//    mctx.is_resizing = true;
-}
+static void gfx_metal_on_resize(void) {}
 
 static void gfx_metal_start_frame(void) {
     mctx.frame_uniforms.frameCount++;
@@ -910,17 +905,11 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
 void gfx_metal_clear_framebuffer(void) {}
 
 void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
-    if (mctx.is_resizing) return;
-
     int source_texture_id = mctx.framebuffers[fb_id_source].texture_id;
     MTL::Texture* source_texture = mctx.textures[source_texture_id].texture;
 
     int target_texture_id = mctx.framebuffers[fb_id_target].texture_id;
     MTL::Texture* target_texture = mctx.textures[target_texture_id].texture;
-
-//     Workaround for detecting when transitioning to/from full screen mode.
-//    if (source_texture->width() != target_texture->width() || source_texture->height() != target_texture->height())
-//        return;
 
     // Copy over the source framebuffer's texture to the target
     auto& source_framebuffer = mctx.framebuffers[fb_id_source];
