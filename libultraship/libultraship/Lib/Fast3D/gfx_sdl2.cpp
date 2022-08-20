@@ -222,9 +222,8 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
         SDL_GL_SetSwapInterval(1);
     } else {
         renderer  = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        if (renderer == NULL)
-        {
-            printf("Error creating renderer: %s\n", SDL_GetError());
+        if (renderer == NULL) {
+            SPDLOG_ERROR("Error creating renderer: {}", SDL_GetError());
             return;
         }
 
