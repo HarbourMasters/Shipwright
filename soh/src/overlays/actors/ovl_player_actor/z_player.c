@@ -4528,7 +4528,7 @@ void func_8083A434(GlobalContext* globalCtx, Player* this) {
     if (this->getItemId == GI_HEART_CONTAINER_2) {
         this->unk_850 = 20;
     }
-    else if (this->getItemId >= 0 || this->getItemEntry.getItemId >= 0) {
+    else if (this->getItemId >= 0 || (this->getItemEntry.objectId != OBJECT_INVALID && this->getItemEntry.getItemId >= 0)) {
         this->unk_850 = 1;
     }
     else {
@@ -6165,7 +6165,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
-            if (this->getItemId != GI_NONE && this->getItemEntry.objectId != OBJECT_INVALID) {
+            if (this->getItemId != GI_NONE || this->getItemEntry.objectId != OBJECT_INVALID) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(-this->getItemId);
