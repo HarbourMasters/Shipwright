@@ -163,6 +163,8 @@ static struct {
     int8_t depth_test;
     int8_t depth_mask;
     int8_t zmode_decal;
+
+    bool is_resizing;
 } mctx;
 
 // MARK: - Helpers
@@ -231,7 +233,6 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height);
 void Metal_NewFrame() {
     int width, height;
     SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
-    set_layer_drawable_size(mctx.layer, width, height);
     gfx_metal_setup_screen_framebuffer(width, height);
 
     MTL::RenderPassDescriptor* current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
@@ -240,6 +241,15 @@ void Metal_NewFrame() {
 
 void Metal_RenderDrawData(ImDrawData* draw_data) {
     auto framebuffer = mctx.framebuffers[0];
+
+    // Workaround for detecting when transitioning to/from full screen mode.
+    MTL::Texture* screen_texture = mctx.textures[framebuffer.texture_id].texture;
+    int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
+    int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
+    mctx.is_resizing = screen_texture->width() != fb_width || screen_texture->height() != fb_height;
+
+    if (mctx.is_resizing) return;
+
     ImGui_ImplMetal_RenderDrawData(draw_data, framebuffer.command_buffer, framebuffer.command_encoder);
 }
 
@@ -566,7 +576,9 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     autorelease_pool->release();
 }
 
-static void gfx_metal_on_resize(void) {}
+static void gfx_metal_on_resize(void) {
+    mctx.is_resizing = true;
+}
 
 static void gfx_metal_start_frame(void) {
     mctx.frame_uniforms.frameCount++;
@@ -720,8 +732,13 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 
     // Screen framebuffer is handled separately on a frame by frame basis
     // see `gfx_metal_setup_screen_framebuffer`.
-    if (fb_id == 0)
+    if (fb_id == 0) {
+        int width, height;
+        SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
+        set_layer_drawable_size(mctx.layer, width, height);
+
         return;
+    }
 
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
@@ -879,19 +896,25 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
 void gfx_metal_clear_framebuffer(void) {}
 
 void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
-    auto& source_framebuffer = mctx.framebuffers[fb_id_source];
-    source_framebuffer.command_encoder->endEncoding();
-    source_framebuffer.has_ended_encoding = true;
-    MTL::BlitCommandEncoder* blit_encoder = source_framebuffer.command_buffer->blitCommandEncoder();
-    blit_encoder->setLabel(NS::String::string("MSAA Copy Encoder", NS::UTF8StringEncoding));
+    if (mctx.is_resizing) return;
 
-    // Copy over the source framebuffer's texture to the target!
     int source_texture_id = mctx.framebuffers[fb_id_source].texture_id;
     MTL::Texture* source_texture = mctx.textures[source_texture_id].texture;
 
     int target_texture_id = mctx.framebuffers[fb_id_target].texture_id;
     MTL::Texture* target_texture = target_texture_id == 0 ? mctx.current_drawable->texture() : mctx.textures[target_texture_id].texture;
 
+    // Workaround for detecting when transitioning to/from full screen mode.
+    if (source_texture->width() != target_texture->width() || source_texture->height() != target_texture->height())
+        return;
+
+    // Copy over the source framebuffer's texture to the target
+    auto& source_framebuffer = mctx.framebuffers[fb_id_source];
+    source_framebuffer.command_encoder->endEncoding();
+    source_framebuffer.has_ended_encoding = true;
+
+    MTL::BlitCommandEncoder* blit_encoder = source_framebuffer.command_buffer->blitCommandEncoder();
+    blit_encoder->setLabel(NS::String::string("MSAA Copy Encoder", NS::UTF8StringEncoding));
     blit_encoder->copyFromTexture(source_texture, target_texture);
     blit_encoder->endEncoding();
 }

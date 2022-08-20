@@ -31,8 +31,14 @@
 #include "../../Cvar.h"
 #include "../../Hooks.h"
 
+#ifndef _LANGUAGE_C
+#define _LANGUAGE_C
+#endif
+#include <PR/ultra64/gbi.h>
+
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
+#include "gfx_pc.h"
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
@@ -127,6 +133,18 @@ static void set_fullscreen(bool on, bool call_callback) {
     if (on_fullscreen_changed_callback != NULL && call_callback) {
         on_fullscreen_changed_callback(on);
     }
+}
+
+static int resizingEventWatcher(void* data, SDL_Event* event) {
+    if (event->type == SDL_WINDOWEVENT &&
+        event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+        SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+        if (win == (SDL_Window*)data) {
+            gfx_get_current_rendering_api()->on_resize();
+            SPDLOG_DEBUG("Resizing");
+        }
+    }
+    return 0;
 }
 
 static uint64_t previous_time;
@@ -232,6 +250,8 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
     SDL_GL_SetSwapInterval(1);
 #endif
 
+    SDL_AddEventWatch(resizingEventWatcher, wnd);
+
     SohImGui::WindowImpl window_impl;
     window_impl.backend = SohImGui::Backend::SDL;
     window_impl.sdl = { wnd, ctx, strcmp(gfx_api_name, "OpenGL") == 0 ? SohImGui::SDLGfxApi::OpenGL : SohImGui::SDLGfxApi::Metal  };
@@ -282,6 +302,7 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 #endif
     Ship::ExecuteHooks<Ship::ExitGame>();
 
+    SDL_DelEventWatch(resizingEventWatcher, wnd);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }
