@@ -1447,7 +1447,7 @@ extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
-extern const int NaviMsgCount;
+extern const u8 NaviMsgCount;
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     u16 naviTextId = rand() % NaviMsgCount;

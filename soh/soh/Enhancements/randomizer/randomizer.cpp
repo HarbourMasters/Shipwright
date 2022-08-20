@@ -3977,12 +3977,12 @@ void CreateScrubMessages() {
 }
 
 CustomMessageMinimal NaviMessages[];
-extern const int NaviMsgCount = 15;
+extern const u8 NaviMsgCount = 15;
 
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    for (int i = 0; i <= (NaviMsgCount - 1); i++) {
+    for (u8 i = 0; i <= (NaviMsgCount - 1); i++) {
         customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
                                               NaviMessages[i].german, NaviMessages[i].french });
