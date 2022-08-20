@@ -585,9 +585,7 @@ void gfx_metal_end_frame(void) {
         if (!framebuffer.has_ended_encoding)
             framebuffer.command_encoder->endEncoding();
 
-        pop_buffer_and_wait_to_requeue(framebuffer.command_buffer);
         framebuffer.command_buffer->commit();
-        framebuffer.command_buffer->waitUntilCompleted();
 
         it++;
     }
@@ -850,10 +848,10 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
 
     if (fb.render_target && fb.command_buffer == nullptr && fb.command_encoder == nullptr) {
         fb.command_buffer = mctx.command_queue->commandBuffer();
-        fb.command_buffer->setLabel(string_with_format("Framebuffer (%d) Command Buffer", fb_id));
+        set_command_buffer_label(fb.command_buffer, fb_id);
 
         fb.command_encoder = fb.command_buffer->renderCommandEncoder(fb.render_pass_descriptor);
-        fb.command_encoder->setLabel(string_with_format("Framebuffer (%d) Render Pass", fb_id));
+        set_command_encoder_label(fb.command_encoder, fb_id);
         fb.command_encoder->setDepthClipMode(MTL::DepthClipModeClamp);
     }
 

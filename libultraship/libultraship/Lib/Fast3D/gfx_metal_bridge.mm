@@ -40,14 +40,14 @@ CA::MetalDrawable* get_layer_next_drawable(void* layer)
   return metalCppDrawable;
 }
 
-// Takes var args and returns NSString with concatenated args.
-NS::String* string_with_format(const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    NSString* string = [NSString stringWithFormat:@(format), args];
-    va_end(args);
-    return (__bridge NS::String*)string;
+void set_command_buffer_label(MTL::CommandBuffer* command_buffer, int framebuffer_index) {
+    id<MTLCommandBuffer> metalCommandBuffer = (__bridge id<MTLCommandBuffer>) command_buffer;
+    metalCommandBuffer.label = [NSString stringWithFormat:@"FrameBuffer (%d) Command Buffer", framebuffer_index];
+}
+
+void set_command_encoder_label(MTL::RenderCommandEncoder* encoder, int framebuffer_index) {
+    id<MTLRenderCommandEncoder> metalEncoder = (__bridge id<MTLRenderCommandEncoder>) encoder;
+    metalEncoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Command Encoder", framebuffer_index];
 }
 
 #endif
