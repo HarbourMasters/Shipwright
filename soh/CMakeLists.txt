@@ -1739,7 +1739,8 @@ if(MSVC)
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
                 /sdl-;
-                /w
+                /w;
+                /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
