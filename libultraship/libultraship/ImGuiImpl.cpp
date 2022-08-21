@@ -600,12 +600,23 @@ namespace SohImGui {
         ImGui::Text("%s", text);
     }
 
-    void EnhancementCheckbox(const char* text, const char* cvarName)
+    void EnhancementCheckbox(const char* text, const char* cvarName, bool disableCheckbox, const char* disableText)
     {
+        if (disableCheckbox) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
         bool val = (bool)CVar_GetS32(cvarName, 0);
-        if (ImGui::Checkbox(text, &val)) {
+        if (ImGui::Checkbox(text, &val, disableCheckbox)) {
             CVar_SetS32(cvarName, val);
             needs_save = true;
+        }
+        if (disableCheckbox) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disableText != "") {
+                ImGui::SetTooltip("%s", disableText);
+            }
+            ImGui::PopItemFlag();
         }
     }
 
@@ -2629,11 +2640,11 @@ namespace SohImGui {
         }
     }
 
-    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom) {
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disableCheckbox, const char* disableText) {
         if (padTop) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
-        EnhancementCheckbox(text, cvarName);
+        EnhancementCheckbox(text, cvarName, disableCheckbox, disableText);
         if (padBottom) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
