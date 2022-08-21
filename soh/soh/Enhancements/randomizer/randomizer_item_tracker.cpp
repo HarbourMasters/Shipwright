@@ -167,7 +167,7 @@ std::vector<uint32_t> buttonMap = {
     BTN_DUP,
     BTN_DDOWN,
     BTN_DLEFT,
-    BTN_DRIGHT,
+    BTN_DRIGHT
 };
 
 ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
