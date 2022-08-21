@@ -257,8 +257,8 @@ public:
     }
 
     void SetPrice(uint16_t price_) {
-      //don't override price if the price was set for shopsanity
-      if (hasShopsanityPrice) {
+      //don't override price if the price was set for shopsanity/scrubsanity
+      if (hasShopsanityPrice || hasScrubsanityPrice) {
         return;
       }
       price = price_;
@@ -269,8 +269,17 @@ public:
       hasShopsanityPrice = true;
     }
 
+    void SetScrubsanityPrice(uint16_t price_) {
+      price = price_;
+      hasScrubsanityPrice = true;
+    }
+
     bool HasShopsanityPrice() const {
       return hasShopsanityPrice;
+    }
+
+    bool HasScrubsanityPrice() const {
+      return hasScrubsanityPrice;
     }
 
     bool IsExcluded() const {
@@ -426,6 +435,7 @@ public:
       isHintable = false;
       price = 0;
       hasShopsanityPrice =  false;
+      hasScrubsanityPrice =  false;
       hidden = false;
     }
 
@@ -451,6 +461,7 @@ private:
     bool isHintable = false;
     uint32_t parentRegion = NONE;
     bool hasShopsanityPrice = false;
+    bool hasScrubsanityPrice = false;
     bool hidden = false;
 };
 
@@ -466,6 +477,8 @@ void LocationTable_Init();
 ItemLocation* Location(uint32_t locKey);
 
 extern std::vector<std::vector<uint32_t>> ShopLocationLists;
+
+extern std::vector<uint32_t> ScrubLocations;
 
 extern std::vector<uint32_t> gossipStoneLocations;
 

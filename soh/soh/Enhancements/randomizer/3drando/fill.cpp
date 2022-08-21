@@ -1039,6 +1039,19 @@ int Fill() {
     //Fast fill for the rest of the pool
     std::vector<uint32_t> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
+
+    // Add prices for scrubsanity
+    if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
+      for (size_t i = 0; i < ScrubLocations.size(); i++) {
+        Location(ScrubLocations[i])->SetScrubsanityPrice(10);
+      }
+    } else if (Scrubsanity.Is(SCRUBSANITY_RANDOM_PRICES)) {
+      for (size_t i = 0; i < ScrubLocations.size(); i++) {
+        int randomPrice = GetRandomScrubPrice();
+        Location(ScrubLocations[i])->SetScrubsanityPrice(randomPrice);
+      }
+    }
+
     GeneratePlaythrough();
     //Successful placement, produced beatable result
     if(playthroughBeatable && !placementFailure) {

@@ -7,6 +7,7 @@
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
 #define NUM_COWS 10
+#define NUM_SCRUBS 35
 
 /**
  *  Initialize new save.
@@ -715,6 +716,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Sets all cows to unmilked when generating a rando save.
         for (u8 i = 0; i < NUM_COWS; i++) {
             gSaveContext.cowsMilked[i] = 0;
+        }
+
+         // Sets all scrubs to not purchased when generating a rando save.
+        for (u8 i = 0; i < NUM_SCRUBS; i++) {
+            gSaveContext.scrubsPurchased[i] = 0;
         }
 
         // Set Cutscene flags to skip them
