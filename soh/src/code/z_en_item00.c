@@ -1477,7 +1477,7 @@ s16 func_8001F404(s16 dropId) {
     }
 
     if (CVar_GetS32("gBombchuDrops", 0) &&
-        dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) {
+        (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
 
