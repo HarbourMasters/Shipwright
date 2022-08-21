@@ -86,7 +86,7 @@ namespace SohImGui {
     void Tooltip(const char* text);
 
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
-    void EnhancementCheckbox(const char* text, const char* cvarName, bool disableCheckbox = false, const char* disableText = "");
+    void EnhancementCheckbox(const char* text, const char* cvarName, bool disabled = false, const char* disabledTooltipText = "", int disabledGraphic = ImGuiCheckboxGraphics_Cross);
     void EnhancementButton(const char* text, const char* cvarName);
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false);
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton = false);
@@ -123,7 +123,7 @@ namespace SohImGui {
     void InsertPadding(float extraVerticalPadding = 0.0f);
     void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
-    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true, bool disableCheckbox = false, const char* disableText = "");
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true, bool disabled = false, const char* disabledTooltipText = "", int disabledGraphic = ImGuiCheckboxGraphics_Cross);
     void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
     std::string GetWindowButtonText(const char* text, bool menuOpen);
 }
