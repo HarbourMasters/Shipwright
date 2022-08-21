@@ -14,6 +14,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+extern GlobalContext* gGlobalCtx;
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);
@@ -165,7 +166,6 @@ std::vector<uint32_t> buttonMap = {
     BTN_DDOWN,
     BTN_DLEFT,
     BTN_DRIGHT,
-    0
 };
 
 ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -503,8 +503,10 @@ void DrawDungeons(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
         ImGui::SameLine(iconSize * i);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + iconSpacing * i);
         ImVec2 p = ImGui::GetCursorScreenPos();
-        ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - 10, p.y - 4));
-        ImGui::Text(dungeons[i].shortName.c_str());
+        std::string dungeonName = dungeons[i].shortName;
+
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - 4));
+        ImGui::Text(dungeonName.c_str());
     }
     ImGui::EndGroup();
     for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
@@ -589,8 +591,9 @@ void DrawItemTracker(bool& open) {
     int comboButton1Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton1", 6)];
     int comboButton2Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton2", 8)];
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
+    bool isPaused = CVar_GetS32("gItemTrackerShowOnlyPaused", 0) == 0 || gGlobalCtx != nullptr && gGlobalCtx->pauseCtx.state > 0;
 
-    if (CVar_GetS32("gItemTrackerDisplayType", 0) == 0 ? CVar_GetS32("gItemTrackerEnabled", 0) : comboButtonsHeld) {
+    if (isPaused && (CVar_GetS32("gItemTrackerDisplayType", 0) == 0 ? CVar_GetS32("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
         if (
             (CVar_GetS32("gItemTrackerInventoryItemsDisplayType", 1) == 1) ||
             (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 1) ||
@@ -701,10 +704,10 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::TableNextColumn();
     LabeledComboBoxRightAligned("Display Mode", "gItemTrackerDisplayType", { "Always", "Combo Button Hold" }, 0);
     if (CVar_GetS32("gItemTrackerDisplayType", 0) > 0) {
-        LabeledComboBoxRightAligned("Combo Button 1", "gItemTrackerComboButton1", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right", "None" }, 6);
-        LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right", "None" }, 8);
-        PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerHotKeyShowOnlyPaused", 0);
+        LabeledComboBoxRightAligned("Combo Button 1", "gItemTrackerComboButton1", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 6);
+        LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 8);
     }
+    PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused", 0);
     PaddedSeparator();
     ImGui::Text("BG Color");
     ImGui::SameLine();
