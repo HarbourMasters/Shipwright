@@ -546,7 +546,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
             }
         }
 
-        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId != GI_NONE) {
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
@@ -587,7 +587,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId != GI_NONE) {
+    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
