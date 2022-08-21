@@ -1430,13 +1430,11 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
 }
 
 /**
- * If the given drop type ID is a bomb, and bombchu drops are enabled, sometimes convert it into a bombchu.
+ * Sometimes convert the given drop ID into a bombchu.
  * Returns the new drop type ID.
  */
 s16 EnItem00_ConvertBombDropToBombchu(s16 dropId) {
-    if (!CVar_GetS32("gBombchuDrops", 0) ||
-        INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE ||
-        (dropId != ITEM00_BOMBS_A && dropId != ITEM00_BOMBS_B && dropId != ITEM00_BOMBS_SPECIAL)) {
+    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
         return dropId;
     }
 
@@ -1478,7 +1476,10 @@ s16 func_8001F404(s16 dropId) {
         }
     }
 
-    dropId = EnItem00_ConvertBombDropToBombchu(dropId);
+    if (CVar_GetS32("gBombchuDrops", 0) &&
+        dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) {
+        dropId = EnItem00_ConvertBombDropToBombchu(dropId);
+    }
 
     // This is convoluted but it seems like it must be a single condition to match
     // clang-format off
