@@ -9,6 +9,10 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+int32_t warpTime = 0;
+bool warped = false;
+Vec3f pos;
+int16_t yaw;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
