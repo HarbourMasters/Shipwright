@@ -9,6 +9,9 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+bool warped = false;
+Vec3f pos;
+int16_t yaw;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
@@ -447,7 +450,7 @@ void GameState_Update(GameState* gameState) {
         CVar_SetS32("gResetRate", 0);
         CVar_SetS32("gTimeRate", 0);
     }
-    
+   
     // Modifiers to set the daytime to a given time.
     //Note: The logic for respawing link can be replaced with the console ReloadHandler command once
     // it is merged with main.
@@ -457,6 +460,9 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.dayTime = 0x4000;
             gSaveContext.skyboxTime = gSaveContext.dayTime;
             if (CVar_GetS32("gCurrRate", 0) == 0) {
+                pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+                yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+                warped = true;
                 gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
                 gGlobalCtx->sceneLoadFlag = 0x14;
                 gGlobalCtx->fadeTransition = 11;
@@ -469,6 +475,9 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.dayTime = 0x8000;
             gSaveContext.skyboxTime = gSaveContext.dayTime;
             if (CVar_GetS32("gCurrRate", 0) == 0) {
+                pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+                yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+                warped = true;
                 gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
                 gGlobalCtx->sceneLoadFlag = 0x14;
                 gGlobalCtx->fadeTransition = 11;
@@ -481,6 +490,9 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.dayTime = 0xC001;
             gSaveContext.skyboxTime = gSaveContext.dayTime;
             if (CVar_GetS32("gCurrRate", 0) == 0) {
+                pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+                yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+                warped = true;
                 gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
                 gGlobalCtx->sceneLoadFlag = 0x14;
                 gGlobalCtx->fadeTransition = 11;
@@ -493,11 +505,22 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.dayTime = 0;
             gSaveContext.skyboxTime = gSaveContext.dayTime;
             if (CVar_GetS32("gCurrRate", 0) == 0) {
+                pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+                yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+                warped = true;
                 gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
                 gGlobalCtx->sceneLoadFlag = 0x14;
                 gGlobalCtx->fadeTransition = 11;
                 gSaveContext.nextTransition = 11;
             }
+        }
+    }
+    
+    if (gGlobalCtx) {
+        if (warped && gGlobalCtx->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+            GET_PLAYER(gGlobalCtx)->actor.shape.rot.y = yaw;
+            GET_PLAYER(gGlobalCtx)->actor.world.pos = pos;
+            warped = false;
         }
     }
    
