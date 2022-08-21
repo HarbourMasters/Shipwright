@@ -7,6 +7,8 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 
+#define NUM_NAVI_MESSAGES 15
+
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
