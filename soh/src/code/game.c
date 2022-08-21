@@ -431,20 +431,26 @@ void GameState_Update(GameState* gameState) {
     if (CVar_GetS32("gSwitchAge", 0) != 0) {
         CVar_SetS32("gSwitchAge", 0);
         if (gGlobalCtx) {
+            pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+            yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+            gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
+            warped = true;
             if (gGlobalCtx->linkAgeOnLoad == 1) {
                 gGlobalCtx->linkAgeOnLoad = 0;
-                //Note: All logic below can be replaced with console ReloadHandler once it's merged with main.
-                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
-                gGlobalCtx->sceneLoadFlag = 0x14;
-                gGlobalCtx->fadeTransition = 11;
-                gSaveContext.nextTransition = 11;
             } else {
                 gGlobalCtx->linkAgeOnLoad = 1;
-                gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
-                gGlobalCtx->sceneLoadFlag = 0x14;
-                gGlobalCtx->fadeTransition = 11;
-                gSaveContext.nextTransition = 11;
             }
+        }
+    }
+
+    if (gGlobalCtx) {
+        if (warped && gGlobalCtx->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+            GET_PLAYER(gGlobalCtx)->actor.shape.rot.y = yaw;
+            GET_PLAYER(gGlobalCtx)->actor.world.pos = pos;
+            warped = false;
         }
     }
 
