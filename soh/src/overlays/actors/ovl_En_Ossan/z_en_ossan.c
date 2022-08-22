@@ -1330,7 +1330,17 @@ void EnOssan_GiveItemWithFanfare(GlobalContext* globalCtx, EnOssan* this) {
     Player* player = GET_PLAYER(globalCtx);
 
     osSyncPrintf("\n" VT_FGCOL(YELLOW) "初めて手にいれた！！" VT_RST "\n\n");
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->shelfSlots[this->cursorIndex]->actor.params);
+        if (shopItemIdentity.shopItemId != -1) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
     globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     globalCtx->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~0x20000000;

@@ -388,7 +388,18 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
         return;
     }
 
-    this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, shopItemEntries[params].objID);
+    if (!gSaveContext.n64ddFlag) {
+        this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, shopItemEntries[params].objID);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+
+        if (Object_IsLoaded(&globalCtx->objectCtx, getItemEntry.objectId)) {
+            this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, getItemEntry.objectId);
+        } else {
+            this->objBankIndex = Object_Spawn(&globalCtx->objectCtx, getItemEntry.objectId);
+        }
+    }
 
     if (this->objBankIndex < 0) {
         Actor_Kill(&this->actor);
@@ -715,6 +726,24 @@ s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
+s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+    // TOOD: Call some some sort of Randomizer equivalent Item_CheckObtainability method to determine if they can buy
+
+    if (gSaveContext.rupees < shopItemIdentity.itemPrice) {
+        return CANBUY_RESULT_NEED_RUPEES;
+    }
+
+    // TOOD: We should put a sold out sign instead of preventing them from buying again
+    // TODO: Need to allow repeated buys for some items
+    if (gSaveContext.shopItemsPurchased[shopItemIdentity.shopItemId] == 1) {
+        return CANBUY_RESULT_CANT_GET_NOW;
+    }
+
+    return CANBUY_RESULT_SUCCESS;
+}
+
 void EnGirlA_ItemGive_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
     Inventory_ChangeAmmo(ITEM_BOW, this->itemCount);
     Rupees_ChangeBy(-this->basePrice);
@@ -842,6 +871,17 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
+void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+
+    if (getItemEntry.modIndex == MOD_NONE) {
+        Item_Give(globalCtx, getItemEntry.itemId);
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        Randomizer_Item_Give(globalCtx, getItemEntry);
+    }
+}
+
 void EnGirlA_BuyEvent_ShieldDiscount(GlobalContext* globalCtx, EnGirlA* this) {
     if (this->actor.params == SI_HYLIAN_SHIELD) {
         if (gSaveContext.infTable[7] & 0x40) {
@@ -887,6 +927,12 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
             gSaveContext.itemGetInf[0] |= 0x20;
             break;
     }
+    Rupees_ChangeBy(-this->basePrice);
+}
+
+void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    gSaveContext.shopItemsPurchased[shopItemIdentity.shopItemId] = 1;
     Rupees_ChangeBy(-this->basePrice);
 }
 
@@ -937,6 +983,14 @@ void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
     } else {
         this->actor.textId = tmp->itemDescTextId;
     }
+
+    if (gSaveContext.n64ddFlag) {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        if (shopItemIdentity.shopItemId != -1) {
+            this->actor.textId = 0x9100 + shopItemIdentity.shopItemId;
+        }
+    }
+
     this->isInvisible = false;
     this->actor.draw = EnGirlA_Draw;
 }
@@ -955,6 +1009,20 @@ void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this) {
     if (EnGirlA_TryChangeShopItem(this)) {
         EnGirlA_InitItem(this, globalCtx);
         itemEntry = &shopItemEntries[this->actor.params];
+
+        if (gSaveContext.n64ddFlag) {
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+            if (shopItemIdentity.shopItemId != -1) {
+                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+                itemEntry->objID = getItemEntry.objectId;
+                itemEntry->giDrawId = getItemEntry.gid;
+                itemEntry->getItemId = getItemEntry.getItemId;
+                itemEntry->count = 1;
+                itemEntry->price = shopItemIdentity.itemPrice;
+                itemEntry->itemDescTextId = 0x9100 + shopItemIdentity.shopItemId;
+            }
+        }
+
         this->actor.textId = itemEntry->itemDescTextId;
     } else {
         this->isInvisible = false;
@@ -980,6 +1048,23 @@ s32 EnGirlA_TrySetMaskItemDescription(EnGirlA* this, GlobalContext* globalCtx) {
 void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
     s16 params = this->actor.params;
     ShopItemEntry* itemEntry = &shopItemEntries[params];
+
+    if (gSaveContext.n64ddFlag) {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        if (shopItemIdentity.shopItemId != -1) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+            itemEntry->objID = getItemEntry.objectId;
+            itemEntry->giDrawId = getItemEntry.gid;
+            itemEntry->getItemId = getItemEntry.getItemId;
+            itemEntry->count = 1;
+            itemEntry->price = shopItemIdentity.itemPrice;
+            itemEntry->itemDescTextId = 0x9100 + shopItemIdentity.shopItemId;
+            itemEntry->itemBuyPromptTextId = 0x9100 + shopItemIdentity.shopItemId + 48; // Magic number, 48 is the number of shop items in the game
+            itemEntry->canBuyFunc = EnGirlA_CanBuy_Randomizer;
+            itemEntry->itemGiveFunc = EnGirlA_ItemGive_Randomizer;
+            itemEntry->buyEventFunc = EnGirlA_BuyEvent_Randomizer;
+        }
+    }
 
     if (Object_IsLoaded(&globalCtx->objectCtx, this->objBankIndex)) {
         this->actor.flags &= ~ACTOR_FLAG_4;

@@ -434,6 +434,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Randomizer_LoadSettings(fileLoc);
         Randomizer_LoadHintLocations(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
+        Randomizer_LoadShopMessages(fileLoc);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1742,6 +1743,7 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
+    Randomizer_LoadShopMessages("");
     Randomizer_LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;

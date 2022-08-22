@@ -678,7 +678,7 @@ static void WriteAllLocations(int language) {
         std::string placedItemName = language == 2 ? location->GetPlacedItemName().french : location->GetPlacedItemName().english;
 
         // Eventually check for other things here like fake name
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice() || location->GetPrice() > 0) {
           jsonData["locations"][location->GetName()]["item"] = placedItemName;
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();;
         } else {

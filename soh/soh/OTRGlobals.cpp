@@ -1552,6 +1552,10 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadShopMessages(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadShopMessages(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
@@ -1572,8 +1576,16 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
     return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
 }
 
+extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, actorParams);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetShopMessage(s16 shopItemId) {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::shopMessageTableID, shopItemId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
@@ -1699,6 +1711,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId >= 0x9000 && textId <= 0x905F) {
             messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
+        } else if (textId >= 0x9100 && textId <= 0x9160) {
+            messageEntry = Randomizer_GetShopMessage((textId & ((1 << 8) - 1)));
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

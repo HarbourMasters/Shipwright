@@ -988,6 +988,7 @@ typedef enum {
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
+    RSK_SHOPSANITY,
     RSK_SHUFFLE_SCRUBS,
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
@@ -1025,3 +1026,11 @@ typedef struct ScrubIdentity {
     int32_t itemPrice;
     bool isShuffled;
 } ScrubIdentity;
+
+typedef struct ShopItemIdentity {
+    int32_t shopItemId;
+    RandomizerCheck randomizerCheck;
+    GetItemID getItemId;
+    int32_t itemPrice;
+    bool isShuffled;
+} ShopItemIdentity;

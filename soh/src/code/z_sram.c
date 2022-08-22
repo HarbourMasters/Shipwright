@@ -8,6 +8,7 @@
 #define NUM_TRIALS 6
 #define NUM_COWS 10
 #define NUM_SCRUBS 35
+#define NUM_SHOP_ITEMS 35
 
 /**
  *  Initialize new save.
@@ -721,6 +722,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
          // Sets all scrubs to not purchased when generating a rando save.
         for (u8 i = 0; i < NUM_SCRUBS; i++) {
             gSaveContext.scrubsPurchased[i] = 0;
+        }
+
+        // Sets all shop items to not purchased when generating a rando save.
+        for (u8 i = 0; i < NUM_SHOP_ITEMS; i++) {
+            gSaveContext.shopItemsPurchased[i] = 0;
         }
 
         // Set Cutscene flags to skip them

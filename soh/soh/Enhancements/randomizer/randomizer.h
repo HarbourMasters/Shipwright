@@ -31,6 +31,7 @@ class Randomizer {
 
     static const std::string getItemMessageTableID;
     static const std::string hintMessageTableID;
+    static const std::string shopMessageTableID;
     static const std::string scrubMessageTableID;
 
     static Sprite* GetSeedTexture(uint8_t index);
@@ -39,6 +40,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
+    void LoadShopMessages(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams);
@@ -47,6 +49,7 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+    ShopItemIdentity IdentifyShopItem(s32 sceneNum, s32 actorParams);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();

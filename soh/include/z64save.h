@@ -186,6 +186,7 @@ typedef struct {
     u8 trialsDone[6];
     u8 cowsMilked[10];
     u8 scrubsPurchased[35];
+    u8 shopItemsPurchased[48];
     u8 temporaryWeapon;
     u16 adultTradeItems;
 } SaveContext; // size = 0x1428

@@ -772,6 +772,10 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
     });
+
+    SaveManager::Instance->LoadArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.shopItemsPurchased[i]);
+    });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -940,6 +944,10 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
     });
+
+    SaveManager::Instance->LoadArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.shopItemsPurchased[i]);
+    });
 }
 
 void SaveManager::SaveBase() {
@@ -1103,6 +1111,10 @@ void SaveManager::SaveBase() {
 
     SaveManager::Instance->SaveArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.scrubsPurchased[i]);
+    });
+
+    SaveManager::Instance->SaveArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.shopItemsPurchased[i]);
     });
 }
 
