@@ -44,7 +44,7 @@
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
 #include "../../ImGuiImpl.h"
-#include "../../GlobalCtx2.h"
+#include "../../Window.h"
 #include "gfx_pc.h"
 
 using namespace std;

@@ -15,6 +15,7 @@
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
 #endif
+#include <PR/ultra64/types.h>
 #include <PR/ultra64/gbi.h>
 #include <PR/ultra64/gs2dex.h>
 #include <string>
@@ -35,6 +36,7 @@
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
 #include "../../Utils.h"
+
 
 // OTRTODO: fix header files for these
 extern "C" {
@@ -2171,7 +2173,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t mtxAddr = cmd->words.w1;
 
                 // OTRTODO: Temp way of dealing with gMtxClear. Need something more elegant in the future...
-                uint32_t gameVersion = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetGameVersion();
+                uint32_t gameVersion = Ship::Window::GetInstance()->GetResourceManager()->GetGameVersion();
                 if (gameVersion == OOT_PAL_GC) {
                     if (mtxAddr == SEG_ADDR(0, 0x0FBC20)) {
                         mtxAddr = clearMtx;

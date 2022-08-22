@@ -73,12 +73,7 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-
-	#ifdef __SWITCH__
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0);
-	#else
 		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-	#endif
 
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
@@ -101,7 +96,7 @@ namespace Ship {
 #define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), virtualSlot, __VA_ARGS__)
 
     void ControlDeck::LoadControllerSettings() {
-        std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+        std::shared_ptr<Mercury> Config = Window::GetInstance()->GetConfig();
 
         for (auto const& val : Config->rjson["Controllers"]["Deck"].items()) {
             int32_t slot = std::stoi(val.key().substr(5));
@@ -187,7 +182,7 @@ namespace Ship {
     }
 
     void ControlDeck::SaveControllerSettings() {
-        std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+        std::shared_ptr<Mercury> Config = Window::GetInstance()->GetConfig();
 
         for (size_t i = 0; i < virtualDevices.size(); i++) {
             std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];

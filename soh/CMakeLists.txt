@@ -1983,14 +1983,6 @@ elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()
 
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-install(CODE "
-    include(InstallRequiredSystemLibraries)
-    include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
-    ")
-endif()
-
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     if (NOT TARGET pathconf)
         add_library(pathconf OBJECT platform/pathconf.c)

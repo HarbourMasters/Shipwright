@@ -1,6 +1,5 @@
 #ifdef __WIIU__
 #include "WiiUGamepad.h"
-#include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
 
 #include "WiiUImpl.h"
@@ -278,6 +277,14 @@ namespace Ship {
             auto scale = sqrt(edgex * edgex + edgey * edgey) / 85.0;
             x *= scale;
             y *= scale;
+        }
+
+        if (isRightStick) {
+            getRightStickX(virtualSlot) = x;
+            getRightStickY(virtualSlot) = y;
+        } else {
+            getLeftStickX(virtualSlot) = x;
+            getLeftStickY(virtualSlot) = y;
         }
     }
 

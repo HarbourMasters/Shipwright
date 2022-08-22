@@ -133,8 +133,6 @@ source_group("Source Files\\CustomImpl\\Utils" FILES ${Source_Files__CustomImpl_
 set(Source_Files__Globals
     "Cvar.cpp"
     "Cvar.h"
-    "GlobalCtx2.cpp"
-    "GlobalCtx2.h"
     "LUSMacros.h"
     "Window.cpp"
     "Window.h"

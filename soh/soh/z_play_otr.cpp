@@ -68,7 +68,7 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(globalCtx, globalCtx->sceneSegment);
     Gameplay_InitEnvironment(globalCtx, globalCtx->skyboxId);
-    /* auto data = static_cast<Ship::Vertex*>(Ship::GlobalCtx2::GetInstance()
+    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
