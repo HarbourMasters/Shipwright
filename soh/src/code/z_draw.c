@@ -769,14 +769,37 @@ void GetItem_DrawFish(GlobalContext* globalCtx, s16 drawId) {
 
 void GetItem_DrawOpa0(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;
+    s16 color_slot;
+    // if (drawId <= firstsmallkeyid && drawId >= lastsmallkeyid && notThievesHideout) {
+    color_slot = 7; // Whatever matches the drawId of the right key
+                        // See what GetItem_DrawGenericMusicNote() does
+    // } else {
+    // color_slot = -1;
+    // }
+    s16* colors[9][3] = {
+        { 255, 255, 255 }, // Generic
+        { 4, 195, 46 },    // Forest Temple
+        { 237, 95, 95 },   // Fire Temple
+        { 85, 180, 223 },  // Water Temple
+        { 222, 158, 47 },  // Spirit Temple
+        { 126, 16, 177 },  // Shadow Temple
+        { 221, 212, 60 },  // Gerudo Training Grounds
+        { 227, 110, 255 },  // Bottom of the Well
+        { 100, 100, 100 }  // Ganon's Castle
+    };
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    // if (color_slot >= 0) {
+    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gsSPGrayscale(POLY_OPA_DISP++, true);
+    // }
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
-
+    // if (color_slot >= 0) {
+    gsSPGrayscale(POLY_OPA_DISP++, false);
+    // }
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
