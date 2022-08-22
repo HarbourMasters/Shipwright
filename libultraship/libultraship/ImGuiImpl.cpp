@@ -41,8 +41,10 @@
 
 #if __APPLE__
 #include <SDL_hints.h>
+#include <SDL_video.h>
 #else
 #include <SDL2/SDL_hints.h>
+#include <SDL2/SDL_video.h>
 #endif
 
 #ifdef __SWITCH__
@@ -336,6 +338,8 @@ namespace SohImGui {
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
+            return true;
+        case Backend::SDL:
             return true;
         default:
             return false;
@@ -2398,8 +2402,18 @@ namespace SohImGui {
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
         if (UseViewports()) {
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
+            if (impl.backend == Backend::SDL) {
+                SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+                SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+
+                SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+            } else {
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+            }
         }
     }
 
