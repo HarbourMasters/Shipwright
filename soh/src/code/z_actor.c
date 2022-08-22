@@ -1955,6 +1955,15 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This function does not require an actor for giving
+ * the player an item, instead setting the player as their own interactRangeActor and getItemDirection.
+ * 
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \return true if the player can receive an item, false if not.
+ */
 s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -1975,6 +1984,22 @@ s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntr
     return false;
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This uses data from the actor link is receiving
+ * the item from to set the player's interactRangeActor and getItemDirection. It also checks
+ * a range from which Link must be from said actor in order to receive the item.
+ *
+ * \param actor the actor link is receiving an item from. Will usually be a chest but can also
+ * be an npc.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \param xzRange the distance on the x and z axes that the player can be from the target
+ * actor to receive the item.
+ * \param yRange the distance on the y axis that the player can be from the target actor
+ * to receive the item.
+ * \return true if the player can receive an item, false if not.
+ */
 s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -2001,6 +2026,15 @@ s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry 
     return false;
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This is a wrapper function around `GiveItemEntryFromActor`
+ * that supplies a fixed xzRange of 50.0f and a fixed yRange of 10.0f.
+ *
+ * \param actor the target actor that link is receiving an item from.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ */
 void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     GiveItemEntryFromActor(actor, globalCtx, getItemEntry, 50.0f, 10.0f);
 }
