@@ -1012,7 +1012,7 @@ void func_80093C80(GlobalContext* globalCtx) {
 
     func_80093D18(gfxCtx);
 
-    if (globalCtx->roomCtx.curRoom.unk_03 == 3) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_3) {
         OPEN_DISPS(gfxCtx);
 
         gDPSetColorDither(POLY_OPA_DISP++, G_CD_DISABLE);

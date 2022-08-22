@@ -3,8 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
-#include <locale>
-#include "GlobalCtx2.h"
+#include <fstream>
+
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -29,6 +29,7 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
@@ -41,6 +42,9 @@
 #include "Hooks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
+#include "Lib/Fast3D/gfx_pc.h"
+#include "Lib/Fast3D/gfx_rendering_api.h"
+
 #ifdef __APPLE__
 #include <SDL_scancode.h>
 #else
@@ -49,6 +53,8 @@
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
 #endif
 
 #include <Audio.h>
@@ -60,10 +66,9 @@ SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
+    context = Ship::Window::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
-    context->GetWindow()->Init();
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -171,6 +176,8 @@ extern "C" void OTRExtScanner() {
 extern "C" void InitOTR() {
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
+#elif defined(__WIIU__)
+    Ship::WiiU::Init();
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -187,6 +194,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
+    GameControlEditor::Init();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -231,13 +239,14 @@ extern "C" uint64_t GetPerfCounter() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
-    OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
+    OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
 }
 
 extern "C" void Graph_StartFrame() {
+#ifndef __WIIU__
     // Why -1?
-    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+    int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
+    OTRGlobals::Instance->context->SetLastScancode(-1);
 
     switch (dwScancode - 1) {
         case SDL_SCANCODE_F5: {
@@ -292,7 +301,15 @@ extern "C" void Graph_StartFrame() {
             break;
         }
     }
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+#endif
+    OTRGlobals::Instance->context->StartFrame();
+}
+
+void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+    for (const auto& m : mtx_replacements) {
+        gfx_run(Commands, m);
+        gfx_end_frame();
+    }
 }
 
 // C->C++ Bridge
@@ -333,12 +350,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+    OTRGlobals::Instance->context->SetTargetFps(fps);
 
     int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
+    RunCommands(commands, mtx_replacements);
 
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
@@ -351,29 +368,19 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
-   /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
-        OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;*/
+   /* if (OTRGlobals::Instance->context->lastScancode != -1)
+        OTRGlobals::Instance->context->lastScancode = -1;*/
 
 }
 
 float divisor_num = 0.0f;
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
-    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
+    OTRGlobals::Instance->context->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
-    return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
-}
-
-extern "C" int32_t OTRGetLastScancode()
-{
-    return OTRGlobals::Instance->context->GetWindow()->lastScancode;
-}
-
-extern "C" void OTRResetScancode()
-{
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+    return OTRGlobals::Instance->context->GetPixelDepth(x, y);
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion()
@@ -1185,7 +1192,7 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1316,15 +1323,15 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetCurrentWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
@@ -1356,33 +1363,33 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" bool AudioPlayer_Init(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Init();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Init();
     }
 
     return false;
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Buffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Buffered();
     }
 }
 
 extern "C" int AudioPlayer_GetDesiredBuffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->GetDesiredBuffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->GetDesiredBuffered();
     }
 }
 
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        OTRGlobals::Instance->context->GetAudioPlayer()->Play(buf, len);
     }
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);

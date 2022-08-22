@@ -1,7 +1,3 @@
-#ifdef _MSC_VER
-#define NOGDI
-#endif
-
 #include "debugconsole.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "../libultraship/Utils.h"
@@ -317,6 +313,69 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gGlobalCtx->sceneLoadFlag = 0x14;
     gGlobalCtx->fadeTransition = 11;
     gSaveContext.nextTransition = 11;
+}
+
+static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx != nullptr) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
+            gSaveContext.respawnFlag = 1;
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
+            gGlobalCtx->fadeTransition = 2;
+            gSaveContext.nextTransition = 2;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx != nullptr) {
+        gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+        gGlobalCtx->sceneLoadFlag = 0x14;
+        gGlobalCtx->fadeTransition = 11;
+        gSaveContext.nextTransition = 11;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx != nullptr) {
+        if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
+                gGlobalCtx->sceneLoadFlag = 0x14;
+                gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
+                gGlobalCtx->fadeTransition = 5;
+        } else {
+            SohImGui::console->SendErrorMessage("Farore's wind not set!");
+        }
+    }
+    else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    
+    return CMD_SUCCESS;
+}
+
+static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (gGlobalCtx != nullptr) {
+        SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, FileChooseContext);
+        gGlobalCtx->state.running = 0;
+    } else {
+        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    return CMD_SUCCESS;
+}
+
+static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    gGlobalCtx->state.running = 0;
+    return CMD_SUCCESS;
 }
 
 static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -799,13 +858,23 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
 void DebugConsole_Init(void) {
     // Console
+    CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
     CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
+    CMD_REGISTER("quit", { QuitHandler, "Quits the game." });
 
     // Save States
     CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
     CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
     CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
         { "Slot number", Ship::ArgumentType::NUMBER, }
+    }});
+
+    // Map & Location
+    CMD_REGISTER("void", { VoidHandler, "Voids out of the current map." });
+    CMD_REGISTER("reload", { ReloadHandler, "Reloads the current map." });
+    CMD_REGISTER("fw", { FWHandler,"Spawns the player where Farore's Wind is set." });
+    CMD_REGISTER("entrance", { EntranceHandler, "Sends player to the entered entrance (hex)", {
+        { "entrance", Ship::ArgumentType::NUMBER }
     }});
 
     // Gameplay
@@ -820,20 +889,14 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", {
         { "Item ID", Ship::ArgumentType::NUMBER }
     }});
-
-    CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", {
-        { "health", Ship::ArgumentType::NUMBER }
-    }});
-
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", {
-        { "actor_id", Ship::ArgumentType::NUMBER },
-        { "data", Ship::ArgumentType::NUMBER },
-        { "x", Ship::ArgumentType::PLAYER_POS, true },
-        { "y", Ship::ArgumentType::PLAYER_POS, true },
-        { "z", Ship::ArgumentType::PLAYER_POS, true },
-        { "rx", Ship::ArgumentType::PLAYER_ROT, true },
-        { "ry", Ship::ArgumentType::PLAYER_ROT, true },
-        { "rz", Ship::ArgumentType::PLAYER_ROT, true }
+    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
+                              { "data", Ship::ArgumentType::NUMBER },
+                              { "x", Ship::ArgumentType::PLAYER_POS, true },
+                              { "y", Ship::ArgumentType::PLAYER_POS, true },
+                              { "z", Ship::ArgumentType::PLAYER_POS, true },
+                              { "rx", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "ry", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "rz", Ship::ArgumentType::PLAYER_ROT, true }
     }});
 
     CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {
@@ -864,10 +927,6 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("item", { ItemHandler,  "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {
         { "slot", Ship::ArgumentType::NUMBER },
         { "item id", Ship::ArgumentType::NUMBER }
-    }});
-
-    CMD_REGISTER("entrance", { EntranceHandler, "Sends player to the entered entrance (hex)", {
-        { "entrance", Ship::ArgumentType::NUMBER }
     }});
 
     CMD_REGISTER("invisible", { InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
@@ -953,8 +1012,6 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("electrocute", { ElectrocuteHandler, "Electrocutes Link." });
 
     CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
-
-    CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Activates Cucco Storm." });
 
     CVar_Load();
 }

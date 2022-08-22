@@ -187,7 +187,7 @@ static u8 sJumpOrder[] = {
 };
 
 static u8 sOcarinaNotes[] = {
-    OCARINA_NOTE_A, OCARINA_NOTE_C_DOWN, OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_LEFT, OCARINA_NOTE_C_UP,
+    OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D5,
 };
 
 void EnFr_OrientUnderwater(EnFr* this) {
@@ -680,19 +680,19 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, GlobalContext* globalCtx) {
             break;
         case OCARINA_MODE_01:                           // Ocarina note played, but no song played
             switch (globalCtx->msgCtx.lastOcaNoteIdx) { // Jumping frogs in open ocarina based on ocarina note played
-                case OCARINA_NOTE_A:
+                case OCARINA_NOTE_D4:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_C_DOWN:
+                case OCARINA_NOTE_F4:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_C_RIGHT:
+                case OCARINA_NOTE_A4:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_C_LEFT:
+                case OCARINA_NOTE_B4:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_C_UP:
+                case OCARINA_NOTE_D5:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
                     break;
             }
@@ -871,19 +871,19 @@ void EnFr_ContinueFrogSong(EnFr* this, GlobalContext* globalCtx) {
         if (globalCtx->msgCtx.msgMode == MSGMODE_FROGS_WAITING) {
             globalCtx->msgCtx.msgMode = MSGMODE_FROGS_START;
             switch (globalCtx->msgCtx.lastOcaNoteIdx) {
-                case OCARINA_NOTE_A:
+                case OCARINA_NOTE_D4:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_C_DOWN:
+                case OCARINA_NOTE_F4:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_C_RIGHT:
+                case OCARINA_NOTE_A4:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_C_LEFT:
+                case OCARINA_NOTE_B4:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_C_UP:
+                case OCARINA_NOTE_D5:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
             }
             if (EnFr_IsFrogSongComplete(this, globalCtx)) {

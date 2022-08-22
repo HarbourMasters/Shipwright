@@ -153,7 +153,7 @@ typedef enum {
 } SkullKidAction;
 
 typedef struct {
-    u8 unk0;
+    u8 unk_0;
     EnSkj* skullkid;
 } EnSkjUnkStruct;
 
@@ -371,7 +371,7 @@ void EnSkj_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Actor_ProcessInitChain(thisx, sInitChain);
     switch (type) {
         case 5: // Invisible on the small stump (sarias song))
-            sSmallStumpSkullKid.unk0 = 1;
+            sSmallStumpSkullKid.unk_0 = 1;
             sSmallStumpSkullKid.skullkid = (EnSkj*)thisx;
             this->actor.destroy = NULL;
             this->actor.draw = NULL;
@@ -382,7 +382,7 @@ void EnSkj_Init(Actor* thisx, GlobalContext* globalCtx2) {
             break;
 
         case 6: // Invisible on the short stump (ocarina game)
-            sSmallStumpSkullKid.unk0 = 1;
+            sSmallStumpSkullKid.unk_0 = 1;
             sSmallStumpSkullKid.skullkid = (EnSkj*)thisx;
             this->actor.destroy = NULL;
             this->actor.draw = NULL;
@@ -421,7 +421,7 @@ void EnSkj_Init(Actor* thisx, GlobalContext* globalCtx2) {
             if ((type > 0) && (type < 3)) {
                 this->actor.targetMode = 7;
                 this->posCopy = this->actor.world.pos;
-                sOcarinaMinigameSkullKids[type - 1].unk0 = 1;
+                sOcarinaMinigameSkullKids[type - 1].unk_0 = 1;
                 sOcarinaMinigameSkullKids[type - 1].skullkid = this;
                 this->minigameState = 0;
                 this->alpha = 0;
@@ -715,7 +715,7 @@ void EnSkj_SariasSongKidIdle(EnSkj* this, GlobalContext* globalCtx) {
         if (!(gSaveContext.itemGetInf[1] & 0x40) && (this->actor.xzDistToPlayer < 200.0f)) {
             this->backflipFlag = 1;
             EnSkj_Backflip(this);
-        } else if (sSmallStumpSkullKid.unk0 != 0) {
+        } else if (sSmallStumpSkullKid.unk_0 != 0) {
             Player* player = GET_PLAYER(globalCtx);
             if (EnSkj_RangeCheck(player, sSmallStumpSkullKid.skullkid)) {
                 EnSkj_SetupWaitInRange(this);
@@ -1222,7 +1222,7 @@ void EnSkj_OcarinaGameWaitForPlayer(EnSkj* this, GlobalContext* globalCtx) {
 s32 EnSkj_IsLeavingGame(EnSkj* this) {
     s32 paramDecr = this->actor.params - 1;
 
-    if (sOcarinaMinigameSkullKids[paramDecr].unk0 == 2) {
+    if (sOcarinaMinigameSkullKids[paramDecr].unk_0 == 2) {
         EnSkj_SetupLeaveOcarinaGame(this);
         return true;
     }
@@ -1275,7 +1275,7 @@ void EnSkj_SetupLeaveOcarinaGame(EnSkj* this) {
 void EnSkj_LeaveOcarinaGame(EnSkj* this, GlobalContext* globalCtx) {
     s32 paramsDecr = this->actor.params - 1;
 
-    sOcarinaMinigameSkullKids[paramsDecr].unk0 = 0;
+    sOcarinaMinigameSkullKids[paramsDecr].unk_0 = 0;
     sOcarinaMinigameSkullKids[paramsDecr].skullkid = NULL;
     this->backflipFlag = 1;
     EnSkj_Backflip(this);
@@ -1573,15 +1573,15 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, GlobalContext* globalCtx) {
 
 void EnSkj_CleanupOcarinaGame(EnSkj* this, GlobalContext* globalCtx) {
     if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
-        sOcarinaMinigameSkullKids[SKULL_KID_LEFT].unk0 = 2;
+        sOcarinaMinigameSkullKids[SKULL_KID_LEFT].unk_0 = 2;
     }
 
     if (sOcarinaMinigameSkullKids[SKULL_KID_RIGHT].skullkid != NULL) {
-        sOcarinaMinigameSkullKids[SKULL_KID_RIGHT].unk0 = 2;
+        sOcarinaMinigameSkullKids[SKULL_KID_RIGHT].unk_0 = 2;
     }
 
-    if ((sOcarinaMinigameSkullKids[SKULL_KID_LEFT].unk0 == 2) &&
-        (sOcarinaMinigameSkullKids[SKULL_KID_RIGHT].unk0 == 2)) {
+    if ((sOcarinaMinigameSkullKids[SKULL_KID_LEFT].unk_0 == 2) &&
+        (sOcarinaMinigameSkullKids[SKULL_KID_RIGHT].unk_0 == 2)) {
         func_800F5C2C();
         Actor_Kill(&this->actor);
     }
