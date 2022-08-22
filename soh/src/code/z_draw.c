@@ -807,7 +807,7 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;
     s16 color_slot;
     // if (drawId <= firstBossKeyId && drawId >= lastBossKeyId) {
-    color_slot = 6; // Whatever matches the drawId of the right key
+    color_slot = 1; // Whatever matches the drawId of the right key
                     // See what GetItem_DrawGenericMusicNote() does
     // } else {
     // color_slot = -1;
