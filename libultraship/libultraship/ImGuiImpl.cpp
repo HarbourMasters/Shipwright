@@ -18,7 +18,6 @@
 #include "Hooks.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "Lib/ImGui/imgui_internal.h"
-#include "GlobalCtx2.h"
 #include "ResourceMgr.h"
 #include "Window.h"
 #include "Cvar.h"
@@ -345,27 +344,27 @@ namespace SohImGui {
 
     void ShowCursor(bool hide, Dialogues d) {
         if (d == Dialogues::dLoadSettings) {
-            GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(hide);
+            Window::GetInstance()->ShowCursor(hide);
             return;
         }
 
         if (d == Dialogues::dConsole && CVar_GetS32("gOpenMenuBar", 0)) {
             return;
         }
-        if (!GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen()) {
+        if (!Window::GetInstance()->IsFullscreen()) {
             oldCursorState = false;
             return;
         }
 
         if (oldCursorState != hide) {
             oldCursorState = hide;
-            GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(hide);
+            Window::GetInstance()->ShowCursor(hide);
         }
     }
 
     void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(path);
+        const auto res = Window::GetInstance()->GetResourceManager()->LoadFile(path);
 
         const auto asset = new GameAsset{ api->new_texture() };
         uint8_t* img_data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(res->buffer.get()), res->dwBufferSize, &asset->width, &asset->height, nullptr, 4);
@@ -401,7 +400,7 @@ namespace SohImGui {
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(path).get());
+        const auto res = static_cast<Ship::Texture*>(Window::GetInstance()->GetResourceManager()->LoadResource(path).get());
 
         std::vector<uint8_t> texBuffer;
         texBuffer.reserve(res->width * res->height * 4);
@@ -466,7 +465,7 @@ namespace SohImGui {
         io->DisplaySize.y =  window_impl.gx2.height;
     #endif
 
-        lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
+        lastBackendID = GetBackendID(Window::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
             #if defined(__SWITCH__) || defined(__WIIU__)
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
@@ -475,8 +474,8 @@ namespace SohImGui {
             #endif
         }
 
-        auto imguiIniPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui.ini");
-        auto imguiLogPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui_log.txt");
+        auto imguiIniPath = Ship::Window::GetPathRelativeToAppDirectory("imgui.ini");
+        auto imguiLogPath = Ship::Window::GetPathRelativeToAppDirectory("imgui_log.txt");
         io->IniFilename = strcpy(new char[imguiIniPath.length() + 1], imguiIniPath.c_str());
         io->LogFilename = strcpy(new char[imguiLogPath.length() + 1], imguiLogPath.c_str());
 
@@ -500,7 +499,7 @@ namespace SohImGui {
     #endif
 
         Ship::RegisterHook<Ship::GfxInit>([] {
-            if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
+            if (Window::GetInstance()->IsFullscreen())
                 ShowCursor(CVar_GetS32("gOpenMenuBar", 0), Dialogues::dLoadSettings);
 
             LoadTexture("Game_Icon", "assets/ship_of_harkinian/icons/gSohIcon.png");
@@ -883,8 +882,8 @@ namespace SohImGui {
         ImGuiWMNewFrame();
         ImGui::NewFrame();
 
-        const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
-        const std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        const std::shared_ptr<Window> wnd = Window::GetInstance();
+        const std::shared_ptr<Mercury> pConf = Window::GetInstance()->GetConfig();
 
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
@@ -921,9 +920,9 @@ namespace SohImGui {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
-            GlobalCtx2::GetInstance()->GetWindow()->SetMenuBar(menu_bar);
+            Window::GetInstance()->SetMenuBar(menu_bar);
             ShowCursor(menu_bar, Dialogues::dMenubar);
-            GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
+            Window::GetInstance()->GetControlDeck()->SaveControllerSettings();
             if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
                 io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
             } else {

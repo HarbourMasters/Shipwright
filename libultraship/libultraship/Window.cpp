@@ -1,23 +1,18 @@
+#include <string>
+#include <chrono>
+#include <fstream>
+#include <iostream>
 #include "Window.h"
-#include "spdlog/spdlog.h"
-#include "KeyboardController.h"
-#include "GlobalCtx2.h"
-#include "DisplayList.h"
-#include "Vertex.h"
-#include "Array.h"
 #include "ResourceMgr.h"
+#include "KeyboardController.h"
+#include "UltraController.h"
+#include "DisplayList.h"
+#include "Console.h"
+#include "Array.h"
 #include "Texture.h"
 #include "Blob.h"
 #include "Matrix.h"
-#include "AudioPlayer.h"
 #include "Hooks.h"
-#include "UltraController.h"
-#include <SDL2/SDL.h>
-#include <string>
-#include <chrono>
-#include "Console.h"
-#include "ImGuiImpl.h"
-#include "PR/ultra64/gbi.h"
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_dxgi.h"
@@ -27,12 +22,25 @@
 #include "Lib/Fast3D/gfx_direct3d12.h"
 #include "Lib/Fast3D/gfx_wiiu.h"
 #include "Lib/Fast3D/gfx_gx2.h"
+#include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/Fast3D/gfx_window_manager_api.h"
-#include <string>
+#include <SDL2/SDL.h>
+#include "ImGuiImpl.h"
+#include "spdlog/async.h"
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/sohconsole_sink.h"
+#include "PR/ultra64/gbi.h"
+#ifdef __APPLE__
+#include "OSXFolderManager.h"
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
+#endif
 
-#include <iostream>
 
-#define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+#define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
 
 extern "C" {
     struct OSMesgQueue;
@@ -59,7 +67,7 @@ extern "C" {
     #endif
 #endif
 
-        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->Init(controllerBits);
+        Ship::Window::GetInstance()->GetControlDeck()->Init(controllerBits);
 
         return 0;
     }
@@ -80,20 +88,20 @@ extern "C" {
 
 	    if (SohImGui::controller->Opened) return;
 
-        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
+        Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
 
     const char* ResourceMgr_GetNameByCRC(uint64_t crc) {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(crc);
         return hashStr != nullptr ? hashStr->c_str() : nullptr;
     }
 
     Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc) {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr) {
-            auto res = std::static_pointer_cast<Ship::Array>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
+            auto res = std::static_pointer_cast<Ship::Array>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (Vtx*)res->vertices.data();
         }
 
@@ -101,10 +109,10 @@ extern "C" {
     }
 
     int32_t* ResourceMgr_LoadMtxByCRC(uint64_t crc) {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr) {
-            auto res = std::static_pointer_cast<Ship::Matrix>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
+            auto res = std::static_pointer_cast<Ship::Matrix>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (int32_t*)res->mtx.data();
         }
 
@@ -112,10 +120,10 @@ extern "C" {
     }
 
     Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc) {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr) {
-            auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
+            auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (Gfx*)&res->instructions[0];
         } else {
             return nullptr;
@@ -123,7 +131,7 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByCRC(uint64_t crc)  {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr)  {
             const auto res = LOAD_TEX(hashStr->c_str());
@@ -137,11 +145,11 @@ extern "C" {
 
     void ResourceMgr_RegisterResourcePatch(uint64_t hash, uint32_t instrIndex, uintptr_t origData)
     {
-        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(hash);
+        const std::string* hashStr = Ship::Window::GetInstance()->GetResourceManager()->HashToString(hash);
 
         if (hashStr != nullptr)
         {
-            auto res = (Ship::Texture*)Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get();
+            auto res = (Ship::Texture*)Ship::Window::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get();
 
             Ship::Patch patch;
             patch.crc = hash;
@@ -201,7 +209,7 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadBlobByName(char* blobPath) {
-        auto res = (Ship::Blob*)Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(blobPath).get();
+        auto res = (Ship::Blob*)Ship::Window::GetInstance()->GetResourceManager()->LoadResource(blobPath).get();
         return (char*)res->data.data();
     }
 
@@ -217,7 +225,26 @@ extern "C" {
 
 namespace Ship {
 
-    Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr), ControllerApi(nullptr) {
+    std::weak_ptr<Window> Window::Context;
+
+    std::shared_ptr<Window> Window::GetInstance() {
+        return Context.lock();
+    }
+
+    std::shared_ptr<Window> Window::CreateInstance(const std::string Name) {
+        if (Context.expired()) {
+            auto Shared = std::make_shared<Window>(Name);
+            Context = Shared;
+            Shared->Initialize();
+            return Shared;
+        }
+
+        SPDLOG_DEBUG("Trying to create a context when it already exists. Returning existing.");
+
+        return GetInstance();
+    }
+
+    Window::Window(std::string Name) : Name(std::move(Name)), APlayer(nullptr), ControllerApi(nullptr), ResMan(nullptr), Logger(nullptr), Config(nullptr) {
         WmApi = nullptr;
         RenderingApi = nullptr;
         bIsFullscreen = false;
@@ -226,77 +253,85 @@ namespace Ship {
     }
 
     Window::~Window() {
-        SPDLOG_INFO("destruct window");
+        SPDLOG_DEBUG("destruct window");
     }
 
     void Window::CreateDefaults() {
-	    const std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        if (pConf->isNewInstance) {
-            pConf->setInt("Window.Width", 640);
-            pConf->setInt("Window.Height", 480);
-            pConf->setBool("Window.Options", false);
-            pConf->setString("Window.GfxBackend", "");
+        if (GetConfig()->isNewInstance) {
+            GetConfig()->setInt("Window.Width", 640);
+            GetConfig()->setInt("Window.Height", 480);
+            GetConfig()->setBool("Window.Options", false);
+            GetConfig()->setString("Window.GfxBackend", "");
 
-            pConf->setBool("Window.Fullscreen.Enabled", false);
-            pConf->setInt("Window.Fullscreen.Width", 1920);
-            pConf->setInt("Window.Fullscreen.Height", 1080);
+            GetConfig()->setBool("Window.Fullscreen.Enabled", false);
+            GetConfig()->setInt("Window.Fullscreen.Width", 1920);
+            GetConfig()->setInt("Window.Fullscreen.Height", 1080);
 
-            pConf->setString("Game.SaveName", "");
-            pConf->setString("Game.Main Archive", "");
-            pConf->setString("Game.Patches Archive", "");
+            GetConfig()->setString("Game.SaveName", "");
+            GetConfig()->setString("Game.Main Archive", "");
+            GetConfig()->setString("Game.Patches Archive", "");
 
-            pConf->setInt("Shortcuts.Fullscreen", 0x044);
-            pConf->setInt("Shortcuts.Console", 0x029);
-            pConf->save();
+            GetConfig()->setInt("Shortcuts.Fullscreen", 0x044);
+            GetConfig()->setInt("Shortcuts.Console", 0x029);
+            GetConfig()->save();
         }
     }
 
-    void Window::Init() {
-        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
-
+    void Window::Initialize() {
+        InitializeLogging();
+        InitializeConfiguration();
+        InitializeResourceManager();
         CreateDefaults();
         InitializeAudioPlayer();
         InitializeControlDeck();
 
-        bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
+        bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false);
 
         if (bIsFullscreen) {
-            dwWidth = pConf->getInt("Window.Fullscreen.Width", 1920);
-            dwHeight = pConf->getInt("Window.Fullscreen.Height", 1080);
+            dwWidth = GetConfig()->getInt("Window.Fullscreen.Width", 1920);
+            dwHeight = GetConfig()->getInt("Window.Fullscreen.Height", 1080);
         } else {
-            dwWidth = pConf->getInt("Window.Width", 640);
-            dwHeight = pConf->getInt("Window.Height", 480);
+            dwWidth = GetConfig()->getInt("Window.Width", 640);
+            dwHeight = GetConfig()->getInt("Window.Height", 480);
         }
 
-        dwMenubar = pConf->getBool("Window.Options", false);
-        gfxBackend = pConf->getString("Window.GfxBackend");
+        dwMenubar = GetConfig()->getBool("Window.Options", false);
+        const std::string& gfx_backend = GetConfig()->getString("Window.GfxBackend");
         InitializeWindowManager();
 
-        gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
+        gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
 
-        Ship::RegisterHook<Ship::ExitGame>([this]() {
+        Ship::RegisterHook<ExitGame>([this]() {
             ControllerApi->SaveControllerSettings();
         });
+    }
+
+    std::string Window::GetAppDirectoryPath() {
+#ifdef __APPLE__
+        FolderManager folderManager;
+        std::string fpath = std::string(folderManager.pathForDirectory(NSApplicationSupportDirectory, NSUserDomainMask));
+        fpath.append("/com.shipofharkinian.soh");
+        return fpath;
+#endif
+
+        return ".";
+    }
+
+    std::string Window::GetPathRelativeToAppDirectory(const char* path) {
+        return GetAppDirectoryPath() + "/" + path;
     }
 
     void Window::StartFrame() {
         gfx_start_frame();
     }
 
-    void Window::RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
-        for (const auto& m : mtx_replacements) {
-            gfx_run(Commands, m);
-            gfx_end_frame();
-        }
-    }
-
-    void Window::SetTargetFps(int fps) {
+    void Window::SetTargetFps(int32_t fps) {
         gfx_set_target_fps(fps);
     }
 
-    void Window::SetMaximumFrameLatency(int latency) {
+    void Window::SetMaximumFrameLatency(int32_t latency) {
         gfx_set_maximum_frame_latency(latency);
     }
 
@@ -329,17 +364,17 @@ namespace Ship {
     void Window::MainLoop(void (*MainFunction)(void)) {
         WmApi->main_loop(MainFunction);
     }
-    bool Window::KeyUp(int32_t dwScancode) {
-        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
-        if (dwScancode == pConf->getInt("Shortcuts.Fullscreen", 0x044)) {
-            GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
+    bool Window::KeyUp(int32_t dwScancode) {
+        if (dwScancode == GetInstance()->GetConfig()->getInt("Shortcuts.Fullscreen", 0x044)) {
+            GetInstance()->ToggleFullscreen();
         }
 
-        GlobalCtx2::GetInstance()->GetWindow()->SetLastScancode(-1);
+        GetInstance()->SetLastScancode(-1);
+
 
         bool bIsProcessed = false;
-        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto controlDeck = GetInstance()->GetControlDeck();
         const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->ReleaseButton(dwScancode)) {
@@ -352,7 +387,7 @@ namespace Ship {
 
     bool Window::KeyDown(int32_t dwScancode) {
         bool bIsProcessed = false;
-        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto controlDeck = GetInstance()->GetControlDeck();
         const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->PressButton(dwScancode)) {
@@ -360,14 +395,14 @@ namespace Ship {
             }
         }
 
-        GlobalCtx2::GetInstance()->GetWindow()->SetLastScancode(dwScancode);
+        GetInstance()->SetLastScancode(dwScancode);
 
         return bIsProcessed;
     }
 
 
     void Window::AllKeysUp(void) {
-        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto controlDeck = Window::GetInstance()->GetControlDeck();
         const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             pad->ReleaseAllButtons();
@@ -375,14 +410,12 @@ namespace Ship {
     }
 
     void Window::OnFullscreenChanged(bool bIsFullscreen) {
-        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        std::shared_ptr<Mercury> pConf = Window::GetInstance()->GetConfig();
 
-        GlobalCtx2::GetInstance()->GetWindow()->bIsFullscreen = bIsFullscreen;
+        Window::GetInstance()->bIsFullscreen = bIsFullscreen;
         pConf->setBool("Window.Fullscreen.Enabled", bIsFullscreen);
-        GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(!bIsFullscreen);
+        Window::GetInstance()->ShowCursor(!bIsFullscreen);
     }
-
-
 
     uint32_t Window::GetCurrentWidth() {
         WmApi->get_dimensions(&dwWidth, &dwHeight);
@@ -452,5 +485,94 @@ namespace Ship {
 
     void Window::InitializeControlDeck() {
         ControllerApi = std::make_shared<ControlDeck>();
+    }
+
+    void Window::InitializeLogging() {
+        try {
+            // Setup Logging
+            spdlog::init_thread_pool(8192, 1);
+            std::vector<spdlog::sink_ptr> Sinks;
+
+            auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
+            SohConsoleSink->set_level(spdlog::level::trace);
+            Sinks.push_back(SohConsoleSink);
+
+#if (!defined(_WIN32) && !defined(__WIIU__)) || defined(_DEBUG)
+            auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+            ConsoleSink->set_level(spdlog::level::trace);
+            Sinks.push_back(ConsoleSink);
+#endif
+
+#ifndef __WIIU__
+            auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log").c_str());
+            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
+            FileSink->set_level(spdlog::level::trace);
+            Sinks.push_back(FileSink);
+#endif
+
+            Logger = std::make_shared<spdlog::async_logger>(GetName(), Sinks.begin(), Sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
+            GetLogger()->set_level(spdlog::level::trace);
+
+#ifndef __WIIU__
+            GetLogger()->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%@] [%l] %v");
+#else
+            GetLogger()->set_pattern("[%s:%#] [%l] %v");
+#endif
+
+            spdlog::register_logger(GetLogger());
+            spdlog::set_default_logger(GetLogger());
+        }
+        catch (const spdlog::spdlog_ex& ex) {
+            std::cout << "Log initialization failed: " << ex.what() << std::endl;
+        }
+    }
+
+    void Window::InitializeResourceManager() {
+        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+        PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
+        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+
+        if (!ResMan->DidLoadSuccessfully())
+        {
+#ifdef _WIN32
+            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
+#elif defined(__SWITCH__)
+            printf("Main OTR file not found!\n");
+#elif defined(__WIIU__)
+            Ship::WiiU::ThrowMissingOTR(MainPath.c_str());
+#else
+            SPDLOG_ERROR("Main OTR file not found!");
+#endif
+            exit(1);
+    }
+#ifdef __SWITCH__
+        Ship::Switch::Init(PostInitPhase);
+#endif
+    }
+
+    void Window::InitializeConfiguration() {
+        Config = std::make_shared<Mercury>(GetPathRelativeToAppDirectory("shipofharkinian.json"));
+    }
+
+    void Window::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr, const size_t size) {
+        std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+        saveFile.seekp(addr);
+        saveFile.write((char*)dramAddr, size);
+        saveFile.close();
+    }
+
+    void Window::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+        std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+
+        // If the file doesn't exist, initialize DRAM
+        if (saveFile.good()) {
+            saveFile.seekg(addr);
+            saveFile.read((char*)dramAddr, size);
+        }
+        else {
+            memset(dramAddr, 0, size);
+        }
+
+        saveFile.close();
     }
 }
