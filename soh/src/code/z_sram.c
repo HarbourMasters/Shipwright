@@ -858,7 +858,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
                     GiveLinkDekuNutUpgrade(giid);
                 } else {
-                    s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
+                    s32 iid = getItem.itemId;
                     if (iid != -1) INV_CONTENT(iid) = iid;
                 }
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
