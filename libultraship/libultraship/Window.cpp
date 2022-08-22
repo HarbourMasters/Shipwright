@@ -31,6 +31,14 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/sohconsole_sink.h"
 #include "PR/ultra64/gbi.h"
+#ifdef __APPLE__
+#include "OSXFolderManager.h"
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
+#endif
+
 
 #define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
 
