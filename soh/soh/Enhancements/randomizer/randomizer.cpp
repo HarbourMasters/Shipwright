@@ -4172,8 +4172,7 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "The first Bombchu pack will always be 20, and subsequent packs will be "
                             "5 or 10 based on how many you have.\n"
-                            "Once found, they can be replenished at the Kokiri shop, Bazaar, or Bombchu "
-                            "shop.\n"
+                            "Once found, they can be replenished at the Bombchu shop.\n"
                             "\n"
                             "Bombchu Bowling is opened by obtaining Bombchus."
                         );
