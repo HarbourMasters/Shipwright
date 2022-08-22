@@ -16,7 +16,6 @@
 
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
-#include "../../GlobalCtx2.h"
 #include "gfx_pc.h"
 #include "gfx_wiiu.h"
 
