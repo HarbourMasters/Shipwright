@@ -1501,6 +1501,7 @@ namespace SohImGui {
                     Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
                     PaddedEnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB", true, false);
                     Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
+                    PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
 
                     ImGui::EndMenu();
                 }
@@ -2266,6 +2267,7 @@ namespace SohImGui {
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 0);
 
+        CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
     }
