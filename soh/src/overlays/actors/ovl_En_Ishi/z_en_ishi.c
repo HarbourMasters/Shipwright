@@ -330,6 +330,9 @@ void EnIshi_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
         return;
     }
+    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 0x061 && this->actor.params == (-255)) {
+        Actor_Kill(&this->actor);
+    }
     EnIshi_SetupWait(this);
 }
 
