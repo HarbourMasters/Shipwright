@@ -891,22 +891,22 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
+
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
     // if (drawId == doubleDef) {
-        gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 130, 0, 255);
-        gsSPGrayscale(POLY_XLU_DISP++, true);
-    // }
-    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
-        
-    // if (drawId == doubleDef) {
-        gsSPGrayscale(POLY_XLU_DISP++, false);
         gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
         gsSPGrayscale(POLY_XLU_DISP++, true);
     // }
-    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
+
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+    
     // if (drawId == doubleDef) {
         gsSPGrayscale(POLY_XLU_DISP++, false);
     // }
+
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 

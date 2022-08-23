@@ -1223,6 +1223,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 
             color_slot = 0;
             break;
         case GI_BOLERO_OF_FIRE:
+        case GI_DOUBLE_DEFENSE:
             color_slot = 1;
             break;
         case GI_SERENADE_OF_WATER:
@@ -1323,7 +1324,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_MAGIC) ||
+        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
             (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
@@ -1384,7 +1385,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         s32 randoGetItemId = Randomizer_GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_MAGIC) ||
+        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
             (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }

@@ -196,7 +196,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
             getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_MAGIC) {
+            if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_DEFENSE) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemId);
             }
             if (getItemId != ITEM_SKULL_TOKEN) {
