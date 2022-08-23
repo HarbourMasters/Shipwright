@@ -62,6 +62,9 @@ void EnWeatherTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "☆☆☆☆☆ (;o;) About ☆☆☆☆☆☆"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ （;o;) くらいよー ☆☆☆☆☆ \n" VT_RST);
             EnWeatherTag_SetupAction(this, EnWeatherTag_DisabledCloudyHyruleMarket);
+            if (gSaveContext.n64ddFlag) { //TODO add enbbtrance rando specific check
+                Actor_Kill(&this->actor);
+            }
             break;
         case EN_WEATHER_TAG_TYPE_CLOUDY_LON_LON_RANCH:
             osSyncPrintf("\n\n");
