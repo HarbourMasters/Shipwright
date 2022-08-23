@@ -271,8 +271,9 @@ void DrawItemCount(ItemTrackerItem item) {
     if (currentAndMax.x > 0) {
         if (currentAndMax.x >= currentAndMax.y) {
             std::string currentString = std::to_string((int)currentAndMax.x);
+            float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
-            ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 14));
+            ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%d", (int)currentAndMax.x);
             ImGui::PopStyleColor();
@@ -288,8 +289,9 @@ void DrawItemCount(ItemTrackerItem item) {
                 ImGui::PopStyleColor();
             } else {
                 std::string currentString = std::to_string((int)currentAndMax.x);
+                float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
-                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 14));
+                ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
                 ImGui::Text("%d", (int)currentAndMax.x);
             }
         }
@@ -789,6 +791,9 @@ void DrawItemTrackerOptions(bool& open) {
     SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
     SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
     PaddedEnhancementCheckbox("Display \"Current/Max\" values", "gItemTrackerDisplayCurrentMax", 0);
+    if (CVar_GetS32("gItemTrackerDisplayCurrentMax", 0) == 0) {
+        PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
+    }
 
     ImGui::TableNextColumn();
 
