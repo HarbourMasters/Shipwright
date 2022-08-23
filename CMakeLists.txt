@@ -195,6 +195,11 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         PERMISSIONS ${PROGRAM_PERMISSIONS_EXECUTE}
         )
 
+install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
+    ")
+
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")

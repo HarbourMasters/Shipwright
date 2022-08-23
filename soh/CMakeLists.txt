@@ -1738,15 +1738,15 @@ if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /sdl-;
-                /w
+                /w;
+                /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl-;
                 /Gy;
                 /W3
             >
+            /sdl-;
             /permissive-;
             /MP;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -1981,14 +1981,6 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
-endif()
-
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-install(CODE "
-    include(InstallRequiredSystemLibraries)
-    include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
-    ")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
