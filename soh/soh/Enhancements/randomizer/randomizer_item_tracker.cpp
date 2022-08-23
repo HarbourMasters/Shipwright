@@ -113,24 +113,14 @@ std::vector<ItemTrackerItem> dungeonItems = {};
 std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
     { ITEM_BOTTLE, ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
     { ITEM_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_BIG_POE, 0, DrawItem) },
     { ITEM_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, 0, DrawItem) },
     { ITEM_BUG, ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_BUGS, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_BUGS, 0, DrawItem) },
     { ITEM_FAIRY, ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_FAIRY, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_FAIRY, 0, DrawItem) },
     { ITEM_FISH, ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_FISH, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_FISH, 0, DrawItem) },
     { ITEM_POTION_GREEN, ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_GREEN_POTION, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, 0, DrawItem) },
     { ITEM_POE, ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_POE, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_POE, 0, DrawItem) },
     { ITEM_POTION_RED, ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_RED_POTION, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_RED_POTION, 0, DrawItem) },
     { ITEM_POTION_BLUE, ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
-    { ITEM_BOTTLE_WITH_BLUE_POTION, ITEM_TRACKER_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, 0, DrawItem) },
-    { ITEM_MILK, ITEM_TRACKER_ITEM(ITEM_MILK, 0, DrawItem) },
     { ITEM_MILK_BOTTLE, ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
     { ITEM_MILK_HALF, ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
     { ITEM_LETTER_RUTO, ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
@@ -196,6 +186,11 @@ std::vector<uint32_t> buttonMap = {
     BTN_DLEFT,
     BTN_DRIGHT
 };
+
+bool IsValidSaveFile() {
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    return validSave;
+}
 
 ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
     ImVec2 result = { 0, 0 };
@@ -276,6 +271,12 @@ void DrawItemCount(ItemTrackerItem item) {
     ImVec2 currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
 
+    if (!IsValidSaveFile()) {
+        ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
+        ImGui::Text("");
+        return;
+    }
+
     if (currentAndMax.x > 0) {
         if (currentAndMax.x >= currentAndMax.y) {
             std::string currentString = std::to_string((int)currentAndMax.x);
@@ -309,7 +310,7 @@ void DrawItemCount(ItemTrackerItem item) {
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? item.name : item.nameFaded),
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -319,7 +320,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? item.name : item.nameFaded),
+    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -373,7 +374,7 @@ void DrawItem(ItemTrackerItem item) {
     }
     
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? item.name : item.nameFaded),
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item);
@@ -386,12 +387,15 @@ void DrawBottle(ItemTrackerItem item) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
     bool hasItem = actualItemId != ITEM_NONE;
 
-    const ItemTrackerItem& actualItem = actualItemTrackerItemMap[hasItem ? actualItemId : item.id];
+    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+        item = actualItemTrackerItemMap[actualItemId];
+    }
+
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? actualItem.name : actualItem.nameFaded),
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(actualItem.id));
+    SetLastItemHoverText(SohUtils::GetItemName(item.id));
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -402,11 +406,11 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey ? item.name : item.nameFaded),
+        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
     else {
-        ImGui::Image(SohImGui::GetTextureByName(hasItem ? item.name : item.nameFaded),
+        ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -438,7 +442,7 @@ void DrawSong(ItemTrackerItem item) {
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(SohImGui::GetTextureByName(hasSong ? item.name : item.nameFaded),
+    ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
@@ -629,8 +633,6 @@ void UpdateVectors() {
     if  (!shouldUpdateVectors) {
         return;
     }
-
-    SohImGui::console->SendInfoMessage("updateVectors");
 
     dungeonRewards.clear();
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
@@ -851,8 +853,7 @@ void DrawItemTrackerOptions(bool& open) {
 }
 
 void InitItemTracker() {
-    // TODO: We want to persist this open, but currently the tracker is crashing if it's opened to quickly on launch
-    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
+    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVar_GetS32("gItemTrackerEnabled", 0) == 1);
     SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
     float trackerBgR = CVar_GetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVar_GetFloat("gItemTrackerBgColorG", 0);
