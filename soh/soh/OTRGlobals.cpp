@@ -1541,7 +1541,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
-        } else if (!CVar_GetS32("gRandoDisableRandomRupeeNames", 0) &&
+        } else if (CVar_GetS32("gRandoRandomRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             Randomizer randomizerInstance;
