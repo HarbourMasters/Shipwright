@@ -1738,16 +1738,15 @@ if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /sdl-;
                 /w;
                 /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl-;
                 /Gy;
                 /W3
             >
+            /sdl-;
             /permissive-;
             /MP;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
