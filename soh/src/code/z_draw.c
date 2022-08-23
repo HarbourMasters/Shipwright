@@ -771,21 +771,20 @@ void GetItem_DrawOpa0(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;
     s16 color_slot;
     // if (drawId <= firstSmallKeyId && drawId >= lastSmallKeyId && !thievesHideoutKeyId) {
-    color_slot = 1; // Whatever matches the drawId of the right key
+    color_slot = 0; // Whatever matches the drawId of the right key
                         // See what GetItem_DrawGenericMusicNote() does
     // } else {
     // color_slot = -1;
     // }
-    s16* colors[9][3] = {
-        { 255, 255, 255 }, // Generic
+    s16* colors[8][3] = {
         { 4, 195, 46 },    // Forest Temple
         { 237, 95, 95 },   // Fire Temple
         { 85, 180, 223 },  // Water Temple
         { 222, 158, 47 },  // Spirit Temple
         { 126, 16, 177 },  // Shadow Temple
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 227, 110, 255 },  // Bottom of the Well
-        { 100, 100, 100 }  // Ganon's Castle
+        { 227, 110, 255 }, // Bottom of the Well
+        { 80, 80, 80 }     // Ganon's Castle
     };
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -807,19 +806,18 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;
     s16 color_slot;
     // if (drawId <= firstBossKeyId && drawId >= lastBossKeyId) {
-    color_slot = 1; // Whatever matches the drawId of the right key
+    color_slot = 0; // Whatever matches the drawId of the right key
                     // See what GetItem_DrawGenericMusicNote() does
     // } else {
     // color_slot = -1;
     // }
-    s16* colors[9][3] = {
-        { 255, 255, 255 }, // Generic
+    s16* colors[6][3] = {
         { 4, 195, 46 },    // Forest Temple
         { 237, 95, 95 },   // Fire Temple
         { 85, 180, 223 },  // Water Temple
         { 222, 158, 47 },  // Spirit Temple
         { 126, 16, 177 },  // Shadow Temple
-        { 100, 100, 100 }  // Ganon's Castle
+        { 210, 0, 0 }      // Ganon's Castle
     };
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -827,7 +825,14 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
     func_80093D18(globalCtx->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
 
+    if (color_slot == 6) { // Ganon's Boss Key
+        gsDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
+        gsSPGrayscale(POLY_OPA_DISP++, true);
+    }
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
+    if (color_slot == 6) { // Ganon's Boss Key
+        gsSPGrayscale(POLY_OPA_DISP++, false);
+    }
 
     func_80093D84(globalCtx->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -873,11 +878,22 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    // if (drawId == doubleDef) {
+        gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 130, 0, 255);
+        gsSPGrayscale(POLY_XLU_DISP++, true);
+    // }
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+        
+    // if (drawId == doubleDef) {
+        gsSPGrayscale(POLY_XLU_DISP++, false);
+        gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
+        gsSPGrayscale(POLY_XLU_DISP++, true);
+    // }
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
-
+    // if (drawId == doubleDef) {
+        gsSPGrayscale(POLY_XLU_DISP++, false);
+    // }
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 

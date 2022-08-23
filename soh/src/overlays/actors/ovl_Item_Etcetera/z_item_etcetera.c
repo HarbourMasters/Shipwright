@@ -230,7 +230,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
 
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
             s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
-            if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
+            if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_MAGIC) ||
                 (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
             }
@@ -256,7 +256,7 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
             randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
+        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_MAGIC) ||
             (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
