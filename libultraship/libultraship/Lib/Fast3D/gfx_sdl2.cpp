@@ -33,7 +33,6 @@
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
-#include "gfx_pc.h"
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
