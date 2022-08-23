@@ -4649,7 +4649,7 @@ void CreateRupeeMessages() {
     }
 }
 
-std::string Randomizer::Randomizer_InsertRupeeName(std::string message, int language) {
+std::string Randomizer::InsertRupeeName(std::string message, int language) {
     const char* englishRupeeNames[44] = {
         "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
         "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
@@ -4690,12 +4690,12 @@ std::string Randomizer::Randomizer_InsertRupeeName(std::string message, int lang
     return message;
 }
 
-CustomMessageEntry Randomizer::Randomizer_GetRupeeMessage(u16 rupeeTextId) {
+CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     CustomMessageEntry messageEntry =
         CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.english = Randomizer::Randomizer_InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
-    messageEntry.german = Randomizer::Randomizer_InsertRupeeName(messageEntry.german, LANGUAGE_GER);
-    messageEntry.french = Randomizer::Randomizer_InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
+    messageEntry.english = Randomizer::InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
+    messageEntry.german = Randomizer::InsertRupeeName(messageEntry.german, LANGUAGE_GER);
+    messageEntry.french = Randomizer::InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
     return messageEntry;
 }
 

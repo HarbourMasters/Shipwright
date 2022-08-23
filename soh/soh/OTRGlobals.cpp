@@ -1544,8 +1544,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
-            Randomizer randomizerInstance;
-            messageEntry = randomizerInstance.Randomizer_GetRupeeMessage(textId);
+            messageEntry = Randomizer::GetRupeeMessage(textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
