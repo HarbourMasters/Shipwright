@@ -1497,9 +1497,14 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->saveVtx[60], 32, 0);
 
-        if (((pauseCtx->state == 7) && (pauseCtx->unk_1EC < 4)) || (pauseCtx->state == 0xE)) {
-            POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
+        if (((pauseCtx->state == 7) && (pauseCtx->unk_1EC < 4 || pauseCtx->unk_1EC == 7)) || (pauseCtx->state == 0xE)) {
+            if (pauseCtx->unk_1EC == 7) {
+                POLY_KAL_DISP =
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sContinuePromptTexs[gSaveContext.language], 152, 16, 0);
+            } else {
+                POLY_KAL_DISP =
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
+            }
 
             gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
                               0, PRIMITIVE, 0);
@@ -3844,25 +3849,32 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     }
                     break;
 
+				// Pause: Save?
                 case 1:
                     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                         if (pauseCtx->promptChoice != 0) {
-                            Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
-                            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                                gSaveContext.buttonStatus[3] = BTN_ENABLED;
-                            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-                                gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                            gSaveContext.unk_13EA = 0;
-                            Interface_ChangeAlpha(50);
-                            pauseCtx->unk_1EC = 2;
-                            WREG(2) = -6240;
-                            YREG(8) = pauseCtx->unk_204;
-                            func_800F64E0(0);
+                            if (CVar_GetS32("gSaveAndQuit", 0)) {
+                                pauseCtx->promptChoice = 0;
+                                Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                                pauseCtx->unk_1EC = 7;
+                            } else {
+                                Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
+                                gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                                    gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                                gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                                    gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                                gSaveContext.unk_13EA = 0;
+                                Interface_ChangeAlpha(50);
+                                pauseCtx->unk_1EC = 2;
+                                WREG(2) = -6240;
+                                YREG(8) = pauseCtx->unk_204;
+                                func_800F64E0(0);
+                            }
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                    &D_801333E8);
                             Gameplay_PerformSave(globalCtx);
-                            pauseCtx->unk_1EC = 4;
+                            pauseCtx->unk_1EC = CVar_GetS32("gSaveAndQuit", 0) ? 7 : 4;
                             D_8082B25C = 3;
                         }
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
@@ -3884,17 +3896,21 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                 case 4:
                     if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A) ||
                         CHECK_BTN_ALL(input->press.button, BTN_START) || (--D_8082B25C == 0)) {
-                        Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
-                        gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                            gSaveContext.buttonStatus[3] = BTN_ENABLED;
-                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
-                        pauseCtx->unk_1EC = 5;
-                        WREG(2) = -6240;
-                        YREG(8) = pauseCtx->unk_204;
-                        func_800F64E0(0);
+                        if (CVar_GetS32("gSaveAndQuit", 0) && D_8082B25C == 0) {
+                            pauseCtx->unk_1EC = 7;
+                        } else {
+                            Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
+                            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                                gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                                gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                            gSaveContext.unk_13EA = 0;
+                            Interface_ChangeAlpha(50);
+                            pauseCtx->unk_1EC = 5;
+                            WREG(2) = -6240;
+                            YREG(8) = pauseCtx->unk_204;
+                            func_800F64E0(0);
+                        }
                     }
                     break;
 
@@ -3932,6 +3948,46 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         pauseCtx->namedItem = PAUSE_ITEM_NONE;
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->unk_204 = -434.0f;
+                    }
+                    break;
+
+                // 7 and 8 are used by "Prompt to quit after saving" enhancement
+                case 7:
+                    if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_B) ||
+                        CHECK_BTN_ALL(input->press.button, BTN_START)) {
+                        if (pauseCtx->promptChoice == 0 || CHECK_BTN_ALL(input->press.button, BTN_B)) {
+                            Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
+                            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                                gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                                gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                            gSaveContext.unk_13EA = 0;
+                            Interface_ChangeAlpha(50);
+                            pauseCtx->unk_1EC = 5;
+                            WREG(2) = -6240;
+                            YREG(8) = pauseCtx->unk_204;
+                            func_800F64E0(0);
+                        } else {
+                            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                   &D_801333E8);
+                            pauseCtx->unk_1EC = 8;
+                        }
+                    }
+                    break;
+
+                case 8:
+                    if (interfaceCtx->unk_244 != 255) {
+                        interfaceCtx->unk_244 += 10;
+                        if (interfaceCtx->unk_244 >= 255) {
+                            interfaceCtx->unk_244 = 255;
+                            pauseCtx->state = 0;
+                            R_UPDATE_RATE = 3;
+                            R_PAUSE_MENU_MODE = 0;
+                            func_800981B8(&globalCtx->objectCtx);
+                            func_800418D0(&globalCtx->colCtx, globalCtx);
+                            globalCtx->state.running = 0;
+                            SET_NEXT_GAMESTATE(&globalCtx->state, Opening_Init, OpeningContext);
+                        }
                     }
                     break;
             }
@@ -4092,6 +4148,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             osSyncPrintf("kscope->angle_s = %f\n", pauseCtx->unk_204);
             break;
 
+		// Game over - Save?
         case 0xE:
             if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                 if (pauseCtx->promptChoice != 0) {
@@ -4125,6 +4182,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             }
             break;
 
+		// Game Over - Continue playing?
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
                 if (pauseCtx->promptChoice == 0) {

@@ -237,6 +237,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Ask to continue playing after saving
+        CVar_SetS32("gSaveAndQuit", 0);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);
@@ -316,6 +318,8 @@ namespace GameMenuBar {
         CVar_SetS32("gTimeFlowFileSelect", 1);
         // Count Golden Skulltulas
         CVar_SetS32("gInjectSkulltulaCount", 1);
+        // Ask to continue playing after saving
+        CVar_SetS32("gSaveAndQuit", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 1);
@@ -873,6 +877,9 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Ask to continue playing after saving", "gSaveAndQuit", true, false);
+                UIWidgets::Tooltip("The save dialog from the pause menu will ask you to continue playing after you select Yes or No.\n"
+                        "Pressing B or Start on the save prompt will close the pause menu without displaying the extra screen.");
                 ImGui::EndMenu();
             }
 
