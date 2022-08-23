@@ -16,6 +16,9 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 extern GlobalContext* gGlobalCtx;
+
+#include "textures/icon_item_static/icon_item_static.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -68,19 +71,35 @@ std::vector<ItemTrackerItem> songItems = {
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeons = {
-    ITEM_TRACKER_DUNGEON(SCENE_BMORI1, "FRST", true, true, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_HIDAN, "FIRE", true, true, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_MIZUSIN, "WATR", true, true, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_JYASINZOU, "SPRT", true, true, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_HAKADAN, "SHDW", true, true, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_HAKADANCH, "BOTW", true, true, false, true),
-    ITEM_TRACKER_DUNGEON(SCENE_YDAN, "DEKU", true, true, false, false),
-    ITEM_TRACKER_DUNGEON(SCENE_DDAN, "DCVN", true, true, false, false),
-    ITEM_TRACKER_DUNGEON(SCENE_BDAN, "JABU", true, true, false, false),
-    ITEM_TRACKER_DUNGEON(SCENE_ICE_DOUKUTO, "ICE", true, true, false, false),
-    ITEM_TRACKER_DUNGEON(SCENE_GANON, "GANON", false, false, true, true),
-    ITEM_TRACKER_DUNGEON(SCENE_MEN, "GTG", false, false, false, true),
-    ITEM_TRACKER_DUNGEON(SCENE_GERUDOWAY, "HIDE", false, false, false, true),
+    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_MEN, { ITEM_KEY_SMALL } },
+    // { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } }, // We're adding this manually for space
+};
+
+std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
+    { SCENE_BMORI1, "FRST" },
+    { SCENE_HIDAN, "FIRE" },
+    { SCENE_MIZUSIN, "WATR" },
+    { SCENE_JYASINZOU, "SPRT" },
+    { SCENE_HAKADAN, "SHDW" },
+    { SCENE_HAKADANCH, "BOTW" },
+    { SCENE_YDAN, "DEKU" },
+    { SCENE_DDAN, "DCVN" },
+    { SCENE_BDAN, "JABU" },
+    { SCENE_ICE_DOUKUTO, "ICE" },
+    { SCENE_GANON, "GANON" },
+    { SCENE_MEN, "GTG" },
+    { SCENE_GERUDOWAY, "HIDE" },
 };
 
 std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
@@ -245,7 +264,7 @@ ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
 }
 
 void DrawItemCount(ItemTrackerItem item) {
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ImVec2 currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
 
@@ -253,7 +272,7 @@ void DrawItemCount(ItemTrackerItem item) {
         if (currentAndMax.x >= currentAndMax.y) {
             std::string currentString = std::to_string((int)currentAndMax.x);
 
-            ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 10));
+            ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 14));
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%d", (int)currentAndMax.x);
             ImGui::PopStyleColor();
@@ -261,7 +280,7 @@ void DrawItemCount(ItemTrackerItem item) {
             if (CVar_GetS32("gItemTrackerDisplayCurrentMax", 0) == 1) {
                 std::string currentAndMaxString = std::to_string((int)currentAndMax.x) + "/" + std::to_string((int)currentAndMax.y);
 
-                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 10));
+                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
                 ImGui::Text("%d/", (int)currentAndMax.x);
                 ImGui::SameLine(0, 0.0f);
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
@@ -270,7 +289,7 @@ void DrawItemCount(ItemTrackerItem item) {
             } else {
                 std::string currentString = std::to_string((int)currentAndMax.x);
 
-                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 10));
+                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2), p.y - 14));
                 ImGui::Text("%d", (int)currentAndMax.x);
             }
         }
@@ -279,7 +298,7 @@ void DrawItemCount(ItemTrackerItem item) {
 
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
@@ -288,7 +307,7 @@ void DrawEquip(ItemTrackerItem item) {
 
 void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
@@ -304,14 +323,10 @@ void DrawQuest(ItemTrackerItem item) {
 
 void DrawItem(ItemTrackerItem item) {
     uint32_t actualItemId = INV_CONTENT(item.id);
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
 
     if (item.id == ITEM_NONE) {
-        ImGui::BeginGroup();
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - 10, p.y - 10));
-        ImGui::EndGroup();
         return;
     }
 
@@ -362,7 +377,7 @@ void DrawBottle(ItemTrackerItem item) {
     bool hasItem = actualItemId != ITEM_NONE;
 
     const ItemTrackerItem& actualItem = actualItemTrackerItemMap[hasItem ? actualItemId : item.id];
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ImGui::Image(SohImGui::GetTextureByName(hasItem ? actualItem.name : actualItem.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
@@ -372,7 +387,7 @@ void DrawBottle(ItemTrackerItem item) {
 void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t itemId = item.id;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
@@ -387,6 +402,20 @@ void DrawDungeonItem(ItemTrackerItem item) {
 
     if (itemId == ITEM_KEY_SMALL) {
         DrawItemCount(item);
+
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
+        ImGui::Text(dungeonName.c_str());
+    }
+
+    if (itemId == ITEM_DUNGEON_MAP && 
+        (item.data == SCENE_YDAN || item.data == SCENE_DDAN || item.data == SCENE_BDAN || item.data == SCENE_ICE_DOUKUTO)
+    ) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::Text(dungeonName.c_str());
     }
     ImGui::EndGroup();
 
@@ -394,16 +423,21 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     uint32_t bitMask = 1 << item.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(SohImGui::GetTextureByName(hasSong ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
 
-void DrawNotes() {
+void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+
     struct ItemTrackerNotes {
         static int TrackerNotesResizeCallback(ImGuiInputTextCallbackData* data) {
             if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
@@ -428,9 +462,8 @@ void DrawNotes() {
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
-    // ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));
-    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y), ImGuiInputTextFlags_AllowTabInput);
-    // ImGui::PopStyleColor();
+    ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
+    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     ImGui::EndGroup();
 }
 
@@ -452,9 +485,11 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     }
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ChromaKeyBackground);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
 }
 void EndFloatingWindows() {
+    ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::End();
@@ -465,87 +500,82 @@ void EndFloatingWindows() {
  * Takes in a vector of ItemTrackerItem and draws them in rows of N items
  */
 void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
-    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 7);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+
     for (int i = 0; i < items.size(); i++) {
-        if (i % columns == 0) {
-            ImGui::BeginGroup();
-        } else {
-            ImGui::SameLine(iconSize * (i % columns));
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + iconSpacing * (i % columns));
-        }
+        int row = i / columns;
+        int column = i % columns;
+        ImGui::SetCursorPos(ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8));
         items[i].drawFunc(items[i]);
-        if (i % columns == columns - 1) {
-            ImGui::EndGroup();
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + iconSpacing);
-        }
-    }
-    if (items.size() % columns != 0) {
-        ImGui::EndGroup();
     }
 }
 
 /**
- * DrawDungeons
+ * DrawItemsInACircle
+ * Takes in a vector of ItemTrackerItem and draws them evenly spread across a circle
+ */
+void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+
+    ImVec2 max = ImGui::GetWindowContentRegionMax();
+    float radius = (iconSize + iconSpacing) * 2;
+
+    for (int i = 0; i < items.size(); i++) {
+        float angle = (float)i / items.size() * 2.0f * M_PI;
+        float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
+        float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
+        ImGui::SetCursorPos(ImVec2(x - 14, y + 4));
+        items[i].drawFunc(items[i]);
+    }
+}
+
+/**
+ * GetDungeonItemsVector
  * Loops over dungeons and creates vectors of items in the correct order 
  * to then call DrawItemsInRows
  */
-void DrawDungeons(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
-    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 7);
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    if (!CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
-        dungeons.erase(std::remove_if(dungeons.begin(), dungeons.end(), [](ItemTrackerDungeon d) { return !d.hasBossKey && !d.hasSmallKey; }), dungeons.end());
-    }
+    // if (!CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
+    //     dungeons.erase(std::remove_if(dungeons.begin(), dungeons.end(), [](ItemTrackerDungeon d) {
+    //         return (d.id == SCENE_YDAN || d.id == SCENE_DDAN || d.id == SCENE_BDAN || d.id == SCENE_ICE_DOUKUTO);
+    //     }), dungeons.end());
+    // }
 
-    ImGui::BeginGroup();
-    ImGui::NewLine();
-    for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
-        ImGui::SameLine(iconSize * i);
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + iconSpacing * i);
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        std::string dungeonName = dungeons[i].shortName;
-
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - 4));
-        ImGui::Text(dungeonName.c_str());
-    }
-    ImGui::EndGroup();
-    for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
-        if (dungeons[i].hasSmallKey) {
-            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[i].id, DrawDungeonItem));
-        } else {
-            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-        }
-    }
-    for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
-        if (dungeons[i].hasBossKey) {
-            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[i].id, DrawDungeonItem));
-        } else {
-            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-        }
-    }
-    if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
-        for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
-            if (dungeons[i].hasMap) {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[i].id, DrawDungeonItem));
-            } else {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-            }
-        }
-        for (int i = 0; i < MIN(dungeons.size(), columns); i++) {
-            if (dungeons[i].hasCompass) {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, dungeons[i].id, DrawDungeonItem));
+    for (int i = 0; i < dungeons[i].items.size(); i++) {
+        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+            if (dungeons[j].items.size() > i) {
+                switch (dungeons[j].items[i]) {
+                    case ITEM_KEY_SMALL:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                        break;
+                    case ITEM_KEY_BOSS:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                        break;
+                    case ITEM_DUNGEON_MAP:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[j].id, DrawDungeonItem));
+                        break;
+                    case ITEM_COMPASS:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, dungeons[j].id, DrawDungeonItem));
+                        break;
+                }
             } else {
                 dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             }
         }
     }
-    DrawItemsInRows(dungeonItems, MIN(dungeons.size(), columns));
 
     if (dungeons.size() > columns) {
-        DrawDungeons(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
+        std::vector<ItemTrackerItem> nextDungeonItems = GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
+        dungeonItems.insert(dungeonItems.end(), nextDungeonItems.begin(), nextDungeonItems.end());
     }
+
+    return dungeonItems;
 }
 
 /* TODO: These need to be moved to a common imgui file */
@@ -588,8 +618,8 @@ void DrawItemTracker(bool& open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
         return;
     }
-    int iconSize = CVar_GetS32("gItemTrackerIconSize", 32);
-    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 7);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
     int comboButton1Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton1", 6)];
     int comboButton2Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton2", 8)];
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
@@ -604,30 +634,41 @@ void DrawItemTracker(bool& open) {
             (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) ||
             (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 1) == 1)
         ) {
-            BeginFloatingWindows("Item Tracker##main window");
+            std::vector<ItemTrackerItem> mainWindowItems = {};
             if (CVar_GetS32("gItemTrackerInventoryItemsDisplayType", 1) == 1) {
-                DrawItemsInRows(inventoryItems);
+                mainWindowItems.insert(mainWindowItems.end(), inventoryItems.begin(), inventoryItems.end());
             }
             if (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 1) {
-                DrawItemsInRows(equipmentItems);
+                mainWindowItems.insert(mainWindowItems.end(), equipmentItems.begin(), equipmentItems.end());
             }
             if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) {
-                DrawItemsInRows(miscItems);
+                mainWindowItems.insert(mainWindowItems.end(), miscItems.begin(), miscItems.end());
             }
             if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 1) {
                 if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) {
-                    ImGui::SameLine(iconSize * 3);
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + iconSpacing * 3);
+                    mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
                 }
-                DrawItemsInRows(dungeonRewardStones);
-                DrawItemsInRows(dungeonRewardMedallions);
+                mainWindowItems.insert(mainWindowItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
+                mainWindowItems.insert(mainWindowItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
             }
             if (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) {
-                DrawItemsInRows(songItems);
+                if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1 && CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) != 1) {
+                    mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                    mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                    mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                    mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                }
+                mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
             }
             if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 1) {
-                DrawDungeons(itemTrackerDungeons);
+                std::vector<ItemTrackerItem> dungeonItemsTemp = GetDungeonItemsVector(itemTrackerDungeons);
+                dungeonItemsTemp[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+                mainWindowItems.insert(mainWindowItems.end(), dungeonItemsTemp.begin(), dungeonItemsTemp.end());
             }
+
+            BeginFloatingWindows("Item Tracker##main window");
+            DrawItemsInRows(mainWindowItems, 6);
+
             if (CVar_GetS32("gItemTrackerNotesDisplayType", 2) == 1 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
                 DrawNotes();
             }
@@ -642,20 +683,31 @@ void DrawItemTracker(bool& open) {
 
         if (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 2) {
             BeginFloatingWindows("Equipment Items Tracker");
-            DrawItemsInRows(equipmentItems);
+            DrawItemsInRows(equipmentItems, 3);
             EndFloatingWindows();
         }
 
         if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 2) {
             BeginFloatingWindows("Misc Items Tracker");
-            DrawItemsInRows(miscItems);
+            DrawItemsInRows(miscItems, 4);
             EndFloatingWindows();
         }
 
         if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
             BeginFloatingWindows("Dungeon Rewards Tracker");
-            DrawItemsInRows(dungeonRewardStones);
-            DrawItemsInRows(dungeonRewardMedallions);
+            if (CVar_GetS32("gItemTrackerDungeonRewardsCircle", 0) == 1) {
+                ImGui::BeginGroup();
+                DrawItemsInACircle(dungeonRewardMedallions);
+                ImGui::EndGroup();
+                ImGui::BeginGroup();
+                DrawItemsInRows(dungeonRewardStones);
+                ImGui::EndGroup();
+            } else {
+                std::vector<ItemTrackerItem> dungeonRewardItems = {};
+                dungeonRewardItems.insert(dungeonRewardItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
+                dungeonRewardItems.insert(dungeonRewardItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
+                DrawItemsInRows(dungeonRewardItems, 3);
+            }
             EndFloatingWindows();
         }
 
@@ -668,16 +720,21 @@ void DrawItemTracker(bool& open) {
         if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
             BeginFloatingWindows("Dungeon Items Tracker");
             if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1)) {
-                DrawDungeons(itemTrackerDungeons, 13);
+                std::vector<ItemTrackerItem> dungeonItemsTemp = GetDungeonItemsVector(itemTrackerDungeons, 12);
+                dungeonItemsTemp[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+                DrawItemsInRows(dungeonItemsTemp, 12);
             } else {
-                DrawDungeons(itemTrackerDungeons);
+                std::vector<ItemTrackerItem> dungeonItemsTemp = GetDungeonItemsVector(itemTrackerDungeons);
+                dungeonItemsTemp[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+                DrawItemsInRows(dungeonItemsTemp);
             }
             EndFloatingWindows();
         }
 
         if (CVar_GetS32("gItemTrackerNotesDisplayType", 2) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+            ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
-            DrawNotes();
+            DrawNotes(true);
             EndFloatingWindows();
         }
     }
@@ -729,8 +786,8 @@ void DrawItemTrackerOptions(bool& open) {
         PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode", 0);
     }
     PaddedSeparator();
-    SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 32, true);
-    SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 7, true);
+    SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
+    SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
     PaddedEnhancementCheckbox("Display \"Current/Max\" values", "gItemTrackerDisplayCurrentMax", 0);
 
     ImGui::TableNextColumn();
@@ -739,13 +796,17 @@ void DrawItemTrackerOptions(bool& open) {
     LabeledComboBoxRightAligned("Equipment", "gItemTrackerEquipmentItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
     LabeledComboBoxRightAligned("Misc", "gItemTrackerMiscItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
     LabeledComboBoxRightAligned("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+        PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", 1);
+    }
     LabeledComboBoxRightAligned("Songs", "gItemTrackerSongsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
     LabeledComboBoxRightAligned("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 2);
     if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) != 0) {
         if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
             PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", 1);
         }
-        PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
+        // TODO: Re-add this, kinda complicated
+        // PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
     }
 
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {

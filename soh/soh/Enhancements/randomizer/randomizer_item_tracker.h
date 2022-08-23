@@ -22,14 +22,5 @@ typedef struct ItemTrackerItem {
 
 typedef struct ItemTrackerDungeon {
     uint32_t id;
-    std::string shortName;
-    bool hasMap;
-    bool hasCompass;
-    bool hasBossKey;
-    bool hasSmallKey;
+    std::vector<uint32_t> items;
 } ItemTrackerDungeon;
-
-#define ITEM_TRACKER_DUNGEON(id, shortName, hasMap, hasCompass, hasBossKey, hasSmallKey)  \
-    {                                                                                     \
-        id, shortName, hasMap, hasCompass, hasBossKey, hasSmallKey                        \
-    }
