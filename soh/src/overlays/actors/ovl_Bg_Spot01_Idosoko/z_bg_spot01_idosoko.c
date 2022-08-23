@@ -47,7 +47,7 @@ void BgSpot01Idosoko_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     CollisionHeader_GetVirtual(&gKakarikoBOTWStoneCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
-    if (!LINK_IS_ADULT || gSaveContext.n64ddFlag) {
+    if (gSaveContext.eventChkInf[6] &0x80 && gSaveContext.n64ddFlag || !LINK_IS_ADULT && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->dyna.actor);
     } else {
         BgSpot01Idosoko_SetupAction(this, func_808ABF54);
