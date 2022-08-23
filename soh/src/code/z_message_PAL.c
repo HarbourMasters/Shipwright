@@ -895,8 +895,8 @@ void Message_HandleOcarina(GlobalContext* globalCtx) {
         } else if (msgCtx->ocarinaAction == OCARINA_ACTION_SCARECROW_LONG_PLAYBACK) {
             // "Recording Playback / Recording Playback / Recording Playback / Recording Playback -> "
             osSyncPrintf("録音再生 録音再生 録音再生 録音再生  -> ");
-            Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
-            Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+            Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
+            Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
             msgCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
             sOcarinaNoteBufPos = sOcarinaNoteBufLen = 0;
             msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos;
@@ -911,8 +911,8 @@ void Message_HandleOcarina(GlobalContext* globalCtx) {
         } else if (msgCtx->ocarinaAction == OCARINA_ACTION_SCARECROW_PLAYBACK) {
             // "8 Note Playback / 8 Note Playback / 8 Note Playback -> "
             osSyncPrintf("８音再生 ８音再生 ８音再生  -> ");
-            Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
-            Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+            Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
+            Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
             msgCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
             sOcarinaNoteBufPos = sOcarinaNoteBufLen = 0;
             msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos;
@@ -1948,8 +1948,8 @@ void Message_StartOcarina(GlobalContext* globalCtx, u16 ocarinaActionId) {
     } else if (ocarinaActionId == OCARINA_ACTION_SCARECROW_LONG_PLAYBACK) {
         // "?????Recording Playback / Recording Playback / Recording Playback / Recording Playback -> "
         osSyncPrintf("?????録音再生 録音再生 録音再生 録音再生  -> ");
-        Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
-        Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+        Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
+        Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
         msgCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
         sOcarinaNoteBufPos = sOcarinaNoteBufLen = 0;
         msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos;
@@ -2234,7 +2234,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
             case MSGMODE_OCARINA_STARTING:
             case MSGMODE_SONG_DEMONSTRATION_STARTING:
             case MSGMODE_SONG_PLAYBACK_STARTING:
-                Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 msgCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
                 msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos = 0;
                 globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_01;
@@ -2675,12 +2675,12 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
                     Message_DrawText(globalCtx, &gfx);
-                    Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
-                    Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                    Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
+                    Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                     Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
                 } else {
-                    Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
-                    Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                    Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
+                    Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 }
                 if (msgCtx->lastPlayedSong != OCARINA_SONG_SCARECROW) {
                     Audio_PlayFanfare(sOcarinaSongFanfares[msgCtx->lastPlayedSong]);
@@ -2710,7 +2710,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     } else if (msgCtx->ocarinaAction == OCARINA_ACTION_TEACH_STORMS) {
                         Audio_OcaSetInstrument(5);
                     } else {
-                        Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                        Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                     }
                     // "Example Performance"
                     osSyncPrintf("模範演奏=%x\n", msgCtx->ocarinaAction - OCARINA_ACTION_TEACH_MINUET);
@@ -2871,7 +2871,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 // "Scarecrow Recording Initialization"
                 osSyncPrintf("案山子録音 初期化\n");
                 Audio_OcaSetRecordingState(1);
-                Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 msgCtx->ocarinaStaff = Audio_OcaGetRecordingStaff();
                 msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos = 0;
                 sOcarinaNoteBufLen = 0;
@@ -2959,7 +2959,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 break;
             case MSGMODE_SCARECROW_RECORDING_START:
                 Audio_OcaSetRecordingState(2);
-                Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 msgCtx->msgMode = MSGMODE_SCARECROW_RECORDING_ONGOING;
                 Message_DrawText(globalCtx, &gfx);
                 break;
@@ -3005,7 +3005,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
                 break;
             case MSGMODE_MEMORY_GAME_START:
-                Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 Audio_OcaSetInstrument(CVar_GetS32("gFluteSFX",6));
                 Audio_OcaMemoryGameStart(gSaveContext.ocarinaGameRoundNum);
                 msgCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
@@ -3106,7 +3106,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 }
                 break;
             case MSGMODE_FROGS_START:
-                Audio_OcaSetInstrument(Cvar_GetS32("gOcarinaSFX",1));
+                Audio_OcaSetInstrument(CVar_GetS32("gOcarinaSFX",1));
                 msgCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
                 msgCtx->ocarinaStaff->pos = sOcarinaNoteBufPos = 0;
                 globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_01;
