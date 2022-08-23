@@ -34,10 +34,10 @@ MTL::Device* get_layer_device(void* layer)
 
 CA::MetalDrawable* get_layer_next_drawable(void* layer)
 {
-  CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
-  id <CAMetalDrawable> metalDrawable = [metalLayer nextDrawable];
-  CA::MetalDrawable* metalCppDrawable = (__bridge CA::MetalDrawable*)metalDrawable;
-  return metalCppDrawable;
+    CAMetalLayer* metalLayer = (__bridge CAMetalLayer*) layer;
+    id <CAMetalDrawable> metalDrawable = [metalLayer nextDrawable];
+    CA::MetalDrawable* metalCppDrawable = (__bridge CA::MetalDrawable*)metalDrawable;
+    return metalCppDrawable;
 }
 
 void set_command_buffer_label(MTL::CommandBuffer* command_buffer, int framebuffer_index) {
