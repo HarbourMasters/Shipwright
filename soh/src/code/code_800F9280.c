@@ -97,6 +97,7 @@ typedef enum {
 } SeqCmdType;
 
 void Audio_ProcessSeqCmd(u32 cmd) {
+    CVar_SetS32("gCMD", cmd);
     s32 pad[2];
     u16 fadeTimer;
     u16 channelMask;
@@ -371,12 +372,18 @@ void Audio_QueueSeqCmd(u32 cmd)
     u32 seqMask = ((1 << 16) - 1);
     u16 oldSeqId = (cmd & seqMask);
     u16 newSeqId = getReplacementSeq(oldSeqId);
-    if (newSeqId != oldSeqId) {
-        cmd = (cmd & ~seqMask) | newSeqId;
-    } 
-
-    sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
-}
+        if (newSeqId != oldSeqId) {
+            if (oldSeqId == 0x2) {
+                if (cmd == 2) {
+                    cmd = newSeqId;
+                }
+            }
+            else {
+                cmd = (cmd & ~seqMask) | newSeqId;
+            }
+        }
+        sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
+    }
 
 void Audio_ProcessSeqCmds(void) {
     while (sSeqCmdWrPos != sSeqCmdRdPos) {
