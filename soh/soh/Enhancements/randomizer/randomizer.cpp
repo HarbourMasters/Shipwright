@@ -28,6 +28,27 @@ const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 
+static const char* englishRupeeNames[44] = {
+    "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
+    "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
+    "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
+    "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
+    "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
+    "Shillings", "Pounds",    "Glimmer",     "Potch"
+};
+
+static const char* germanRupeeNames[1] = { 
+    "Rubine"
+};
+
+static const char* frenchRupeeNames[36] = {
+    "Rubis",       "Bitcoin", "Bananes",   "Euros",     "Dollars", "Émeraudes",  "Joyaux",   "Diamants",
+    "Balles",      "Pokémon", "Pièces",    "Lunes",     "Étoiles", "Dogecoin",   "Anneaux",  "Radis",
+    "Pokédollars", "Zennies", "Pépètes",   "Mailles",   "Éthers",  "Clochettes", "Capsules", "Gils",
+    "Champignons", "Blés",    "Halos",     "Munnies",   "Orens",   "Florens",    "Crédits",  "Galds",
+    "Bling",       "Orbes",   "Baguettes", "Croissants"
+};
+
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
     gSeedTextures[0] = bowSprite;
@@ -4650,22 +4671,6 @@ void CreateRupeeMessages() {
 }
 
 std::string Randomizer::InsertRupeeName(std::string message, int language) {
-    const char* englishRupeeNames[44] = {
-        "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
-        "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
-        "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
-        "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
-        "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
-        "Shillings", "Pounds",    "Glimmer",     "Potch"
-    };
-    const char* germanRupeeNames[1] = { "Rubine" };
-    const char* frenchRupeeNames[36] = {
-        "Rubis",       "Bitcoin", "Bananes",   "Euros",     "Dollars", "Émeraudes",  "Joyaux",   "Diamants",
-        "Balles",      "Pokémon", "Pièces",    "Lunes",     "Étoiles", "Dogecoin",   "Anneaux",  "Radis",
-        "Pokédollars", "Zennies", "Pépètes",   "Mailles",   "Éthers",  "Clochettes", "Capsules", "Gils",
-        "Champignons", "Blés",    "Halos",     "Munnies",   "Orens",   "Florens",    "Crédits",  "Galds",
-        "Bling",       "Orbes",   "Baguettes", "Croissants"
-    };
     int randomIndex;
     std::string replaceWith;
     switch (language) {
