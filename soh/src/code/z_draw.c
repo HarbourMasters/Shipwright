@@ -790,15 +790,20 @@ void GetItem_DrawOpa0(GlobalContext* globalCtx, s16 drawId) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
+
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
     if (color_slot >= 0) {
         gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
         gsSPGrayscale(POLY_OPA_DISP++, true);
     }
+
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
+
     if (color_slot >= 0) {
         gsSPGrayscale(POLY_OPA_DISP++, false);
     }
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
@@ -823,27 +828,35 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
+
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
 
     if (color_slot == 6) { // Ganon's Boss Key
         gsDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
         gsSPGrayscale(POLY_OPA_DISP++, true);
     }
+
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
+
     if (color_slot == 6) { // Ganon's Boss Key
         gsSPGrayscale(POLY_OPA_DISP++, false);
     }
 
     func_80093D84(globalCtx->state.gfxCtx);
+
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
     if (color_slot >= 0) {
         gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
         gsSPGrayscale(POLY_XLU_DISP++, true);
     }
+
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
+
     if (color_slot >= 0) {
         gsSPGrayscale(POLY_XLU_DISP++, false);
     }
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
