@@ -316,6 +316,12 @@ namespace Ship {
         return fpath;
 #endif
 
+#ifdef __linux__
+        char* fpath = std::getenv("SHIP_HOME");
+        if (fpath != NULL)
+            return std::string(fpath);
+#endif
+
         return ".";
     }
 
