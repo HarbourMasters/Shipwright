@@ -294,6 +294,11 @@ void Gameplay_Init(GameState* thisx) {
                 break;
             }
 
+            else if (gSaveContext.isfaroreswind == 1) {
+                gSaveContext.isfaroreswind = 0;
+                break;
+            }
+
             else if (gSaveContext.isdebugwarp == 1) {
                 gSaveContext.isdebugwarp = 0;
                 break;
@@ -307,7 +312,7 @@ void Gameplay_Init(GameState* thisx) {
                 if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x0578) {
                     gSaveContext.isyounglinkfountain = 1;
                     gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;//continue?
+                    break;
 
                 } 
 
@@ -1954,7 +1959,6 @@ void Gameplay_SaveSceneFlags(GlobalContext* globalCtx) {
 void Gameplay_SetRespawnData(GlobalContext* globalCtx, s32 respawnMode, s16 entranceIndex, s32 roomIndex,
                              s32 playerParams, Vec3f* pos, s16 yaw) {
     RespawnData* respawnData = &gSaveContext.respawn[respawnMode];
-
     respawnData->entranceIndex = entranceIndex;
     respawnData->roomIndex = roomIndex;
     respawnData->pos = *pos;

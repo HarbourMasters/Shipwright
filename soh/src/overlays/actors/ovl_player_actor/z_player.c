@@ -13890,6 +13890,7 @@ void func_8085063C(Player* this, GlobalContext* globalCtx) {
             globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
             globalCtx->fadeTransition = 5;
             func_80088AF0(globalCtx);
+            gSaveContext.isfaroreswind = 1;
             return;
         }
 
