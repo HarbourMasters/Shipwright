@@ -452,7 +452,7 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
         statsWindowOpen = CVar_GetS32("gStatsEnabled", 0);
-        CVar_RegisterS32("gRandoRandomRupeeNames", 1);
+        CVar_RegisterS32("gRandomizeRupeeNames", 1);
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
     #endif
@@ -1913,7 +1913,7 @@ namespace SohImGui {
                         "(medallions/stones/songs). Note that these fanfares\n"
                         "are longer than usual."
                     );
-                    PaddedEnhancementCheckbox("Random Rupee Names", "gRandoRandomRupeeNames", true, false);
+                    PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
                     Tooltip(
                         "When obtaining rupees, randomize what the rupee is called in the textbox."
                     );
