@@ -1223,7 +1223,6 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 
             color_slot = 0;
             break;
         case GI_BOLERO_OF_FIRE:
-        case GI_DOUBLE_DEFENSE:
             color_slot = 1;
             break;
         case GI_SERENADE_OF_WATER:
@@ -1246,18 +1245,21 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 
         case GI_NUT_UPGRADE_40:
             color_slot = 7;
             break;
+        case GI_DOUBLE_DEFENSE:
+            color_slot = 8;
+            break;
     }
 
     s16* colors[9][3] = {
         { 34, 255, 76 },   // Minuet and Magic Upgrades Colors
-        { 177, 35, 35 },   // Bolero and Double Defense Colors
+        { 177, 35, 35 },   // Bolero Color
         { 115, 251, 253 }, // Serenade Color
         { 177, 122, 35 },  // Requiem Color
         { 177, 28, 212 },  // Nocturne Color
         { 255, 255, 92 },  // Prelude Color
         { 31, 152, 49 },   // Stick Upgrade Color
         { 222, 182, 20 },  // Nut Upgrade Color
-        { 255, 255, 255 }  // White Color placeholder
+        { 255, 255, 255 }  // Double Defense Color
     };
 
     s16* colorsEnv[9][3] = {
