@@ -18,7 +18,7 @@ typedef enum {
 
 typedef struct {
     u16 giid;
-    u16 iid;
+    ItemID iid;
     std::string english;
     std::string german;
     std::string french;
