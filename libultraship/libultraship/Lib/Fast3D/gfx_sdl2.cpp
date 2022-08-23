@@ -31,11 +31,6 @@
 #include "../../Cvar.h"
 #include "../../Hooks.h"
 
-#ifndef _LANGUAGE_C
-#define _LANGUAGE_C
-#endif
-#include <PR/ultra64/gbi.h>
-
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
@@ -135,18 +130,6 @@ static void set_fullscreen(bool on, bool call_callback) {
     }
 }
 
-static int resizingEventWatcher(void* data, SDL_Event* event) {
-    if (event->type == SDL_WINDOWEVENT &&
-        event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-        SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
-        if (win == (SDL_Window*)data) {
-            gfx_get_current_rendering_api()->on_resize();
-            SPDLOG_DEBUG("Resizing");
-        }
-    }
-    return 0;
-}
-
 static uint64_t previous_time;
 #ifdef _WIN32
 static HANDLE timer;
@@ -161,32 +144,33 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+    SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
 
 #if defined(ENABLE_METAL)
-    bool metal_enabled = true;
+    bool use_opengl = strcmp(gfx_api_name, "OpenGL") == 0;
 #else
-    bool metal_enabled = false;
+    bool use_opengl = true;
 #endif
 
-    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
+    if (use_opengl) {
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     } else {
         SDL_SetHint(SDL_HINT_RENDER_DRIVER, "metal");
     }
 
+    if (use_opengl) {
 #if defined(__APPLE__)
-     if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    }
 #elif defined(__SWITCH__)
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
+    }
 
 #ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
@@ -204,7 +188,7 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
 
     Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
 
-    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
+    if (use_opengl) {
         flags = flags | SDL_WINDOW_OPENGL;
     } else {
         flags = flags | SDL_WINDOW_METAL;
@@ -212,7 +196,7 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 
-    if (strcmp(gfx_api_name, "OpenGL") == 0 || !metal_enabled) {
+    if (use_opengl) {
 #ifndef __SWITCH__
         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
@@ -227,7 +211,8 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
         }
 #endif
         SDL_GL_SetSwapInterval(1);
-    } else {
+    }
+    else {
         renderer  = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (renderer == NULL) {
             SPDLOG_ERROR("Error creating renderer: {}", SDL_GetError());
@@ -235,10 +220,10 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
         }
 
         SDL_GetRendererOutputSize(renderer, &window_width, &window_height);
+#ifdef ENABLE_METAL // Redundant but needed for compilation
         Metal_SetRenderer(renderer);
+#endif
     }
-
-    SDL_AddEventWatch(resizingEventWatcher, wnd);
 
     SohImGui::WindowImpl window_impl;
     window_impl.backend = SohImGui::Backend::SDL;
@@ -290,7 +275,6 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 #endif
     Ship::ExecuteHooks<Ship::ExitGame>();
 
-    SDL_DelEventWatch(resizingEventWatcher, wnd);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }

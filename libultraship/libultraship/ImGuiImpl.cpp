@@ -227,7 +227,6 @@ namespace SohImGui {
                 ImGui_ImplSDL2_InitForMetal(static_cast<SDL_Window*>(impl.sdl.window));
                 break;
             case SDLGfxApi::OpenGL:
-                SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
                 ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
                 break;
             }
