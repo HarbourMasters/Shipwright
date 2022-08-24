@@ -89,7 +89,6 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
-    // { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } }, // We're adding this manually for space
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
@@ -101,7 +100,6 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
     { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
-    // { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } }, // We're adding this manually for space
 };
 
 
@@ -118,7 +116,6 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
     { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
-    // { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } }, // We're adding this manually for space
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
@@ -684,14 +681,17 @@ void UpdateVectors() {
     if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
         if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
         } else {
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
             dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
         }
     } else {
         if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
