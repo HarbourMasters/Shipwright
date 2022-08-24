@@ -1,5 +1,5 @@
 #include "SDLController.h"
-#include "GlobalCtx2.h"
+
 #include "spdlog/spdlog.h"
 #include "Window.h"
 #include <Utils/StringHelper.h>

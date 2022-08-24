@@ -88,6 +88,7 @@ void EnNiwLady_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("\n\n");
     this->actionFunc = func_80AB9F24;
     thisx->uncullZoneForward = 600.0f;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 }
 
 void EnNiwLady_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -304,12 +305,12 @@ void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
         if (!(gSaveContext.itemGetInf[0] & 0x1000)) {
             this->actor.parent = NULL;
 
-            if (gSaveContext.n64ddFlag) {
-                s32 itemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
-                func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 50.0f);
-            } else {
+            if (!gSaveContext.n64ddFlag) {
                 this->getItemId = GI_BOTTLE;
                 func_8002F434(&this->actor, globalCtx, GI_BOTTLE, 100.0f, 50.0f);
+            } else {
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 100.0f, 50.0f);
             }
 
             this->actionFunc = func_80ABAC00;
@@ -394,11 +395,12 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
 
-                if (gSaveContext.n64ddFlag) {
-                    s32 itemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    func_8002F434(&this->actor, globalCtx, itemId, 200.0f, 100.0f);
-                } else {
+                if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
+                } else {
+                    // TODO: get-item-rework Adult trade sequence
+                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
                 }
 
                 this->actionFunc = func_80ABAC00;
@@ -455,10 +457,14 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
             getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
 
             if (gSaveContext.n64ddFlag && getItemId == GI_POCKET_EGG) {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                // TODO: get-item-rework Adult trade sequence
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
             }
         }
-        func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);
+        if (this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);
+        }
     }
 }
 

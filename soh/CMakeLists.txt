@@ -218,6 +218,7 @@ set(Header_Files__soh__Enhancements__randomizer__3drando
     "soh/Enhancements/randomizer/3drando/trial.hpp"
     "soh/Enhancements/randomizer/3drando/utils.hpp"
 )
+
 source_group("Header Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Header_Files__soh__Enhancements__randomizer__3drando})
 
 set(Header_Files__soh__Enhancements__custom_message
@@ -226,6 +227,13 @@ set(Header_Files__soh__Enhancements__custom_message
 )
 
 source_group("Header Files\\soh\\Enhancements\\custom-message" FILES ${Header_Files__soh__Enhancements__custom_message})
+
+set(Header_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.h"
+    "soh/Enhancements/item-tables/ItemTableTypes.h"
+)
+
+source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
@@ -348,6 +356,12 @@ set(Source_Files__soh__Enhancements__custom_message
 )
 
 source_group("Source Files\\soh\\Enhancements\\custom-message" FILES ${Source_Files__soh__Enhancements__custom_message})
+
+set(Source_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1558,6 +1572,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
+    ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
@@ -1568,6 +1583,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
+    ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
@@ -1738,15 +1754,15 @@ if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /sdl-;
-                /w
+                /w;
+                /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl-;
                 /Gy;
                 /W3
             >
+            /sdl-;
             /permissive-;
             /MP;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -1981,14 +1997,6 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
-endif()
-
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-install(CODE "
-    include(InstallRequiredSystemLibraries)
-    include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
-    ")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")

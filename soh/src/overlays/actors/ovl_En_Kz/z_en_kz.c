@@ -453,6 +453,7 @@ void EnKz_Wait(EnKz* this, GlobalContext* globalCtx) {
 }
 
 void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
     f32 xzRange;
     f32 yRange;
@@ -464,17 +465,23 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
     } else {
         if (gSaveContext.n64ddFlag) {
             if (this->isTrading) {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                getItemId = getItemEntry.getItemId;
                 Flags_SetTreasure(globalCtx, 0x1F);
             } else {
-                getItemId = Randomizer_GetItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+                getItemId = getItemEntry.getItemId;
             }
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
         }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
-        func_8002F434(&this->actor, globalCtx, getItemId, xzRange, yRange);
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, getItemId, xzRange, yRange);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzRange, yRange);
+        }
     }
 }
 

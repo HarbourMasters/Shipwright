@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <Utils/File.h>
-#include "GlobalCtx2.h"
+#include "Window.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
@@ -144,7 +144,7 @@ template <typename Numeric> bool is_number(const std::string& s) {
 }
 
 void CVar_LoadLegacy() {
-    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
+    auto cvarsConfig = Ship::Window::GetPathRelativeToAppDirectory("cvars.cfg");
     if (File::Exists(cvarsConfig)) {
         const auto lines = File::ReadAllLines(cvarsConfig);
 
@@ -191,7 +191,7 @@ void CVar_LoadLegacy() {
 
 
 extern "C" void CVar_Load() {
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
+    std::shared_ptr<Mercury> pConf = Ship::Window::GetInstance()->GetConfig();
     pConf->reload();
 
     for (const auto& item : pConf->rjson["CVars"].items()) {
@@ -235,7 +235,7 @@ extern "C" void CVar_Load() {
 
 extern "C" void CVar_Save()
 {
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
+    std::shared_ptr<Mercury> pConf = Ship::Window::GetInstance()->GetConfig();
 
     for (const auto& cvar : cvars) {
         const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
