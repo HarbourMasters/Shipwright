@@ -279,6 +279,14 @@ namespace Ship {
             x *= scale;
             y *= scale;
         }
+
+        if (isRightStick) {
+            getRightStickX(virtualSlot) = x;
+            getRightStickY(virtualSlot) = y;
+        } else {
+            getLeftStickX(virtualSlot) = x;
+            getLeftStickY(virtualSlot) = y;
+        }
     }
 
     void WiiUGamepad::CreateDefaultBinding(int32_t virtualSlot) {

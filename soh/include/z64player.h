@@ -2,16 +2,9 @@
 #define Z64PLAYER_H
 
 #include "z64actor.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 struct Player;
-
-typedef struct {
-    /* 0x00 */ u8 itemId;
-    /* 0x01 */ u8 field; // various bit-packed data
-    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
-    /* 0x03 */ u8 textId;
-    /* 0x04 */ u16 objectId;
-} GetItemEntry; // size = 0x06
 
 extern GetItemEntry sGetItemTable[195];
 
@@ -374,6 +367,7 @@ typedef enum {
     FLAG_SCENE_TREASURE,
     FLAG_SCENE_CLEAR,
     FLAG_SCENE_COLLECTIBLE,
+    FLAG_EVENT_CHECK_INF,
     FLAG_COW_MILKED
 } FlagType;
 
@@ -639,6 +633,7 @@ typedef struct Player {
     /* 0x0A89 */ bool       pendingIceTrap;
     /* 0x0A95 */ PendingFlag pendingFlag;
     /* 0x0AA1 */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
-} Player; // size = 0xAA2
+    /* 0x0AA2 */ GetItemEntry getItemEntry;
+} Player; // size = 0xAAA
 
 #endif

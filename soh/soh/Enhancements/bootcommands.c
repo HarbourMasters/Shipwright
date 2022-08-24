@@ -25,6 +25,9 @@ void BootCommands_Init()
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
     CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
+#if defined(__SWITCH__) || defined(__WIIU__)
+    CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
+#endif
 }
 
 //void BootCommands_ParseBootArgs(char* str)

@@ -947,6 +947,7 @@ void func_80A40B1C(EnGo* this, GlobalContext* globalCtx) {
 void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
     f32 xzDist;
     f32 yDist;
+    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
@@ -957,21 +958,30 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
         this->unk_20C = 0;
         if ((this->actor.params & 0xF0) == 0x90) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
-                getItemId = gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS) : GI_SWORD_BGS;
+                if (!gSaveContext.n64ddFlag) {
+                    getItemId = GI_SWORD_BGS;
+                } else {
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
+                    getItemId = getItemEntry.getItemId;
+                }
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                getItemId = GI_CLAIM_CHECK;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    getItemId = getItemEntry.getItemId;
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                } else {
+                    getItemId = GI_CLAIM_CHECK;
                 }
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                getItemId = GI_PRESCRIPTION;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                    getItemId = getItemEntry.getItemId;
+                } else {
+                    getItemId = GI_PRESCRIPTION;
                 }
             }
         }
@@ -982,7 +992,11 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
 
         yDist = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzDist = this->actor.xzDistToPlayer + 1.0f;
-        func_8002F434(&this->actor, globalCtx, getItemId, xzDist, yDist);
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, getItemId, xzDist, yDist);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, xzDist, yDist);
+        }
     }
 }
 

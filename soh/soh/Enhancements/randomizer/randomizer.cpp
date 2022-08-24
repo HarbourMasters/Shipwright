@@ -16,6 +16,8 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
 
@@ -122,195 +124,6 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_EYEDROPS, ITEM_EYEDROPS },
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
 };
-
-std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
-                                               { GI_BOMBS_5, GID_BOMB },
-                                               { GI_NUTS_5, GID_NUTS },
-                                               { GI_BOMBCHUS_10, GID_BOMBCHU },
-                                               { GI_BOW, GID_BOW },
-                                               { GI_SLINGSHOT, GID_SLINGSHOT },
-                                               { GI_BOOMERANG, GID_BOOMERANG },
-                                               { GI_STICKS_1, GID_STICK },
-                                               { GI_HOOKSHOT, GID_HOOKSHOT },
-                                               { GI_LONGSHOT, GID_LONGSHOT },
-                                               { GI_LENS, GID_LENS },
-                                               { GI_LETTER_ZELDA, GID_LETTER_ZELDA },
-                                               { GI_OCARINA_OOT, GID_OCARINA_TIME },
-                                               { GI_HAMMER, GID_HAMMER },
-                                               { GI_COJIRO, GID_COJIRO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BOTTLE, GID_BOTTLE },
-                                               { GI_POTION_RED, GID_POTION_RED },
-                                               { GI_POTION_GREEN, GID_POTION_GREEN },
-                                               { GI_POTION_BLUE, GID_POTION_BLUE },
-                                               { GI_FAIRY, GID_FAIRY },
-                                               { GI_MILK_BOTTLE, GID_MILK },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BEAN, GID_BEAN },
-                                               { GI_MASK_SKULL, GID_MASK_SKULL },
-                                               { GI_MASK_SPOOKY, GID_MASK_SPOOKY },
-                                               { GI_CHICKEN, GID_CHICKEN },
-                                               { GI_MASK_KEATON, GID_MASK_KEATON },
-                                               { GI_MASK_BUNNY, GID_MASK_BUNNY },
-                                               { GI_MASK_TRUTH, GID_MASK_TRUTH },
-                                               { GI_POCKET_EGG, GID_EGG },
-                                               { GI_POCKET_CUCCO, GID_CHICKEN },
-                                               { GI_ODD_MUSHROOM, GID_ODD_MUSHROOM },
-                                               { GI_ODD_POTION, GID_ODD_POTION },
-                                               { GI_SAW, GID_SAW },
-                                               { GI_SWORD_BROKEN, GID_SWORD_BROKEN },
-                                               { GI_PRESCRIPTION, GID_PRESCRIPTION },
-                                               { GI_FROG, GID_FROG },
-                                               { GI_EYEDROPS, GID_EYEDROPS },
-                                               { GI_CLAIM_CHECK, GID_CLAIM_CHECK },
-                                               { GI_SWORD_KOKIRI, GID_SWORD_KOKIRI },
-                                               { GI_SWORD_KNIFE, GID_SWORD_BGS },
-                                               { GI_SHIELD_DEKU, GID_SHIELD_DEKU },
-                                               { GI_SHIELD_HYLIAN, GID_SHIELD_HYLIAN },
-                                               { GI_SHIELD_MIRROR, GID_SHIELD_MIRROR },
-                                               { GI_TUNIC_GORON, GID_TUNIC_GORON },
-                                               { GI_TUNIC_ZORA, GID_TUNIC_ZORA },
-                                               { GI_BOOTS_IRON, GID_BOOTS_IRON },
-                                               { GI_BOOTS_HOVER, GID_BOOTS_HOVER },
-                                               { GI_QUIVER_40, GID_QUIVER_40 },
-                                               { GI_QUIVER_50, GID_QUIVER_50 },
-                                               { GI_BOMB_BAG_20, GID_BOMB_BAG_20 },
-                                               { GI_BOMB_BAG_30, GID_BOMB_BAG_30 },
-                                               { GI_BOMB_BAG_40, GID_BOMB_BAG_40 },
-                                               { GI_GAUNTLETS_SILVER, GID_GAUNTLETS_SILVER },
-                                               { GI_GAUNTLETS_GOLD, GID_GAUNTLETS_GOLD },
-                                               { GI_SCALE_SILVER, GID_SCALE_SILVER },
-                                               { GI_SCALE_GOLD, GID_SCALE_GOLDEN },
-                                               { GI_STONE_OF_AGONY, GID_STONE_OF_AGONY },
-                                               { GI_GERUDO_CARD, GID_GERUDO_CARD },
-                                               { GI_OCARINA_FAIRY, GID_OCARINA_FAIRY },
-                                               { GI_SEEDS_5, GID_SEEDS },
-                                               { GI_HEART_CONTAINER, GID_HEART_CONTAINER },
-                                               { GI_HEART_PIECE, GID_HEART_PIECE },
-                                               { GI_KEY_BOSS, GID_KEY_BOSS },
-                                               { GI_COMPASS, GID_COMPASS },
-                                               { GI_MAP, GID_DUNGEON_MAP },
-                                               { GI_KEY_SMALL, GID_KEY_SMALL },
-                                               { GI_MAGIC_SMALL, GID_MAGIC_SMALL },
-                                               { GI_MAGIC_LARGE, GID_MAGIC_LARGE },
-                                               { GI_WALLET_ADULT, GID_WALLET_ADULT },
-                                               { GI_WALLET_GIANT, GID_WALLET_GIANT },
-                                               { GI_WEIRD_EGG, GID_EGG },
-                                               { GI_HEART, GID_HEART },
-                                               { GI_ARROWS_SMALL, GID_ARROWS_SMALL },
-                                               { GI_ARROWS_MEDIUM, GID_ARROWS_MEDIUM },
-                                               { GI_ARROWS_LARGE, GID_ARROWS_LARGE },
-                                               { GI_RUPEE_GREEN, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED, GID_RUPEE_RED },
-                                               { GI_HEART_CONTAINER_2, GI_HEART_CONTAINER_2 },
-                                               { GI_MILK, GID_MILK },
-                                               { GI_MASK_GORON, GID_MASK_GORON },
-                                               { GI_MASK_ZORA, GID_MASK_ZORA },
-                                               { GI_MASK_GERUDO, GID_MASK_GERUDO },
-                                               { GI_BRACELET, GID_BRACELET },
-                                               { GI_RUPEE_PURPLE, GID_RUPEE_PURPLE },
-                                               { GI_RUPEE_GOLD, GID_RUPEE_GOLD },
-                                               { GI_SWORD_BGS, GID_SWORD_BGS },
-                                               { GI_ARROW_FIRE, GID_ARROW_FIRE },
-                                               { GI_ARROW_ICE, GID_ARROW_ICE },
-                                               { GI_ARROW_LIGHT, GID_ARROW_LIGHT },
-                                               { GI_SKULL_TOKEN, GID_SKULL_TOKEN },
-                                               { GI_DINS_FIRE, GID_DINS_FIRE },
-                                               { GI_FARORES_WIND, GID_FARORES_WIND },
-                                               { GI_NAYRUS_LOVE, GID_NAYRUS_LOVE },
-                                               { GI_BULLET_BAG_30, GID_BULLET_BAG },
-                                               { GI_BULLET_BAG_40, GID_BULLET_BAG },
-                                               { GI_STICKS_5, GID_STICK },
-                                               { GI_STICKS_10, GID_STICK },
-                                               { GI_NUTS_5_2, GID_NUTS },
-                                               { GI_NUTS_10, GID_NUTS },
-                                               { GI_BOMBS_1, GID_BOMB },
-                                               { GI_BOMBS_10, GID_BOMB },
-                                               { GI_BOMBS_20, GID_BOMB },
-                                               { GI_BOMBS_30, GID_BOMB },
-                                               { GI_SEEDS_30, GID_SEEDS },
-                                               { GI_BOMBCHUS_5, GID_BOMBCHU },
-                                               { GI_BOMBCHUS_20, GID_BOMBCHU },
-                                               { GI_FISH, GID_FISH },
-                                               { GI_BUGS, GID_BUG },
-                                               { GI_BLUE_FIRE, GID_BLUE_FIRE },
-                                               { GI_POE, GID_POE },
-                                               { GI_BIG_POE, GID_BIG_POE },
-                                               { GI_DOOR_KEY, GID_KEY_SMALL },
-                                               { GI_RUPEE_GREEN_LOSE, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE_LOSE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED_LOSE, GID_RUPEE_RED },
-                                               { GI_RUPEE_PURPLE_LOSE, GID_RUPEE_PURPLE },
-                                               { GI_HEART_PIECE_WIN, GID_HEART_PIECE },
-                                               { GI_STICK_UPGRADE_20, GID_STICK },
-                                               { GI_STICK_UPGRADE_30, GID_STICK },
-                                               { GI_NUT_UPGRADE_30, GID_NUTS },
-                                               { GI_NUT_UPGRADE_40, GID_NUTS },
-                                               { GI_BULLET_BAG_50, GID_BULLET_BAG_50 },
-                                               { GI_ZELDAS_LULLABY, GID_SONG_ZELDA },
-                                               { GI_EPONAS_SONG, GID_SONG_EPONA },
-                                               { GI_SARIAS_SONG, GID_SONG_SARIA },
-                                               { GI_SUNS_SONG, GID_SONG_SUN },
-                                               { GI_SONG_OF_TIME, GID_SONG_TIME },
-                                               { GI_SONG_OF_STORMS, GID_SONG_STORM },
-                                               { GI_MINUET_OF_FOREST, GID_SONG_MINUET },
-                                               { GI_BOLERO_OF_FIRE, GID_SONG_BOLERO },
-                                               { GI_SERENADE_OF_WATER, GID_SONG_SERENADE },
-                                               { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
-                                               { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
-                                               { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
-                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
-                                               { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
-                                               { GI_STONE_GORON, GID_GORON_RUBY },
-                                               { GI_STONE_ZORA, GID_ZORA_SAPPHIRE },
-                                               { GI_MEDALLION_FOREST, GID_MEDALLION_FOREST },
-                                               { GI_MEDALLION_FIRE, GID_MEDALLION_FIRE },
-                                               { GI_MEDALLION_WATER, GID_MEDALLION_WATER },
-                                               { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
-                                               { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
-                                               { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
-                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
-                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
-                                               { GI_GERUDO_FORTRESS_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_FOREST_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_FIRE_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_WATER_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_SPIRIT_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_SHADOW_TEMPLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_BOTTOM_OF_THE_WELL_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_GANONS_CASTLE_SMALL_KEY, GID_KEY_SMALL },
-                                               { GI_FOREST_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_FIRE_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_WATER_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_SPIRIT_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_SHADOW_TEMPLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_GANONS_CASTLE_BOSS_KEY, GID_KEY_BOSS },
-                                               { GI_DEKU_TREE_MAP, GID_DUNGEON_MAP },
-                                               { GI_DODONGOS_CAVERN_MAP, GID_DUNGEON_MAP },
-                                               { GI_JABU_JABUS_BELLY_MAP, GID_DUNGEON_MAP },
-                                               { GI_FOREST_TEMPLE_MAP, GID_DUNGEON_MAP },
-                                               { GI_FIRE_TEMPLE_MAP, GID_DUNGEON_MAP },
-                                               { GI_WATER_TEMPLE_MAP, GID_DUNGEON_MAP },
-                                               { GI_SPIRIT_TEMPLE_MAP, GID_DUNGEON_MAP },
-                                               { GI_SHADOW_TEMPLE_MAP, GID_DUNGEON_MAP },
-                                               { GI_BOTTOM_OF_THE_WELL_MAP, GID_DUNGEON_MAP },
-                                               { GI_ICE_CAVERN_MAP, GID_DUNGEON_MAP },
-                                               { GI_DEKU_TREE_COMPASS, GID_COMPASS },
-                                               { GI_DODONGOS_CAVERN_COMPASS, GID_COMPASS },
-                                               { GI_JABU_JABUS_BELLY_COMPASS, GID_COMPASS },
-                                               { GI_FOREST_TEMPLE_COMPASS, GID_COMPASS },
-                                               { GI_FIRE_TEMPLE_COMPASS, GID_COMPASS },
-                                               { GI_WATER_TEMPLE_COMPASS, GID_COMPASS },
-                                               { GI_SPIRIT_TEMPLE_COMPASS, GID_COMPASS },
-                                               { GI_SHADOW_TEMPLE_COMPASS, GID_COMPASS },
-                                               { GI_BOTTOM_OF_THE_WELL_COMPASS, GID_COMPASS },
-                                               { GI_ICE_CAVERN_COMPASS, GID_COMPASS },
-                                               { GI_ICE_TRAP, GID_RUPEE_GOLD },
-                                               { GI_ICE_TRAP, GID_MAXIMUM },
-                                               { GI_TEXT_0, GID_MAXIMUM } };
 
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "No Item", RG_NONE },
@@ -735,18 +548,6 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
 };
-
-s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
-    if (getItemIdToItemId.count(getItemId) == 0) {
-        return -1;
-    }
-
-    return getItemIdToItemId[getItemId];
-}
-
-s16 Randomizer::GetItemModelFromId(s16 itemId) {
-    return itemIdToModel[itemId];
-}
 
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
@@ -1301,16 +1102,16 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
     }
 }
 
-GetItemID Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    GetItemID itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
+s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    s16 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
     return itemId;
 }
 
-GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
+s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
+s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1364,6 +1165,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? GI_ARROW_ICE : GI_RUPEE_BLUE;
         case RG_LIGHT_ARROWS:
             return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? GI_ARROW_LIGHT : GI_RUPEE_BLUE;
+        
+        case RG_DOUBLE_DEFENSE:
+            return !gSaveContext.doubleDefense ? (GetItemID)RG_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
 
         case RG_GERUDO_MEMBERSHIP_CARD:
             return GI_GERUDO_CARD;
@@ -1373,14 +1177,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MAGIC_BEAN_PACK:
             return GI_BEAN; //todo make it 10 of them
 
-        case RG_DOUBLE_DEFENSE:
-            return !gSaveContext.doubleDefense ? GI_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
-
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
 
         case RG_ZELDAS_LETTER:
             return GI_LETTER_ZELDA;
+        case RG_RUTOS_LETTER:
+            return GI_LETTER_RUTO;
 
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
@@ -1503,9 +1306,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
-                    return GI_SINGLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                    return GI_DOUBLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_DOUBLE;
             }
             return GI_RUPEE_BLUE;
 
@@ -1525,126 +1328,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-        case RG_BOTTLE_WITH_RED_POTION:
-            return GI_BOTTLE_WITH_RED_POTION;
-        case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_BOTTLE_WITH_GREEN_POTION;
-        case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_BOTTLE_WITH_BLUE_POTION;
-        case RG_BOTTLE_WITH_FAIRY:
-            return GI_BOTTLE_WITH_FAIRY;
-        case RG_BOTTLE_WITH_FISH:
-            return GI_BOTTLE_WITH_FISH;
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BOTTLE_WITH_BLUE_FIRE;
-        case RG_BOTTLE_WITH_BUGS:
-            return GI_BOTTLE_WITH_BUGS;
-        case RG_BOTTLE_WITH_POE:
-            return GI_BOTTLE_WITH_POE;
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
-        case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BOTTLE_WITH_BIG_POE;
-
-        case RG_ZELDAS_LULLABY:
-            return GI_ZELDAS_LULLABY;
-        case RG_EPONAS_SONG:
-            return GI_EPONAS_SONG;
-        case RG_SARIAS_SONG:
-            return GI_SARIAS_SONG;
-        case RG_SUNS_SONG:
-            return GI_SUNS_SONG;
-        case RG_SONG_OF_TIME:
-            return GI_SONG_OF_TIME;
-        case RG_SONG_OF_STORMS:
-            return GI_SONG_OF_STORMS;
-
-        case RG_MINUET_OF_FOREST:
-            return GI_MINUET_OF_FOREST;
-        case RG_BOLERO_OF_FIRE:
-            return GI_BOLERO_OF_FIRE;
-        case RG_SERENADE_OF_WATER:
-            return GI_SERENADE_OF_WATER;
-        case RG_REQUIEM_OF_SPIRIT:
-            return GI_REQUIEM_OF_SPIRIT;
-        case RG_NOCTURNE_OF_SHADOW:
-            return GI_NOCTURNE_OF_SHADOW;
-        case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;
-
-        case RG_DEKU_TREE_MAP:
-            return GI_DEKU_TREE_MAP;
-        case RG_DODONGOS_CAVERN_MAP:
-            return GI_DODONGOS_CAVERN_MAP;
-        case RG_JABU_JABUS_BELLY_MAP:
-            return GI_JABU_JABUS_BELLY_MAP;
-        case RG_FOREST_TEMPLE_MAP:
-            return GI_FOREST_TEMPLE_MAP;
-        case RG_FIRE_TEMPLE_MAP:
-            return GI_FIRE_TEMPLE_MAP;
-        case RG_WATER_TEMPLE_MAP:
-            return GI_WATER_TEMPLE_MAP;
-        case RG_SPIRIT_TEMPLE_MAP:
-            return GI_SPIRIT_TEMPLE_MAP;
-        case RG_SHADOW_TEMPLE_MAP:
-            return GI_SHADOW_TEMPLE_MAP;
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-            return GI_BOTTOM_OF_THE_WELL_MAP;
-        case RG_ICE_CAVERN_MAP:
-            return GI_ICE_CAVERN_MAP;
-
-        case RG_DEKU_TREE_COMPASS:
-            return GI_DEKU_TREE_COMPASS;
-        case RG_DODONGOS_CAVERN_COMPASS:
-            return GI_DODONGOS_CAVERN_COMPASS;
-        case RG_JABU_JABUS_BELLY_COMPASS:
-            return GI_JABU_JABUS_BELLY_COMPASS;
-        case RG_FOREST_TEMPLE_COMPASS:
-            return GI_FOREST_TEMPLE_COMPASS;
-        case RG_FIRE_TEMPLE_COMPASS:
-            return GI_FIRE_TEMPLE_COMPASS;
-        case RG_WATER_TEMPLE_COMPASS:
-            return GI_WATER_TEMPLE_COMPASS;
-        case RG_SPIRIT_TEMPLE_COMPASS:
-            return GI_SPIRIT_TEMPLE_COMPASS;
-        case RG_SHADOW_TEMPLE_COMPASS:
-            return GI_SHADOW_TEMPLE_COMPASS;
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            return GI_BOTTOM_OF_THE_WELL_COMPASS;
-        case RG_ICE_CAVERN_COMPASS:
-            return GI_ICE_CAVERN_COMPASS;
-
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-            return GI_FOREST_TEMPLE_BOSS_KEY;
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-            return GI_FIRE_TEMPLE_BOSS_KEY;
-        case RG_WATER_TEMPLE_BOSS_KEY:
-            return GI_WATER_TEMPLE_BOSS_KEY;
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-            return GI_SPIRIT_TEMPLE_BOSS_KEY;
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-            return GI_SHADOW_TEMPLE_BOSS_KEY;
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            return GI_GANONS_CASTLE_BOSS_KEY;
-
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-            return GI_FOREST_TEMPLE_SMALL_KEY;
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-            return GI_FIRE_TEMPLE_SMALL_KEY;
-        case RG_WATER_TEMPLE_SMALL_KEY:
-            return GI_WATER_TEMPLE_SMALL_KEY;
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            return GI_SPIRIT_TEMPLE_SMALL_KEY;
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-            return GI_SHADOW_TEMPLE_SMALL_KEY;
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            return GI_BOTTOM_OF_THE_WELL_SMALL_KEY;
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            return GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY;
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-            return GI_GERUDO_FORTRESS_SMALL_KEY;
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            return GI_GANONS_CASTLE_SMALL_KEY;
             
         // todo test this with keys in own dungeon
         case RG_TREASURE_GAME_SMALL_KEY:
@@ -1661,26 +1344,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_GERUDO_FORTRESS_KEY_RING:
         case RG_GANONS_CASTLE_KEY_RING:
             return GI_RUPEE_BLUE;
-
-        case RG_KOKIRI_EMERALD:
-            return GI_STONE_KOKIRI;
-        case RG_GORON_RUBY:
-            return GI_STONE_GORON;
-        case RG_ZORA_SAPPHIRE:
-            return GI_STONE_ZORA;
-
-        case RG_FOREST_MEDALLION:
-            return GI_MEDALLION_FOREST;
-        case RG_FIRE_MEDALLION:
-            return GI_MEDALLION_FIRE;
-        case RG_WATER_MEDALLION:
-            return GI_MEDALLION_WATER;
-        case RG_SPIRIT_MEDALLION:
-            return GI_MEDALLION_SPIRIT;
-        case RG_SHADOW_MEDALLION:
-            return GI_MEDALLION_SHADOW;
-        case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;
 
         case RG_RECOVERY_HEART:
             return GI_HEART;
@@ -1701,10 +1364,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-
-        case RG_ICE_TRAP:
-            return GI_ICE_TRAP;
-
         case RG_MILK:
             return GI_MILK; //todo logic around needing a bottle?
 
@@ -1760,8 +1419,134 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_RUPEE_BLUE; //todo
 
         default:
+            if (!IsItemVanilla(randoGet)) {
+                return randoGet;
+            }
             return ogItemId;
+        }
     }
+
+bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
+    switch (randoGet) {
+        case RG_NONE:
+        case RG_KOKIRI_SWORD: 
+        case RG_GIANTS_KNIFE: 
+        case RG_BIGGORON_SWORD:
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_IRON_BOOTS:
+        case RG_HOVER_BOOTS:
+        case RG_BOOMERANG:
+        case RG_LENS_OF_TRUTH:
+        case RG_MEGATON_HAMMER:
+        case RG_STONE_OF_AGONY:
+        case RG_DINS_FIRE:
+        case RG_FARORES_WIND:
+        case RG_NAYRUS_LOVE:
+        case RG_FIRE_ARROWS:
+        case RG_ICE_ARROWS:
+        case RG_LIGHT_ARROWS:
+        case RG_GERUDO_MEMBERSHIP_CARD:
+        case RG_MAGIC_BEAN:
+        case RG_WEIRD_EGG: 
+        case RG_ZELDAS_LETTER:
+        case RG_RUTOS_LETTER:
+        case RG_POCKET_EGG:
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+        case RG_GOLD_SKULLTULA_TOKEN:
+        case RG_PROGRESSIVE_HOOKSHOT:
+        case RG_PROGRESSIVE_STRENGTH:
+        case RG_PROGRESSIVE_BOMB_BAG:
+        case RG_PROGRESSIVE_BOW:
+        case RG_PROGRESSIVE_SLINGSHOT:
+        case RG_PROGRESSIVE_WALLET:
+        case RG_PROGRESSIVE_SCALE:
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_OCARINA:
+        case RG_PROGRESSIVE_GORONSWORD:
+        case RG_EMPTY_BOTTLE:
+        case RG_BOTTLE_WITH_MILK:
+        case RG_RECOVERY_HEART:
+        case RG_GREEN_RUPEE:
+        case RG_BLUE_RUPEE:
+        case RG_RED_RUPEE:
+        case RG_PURPLE_RUPEE:
+        case RG_HUGE_RUPEE:
+        case RG_PIECE_OF_HEART:
+        case RG_HEART_CONTAINER:
+        case RG_MILK:
+        case RG_BOMBS_5:
+        case RG_BOMBS_10:
+        case RG_BOMBS_20:
+        case RG_BOMBCHU_5:
+        case RG_BOMBCHU_10:
+        case RG_BOMBCHU_20:
+        case RG_BOMBCHU_DROP:
+        case RG_ARROWS_5:
+        case RG_ARROWS_10:
+        case RG_ARROWS_30:
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_DEKU_SEEDS_30:
+        case RG_DEKU_STICK_1:
+        case RG_RED_POTION_REFILL:
+        case RG_GREEN_POTION_REFILL:
+        case RG_BLUE_POTION_REFILL:
+        case RG_TREASURE_GAME_HEART:
+        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_ARROWS_30:
+        case RG_BUY_ARROWS_50:
+        case RG_BUY_BOMBS_525:
+        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_STICK_1:
+        case RG_BUY_BOMBS_10:
+        case RG_BUY_FISH:
+        case RG_BUY_RED_POTION_30:
+        case RG_BUY_GREEN_POTION:
+        case RG_BUY_BLUE_POTION:
+        case RG_BUY_HYLIAN_SHIELD:
+        case RG_BUY_DEKU_SHIELD:
+        case RG_BUY_GORON_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+        case RG_BUY_HEART:
+        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHU_5:
+        case RG_BUY_DEKU_SEEDS_30:
+        case RG_SOLD_OUT:
+        case RG_BUY_BLUE_FIRE:
+        case RG_BUY_BOTTLE_BUG:
+        case RG_BUY_POE:
+        case RG_BUY_FAIRYS_SPIRIT:
+        case RG_BUY_ARROWS_10:
+        case RG_BUY_BOMBS_20:
+        case RG_BUY_BOMBS_30:
+        case RG_BUY_BOMBS_535:
+        case RG_BUY_RED_POTION_40:
+        case RG_BUY_RED_POTION_50:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
+    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    return IsItemVanilla(randoGet);
 }
 
 std::string Randomizer::GetAdultAltarText() const {
@@ -1784,7 +1569,7 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+s16 Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return GetItemFromGet(this->itemLocations[randomizerCheck], ogId);
 }
 
@@ -2877,9 +2662,9 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-// Randomizer settings
+    // Randomizer settings
     // Logic Settings
-    const char* randoLogicRules[2] = { "Glitchless", "No logic"};
+    const char* randoLogicRules[2] = { "Glitchless", "No logic" };
 
     // Open Settings
     const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -2887,7 +2672,8 @@ void DrawRandoEditor(bool& open) {
     const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
     const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    const char* randoRainbowBridge[7] = { "Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens" };
+    const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
+                                          "Dungeon rewards", "Dungeons",    "Tokens" };
     const char* randoGanonsTrial[2] = { "Off", "On" };
 
     // World Settings
@@ -2920,19 +2706,23 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
-    const char* randoShuffleMapsAndCompasses[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleSmallKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
+    const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+                                                    "Any Dungeon", "Overworld", "Anywhere" };
+    const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+                                             "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleBossKeys[6] = { "Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[6] = { "Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere" };
+    const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+                                            "Any Dungeon", "Overworld", "Anywhere" };
+    const char* randoShuffleGanonsBossKey[6] = { "Vanilla",     "Own dungeon", "Start with",
+                                                 "Any Dungeon", "Overworld",   "Anywhere" };
 
     // Timesaver Settings
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"};
+    const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
-    const char* randoHintDistribution[4] = {"Useless", "Balanced", "Strong", "Very Strong"};
+    const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
     const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
     const char* randoStartingTime[2] = { "Day", "Night" };
     const char* randoChestAnimations[2] = { "Always Fast", "Match contents" };
@@ -2942,7 +2732,7 @@ void DrawRandoEditor(bool& open) {
 
     // Item Pool Settings
     const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
-    const char* randoIceTraps[5] =  {"Off", "Normal", "Extra", "Mayhem", "Onslaught"};
+    const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
     // SFX Settings
     const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
@@ -3089,489 +2879,276 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-        ImGui::SetNextWindowSize(ImVec2(830, 600), ImGuiCond_FirstUseEver);
-        if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-            ImGui::End();
-            return;
-        }
+    ImGui::SetNextWindowSize(ImVec2(830, 600), ImGuiCond_FirstUseEver);
+    if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
 
-        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
-        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                            ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
-        SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+    bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
+    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
+    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
+    SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-        if (CVar_GetS32("gRandomizer", 0) == 1) {
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-            if (ImGui::Button("Generate Seed")) {
-                if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-                    randoThread = std::thread(&GenerateRandomizerImgui);
-                }
+    if (CVar_GetS32("gRandomizer", 0) == 1) {
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        if (ImGui::Button("Generate Seed")) {
+            if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+                randoThread = std::thread(&GenerateRandomizerImgui);
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-            std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
-            ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-
-            // RANDOTODO settings presets
-            // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-            // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
-        PaddedSeparator();
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
+        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
-        ImGuiWindow* window = ImGui::GetCurrentWindow();
-        static ImVec2 cellPadding(8.0f, 8.0f);
+        // RANDOTODO settings presets
+        // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+        // ImGui::Text("Settings File: %s", presetfilepath.c_str());
+    }
+    PaddedSeparator();
 
-        if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-            if (ImGui::BeginTabItem("Main Rules")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::TableHeadersRow();
-                    ImGui::PopItemFlag();
-                    ImGui::TableNextRow();
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
+    static ImVec2 cellPadding(8.0f, 8.0f);
 
-                    // COLUMN 1 - OPEN SETTINGS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::PushItemWidth(-FLT_MIN);
+    if (CVar_GetS32("gRandomizer", 0) == 1 &&
+        ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        if (ImGui::BeginTabItem("Main Rules")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
 
-                    if (CVar_GetS32("gRandomizeAllOpenSettings", 0) != 1) {
-                        // Forest
-                        ImGui::Text(Settings::OpenForest.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Closed - Kokiri sword & shield are required to access "
-                            "the Deku Tree, and completing the Deku Tree is required to "
-                            "access the Hyrule Field exit.\n"
-                            "\n"
-                            "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                            "Field but Mido still requires the Kokiri sword and Deku shield "
-                            "to access the tree.\n"
-                            "\n"
-                            "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                            "boy no longer blocks the path out of the forest.");
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
-                        PaddedSeparator();
-                        // Kakariko Gate
-                        ImGui::Text(Settings::OpenKakariko.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Closed - The gate will remain closed until Zelda's letter "
-                            "is shown to the guard.\n"
-                            "\n"
-                            "Open - The gate is always open. The happy mask shop "
-                            "will open immediately after obtaining Zelda's letter."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
-                        PaddedSeparator();
+                // COLUMN 1 - OPEN SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
 
-                        // Door of Time
-                        ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Closed - The Ocarina of Time, the Song of Time and all "
-                            "three spiritual stones are required to open the Door of Time.\n"
-                            "\n"
-                            "Song only - Play the Song of Time in front of the Door of "
-                            "Time to open it.\n"
-                            "\n"
-                            "Open - The Door of Time is permanently open with no requirements."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
-                        PaddedSeparator();
+                if (CVar_GetS32("gRandomizeAllOpenSettings", 0) != 1) {
+                    // Forest
+                    ImGui::Text(Settings::OpenForest.GetName().c_str());
+                    InsertHelpHoverText("Closed - Kokiri sword & shield are required to access "
+                                        "the Deku Tree, and completing the Deku Tree is required to "
+                                        "access the Hyrule Field exit.\n"
+                                        "\n"
+                                        "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
+                                        "Field but Mido still requires the Kokiri sword and Deku shield "
+                                        "to access the tree.\n"
+                                        "\n"
+                                        "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
+                                        "boy no longer blocks the path out of the forest.");
+                    SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
+                    PaddedSeparator();
+                    // Kakariko Gate
+                    ImGui::Text(Settings::OpenKakariko.GetName().c_str());
+                    InsertHelpHoverText("Closed - The gate will remain closed until Zelda's letter "
+                                        "is shown to the guard.\n"
+                                        "\n"
+                                        "Open - The gate is always open. The happy mask shop "
+                                        "will open immediately after obtaining Zelda's letter.");
+                    SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
+                    PaddedSeparator();
 
-                        // Zora's Fountain
-                        ImGui::Text(Settings::ZorasFountain.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Closed - King Zora obstructs the way to Zora's Fountain. "
-                            "Ruto's letter must be shown as child Link in order to move "
-                            "him in both time periods.\n"
-                            "\n"
-                            "Closed as child - Ruto's Letter is only required to move King Zora "
-                            "as child Link. Zora's Fountain starts open as adult.\n"
-                            "\n" 
-                            "Open - King Zora has already mweeped out of the way in both "
-                            "time periods. Ruto's Letter is removed from the item pool."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
-                        PaddedSeparator();
+                    // Door of Time
+                    ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
+                    InsertHelpHoverText("Closed - The Ocarina of Time, the Song of Time and all "
+                                        "three spiritual stones are required to open the Door of Time.\n"
+                                        "\n"
+                                        "Song only - Play the Song of Time in front of the Door of "
+                                        "Time to open it.\n"
+                                        "\n"
+                                        "Open - The Door of Time is permanently open with no requirements.");
+                    SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
+                    PaddedSeparator();
 
-                        // Gerudo Fortress
-                        ImGui::Text(Settings::GerudoFortress.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Sets the amount of carpenters required to repair the bridge "
-                            "in Gerudo Valley.\n"
-                            "\n"
-                            "Normal - All 4 carpenters are required to be saved.\n"
-                            "\n"
-                            "Fast - Only the bottom left carpenter requires rescuing.\n"
-                            "\n"
-                            "Open - The bridge is repaired from the start."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
-                        PaddedSeparator();
+                    // Zora's Fountain
+                    ImGui::Text(Settings::ZorasFountain.GetName().c_str());
+                    InsertHelpHoverText("Closed - King Zora obstructs the way to Zora's Fountain. "
+                                        "Ruto's letter must be shown as child Link in order to move "
+                                        "him in both time periods.\n"
+                                        "\n"
+                                        "Closed as child - Ruto's Letter is only required to move King Zora "
+                                        "as child Link. Zora's Fountain starts open as adult.\n"
+                                        "\n"
+                                        "Open - King Zora has already mweeped out of the way in both "
+                                        "time periods. Ruto's Letter is removed from the item pool.");
+                    SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
+                    PaddedSeparator();
 
-                        // Rainbow Bridge
-                        ImGui::Text(Settings::Bridge.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Alters the requirements to open the bridge to Ganon's Castle.\n"
-                            "\n"
-                            "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light Arrows.\n"
-                            "\n"
-                            "Always open - No requirements.\n"
-                            "\n"
-                            "Stones - Obtain the specified amount of spiritual stones.\n"
-                            "\n"
-                            "Medallions - Obtain the specified amount of medallions.\n"
-                            "\n"
-                            "Dungeon rewards - Obtain the specified total sum of spiritual "
-                            "stones or medallions.\n"
-                            "\n"
-                            "Dungeons - Complete the specified amount of dungeons. Dungeons "
-                            "are considered complete after stepping in to the blue warp after "
-                            "the boss.\n"
-                            "\n"
-                            "Tokens - Obtain the specified amount of Skulltula tokens."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                    // Gerudo Fortress
+                    ImGui::Text(Settings::GerudoFortress.GetName().c_str());
+                    InsertHelpHoverText("Sets the amount of carpenters required to repair the bridge "
+                                        "in Gerudo Valley.\n"
+                                        "\n"
+                                        "Normal - All 4 carpenters are required to be saved.\n"
+                                        "\n"
+                                        "Fast - Only the bottom left carpenter requires rescuing.\n"
+                                        "\n"
+                                        "Open - The bridge is repaired from the start.");
+                    SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
+                    PaddedSeparator();
+
+                    // Rainbow Bridge
+                    ImGui::Text(Settings::Bridge.GetName().c_str());
+                    InsertHelpHoverText("Alters the requirements to open the bridge to Ganon's Castle.\n"
+                                        "\n"
+                                        "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light Arrows.\n"
+                                        "\n"
+                                        "Always open - No requirements.\n"
+                                        "\n"
+                                        "Stones - Obtain the specified amount of spiritual stones.\n"
+                                        "\n"
+                                        "Medallions - Obtain the specified amount of medallions.\n"
+                                        "\n"
+                                        "Dungeon rewards - Obtain the specified total sum of spiritual "
+                                        "stones or medallions.\n"
+                                        "\n"
+                                        "Dungeons - Complete the specified amount of dungeons. Dungeons "
+                                        "are considered complete after stepping in to the blue warp after "
+                                        "the boss.\n"
+                                        "\n"
+                                        "Tokens - Obtain the specified amount of Skulltula tokens.");
+                    SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                    ImGui::PopItemWidth();
+                    switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                            SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                           "gRandomizeStoneCount", 1, 3, "", 3, true);
+                            break;
+                        case 3:
+                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                            SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                           "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                            break;
+                        case 4:
+                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                            SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                           "gRandomizeRewardCount", 1, 9, "", 9, true);
+                            break;
+                        case 5:
+                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                            SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                           "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                            break;
+                        case 6:
+                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                            SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
+                                                           "gRandomizeTokenCount", 1, 100, "", 100, true);
+                            break;
+                    }
+                    PaddedSeparator();
+
+                    // Random Ganon's Trials
+                    /*
+                    ImGui::Text("Random Ganon's Trials");
+                    InsertHelpHoverText("Sets a random number or required trials to enter\nGanon's Tower.");
+                    SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 2, 0);
+                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
                         ImGui::PopItemWidth();
-                        switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
-                            case 0:
-                                break;
-                            case 1:
-                                break;
-                            case 2:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                               "gRandomizeStoneCount", 1, 3, "", 3, true);
-                                break;
-                            case 3:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                               "gRandomizeMedallionCount", 1, 6, "", 6, true);
-                                break;
-                            case 4:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                               "gRandomizeRewardCount", 1, 9, "", 9, true);
-                                break;
-                            case 5:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                               "gRandomizeDungeonCount", 1, 8, "", 8, true);
-                                break;
-                            case 6:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                               "gRandomizeTokenCount", 1, 100, "", 100, true);
-                                break;
-                        }
-                        PaddedSeparator();
-
-                        // Random Ganon's Trials
-                        /*
-                        ImGui::Text("Random Ganon's Trials");
-                        InsertHelpHoverText("Sets a random number or required trials to enter\nGanon's Tower.");
-                        SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 2, 0);
-                        if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
-                            ImGui::PopItemWidth();
-                            SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                           "gRandomizeGanonTrialCount", 0, 6, "", 6);
-                            InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
-                        RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
-                        }
-                        */
-                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
-                        InsertHelpHoverText(
-                            "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
+                        SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
+                                                       "gRandomizeGanonTrialCount", 0, 6, "", 6);
+                        InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
+                    RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
                     }
-                    
-                    // COLUMN 2 - Shuffle Settings
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::PushItemWidth(-FLT_MIN);
-                    if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
-
-                        // Shuffle Songs
-                        ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Song locations - Songs will only appear at locations that normally teach songs.\n"
-                            "\n"
-                            "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
-                            "The 4 remaining songs are located at:\n"
-                            "  - Zelda's lullaby location\n"
-                            "  - Ice Cavern's Serenade of Water location\n"
-                            "  - Bottom of the Well Lens of Truth location\n"
-                            "  - Gerudo Training Ground's Ice Arrows location\n"
-                            "\n"
-                            "Anywhere - Songs can appear at any location."
-                        );
-
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
-                        PaddedSeparator();
-
-                        // Shuffle Tokens
-                        ImGui::Text(Settings::Tokensanity.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Shuffles Golden Skulltula Tokens into the item pool. This means "
-                            "Golden Skulltulas can contain other items as well.\n"
-                            "\n"
-                            "Off - GS tokens will not be shuffled.\n"
-                            "\n"
-                            "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
-                            "\n"
-                            "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
-                            "\n"
-                            "All Tokens - Shuffle all 100 GS tokens."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
-                        PaddedSeparator();
-
-                        SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
-                        InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
-                                            "expected to be collected after getting Sun's Song.");
-                        PaddedSeparator();
-
-                        // Shuffle Cows
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                        InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                        PaddedSeparator();
-
-                        // Shuffle Adult Trade Quest
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
-                        InsertHelpHoverText(
-                            "Adds all of the adult trade quest items into the pool, each of which "
-                            "can be traded for a unique reward.\n"
-                            "\n"
-                            "You will be able to choose which of your owned adult trade items is visible "
-                            "in the inventory by selecting the item with A and using the control stick or "
-                            "D-pad.\n"
-                            "\n"
-                            "If disabled, only the Claim Check will be found in the pool."
-                        );
-                        PaddedSeparator();
-
-                        if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
-                            // Shuffle Kokiri Sword
-                            SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(), "gRandomizeShuffleKokiriSword");
-                            InsertHelpHoverText(
-                                "Shuffles the Kokiri Sword into the item pool.\n"
-                                "\n"
-                                "This will require the use of sticks until the Kokiri Sword is found."
-                            );
-                            PaddedSeparator();
-                        }
-
-                        if(CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
-                            // Shuffle Ocarinas
-                            SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas");
-                            InsertHelpHoverText(
-                                "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
-                                "\n"
-                                "This will require finding an Ocarina before being able to play songs."
-                            );
-                            PaddedSeparator();
-                        }
-
-                        // Shuffle Weird Egg
-                        // Disabled when Skip Child Zelda is active
-                        if (!disableEditingRandoSettings) {
-                            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
-                            ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                                ImGui::GetStyle().Alpha *
-                                                    (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
-                        }
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
-                        if (!disableEditingRandoSettings) {
-                            ImGui::PopStyleVar();
-                            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                                CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
-                                ImGui::SetTooltip("%s",
-                                                  "This option is disabled because \"Skip Child Zelda\" is enabled");
-                            }
-                            ImGui::PopItemFlag();
-                        }
-                        InsertHelpHoverText(
-                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
-                            "\"Skip Child Zelda\" disables this feature.\n"
-                            "\n"
-                            "The Weird Egg is required to unlock several events:\n"
-                            "  - Zelda's Lullaby from Impa\n"
-                            "  - Saria's song in Sacred Forest Meadow\n"
-                            "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
-                            "  - Zelda's letter for Kakariko gate (if set to closed)\n"
-                            "  - Happy Mask Shop sidequest\n"
-                        );
-                        PaddedSeparator();
-
-                        // Shuffle Gerudo Membership Card
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
-                        InsertHelpHoverText(
-                            "Shuffles the Gerudo Membership Card into the item pool.\n"
-                            "\n"
-                            "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
-                            "the gate to Haunted Wasteland and the Horseback Archery minigame."
-                        );
-                        PaddedSeparator();
-
-                        // Shuffle Frog Song Rupees
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
-                        InsertHelpHoverText(
-                            "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
-                            "you to earn items by playing songs at the Frog Choir.\n"
-                            "\n"
-                            "This setting does not effect the item earned from playing\n"
-                            "the Song of Storms and the frog song minigame."
-                        );
-                    }
-                    ImGui::PopItemWidth();
-
-                    // COLUMN 3 - Shuffle Dungeon Items
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::PushItemWidth(-FLT_MIN);
-
-                    // Shuffle Dungeon Rewards
-                    ImGui::Text(Settings::ShuffleRewards.GetName().c_str());
+                    */
+                    SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
                     InsertHelpHoverText(
-                        "Shuffles the location of spiritual stones and medallions.\n"
-                        "\n"
-                        "End of dungeons - Spiritual stones and medallions will be given as rewards "
-                        "for beating major dungeons. Link will always start with one stone or medallion.\n"
-                        "\n"
-                        "Any dungeon - Spiritual stones and medallions can be found inside any dungeon.\n"
-                        "\n"
-                        "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Spiritual stones and medallions can appear anywhere."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
-                    PaddedSeparator();
-
-                    // Maps & Compasses
-                    ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with Maps & Compasses from all dungeons.\n"
-                            "\n"
-                            "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                            "\n"
-                            "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                            "\n"
-                            "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                            "\n"
-                            "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                            "\n"
-                            "Anywhere - Maps & Compasses can appear anywhere in the world."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
-                    PaddedSeparator();
-
-                    // Keysanity
-                    ImGui::Text(Settings::Keysanity.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with all Small Keys from all dungeons.\n"
-                        "\n"
-                        "Vanilla - Small Keys will appear in their vanilla locations.\n"
-                        "\n"
-                        "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
-                        "\n"
-                        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Small Keys can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Small Keys can appear anywhere in the world."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 2);
-                    PaddedSeparator();
-
-                    // Gerudo Keys
-                    ImGui::Text(Settings::GerudoKeys.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
-                        "\n"
-                        "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, 0);
-                    PaddedSeparator();
-
-                    // Boss Keysanity
-                    ImGui::Text(Settings::BossKeysanity.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Start with - You will start with Boss keys from all dungeons.\n"
-                        "\n"
-                        "Vanilla - Boss Keys will appear in their vanilla locations.\n"
-                        "\n"
-                        "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
-                        "\n"
-                        "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Boss Keys can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Boss Keys can appear anywhere in the world."
-                    );  
-                    SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 2);
-                    PaddedSeparator();
-
-                    // Ganon's Boss Key
-                    ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
-                        "\n"
-                        "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
-                        "\n"
-                        "Start with - Places Ganon's Boss Key in your starting inventory."
-                        "\n"
-                        "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
-                        "\n"
-                        "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
-                        "\n"
-                        "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
-
-                    ImGui::PopItemWidth();
-                    ImGui::EndTable();
+                        "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
                 }
-                ImGui::PopStyleVar(1);
-                ImGui::EndTabItem();
-            }
 
-            if (ImGui::BeginTabItem("Other")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::TableHeadersRow();
-                    ImGui::PopItemFlag();
-                    ImGui::TableNextRow();
-                    
-                    // COLUMN 1 - TIME SAVERS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                // COLUMN 2 - Shuffle Settings
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+                if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
 
-                    // Cuccos to return
-                    SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
-                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7, true);
+                    // Shuffle Songs
+                    ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
                     InsertHelpHoverText(
-                        "The amount of cuccos needed to claim the reward from Anju the cucco lady"
-                    );
+                        "Song locations - Songs will only appear at locations that normally teach songs.\n"
+                        "\n"
+                        "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
+                        "The 4 remaining songs are located at:\n"
+                        "  - Zelda's lullaby location\n"
+                        "  - Ice Cavern's Serenade of Water location\n"
+                        "  - Bottom of the Well Lens of Truth location\n"
+                        "  - Gerudo Training Ground's Ice Arrows location\n"
+                        "\n"
+                        "Anywhere - Songs can appear at any location.");
+
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                     PaddedSeparator();
 
-                    // Big Poe Target Count
-                    SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10, true);
-                    InsertHelpHoverText(
-                        "The Poe collector will give a reward for turning in this many Big Poes."
-                    );
+                    // Shuffle Tokens
+                    ImGui::Text(Settings::Tokensanity.GetName().c_str());
+                    InsertHelpHoverText("Shuffles Golden Skulltula Tokens into the item pool. This means "
+                                        "Golden Skulltulas can contain other items as well.\n"
+                                        "\n"
+                                        "Off - GS tokens will not be shuffled.\n"
+                                        "\n"
+                                        "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
+                                        "\n"
+                                        "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
+                                        "\n"
+                                        "All Tokens - Shuffle all 100 GS tokens.");
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
                     PaddedSeparator();
 
-                    // Skip child stealth
+                    SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                    InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
+                                        "expected to be collected after getting Sun's Song.");
+                    PaddedSeparator();
+
+                    // Shuffle Cows
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
+                    InsertHelpHoverText(
+                        "Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                    PaddedSeparator();
+
+                    // Shuffle Adult Trade Quest
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
+                                                  "gRandomizeShuffleAdultTrade");
+                    InsertHelpHoverText("Adds all of the adult trade quest items into the pool, each of which "
+                                        "can be traded for a unique reward.\n"
+                                        "\n"
+                                        "You will be able to choose which of your owned adult trade items is visible "
+                                        "in the inventory by selecting the item with A and using the control stick or "
+                                        "D-pad.\n"
+                                        "\n"
+                                        "If disabled, only the Claim Check will be found in the pool.");
+                    PaddedSeparator();
+
+                    if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
+                        // Shuffle Kokiri Sword
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(),
+                                                      "gRandomizeShuffleKokiriSword");
+                        InsertHelpHoverText("Shuffles the Kokiri Sword into the item pool.\n"
+                                            "\n"
+                                            "This will require the use of sticks until the Kokiri Sword is found.");
+                        PaddedSeparator();
+                    }
+
+                    if (CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
+                        // Shuffle Ocarinas
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(),
+                                                      "gRandomizeShuffleOcarinas");
+                        InsertHelpHoverText(
+                            "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
+                            "\n"
+                            "This will require finding an Ocarina before being able to play songs.");
+                        PaddedSeparator();
+                    }
+
+                    // Shuffle Weird Egg
                     // Disabled when Skip Child Zelda is active
                     if (!disableEditingRandoSettings) {
                         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
@@ -3579,8 +3156,8 @@ void DrawRandoEditor(bool& open) {
                                             ImGui::GetStyle().Alpha *
                                                 (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
                     }
-                    SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
-                                                  "gRandomizeSkipChildStealth");
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(),
+                                                  "gRandomizeShuffleWeirdEgg");
                     if (!disableEditingRandoSettings) {
                         ImGui::PopStyleVar();
                         if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
@@ -3589,362 +3166,524 @@ void DrawRandoEditor(bool& open) {
                         }
                         ImGui::PopItemFlag();
                     }
-                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
-                    PaddedSeparator();
-
-                    // Skip child zelda
-                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
-                    InsertHelpHoverText(
-                        "Start with Zelda's Letter in your inventory and skip the sequence up "
-                        "until after meeting Zelda. Disables the ability to shuffle Weird Egg."
-                    );
-                    PaddedSeparator();
-
-                    // Skip Epona race
-                    SohImGui::EnhancementCheckbox(Settings::SkipEponaRace.GetName().c_str(), "gRandomizeSkipEponaRace");
-                    InsertHelpHoverText(
-                        "Epona can be summoned with Epona's Song without needing to race Ingo."
-                    );
-                    PaddedSeparator();
-
-                    // Skip tower escape
-                    SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
-                    InsertHelpHoverText(
-                        "The tower escape sequence between Ganondorf and Ganon will be skipped."
-                    );
-                    PaddedSeparator();
-
-                    // Complete mask quest
-                    SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(), "gRandomizeCompleteMaskQuest");
-                    InsertHelpHoverText(
-                        "Once the happy mask shop is opened, all masks will be available to be borrowed."
-                    );
-                    PaddedSeparator();
-
-                    // Enable Glitch-Useful Cutscenes
-                    SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(), "gRandomizeEnableGlitchCutscenes");
-                    InsertHelpHoverText(
-                        "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-                        "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise."
-                    );
-
-                    // COLUMN 2 - HINT SETTINGS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::PushItemWidth(-FLT_MIN);
-
-                    // Gossip Stone Hints
-                    ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
-                        "\"Way of the Hero\" indicate a location that holds an item required to beat "
-                        "the seed.\n"
-                        "\n"
-                        "No hints - No hints will be given at all.\n"
-                        "\n"
-                        "Need Nothing - Hints are always available from Gossip Stones.\n"
-                        "\n"
-                        "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
-                        "\n"
-                        "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n"
-                    );
-
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
-                        // Hint Clarity
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        ImGui::Indent();
-                        ImGui::Text(Settings::ClearerHints.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Sets the difficulty of hints.\n"
-                            "\n"
-                            "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
-                            "Ex: Kokiri Sword > a butter knife\n"
-                            "\n"
-                            "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
-                            "Ex: Kokiri Sword > a sword\n"
-                            "\n"
-                            "Clear - Hints are clearly written and are unique for each item.\n"
-                            "Ex: Kokiri Sword > the Kokiri Sword"
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
-
-                        // Hint Distribution
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        ImGui::Text(Settings::HintDistribution.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Sets how many hints will be useful.\n"
-                            "\n"
-                            "Useless - Only junk hints.\n"
-                            "\n"
-                            "Balanced - Recommended hint spread.\n"
-                            "\n"
-                            "Strong - More useful hints.\n"
-                            "\n"
-                            "Very Strong - Many powerful hints."
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
-                        ImGui::Unindent();
-                    }
-                    ImGui::PopItemWidth();
-
-                    // COLUMN 3 - ITEM POOL SETTINGS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::PushItemWidth(-FLT_MIN);
-                    ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Sets how many major items appear in the item pool.\n"
-                        "\n"
-                        "Plentiful - Extra major items are added to the pool.\n"
-                        "\n"
-                        "Balanced - Original item pool.\n"
-                        "\n"
-                        "Scarce - Some excess items are removed, including health upgrades.\n"
-                        "\n"
-                        "Minimal - Most excess items are removed."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                    PaddedSeparator();
-
-                    // Ice Traps
-                    ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Sets how many items are replaced by ice traps.\n"
-                        "\n"
-                        "Off - No ice traps.\n"
-                        "\n"
-                        "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                        "\n"
-                        "Extra - Chance to replace added junk items with additional ice traps.\n"
-                        "\n"
-                        "Mayhem - All added junk items will be Ice Traps.\n"
-                        "\n"
-                        "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                        "in the base pool."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
-                    ImGui::PopItemWidth();
-                    ImGui::EndTable();
-                }
-                ImGui::PopStyleVar(1);
-                ImGui::EndTabItem();
-            }
-
-            static bool locationsTabOpen = false;
-            if (ImGui::BeginTabItem("Locations")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (!locationsTabOpen) {
-                    locationsTabOpen = true;
-                    RandomizerCheckObjects::UpdateImGuiVisibility();
-                    // todo: this efficently when we build out cvar array support
-                    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
-                    std::string excludedLocationString;
-                    excludedLocations.clear();
-                    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
-                        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-                    }
-                }
-
-                if (ImGui::BeginTable("tableRandoLocations", 2,
-                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::TableHeadersRow();
-                    ImGui::PopItemFlag();
-                    ImGui::TableNextRow();
-
-                    // COLUMN 1 - INCLUDED LOCATIONS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    
-                    static ImGuiTextFilter locationSearch;
-                    locationSearch.Draw();
-
-                    ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
-                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                        bool hasItems = false;
-                        for (auto locationIt : areaIt.second) {
-                            if (locationIt.visibleInImgui &&
-                                !excludedLocations.count(locationIt.rc) &&
-                                locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
-
-                                hasItems = true;
-                                break;
-                            }
-                        }
-
-                        if (hasItems) {
-                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                                for (auto locationIt : areaIt.second) {
-                                    if (locationIt.visibleInImgui &&
-                                        !excludedLocations.count(locationIt.rc) &&
-                                        locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
-
-                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
-                                            excludedLocations.insert(locationIt.rc);
-                                            // todo: this efficently when we build out cvar array support
-                                            std::string excludedLocationString = "";
-                                            for (auto excludedLocationIt : excludedLocations) {
-                                                excludedLocationString += std::to_string(excludedLocationIt);
-                                                excludedLocationString += ",";
-                                            }
-                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                            SohImGui::needs_save = true;
-                                        }
-                                        ImGui::SameLine();
-                                        ImGui::Text(locationIt.rcShortName.c_str());
-                                    }
-                                }
-                                ImGui::TreePop();
-                            }
-                        }
-                    }
-                    ImGui::EndChild();
-
-                    // COLUMN 2 - EXCLUDED LOCATIONS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                    ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
-                    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
-                        bool hasItems = false;
-                        for (auto locationIt : areaIt.second) {
-                            if (locationIt.visibleInImgui && excludedLocations.count(locationIt.rc)) {
-                                hasItems = true;
-                                break;
-                            }
-                        }
-
-                        if (hasItems) {
-                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                                for (auto locationIt : areaIt.second) {
-                                    auto elfound = excludedLocations.find(locationIt.rc);
-                                    if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
-                                        if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
-                                            excludedLocations.erase(elfound);
-                                            // todo: this efficently when we build out cvar array support
-                                            std::string excludedLocationString = "";
-                                            for (auto excludedLocationIt : excludedLocations) {
-                                                excludedLocationString += std::to_string(excludedLocationIt);
-                                                excludedLocationString += ",";
-                                            }
-                                            CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                            SohImGui::needs_save = true;
-                                        }
-                                        ImGui::SameLine();
-                                        ImGui::Text(locationIt.rcShortName.c_str());
-                                    }
-                                }
-                                ImGui::TreePop();
-                            }
-                        }
-                    }
-                    ImGui::EndChild();                 
-
-                    ImGui::EndTable();
-                }
-                ImGui::PopStyleVar(1);
-                ImGui::EndTabItem();
-            } else {
-                locationsTabOpen = false;
-            }
-
-            if (ImGui::BeginTabItem("Tricks/Glitches")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    ImGui::PushItemWidth(170.0);
-                    ImGui::Text("Logic Rules");
-                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
+                    InsertHelpHoverText("Shuffles the Weird Egg from Malon in to the item pool. Enabling "
+                                        "\"Skip Child Zelda\" disables this feature.\n"
                                         "\n"
-                                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.");
-                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
-                    ImGui::PopItemWidth();
-                    ImGui::EndTable();
+                                        "The Weird Egg is required to unlock several events:\n"
+                                        "  - Zelda's Lullaby from Impa\n"
+                                        "  - Saria's song in Sacred Forest Meadow\n"
+                                        "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
+                                        "  - Zelda's letter for Kakariko gate (if set to closed)\n"
+                                        "  - Happy Mask Shop sidequest\n");
+                    PaddedSeparator();
+
+                    // Shuffle Gerudo Membership Card
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
+                                                  "gRandomizeShuffleGerudoToken");
+                    InsertHelpHoverText("Shuffles the Gerudo Membership Card into the item pool.\n"
+                                        "\n"
+                                        "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
+                                        "the gate to Haunted Wasteland and the Horseback Archery minigame.");
+                    PaddedSeparator();
+
+                    // Shuffle Frog Song Rupees
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(),
+                                                  "gRandomizeShuffleFrogSongRupees");
+                    InsertHelpHoverText("Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                                        "you to earn items by playing songs at the Frog Choir.\n"
+                                        "\n"
+                                        "This setting does not effect the item earned from playing\n"
+                                        "the Song of Storms and the frog song minigame.");
                 }
-                if (ImGui::BeginTable("tableRandoTricksGlitches", 2,
-                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Enable Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Enable Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::TableHeadersRow();
-                    ImGui::PopItemFlag();
-                    ImGui::TableNextRow();
+                ImGui::PopItemWidth();
 
-                    // COLUMN 1 - ENABLE TRICKS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::Text("Coming soon");
+                // COLUMN 3 - Shuffle Dungeon Items
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
 
-                    // COLUMN 2 - ENABLE GLITCHES
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::Text("Coming soon");
+                // Shuffle Dungeon Rewards
+                ImGui::Text(Settings::ShuffleRewards.GetName().c_str());
+                InsertHelpHoverText(
+                    "Shuffles the location of spiritual stones and medallions.\n"
+                    "\n"
+                    "End of dungeons - Spiritual stones and medallions will be given as rewards "
+                    "for beating major dungeons. Link will always start with one stone or medallion.\n"
+                    "\n"
+                    "Any dungeon - Spiritual stones and medallions can be found inside any dungeon.\n"
+                    "\n"
+                    "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Spiritual stones and medallions can appear anywhere.");
+                SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
+                PaddedSeparator();
 
-                    ImGui::EndTable();
-                }
-                ImGui::PopStyleVar(1);
-                ImGui::EndTabItem();
+                // Maps & Compasses
+                ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                InsertHelpHoverText("Start with - You will start with Maps & Compasses from all dungeons.\n"
+                                    "\n"
+                                    "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+                                    "\n"
+                                    "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+                                    "\n"
+                                    "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                                    "\n"
+                                    "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                                    "\n"
+                                    "Anywhere - Maps & Compasses can appear anywhere in the world.");
+                SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
+                PaddedSeparator();
+
+                // Keysanity
+                ImGui::Text(Settings::Keysanity.GetName().c_str());
+                InsertHelpHoverText("Start with - You will start with all Small Keys from all dungeons.\n"
+                                    "\n"
+                                    "Vanilla - Small Keys will appear in their vanilla locations.\n"
+                                    "\n"
+                                    "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
+                                    "\n"
+                                    "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+                                    "\n"
+                                    "Overworld - Small Keys can only appear outside of dungeons.\n"
+                                    "\n"
+                                    "Anywhere - Small Keys can appear anywhere in the world.");
+                SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 2);
+                PaddedSeparator();
+
+                // Gerudo Keys
+                ImGui::Text(Settings::GerudoKeys.GetName().c_str());
+                InsertHelpHoverText("Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
+                                    "\n"
+                                    "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
+                                    "\n"
+                                    "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
+                                    "\n"
+                                    "Anywhere - Thieve's Hideout Keys can appear anywhere in the world.");
+                SohImGui::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, 0);
+                PaddedSeparator();
+
+                // Boss Keysanity
+                ImGui::Text(Settings::BossKeysanity.GetName().c_str());
+                InsertHelpHoverText("Start with - You will start with Boss keys from all dungeons.\n"
+                                    "\n"
+                                    "Vanilla - Boss Keys will appear in their vanilla locations.\n"
+                                    "\n"
+                                    "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                                    "\n"
+                                    "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                                    "\n"
+                                    "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                                    "\n"
+                                    "Anywhere - Boss Keys can appear anywhere in the world.");
+                SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 2);
+                PaddedSeparator();
+
+                // Ganon's Boss Key
+                ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
+                InsertHelpHoverText("Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
+                                    "\n"
+                                    "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
+                                    "\n"
+                                    "Start with - Places Ganon's Boss Key in your starting inventory."
+                                    "\n"
+                                    "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
+                                    "\n"
+                                    "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
+                                    "\n"
+                                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.");
+                SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
+
+                ImGui::PopItemWidth();
+                ImGui::EndTable();
             }
-
-            if (ImGui::BeginTabItem("Starting Inventory")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoStartingInventory", 3,
-                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::TableHeadersRow();
-                    ImGui::PopItemFlag();
-                    ImGui::TableNextRow();
-
-                    // COLUMN 1 - STARTING EQUIPMENT
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    SohImGui::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(), "gRandomizeStartingDekuShield");
-
-                    // COLUMN 2 - STARTING ITEMS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    SohImGui::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
-                    PaddedSeparator();
-                    SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                    InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
-
-                    // COLUMN 3 - STARTING SONGS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::Text("Coming soon");
-
-                    ImGui::EndTable();
-                }
-                ImGui::PopStyleVar(1);
-                ImGui::EndTabItem();
-            }
-            
-            ImGui::EndTabBar();
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
         }
-        ImGui::PopItemFlag();
-        ImGui::PopStyleVar();
-        ImGui::End();
+
+        if (ImGui::BeginTabItem("Other")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - TIME SAVERS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                // Cuccos to return
+                SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
+                                               "gRandomizeCuccosToReturn", 0, 7, "", 7, true);
+                InsertHelpHoverText("The amount of cuccos needed to claim the reward from Anju the cucco lady");
+                PaddedSeparator();
+
+                // Big Poe Target Count
+                SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                                               "gRandomizeBigPoeTargetCount", 1, 10, "", 10, true);
+                InsertHelpHoverText("The Poe collector will give a reward for turning in this many Big Poes.");
+                PaddedSeparator();
+
+                // Skip child stealth
+                // Disabled when Skip Child Zelda is active
+                if (!disableEditingRandoSettings) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                                        ImGui::GetStyle().Alpha *
+                                            (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
+                }
+                SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
+                                              "gRandomizeSkipChildStealth");
+                if (!disableEditingRandoSettings) {
+                    ImGui::PopStyleVar();
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+                        CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
+                        ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
+                    }
+                    ImGui::PopItemFlag();
+                }
+                InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+                PaddedSeparator();
+
+                // Skip child zelda
+                SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+                InsertHelpHoverText("Start with Zelda's Letter in your inventory and skip the sequence up "
+                                    "until after meeting Zelda. Disables the ability to shuffle Weird Egg.");
+                PaddedSeparator();
+
+                // Skip Epona race
+                SohImGui::EnhancementCheckbox(Settings::SkipEponaRace.GetName().c_str(), "gRandomizeSkipEponaRace");
+                InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
+                PaddedSeparator();
+
+                // Skip tower escape
+                SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
+                InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
+                PaddedSeparator();
+
+                // Complete mask quest
+                SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
+                                              "gRandomizeCompleteMaskQuest");
+                InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
+                PaddedSeparator();
+
+                // Enable Glitch-Useful Cutscenes
+                SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
+                                              "gRandomizeEnableGlitchCutscenes");
+                InsertHelpHoverText(
+                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
+                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
+
+                // COLUMN 2 - HINT SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Gossip Stone Hints
+                ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
+                InsertHelpHoverText(
+                    "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
+                    "\"Way of the Hero\" indicate a location that holds an item required to beat "
+                    "the seed.\n"
+                    "\n"
+                    "No hints - No hints will be given at all.\n"
+                    "\n"
+                    "Need Nothing - Hints are always available from Gossip Stones.\n"
+                    "\n"
+                    "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
+                    "\n"
+                    "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
+
+                SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
+                if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
+                    // Hint Clarity
+                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                    ImGui::Indent();
+                    ImGui::Text(Settings::ClearerHints.GetName().c_str());
+                    InsertHelpHoverText("Sets the difficulty of hints.\n"
+                                        "\n"
+                                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
+                                        "Ex: Kokiri Sword > a butter knife\n"
+                                        "\n"
+                                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
+                                        "Ex: Kokiri Sword > a sword\n"
+                                        "\n"
+                                        "Clear - Hints are clearly written and are unique for each item.\n"
+                                        "Ex: Kokiri Sword > the Kokiri Sword");
+                    SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
+
+                    // Hint Distribution
+                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                    ImGui::Text(Settings::HintDistribution.GetName().c_str());
+                    InsertHelpHoverText("Sets how many hints will be useful.\n"
+                                        "\n"
+                                        "Useless - Only junk hints.\n"
+                                        "\n"
+                                        "Balanced - Recommended hint spread.\n"
+                                        "\n"
+                                        "Strong - More useful hints.\n"
+                                        "\n"
+                                        "Very Strong - Many powerful hints.");
+                    SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
+                    ImGui::Unindent();
+                }
+                ImGui::PopItemWidth();
+
+                // COLUMN 3 - ITEM POOL SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
+                                    "\n"
+                                    "Plentiful - Extra major items are added to the pool.\n"
+                                    "\n"
+                                    "Balanced - Original item pool.\n"
+                                    "\n"
+                                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                                    "\n"
+                                    "Minimal - Most excess items are removed.");
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
+                                    "\n"
+                                    "Off - No ice traps.\n"
+                                    "\n"
+                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                    "\n"
+                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                    "\n"
+                                    "Mayhem - All added junk items will be Ice Traps.\n"
+                                    "\n"
+                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                    "in the base pool.");
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+                ImGui::PopItemWidth();
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
+        static bool locationsTabOpen = false;
+        if (ImGui::BeginTabItem("Locations")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (!locationsTabOpen) {
+                locationsTabOpen = true;
+                RandomizerCheckObjects::UpdateImGuiVisibility();
+                // todo: this efficently when we build out cvar array support
+                std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+                std::string excludedLocationString;
+                excludedLocations.clear();
+                while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+                    excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+                }
+            }
+
+            if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - INCLUDED LOCATIONS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                static ImGuiTextFilter locationSearch;
+                locationSearch.Draw();
+
+                ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
+                for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                    bool hasItems = false;
+                    for (auto locationIt : areaIt.second) {
+                        if (locationIt.visibleInImgui && !excludedLocations.count(locationIt.rc) &&
+                            locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                            hasItems = true;
+                            break;
+                        }
+                    }
+
+                    if (hasItems) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                            for (auto locationIt : areaIt.second) {
+                                if (locationIt.visibleInImgui && !excludedLocations.count(locationIt.rc) &&
+                                    locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                                    if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(locationIt.rc);
+                                        // todo: this efficently when we build out cvar array support
+                                        std::string excludedLocationString = "";
+                                        for (auto excludedLocationIt : excludedLocations) {
+                                            excludedLocationString += std::to_string(excludedLocationIt);
+                                            excludedLocationString += ",";
+                                        }
+                                        CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        SohImGui::needs_save = true;
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(locationIt.rcShortName.c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+                ImGui::EndChild();
+
+                // COLUMN 2 - EXCLUDED LOCATIONS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
+                for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                    bool hasItems = false;
+                    for (auto locationIt : areaIt.second) {
+                        if (locationIt.visibleInImgui && excludedLocations.count(locationIt.rc)) {
+                            hasItems = true;
+                            break;
+                        }
+                    }
+
+                    if (hasItems) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                            for (auto locationIt : areaIt.second) {
+                                auto elfound = excludedLocations.find(locationIt.rc);
+                                if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
+                                        excludedLocations.erase(elfound);
+                                        // todo: this efficently when we build out cvar array support
+                                        std::string excludedLocationString = "";
+                                        for (auto excludedLocationIt : excludedLocations) {
+                                            excludedLocationString += std::to_string(excludedLocationIt);
+                                            excludedLocationString += ",";
+                                        }
+                                        CVar_SetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        SohImGui::needs_save = true;
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(locationIt.rcShortName.c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+                ImGui::EndChild();
+
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        } else {
+            locationsTabOpen = false;
+        }
+
+        if (ImGui::BeginTabItem("Tricks/Glitches")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(170.0);
+                ImGui::Text("Logic Rules");
+                InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
+                                    "\n"
+                                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.");
+                SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+                ImGui::PopItemWidth();
+                ImGui::EndTable();
+            }
+            if (ImGui::BeginTable("tableRandoTricksGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Enable Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enable Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - ENABLE TRICKS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::Text("Coming soon");
+
+                // COLUMN 2 - ENABLE GLITCHES
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::Text("Coming soon");
+
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Starting Inventory")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
+                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - STARTING EQUIPMENT
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                SohImGui::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(),
+                                              "gRandomizeStartingKokiriSword");
+                PaddedSeparator();
+                SohImGui::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(),
+                                              "gRandomizeStartingDekuShield");
+
+                // COLUMN 2 - STARTING ITEMS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                SohImGui::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
+                PaddedSeparator();
+                SohImGui::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
+                                              "gRandomizeStartingConsumables");
+                PaddedSeparator();
+                SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+
+                // COLUMN 3 - STARTING SONGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::Text("Coming soon");
+
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
+        ImGui::EndTabBar();
     }
+    ImGui::PopItemFlag();
+    ImGui::PopStyleVar();
+    ImGui::End();
+}
 
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        if (messageEntry.giid == GI_ICE_TRAP) {
+        if (messageEntry.giid == RG_ICE_TRAP) {
             customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
                                                 { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
                                                   messageEntry.german, messageEntry.french });
@@ -3979,82 +3718,186 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE(GI_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
+        GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
                   "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
                                "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
                                "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
                                "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", 
                                "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
                                 "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
                                 "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FISH, ITEM_FISH,
                                 "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
                                 "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
                                "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
                                "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, 
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, 
                                 "You got a %rFairy in a Bottle%w!&Use it wisely!",
                                 "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
                                "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
                                "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
                                "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
                                "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTLE_WITH_POE, ITEM_POE,
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_POE, ITEM_POE,
                                "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
                                "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE_NO_GERMAN(GI_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
-        GIMESSAGE_NO_GERMAN(GI_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
-        GIMESSAGE_NO_GERMAN(GI_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(GI_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
         
-        GIMESSAGE_NO_GERMAN(GI_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!", "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(GI_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!", "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(GI_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!", "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!", "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(GI_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!", "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!", "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!", "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!", "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!", "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!", "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
 
-        GIMESSAGE_NO_GERMAN(GI_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!", "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(GI_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(GI_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(GI_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(GI_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(GI_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(GI_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!", "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(GI_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!", "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!", "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();
 }
 
+class ExtendedVanillaTableInvalidItemIdException: public std::exception {
+    private:
+    s16 itemID;
+
+    public:
+      ExtendedVanillaTableInvalidItemIdException(s16 itemID): itemID(itemID) {}
+      std::string what() {
+        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
+        "item, try adding it to randoGetItemTable instead.";
+      }
+};
+
+void InitRandoItemTable() {
+    // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
+    GetItemEntry extendedVanillaGetItemTable[] = {
+        GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_LIGHT_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_FOREST_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_FIRE_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_WATER_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SHADOW_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SPIRIT_MEDALLION),
+
+        GET_ITEM(ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_KOKIRI_EMERALD),
+        GET_ITEM(ITEM_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_GORON_RUBY),
+        GET_ITEM(ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZORA_SAPPHIRE),
+
+        GET_ITEM(ITEM_SONG_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZELDAS_LULLABY),
+        GET_ITEM(ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SUNS_SONG),
+        GET_ITEM(ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_EPONAS_SONG),
+        GET_ITEM(ITEM_SONG_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_STORMS),
+        GET_ITEM(ITEM_SONG_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_TIME),
+        GET_ITEM(ITEM_SONG_SARIA, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SARIAS_SONG),
+
+        GET_ITEM(ITEM_SONG_MINUET, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_MINUET_OF_FOREST),
+        GET_ITEM(ITEM_SONG_BOLERO, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_BOLERO_OF_FIRE),
+        GET_ITEM(ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SERENADE_OF_WATER),
+        GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_NOCTURNE_OF_SHADOW),
+        GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_REQUIEM_OF_SPIRIT),
+        GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_PRELUDE_OF_LIGHT),
+    };
+
+    // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
+    // RandomizerGet enum values for both.
+    GetItemEntry randoGetItemTable[] = {
+        GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
+        GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_SINGLE),
+        GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
+        GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DOUBLE_DEFENSE),
+        GET_ITEM(RG_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_FAIRY),
+        GET_ITEM(RG_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_FISH),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_FIRE),
+        GET_ITEM(RG_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
+        GET_ITEM(RG_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
+        GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
+        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
+        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
+        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
+        GET_ITEM(RG_DEKU_TREE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
+        GET_ITEM(RG_DODONGOS_CAVERN_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
+        GET_ITEM(RG_JABU_JABUS_BELLY_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
+        GET_ITEM(RG_FOREST_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FOREST_TEMPLE_MAP),
+        GET_ITEM(RG_FIRE_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FIRE_TEMPLE_MAP),
+        GET_ITEM(RG_WATER_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_WATER_TEMPLE_MAP),
+        GET_ITEM(RG_SPIRIT_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_MAP),
+        GET_ITEM(RG_SHADOW_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_MAP),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_MAP),
+        GET_ITEM(RG_ICE_CAVERN_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_MAP),
+        GET_ITEM(RG_DEKU_TREE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DEKU_TREE_COMPASS),
+        GET_ITEM(RG_DODONGOS_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DODONGOS_CAVERN_COMPASS),
+        GET_ITEM(RG_JABU_JABUS_BELLY_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_COMPASS),
+        GET_ITEM(RG_FOREST_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FOREST_TEMPLE_COMPASS),
+        GET_ITEM(RG_FIRE_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_FIRE_TEMPLE_COMPASS),
+        GET_ITEM(RG_WATER_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_WATER_TEMPLE_COMPASS),
+        GET_ITEM(RG_SPIRIT_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_COMPASS),
+        GET_ITEM(RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
+        GET_ITEM(RG_ICE_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
+    };
+    ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
+    for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
+    }
+    for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
+    }
+}
+
+
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
+    InitRandoItemTable();
 }
 
 extern "C" {

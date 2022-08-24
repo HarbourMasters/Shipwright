@@ -16,11 +16,13 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
-    GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
+    s16 GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
+    s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
+    bool IsItemVanilla(RandomizerGet randoGet);
+
 
   public:
     Randomizer();
@@ -38,14 +40,15 @@ class Randomizer {
     void LoadHintLocations(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
-    RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+    RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
-    GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+    s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+    s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
+    bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
 #ifdef __cplusplus

@@ -73,12 +73,7 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-
-	#ifdef __SWITCH__
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0);
-	#else
 		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-	#endif
 
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];

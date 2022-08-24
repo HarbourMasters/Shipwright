@@ -1591,70 +1591,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if (item == ITEM_SINGLE_MAGIC) {
-        gSaveContext.magicAcquired = true;
-        gSaveContext.unk_13F6 = 0x30;
-        Magic_Fill(globalCtx);
-        return ITEM_NONE;
-    } else if (item == ITEM_DOUBLE_MAGIC) {
-        if (!gSaveContext.magicAcquired) {
-            gSaveContext.magicAcquired = true;
-        }
-        gSaveContext.doubleMagic = true;
-        gSaveContext.unk_13F6 = 0x60;
-        gSaveContext.magicLevel = 0;
-        Magic_Fill(globalCtx);
-        return ITEM_NONE;
-    }
-
-    if (item == ITEM_DOUBLE_DEFENSE) {
-        gSaveContext.doubleDefense = true;
-        gSaveContext.inventory.defenseHearts = 20;
-        gSaveContext.healthAccumulator = 0x140;
-        return ITEM_NONE;
-    }
-
-    if (item >= ITEM_BOTTLE_WITH_RED_POTION &&
-        item <= ITEM_BOTTLE_WITH_BIG_POE) {
-        temp = SLOT(ITEM_BOTTLE);
-        for (i = 0; i < 4; i++) {
-            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
-                switch (item) {
-                    case ITEM_BOTTLE_WITH_RED_POTION:
-                        item = ITEM_POTION_RED;
-                        break;
-                    case ITEM_BOTTLE_WITH_GREEN_POTION:
-                        item = ITEM_POTION_GREEN;
-                        break;
-                    case ITEM_BOTTLE_WITH_BLUE_POTION:
-                        item = ITEM_POTION_BLUE;
-                        break;
-                    case ITEM_BOTTLE_WITH_FAIRY:
-                        item = ITEM_FAIRY;
-                        break;
-                    case ITEM_BOTTLE_WITH_FISH:
-                        item = ITEM_FISH;
-                        break;
-                    case ITEM_BOTTLE_WITH_BLUE_FIRE:
-                        item = ITEM_BLUE_FIRE;
-                        break;
-                    case ITEM_BOTTLE_WITH_BUGS:
-                        item = ITEM_BUG;
-                        break;
-                    case ITEM_BOTTLE_WITH_POE:
-                        item = ITEM_POE;
-                        break;
-                    case ITEM_BOTTLE_WITH_BIG_POE:
-                        item = ITEM_BIG_POE;
-                        break;
-                }
-
-                gSaveContext.inventory.items[temp + i] = item;
-                return ITEM_NONE;
-            }
-        }
-    }
-
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
 
@@ -1756,100 +1692,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             return ITEM_NONE;
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
-            return ITEM_NONE;
-        }
-    } else if (
-        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY && item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY && item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= ITEM_DEKU_TREE_MAP && item <= ITEM_ICE_CAVERN_MAP) ||
-        (item >= ITEM_DEKU_TREE_COMPASS && item <= ITEM_ICE_CAVERN_COMPASS)
-    ) {
-        int mapIndex = gSaveContext.mapIndex;
-        switch (item) {
-            case ITEM_DEKU_TREE_MAP:
-            case ITEM_DEKU_TREE_COMPASS:
-                mapIndex = SCENE_YDAN;
-                break;
-            case ITEM_DODONGOS_CAVERN_MAP:
-            case ITEM_DODONGOS_CAVERN_COMPASS:
-                mapIndex = SCENE_DDAN;
-                break;
-            case ITEM_JABU_JABUS_BELLY_MAP:
-            case ITEM_JABU_JABUS_BELLY_COMPASS:
-                mapIndex = SCENE_BDAN;
-                break;
-            case ITEM_FOREST_TEMPLE_MAP:
-            case ITEM_FOREST_TEMPLE_COMPASS:
-            case ITEM_FOREST_TEMPLE_SMALL_KEY:
-            case ITEM_FOREST_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_BMORI1;
-                break;
-            case ITEM_FIRE_TEMPLE_MAP:
-            case ITEM_FIRE_TEMPLE_COMPASS:
-            case ITEM_FIRE_TEMPLE_SMALL_KEY:
-            case ITEM_FIRE_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_HIDAN;
-                break;
-            case ITEM_WATER_TEMPLE_MAP:
-            case ITEM_WATER_TEMPLE_COMPASS:
-            case ITEM_WATER_TEMPLE_SMALL_KEY:
-            case ITEM_WATER_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_MIZUSIN;
-                break;
-            case ITEM_SPIRIT_TEMPLE_MAP:
-            case ITEM_SPIRIT_TEMPLE_COMPASS:
-            case ITEM_SPIRIT_TEMPLE_SMALL_KEY:
-            case ITEM_SPIRIT_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_JYASINZOU;
-                break;
-            case ITEM_SHADOW_TEMPLE_MAP:
-            case ITEM_SHADOW_TEMPLE_COMPASS:
-            case ITEM_SHADOW_TEMPLE_SMALL_KEY:
-            case ITEM_SHADOW_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_HAKADAN;
-                break;
-            case ITEM_BOTTOM_OF_THE_WELL_MAP:
-            case ITEM_BOTTOM_OF_THE_WELL_COMPASS:
-            case ITEM_BOTTOM_OF_THE_WELL_SMALL_KEY:
-                mapIndex = SCENE_HAKADANCH;
-                break;
-            case ITEM_ICE_CAVERN_MAP:
-            case ITEM_ICE_CAVERN_COMPASS:
-                mapIndex = SCENE_ICE_DOUKUTO;
-                break;
-            case ITEM_GANONS_CASTLE_BOSS_KEY:
-                mapIndex = SCENE_GANON;
-                break;
-            case ITEM_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-                mapIndex = SCENE_MEN;
-                break;
-            case ITEM_GERUDO_FORTRESS_SMALL_KEY:
-                mapIndex = SCENE_GERUDOWAY;
-                break;
-            case ITEM_GANONS_CASTLE_SMALL_KEY:
-                mapIndex = SCENE_GANONTIKA;
-                break;
-        }
-
-        if ((item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY)) {
-            if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
-                gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
-                return ITEM_NONE;
-            } else {
-                gSaveContext.inventory.dungeonKeys[mapIndex]++;
-                return ITEM_NONE;
-            }
-        } else {
-            int bitmask;
-            if ((item >= ITEM_DEKU_TREE_MAP) && (item <= ITEM_ICE_CAVERN_MAP)) {
-                bitmask = gBitFlags[2];
-            } else if ((item >= ITEM_DEKU_TREE_COMPASS) && (item <= ITEM_ICE_CAVERN_COMPASS)) {
-                bitmask = gBitFlags[1];
-            } else {
-                bitmask = gBitFlags[0];
-            }
-            
-            gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
             return ITEM_NONE;
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
@@ -2313,6 +2155,176 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     return temp;
 }
 
+u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
+    uint16_t item = giEntry.itemId;
+    uint16_t temp;
+    uint16_t i;
+    uint16_t slot;
+
+    slot = SLOT(item);
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.magicAcquired = true;
+        gSaveContext.unk_13F6 = 0x30;
+        Magic_Fill(globalCtx);
+        return RG_NONE;
+    } else if (item == RG_MAGIC_DOUBLE) {
+        if (!gSaveContext.magicAcquired) {
+            gSaveContext.magicAcquired = true;
+        }
+        gSaveContext.doubleMagic = true;
+        gSaveContext.unk_13F6 = 0x60;
+        gSaveContext.magicLevel = 0;
+        Magic_Fill(globalCtx);
+        return RG_NONE;
+    }
+
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.doubleDefense = true;
+        gSaveContext.inventory.defenseHearts = 20;
+        gSaveContext.healthAccumulator = 0x140;
+        return RG_NONE;
+    }
+
+    if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
+        temp = SLOT(ITEM_BOTTLE);
+        for (i = 0; i < 4; i++) {
+            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
+                switch (item) {
+                    case RG_BOTTLE_WITH_RED_POTION:
+                        item = ITEM_POTION_RED;
+                        break;
+                    case RG_BOTTLE_WITH_GREEN_POTION:
+                        item = ITEM_POTION_GREEN;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_POTION:
+                        item = ITEM_POTION_BLUE;
+                        break;
+                    case RG_BOTTLE_WITH_FAIRY:
+                        item = ITEM_FAIRY;
+                        break;
+                    case RG_BOTTLE_WITH_FISH:
+                        item = ITEM_FISH;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_FIRE:
+                        item = ITEM_BLUE_FIRE;
+                        break;
+                    case RG_BOTTLE_WITH_BUGS:
+                        item = ITEM_BUG;
+                        break;
+                    case RG_BOTTLE_WITH_POE:
+                        item = ITEM_POE;
+                        break;
+                    case RG_BOTTLE_WITH_BIG_POE:
+                        item = ITEM_BIG_POE;
+                        break;
+                }
+
+                gSaveContext.inventory.items[temp + i] = item;
+                return ITEM_NONE;
+            }
+        }
+    } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+               (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
+               (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
+               (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
+        int mapIndex = gSaveContext.mapIndex;
+        switch (item) {
+            case RG_DEKU_TREE_MAP:
+            case RG_DEKU_TREE_COMPASS:
+                mapIndex = SCENE_YDAN;
+                break;
+            case RG_DODONGOS_CAVERN_MAP:
+            case RG_DODONGOS_CAVERN_COMPASS:
+                mapIndex = SCENE_DDAN;
+                break;
+            case RG_JABU_JABUS_BELLY_MAP:
+            case RG_JABU_JABUS_BELLY_COMPASS:
+                mapIndex = SCENE_BDAN;
+                break;
+            case RG_FOREST_TEMPLE_MAP:
+            case RG_FOREST_TEMPLE_COMPASS:
+            case RG_FOREST_TEMPLE_SMALL_KEY:
+            case RG_FOREST_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_BMORI1;
+                break;
+            case RG_FIRE_TEMPLE_MAP:
+            case RG_FIRE_TEMPLE_COMPASS:
+            case RG_FIRE_TEMPLE_SMALL_KEY:
+            case RG_FIRE_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HIDAN;
+                break;
+            case RG_WATER_TEMPLE_MAP:
+            case RG_WATER_TEMPLE_COMPASS:
+            case RG_WATER_TEMPLE_SMALL_KEY:
+            case RG_WATER_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_MIZUSIN;
+                break;
+            case RG_SPIRIT_TEMPLE_MAP:
+            case RG_SPIRIT_TEMPLE_COMPASS:
+            case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            case RG_SPIRIT_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_JYASINZOU;
+                break;
+            case RG_SHADOW_TEMPLE_MAP:
+            case RG_SHADOW_TEMPLE_COMPASS:
+            case RG_SHADOW_TEMPLE_SMALL_KEY:
+            case RG_SHADOW_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_HAKADAN;
+                break;
+            case RG_BOTTOM_OF_THE_WELL_MAP:
+            case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+                mapIndex = SCENE_HAKADANCH;
+                break;
+            case RG_ICE_CAVERN_MAP:
+            case RG_ICE_CAVERN_COMPASS:
+                mapIndex = SCENE_ICE_DOUKUTO;
+                break;
+            case RG_GANONS_CASTLE_BOSS_KEY:
+                mapIndex = SCENE_GANON;
+                break;
+            case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+                mapIndex = SCENE_MEN;
+                break;
+            case RG_GERUDO_FORTRESS_SMALL_KEY:
+                mapIndex = SCENE_GERUDOWAY;
+                break;
+            case RG_GANONS_CASTLE_SMALL_KEY:
+                mapIndex = SCENE_GANONTIKA;
+                break;
+        }
+
+        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+                gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+                return RG_NONE;
+            } else {
+                gSaveContext.inventory.dungeonKeys[mapIndex]++;
+                return RG_NONE;
+            }
+        } else {
+            int bitmask;
+            if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
+                bitmask = gBitFlags[2];
+            } else if ((item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS)) {
+                bitmask = gBitFlags[1];
+            } else {
+                bitmask = gBitFlags[0];
+            }
+
+            gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
+            return RG_NONE;
+        }
+    }
+
+    temp = gSaveContext.inventory.items[slot];
+    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
+    INV_CONTENT(item) = item;
+
+    return temp;
+}
+
+
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
     s16 slot = SLOT(item);
@@ -2365,11 +2377,11 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
-    } else if (
-        (item >= ITEM_GERUDO_FORTRESS_SMALL_KEY) && (item <= ITEM_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= ITEM_FOREST_TEMPLE_BOSS_KEY) && (item <= ITEM_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= ITEM_DEKU_TREE_MAP) && (item <= ITEM_ICE_CAVERN_MAP) ||
-        (item >= ITEM_DEKU_TREE_COMPASS) && (item <= ITEM_ICE_CAVERN_COMPASS)
+    } else if ( gSaveContext.n64ddFlag &&
+        ((item >= RG_GERUDO_FORTRESS_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+        (item >= RG_FOREST_TEMPLE_BOSS_KEY) && (item <= RG_GANONS_CASTLE_BOSS_KEY) ||
+        (item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP) ||
+        (item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS))
     ) {
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
