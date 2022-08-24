@@ -557,7 +557,7 @@ void EnWf_RunAtPlayer(EnWf* this, GlobalContext* globalCtx) {
             }
             if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (sp58 <= 0) && ((playSpeed + animPrevFrame) > 0)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
             }
         }
     }
@@ -688,7 +688,7 @@ void EnWf_RunAroundPlayer(EnWf* this, GlobalContext* globalCtx) {
         if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (animFrameSpeedDiff <= 0) &&
             (animSpeed + animPrevFrame > 0)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
         }
 
         if ((globalCtx->gameplayFrames & 95) == 0) {
@@ -751,7 +751,7 @@ void EnWf_Slash(EnWf* this, GlobalContext* globalCtx) {
         SkelAnime_Update(&this->skelAnime)) {
         if ((curFrame != 15) && (this->actionTimer != 0)) {
             this->actor.shape.rot.y += (s16)(3276.0f * (1.5f + (this->actionTimer - 4) * 0.4f));
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 1, 2.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 1, 2.0f, 50, 50, true);
             this->actionTimer--;
         } else if (!Actor_IsFacingPlayer(&this->actor, 0x1554) && (curFrame != 15)) {
             EnWf_SetupWait(this);
@@ -1168,7 +1168,7 @@ void EnWf_Sidestep(EnWf* this, GlobalContext* globalCtx) {
         if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (animFrameSpeedDiff <= 0) &&
             ((animSpeed + animPrevFrame) > 0)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
         }
 
         if ((globalCtx->gameplayFrames & 95) == 0) {

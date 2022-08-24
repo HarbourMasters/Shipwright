@@ -198,14 +198,24 @@ void func_80AACFA0(EnMk* this, GlobalContext* globalCtx) {
         gSaveContext.itemGetInf[1] |= 1;
     } else {
         // not sure when/how/if this is getting called
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        }
     }
 }
 
 void func_80AAD014(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         this->actionFunc = func_80AACFA0;
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        }
     }
 
     this->flags |= 1;

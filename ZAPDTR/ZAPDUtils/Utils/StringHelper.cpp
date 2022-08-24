@@ -64,7 +64,11 @@ void StringHelper::ReplaceOriginal(std::string& str, const std::string& from, co
 
 bool StringHelper::StartsWith(const std::string& s, const std::string& input)
 {
+#if __cplusplus >= 202002L
+	return s.starts_with(input.c_str());
+#else
 	return s.rfind(input, 0) == 0;
+#endif
 }
 
 bool StringHelper::Contains(const std::string& s, const std::string& input)
