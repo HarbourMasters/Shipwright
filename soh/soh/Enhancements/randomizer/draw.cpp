@@ -76,17 +76,13 @@ extern "C" void Randomizer_DrawBossKey(GlobalContext* globalCtx, GetItemEntry* g
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    if (color_slot >= 0) {
-        gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2],
-                              255);
-        gsSPGrayscale(POLY_XLU_DISP++, true);
-    }
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2],
+                            255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
 
-    if (color_slot >= 0) {
-        gsSPGrayscale(POLY_XLU_DISP++, false);
-    }
+    gsSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
@@ -99,16 +95,12 @@ extern "C" void Randomizer_DrawDoubleDefense(GlobalContext* globalCtx, GetItemEn
    
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    // if (drawId == doubleDef) {
     gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
     gsSPGrayscale(POLY_XLU_DISP++, true);
-    // }
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartBorderDL);
 
-    // if (drawId == doubleDef) {
     gsSPGrayscale(POLY_XLU_DISP++, false);
-    // }
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
 
