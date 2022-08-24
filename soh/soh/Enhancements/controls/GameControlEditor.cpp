@@ -48,15 +48,12 @@ namespace GameControlEditor {
         }
     }
 
-    void DrawHelpIcon(const std::string& helptext, bool sameline = true, int Pos = 0) {
+    void DrawHelpIcon(const std::string& helptext) {
         // place the ? button to the most of the right side of the cell it is using.
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
         ImGui::SmallButton("?");
         SohImGui::Tooltip(helptext.c_str());
-        if (sameline) {
-            //I do not use ImGui::SameLine(); because it make some element vanish.
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
-        }
     }
 
     typedef uint32_t N64ButtonMask;
@@ -303,16 +300,16 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-		SohImGui::Tooltip("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-		SohImGui::Tooltip("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-		SohImGui::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+		DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 		SohImGui::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
-		SohImGui::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+		DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
 	}
 	
 	void DrawUI(bool& open) {
