@@ -3734,6 +3734,17 @@ void CreateScrubMessages() {
                   std::to_string(price) + " Rubis%w!\x07\x10\xA3"
             });
     }
+    customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, 0x405E,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "I tried to be a magic bean salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, want to buy my&"
+            "%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "I tried to be a magic bean salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, want to buy my&"
+            "%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "I tried to be a magic bean salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, want to buy my&"
+            "%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+        });
 }
 
 void CreateRupeeMessages() {
