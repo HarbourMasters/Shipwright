@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
@@ -18,28 +18,28 @@ set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-include(cmake/automate-vcpkg.cmake)
+include(CMake/automate-vcpkg.cmake)
 
 set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng)
+vcpkg_install_packages(zlib bzip2 libpng SDL2 GLEW glfw3)
 endif()
 
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if(NOT CMAKE_VS_PLATFORM_NAME)
-		set(CMAKE_VS_PLATFORM_NAME "x64")
-	endif()
-	message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
+    if(NOT CMAKE_VS_PLATFORM_NAME)
+        set(CMAKE_VS_PLATFORM_NAME "x64")
+    endif()
+    message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
-	if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
-		OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
-		message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
-	endif()
+    if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
+        OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
+        message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
+    endif()
 endif()
 
 ################################################################################
@@ -57,7 +57,7 @@ set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 endif()
 
 if(NOT CMAKE_BUILD_TYPE )
-	set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
 ################################################################################
@@ -122,7 +122,7 @@ add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")
 add_subdirectory(OTRGui)
 endif()
 
@@ -131,22 +131,22 @@ set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${CMAKE_SOURCE_DIR}/scri
 set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-INSTALL(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
+install(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
 
 add_custom_target(
     ExtractAssets
-    COMMAND ${CMAKE_COMMAND} -Dprogram=$<TARGET_FILE:ZAPD> -P ${CMAKE_SOURCE_DIR}/CMake/genscript.cmake
-    COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f oot.otr
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>"
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_SOURCE_DIR}
     COMMAND ${CMAKE_COMMAND} -E copy oot.otr ${CMAKE_BINARY_DIR}/soh
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
-    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -177,15 +177,38 @@ add_custom_target(CreateOSXIcons
     COMMENT "Creating OSX icons ..."
     )
 add_dependencies(soh CreateOSXIcons)
+
+add_custom_target(Assets ALL
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/OTRGui/assets/extractor" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/extractor" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/OTRExporter/assets" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/game" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/soh/assets/xml" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/extractor/xmls" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
+    )
+add_dependencies(soh Assets)
+
+install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
+
+set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
+
+install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
+        DESTINATION .
+        PATTERN ZAPD.out
+        PERMISSIONS ${PROGRAM_PERMISSIONS_EXECUTE}
+        )
+
+install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
+    ")
+
 endif()
 
-if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch")
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/README.md DESTINATION . COMPONENT ship RENAME readme.txt )
+if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
+install(FILES ${CMAKE_SOURCE_DIR}/README.md DESTINATION . COMPONENT ship RENAME readme.txt )
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-	set(CPACK_GENERATOR "External")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch")
+    set(CPACK_GENERATOR "External")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
     set(CPACK_GENERATOR "ZIP")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(CPACK_GENERATOR "Bundle")

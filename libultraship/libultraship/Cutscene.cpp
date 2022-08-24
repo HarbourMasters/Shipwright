@@ -1,4 +1,5 @@
 #include "Cutscene.h"
+#include "spdlog/spdlog.h"
 
 enum class CutsceneCommands
 {
@@ -511,9 +512,7 @@ void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 			return;
 		}
 		default:
-#ifdef _DEBUG
-			printf("CutsceneV0: Unknown command %x\n", commandId);
-#endif
+			SPDLOG_TRACE("CutsceneV0: Unknown command {}\n", commandId);
 			// error?
 			break;
 		}

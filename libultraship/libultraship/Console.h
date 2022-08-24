@@ -6,25 +6,16 @@
 #include <functional>
 
 #include "Lib/ImGui/imgui.h"
+#include "spdlog/spdlog.h"
 
 namespace Ship {
-	#define LOG(msg, ...) SohImGui::console->Append("Main", Ship::Priority::LOG_LVL, msg, ##__VA_ARGS__)
-	#define INFO(msg, ...) SohImGui::console->Append("Main", Ship::Priority::INFO_LVL, msg, ##__VA_ARGS__)
-	#define WARNING(msg, ...) SohImGui::console->Append("Main", Ship::Priority::WARNING_LVL, msg, ##__VA_ARGS__)
-	#define ERROR(msg, ...) SohImGui::console->Append("Main", Ship::Priority::ERROR_LVL, msg, ##__VA_ARGS__)
 	#define CMD_SUCCESS true
 	#define CMD_FAILED false
 	#define MAX_BUFFER_SIZE 255
 	#define NULLSTR "None"
 
-	typedef std::function<bool(std::vector<std::string> args)> CommandHandler;
-
-	enum Priority {
-		INFO_LVL,
-		LOG_LVL,
-		WARNING_LVL,
-		ERROR_LVL
-	};
+	class Console;
+	typedef std::function<bool(std::shared_ptr<Console> Console, std::vector<std::string> args)> CommandHandler;
 
 	enum class ArgumentType {
 		TEXT, NUMBER, PLAYER_POS, PLAYER_ROT
@@ -44,40 +35,68 @@ namespace Ship {
 
 	struct ConsoleLine {
 		std::string text;
-		Priority priority = Priority::INFO_LVL;
-		std::string channel = "Main";
+		spdlog::level::level_enum priority = spdlog::level::info;
+		std::string channel = "Console";
 	};
 
-	class Console {
+	class Console : public std::enable_shared_from_this<Console> {
+	private:
+		static int CallbackStub(ImGuiInputTextCallbackData* data);
+		static bool ClearCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool HelpCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool BindCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+		static bool BindToggleCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+
+		bool opened = false;
 		int selectedId = -1;
+		int historyIndex = -1;
 		std::vector<int> selectedEntries;
 		std::string filter;
-		std::string level_filter = NULLSTR;
-		std::vector<std::string> log_channels = { "Main", "SoH Logging" };
-		std::vector<std::string> priority_filters = { "None", "Info", "Log", "Warning", "Error" };
-		std::vector<ImVec4> priority_colors = {
-			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
-			ImVec4(0.2f, 1.0f, 0.2f, 1.0f),
-			ImVec4(0.9f, 0.8f, 0.4f, 0.01f),
-			ImVec4(1.0f, 0.2f, 0.2f, 1.0f)
-		};
-	public:
-		std::map<std::string, std::vector<ConsoleLine>> Log;
-		std::map<std::string, CommandEntry> Commands;
-		std::vector<std::string> Autocomplete;
+		std::string currentChannel = "Console";
+		bool openAutocomplete = false;
+		char* inputBuffer = nullptr;
+		char* filterBuffer = nullptr;
+		std::string cmdHint = NULLSTR;
+		spdlog::level::level_enum levelFilter = spdlog::level::trace;
+
 		std::vector<std::string> History;
-		std::string CMDHint = NULLSTR;
-		char* FilterBuffer = nullptr;
-		char* InputBuffer = nullptr;
-		bool OpenAutocomplete = false;
-		int HistoryIndex = -1;
-		std::string selected_channel = "Main";
-		bool opened = false;
+		std::vector<std::string> Autocomplete;
+		std::map<ImGuiKey, std::string> Bindings;
+		std::map<ImGuiKey, std::string> BindingToggle;
+		std::map<std::string, CommandEntry> Commands;
+		std::map<std::string, std::vector<ConsoleLine>> Log;
+		const std::vector<std::string> LogChannels = { "Console", "Logs" };
+		const std::vector<spdlog::level::level_enum> PriorityFilters = { spdlog::level::off, spdlog::level::critical, spdlog::level::err, spdlog::level::warn, spdlog::level::info, spdlog::level::debug, spdlog::level::trace };
+		const std::vector<ImVec4> PriorityColours = {
+			ImVec4(0.8f, 0.8f, 0.8f, 1.0f),     // TRACE
+			ImVec4(0.9f, 0.9f, 0.9f, 1.0f),     // DEBUG
+			ImVec4(1.0f, 1.0f, 1.0f, 1.0f),     // INFO
+			ImVec4(1.0f, 0.875f, 0.125f, 1.0f), // WARN
+			ImVec4(0.65f, 0.18f, 0.25, 1.0f),   // ERROR
+			ImVec4(0.95f, 0.11f, 0.25, 1.0f),   // CRITICAL
+			ImVec4(0.0f, 0.0f, 0.0f, 0.0f)      // OFF
+		};
+	protected:
+		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, va_list args);
+
+	public:
+		void ClearLogs(std::string channel);
+		void ClearLogs();
 		void Init();
 		void Update();
 		void Draw();
-		void Append(const std::string& channel, Priority priority, const char* fmt, ...) IM_FMTARGS(4);
 		void Dispatch(const std::string& line);
-		static int CallbackStub(ImGuiInputTextCallbackData* data);
+		void SendInfoMessage(const char* fmt, ...);
+		void SendErrorMessage(const char* fmt, ...);
+		void SendInfoMessage(const std::string& str);
+		void SendErrorMessage(const std::string& str);
+		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, ...);
+		bool HasCommand(const std::string& command);
+		void AddCommand(const std::string& command, CommandEntry entry);
+
+		std::string GetCurrentChannel() { return currentChannel; }
+		bool IsOpened() { return opened;  }
+		void Close() { opened = false; }
+		void Open() { opened = true;  }
 	};
 }

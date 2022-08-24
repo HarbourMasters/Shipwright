@@ -944,7 +944,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("A");
             InsertHelpHoverText("First-time overworld entrance cs related");
-            DrawFlagArray16("eci1", gSaveContext.eventChkInf[10]);
+            DrawFlagArray16("eci10", gSaveContext.eventChkInf[10]);
         });
 
         DrawGroupWithBorder([&]() {

@@ -7,13 +7,13 @@ namespace Ship {
 		public:
 			KeyboardController();
 
-			void ReadFromSource(int32_t slot) override;
-			void WriteToSource(int32_t slot, ControllerCallback* controller) override;
+			void ReadFromSource(int32_t virtualSlot) override;
+			void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) override;
 			bool Connected() const override { return true; }
 			bool CanRumble() const override { return false; }
 			bool CanGyro() const override { return false; }
-			const char* GetControllerName() override;
-			const char* GetButtonName(int slot, int n64Button) override;
+			const std::string GetControllerName() override;
+			const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) override;
 			bool PressButton(int32_t dwScancode);
 			bool ReleaseButton(int32_t dwScancode);
 
@@ -29,7 +29,7 @@ namespace Ship {
 			}
 
 			int32_t GetLastScancode() { return lastScancode; }
-			void CreateDefaultBinding(int32_t slot) override;
+			void CreateDefaultBinding(int32_t virtualSlot) override;
 
 		protected:
 			int32_t lastScancode;

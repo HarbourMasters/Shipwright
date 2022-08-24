@@ -31,47 +31,24 @@ public:
     {}
 
 protected:
-    void sink_it_(const details::log_msg &msg) override
-    {
-        const Ship::Priority priority = convert_to_soh(msg.level);
+    void sink_it_(const details::log_msg &msg) override {
         memory_buf_t formatted;
-        if (use_raw_msg_)
-        {
+        if (use_raw_msg_) {
             details::fmt_helper::append_string_view(msg.payload, formatted);
         }
-        else
-        {
+        else {
             base_sink<Mutex>::formatter_->format(msg, formatted);
         }
         formatted.push_back('\0');
-        const char *msg_output = formatted.data();
-        if (CVar_GetS32("gSinkEnabled", 0) && SohImGui::console->opened)
-            SohImGui::console->Append("SoH Logging", priority, "%s", msg_output);
+        const char* msg_output = formatted.data();
+        if (CVar_GetS32("gSinkEnabled", 0) && SohImGui::console->IsOpened()) {
+            SohImGui::console->Append("Logs", msg.level, "%s", msg_output);
+        }
     }
 
     void flush_() override {}
 
 private:
-    static Ship::Priority convert_to_soh(spdlog::level::level_enum level)
-    {
-        switch (level) {
-            case spdlog::level::trace:
-                return Ship::Priority::INFO_LVL;
-            case spdlog::level::debug:
-                return Ship::Priority::LOG_LVL;
-            case spdlog::level::info:
-                return Ship::Priority::LOG_LVL;
-            case spdlog::level::warn:
-                return Ship::Priority::WARNING_LVL;
-            case spdlog::level::err:
-                return Ship::Priority::ERROR_LVL;
-            case spdlog::level::critical:
-                return Ship::Priority::ERROR_LVL;
-            default:
-                break;
-        }
-            return Ship::Priority::LOG_LVL;
-    }
 
     std::string tag_;
     bool use_raw_msg_;

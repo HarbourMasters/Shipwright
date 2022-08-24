@@ -255,7 +255,7 @@ void EnFloormas_SetupHover(EnFloormas* this, GlobalContext* globalCtx) {
     this->actor.speedXZ = 0.0f;
     this->actor.gravity = 0.0f;
     EnFloormas_MakeInvulnerable(this);
-    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 6, 20.0f, 0x12C, 0x64, 1);
+    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 6, 20.0f, 300, 100, true);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FLOORMASTER_ATTACK);
     this->actionFunc = EnFloormas_Hover;
 }

@@ -26,13 +26,13 @@ Menu* currentMenu;
 } // namespace
 
 void PrintTopScreen() {
-    SPDLOG_INFO("\x1b[2;11H%sOcarina of Time 3D Randomizer%s", CYAN, RESET);
-    SPDLOG_INFO("\x1b[3;18H%s%s-%s%s", CYAN, RANDOMIZER_VERSION, COMMIT_NUMBER, RESET);
-    SPDLOG_INFO("\x1b[4;10HA/B/D-pad: Navigate Menu\n");
-    SPDLOG_INFO("            Select: Exit to Homebrew Menu\n");
-    SPDLOG_INFO("                 Y: New Random Seed\n");
-    SPDLOG_INFO("                 X: Input Custom Seed\n");
-    SPDLOG_INFO("\x1b[11;7HCurrent Seed: %s", Settings::seed.c_str());
+    SPDLOG_DEBUG("\x1b[2;11H%sOcarina of Time 3D Randomizer%s", CYAN, RESET);
+    SPDLOG_DEBUG("\x1b[3;18H%s%s-%s%s", CYAN, RANDOMIZER_VERSION, COMMIT_NUMBER, RESET);
+    SPDLOG_DEBUG("\x1b[4;10HA/B/D-pad: Navigate Menu\n");
+    SPDLOG_DEBUG("            Select: Exit to Homebrew Menu\n");
+    SPDLOG_DEBUG("                 Y: New Random Seed\n");
+    SPDLOG_DEBUG("                 X: Input Custom Seed\n");
+    SPDLOG_DEBUG("\x1b[11;7HCurrent Seed: %s", Settings::seed.c_str());
 }
 
 void MenuInit() {
@@ -526,7 +526,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
                    "successful.");
-            SPDLOG_INFO("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");
+            SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");
             return "";
         } else {
             printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);

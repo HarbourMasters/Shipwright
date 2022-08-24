@@ -206,23 +206,23 @@ static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uin
 static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocations) {
   //return if there aren't any hintable locations or gossip stones available
   if (possibleHintLocations.empty()) {
-      SPDLOG_INFO("\tNO LOCATIONS TO HINT\n\n");
+      SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
     return;
   }
 
   uint32_t hintedLocation = RandomElement(possibleHintLocations);
   const std::vector<uint32_t> accessibleGossipStones = GetAccessibleGossipStones(hintedLocation);
 
-  SPDLOG_INFO("\tLocation: ");
-  SPDLOG_INFO(Location(hintedLocation)->GetName());
-  SPDLOG_INFO("\n");
+  SPDLOG_DEBUG("\tLocation: ");
+  SPDLOG_DEBUG(Location(hintedLocation)->GetName());
+  SPDLOG_DEBUG("\n");
 
-  SPDLOG_INFO("\tItem: ");
-  SPDLOG_INFO(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
-  SPDLOG_INFO("\n");
+  SPDLOG_DEBUG("\tItem: ");
+  SPDLOG_DEBUG(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
+  SPDLOG_DEBUG("\n");
 
   if (accessibleGossipStones.empty()) {
-      SPDLOG_INFO("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+      SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
     return;
   }
 
@@ -235,9 +235,9 @@ static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocation
   Text prefix = Hint(PREFIX).GetText();
 
   Text finalHint = prefix + locationHintText + " #"+itemHintText+"#.";
-  SPDLOG_INFO("\tMessage: ");
-  SPDLOG_INFO(finalHint.english);
-  SPDLOG_INFO("\n\n");
+  SPDLOG_DEBUG("\tMessage: ");
+  SPDLOG_DEBUG(finalHint.english);
+  SPDLOG_DEBUG("\n\n");
 
   AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
 }
@@ -258,24 +258,24 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
 
     // If no more locations can be hinted at for woth, then just try to get another hint
     if (possibleHintLocations.empty()) {
-        SPDLOG_INFO("\tNO LOCATIONS TO HINT\n\n");
+        SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
         return;
     }
     uint32_t hintedLocation = RandomElement(possibleHintLocations);
 
-    SPDLOG_INFO("\tLocation: ");
-    SPDLOG_INFO(Location(hintedLocation)->GetName());
-    SPDLOG_INFO("\n");
+    SPDLOG_DEBUG("\tLocation: ");
+    SPDLOG_DEBUG(Location(hintedLocation)->GetName());
+    SPDLOG_DEBUG("\n");
 
-    SPDLOG_INFO("\tItem: ");
-    SPDLOG_INFO(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
-    SPDLOG_INFO("\n");
+    SPDLOG_DEBUG("\tItem: ");
+    SPDLOG_DEBUG(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
+    SPDLOG_DEBUG("\n");
 
     // get an accessible gossip stone
     const std::vector<uint32_t> gossipStoneLocations = GetAccessibleGossipStones(hintedLocation);
 
     if (gossipStoneLocations.empty()) {
-        SPDLOG_INFO("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+        SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
         return;
     }
     Location(hintedLocation)->SetAsHinted();
@@ -293,9 +293,9 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
         locationText = GetHintRegion(parentRegion)->GetHint().GetText();
     }
     Text finalWothHint = Hint(PREFIX).GetText() + "#" + locationText + "#" + Hint(WAY_OF_THE_HERO).GetText();
-    SPDLOG_INFO("\tMessage: ");
-    SPDLOG_INFO(finalWothHint.english);
-    SPDLOG_INFO("\n\n");
+    SPDLOG_DEBUG("\tMessage: ");
+    SPDLOG_DEBUG(finalWothHint.english);
+    SPDLOG_DEBUG("\n\n");
     AddHint(finalWothHint, gossipStone, { QM_LBLUE });
 }
 
@@ -312,18 +312,18 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
 
     uint32_t hintedLocation = RandomElement(barrenLocations, true);
 
-    SPDLOG_INFO("\tLocation: ");
-    SPDLOG_INFO(Location(hintedLocation)->GetName());
-    SPDLOG_INFO("\n");
+    SPDLOG_DEBUG("\tLocation: ");
+    SPDLOG_DEBUG(Location(hintedLocation)->GetName());
+    SPDLOG_DEBUG("\n");
 
-    SPDLOG_INFO("\tItem: ");
-    SPDLOG_INFO(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
-    SPDLOG_INFO("\n");
+    SPDLOG_DEBUG("\tItem: ");
+    SPDLOG_DEBUG(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
+    SPDLOG_DEBUG("\n");
 
     // get an accessible gossip stone
     const std::vector<uint32_t> gossipStoneLocations = GetAccessibleGossipStones(hintedLocation);
     if (gossipStoneLocations.empty()) {
-        SPDLOG_INFO("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+        SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
         return;
     }
     Location(hintedLocation)->SetAsHinted();
@@ -341,9 +341,9 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     }
     Text finalBarrenHint =
         Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "#" + locationText + "#" + Hint(FOOLISH).GetText();
-    SPDLOG_INFO("\tMessage: ");
-    SPDLOG_INFO(finalBarrenHint.english);
-    SPDLOG_INFO("\n\n");
+    SPDLOG_DEBUG("\tMessage: ");
+    SPDLOG_DEBUG(finalBarrenHint.english);
+    SPDLOG_DEBUG("\n\n");
     AddHint(finalBarrenHint, gossipStone, { QM_PINK });
 
     // get rid of all other locations in this same barren region
@@ -359,23 +359,23 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   });
   //If no more locations can be hinted at, then just try to get another hint
   if (possibleHintLocations.empty()) {
-    SPDLOG_INFO("\tNO LOCATIONS TO HINT\n\n");
+    SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
     return;
   }
   uint32_t hintedLocation = RandomElement(possibleHintLocations);
 
-  SPDLOG_INFO("\tLocation: ");
-  SPDLOG_INFO(Location(hintedLocation)->GetName());
-  SPDLOG_INFO("\n");
+  SPDLOG_DEBUG("\tLocation: ");
+  SPDLOG_DEBUG(Location(hintedLocation)->GetName());
+  SPDLOG_DEBUG("\n");
 
-  SPDLOG_INFO("\tItem: ");
-  SPDLOG_INFO(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
-  SPDLOG_INFO("\n");
+  SPDLOG_DEBUG("\tItem: ");
+  SPDLOG_DEBUG(Location(hintedLocation)->GetPlacedItemName().GetEnglish());
+  SPDLOG_DEBUG("\n");
 
   //get an acessible gossip stone
   const std::vector<uint32_t> gossipStoneLocations = GetAccessibleGossipStones(hintedLocation);
   if (gossipStoneLocations.empty()) {
-      SPDLOG_INFO("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+      SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
     return;
   }
   Location(hintedLocation)->SetAsHinted();
@@ -387,16 +387,16 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
     uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
     Text locationText = AreaTable(parentRegion)->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+locationText+"# "+Hint(HOARDS).GetText()+" #"+itemText+"#.";
-    SPDLOG_INFO("\tMessage: ");
-    SPDLOG_INFO(finalHint.english);
-    SPDLOG_INFO("\n\n");
+    SPDLOG_DEBUG("\tMessage: ");
+    SPDLOG_DEBUG(finalHint.english);
+    SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
   } else {
     Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
-    SPDLOG_INFO("\tMessage: ");
-    SPDLOG_INFO(finalHint.english);
-    SPDLOG_INFO("\n\n");
+    SPDLOG_DEBUG("\tMessage: ");
+    SPDLOG_DEBUG(finalHint.english);
+    SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_RED, QM_GREEN});
   }
 }
@@ -411,15 +411,15 @@ static void CreateJunkHint() {
   LogicReset();
   const std::vector<uint32_t> gossipStones = GetAccessibleLocations(gossipStoneLocations);
   if (gossipStones.empty()) {
-      SPDLOG_INFO("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+      SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
     return;
   }
   uint32_t gossipStone = RandomElement(gossipStones);
   Text hint = junkHint.GetText();
 
-  SPDLOG_INFO("\tMessage: ");
-  SPDLOG_INFO(hint.english);
-  SPDLOG_INFO("\n\n");
+  SPDLOG_DEBUG("\tMessage: ");
+  SPDLOG_DEBUG(hint.english);
+  SPDLOG_DEBUG("\n\n");
 
   AddHint(hint, gossipStone, {QM_PINK});
 }
@@ -711,7 +711,7 @@ void CreateAllHints() {
   CreateGanonText();
   CreateAltarText();
 
-  SPDLOG_INFO("\nNOW CREATING HINTS\n");
+  SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];
 
   uint8_t remainingDungeonWothHints = hintSetting.dungeonsWothLimit;
@@ -768,9 +768,9 @@ void CreateAllHints() {
       barrenDungeons.push_back(barrenRegion);
     }
   }
-  SPDLOG_INFO("\nBarren Dungeons:\n");
+  SPDLOG_DEBUG("\nBarren Dungeons:\n");
   for (std::string barrenDungeon : barrenDungeons) {
-      SPDLOG_INFO(barrenDungeon + "\n");
+      SPDLOG_DEBUG(barrenDungeon + "\n");
   }
 
   //Get list of all woth dungeons
@@ -783,9 +783,9 @@ void CreateAllHints() {
       wothDungeons.push_back(wothRegion);
     }
   }
-  SPDLOG_INFO("\nWoth Dungeons:\n");
+  SPDLOG_DEBUG("\nWoth Dungeons:\n");
   for (std::string wothDungeon : wothDungeons) {
-      SPDLOG_INFO(wothDungeon + "\n");
+      SPDLOG_DEBUG(wothDungeon + "\n");
   }
 
   //Set DungeonInfo array for each dungeon
@@ -827,9 +827,9 @@ void CreateAllHints() {
     //get a random hint type from the remaining hints
     HintType type = RandomElement(remainingHintTypes, true);
 
-    SPDLOG_INFO("Attempting to make hint of type: ");
-    SPDLOG_INFO(hintTypeNames[static_cast<int>(type)]);
-    SPDLOG_INFO("\n");
+    SPDLOG_DEBUG("Attempting to make hint of type: ");
+    SPDLOG_DEBUG(hintTypeNames[static_cast<int>(type)]);
+    SPDLOG_DEBUG("\n");
 
     //create the appropriate hint for the type
     if (type == HintType::Woth) {

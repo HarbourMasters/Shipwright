@@ -1460,11 +1460,11 @@ void GenerateLocationPool() {
 
 void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmediately /*= false*/, bool setHidden /*= false*/) {
   auto loc = Location(locKey);
-  SPDLOG_INFO("\n");
-  SPDLOG_INFO(ItemTable(item).GetName().GetEnglish());
-  SPDLOG_INFO(" placed at ");
-  SPDLOG_INFO(loc->GetName());
-  SPDLOG_INFO("\n\n");
+  SPDLOG_DEBUG("\n");
+  SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+  SPDLOG_DEBUG(" placed at ");
+  SPDLOG_DEBUG(loc->GetName());
+  SPDLOG_DEBUG("\n\n");
 
   if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
     ItemTable(item).ApplyEffect();
@@ -1551,7 +1551,7 @@ void AddExcludedOptions() {
 }
 
 void CreateItemOverrides() {
-    SPDLOG_INFO("NOW CREATING OVERRIDES\n\n");
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
         ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
@@ -1563,18 +1563,18 @@ void CreateItemOverrides() {
             .key = loc->Key(),
             .value = val,
         });
-        SPDLOG_INFO("\tScene: ");
-        SPDLOG_INFO(std::to_string(loc->Key().scene));
-        SPDLOG_INFO("\tType: ");
-        SPDLOG_INFO(std::to_string(loc->Key().type));
-        SPDLOG_INFO("\tFlag:  ");
-        SPDLOG_INFO(std::to_string(loc->Key().flag));
-        SPDLOG_INFO("\t");
-        SPDLOG_INFO(loc->GetName());
-        SPDLOG_INFO(": ");
-        SPDLOG_INFO(loc->GetPlacedItemName().GetEnglish());
-        SPDLOG_INFO("\n");
+        SPDLOG_DEBUG("\tScene: ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().scene));
+        SPDLOG_DEBUG("\tType: ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().type));
+        SPDLOG_DEBUG("\tFlag:  ");
+        SPDLOG_DEBUG(std::to_string(loc->Key().flag));
+        SPDLOG_DEBUG("\t");
+        SPDLOG_DEBUG(loc->GetName());
+        SPDLOG_DEBUG(": ");
+        SPDLOG_DEBUG(loc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG("\n");
     }
-    SPDLOG_INFO("Overrides Created: ");
-    SPDLOG_INFO(std::to_string(overrides.size()));
+    SPDLOG_DEBUG("Overrides Created: ");
+    SPDLOG_DEBUG(std::to_string(overrides.size()));
 }

@@ -38,9 +38,9 @@ void EfcErupc_Init(Actor* thisx, GlobalContext* globalCtx) {
     EfcErupc_SetupAction(this, EfcErupc_UpdateAction);
     Actor_SetScale(&this->actor, 1.0f);
     EfcErupc_InitParticles(this->particles);
-    this->unk14C = this->unk14E = this->unk150 = 0;
-    this->unk152 = 5;
-    this->unk154 = -100;
+    this->unk_14C = this->unk_14E = this->unk_150 = 0;
+    this->unk_152 = 5;
+    this->unk_154 = -100;
 }
 
 void EfcErupc_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -55,22 +55,22 @@ void EfcErupc_UpdateAction(EfcErupc* this, GlobalContext* globalCtx) {
     if (globalCtx->csCtx.state != 0) {
         if (globalCtx->csCtx.npcActions[1] != NULL) {
             if (globalCtx->csCtx.npcActions[1]->action == 2) {
-                if (this->unk150 == 30) {
+                if (this->unk_150 == 30) {
                     func_800788CC(NA_SE_IT_EARTHQUAKE);
                 }
-                if (this->unk150 <= 64) {
-                    if (this->unk154 < 200) {
-                        this->unk154 += 10;
+                if (this->unk_150 <= 64) {
+                    if (this->unk_154 < 200) {
+                        this->unk_154 += 10;
                     }
                 } else {
-                    if (this->unk154 > -100) {
-                        this->unk154 -= 10;
+                    if (this->unk_154 > -100) {
+                        this->unk_154 -= 10;
                     }
                 }
-                this->unk150++;
+                this->unk_150++;
             } else {
-                if (this->unk154 > -100) {
-                    this->unk154 -= 10;
+                if (this->unk_154 > -100) {
+                    this->unk_154 -= 10;
                 }
             }
         }
@@ -79,28 +79,28 @@ void EfcErupc_UpdateAction(EfcErupc* this, GlobalContext* globalCtx) {
         if (globalCtx->csCtx.npcActions[2] != NULL) {
             switch (globalCtx->csCtx.npcActions[2]->action) {
                 case 2:
-                    if (this->unk14E == 0) {
+                    if (this->unk_14E == 0) {
                         func_800F3F3C(6);
                         gSaveContext.eventChkInf[2] |= 0x8000;
                     }
-                    this->unk14E++;
+                    this->unk_14E++;
                     break;
                 case 3:
-                    this->unk14E = 30;
+                    this->unk_14E = 30;
             }
-            this->unk14C++;
+            this->unk_14C++;
         }
     }
     accel.z = 0.0f;
     accel.x = 0.0f;
     pos.y = this->actor.world.pos.y + 300.0f;
-    for (i = 0; i < this->unk152; i++) {
+    for (i = 0; i < this->unk_152; i++) {
         pos.x = Rand_CenteredFloat(100.0f) + this->actor.world.pos.x;
         pos.z = Rand_CenteredFloat(100.0f) + this->actor.world.pos.z;
         vel.x = Rand_CenteredFloat(100.0f);
         vel.y = Rand_ZeroFloat(100.0f);
         vel.z = Rand_CenteredFloat(100.0f);
-        accel.y = this->unk154 * 0.1f;
+        accel.y = this->unk_154 * 0.1f;
         EfcErupc_AddParticle(this->particles, &pos, &vel, &accel, 80.0f);
     }
 }
@@ -121,16 +121,16 @@ void EfcErupc_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, this->unk14C * 1, this->unk14E * -4, 32, 64, 1,
-                                this->unk14C * 4, this->unk14E * -20, 64, 64));
+               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, this->unk_14C * 1, this->unk_14E * -4, 32, 64, 1,
+                                this->unk_14C * 4, this->unk_14E * -20, 64, 64));
 
     gSPSegment(
         POLY_XLU_DISP++, 0x09,
-        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, this->unk150 * -4, 16, 128, 1, 0, this->unk150 * 12, 32, 32));
+        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, this->unk_150 * -4, 16, 128, 1, 0, this->unk_150 * 12, 32, 32));
 
     gSPSegment(
         POLY_XLU_DISP++, 0x0A,
-        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, this->unk150 * -4, 16, 128, 1, 0, this->unk150 * 12, 32, 32));
+        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, this->unk_150 * -4, 16, 128, 1, 0, this->unk_150 * 12, 32, 32));
 
     Matrix_Push();
     Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);

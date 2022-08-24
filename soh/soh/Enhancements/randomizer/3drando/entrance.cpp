@@ -156,7 +156,7 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
   //Entrances shouldn't connect to their own scene, fail in this situation
   if (entrance->GetParentRegion()->scene != "" && entrance->GetParentRegion()->scene == target->GetConnectedRegion()->scene) {
     auto message = "Entrance " + entrance->GetName() + " attempted to connect with own scene target " + target->to_string() + ". Connection failed.\n";
-    SPDLOG_INFO(message);
+    SPDLOG_DEBUG(message);
     return false;
   }
 
@@ -168,7 +168,7 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
 //Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if necessary
 static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
   auto message = "Attempting to connect " + entrance->GetName() + " to " + targetEntrance->to_string() + "\n";
-    SPDLOG_INFO(message);
+    SPDLOG_DEBUG(message);
   entrance->Connect(targetEntrance->Disconnect());
   entrance->SetReplacement(targetEntrance->GetReplacement());
   if (entrance->GetReverse() != nullptr /*&& entrances aren't decoupled*/) {
@@ -208,7 +208,7 @@ static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
 static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<Entrance*>& alreadyChecked) {
 
     if (entrance == nullptr) {
-        SPDLOG_INFO("Entrance is nullptr in EntranceUnreachableAs()");
+        SPDLOG_DEBUG("Entrance is nullptr in EntranceUnreachableAs()");
         return true;
     }
 
@@ -247,7 +247,7 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
 }
 
 static bool ValidateWorld(Entrance* entrancePlaced) {
-    SPDLOG_INFO("Validating world\n");
+    SPDLOG_DEBUG("Validating world\n");
 
   //check certain conditions when certain types of ER are enabled
   EntranceType type = EntranceType::None;
@@ -285,11 +285,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
           if (ElementInContainer(replacementName, childForbidden) && !EntranceUnreachableAs(entrance, AGE_CHILD, alreadyChecked)) {
             auto message = replacementName + " is replaced by an entrance with a potential child access\n";
-              SPDLOG_INFO(message);
+              SPDLOG_DEBUG(message);
             return false;
           } else if (ElementInContainer(replacementName, adultForbidden) && !EntranceUnreachableAs(entrance, AGE_ADULT, alreadyChecked)) {
             auto message = replacementName + " is replaced by an entrance with a potential adult access\n";
-              SPDLOG_INFO(message);
+              SPDLOG_DEBUG(message);
             return false;
           }
         }
@@ -299,11 +299,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
         if (ElementInContainer(name, childForbidden) && !EntranceUnreachableAs(entrance, AGE_CHILD, alreadyChecked)) {
           auto message = name + " is potentially accessible as child\n";
-            SPDLOG_INFO(message);
+            SPDLOG_DEBUG(message);
           return false;
         } else if (ElementInContainer(name, adultForbidden) && !EntranceUnreachableAs(entrance, AGE_ADULT, alreadyChecked)) {
           auto message = name + " is potentially accessible as adult\n";
-            SPDLOG_INFO(message);
+            SPDLOG_DEBUG(message);
           return false;
         }
       }
@@ -317,7 +317,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
       auto impasHouseBackHintRegion = GetHintRegionHintKey(KAK_IMPAS_HOUSE_BACK);
       if (impasHouseFrontHintRegion != NONE && impasHouseBackHintRegion != NONE && impasHouseBackHintRegion != LINKS_POCKET && impasHouseFrontHintRegion != LINKS_POCKET && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
         auto message = "Kak Impas House entrances are not in the same hint area\n";
-          SPDLOG_INFO(message);
+          SPDLOG_DEBUG(message);
         return false;
       }
     }
@@ -328,23 +328,23 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     if (checkOtherEntranceAccess) {
       // At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
       if (!AreaTable(KOKIRI_FOREST)->HasAccess() && !AreaTable(KAKARIKO_VILLAGE)->HasAccess()) {
-          SPDLOG_INFO("Invalid starting area\n");
+          SPDLOG_DEBUG("Invalid starting area\n");
         return false;
       }
 
       // Check that a region where time passes is always reachable as both ages without having collected any items
       if (!Areas::HasTimePassAccess(AGE_CHILD) || !Areas::HasTimePassAccess(AGE_ADULT)) {
-          SPDLOG_INFO("Time passing is not guaranteed as both ages\n");
+          SPDLOG_DEBUG("Time passing is not guaranteed as both ages\n");
         return false;
       }
 
       // The player should be able to get back to ToT after going through time, without having collected any items
       // This is important to ensure that the player never loses access to the pedestal after going through time
       if (Settings::ResolvedStartingAge == AGE_CHILD && !AreaTable(TEMPLE_OF_TIME)->Adult()) {
-          SPDLOG_INFO("Path to Temple of Time as adult is not guaranteed\n");
+          SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
         return false;
       } else if (Settings::ResolvedStartingAge == AGE_ADULT && !AreaTable(TEMPLE_OF_TIME)->Child()) {
-          SPDLOG_INFO("Path to Temple of Time as child is not guaranteed\n");
+          SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
         return false;
       }
     }
@@ -353,11 +353,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // This is important to ensure that players can never lock their only bottles by filling them with Big Poes they can't sell
     if (checkPoeCollectorAccess) {
       if (!AreaTable(MARKET_GUARD_HOUSE)->Adult()) {
-            SPDLOG_INFO("Big Poe Shop access is not guarenteed as adult\n");
+            SPDLOG_DEBUG("Big Poe Shop access is not guarenteed as adult\n");
         return false;
       }
     }
-    SPDLOG_INFO("All Locations NOT REACHABLE\n");
+    SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
     return false;
   }
   return true;
@@ -476,7 +476,7 @@ static void ShuffleEntrancePool(std::vector<Entrance*>& entrancePool, std::vecto
   }
 
   if (retries <= 0) {
-      SPDLOG_INFO("Entrance placement attempt count exceeded. Restarting randomization completely");
+      SPDLOG_DEBUG("Entrance placement attempt count exceeded. Restarting randomization completely");
     entranceShuffleFailure = true;
   }
 }
@@ -840,7 +840,7 @@ void CreateEntranceOverrides() {
   if (noRandomEntrances) {
     return;
   }
-  SPDLOG_INFO("\nCREATING ENTRANCE OVERRIDES\n");
+  SPDLOG_DEBUG("\nCREATING ENTRANCE OVERRIDES\n");
   auto allShuffleableEntrances = GetShuffleableEntrances(EntranceType::All, false);
 
   for (Entrance* entrance : allShuffleableEntrances) {
@@ -851,7 +851,7 @@ void CreateEntranceOverrides() {
     }
 
     auto message = "Setting " + entrance->to_string() + "\n";
-    SPDLOG_INFO(message);
+    SPDLOG_DEBUG(message);
 
     int16_t originalIndex = entrance->GetIndex();
     int16_t destinationIndex = entrance->GetReverse()->GetIndex();
@@ -868,9 +868,9 @@ void CreateEntranceOverrides() {
     });
 
     message = "\tOriginal: " + std::to_string(originalIndex) + "\n";
-    SPDLOG_INFO(message);
+    SPDLOG_DEBUG(message);
     message = "\tReplacement " + std::to_string(replacementIndex) + "\n";
-    SPDLOG_INFO(message);
+    SPDLOG_DEBUG(message);
   }
 }
 
