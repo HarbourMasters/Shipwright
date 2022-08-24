@@ -2014,6 +2014,9 @@ namespace SohImGui {
                     Tooltip(
                         "Replace Navi's overworld quest hints with rando-related gameplay hints."
                     );
+                    PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
+                    Tooltip(
+                        "Matches the color of small keys and boss keys to the dungeon they belong to. This helps identify keys from afar and adds a little bit of flair.");
                     ImGui::EndMenu();
                 }
 

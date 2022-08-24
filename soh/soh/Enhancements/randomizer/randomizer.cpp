@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
+#include "draw.h"
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -4049,6 +4050,14 @@ void InitRandoItemTable() {
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
     }
     for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
+            && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
+        } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
+        } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
 }
