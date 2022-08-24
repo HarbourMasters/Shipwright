@@ -6,12 +6,12 @@
 #include <utility>
 #include <iterator>
 
-#include "Lib/ImGui/imgui.h"
-#include "Lib/ImGui/imgui_internal.h"
-#include "Cvar.h"
-#include "UltraController.h"
-#include "Utils/StringHelper.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_internal.h>
+#include <libultraship/Cvar.h>
+#include <libultraship/UltraController.h>
+#include <Utils/StringHelper.h>
+#include <libultraship/ImGuiImpl.h>
 
 namespace GameControlEditor {
     const ImGuiTableFlags PANEL_TABLE_FLAGS =

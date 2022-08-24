@@ -1,11 +1,11 @@
 #include "CosmeticsEditor.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 #include <random>
 #include <algorithm>
-#include <PR/ultra64/types.h>
+#include <ultra64/types.h>
 
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.

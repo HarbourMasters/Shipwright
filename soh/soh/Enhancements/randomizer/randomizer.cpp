@@ -1,21 +1,21 @@
 #include "randomizer.h"
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <variables.h>
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
-#include <soh/Enhancements/debugger/ImGuiHelpers.h>
-#include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
-#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
-#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "../debugger/ImGuiHelpers.h"
+#include <ImGui/imgui_internal.h>
+#include "../custom-message/CustomMessageManager.h"
+#include "../custom-message/CustomMessageTypes.h"
+#include "../item-tables/ItemTableManager.h"
 #include <stdexcept>
 
 using json = nlohmann::json;

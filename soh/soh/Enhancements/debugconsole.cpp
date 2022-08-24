@@ -1,7 +1,7 @@
 #include "debugconsole.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "savestates.h"
-#include "Console.h"
+#include <libultraship/Console.h>
 
 #include <vector>
 #include <string>
@@ -12,8 +12,8 @@
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 
-#include "Window.h"
-#include "Lib/ImGui/imgui_internal.h"
+#include <libultraship/Window.h>
+#include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
 
@@ -25,7 +25,7 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 
 #define CMD_REGISTER SohImGui::BindCmd
 

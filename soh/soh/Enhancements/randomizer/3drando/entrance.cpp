@@ -14,7 +14,7 @@
 #include <utility>
 #include <set>
 #include <map>
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 std::list<EntranceOverride> entranceOverrides = {};
 bool noRandomEntrances = false;

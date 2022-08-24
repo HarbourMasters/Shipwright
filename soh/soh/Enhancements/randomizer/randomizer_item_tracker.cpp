@@ -1,13 +1,13 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include <soh/Enhancements/debugger/ImGuiHelpers.h>
+#include <libultraship/ImGuiImpl.h>
+#include "../debugger/ImGuiHelpers.h"
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>

@@ -23,7 +23,7 @@ typedef struct {
 #include <vector>
 #include <filesystem>
 
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 class SaveManager {
 public:

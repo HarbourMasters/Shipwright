@@ -1,12 +1,12 @@
 #include "colViewer.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "ImGuiHelpers.h"
 #include "../../frame_interpolation.h"
 
 #include <vector>
 #include <string>
 #include <cmath>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>

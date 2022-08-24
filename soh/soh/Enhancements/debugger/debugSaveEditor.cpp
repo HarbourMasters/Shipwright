@@ -1,13 +1,13 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "ImGuiHelpers.h"
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>
