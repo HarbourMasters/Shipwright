@@ -1170,7 +1170,8 @@ void Player_DrawGetItemImpl(GlobalContext* globalCtx, Player* this, Vec3f* refPo
     Matrix_RotateZYX(0, globalCtx->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    if (this->getItemEntry.drawFunc != NULL && CVar_GetS32("gRandoMatchKeyColors", 0)) {
+    if (this->getItemEntry.drawFunc != NULL &&
+        (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
         this->getItemEntry.drawFunc(globalCtx, &this->getItemEntry);
     } else {
         GetItem_Draw(globalCtx, drawIdPlusOne - 1);

@@ -12667,6 +12667,14 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 this->stateFlags1 &= ~PLAYER_STATE1_29;
                 func_80852FFC(globalCtx, NULL, 8);
             }
+
+            // Set unk_862 to 0 early to not have the game draw non-custom colored models for a split second.
+            // This unk is what the game normally uses to decide what item to draw when holding up an item above Link's head.
+            // Only do this when the item actually has a custom draw function.
+            if (this->getItemEntry.drawFunc != NULL) {
+                this->unk_862 = 0;
+            }
+
             this->getItemId = GI_NONE;
             this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         }
