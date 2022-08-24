@@ -80,9 +80,10 @@ namespace SohImGui {
     extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
+
+
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
-    void Tooltip(const char* text);
 
     void DrawMainMenuAndCalculateGameSize(void);
     void RegisterMenuDrawMethod(std::function<void(void)> drawMethod);
@@ -90,12 +91,15 @@ namespace SohImGui {
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
-    void ShowCursor(bool hide, Dialogues w);
-    void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
+
+    Backend WindowBackend();
+    float WindowRefreshRate();
 
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
     void EnableWindow(const std::string& name, bool isEnabled = true);
+
     void ToggleStatisticsWindow(bool isOpen = true);
+
     void ToggleConsoleWindow(bool isOpen = true);
     void DispatchConsoleCommand(const std::string& line);
 
@@ -103,6 +107,9 @@ namespace SohImGui {
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
 
+    void Tooltip(const char* text);
+    void ShowCursor(bool hide, Dialogues w);
+    void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
 
 
 
