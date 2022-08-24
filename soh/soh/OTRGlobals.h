@@ -3,10 +3,11 @@
 
 #pragma once
 
-#include "GlobalCtx2.h"
 #include "SaveManager.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
+#include "Window.h"
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
@@ -17,9 +18,10 @@ class OTRGlobals
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
+    uint16_t getItemModIndex;
 
     OTRGlobals();
     ~OTRGlobals();
@@ -30,6 +32,7 @@ private:
 #endif
 
 #ifndef __cplusplus
+void VanillaItemTable_Init();
 void OTRAudio_Init();
 void InitAudio();
 void Graph_StartFrame();
@@ -95,14 +98,14 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
-s16 Randomizer_GetItemModelFromId(s16 itemId);
-s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
-s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 void Overlay_DisplayText(float duration, const char* text);
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 #endif
 
 #endif

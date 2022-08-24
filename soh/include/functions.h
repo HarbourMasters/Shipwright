@@ -10,6 +10,7 @@ extern "C"
 #endif
 
 #include "../../libultraship/libultraship/luslog.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
@@ -453,7 +454,10 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
-s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId);
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry);
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry);
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId);
 void func_8002F580(Actor* actor, GlobalContext* globalCtx);
@@ -1050,6 +1054,7 @@ void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button);
 void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button);
 void func_80084BF4(GlobalContext* globalCtx, u16 flag);
 u8 Item_Give(GlobalContext* globalCtx, u8 item);
+u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
 void PerformAutosave(GlobalContext* globalCtx, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
