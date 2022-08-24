@@ -6,8 +6,6 @@
 #include <functional>
 
 #include "Lib/ImGui/imgui.h"
-#define NOGDI
-#define WIN32_LEAN_AND_MEAN
 #include "spdlog/spdlog.h"
 
 namespace Ship {

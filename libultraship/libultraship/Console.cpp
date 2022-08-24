@@ -1,12 +1,12 @@
 #include "Console.h"
 
 #include "Cvar.h"
-#include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Utils.h"
+#include <sstream>
 
 namespace Ship {
 	std::string BuildUsage(const CommandEntry& entry) {
