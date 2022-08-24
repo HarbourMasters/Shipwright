@@ -1678,7 +1678,6 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
             }
             break;
         case SCENE_KAKUSIANA: // Grotto
-            // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
             switch (respawnData) { 
                 case 0xE6: // Hyrule Field Scrub Grotto
                     switch (actorParams) {
@@ -3993,7 +3992,14 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
 void CreateScrubMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
-    for (u32 price = 0; price <= 95; price += 5) {
+    customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, 0,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
+            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
+        });
+
+    for (u32 price = 5; price <= 95; price += 5) {
         customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
