@@ -190,11 +190,12 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, GlobalContext* globalCtx) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        func_8002F434(&this->actor, globalCtx,
-                      gSaveContext.n64ddFlag
-                          ? Randomizer_GetItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT)
-                          : GI_OCARINA_OOT,
-                      30.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_OCARINA_OOT, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
+        }
 
         if ((globalCtx->gameplayFrames & 13) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
@@ -215,12 +216,9 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_8002ED80(thisx, globalCtx, 0);
 
     if (gSaveContext.n64ddFlag) {
-        s32 randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
-        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        GetItem_Draw(globalCtx, randoGetItem.gid);
         return;
     }
 

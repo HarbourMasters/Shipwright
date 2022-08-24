@@ -462,13 +462,13 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx, u8 ruto, u8 adult) {
-    GetItemID getItemId = Randomizer_GetRandomizedItemId(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+    GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
 
     if (this->actor.parent != NULL && this->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {
         Flags_SetTreasure(globalCtx, 0x1F);
     } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         if (adult) {
             OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
