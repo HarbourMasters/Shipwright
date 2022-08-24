@@ -603,12 +603,100 @@ namespace SohImGui {
         ImGui::Text("%s", text);
     }
 
-    void EnhancementCheckbox(const char* text, const char* cvarName)
+    void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz)
     {
+        float thickness = ImMax(sz / 5.0f, 1.0f);
+        sz -= thickness * 0.5f;
+        pos += ImVec2(thickness * 0.25f, thickness * 0.25f);
+
+        draw_list->PathLineTo(ImVec2(pos.x, pos.y));
+        draw_list->PathLineTo(ImVec2(pos.x + sz, pos.y + sz));
+        draw_list->PathStroke(col, 0, thickness);
+
+        draw_list->PathLineTo(ImVec2(pos.x + sz, pos.y));
+        draw_list->PathLineTo(ImVec2(pos.x, pos.y + sz));
+        draw_list->PathStroke(col, 0, thickness);
+    }
+
+    bool CustomCheckbox(const char* label, bool* v, bool disabled, ImGuiCheckboxGraphics disabledGraphic) {
+        ImGuiWindow* window = ImGui::GetCurrentWindow();
+        if (window->SkipItems)
+            return false;
+
+        ImGuiContext& g = *GImGui;
+        const ImGuiStyle& style = g.Style;
+        const ImGuiID id = window->GetID(label);
+        const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+        const float square_sz = ImGui::GetFrameHeight();
+        const ImVec2 pos = window->DC.CursorPos;
+        const ImRect total_bb(pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+        ImGui::ItemSize(total_bb, style.FramePadding.y);
+        if (!ImGui::ItemAdd(total_bb, id))
+        {
+            IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
+            return false;
+        }
+
+        bool hovered, held;
+        bool pressed = ImGui::ButtonBehavior(total_bb, id, &hovered, &held);
+        if (pressed)
+        {
+            *v = !(*v);
+            ImGui::MarkItemEdited(id);
+        }
+
+        const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
+        ImGui::RenderNavHighlight(total_bb, id);
+        ImGui::RenderFrame(check_bb.Min, check_bb.Max, ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), true, style.FrameRounding);
+        ImU32 check_col = ImGui::GetColorU32(ImGuiCol_CheckMark);
+        ImU32 cross_col = ImGui::GetColorU32(ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
+        bool mixed_value = (g.LastItemData.InFlags & ImGuiItemFlags_MixedValue) != 0;
+        if (mixed_value)
+        {
+            // Undocumented tristate/mixed/indeterminate checkbox (#2644)
+            // This may seem awkwardly designed because the aim is to make ImGuiItemFlags_MixedValue supported by all widgets (not just checkbox)
+            ImVec2 pad(ImMax(1.0f, IM_FLOOR(square_sz / 3.6f)), ImMax(1.0f, IM_FLOOR(square_sz / 3.6f)));
+            window->DrawList->AddRectFilled(check_bb.Min + pad, check_bb.Max - pad, check_col, style.FrameRounding);
+        }
+        else if ((!disabled && *v) || (disabled && disabledGraphic == ImGuiCheckboxGraphics::Checkmark))
+        {
+            const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+            ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
+        }
+        else if (disabled && disabledGraphic == ImGuiCheckboxGraphics::Cross) {
+            const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+            RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), cross_col, square_sz - pad * 2.0f);
+        }
+
+        ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
+        if (g.LogEnabled)
+            ImGui::LogRenderedText(&label_pos, mixed_value ? "[~]" : *v ? "[x]" : "[ ]");
+        if (label_size.x > 0.0f)
+            ImGui::RenderText(label_pos, label);
+
+        IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
+        return pressed;
+    }
+
+    void EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, ImGuiCheckboxGraphics disabledGraphic)
+    {
+        if (disabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
         bool val = (bool)CVar_GetS32(cvarName, 0);
-        if (ImGui::Checkbox(text, &val)) {
+        if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVar_SetS32(cvarName, val);
             needs_save = true;
+        }
+
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disabledTooltipText != "") {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
         }
     }
 
@@ -2644,11 +2732,11 @@ namespace SohImGui {
         }
     }
 
-    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom) {
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, ImGuiCheckboxGraphics disabledGraphic) {
         if (padTop) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
-        EnhancementCheckbox(text, cvarName);
+        EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic);
         if (padBottom) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
