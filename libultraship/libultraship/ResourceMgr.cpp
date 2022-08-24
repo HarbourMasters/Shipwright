@@ -293,7 +293,7 @@ namespace Ship {
 		return LoadedList;
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::DirtyDirectory(std::string& SearchMask) {
+	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::DirtyDirectory(const std::string& SearchMask) {
 		auto PromiseList = CacheDirectoryAsync(SearchMask);
 		auto LoadedList = std::make_shared<std::vector<std::shared_ptr<Resource>>>();
 
