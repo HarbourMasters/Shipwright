@@ -40,7 +40,7 @@ namespace Ship {
 		std::variant<std::shared_ptr<Resource>, std::shared_ptr<ResourcePromise>> LoadResourceAsync(const char* FilePath);
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(const std::string& SearchMask);
-		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> DirtyDirectory(std::string& SearchMask);
+		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> DirtyDirectory(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::string>> ListFiles(std::string SearchMask);
 
 	protected:
