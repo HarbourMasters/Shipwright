@@ -400,7 +400,7 @@ void GetItem_Draw(GlobalContext* globalCtx, s16 drawId) {
  * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
  */
 void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
-    if (getItemEntry.drawFunc != NULL) {
+    if (getItemEntry.drawFunc != NULL && CVar_GetS32("gRandoMatchKeyColors", 0)) {
         getItemEntry.drawFunc(globalCtx, &getItemEntry);
     } else {
         GetItem_Draw(globalCtx, getItemEntry.gid);

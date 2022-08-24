@@ -1903,6 +1903,9 @@ namespace SohImGui {
                         "(medallions/stones/songs). Note that these fanfares\n"
                         "are longer than usual."
                     );
+                    PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
+                    Tooltip(
+                        "Matches the color of small keys and boss keys to the dungeon they belong to. This helps identify keys from afar and adds a little bit of flair.");
                     ImGui::EndMenu();
                 }
 
