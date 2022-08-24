@@ -126,8 +126,7 @@ void LoadRainbowColor(bool& open) {
         std::string cvarName = RainbowColorCvarList[s];
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
-        std::string RBM_HUE = cvarName;
-        RBM_HUE += "Hue";
+        std::string RBM_HUE = "gColorRainbowHue";
         f32 Canon = 10.f * s;
         ImVec4 NewColor;
         const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
