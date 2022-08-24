@@ -361,6 +361,96 @@ void Gameplay_Init(GameState* thisx) {
                     continue;
                 }
         }
+        if (gSaveContext.entranceIndex == 0x457) {//deku tree warp  
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0209) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        }
+        else if (gSaveContext.entranceIndex == 0x47A) {//dc warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0242) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x10E) {//jabu warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0221) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x608) {//forest temple warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0215) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x564) {//fire temple warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x024A) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x60C) {//water temple warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x021D) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x580) {//shadow temple warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0205) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x610) {//spirit temple warp
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x01E1) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        }
     } 
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
