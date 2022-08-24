@@ -4670,7 +4670,7 @@ void CreateRupeeMessages() {
     }
 }
 
-std::string Randomizer::InsertRupeeName(std::string message, int language) {
+std::string Randomizer::RandomizeRupeeName(std::string message, int language) {
     int randomIndex;
     std::string replaceWith;
     switch (language) {
@@ -4698,9 +4698,9 @@ std::string Randomizer::InsertRupeeName(std::string message, int language) {
 CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     CustomMessageEntry messageEntry =
         CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.english = Randomizer::InsertRupeeName(messageEntry.english, LANGUAGE_ENG);
-    messageEntry.german = Randomizer::InsertRupeeName(messageEntry.german, LANGUAGE_GER);
-    messageEntry.french = Randomizer::InsertRupeeName(messageEntry.french, LANGUAGE_FRA);
+    messageEntry.english = Randomizer::RandomizeRupeeName(messageEntry.english, LANGUAGE_ENG);
+    messageEntry.german = Randomizer::RandomizeRupeeName(messageEntry.german, LANGUAGE_GER);
+    messageEntry.french = Randomizer::RandomizeRupeeName(messageEntry.french, LANGUAGE_FRA);
     return messageEntry;
 }
 

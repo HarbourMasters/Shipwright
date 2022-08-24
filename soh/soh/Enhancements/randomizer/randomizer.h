@@ -48,7 +48,7 @@ class Randomizer {
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
-    static std::string InsertRupeeName(std::string message, int language);
+    static std::string RandomizeRupeeName(std::string message, int language);
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
 };
 
