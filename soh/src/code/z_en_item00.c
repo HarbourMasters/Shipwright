@@ -335,6 +335,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
+    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
@@ -508,9 +509,15 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
     }
 
-    if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        func_8002F554(&this->actor, globalCtx, getItemId);
+    if (!Actor_HasParent(&this->actor, globalCtx)) {
+        if (!gSaveContext.n64ddFlag) {
+            if (getItemId != GI_NONE) {
+                func_8002F554(&this->actor, globalCtx, getItemId);
+            }
+        } else {
+            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
+        }
     }
 
     EnItem00_SetupAction(this, func_8001E5C8);
@@ -666,10 +673,15 @@ void func_8001E304(EnItem00* this, GlobalContext* globalCtx) {
 
 void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
-
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, globalCtx)) {
-            func_8002F434(&this->actor, globalCtx, this->getItemId, 50.0f, 80.0f);
+            if (!gSaveContext.n64ddFlag) {
+                func_8002F434(&this->actor, globalCtx, this->getItemId, 50.0f, 80.0f);
+            } else {
+                GetItemEntry getItemEntry =
+                    Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+                GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 50.0f, 80.0f);
+            }
             this->unk_15A++;
         } else {
             this->getItemId = GI_NONE;
@@ -703,6 +715,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s16* params;
     Actor* dynaActor;
     s32 getItemId = GI_NONE;
+    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
     s16 sp3A = 0;
     s16 i;
     u32* temp;
@@ -883,10 +896,13 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        if (gSaveContext.n64ddFlag) {
-            getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F554(&this->actor, globalCtx, getItemId);
+        } else {
+            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            getItemId = getItem.getItemId;
+            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
-        func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
     switch (*params) {
@@ -1214,38 +1230,56 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 getItemId) {
+void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetItemEntry giEntry) {
     s16 color_slot;
-    switch (getItemId) {
-        case GI_MINUET_OF_FOREST:
-        case GI_SINGLE_MAGIC:
-        case GI_DOUBLE_MAGIC:
-            color_slot = 0;
+    switch (giEntry.modIndex) {
+        case MOD_NONE:
+            switch (giEntry.itemId) {
+                case ITEM_SONG_MINUET:
+                    color_slot = 0;
+                    break;
+                case ITEM_SONG_BOLERO:
+                    color_slot = 1;
+                    break;
+                case ITEM_SONG_SERENADE:
+                    color_slot = 2;
+                    break;
+                case ITEM_SONG_REQUIEM:
+                    color_slot = 3;
+                    break;
+                case ITEM_SONG_NOCTURNE:
+                    color_slot = 4;
+                    break;
+                case ITEM_SONG_PRELUDE:
+                    color_slot = 5;
+                    break;
+                case ITEM_STICK_UPGRADE_20:
+                case ITEM_STICK_UPGRADE_30:
+                    color_slot = 6;
+                    break;
+                case ITEM_NUT_UPGRADE_30:
+                case ITEM_NUT_UPGRADE_40:
+                    color_slot = 7;
+                    break;
+                default:
+                    return;
+            }
             break;
-        case GI_BOLERO_OF_FIRE:
-        case GI_DOUBLE_DEFENSE:
-            color_slot = 1;
+        case MOD_RANDOMIZER:
+            switch (giEntry.itemId) {
+                case RG_MAGIC_SINGLE:
+                case RG_MAGIC_DOUBLE:
+                    color_slot = 0;
+                    break;
+                case RG_DOUBLE_DEFENSE:
+                    color_slot = 1;
+                    break;
+                default:
+                    return;
+            }
             break;
-        case GI_SERENADE_OF_WATER:
-            color_slot = 2;
-            break;
-        case GI_REQUIEM_OF_SPIRIT:
-            color_slot = 3;
-            break;
-        case GI_NOCTURNE_OF_SHADOW:
-            color_slot = 4;
-            break;
-        case GI_PRELUDE_OF_LIGHT:
-            color_slot = 5;
-            break;
-        case GI_STICK_UPGRADE_20:
-        case GI_STICK_UPGRADE_30:
-            color_slot = 6;
-            break;
-        case GI_NUT_UPGRADE_30:
-        case GI_NUT_UPGRADE_40:
-            color_slot = 7;
-            break;
+        default:
+            return;
     }
 
     s16* colors[9][3] = {
@@ -1323,12 +1357,10 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
-        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+        GetItemEntry randoGetItemEntry =
+            Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
+        GetItem_Draw(globalCtx, randoGetItemEntry.gid);
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1384,12 +1416,10 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = Randomizer_GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
-        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+        GetItemEntry randoGetItemEntry =
+            Randomizer_GetRandomizedItem(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
+        GetItem_Draw(globalCtx, randoGetItemEntry.gid);
     } else {
         s32 pad;
 
