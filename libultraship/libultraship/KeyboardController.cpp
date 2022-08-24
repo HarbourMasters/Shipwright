@@ -7,7 +7,7 @@
 #endif
 
 #include "Hooks.h"
-#include "GlobalCtx2.h"
+
 #include "Window.h"
 
 namespace Ship {
@@ -70,7 +70,7 @@ namespace Ship {
 		});
 
 		if (find == Mappings.end()) return "Unknown";
-		const char* name = GlobalCtx2::GetInstance()->GetWindow()->GetKeyName(find->first);
+		const char* name = Window::GetInstance()->GetKeyName(find->first);
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 
