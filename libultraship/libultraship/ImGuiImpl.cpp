@@ -1359,6 +1359,8 @@ namespace SohImGui {
                         );
                         PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                        PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false);
+                        Tooltip("Bombchus will sometimes drop in place of bombs");
                         PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                         PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
@@ -2228,6 +2230,8 @@ namespace SohImGui {
         CVar_SetS32("gNoRandomDrops", 0);
         // No Heart Drops
         CVar_SetS32("gNoHeartDrops", 0);
+        // Enable Bombchu Drops
+        CVar_SetS32("gBombchuDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
 
