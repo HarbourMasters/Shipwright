@@ -70,6 +70,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
+GetItemEntry sItem;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -445,40 +446,47 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            int32_t item = Randomizer_GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            sItem = Randomizer_GetRandomizedItem(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                 if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(globalCtx, 0x1B)) {
-                            item = GI_RUPEE_BLUE;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
                         if(Flags_GetCollectible(globalCtx, 0x1C)) {
-                            item = GI_RUPEE_BLUE;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
                         if(Flags_GetCollectible(globalCtx, 0x1D)) {
-                            item = GI_RUPEE_BLUE;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
                         if(Flags_GetCollectible(globalCtx, 0x1E)) {
-                            item = GI_RUPEE_BLUE;
+                            sItem = blueRupee;
                         }
                     }
                     if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
                         if(Flags_GetCollectible(globalCtx, 0x1F)) {
-                            item = GI_RUPEE_BLUE;
+                            sItem = blueRupee;
                         }
                     }
                 }
             }
-
-            func_8002F554(&this->dyna.actor, globalCtx, 0 - item);
+            // Chests need to have a negative getItemId in order to not immediately give their item
+            // when approaching.
+            if (gSaveContext.n64ddFlag) {
+                sItem.getItemId = 0 - sItem.getItemId;
+                GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
+            } else {
+                func_8002F554(&this->dyna.actor, globalCtx, -(this->dyna.actor.params >> 5 & 0x7F));
+            }
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
@@ -590,9 +598,7 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && Randomizer_GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F,
-                                                        this->dyna.actor.id, this->dyna.actor.params,
-                                                        globalCtx->sceneNum) == GI_ICE_TRAP)) && 
+         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
         this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }

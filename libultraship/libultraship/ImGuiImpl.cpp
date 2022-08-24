@@ -41,8 +41,10 @@
 
 #if __APPLE__
 #include <SDL_hints.h>
+#include <SDL_video.h>
 #else
 #include <SDL2/SDL_hints.h>
+#include <SDL2/SDL_video.h>
 #endif
 
 #ifdef __SWITCH__
@@ -163,8 +165,14 @@ namespace SohImGui {
             } else {
                 console->Close();
             }
-            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
-            UpdateAudio();
+
+            if (CVar_GetS32("gControllerConfigurationEnabled", 0)) {
+                controller->Open();
+            } else {
+                controller->Close();
+            }
+
+        	UpdateAudio();
         });
     }
 
@@ -336,6 +344,8 @@ namespace SohImGui {
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
+            return true;
+        case Backend::SDL:
             return true;
         default:
             return false;
@@ -599,12 +609,100 @@ namespace SohImGui {
         ImGui::Text("%s", text);
     }
 
-    void EnhancementCheckbox(const char* text, const char* cvarName)
+    void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz)
     {
+        float thickness = ImMax(sz / 5.0f, 1.0f);
+        sz -= thickness * 0.5f;
+        pos += ImVec2(thickness * 0.25f, thickness * 0.25f);
+
+        draw_list->PathLineTo(ImVec2(pos.x, pos.y));
+        draw_list->PathLineTo(ImVec2(pos.x + sz, pos.y + sz));
+        draw_list->PathStroke(col, 0, thickness);
+
+        draw_list->PathLineTo(ImVec2(pos.x + sz, pos.y));
+        draw_list->PathLineTo(ImVec2(pos.x, pos.y + sz));
+        draw_list->PathStroke(col, 0, thickness);
+    }
+
+    bool CustomCheckbox(const char* label, bool* v, bool disabled, ImGuiCheckboxGraphics disabledGraphic) {
+        ImGuiWindow* window = ImGui::GetCurrentWindow();
+        if (window->SkipItems)
+            return false;
+
+        ImGuiContext& g = *GImGui;
+        const ImGuiStyle& style = g.Style;
+        const ImGuiID id = window->GetID(label);
+        const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+        const float square_sz = ImGui::GetFrameHeight();
+        const ImVec2 pos = window->DC.CursorPos;
+        const ImRect total_bb(pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+        ImGui::ItemSize(total_bb, style.FramePadding.y);
+        if (!ImGui::ItemAdd(total_bb, id))
+        {
+            IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
+            return false;
+        }
+
+        bool hovered, held;
+        bool pressed = ImGui::ButtonBehavior(total_bb, id, &hovered, &held);
+        if (pressed)
+        {
+            *v = !(*v);
+            ImGui::MarkItemEdited(id);
+        }
+
+        const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
+        ImGui::RenderNavHighlight(total_bb, id);
+        ImGui::RenderFrame(check_bb.Min, check_bb.Max, ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), true, style.FrameRounding);
+        ImU32 check_col = ImGui::GetColorU32(ImGuiCol_CheckMark);
+        ImU32 cross_col = ImGui::GetColorU32(ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
+        bool mixed_value = (g.LastItemData.InFlags & ImGuiItemFlags_MixedValue) != 0;
+        if (mixed_value)
+        {
+            // Undocumented tristate/mixed/indeterminate checkbox (#2644)
+            // This may seem awkwardly designed because the aim is to make ImGuiItemFlags_MixedValue supported by all widgets (not just checkbox)
+            ImVec2 pad(ImMax(1.0f, IM_FLOOR(square_sz / 3.6f)), ImMax(1.0f, IM_FLOOR(square_sz / 3.6f)));
+            window->DrawList->AddRectFilled(check_bb.Min + pad, check_bb.Max - pad, check_col, style.FrameRounding);
+        }
+        else if ((!disabled && *v) || (disabled && disabledGraphic == ImGuiCheckboxGraphics::Checkmark))
+        {
+            const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+            ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
+        }
+        else if (disabled && disabledGraphic == ImGuiCheckboxGraphics::Cross) {
+            const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+            RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), cross_col, square_sz - pad * 2.0f);
+        }
+
+        ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
+        if (g.LogEnabled)
+            ImGui::LogRenderedText(&label_pos, mixed_value ? "[~]" : *v ? "[x]" : "[ ]");
+        if (label_size.x > 0.0f)
+            ImGui::RenderText(label_pos, label);
+
+        IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
+        return pressed;
+    }
+
+    void EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, ImGuiCheckboxGraphics disabledGraphic)
+    {
+        if (disabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
         bool val = (bool)CVar_GetS32(cvarName, 0);
-        if (ImGui::Checkbox(text, &val)) {
+        if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVar_SetS32(cvarName, val);
             needs_save = true;
+        }
+
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disabledTooltipText != "") {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
         }
     }
 
@@ -752,12 +850,7 @@ namespace SohImGui {
     }
 
     void RandomizeColor(const char* cvarName, ImVec4* colors) {
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
+        Color_RGBA8 NewColors = {0,0,0,255};
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "##";
@@ -772,9 +865,10 @@ namespace SohImGui {
             colors->x = (float)RND_R / 255;
             colors->y = (float)RND_G / 255;
             colors->z = (float)RND_B / 255;
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+            NewColors.r = ClampFloatToInt(colors->x * 255, 0, 255);
+            NewColors.g = ClampFloatToInt(colors->y * 255, 0, 255);
+            NewColors.b = ClampFloatToInt(colors->z * 255, 0, 255);
+            CVar_SetRGBA(cvarName, NewColors);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
@@ -801,16 +895,16 @@ namespace SohImGui {
         MakeInvisible += cvarName;
         MakeInvisible += "Reset";
         if (ImGui::Button(MakeInvisible.c_str())) {
-            colors->x = defaultcolors.x / 255;
-            colors->y = defaultcolors.y / 255;
-            colors->z = defaultcolors.z / 255;
-            if (has_alpha) { colors->w = defaultcolors.w / 255; };
+            colors->x = defaultcolors.x;
+            colors->y = defaultcolors.y;
+            colors->z = defaultcolors.z;
+            if (has_alpha) { colors->w = defaultcolors.w; };
 
             Color_RGBA8 colorsRGBA;
-            colorsRGBA.r = defaultcolors.x / 255;
-            colorsRGBA.g = defaultcolors.y / 255;
-            colorsRGBA.b = defaultcolors.z / 255;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w / 255; };
+            colorsRGBA.r = defaultcolors.x;
+            colorsRGBA.g = defaultcolors.y;
+            colorsRGBA.b = defaultcolors.z;
+            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
@@ -1008,7 +1102,11 @@ namespace SohImGui {
                         bool currentValue = CVar_GetS32("gControllerConfigurationEnabled", 0);
                         CVar_SetS32("gControllerConfigurationEnabled", !currentValue);
                         needs_save = true;
-                        controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                        if (CVar_GetS32("gControllerConfigurationEnabled", 0)) {
+                            controller->Open();
+                        } else {
+                            controller->Close();
+                        }
                     }
                     ImGui::PopStyleColor(1);
                     ImGui::PopStyleVar(3);
@@ -1213,6 +1311,8 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                         PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
+                        PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
+                        Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song."); 
                         PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
@@ -1267,6 +1367,8 @@ namespace SohImGui {
                         );
                         PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                        PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false);
+                        Tooltip("Bombchus will sometimes drop in place of bombs");
                         PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                         PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
@@ -2143,6 +2245,8 @@ namespace SohImGui {
         CVar_SetS32("gNoRandomDrops", 0);
         // No Heart Drops
         CVar_SetS32("gNoHeartDrops", 0);
+        // Enable Bombchu Drops
+        CVar_SetS32("gBombchuDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
 
@@ -2394,6 +2498,8 @@ namespace SohImGui {
         CVar_SetS32("gVisualAgony", 1);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
+        // Pull out Ocarina to Summon Scarecrow
+        CVar_SetS32("gSkipScarecrow", 0);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
@@ -2405,8 +2511,18 @@ namespace SohImGui {
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
         if (UseViewports()) {
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
+            if (impl.backend == Backend::SDL) {
+                SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+                SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+
+                SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+            } else {
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+            }
         }
     }
 
@@ -2637,11 +2753,11 @@ namespace SohImGui {
         }
     }
 
-    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom) {
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, ImGuiCheckboxGraphics disabledGraphic) {
         if (padTop) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
-        EnhancementCheckbox(text, cvarName);
+        EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic);
         if (padBottom) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
