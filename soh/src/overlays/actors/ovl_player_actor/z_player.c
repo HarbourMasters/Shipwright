@@ -6165,7 +6165,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
-            if (this->getItemId != GI_NONE || this->getItemEntry.objectId != OBJECT_INVALID) {
+            if (this->getItemId != GI_NONE && this->getItemEntry.objectId != OBJECT_INVALID) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(-this->getItemId);
@@ -9687,8 +9687,8 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                     (interactRangeActor != NULL) &&
                     ((!sp1C && (this->getItemId == GI_NONE)) ||
-                        ((this->getItemId < 0 || this->getItemEntry.getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
-                    if (this->getItemId < 0 || this->getItemEntry.getItemId < 0) {
+                        ((this->getItemId < 0 && this->getItemEntry.getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
+                    if (this->getItemId < 0 && this->getItemEntry.getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
                     } else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
                         doAction = DO_ACTION_DROP;
@@ -9744,7 +9744,7 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     }
                 }
                 else if (!(this->stateFlags1 & PLAYER_STATE1_27) && func_8083A0D4(this) &&
-                    ((!gSaveContext.n64ddFlag && this->getItemId < GI_MAX) || (gSaveContext.n64ddFlag && this->getItemEntry.getItemId < RG_MAX))) {
+                    (this->getItemId < GI_MAX)) {
                     doAction = DO_ACTION_GRAB;
                 }
                 else if (this->stateFlags2 & PLAYER_STATE2_11) {
