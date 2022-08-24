@@ -293,7 +293,7 @@ namespace GameControlEditor {
     }
 
     void DrawCameraControlPanel() {
-		if (!ImGui::CollapsingHeader("Camera Controls")) {
+        if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
         }
         
@@ -301,18 +301,18 @@ namespace GameControlEditor {
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		SohImGui::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        SohImGui::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		SohImGui::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-		DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		SohImGui::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
-		DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-	}
-	
-	void DrawUI(bool& open) {
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        SohImGui::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+        DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        SohImGui::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
+        DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+    }
+    
+    void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;
