@@ -6165,7 +6165,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
-            if (this->getItemId != GI_NONE || this->getItemEntry.objectId != OBJECT_INVALID) {
+            if (this->getItemId != GI_NONE && this->getItemEntry.objectId != OBJECT_INVALID) {
                 GetItemEntry giEntry;
                 if (this->getItemEntry.objectId == OBJECT_INVALID) {
                     giEntry = ItemTable_Retrieve(-this->getItemId);
@@ -9687,8 +9687,8 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                     (interactRangeActor != NULL) &&
                     ((!sp1C && (this->getItemId == GI_NONE)) ||
-                        ((this->getItemId < 0 || this->getItemEntry.getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
-                    if (this->getItemId < 0 || this->getItemEntry.getItemId < 0) {
+                        ((this->getItemId < 0 && this->getItemEntry.getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
+                    if (this->getItemId < 0 && this->getItemEntry.getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
                     } else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
                         doAction = DO_ACTION_DROP;
@@ -9744,7 +9744,7 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     }
                 }
                 else if (!(this->stateFlags1 & PLAYER_STATE1_27) && func_8083A0D4(this) &&
-                    ((!gSaveContext.n64ddFlag && this->getItemId < GI_MAX) || (gSaveContext.n64ddFlag && this->getItemEntry.getItemId < RG_MAX))) {
+                    (this->getItemId < GI_MAX)) {
                     doAction = DO_ACTION_GRAB;
                 }
                 else if (this->stateFlags2 & PLAYER_STATE2_11) {
@@ -10372,6 +10372,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
 
         /*Prevent it on horse, while jumping and on title screen.
         If you fly around no stone of agony for you! */
+        Color_RGB8 StoneOfAgony_ori = { 255, 255, 255 };
         if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
             s16 Top_Margins = (CVar_GetS32("gHUDMargin_T", 0)*-1);
             s16 Left_Margins = CVar_GetS32("gHUDMargin_L", 0);
@@ -10417,30 +10418,34 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             gDPPipeSync(OVERLAY_DISP++);
 
             if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
             } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b, DefaultIconA);
             }
 
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             if (this->unk_6A0 > 4000000.0f) {
                 if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), 255);
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, 255);
                 } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b, 255);
                 }
             } else {
                 if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
                 } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b, DefaultIconA);
                 }
             }
             if (temp == 0 || temp <= 0.1f) {
-               /*Fail check, it is used to draw off the icon when
-               link is standing out range but do not refresh unk_6A0.
-               Also used to make a default value in my case.*/
-               gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+                /*Fail check, it is used to draw off the icon when
+                link is standing out range but do not refresh unk_6A0.
+                Also used to make a default value in my case.*/
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b, DefaultIconA);
+                }
             }
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
             gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
@@ -11182,42 +11187,83 @@ void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
-    s32 temp1;
-    s16 temp2;
-    s16 temp3;
+	s32 temp1;
+	s16 temp2;
+	s16 temp3;
 
-    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
-        temp2 = sControlInput->rel.stick_y * 240.0f;
-        Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+	if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
+		if (CVar_GetS32("gAutoCenterView", 0) != 0) {
+			temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+			Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-        temp2 = sControlInput->rel.stick_x * -16.0f;
-        temp2 = CLAMP(temp2, -3000, 3000);
-        this->actor.focus.rot.y += temp2;
-    }
-    else {
-        temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f);
-        this->actor.focus.rot.x += temp3;
+			temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
+			temp2 = CLAMP(temp2, -3000, 3000);
+			this->actor.focus.rot.y += temp2;
+		} else {
+			temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+			temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+				(s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+			this->actor.focus.rot.x += temp3;
 
-        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
-        }
+			if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+				this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+			}
+            
+			if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+				this->actor.focus.rot.x -= (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+			}
 
-        this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
+			this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
-        temp1 = 19114;
-        temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-        temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f);
-        temp2 += temp3;
+			temp1 = 19114;
+			temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+			temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+				(s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+			temp2 += temp3;
 
-        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
+			this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
-        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
-        }
-    }
+			if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+				this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+			}
+
+			if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.y += (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+			}
+		}
+}
+	else {
+		temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+		temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+			(s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+		this->actor.focus.rot.x += temp3;
+
+		if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+			this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+		}
+        
+		if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.x -= (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+		}
+
+		this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
+
+		temp1 = 19114;
+		temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+		temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+			(s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+		temp2 += temp3;
+
+		this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
+
+		if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+			this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+		}
+
+		if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.y += (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		}
+	}
 
     this->unk_6AE |= 2;
     return func_80836AB8(this, (globalCtx->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) -
@@ -12604,6 +12650,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                         giEntry.itemId == RG_MAGIC_DOUBLE) {
                 Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
             } else {
+                // Just in case something weird happens with MOD_INDEX
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         } else {

@@ -216,7 +216,27 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
-    void DrawUI(bool& open) {
+    void DrawCameraControlPanel() {
+		if (!ImGui::CollapsingHeader("Camera Controls")) {
+            return;
+        }
+        
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        SohImGui::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+		SohImGui::Tooltip("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+		SohImGui::Tooltip("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+		SohImGui::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
+		SohImGui::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+	}
+	
+	void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;
@@ -225,6 +245,7 @@ namespace GameControlEditor {
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &open)) {
             DrawOcarinaControlPanel();
+			DrawCameraControlPanel();
         }
         ImGui::End();
     }

@@ -3,6 +3,8 @@
 
 #include "soh/frame_interpolation.h"
 
+const Color_RGB8 Trails_Color_ori = {255,255,255};
+
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -198,6 +200,7 @@ s32 EffectBlure_Update(void* thisx) {
     s16 GreenColor;
     s16 BlueColor;
     s16 TrailDuration;
+    Color_RGB8 Trails_col = CVar_GetRGB("gTrailCol", Trails_Color_ori);
 
     if (this == NULL) {
         return 0;
@@ -208,16 +211,17 @@ s32 EffectBlure_Update(void* thisx) {
     }
 
     if (CVar_GetS32("gUseTrailsCol", 0) !=0) {
-        RedColor = CVar_GetS32("gTrailColR",255);
-        GreenColor = CVar_GetS32("gTrailColG",255);
-        BlueColor = CVar_GetS32("gTrailColB",255);
-        TrailDuration = 4.0f*CVar_GetS32("gTrailDurantion",1);
+        RedColor = Trails_col.r;
+        GreenColor = Trails_col.g;
+        BlueColor = Trails_col.b;
+        TrailDuration = 4.0f * CVar_GetS32("gTrailDurantion",1);
     } else {
-        RedColor = 255;
-        GreenColor = 255;
-        BlueColor = 255;
+        RedColor = Trails_Color_ori.r;
+        GreenColor = Trails_Color_ori.g;
+        BlueColor = Trails_Color_ori.b;
         TrailDuration=4.0f;
     }
+
     this->p1StartColor.r = RedColor;
     this->p2StartColor.r = RedColor;
     this->p1EndColor.r = RedColor;

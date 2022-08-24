@@ -114,7 +114,7 @@ void Update() {
 
     // rescan devices if connection state changed
     if (rescan) {
-		Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->ScanPhysicalDevices();
+        Window::GetInstance()->GetControlDeck()->ScanPhysicalDevices();
     }
 }
 
