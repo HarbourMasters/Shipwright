@@ -477,7 +477,7 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Hearts counts", "gHearts");
             DrawPositionsRadioBoxes("gHeartsCount");
-            DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-25,ImGui::GetWindowViewport()->Size.x);
+            DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
             ImGui::NewLine();
             ImGui::EndTable();

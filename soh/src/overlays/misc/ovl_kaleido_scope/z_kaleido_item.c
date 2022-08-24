@@ -657,8 +657,6 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
             sCButtonPosX[4] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
             sCButtonPosX[5] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
             sCButtonPosX[6] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
-        } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
-            ; /*TODO*/   
         }
     } else {
         sCButtonPosX[3] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[3][0]);
@@ -681,8 +679,6 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
             sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
         } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
             sCButtonPosX[0] = CVar_GetS32("gCBtnLPosX", 0);
-        } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
-            ; /*TODO*/
         }
     } else {
         sCButtonPosX[0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
@@ -699,8 +695,6 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
             sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
         } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
             sCButtonPosX[1] = CVar_GetS32("gCBtnDPosX", 0);
-        } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
-            ; /*TODO*/
         }
     } else {
         sCButtonPosX[1] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
@@ -717,8 +711,6 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
             sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
         } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
             sCButtonPosX[2] = CVar_GetS32("gCBtnRPosX", 0);
-        } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
-            ; /*TODO*/
         }
     } else {
         sCButtonPosX[2] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);

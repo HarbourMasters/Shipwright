@@ -3566,10 +3566,6 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, interfaceCtx->cLeftAlpha);
     }
-    /*gSPWideTextureRectangle(OVERLAY_DISP++, C_Left_BTN_Pos[0] << 2, C_Left_BTN_Pos[1] << 2,
-                        (C_Left_BTN_Pos[0] + CLeftScaled) << 2,
-                        (C_Left_BTN_Pos[1] + CLeftScaled) << 2,
-                        G_TX_RENDERTILE, 0, 0, CLeft_factor, CLeft_factor);*/
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Left_BTN_Pos[0] << 2, C_Left_BTN_Pos[1] << 2,
                         (C_Left_BTN_Pos[0] + R_ITEM_BTN_WIDTH(1)) << 2,
                         (C_Left_BTN_Pos[1] + R_ITEM_BTN_WIDTH(1)) << 2,
@@ -3585,10 +3581,6 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, interfaceCtx->cDownAlpha);
     }
-    /*gSPWideTextureRectangle(OVERLAY_DISP++,  C_Down_BTN_Pos[0] << 2, C_Down_BTN_Pos[1] << 2,
-                        (C_Down_BTN_Pos[0] + CDownScaled) << 2,
-                        (C_Down_BTN_Pos[1] + CDownScaled) << 2,
-                        G_TX_RENDERTILE, 0, 0, CDown_factor, CDown_factor);*/
     gSPWideTextureRectangle(OVERLAY_DISP++,  C_Down_BTN_Pos[0] << 2, C_Down_BTN_Pos[1] << 2,
                         (C_Down_BTN_Pos[0] + R_ITEM_BTN_WIDTH(2)) << 2,
                         (C_Down_BTN_Pos[1] + R_ITEM_BTN_WIDTH(2)) << 2,
@@ -3604,10 +3596,6 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, interfaceCtx->cRightAlpha);
     }
-    /*gSPWideTextureRectangle(OVERLAY_DISP++, C_Right_BTN_Pos[0] << 2, C_Right_BTN_Pos[1] << 2,
-                        (C_Right_BTN_Pos[0] + CRightScaled) << 2,
-                        (C_Right_BTN_Pos[1] + CRightScaled) << 2,
-                        G_TX_RENDERTILE, 0, 0, CRight_factor, CRight_factor);*/
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Right_BTN_Pos[0] << 2, C_Right_BTN_Pos[1] << 2,
                         (C_Right_BTN_Pos[0] + R_ITEM_BTN_WIDTH(3)) << 2,
                         (C_Right_BTN_Pos[1] + R_ITEM_BTN_WIDTH(3)) << 2,
@@ -4054,25 +4042,6 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
                         (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
                         (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
                         gItemIconDD[button] << 1, gItemIconDD[button] << 1);
-
-    /* Used only by scaling system
-    gDPPipeSync(OVERLAY_DISP++); 
-    gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
-    gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, ItemsSlotsAlpha[button]);
-    gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-    Matrix_Translate(
-        ItemIconPos[button][0],
-        ItemIconPos[button][1] * -1, 1.0f, MTXMODE_NEW);
-
-    Matrix_Scale(
-        ItemScaleCurrent[button]/1, 
-        ItemScaleCurrent[button]/1, 
-        ItemScaleCurrent[button]/1, MTXMODE_APPLY);
-    gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[0], 4, 0);
-    gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
-    gDPPipeSync(OVERLAY_DISP++);*/
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
