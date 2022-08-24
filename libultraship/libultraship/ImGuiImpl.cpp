@@ -2000,13 +2000,13 @@ namespace SohImGui {
 
                 if (ImGui::BeginMenu("Rando Enhancements"))
                 {
-                    EnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
+                    PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
                     Tooltip(
                         "Play unique fanfares when obtaining quest items\n"
                         "(medallions/stones/songs). Note that these fanfares\n"
                         "are longer than usual."
                     );
-                    EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                    PaddedEnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
                     Tooltip(
                         "Replace Navi's overworld quest hints with rando-\n"
                         "related gameplay hints.\n"
