@@ -68,7 +68,7 @@ If you get an error saying `Incompatible ROM hash`, you have selected the wrong 
 
 ### Nintendo Wii U Rom Extraction
 
-* Download the latest PC release of the Ship of Harkinian, and follow hte instructions above for generating the `oot.otr` archive on that platform.
+* Download the latest PC release of the Ship of Harkinian, and follow the instructions above for generating the `oot.otr` archive on that platform.
 * Copy the `.rpx` and the `oot.otr` archive to `wiiu/apps/soh`
 
 ---
