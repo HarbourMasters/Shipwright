@@ -221,7 +221,7 @@ namespace GameControlEditor {
     // Copied from InputEditor::DrawButton
     // CurrentPort is indexed started at 1 here due to the Generic tab
     void DrawButton(const char* label, int n64Btn) {
-        auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
         auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
         float size = 40;
         bool readingMode = BtnReading == n64Btn;
@@ -266,7 +266,7 @@ namespace GameControlEditor {
 
     // Controller dropdown copied from InputEditor::DrawControllerSchema
     void DrawCustomButtons() {
-        auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
         auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
         auto profile = backend->getProfile(CurrentPort - 1);
         bool IsKeyboard = backend->GetGuid() == "Keyboard" || backend->GetGuid() == "Auto" || !backend->Connected();
