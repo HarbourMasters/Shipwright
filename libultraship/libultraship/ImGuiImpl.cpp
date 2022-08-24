@@ -163,8 +163,14 @@ namespace SohImGui {
             } else {
                 console->Close();
             }
-            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
-            UpdateAudio();
+
+            if (CVar_GetS32("gControllerConfigurationEnabled", 0)) {
+                controller->Open();
+            } else {
+                controller->Close();
+            }
+
+        	UpdateAudio();
         });
     }
 
@@ -1008,7 +1014,11 @@ namespace SohImGui {
                         bool currentValue = CVar_GetS32("gControllerConfigurationEnabled", 0);
                         CVar_SetS32("gControllerConfigurationEnabled", !currentValue);
                         needs_save = true;
-                        controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                        if (CVar_GetS32("gControllerConfigurationEnabled", 0)) {
+                            controller->Open();
+                        } else {
+                            controller->Close();
+                        }
                     }
                     ImGui::PopStyleColor(1);
                     ImGui::PopStyleVar(3);
