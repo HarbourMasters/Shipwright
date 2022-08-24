@@ -859,6 +859,7 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx);
 void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx);
 void Cutscene_SetSegment(GlobalContext* globalCtx, void* segment);
 void GetItem_Draw(GlobalContext* globalCtx, s16 drawId);
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 void SoundSource_InitAll(GlobalContext* globalCtx);
 void SoundSource_UpdateAll(GlobalContext* globalCtx);
 void SoundSource_PlaySfxAtFixedWorldPos(GlobalContext* globalCtx, Vec3f* pos, s32 duration, u16 sfxId);

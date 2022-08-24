@@ -184,7 +184,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 f32 mtxScale = 1.5f;
                 Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
             }
-            GetItem_Draw(globalCtx, getItem.gid);
+            GetItemEntry_Draw(globalCtx, getItem);
         }
         
     }

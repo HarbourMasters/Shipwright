@@ -395,6 +395,18 @@ void GetItem_Draw(GlobalContext* globalCtx, s16 drawId) {
     sDrawItemTable[drawId].drawFunc(globalCtx, drawId);
 }
 
+/**
+ * Draw "Get Item" Model from a `GetItemEntry`
+ * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
+ */
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    if (getItemEntry.drawFunc != NULL) {
+        getItemEntry.drawFunc(globalCtx, &getItemEntry);
+    } else {
+        GetItem_Draw(globalCtx, getItemEntry.gid);
+    }
+}
+
 // All remaining functions in this file are draw functions referenced in the table and called by the function above
 
 /* 0x0178 */ u8 primXluColor[3];

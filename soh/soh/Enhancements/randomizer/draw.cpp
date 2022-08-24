@@ -6,49 +6,31 @@
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
+#include "objects/object_gi_hearts/object_gi_hearts.h"
 
 extern "C" void Randomizer_DrawSmallKey(GlobalContext* globalCtx, GetItemEntry* getItemEntry) {
     s32 pad;
-    
-    std::array<s16, 3> color;
-    switch(getItemEntry->getItemId) {
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-            color = {4, 195, 46};
-            break;
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-            color = {237, 95, 95};
-            break;
-        case RG_WATER_TEMPLE_SMALL_KEY:
-            color = {85, 180, 223};
-            break;
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            color = {222, 158, 47};
-            break;
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-            color = {126, 16, 177};
-            break;
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            color = {221, 212, 60};
-            break;
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            color = {227, 110, 255};
-            break;
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            color = {80, 80, 80};
-            break;
-    }
+
+    s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
+    s16 colors[8][3] = {
+        { 4, 195, 46 },    // Forest Temple
+        { 237, 95, 95 },   // Fire Temple
+        { 85, 180, 223 },  // Water Temple
+        { 222, 158, 47 },  // Spirit Temple
+        { 126, 16, 177 },  // Shadow Temple
+        { 221, 212, 60 },  // Gerudo Training Grounds
+        { 227, 110, 255 }, // Bottom of the Well
+        { 80, 80, 80 }     // Ganon's Castle
+    };
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
-        G_MTX_MODELVIEW | G_MTX_LOAD);
-
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, color[0], color[1], color[2], 255);
+    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
     gsSPGrayscale(POLY_OPA_DISP++, true);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
@@ -74,8 +56,6 @@ extern "C" void Randomizer_DrawBossKey(GlobalContext* globalCtx, GetItemEntry* g
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -92,8 +72,6 @@ extern "C" void Randomizer_DrawBossKey(GlobalContext* globalCtx, GetItemEntry* g
     }
 
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -109,6 +87,30 @@ extern "C" void Randomizer_DrawBossKey(GlobalContext* globalCtx, GetItemEntry* g
     if (color_slot >= 0) {
         gsSPGrayscale(POLY_XLU_DISP++, false);
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawDoubleDefense(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    s32 pad;
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    func_80093D84(globalCtx->state.gfxCtx);
+   
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    // if (drawId == doubleDef) {
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
+    // }
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartBorderDL);
+
+    // if (drawId == doubleDef) {
+    gsSPGrayscale(POLY_XLU_DISP++, false);
+    // }
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
