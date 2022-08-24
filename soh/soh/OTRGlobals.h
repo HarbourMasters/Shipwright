@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include "GlobalCtx2.h"
 #include "SaveManager.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
+#include "Window.h"
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
@@ -18,7 +18,7 @@ class OTRGlobals
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     uint16_t getItemModIndex;
