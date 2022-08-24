@@ -57,7 +57,7 @@ If you get any errors, then you might have selected the wrong rom. Make sure to 
 * Run `soh.app`, and when prompted, select one of the supported roms listed above.
 * You should see a notification saying `Processing OTR`, then, once the process is complete, you should get a notification saying `OTR Successfully Generated`, then the game should start.
 
-The packing process can take up to **5 minutes**
+The packing process can take up to **5 minutes**.
 
 If you get an error saying `Incompatible ROM hash`, you have selected the wrong rom, make sure the checksum matches one of the ones listed above.
 
