@@ -61,7 +61,7 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "Enhancements/menu/GameMenuBar.hpp"
+#include "GameMenuBar.hpp"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
