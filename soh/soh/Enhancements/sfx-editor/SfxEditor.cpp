@@ -11,151 +11,39 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-/*    // SFX Settings
-    const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
-    const char* randoSFXFanfares[3] = { "Normal", "No Fanfares", "Random" };
-    const char* randoSFXLowHP[29] = { "Default",
-                                      "Completely Random",
-                                      "Random Ear-Safe",
-                                      "None",
-                                      "Bark", NA_SE_EV_SMALL_DOG_BARK  0x28D8
-                                      "Bomb Bounce", NA_SE_EN_AWA_BOUND 0x3948
-                                      "Bongo Bongo Low", NA_SE_EN_SHADEST_TAIKO_LOW 0x3950
-                                      "Business Scrub", NA_SE_EN_NUTS_FAINT 0x3882
-                                      "Carrot Refill", NA_SE_SY_CARROT_RECOVER 0x4845
-                                      "Cluck", NA_SE_EV_CHICKEN_CRY_N 0x2811
-                                      "Drawbridge Set", NA_SE_EV_BRIDGE_OPEN_STOP 0x280E
-                                      "Guay", NA_SE_EN_KAICHO_FLUTTER 0x3897
-                                      "HP Low",  	NA_SE_SY_HITPOINT_ALARM 0x481B
-                                      "HP Recover", NA_SE_SY_HP_RECOVER 0x480B
-                                      "Horse Trot", NA_SE_EV_HORSE_RUN 0x2804
-                                      "Iront Boots", NA_SE_PL_WALK_HEAVYBOOTS 0x80D
-                                      "Moo", NA_SE_EV_COW_CRY 0x28DF 
-                                      "Mweep!",  	NA_SE_VO_KZ_MOVE 0x687A
-                                      "Navi Hey!", NA_SE_VO_NA_HELLO_2 0x685F
-                                      "Navi Random", NA_SE_VO_NA_HELLO_2, NA_SE_VO_NA_HELLO_1, NA_SE_VO_NA_HELLO_0 0x685F, 0x685E, 0x685D
-                                      "Pot Shattering", NA_SE_EV_POT_BROKEN 0x2887
-                                      "Ribbit", NA_SE_EV_FROG_CRY_0, 0x28E3
-                                      "Rupee (Silver)", NA_SE_EV_FIVE_COUNT_LUPY 0x28E8
-                                      "Switch", NA_SE_EV_FOOT_SWITCH, NA_SE_EV_DIAMOND_SWITCH 0x2815, 0x28BA
-                                      "Sword Bonk",  	NA_SE_IT_WALL_HIT_SOFT 0x181B
-                                      "Tambourine", NA_SE_SY_METRONOME 0x4836
-                                      "Timer",  	NA_SE_SY_TIMER 0x2821
-                                      "Zelda Gasp (Adult)" NA_SE_VO_Z1_SURPRISE 0x6878};
+const char* randoSFXLowHP[23] = { "Bark",
+                                  "Bomb Bounce",
+                                  "Bongo Bongo Low",
+                                  "Business Scrub",
+                                  "Carrot Refill",
+                                  "Cluck",
+                                  "Drawbridge Set",
+                                  "Guay",
+                                  "Low HP Beep",
+                                  "HP Recover",
+                                  "Horse Trot",
+                                  "Iron Boots",
+                                  "Moo",
+                                  "Mweep!",
+                                  "Navi Hey!",
+                                  "Navi Listen!",
+                                  "Pot Shattering",
+                                  "Ribbit",
+                                  "Rupee (Silver)",
+                                  "Switch",
+                                  "Sword Bonk",
+                                  "Tambourine",
+                                  "Zelda Gasp (Adult)" };
 
-    const char* randoSFXHorse[13] = {
-        "Default",       "Completely Random", "Random Ear-Safe", "Random Choice", "None",
-        "Armos",         "Child Scream",      "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Scream", "Ruto Wiggle",       "Stalchild Attack"
-    };
-    const char* randoSFXNightfall[13] = {
-        "Default",        "Completely Random",    "Random Ear-Safe", "Random Choice", "None",
-        "Cockadoodiedoo", "Gold Skulltula Token", "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Moan",    "Talon Snore",          "Thunder"
-    };
-    const char* randoSFXHoverBoots[11] = {
-        "Default",      "Completely Random",  "Random Ear-Safe", "Random Choice", "None",      "Bark",
-        "Cartoon Fall", "Flare Dancer Laugh", "Mweep!",          "Shabom Pop",    "Tambourine"
-    };
-    const char* randoSFXOcarina[7] = { "Dafault", "Random Choice", "Flute", "Harp", "Whistle", "Malon", "Grind Organ" };
-    const char* randoSFXMenu[65] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random Choise",
-                                     "None",
-                                     "Bark",
-                                     "Bomb Bounce",
-                                     "Bongo Bongo High",
-                                     "Bongo Bongo Low",
-                                     "Bottle Cork",
-                                     "Bow Twang",
-                                     "Bubble Laugh",
-                                     "Carrot Refill",
-                                     "Change Item",
-                                     "Child Pant",
-                                     "Cluck",
-                                     "Deku Baba",
-                                     "Drawbridge Set",
-                                     "Dusk Howl",
-                                     "Fanfare (Light)",
-                                     "Fanfare (Mediaum)",
-                                     "Field Shrub",
-                                     "Flare Dancer Startled",
-                                     "Ganondorf \"Teh!\"",
-                                     "Gohma Larva Croak",
-                                     "Gold Skulltula Token",
-                                     "Goron Wake",
-                                     "Guay",
-                                     "Gunshot",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Hammer Bonk",
-                                     "Horse Trot",
-                                     "Iron Boots",
-                                     "Iron Knuckle",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Notification",
-                                     "Phantom Ganon Laugh",
-                                     "Plant Explode",
-                                     "Pot Shattering",
-                                     "Redead Moan",
-                                     "Ribbit",
-                                     "Rupee",
-                                     "Rupee (Silver)",
-                                     "Ruto Crash",
-                                     "Ruto Lift",
-                                     "Ruto Thrown",
-                                     "Scrub Emerge",
-                                     "Shabom Bounce",
-                                     "Shabom Pop",
-                                     "Shellblade",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Spit Nut",
-                                     "Switch",
-                                     "Sword Bonk",
-                                     "Talon \"Hmmm\"",
-                                     "Talon Snore",
-                                     "Talon Surprised",
-                                     "Tambourine",
-                                     "Target Ennemy",
-                                     "Target Neutral",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
-    const char* randoSFXNavi[32] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random  Choice",
-                                     "None",
-                                     "Bark",
-                                     "Business Scrub",
-                                     "Carrot Refill",
-                                     "Click",
-                                     "Dusk Howl",
-                                     "Exploding Crate",
-                                     "Explosion",
-                                     "Great Fairy",
-                                     "Guay",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Horse Neigh",
-                                     "Ice Shattering",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Navi \"Hello!\"",
-                                     "Notification",
-                                     "Poe",
-                                     "Pot Shattering",
-                                     "Redead Scream",
-                                     "Ribit",
-                                     "Ruto Giggle",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Tambourine",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
-*/
+const char* randoSFXNightfall[9] = { "Dusk Howl", "Cockadoodiedoo", "Gold Skulltula Token", "Great Fairy", "Moo",
+                                     "Mweep!", "Redead Moan", "Talon Snore", "Thunder" };
+
+const char* randoSFXHorse[8] = { "Armos",  "Child Scream",  "Great Fairy", "Moo",
+                                 "Mweep!", "Redead Scream", "Ruto Giggle", "Stalchild Attack" };
+
+const char* randoSFXHoverBoots[6] = {
+    "Bark", "Cartoon Fall", "Flare Dancer Laugh", "Mweep!", "Shabom Pop", "Tambourine"
+};
 
 const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
     { NA_BGM_FIELD_LOGIC, { "Hyrule Field", "NA_BGM_FIELD_LOGIC", SEQ_BGM_WORLD } },
@@ -251,7 +139,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     { NA_SE_EV_CHICKEN_CRY_N, { "Cluck", "0x2811", SFX_SOUND } },
     { NA_SE_EV_BRIDGE_OPEN_STOP, { "Drawbridge Set", "0x280E", SFX_SOUND } },
     { NA_SE_EN_KAICHO_CRY, { "Guay", "0x38B6", SFX_SOUND } },
-    { NA_SE_SY_HITPOINT_ALARM, { "HP Low", "0x481B", SFX_SOUND } },
+    { NA_SE_SY_HITPOINT_ALARM, { "Low HP Beep", "0x481B", SFX_SOUND } },
     { NA_SE_SY_HP_RECOVER, { "HP Recover", "0x480B", SFX_SOUND } },
     { NA_SE_EV_HORSE_RUN, { "Horse Trot", "0x2804", SFX_SOUND } },
     { NA_SE_PL_WALK_HEAVYBOOTS, { "Iron Boots", "0x80D", SFX_SOUND } },
@@ -348,6 +236,66 @@ void Draw_BgmTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
             }
         }
         SohImGui::needs_save = true;
+    }
+    if (type == SFX_SOUND) {
+        for (int i = 0; i < 4; i++) {
+            char sound[35] = "";
+            int max = 0;
+            
+            if (i == 0) {
+                strcat(sound, "Randomize Sound: Low HP Beep");
+                max = 22;   
+            }
+            if (i == 1) {
+                strcat(sound, "Randomize Sound: Nightfall Howl");
+                max = 8;
+            }
+            if (i == 2) {
+                strcat(sound, "Randomize Sound: Horse Trot");
+                max = 7;
+            }
+            if (i == 3) {
+                strcat(sound, "Randomize Sound: Hover Boots");
+                max = 5;
+            } 
+            if (ImGui::Button(sound)) {
+                std::vector<u16> values;
+                for (const auto& [value, nameAndStorageKeySuffix] : map) {
+                    const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+                    for (int j = 0; j < max; j++) {
+                        if (i == 0) {
+                            if (name == randoSFXLowHP[j]) {
+                                values.push_back(value);
+                            }
+                        } else if (i == 1) {
+                            if (name == randoSFXNightfall[j]) {
+                                values.push_back(value);
+                            }
+                        } else if (i == 2) {
+                            if (name == randoSFXHorse[j]) {
+                                values.push_back(value);
+                            }
+                        } else {
+                            if (name == randoSFXHoverBoots[j]) {
+                                values.push_back(value);
+                            }
+                        }
+                    }
+                }
+                const int randomIndex = rand() % values.size();
+                const int randomValue = values[randomIndex];
+                if (i == 0) {
+                    CVar_SetS32("gSfxEditor_0x481B", randomValue);
+                } else if (i == 1) {
+                    CVar_SetS32("gSfxEditor_0x28AE", randomValue);
+                } else if (i == 2) {
+                    CVar_SetS32("gSfxEditor_0x2804", randomValue);
+                } else {
+                    CVar_SetS32("gSfxEditor_0x8C9", randomValue);
+                }
+                SohImGui::needs_save = true; 
+            }
+        }
     }
 
     ImGui::BeginTable(tabKey.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
