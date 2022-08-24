@@ -1396,7 +1396,9 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (Actor_ProcessTalkRequest(thisx, globalCtx)) {
-        func_800F4524(&D_801333D4, NA_SE_VO_SK_LAUGH, 0x20);
+        char src[80];
+        sprintf(src, "gSfxEditor_0x%x", NA_SE_VO_SK_LAUGH);
+        func_800F4524(&D_801333D4, CVar_GetS32(src, NA_SE_VO_SK_LAUGH), 0x20);
         thisx->focus.pos = thisx->world.pos;
 
         if (thisx->textId == ElfMessage_GetCUpText(globalCtx)) {

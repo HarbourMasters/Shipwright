@@ -205,13 +205,16 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
         }
 
         func_800F436C(&sSoundPos, NA_SE_EV_NAVY_FLY - SFX_FLAG, (0.4f * dist) + 0.6f);
+        char src[80];
+        int sfxId;
         switch (globalCtx->csCtx.frames) {
             case 473:
                 func_800788CC(NA_SE_VO_NA_HELLO_3);
                 break;
 
             case 583:
-                func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+                sprintf(src, "gSfxEditor_0x%x", NA_SE_VO_NA_HELLO_2);
+                func_800F4524(&D_801333D4, CVar_GetS32(src, NA_SE_VO_NA_HELLO_2), 32);
                 break;
 
             case 763:

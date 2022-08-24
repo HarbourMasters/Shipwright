@@ -7,95 +7,309 @@
 #include <Cvar.h>
 #include "../libultraship/ImGuiImpl.h"
 #include <functions.h>
+extern "C" {
+extern GlobalContext* gGlobalCtx;
+}
+
+/*    // SFX Settings
+    const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
+    const char* randoSFXFanfares[3] = { "Normal", "No Fanfares", "Random" };
+    const char* randoSFXLowHP[29] = { "Default",
+                                      "Completely Random",
+                                      "Random Ear-Safe",
+                                      "None",
+                                      "Bark", NA_SE_EV_SMALL_DOG_BARK  0x28D8
+                                      "Bomb Bounce", NA_SE_EN_AWA_BOUND 0x3948
+                                      "Bongo Bongo Low", NA_SE_EN_SHADEST_TAIKO_LOW 0x3950
+                                      "Business Scrub", NA_SE_EN_NUTS_FAINT 0x3882
+                                      "Carrot Refill", NA_SE_SY_CARROT_RECOVER 0x4845
+                                      "Cluck", NA_SE_EV_CHICKEN_CRY_N 0x2811
+                                      "Drawbridge Set", NA_SE_EV_BRIDGE_OPEN_STOP 0x280E
+                                      "Guay", NA_SE_EN_KAICHO_FLUTTER 0x3897
+                                      "HP Low",  	NA_SE_SY_HITPOINT_ALARM 0x481B
+                                      "HP Recover", NA_SE_SY_HP_RECOVER 0x480B
+                                      "Horse Trot", NA_SE_EV_HORSE_RUN 0x2804
+                                      "Iront Boots", NA_SE_PL_WALK_HEAVYBOOTS 0x80D
+                                      "Moo", NA_SE_EV_COW_CRY 0x28DF 
+                                      "Mweep!",  	NA_SE_VO_KZ_MOVE 0x687A
+                                      "Navi Hey!", NA_SE_VO_NA_HELLO_2 0x685F
+                                      "Navi Random", NA_SE_VO_NA_HELLO_2, NA_SE_VO_NA_HELLO_1, NA_SE_VO_NA_HELLO_0 0x685F, 0x685E, 0x685D
+                                      "Pot Shattering", NA_SE_EV_POT_BROKEN 0x2887
+                                      "Ribbit", NA_SE_EV_FROG_CRY_0, 0x28E3
+                                      "Rupee (Silver)", NA_SE_EV_FIVE_COUNT_LUPY 0x28E8
+                                      "Switch", NA_SE_EV_FOOT_SWITCH, NA_SE_EV_DIAMOND_SWITCH 0x2815, 0x28BA
+                                      "Sword Bonk",  	NA_SE_IT_WALL_HIT_SOFT 0x181B
+                                      "Tambourine", NA_SE_SY_METRONOME 0x4836
+                                      "Timer",  	NA_SE_SY_TIMER 0x2821
+                                      "Zelda Gasp (Adult)" NA_SE_VO_Z1_SURPRISE 0x6878};
+
+    const char* randoSFXHorse[13] = {
+        "Default",       "Completely Random", "Random Ear-Safe", "Random Choice", "None",
+        "Armos",         "Child Scream",      "Great Fairy",     "Moo",           "Mweep!",
+        "Redead Scream", "Ruto Wiggle",       "Stalchild Attack"
+    };
+    const char* randoSFXNightfall[13] = {
+        "Default",        "Completely Random",    "Random Ear-Safe", "Random Choice", "None",
+        "Cockadoodiedoo", "Gold Skulltula Token", "Great Fairy",     "Moo",           "Mweep!",
+        "Redead Moan",    "Talon Snore",          "Thunder"
+    };
+    const char* randoSFXHoverBoots[11] = {
+        "Default",      "Completely Random",  "Random Ear-Safe", "Random Choice", "None",      "Bark",
+        "Cartoon Fall", "Flare Dancer Laugh", "Mweep!",          "Shabom Pop",    "Tambourine"
+    };
+    const char* randoSFXOcarina[7] = { "Dafault", "Random Choice", "Flute", "Harp", "Whistle", "Malon", "Grind Organ" };
+    const char* randoSFXMenu[65] = { "Default",
+                                     "Completely Random",
+                                     "Random Ear-Safe",
+                                     "Random Choise",
+                                     "None",
+                                     "Bark",
+                                     "Bomb Bounce",
+                                     "Bongo Bongo High",
+                                     "Bongo Bongo Low",
+                                     "Bottle Cork",
+                                     "Bow Twang",
+                                     "Bubble Laugh",
+                                     "Carrot Refill",
+                                     "Change Item",
+                                     "Child Pant",
+                                     "Cluck",
+                                     "Deku Baba",
+                                     "Drawbridge Set",
+                                     "Dusk Howl",
+                                     "Fanfare (Light)",
+                                     "Fanfare (Mediaum)",
+                                     "Field Shrub",
+                                     "Flare Dancer Startled",
+                                     "Ganondorf \"Teh!\"",
+                                     "Gohma Larva Croak",
+                                     "Gold Skulltula Token",
+                                     "Goron Wake",
+                                     "Guay",
+                                     "Gunshot",
+                                     "HP Low",
+                                     "HP Recover",
+                                     "Hammer Bonk",
+                                     "Horse Trot",
+                                     "Iron Boots",
+                                     "Iron Knuckle",
+                                     "Moo",
+                                     "Mweep!",
+                                     "Notification",
+                                     "Phantom Ganon Laugh",
+                                     "Plant Explode",
+                                     "Pot Shattering",
+                                     "Redead Moan",
+                                     "Ribbit",
+                                     "Rupee",
+                                     "Rupee (Silver)",
+                                     "Ruto Crash",
+                                     "Ruto Lift",
+                                     "Ruto Thrown",
+                                     "Scrub Emerge",
+                                     "Shabom Bounce",
+                                     "Shabom Pop",
+                                     "Shellblade",
+                                     "Skulltula",
+                                     "Soft Beep",
+                                     "Spit Nut",
+                                     "Switch",
+                                     "Sword Bonk",
+                                     "Talon \"Hmmm\"",
+                                     "Talon Snore",
+                                     "Talon Surprised",
+                                     "Tambourine",
+                                     "Target Ennemy",
+                                     "Target Neutral",
+                                     "Timer",
+                                     "Zelda Gasp (Adult)" };
+    const char* randoSFXNavi[32] = { "Default",
+                                     "Completely Random",
+                                     "Random Ear-Safe",
+                                     "Random  Choice",
+                                     "None",
+                                     "Bark",
+                                     "Business Scrub",
+                                     "Carrot Refill",
+                                     "Click",
+                                     "Dusk Howl",
+                                     "Exploding Crate",
+                                     "Explosion",
+                                     "Great Fairy",
+                                     "Guay",
+                                     "HP Low",
+                                     "HP Recover",
+                                     "Horse Neigh",
+                                     "Ice Shattering",
+                                     "Moo",
+                                     "Mweep!",
+                                     "Navi \"Hello!\"",
+                                     "Notification",
+                                     "Poe",
+                                     "Pot Shattering",
+                                     "Redead Scream",
+                                     "Ribit",
+                                     "Ruto Giggle",
+                                     "Skulltula",
+                                     "Soft Beep",
+                                     "Tambourine",
+                                     "Timer",
+                                     "Zelda Gasp (Adult)" };
+*/
 
 const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
-  {NA_BGM_FIELD_LOGIC,      {"Hyrule Field", "NA_BGM_FIELD_LOGIC", SEQ_BGM_WORLD}},
-  {NA_BGM_DUNGEON,          {"Dodongo's Cavern", "NA_BGM_DUNGEON", SEQ_BGM_WORLD}},
-  {NA_BGM_KAKARIKO_ADULT,   {"Kakariko Village (Adult)", "NA_BGM_KAKARIKO_ADULT", SEQ_BGM_WORLD}},
-  {NA_BGM_ENEMY,            {"Battle", "NA_BGM_ENEMY", SEQ_NOSHUFFLE}},
-  {NA_BGM_BOSS,             {"Boss Battle", "NA_BGM_BOSS", SEQ_BGM_WORLD}},
-  {NA_BGM_INSIDE_DEKU_TREE, {"Inside the Deku Tree", "NA_BGM_INSIDE_DEKU_TREE", SEQ_BGM_WORLD}},
-  {NA_BGM_MARKET,           {"Market", "NA_BGM_MARKET", SEQ_BGM_WORLD}},
-  {NA_BGM_TITLE,            {"Title Theme", "NA_BGM_TITLE", SEQ_BGM_WORLD}},
-  {NA_BGM_LINK_HOUSE,       {"House", "NA_BGM_LINK_HOUSE", SEQ_BGM_WORLD}},
-  {NA_BGM_GAME_OVER,        {"Game Over", "NA_BGM_GAME_OVER", SEQ_FANFARE}},
-  {NA_BGM_BOSS_CLEAR,       {"Boss Clear", "NA_BGM_BOSS_CLEAR", SEQ_FANFARE}},
-  {NA_BGM_ITEM_GET,         {"Obtain Item", "NA_BGM_ITEM_GET", SEQ_FANFARE}},
-  {NA_BGM_OPENING_GANON,    {"Enter Ganondorf", "NA_BGM_OPENING_GANON", SEQ_FANFARE}},
-  {NA_BGM_HEART_GET,        {"Obtain Heart Container", "NA_BGM_HEART_GET", SEQ_FANFARE}},
-  {NA_BGM_OCA_LIGHT,        {"Prelude of Light", "NA_BGM_OCA_LIGHT", SEQ_FANFARE}},
-  {NA_BGM_JABU_JABU,        {"Inside Jabu-Jabu's Belly", "NA_BGM_JABU_JABU", SEQ_BGM_WORLD}},
-  {NA_BGM_KAKARIKO_KID,     {"Kakariko Village (Child)", "NA_BGM_KAKARIKO_KID", SEQ_BGM_WORLD}},
-  {NA_BGM_GREAT_FAIRY,      {"Great Fairy's Fountain", "NA_BGM_GREAT_FAIRY", SEQ_BGM_WORLD}},
-  {NA_BGM_ZELDA_THEME,      {"Zelda's Theme", "NA_BGM_ZELDA_THEME", SEQ_BGM_WORLD}},
-  {NA_BGM_FIRE_TEMPLE,      {"Fire Temple", "NA_BGM_FIRE_TEMPLE", SEQ_BGM_WORLD}},
-  {NA_BGM_OPEN_TRE_BOX,     {"Open Treasure Chest", "NA_BGM_OPEN_TRE_BOX", SEQ_FANFARE}},
-  {NA_BGM_FOREST_TEMPLE,    {"Forest Temple", "NA_BGM_FOREST_TEMPLE", SEQ_BGM_WORLD}},
-  {NA_BGM_COURTYARD,        {"Hyrule Castle Courtyard", "NA_BGM_COURTYARD", SEQ_BGM_WORLD}},
-  {NA_BGM_GANON_TOWER,      {"Ganondorf's Theme", "NA_BGM_GANON_TOWER", SEQ_BGM_WORLD}},
-  {NA_BGM_LONLON,           {"Lon Lon Ranch", "NA_BGM_LONLON", SEQ_BGM_WORLD}},
-  {NA_BGM_GORON_CITY,       {"Goron City", "NA_BGM_GORON_CITY", SEQ_BGM_WORLD}},
-  {NA_BGM_SPIRITUAL_STONE,  {"Spiritual Stone Get", "NA_BGM_SPIRITUAL_STONE", SEQ_FANFARE}},
-  {NA_BGM_OCA_BOLERO,       {"Bolero of Fire", "NA_BGM_OCA_BOLERO", SEQ_FANFARE}},
-  {NA_BGM_OCA_MINUET,       {"Minuet of Forest", "NA_BGM_OCA_MINUET", SEQ_FANFARE}},
-  {NA_BGM_OCA_SERENADE,     {"Serenade of Water", "NA_BGM_OCA_SERENADE", SEQ_FANFARE}},
-  {NA_BGM_OCA_REQUIEM,      {"Requiem of Spirit", "NA_BGM_OCA_REQUIEM", SEQ_FANFARE}},
-  {NA_BGM_OCA_NOCTURNE,     {"Nocturne of Shadow", "NA_BGM_OCA_NOCTURNE", SEQ_FANFARE}},
-  {NA_BGM_MINI_BOSS,        {"Mini-Boss Battle", "NA_BGM_MINI_BOSS", SEQ_BGM_WORLD}},
-  {NA_BGM_SMALL_ITEM_GET,   {"Obtain Small Item", "NA_BGM_SMALL_ITEM_GET", SEQ_FANFARE}},
-  {NA_BGM_TEMPLE_OF_TIME,   {"Temple of Time", "NA_BGM_TEMPLE_OF_TIME", SEQ_BGM_WORLD}},
-  {NA_BGM_EVENT_CLEAR,      {"Escape from Lon Lon Ranch", "NA_BGM_EVENT_CLEAR", SEQ_FANFARE}},
-  {NA_BGM_KOKIRI,           {"Kokiri Forest", "NA_BGM_KOKIRI", SEQ_BGM_WORLD}},
-  {NA_BGM_OCA_FAIRY_GET,    {"Obtain Fairy Ocarina", "NA_BGM_OCA_FAIRY_GET", SEQ_FANFARE}},
-  {NA_BGM_SARIA_THEME,      {"Lost Woods", "NA_BGM_SARIA_THEME", SEQ_BGM_WORLD}},
-  {NA_BGM_SPIRIT_TEMPLE,    {"Spirit Temple", "NA_BGM_SPIRIT_TEMPLE", SEQ_BGM_WORLD}},
-  {NA_BGM_HORSE,            {"Horse Race", "NA_BGM_HORSE", SEQ_BGM_WORLD}},
-  {NA_BGM_HORSE_GOAL,       {"Horse Race Goal", "NA_BGM_HORSE_GOAL", SEQ_FANFARE}},
-  {NA_BGM_INGO,             {"Ingo's Theme", "NA_BGM_INGO", SEQ_BGM_WORLD}},
-  {NA_BGM_MEDALLION_GET,    {"Obtain Medallion", "NA_BGM_MEDALLION_GET", SEQ_FANFARE}},
-  {NA_BGM_OCA_SARIA,        {"Ocarina Saria's Song", "NA_BGM_OCA_SARIA", SEQ_FANFARE}},
-  {NA_BGM_OCA_EPONA,        {"Ocarina Epona's Song", "NA_BGM_OCA_EPONA", SEQ_FANFARE}},
-  {NA_BGM_OCA_ZELDA,        {"Ocarina Zelda's Lullaby", "NA_BGM_OCA_ZELDA", SEQ_FANFARE}},
-  {NA_BGM_OCA_SUNS,         {"Ocarina Sun's Song", "NA_BGM_OCA_SUNS", SEQ_FANFARE}},
-  {NA_BGM_OCA_TIME,         {"Ocarina Song of Time", "NA_BGM_OCA_TIME", SEQ_FANFARE}},
-  {NA_BGM_OCA_STORM,        {"Ocarina Song of Storms", "NA_BGM_OCA_STORM", SEQ_FANFARE}},
-  {NA_BGM_NAVI_OPENING,     {"Fairy Flying", "NA_BGM_NAVI_OPENING", SEQ_BGM_WORLD}},
-  {NA_BGM_DEKU_TREE_CS,     {"Deku Tree", "NA_BGM_DEKU_TREE_CS", SEQ_BGM_WORLD}},
-  {NA_BGM_WINDMILL,         {"Windmill Hut", "NA_BGM_WINDMILL", SEQ_BGM_WORLD}},
-  {NA_BGM_HYRULE_CS,        {"Legend of Hyrule", "NA_BGM_HYRULE_CS", SEQ_NOSHUFFLE}},
-  {NA_BGM_MINI_GAME,        {"Shooting Gallery", "NA_BGM_MINI_GAME", SEQ_BGM_WORLD}},
-  {NA_BGM_SHEIK,            {"Sheik's Theme", "NA_BGM_SHEIK", SEQ_BGM_WORLD}},
-  {NA_BGM_ZORA_DOMAIN,      {"Zora's Domain", "NA_BGM_ZORA_DOMAIN", SEQ_BGM_WORLD}},
-  {NA_BGM_APPEAR,           {"Enter Zelda", "NA_BGM_APPEAR", SEQ_FANFARE}},
-  {NA_BGM_ADULT_LINK,       {"Goodbye to Zelda", "NA_BGM_ADULT_LINK", SEQ_BGM_WORLD}},
-  {NA_BGM_MASTER_SWORD,     {"Master Sword", "NA_BGM_MASTER_SWORD", SEQ_FANFARE}},
-  {NA_BGM_INTRO_GANON,      {"Ganon Intro", "NA_BGM_INTRO_GANON", SEQ_BGM_WORLD}},
-  {NA_BGM_SHOP,             {"Shop", "NA_BGM_SHOP", SEQ_BGM_WORLD}},
-  {NA_BGM_CHAMBER_OF_SAGES, {"Chamber of the Sages", "NA_BGM_CHAMBER_OF_SAGES", SEQ_BGM_WORLD}},
-  {NA_BGM_FILE_SELECT,      {"File Select", "NA_BGM_FILE_SELECT", SEQ_NOSHUFFLE}},
-  {NA_BGM_ICE_CAVERN,       {"Ice Cavern", "NA_BGM_ICE_CAVERN", SEQ_BGM_WORLD}},
-  {NA_BGM_DOOR_OF_TIME,     {"Open Door of Temple of Time", "NA_BGM_DOOR_OF_TIME", SEQ_FANFARE}},
-  {NA_BGM_OWL,              {"Kaepora Gaebora's Theme", "NA_BGM_OWL", SEQ_BGM_WORLD}},
-  {NA_BGM_SHADOW_TEMPLE,    {"Shadow Temple", "NA_BGM_SHADOW_TEMPLE", SEQ_BGM_WORLD}},
-  {NA_BGM_WATER_TEMPLE,     {"Water Temple", "NA_BGM_WATER_TEMPLE", SEQ_BGM_WORLD}},
-  {NA_BGM_BRIDGE_TO_GANONS, {"Ganon's Castle Bridge", "NA_BGM_BRIDGE_TO_GANONS", SEQ_FANFARE}},
-  {NA_BGM_OCARINA_OF_TIME,  {"Ocarina of Time", "NA_BGM_OCARINA_OF_TIME", SEQ_NOSHUFFLE}},
-  {NA_BGM_GERUDO_VALLEY,    {"Gerudo Valley", "NA_BGM_GERUDO_VALLEY", SEQ_BGM_WORLD}},
-  {NA_BGM_POTION_SHOP,      {"Potion Shop", "NA_BGM_POTION_SHOP", SEQ_BGM_WORLD}},
-  {NA_BGM_KOTAKE_KOUME,     {"Kotake & Koume's Theme", "NA_BGM_KOTAKE_KOUME", SEQ_BGM_WORLD}},
-  {NA_BGM_ESCAPE,           {"Escape from Ganon's Castle", "NA_BGM_ESCAPE", SEQ_BGM_WORLD}},
-  {NA_BGM_UNDERGROUND,      {"Ganon's Castle Under Ground", "NA_BGM_UNDERGROUND", SEQ_BGM_WORLD}},
-  {NA_BGM_GANONDORF_BOSS,   {"Ganondorf Battle", "NA_BGM_GANONDORF_BOSS", SEQ_BGM_WORLD}},
-  {NA_BGM_GANON_BOSS,       {"Ganon Battle", "NA_BGM_GANON_BOSS", SEQ_BGM_WORLD}},
-  {NA_BGM_END_DEMO,         {"Seal of Six Sages", "NA_BGM_END_DEMO", SEQ_NOSHUFFLE}},
-  {NA_BGM_STAFF_1,          {"End Credits I", "NA_BGM_STAFF_1", SEQ_NOSHUFFLE}},
-  {NA_BGM_STAFF_2,          {"End Credits II", "NA_BGM_STAFF_2", SEQ_NOSHUFFLE}},
-  {NA_BGM_STAFF_3,          {"End Credits III", "NA_BGM_STAFF_3", SEQ_NOSHUFFLE}},
-  {NA_BGM_STAFF_4,          {"End Credits IV", "NA_BGM_STAFF_4", SEQ_NOSHUFFLE}},
-  {NA_BGM_FIRE_BOSS,        {"King Dodongo & Volvagia Boss Battle", "NA_BGM_FIRE_BOSS", SEQ_BGM_WORLD}},
-  {NA_BGM_TIMED_MINI_GAME,  {"Mini-Game", "NA_BGM_TIMED_MINI_GAME", SEQ_BGM_ERROR}},
+    { NA_BGM_FIELD_LOGIC, { "Hyrule Field", "NA_BGM_FIELD_LOGIC", SEQ_BGM_WORLD } },
+    { NA_BGM_DUNGEON, { "Dodongo's Cavern", "NA_BGM_DUNGEON", SEQ_BGM_WORLD } },
+    { NA_BGM_KAKARIKO_ADULT, { "Kakariko Village (Adult)", "NA_BGM_KAKARIKO_ADULT", SEQ_BGM_WORLD } },
+    { NA_BGM_ENEMY, { "Battle", "NA_BGM_ENEMY", SEQ_NOSHUFFLE } },
+    { NA_BGM_BOSS, { "Boss Battle", "NA_BGM_BOSS", SEQ_BGM_WORLD } },
+    { NA_BGM_INSIDE_DEKU_TREE, { "Inside the Deku Tree", "NA_BGM_INSIDE_DEKU_TREE", SEQ_BGM_WORLD } },
+    { NA_BGM_MARKET, { "Market", "NA_BGM_MARKET", SEQ_BGM_WORLD } },
+    { NA_BGM_TITLE, { "Title Theme", "NA_BGM_TITLE", SEQ_BGM_WORLD } },
+    { NA_BGM_LINK_HOUSE, { "House", "NA_BGM_LINK_HOUSE", SEQ_BGM_WORLD } },
+    { NA_BGM_GAME_OVER, { "Game Over", "NA_BGM_GAME_OVER", SEQ_FANFARE } },
+    { NA_BGM_BOSS_CLEAR, { "Boss Clear", "NA_BGM_BOSS_CLEAR", SEQ_FANFARE } },
+    { NA_BGM_ITEM_GET, { "Obtain Item", "NA_BGM_ITEM_GET", SEQ_FANFARE } },
+    { NA_BGM_OPENING_GANON, { "Enter Ganondorf", "NA_BGM_OPENING_GANON", SEQ_FANFARE } },
+    { NA_BGM_HEART_GET, { "Obtain Heart Container", "NA_BGM_HEART_GET", SEQ_FANFARE } },
+    { NA_BGM_OCA_LIGHT, { "Prelude of Light", "NA_BGM_OCA_LIGHT", SEQ_FANFARE } },
+    { NA_BGM_JABU_JABU, { "Inside Jabu-Jabu's Belly", "NA_BGM_JABU_JABU", SEQ_BGM_WORLD } },
+    { NA_BGM_KAKARIKO_KID, { "Kakariko Village (Child)", "NA_BGM_KAKARIKO_KID", SEQ_BGM_WORLD } },
+    { NA_BGM_GREAT_FAIRY, { "Great Fairy's Fountain", "NA_BGM_GREAT_FAIRY", SEQ_BGM_WORLD } },
+    { NA_BGM_ZELDA_THEME, { "Zelda's Theme", "NA_BGM_ZELDA_THEME", SEQ_BGM_WORLD } },
+    { NA_BGM_FIRE_TEMPLE, { "Fire Temple", "NA_BGM_FIRE_TEMPLE", SEQ_BGM_WORLD } },
+    { NA_BGM_OPEN_TRE_BOX, { "Open Treasure Chest", "NA_BGM_OPEN_TRE_BOX", SEQ_FANFARE } },
+    { NA_BGM_FOREST_TEMPLE, { "Forest Temple", "NA_BGM_FOREST_TEMPLE", SEQ_BGM_WORLD } },
+    { NA_BGM_COURTYARD, { "Hyrule Castle Courtyard", "NA_BGM_COURTYARD", SEQ_BGM_WORLD } },
+    { NA_BGM_GANON_TOWER, { "Ganondorf's Theme", "NA_BGM_GANON_TOWER", SEQ_BGM_WORLD } },
+    { NA_BGM_LONLON, { "Lon Lon Ranch", "NA_BGM_LONLON", SEQ_BGM_WORLD } },
+    { NA_BGM_GORON_CITY, { "Goron City", "NA_BGM_GORON_CITY", SEQ_BGM_WORLD } },
+    { NA_BGM_SPIRITUAL_STONE, { "Spiritual Stone Get", "NA_BGM_SPIRITUAL_STONE", SEQ_FANFARE } },
+    { NA_BGM_OCA_BOLERO, { "Bolero of Fire", "NA_BGM_OCA_BOLERO", SEQ_FANFARE } },
+    { NA_BGM_OCA_MINUET, { "Minuet of Forest", "NA_BGM_OCA_MINUET", SEQ_FANFARE } },
+    { NA_BGM_OCA_SERENADE, { "Serenade of Water", "NA_BGM_OCA_SERENADE", SEQ_FANFARE } },
+    { NA_BGM_OCA_REQUIEM, { "Requiem of Spirit", "NA_BGM_OCA_REQUIEM", SEQ_FANFARE } },
+    { NA_BGM_OCA_NOCTURNE, { "Nocturne of Shadow", "NA_BGM_OCA_NOCTURNE", SEQ_FANFARE } },
+    { NA_BGM_MINI_BOSS, { "Mini-Boss Battle", "NA_BGM_MINI_BOSS", SEQ_BGM_WORLD } },
+    { NA_BGM_SMALL_ITEM_GET, { "Obtain Small Item", "NA_BGM_SMALL_ITEM_GET", SEQ_FANFARE } },
+    { NA_BGM_TEMPLE_OF_TIME, { "Temple of Time", "NA_BGM_TEMPLE_OF_TIME", SEQ_BGM_WORLD } },
+    { NA_BGM_EVENT_CLEAR, { "Escape from Lon Lon Ranch", "NA_BGM_EVENT_CLEAR", SEQ_FANFARE } },
+    { NA_BGM_KOKIRI, { "Kokiri Forest", "NA_BGM_KOKIRI", SEQ_BGM_WORLD } },
+    { NA_BGM_OCA_FAIRY_GET, { "Obtain Fairy Ocarina", "NA_BGM_OCA_FAIRY_GET", SEQ_FANFARE } },
+    { NA_BGM_SARIA_THEME, { "Lost Woods", "NA_BGM_SARIA_THEME", SEQ_BGM_WORLD } },
+    { NA_BGM_SPIRIT_TEMPLE, { "Spirit Temple", "NA_BGM_SPIRIT_TEMPLE", SEQ_BGM_WORLD } },
+    { NA_BGM_HORSE, { "Horse Race", "NA_BGM_HORSE", SEQ_BGM_WORLD } },
+    { NA_BGM_HORSE_GOAL, { "Horse Race Goal", "NA_BGM_HORSE_GOAL", SEQ_FANFARE } },
+    { NA_BGM_INGO, { "Ingo's Theme", "NA_BGM_INGO", SEQ_BGM_WORLD } },
+    { NA_BGM_MEDALLION_GET, { "Obtain Medallion", "NA_BGM_MEDALLION_GET", SEQ_FANFARE } },
+    { NA_BGM_OCA_SARIA, { "Ocarina Saria's Song", "NA_BGM_OCA_SARIA", SEQ_FANFARE } },
+    { NA_BGM_OCA_EPONA, { "Ocarina Epona's Song", "NA_BGM_OCA_EPONA", SEQ_FANFARE } },
+    { NA_BGM_OCA_ZELDA, { "Ocarina Zelda's Lullaby", "NA_BGM_OCA_ZELDA", SEQ_FANFARE } },
+    { NA_BGM_OCA_SUNS, { "Ocarina Sun's Song", "NA_BGM_OCA_SUNS", SEQ_FANFARE } },
+    { NA_BGM_OCA_TIME, { "Ocarina Song of Time", "NA_BGM_OCA_TIME", SEQ_FANFARE } },
+    { NA_BGM_OCA_STORM, { "Ocarina Song of Storms", "NA_BGM_OCA_STORM", SEQ_FANFARE } },
+    { NA_BGM_NAVI_OPENING, { "Fairy Flying", "NA_BGM_NAVI_OPENING", SEQ_BGM_WORLD } },
+    { NA_BGM_DEKU_TREE_CS, { "Deku Tree", "NA_BGM_DEKU_TREE_CS", SEQ_BGM_WORLD } },
+    { NA_BGM_WINDMILL, { "Windmill Hut", "NA_BGM_WINDMILL", SEQ_BGM_WORLD } },
+    { NA_BGM_HYRULE_CS, { "Legend of Hyrule", "NA_BGM_HYRULE_CS", SEQ_NOSHUFFLE } },
+    { NA_BGM_MINI_GAME, { "Shooting Gallery", "NA_BGM_MINI_GAME", SEQ_BGM_WORLD } },
+    { NA_BGM_SHEIK, { "Sheik's Theme", "NA_BGM_SHEIK", SEQ_BGM_WORLD } },
+    { NA_BGM_ZORA_DOMAIN, { "Zora's Domain", "NA_BGM_ZORA_DOMAIN", SEQ_BGM_WORLD } },
+    { NA_BGM_APPEAR, { "Enter Zelda", "NA_BGM_APPEAR", SEQ_FANFARE } },
+    { NA_BGM_ADULT_LINK, { "Goodbye to Zelda", "NA_BGM_ADULT_LINK", SEQ_BGM_WORLD } },
+    { NA_BGM_MASTER_SWORD, { "Master Sword", "NA_BGM_MASTER_SWORD", SEQ_FANFARE } },
+    { NA_BGM_INTRO_GANON, { "Ganon Intro", "NA_BGM_INTRO_GANON", SEQ_BGM_WORLD } },
+    { NA_BGM_SHOP, { "Shop", "NA_BGM_SHOP", SEQ_BGM_WORLD } },
+    { NA_BGM_CHAMBER_OF_SAGES, { "Chamber of the Sages", "NA_BGM_CHAMBER_OF_SAGES", SEQ_BGM_WORLD } },
+    { NA_BGM_FILE_SELECT, { "File Select", "NA_BGM_FILE_SELECT", SEQ_NOSHUFFLE } },
+    { NA_BGM_ICE_CAVERN, { "Ice Cavern", "NA_BGM_ICE_CAVERN", SEQ_BGM_WORLD } },
+    { NA_BGM_DOOR_OF_TIME, { "Open Door of Temple of Time", "NA_BGM_DOOR_OF_TIME", SEQ_FANFARE } },
+    { NA_BGM_OWL, { "Kaepora Gaebora's Theme", "NA_BGM_OWL", SEQ_BGM_WORLD } },
+    { NA_BGM_SHADOW_TEMPLE, { "Shadow Temple", "NA_BGM_SHADOW_TEMPLE", SEQ_BGM_WORLD } },
+    { NA_BGM_WATER_TEMPLE, { "Water Temple", "NA_BGM_WATER_TEMPLE", SEQ_BGM_WORLD } },
+    { NA_BGM_BRIDGE_TO_GANONS, { "Ganon's Castle Bridge", "NA_BGM_BRIDGE_TO_GANONS", SEQ_FANFARE } },
+    { NA_BGM_OCARINA_OF_TIME, { "Ocarina of Time", "NA_BGM_OCARINA_OF_TIME", SEQ_NOSHUFFLE } },
+    { NA_BGM_GERUDO_VALLEY, { "Gerudo Valley", "NA_BGM_GERUDO_VALLEY", SEQ_BGM_WORLD } },
+    { NA_BGM_POTION_SHOP, { "Potion Shop", "NA_BGM_POTION_SHOP", SEQ_BGM_WORLD } },
+    { NA_BGM_KOTAKE_KOUME, { "Kotake & Koume's Theme", "NA_BGM_KOTAKE_KOUME", SEQ_BGM_WORLD } },
+    { NA_BGM_ESCAPE, { "Escape from Ganon's Castle", "NA_BGM_ESCAPE", SEQ_BGM_WORLD } },
+    { NA_BGM_UNDERGROUND, { "Ganon's Castle Under Ground", "NA_BGM_UNDERGROUND", SEQ_BGM_WORLD } },
+    { NA_BGM_GANONDORF_BOSS, { "Ganondorf Battle", "NA_BGM_GANONDORF_BOSS", SEQ_BGM_WORLD } },
+    { NA_BGM_GANON_BOSS, { "Ganon Battle", "NA_BGM_GANON_BOSS", SEQ_BGM_WORLD } },
+    { NA_BGM_END_DEMO, { "Seal of Six Sages", "NA_BGM_END_DEMO", SEQ_NOSHUFFLE } },
+    { NA_BGM_STAFF_1, { "End Credits I", "NA_BGM_STAFF_1", SEQ_NOSHUFFLE } },
+    { NA_BGM_STAFF_2, { "End Credits II", "NA_BGM_STAFF_2", SEQ_NOSHUFFLE } },
+    { NA_BGM_STAFF_3, { "End Credits III", "NA_BGM_STAFF_3", SEQ_NOSHUFFLE } },
+    { NA_BGM_STAFF_4, { "End Credits IV", "NA_BGM_STAFF_4", SEQ_NOSHUFFLE } },
+    { NA_BGM_FIRE_BOSS, { "King Dodongo & Volvagia Boss Battle", "NA_BGM_FIRE_BOSS", SEQ_BGM_WORLD } },
+    { NA_BGM_TIMED_MINI_GAME, { "Mini-Game", "NA_BGM_TIMED_MINI_GAME", SEQ_BGM_ERROR } },
+    { NA_SE_EV_SMALL_DOG_BARK, { "Bark", "0x28D8", SFX_SOUND } },
+    { NA_SE_EN_AWA_BOUND, { "Bomb Bounce", "0x3948", SFX_SOUND } },
+    { NA_SE_EN_SHADEST_TAIKO_LOW, { "Bongo Bongo Low", "0x3950", SFX_SOUND } },
+    { NA_SE_EN_NUTS_FAINT, { "Business Scrub", "0x3882", SFX_SOUND } },
+    { NA_SE_SY_CARROT_RECOVER, { "Carrot Refill", "0x4845", SFX_SOUND } },
+    { NA_SE_EV_CHICKEN_CRY_N, { "Cluck", "0x2811", SFX_SOUND } },
+    { NA_SE_EV_BRIDGE_OPEN_STOP, { "Drawbridge Set", "0x280E", SFX_SOUND } },
+    { NA_SE_EN_KAICHO_CRY, { "Guay", "0x38B6", SFX_SOUND } },
+    { NA_SE_SY_HITPOINT_ALARM, { "HP Low", "0x481B", SFX_SOUND } },
+    { NA_SE_SY_HP_RECOVER, { "HP Recover", "0x480B", SFX_SOUND } },
+    { NA_SE_EV_HORSE_RUN, { "Horse Trot", "0x2804", SFX_SOUND } },
+    { NA_SE_PL_WALK_HEAVYBOOTS, { "Iron Boots", "0x80D", SFX_SOUND } },
+    { NA_SE_EV_COW_CRY, { "Moo", "0x28DF", SFX_SOUND } },
+    { NA_SE_VO_KZ_MOVE, { "Mweep!", "0x687A", SFX_SOUND } },
+    { NA_SE_VO_NA_HELLO_2, { "Navi Hey!", "0x685F", SFX_SOUND } },
+    { NA_SE_VO_SK_LAUGH, { "Navi Listen!", "0x6873", SFX_SOUND } },
+    { NA_SE_EV_POT_BROKEN, { "Pot Shattering", "0x2887", SFX_SOUND } },
+    { NA_SE_EV_FROG_CRY_0, { "Ribbit", "0x28E3", SFX_SOUND } },
+    { NA_SE_EV_FIVE_COUNT_LUPY, { "Rupee (Silver)", "0x28E8", SFX_SOUND } },
+    { NA_SE_EV_FOOT_SWITCH, { "Switch", "0x2815", SFX_SOUND } },
+    { NA_SE_IT_WALL_HIT_SOFT, { "Sword Bonk", "0x181", SFX_SOUND } },
+    { NA_SE_SY_METRONOME, { "Tambourine", "0x483", SFX_SOUND } },
+    { NA_SE_VO_Z1_SURPRISE, { "Zelda Gasp (Adult)", "0x6878", SFX_SOUND } },
+    { NA_SE_EN_AMOS_VOICE, { "Armos", "0x3848", SFX_SOUND } },
+    { NA_SE_VO_LI_FALL_L_KID, { "Child Scream", "0x6828", SFX_SOUND } },
+    { NA_SE_VO_FR_LAUGH_0, { "Great Fairy", "0x6858", SFX_SOUND } },
+    { NA_SE_EN_REDEAD_AIM, { "Redead Scream", "0x38E5", SFX_SOUND } },
+    { NA_SE_VO_RT_LAUGH_0, { "Ruto Giggle", "0x6863", SFX_SOUND } },
+    { NA_SE_EN_STALKID_ATTACK, { "Stalchild Attack", "0x3831", SFX_SOUND } },
+    { NA_SE_EV_CHICKEN_CRY_M, { "Cockadoodiedoo", "0x2813", SFX_SOUND } },
+    { NA_SE_SY_KINSTA_MARK_APPEAR, { "Gold Skulltula Token", "0x4843", SFX_SOUND } },
+    { NA_SE_EN_REDEAD_CRY, { "Redead Moan", "0x38E4", SFX_SOUND } },
+    { NA_SE_VO_TA_SLEEP, { "Talon Snore", "0x6850", SFX_SOUND } },
+    { NA_SE_EV_LIGHTNING, { "Thunder", "0x282E", SFX_SOUND } },
+    { NA_SE_OC_ABYSS, { "Cartoon Fall", "0x5801", SFX_SOUND } },
+    { NA_SE_EN_FLAME_LAUGH, { "Flare Dancer Laugh", "0x3981", SFX_SOUND } },
+    { NA_SE_EN_AWA_BREAK, { "Shabom Pop", "0x3949", SFX_SOUND } },
+    { NA_SE_EN_SHADEST_TAIKO_HIGH, { "Bongo Bongo High", "0x3951", SFX_SOUND } },
+    { NA_SE_EV_BOTTLE_CAP_OPEN, { "Bottle Cork", "0x286C", SFX_SOUND } },
+    { NA_SE_IT_BOW_FLICK, { "Bow Twang", "0x1830", SFX_SOUND } },
+    { NA_SE_EN_BUBLE_LAUGH, { "Bubble Laugh", "0x38CA", SFX_SOUND } },
+    { NA_SE_VO_LI_BREATH_DRINK_KID, { "Child Pant", "0x682A", SFX_SOUND } },
+    { NA_SE_EN_DEKU_JR_MOUTH, { "Deku Baba", "0x3860", SFX_SOUND } },
+    { NA_SE_EV_DOG_CRY_EVENING, { "Dusk Howl", "0x28AE", SFX_SOUND } },
+    { NA_SE_EN_FLAME_DAMAGE, { "Flare Dancer Startled", "0x397A", SFX_SOUND } },
+    { NA_SE_EN_GANON_AT_RETURN, { "Ganondorf Teh!", "0x39CA", SFX_SOUND } },
+    { NA_SE_EN_GOMA_JR_CRY, { "Gohma Larva Croak", "0x395D", SFX_SOUND } },
+    { NA_SE_EN_GOLON_WAKE_UP, { "Goron Wake", "0x38FC", SFX_SOUND } },
+    { NA_SE_SY_START_SHOT, { "Gunshot", "0x4835", SFX_SOUND } },
+    { NA_SE_IT_HAMMER_HIT, { "Hammer Bonk", "0x180A", SFX_SOUND } },
+    { NA_SE_EN_IRONNACK_SWING_AXE, { "Iron Knuckle", "0x3929", SFX_SOUND } },
+    { NA_SE_EN_FANTOM_ST_LAUGH, { "Phantom Ganon Laugh", "0x39D6", SFX_SOUND } },
+    { NA_SE_EV_PLANT_BROKEN, { "Plant Explode", "0x284E", SFX_SOUND } },
+    { NA_SE_SY_GET_RUPY, { "Rupee", "0x4803", SFX_SOUND } }, 
+    { NA_SE_VO_RT_CRASH, { "Ruto Crash", "0x6860", SFX_SOUND } },
+    { NA_SE_VO_RT_LIFT, { "Ruto Lift", "0x6864", SFX_SOUND } },
+    { NA_SE_VO_RT_THROW, { "Ruto Thrown", "0x6865", SFX_SOUND } },
+    { NA_SE_EN_NUTS_UP, { "Scrub Emerge", "0x387C", SFX_SOUND } },
+    { NA_SE_EN_AWA_BOUND, { "Shabom Bounce", "0x3948", SFX_SOUND } },
+    { NA_SE_EN_SHELL_MOUTH, { "Shellblade", "0x3849", SFX_SOUND } },
+    { NA_SE_EN_STALTU_DAMAGE, { "Skulltula Damage", "0x386B", SFX_SOUND } },
+    { NA_SE_EN_NUTS_THROW, { "Spit Nut", "0x387E", SFX_SOUND } },
+    { NA_SE_VO_TA_CRY_0, { "Talon Hmm", "0x6852", SFX_SOUND } },
+    { NA_SE_VO_TA_SURPRISE, { "Talon Surprised", "0x6851", SFX_SOUND } },
+    { NA_SE_SY_LOCK_ON, { "Target Enemy", "0x4830", SFX_SOUND } },
+    { NA_SE_SY_LOCK_ON_HUMAN, { "Target Neutral", "0x4810", SFX_SOUND } }
 };
-
 
 const std::map<u16, const std::string> ocarinaSFXMap = { { 1, "Ocarina" }, { 2, "Voice" },     { 3, "Whistle" },
                                                          { 4, "Harp" },    { 5, "MusicBox"}, { 6, "Flute" } };
@@ -183,15 +397,20 @@ void Draw_BgmTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
             }
         } else {
             if (ImGui::Button(previewButton.c_str())) {
-                if  (CVar_GetS32("gSfxEditor_playing", 0) != 0) {
-                    func_800F5C2C();
-                    CVar_SetS32("gSfxEditor_playing", 0);
-                    SohImGui::needs_save = true;
+                if (type == SFX_SOUND) {
+                    Player* player = (Player*)(gGlobalCtx)->actorCtx.actorLists[ACTORCAT_PLAYER].head;
+                    Audio_PlayActorSound2(&player->actor, currentValue);
                 } else {
-                    // TODO: Cant do both here, so have to click preview button twice
-                    func_800F5ACC(currentValue);
-                    CVar_SetS32("gSfxEditor_playing", currentValue);
-                    SohImGui::needs_save = true;
+                    if (CVar_GetS32("gSfxEditor_playing", 0) != 0) {
+                        func_800F5C2C();
+                        CVar_SetS32("gSfxEditor_playing", 0);
+                        SohImGui::needs_save = true;
+                    } else {
+                        // TODO: Cant do both here, so have to click preview button twice
+                        func_800F5ACC(currentValue);
+                        CVar_SetS32("gSfxEditor_playing", currentValue);
+                        SohImGui::needs_save = true;
+                    }
                 }
             }
         }
@@ -299,6 +518,10 @@ void DrawSfxEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("Fanfares")) {
             Draw_BgmTab("fanfares", sequenceMap, SEQ_FANFARE);
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("SFX")) {
+            Draw_BgmTab("sfx", sequenceMap, SFX_SOUND);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Ocarina SFX")) {

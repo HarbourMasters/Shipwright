@@ -2568,16 +2568,20 @@ void Interface_SetDoAction(GlobalContext* globalCtx, u16 action) {
 void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
+    char src[80];
+
     if (((naviCallState == 0x1D) || (naviCallState == 0x1E)) && !interfaceCtx->naviCalling &&
         (globalCtx->csCtx.state == CS_STATE_IDLE)) {
         if (!CVar_GetS32("gDisableNaviCallAudio", 0)) {
             // clang-format off
-            if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
+            if (naviCallState == 0x1E) { sprintf(src, "gSfxEditor_0x%x", NA_SE_VO_NA_HELLO_2);
+                Audio_PlaySoundGeneral(CVar_GetS32(src, NA_SE_VO_NAVY_CALL), &D_801333D4, 4,
                                                                 &D_801333E0, &D_801333E0, &D_801333E8); }
             // clang-format on
 
             if (naviCallState == 0x1D) {
-                func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+                sprintf(src, "gSfxEditor_0x%x", NA_SE_VO_NA_HELLO_2);
+                func_800F4524(&D_801333D4, CVar_GetS32(src, NA_SE_VO_NA_HELLO_2), 32);
             }
         }
 

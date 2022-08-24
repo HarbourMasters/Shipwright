@@ -1,6 +1,7 @@
 #include "ultra64.h"
 #include "global.h"
 #include "vt.h"
+#include "../soh/Enhancements/sfx-editor/SfxEditor.h"
 
 typedef struct {
     /* 0x00 */ u16 sfxId;
@@ -122,8 +123,11 @@ void Audio_ClearBGMMute(u8 channelIdx) {
     }
 }
 
-void Audio_PlaySoundGeneral(u16 sfxId, Vec3f* pos, u8 token, f32* freqScale, f32* vol, s8* reverbAdd)
+void Audio_PlaySoundGeneral(u16 sfxId, Vec3f* pos, u8 token, f32* freqScale, f32* vol, s8* reverbAdd) //EDIT
 {
+    char src[80];
+    sprintf(src, "gSfxEditor_0x%x", sfxId);
+    sfxId = CVar_GetS32(src, sfxId);
     size_t i;
     SoundRequest* req;
 
@@ -501,6 +505,9 @@ void Audio_PlayActiveSounds(u8 bankId)
 
     for (i = 0; i < gChannelsPerBank[gSfxChannelLayout][bankId]; i++) {
         entryIndex = gActiveSounds[bankId][i].entryIndex;
+        char src[80];
+        sprintf(src, "gSfxEditor_0x%x", entryIndex);
+        entryIndex = CVar_GetS32(src, entryIndex);
         if (entryIndex != 0xFF) {
             entry = &gSoundBanks[bankId][entryIndex];
             channel = gAudioContext.seqPlayers[SEQ_PLAYER_SFX].channels[sCurSfxPlayerChannelIdx];
