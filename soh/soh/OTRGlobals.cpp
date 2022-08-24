@@ -1578,18 +1578,17 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
-    int price = 0;
-    switch (scrubTextId) {
-        case TEXT_SCRUB_POH:
-            price = 10;
-            break;
-        case TEXT_SCRUB_STICK_UPGRADE:
-        case TEXT_SCRUB_NUT_UPGRADE:
-            price = 40;
-            break;
-    }
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
+    u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {

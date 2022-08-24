@@ -3394,6 +3394,16 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                     PaddedSeparator();
 
+                    // Shuffle Scrubs
+                    ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Off - Scrubs will not be shuffled.\n"
+                        "\n"
+                        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
+                    PaddedSeparator();
+
                     // Shuffle Tokens
                     ImGui::Text(Settings::Tokensanity.GetName().c_str());
                     InsertHelpHoverText("Shuffles Golden Skulltula Tokens into the item pool. This means "
@@ -3414,20 +3424,11 @@ void DrawRandoEditor(bool& open) {
                                         "expected to be collected after getting Sun's Song.");
                     PaddedSeparator();
 
-                        // Shuffle Scrubs
-                        ImGui::Text(Settings::Scrubsanity.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Off - Scrubs will not be shuffled.\n"
-                            "\n"
-                            "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
-                        PaddedSeparator();
 
-                        // Shuffle Cows
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                        InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                        PaddedSeparator();
+                    // Shuffle Cows
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
+                    InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                    PaddedSeparator();
 
                     // Shuffle Adult Trade Quest
                     SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
