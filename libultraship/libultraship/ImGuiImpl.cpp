@@ -1301,6 +1301,8 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                         PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
+                        PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
+                        Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song."); 
                         PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
@@ -2479,6 +2481,8 @@ namespace SohImGui {
         CVar_SetS32("gVisualAgony", 1);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
+        // Pull out Ocarina to Summon Scarecrow
+        CVar_SetS32("gSkipScarecrow", 0);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
