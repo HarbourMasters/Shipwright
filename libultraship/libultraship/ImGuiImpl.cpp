@@ -1078,8 +1078,6 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            clientDrawMenu();
-
             if (ImGui::BeginMenu("Settings"))
             {
                 if (ImGui::BeginMenu("Audio")) {
@@ -1968,33 +1966,7 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            if (ImGui::BeginMenu("Randomizer"))
-            {
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                static ImVec2 buttonSize(200.0f, 0.0f);
-                if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gRandomizerSettingsEnabled", 0);
-                    CVar_SetS32("gRandomizerSettingsEnabled", !currentValue);
-                    needs_save = true;
-                    customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
-                }
-                InsertPadding();
-                if (ImGui::Button(GetWindowButtonText("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gItemTrackerEnabled", 0);
-                    CVar_SetS32("gItemTrackerEnabled", !currentValue);
-                    needs_save = true;
-                    customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
-                }
-                ImGui::PopStyleVar(3);
-                ImGui::PopStyleColor(1);
-
-                ImGui::EndMenu();
-            }
+            clientDrawMenu();
 
             ImGui::PopStyleVar(1);
             ImGui::EndMenuBar();
@@ -2556,6 +2528,10 @@ namespace SohImGui {
         } else {
             windowCategories[category].emplace_back(name);
         }
+    }
+
+    void EnableWindow(const std::string& name, bool isEnabled) {
+        customWindows[name].enabled = isEnabled;
     }
 
     ImTextureID GetTextureByName(const std::string& name) {
