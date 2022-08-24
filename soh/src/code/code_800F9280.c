@@ -97,7 +97,6 @@ typedef enum {
 } SeqCmdType;
 
 void Audio_ProcessSeqCmd(u32 cmd) {
-    CVar_SetS32("gCMD", cmd);
     s32 pad[2];
     u16 fadeTimer;
     u16 channelMask;
