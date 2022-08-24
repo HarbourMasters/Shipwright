@@ -1546,7 +1546,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (textId >= 0x0140 && textId <= 0x015F) {
+        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             messageEntry = Randomizer_GetNaviMessage();
         }
     }
