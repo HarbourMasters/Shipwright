@@ -5,6 +5,14 @@
 extern const char* digitTextures[];
 
 void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
+    Color_RGB8 A_button_ori = {80, 255, 150};
+    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
+    Color_RGB8 C_button_ori = {255, 255, 50};
+    Color_RGB8 C_button_uni = CVar_GetRGB("gCCCBtnPrim", C_button_ori);
+    Color_RGB8 C_button_U = CVar_GetRGB("gCCCUBtnPrim", C_button_ori);
+    Color_RGB8 C_button_D = CVar_GetRGB("gCCCDBtnPrim", C_button_ori);
+    Color_RGB8 C_button_L = CVar_GetRGB("gCCCLBtnPrim", C_button_ori);
+    Color_RGB8 C_button_R = CVar_GetRGB("gCCCRBtnPrim", C_button_ori);
     static s16 D_8082A070[][4] = {
         { 255, 0, 0, 255 },
         { 255, 70, 0, 150 },
@@ -148,12 +156,13 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                         osSyncPrintf("111 ccc=%d\n", phi_s0_2);
                     } else {
                         phi_s0_2 = pauseCtx->cursorPoint[PAUSE_QUEST] + 0x5A;
-                        osSyncPrintf("222 ccc=%d (%d, %d, %d)\n", phi_s0_2, pauseCtx->cursorPoint[PAUSE_QUEST], 0x12,
-                                     0x6C);
+                        osSyncPrintf("222 ccc=%d (%d, %d, %d)\n", phi_s0_2, pauseCtx->cursorPoint[PAUSE_QUEST],
+                                        0x12, 0x6C);
                     }
                 } else {
                     phi_s0_2 = PAUSE_ITEM_NONE;
-                    osSyncPrintf("999 ccc=%d (%d,  %d)\n", PAUSE_ITEM_NONE, pauseCtx->cursorPoint[PAUSE_QUEST], 0x18);
+                    osSyncPrintf("999 ccc=%d (%d,  %d)\n", PAUSE_ITEM_NONE, pauseCtx->cursorPoint[PAUSE_QUEST],
+                                    0x18);
                 }
             } else {
                 if ((gSaveContext.inventory.questItems & 0xF0000000) != 0) {
@@ -162,7 +171,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     phi_s0_2 = PAUSE_ITEM_NONE;
                 }
                 osSyncPrintf("888 ccc=%d (%d,  %d,  %x)\n", phi_s0_2, pauseCtx->cursorPoint[PAUSE_QUEST], 0x72,
-                             gSaveContext.inventory.questItems & 0xF0000000);
+                                gSaveContext.inventory.questItems & 0xF0000000);
             }
 
             sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
@@ -492,45 +501,30 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                     gDPPipeSync(POLY_KAL_DISP++);
 
+                    s16 Notes_alpha = D_8082A150[sp218];
                     if (D_8082A124[sp218] == 0) {
                         if (CVar_GetS32("gHudColors", 1) == 0) { // A Button notes
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button_ori.r, A_button_ori.g, A_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80),
-                                            CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150),
-                                            D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, Notes_alpha);
                         }
                     } else {
                         if (CVar_GetS32("gHudColors", 1) == 0) { // C Buttons notes
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255),
-                                            CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0),
-                                            D_8082A150[sp218]);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_D5 && CVar_GetS32("gHudColors", 1) == 2 &&
-                                   CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCUBtnPrimR", 255),
-                                            CVar_GetS32("gCCCUBtnPrimG", 160), CVar_GetS32("gCCCUBtnPrimB", 0),
-                                            D_8082A150[sp218]);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_B4 && CVar_GetS32("gHudColors", 1) == 2 &&
-                                   CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", 255),
-                                            CVar_GetS32("gCCCLBtnPrimG", 160), CVar_GetS32("gCCCLBtnPrimB", 0),
-                                            D_8082A150[sp218]);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_A4 && CVar_GetS32("gHudColors", 1) == 2 &&
-                                   CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", 255),
-                                            CVar_GetS32("gCCCRBtnPrimG", 160), CVar_GetS32("gCCCRBtnPrimB", 0),
-                                            D_8082A150[sp218]);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_F4 && CVar_GetS32("gHudColors", 1) == 2 &&
-                                   CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", 255),
-                                            CVar_GetS32("gCCCDBtnPrimG", 160), CVar_GetS32("gCCCDBtnPrimB", 0),
-                                            D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_uni.r, C_button_uni.g, C_button_uni.b, Notes_alpha);
+                        } else if (D_8082A124[sp218] == OCARINA_NOTE_D5 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_U.r, C_button_U.g, C_button_U.b, Notes_alpha);
+                        } else if (D_8082A124[sp218] == OCARINA_NOTE_B4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, Notes_alpha);
+                        } else if (D_8082A124[sp218] == OCARINA_NOTE_A4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, Notes_alpha);
+                        } else if (D_8082A124[sp218] == OCARINA_NOTE_F4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, Notes_alpha);
                         }
                     }
 
@@ -558,39 +552,30 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 gDPPipeSync(POLY_KAL_DISP++);
 
                 if (pauseCtx->unk_1E4 == 8) {
+                    s16 Notes_alpha = 200;
                     if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        if (CVar_GetS32("gHudColors", 1) == 0) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, 200);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { // A Button notes
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, 200);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button_ori.r, A_button_ori.g, A_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80),
-                                            CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150), 200);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, Notes_alpha);
                         }
                     } else {
-                        if (CVar_GetS32("gHudColors", 1) == 0) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { // C Buttons notes
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255),
-                                            CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), 200);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCUBtnPrimR", 255),
-                                            CVar_GetS32("gCCCUBtnPrimG", 160), CVar_GetS32("gCCCUBtnPrimB", 0), 200);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", 255),
-                                            CVar_GetS32("gCCCLBtnPrimG", 160), CVar_GetS32("gCCCLBtnPrimB", 0), 200);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", 255),
-                                            CVar_GetS32("gCCCRBtnPrimG", 160), CVar_GetS32("gCCCRBtnPrimB", 0), 200);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", 255),
-                                            CVar_GetS32("gCCCDBtnPrimG", 160), CVar_GetS32("gCCCDBtnPrimB", 0), 200);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_uni.r, C_button_uni.g, C_button_uni.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_U.r, C_button_U.g, C_button_U.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, Notes_alpha);
                         }
                     }
                 } else {
@@ -643,43 +628,28 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                     gDPPipeSync(POLY_KAL_DISP++);
 
+                    s16 Notes_alpha = D_8082A150[phi_s3];
                     if (D_8082A124[phi_s3] == 0) {
-                        if (CVar_GetS32("gHudColors", 1) == 0) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, 200);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { // A Button notes
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[phi_s3]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button_ori.r, A_button_ori.g, A_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80),
-                                            CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150),
-                                            D_8082A150[phi_s3]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, Notes_alpha);
                         }
                     } else {
-                        if (CVar_GetS32("gHudColors", 1) == 0) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { // C Buttons notes
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, Notes_alpha);
                         } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255),
-                                            CVar_GetS32("gCCCBtnPrimG", 255), CVar_GetS32("gCCCBtnPrimB", 0),
-                                            D_8082A150[phi_s3]);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCUBtnPrimR", 255),
-                                            CVar_GetS32("gCCCUBtnPrimG", 255), CVar_GetS32("gCCCUBtnPrimB", 0),
-                                            D_8082A150[phi_s3]);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", 255),
-                                            CVar_GetS32("gCCCLBtnPrimG", 255), CVar_GetS32("gCCCLBtnPrimB", 0),
-                                            D_8082A150[phi_s3]);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", 255),
-                                            CVar_GetS32("gCCCRBtnPrimG", 255), CVar_GetS32("gCCCRBtnPrimB", 0),
-                                            D_8082A150[phi_s3]);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4 &&
-                                   CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", 255),
-                                            CVar_GetS32("gCCCDBtnPrimG", 255), CVar_GetS32("gCCCDBtnPrimB", 0),
-                                            D_8082A150[phi_s3]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_uni.r, C_button_uni.g, C_button_uni.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, Notes_alpha);
+                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, Notes_alpha);
                         }
                     }
 
@@ -745,9 +715,9 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
             phi_s0 = 0;
             for (sp21A = 0; sp21A < 3; sp21A++, sp218 += 4) {
                 if ((sp21A >= 2) || (sp208[sp21A] != 0) || (phi_s0 != 0)) {
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, digitTextures[sp208[sp21A]], G_IM_FMT_I, G_IM_SIZ_8b, 8, 16, 0,
-                                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                        G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, digitTextures[sp208[sp21A]], G_IM_FMT_I,
+                                        G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                     gSP1Quadrangle(POLY_KAL_DISP++, sp218, sp218 + 2, sp218 + 3, sp218 + 1, 0);
 
