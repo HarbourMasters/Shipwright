@@ -454,6 +454,7 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
 s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
 void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry);
