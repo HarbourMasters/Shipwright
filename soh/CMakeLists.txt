@@ -1669,14 +1669,13 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${SDL2-INCLUDE}
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
