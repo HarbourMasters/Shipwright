@@ -461,6 +461,7 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
         statsWindowOpen = CVar_GetS32("gStatsEnabled", 0);
+        CVar_RegisterS32("gRandoRelevantNavi", 1);
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
     #endif
@@ -2004,6 +2005,11 @@ namespace SohImGui {
                         "Play unique fanfares when obtaining quest items\n"
                         "(medallions/stones/songs). Note that these fanfares\n"
                         "are longer than usual."
+                    );
+                    EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                    Tooltip(
+                        "Replace Navi's overworld quest hints with rando-\n"
+                        "related gameplay hints.\n"
                     );
                     ImGui::EndMenu();
                 }

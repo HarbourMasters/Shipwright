@@ -7,6 +7,8 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 
+#define NUM_NAVI_MESSAGES 15
+
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
@@ -31,6 +33,7 @@ class Randomizer {
     static const std::string getItemMessageTableID;
     static const std::string hintMessageTableID;
     static const std::string scrubMessageTableID;
+    static const std::string NaviRandoMessageTableID;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
