@@ -10,6 +10,15 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void enableBetaQuest();
+    void disableBetaQuest();
+#ifdef __cplusplus
+}
+#endif
+
 namespace GameMenuBar {
     void Draw();
 }

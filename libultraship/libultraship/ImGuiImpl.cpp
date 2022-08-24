@@ -83,8 +83,6 @@ OSContPad* pads;
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
 
-bool isBetaQuestEnabled = false;
-
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
     /* 1 */ SEQ_FANFARE,
@@ -92,11 +90,6 @@ enum SeqPlayers {
     /* 3 */ SEQ_BGM_SUB,
     /* 4 */ SEQ_MAX
 };
-
-extern "C" {
-    void enableBetaQuest() { isBetaQuestEnabled = true; }
-    void disableBetaQuest() { isBetaQuestEnabled = false; }
-}
 
 namespace SohImGui {
 
@@ -1032,13 +1025,13 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
              ImGui::IsKeyDown(ImGuiKey_RightSuper)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Dispatch("reset");
+            DispatchConsoleCommand("reset");
         }
         #else
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
              ImGui::IsKeyDown(ImGuiKey_RightCtrl)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Dispatch("reset");
+            DispatchConsoleCommand("reset");
         }
         #endif
 
@@ -1779,113 +1772,6 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            if (ImGui::BeginMenu("Cheats"))
-            {
-                if (ImGui::BeginMenu("Infinite...")) {
-                    EnhancementCheckbox("Money", "gInfiniteMoney");
-                    PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
-                    PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
-                    PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
-                    PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
-                    PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
-
-                    ImGui::EndMenu();
-                }
-
-                PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
-                Tooltip("Allows you to walk through walls");
-                PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
-                Tooltip("Makes every surface in the game climbable");
-                PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
-                Tooltip("Holding L makes you float into the air");
-                PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
-                Tooltip("Makes every tunic have the effects of every other tunic");
-                PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
-                Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
-                PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
-                Tooltip("Allows you to use any item at any location");
-                PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
-                Tooltip("Freezes the time of day");
-                PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
-                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-                PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
-                Tooltip("Prevents the Deku Shield from burning on contact with fire");
-                PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
-                PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
-                Tooltip("This syncs the ingame time with the real world time");
-
-                {
-                    static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
-                    static int32_t lastBetaQuestEnabled = betaQuestEnabled;
-                    static int32_t betaQuestWorld = CVar_GetS32("gBetaQuestWorld", 0xFFEF);
-                    static int32_t lastBetaQuestWorld = betaQuestWorld;
-
-                    if (!isBetaQuestEnabled) {
-                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                    }
-
-                    PaddedEnhancementCheckbox("Enable Beta Quest", "gEnableBetaQuest", true, false);
-                    Tooltip("Turns on OoT Beta Quest. *WARNING* This will reset your game.");
-                    betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
-                    if (betaQuestEnabled) {
-                        if (betaQuestEnabled != lastBetaQuestEnabled) {
-                            betaQuestWorld = 0;
-                        }
-
-                        ImGui::Text("Beta Quest World: %d", betaQuestWorld);
-
-                        if (ImGui::Button(" - ##BetaQuest")) {
-                            betaQuestWorld--;
-                        }
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
-                        ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 8, "", ImGuiSliderFlags_AlwaysClamp);
-                        Tooltip("Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\nCtrl+Click to type in a value.");
-
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                        if (ImGui::Button(" + ##BetaQuest")) {
-                            betaQuestWorld++;
-                        }
-
-                        if (betaQuestWorld > 8) {
-                            betaQuestWorld = 8;
-                        }
-                        else if (betaQuestWorld < 0) {
-                            betaQuestWorld = 0;
-                        }
-                    }
-                    else {
-                        lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
-                        CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
-                    }
-                    if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
-                    {
-                        // Reset the game if the beta quest state or world changed because beta quest happens on redirecting the title screen cutscene.
-                        lastBetaQuestEnabled = betaQuestEnabled;
-                        lastBetaQuestWorld = betaQuestWorld;
-                        CVar_SetS32("gEnableBetaQuest", betaQuestEnabled);
-                        CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
-
-                        console->Dispatch("reset");
-
-                        needs_save = true;
-                    }
-
-                    if (!isBetaQuestEnabled) {
-                        ImGui::PopItemFlag();
-                        ImGui::PopStyleVar(1);
-                    }
-                }
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
             clientDrawMenu();
 
             ImGui::PopStyleVar(1);
@@ -2463,6 +2349,10 @@ namespace SohImGui {
             console->Open();
         else
             console->Close();
+    }
+
+    void DispatchConsoleCommand(const std::string& line) {
+        console->Dispatch(line);
     }
 
     void RequestCvarSaveOnNextTick() {

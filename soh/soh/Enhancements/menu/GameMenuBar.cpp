@@ -14,6 +14,13 @@
 #include <libultraship/ImGuiImpl.h>
 #include <libultraship/Cvar.h>
 
+bool isBetaQuestEnabled = false;
+
+extern "C" {
+    void enableBetaQuest() { isBetaQuestEnabled = true; }
+    void disableBetaQuest() { isBetaQuestEnabled = false; }
+}
+
 namespace UIWidgets {
 
     // MARK: - Enums
@@ -218,6 +225,113 @@ namespace GameMenuBar {
     // MARK: - Delegates
 
     void Draw() {
+        if (ImGui::BeginMenu("Cheats"))
+        {
+            if (ImGui::BeginMenu("Infinite...")) {
+                UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
+                UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
+
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
+            UIWidgets::Tooltip("Allows you to walk through walls");
+            UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
+            UIWidgets::Tooltip("Makes every surface in the game climbable");
+            UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
+            UIWidgets::Tooltip("Holding L makes you float into the air");
+            UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
+            UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
+            UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
+            UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
+            UIWidgets::Tooltip("Allows you to use any item at any location");
+            UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
+            UIWidgets::Tooltip("Freezes the time of day");
+            UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
+            UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
+            UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
+            UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
+            UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
+            UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+            UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
+            UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+
+            {
+                static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
+                static int32_t lastBetaQuestEnabled = betaQuestEnabled;
+                static int32_t betaQuestWorld = CVar_GetS32("gBetaQuestWorld", 0xFFEF);
+                static int32_t lastBetaQuestWorld = betaQuestWorld;
+
+                if (!isBetaQuestEnabled) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                }
+
+                UIWidgets::PaddedEnhancementCheckbox("Enable Beta Quest", "gEnableBetaQuest", true, false);
+                UIWidgets::Tooltip("Turns on OoT Beta Quest. *WARNING* This will reset your game.");
+                betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
+                if (betaQuestEnabled) {
+                    if (betaQuestEnabled != lastBetaQuestEnabled) {
+                        betaQuestWorld = 0;
+                    }
+
+                    ImGui::Text("Beta Quest World: %d", betaQuestWorld);
+
+                    if (ImGui::Button(" - ##BetaQuest")) {
+                        betaQuestWorld--;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+                    ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 8, "", ImGuiSliderFlags_AlwaysClamp);
+                    UIWidgets::Tooltip("Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\nCtrl+Click to type in a value.");
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(" + ##BetaQuest")) {
+                        betaQuestWorld++;
+                    }
+
+                    if (betaQuestWorld > 8) {
+                        betaQuestWorld = 8;
+                    }
+                    else if (betaQuestWorld < 0) {
+                        betaQuestWorld = 0;
+                    }
+                }
+                else {
+                    lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
+                    CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
+                }
+                if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
+                {
+                    // Reset the game if the beta quest state or world changed because beta quest happens on redirecting the title screen cutscene.
+                    lastBetaQuestEnabled = betaQuestEnabled;
+                    lastBetaQuestWorld = betaQuestWorld;
+                    CVar_SetS32("gEnableBetaQuest", betaQuestEnabled);
+                    CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
+
+                    SohImGui::DispatchConsoleCommand("reset");
+
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+
+                if (!isBetaQuestEnabled) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
+                }
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::SetCursorPosY(0.0f);
+
         if (ImGui::BeginMenu("Developer Tools"))
         {
             UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");

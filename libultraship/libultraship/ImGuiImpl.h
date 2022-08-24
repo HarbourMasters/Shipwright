@@ -1,15 +1,6 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
-#endif
-    void enableBetaQuest();
-    void disableBetaQuest();
-#ifdef __cplusplus
-}
-#endif
-
-#ifdef __cplusplus
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
@@ -106,6 +97,7 @@ namespace SohImGui {
     void EnableWindow(const std::string& name, bool isEnabled = true);
     void ToggleStatisticsWindow(bool isOpen = true);
     void ToggleConsoleWindow(bool isOpen = true);
+    void DispatchConsoleCommand(const std::string& line);
 
     void RequestCvarSaveOnNextTick();
 
