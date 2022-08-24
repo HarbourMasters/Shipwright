@@ -12,8 +12,6 @@
 #include <libultraship/ImGuiImpl.h>
 #include <libultraship/Cvar.h>
 
-// TODO: Look into places that used to call `needs_save`
-
 namespace UIWidgets {
     void Spacer(float height) {
         ImGui::Dummy(ImVec2(0.0f, height));
@@ -46,7 +44,7 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVar_GetS32("gRandomizerSettingsEnabled", 0);
                 CVar_SetS32("gRandomizerSettingsEnabled", !currentValue);
-//                needs_save = true;
+                SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
@@ -54,7 +52,7 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVar_GetS32("gItemTrackerEnabled", 0);
                 CVar_SetS32("gItemTrackerEnabled", !currentValue);
-//                needs_save = true;
+                SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0));
             }
             ImGui::PopStyleVar(3);

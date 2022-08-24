@@ -2534,6 +2534,10 @@ namespace SohImGui {
         customWindows[name].enabled = isEnabled;
     }
 
+    void RequestCvarSaveOnNextTick() {
+        needs_save = true;
+    }
+
     ImTextureID GetTextureByName(const std::string& name) {
         return GetTextureByID(DefaultAssets[name]->textureId);
     }

@@ -93,6 +93,27 @@ namespace SohImGui {
     void Update(EventImpl event);
     void Tooltip(const char* text);
 
+    void DrawMainMenuAndCalculateGameSize(void);
+    void RegisterMenuDrawMethod(std::function<void(void)> drawMethod);
+
+    void DrawFramebufferAndGameInput(void);
+    void Render(void);
+    void CancelFrame(void);
+    void ShowCursor(bool hide, Dialogues w);
+    void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
+
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
+    void EnableWindow(const std::string& name, bool isEnabled=true);
+    void RequestCvarSaveOnNextTick();
+
+    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
+
+
+
+
+
+
+
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
     void EnhancementCheckbox(const char* text, const char* cvarName, bool disabled = false, const char* disabledTooltipText = "", ImGuiCheckboxGraphics disabledGraphic = ImGuiCheckboxGraphics::Cross);
     void EnhancementButton(const char* text, const char* cvarName);
@@ -108,19 +129,6 @@ namespace SohImGui {
     void applyEnhancementPresetEnhanced(void);
     void applyEnhancementPresetRandomizer(void);
 
-    void DrawMainMenuAndCalculateGameSize(void);
-    void RegisterMenuDrawMethod(std::function<void(void)> drawMethod);
-
-    void DrawFramebufferAndGameInput(void);
-    void Render(void);
-    void CancelFrame(void);
-    void ShowCursor(bool hide, Dialogues w);
-    void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
-
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
-    void EnableWindow(const std::string& name, bool isEnabled=true);
-
-    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
     int ClampFloatToInt(float value, int min, int max);
     void RandomizeColor(const char* cvarName, ImVec4* colors);
