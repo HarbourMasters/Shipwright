@@ -4050,7 +4050,8 @@ void InitRandoItemTable() {
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
     }
     for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
-        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY) {
+        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
+            && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
         } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;

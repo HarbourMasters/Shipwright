@@ -12,14 +12,15 @@ extern "C" void Randomizer_DrawSmallKey(GlobalContext* globalCtx, GetItemEntry* 
     s32 pad;
 
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
-    s16 colors[8][3] = {
+    s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
         { 237, 95, 95 },   // Fire Temple
         { 85, 180, 223 },  // Water Temple
         { 222, 158, 47 },  // Spirit Temple
         { 126, 16, 177 },  // Shadow Temple
-        { 221, 212, 60 },  // Gerudo Training Grounds
         { 227, 110, 255 }, // Bottom of the Well
+        { 221, 212, 60 },  // Gerudo Training Grounds
+        { 255, 255, 255 }, // Theive's Hideout (unused)
         { 80, 80, 80 }     // Ganon's Castle
     };
 
