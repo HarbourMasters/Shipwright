@@ -1,6 +1,5 @@
 #ifdef __WIIU__
 #include "WiiUController.h"
-#include "GlobalCtx2.h"
 #include "Window.h"
 #include "ImGuiImpl.h"
 

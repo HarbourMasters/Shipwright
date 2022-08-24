@@ -1009,20 +1009,15 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
-    s16* TitleCard_Colors[3] = {255,255,255};
-        if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_B_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_B_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_B_U_PrimB", 255);
-        } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_OW_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_OW_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_OW_U_PrimB", 255);
-        } else {
-            TitleCard_Colors[0] = 255;
-            TitleCard_Colors[1] = 255;
-            TitleCard_Colors[2] = 255;
-        }
+    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
+    Color_RGB8 TitleCard_Colors = {255,255,255};
+    if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
+        TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
+        TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    } else {
+        TitleCard_Colors = TitleCard_Colors_ori;
+    }
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (DECR(titleCtx->durationTimer) == 0) {
@@ -1032,9 +1027,9 @@ void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors[0], 20);
-            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors[1], 20);
-            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors[2], 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors.r, 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors.g, 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors.b, 20);
         }
     }
 }
@@ -1195,7 +1190,8 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     actor->uncullZoneDownward = 700.0f;
     if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -2840,7 +2836,8 @@ s32 func_800314D4(GlobalContext* globalCtx, Actor* actor, Vec3f* arg2, f32 arg3)
 
     if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         return true;
     }
 

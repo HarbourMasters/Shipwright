@@ -118,9 +118,10 @@ void func_80A90264(EnKakasi2* this, GlobalContext* globalCtx) {
 
     this->unk_194++;
 
-    if ((BREG(1) != 0) && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
-        (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
-
+    if (((BREG(1) != 0) || ((CVar_GetS32("gSkipScarecrow", 0) != 0) && 
+            (globalCtx->msgCtx.ocarinaAction == OCARINA_ACTION_FREE_PLAY) && gSaveContext.scarecrowSpawnSongSet)) &&
+            (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+            (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)){
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(globalCtx, &this->collider);
         Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
