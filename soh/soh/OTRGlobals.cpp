@@ -33,6 +33,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include <soh/Enhancements/randomizer/randomizer.h>
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
@@ -1719,6 +1720,10 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_GetScrubMessage(textId);
+        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
+                   textId == TEXT_HUGE_RUPEE)) {
+            messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
         } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             messageEntry = Randomizer_GetNaviMessage();
@@ -1751,7 +1756,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =

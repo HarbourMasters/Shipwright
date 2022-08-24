@@ -461,6 +461,7 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
         statsWindowOpen = CVar_GetS32("gStatsEnabled", 0);
+        CVar_RegisterS32("gRandomizeRupeeNames", 1);
         CVar_RegisterS32("gRandoRelevantNavi", 1);
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
@@ -2000,16 +2001,18 @@ namespace SohImGui {
 
                 if (ImGui::BeginMenu("Rando Enhancements"))
                 {
-                    PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
+                    EnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
                     Tooltip(
-                        "Play unique fanfares when obtaining quest items\n"
-                        "(medallions/stones/songs). Note that these fanfares\n"
-                        "are longer than usual."
+                        "Play unique fanfares when obtaining quest items "
+                        "(medallions/stones/songs). Note that these fanfares are longer than usual."
                     );
-                    PaddedEnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                    PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
                     Tooltip(
-                        "Replace Navi's overworld quest hints with rando-\n"
-                        "related gameplay hints.\n"
+                        "When obtaining rupees, randomize what the rupee is called in the textbox."
+                    );
+                    PaddedEnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi", true, false);
+                    Tooltip(
+                        "Replace Navi's overworld quest hints with rando-related gameplay hints."
                     );
                     PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
                     Tooltip(

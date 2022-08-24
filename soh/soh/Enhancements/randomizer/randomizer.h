@@ -6,6 +6,7 @@
 #include "../../../include/z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #define NUM_NAVI_MESSAGES 15
 
@@ -33,6 +34,7 @@ class Randomizer {
     static const std::string getItemMessageTableID;
     static const std::string hintMessageTableID;
     static const std::string scrubMessageTableID;
+    static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
 
     static Sprite* GetSeedTexture(uint8_t index);
@@ -51,6 +53,8 @@ class Randomizer {
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
+    static std::string RandomizeRupeeName(std::string message, int language);
+    static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
