@@ -106,6 +106,10 @@ namespace SohImGui {
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
+
+    std::function<void(void)> clientDrawMenu;
+
+
     bool p_open = false;
     bool needs_save = false;
     int lastBackendID = 0;
@@ -1073,6 +1077,8 @@ namespace SohImGui {
             }
 
             ImGui::SetCursorPosY(0.0f);
+
+            clientDrawMenu();
 
             if (ImGui::BeginMenu("Settings"))
             {
@@ -2076,6 +2082,10 @@ namespace SohImGui {
         }
 
         overlay->Draw();
+    }
+
+    void RegisterMenuDrawMethod(std::function<void(void)> drawMethod) {
+        clientDrawMenu = drawMethod;
     }
 
     void DrawFramebufferAndGameInput(void) {

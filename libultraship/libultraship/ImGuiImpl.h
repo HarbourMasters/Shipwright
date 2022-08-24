@@ -109,6 +109,7 @@ namespace SohImGui {
     void applyEnhancementPresetRandomizer(void);
 
     void DrawMainMenuAndCalculateGameSize(void);
+    void RegisterMenuDrawMethod(std::function<void(void)> drawMethod);
 
     void DrawFramebufferAndGameInput(void);
     void Render(void);
