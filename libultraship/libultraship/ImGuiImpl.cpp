@@ -844,12 +844,7 @@ namespace SohImGui {
     }
 
     void RandomizeColor(const char* cvarName, ImVec4* colors) {
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
+        Color_RGBA8 NewColors = {0,0,0,255};
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "##";
@@ -864,9 +859,10 @@ namespace SohImGui {
             colors->x = (float)RND_R / 255;
             colors->y = (float)RND_G / 255;
             colors->z = (float)RND_B / 255;
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+            NewColors.r = ClampFloatToInt(colors->x * 255, 0, 255);
+            NewColors.g = ClampFloatToInt(colors->y * 255, 0, 255);
+            NewColors.b = ClampFloatToInt(colors->z * 255, 0, 255);
+            CVar_SetRGBA(cvarName, NewColors);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
@@ -893,16 +889,16 @@ namespace SohImGui {
         MakeInvisible += cvarName;
         MakeInvisible += "Reset";
         if (ImGui::Button(MakeInvisible.c_str())) {
-            colors->x = defaultcolors.x / 255;
-            colors->y = defaultcolors.y / 255;
-            colors->z = defaultcolors.z / 255;
-            if (has_alpha) { colors->w = defaultcolors.w / 255; };
+            colors->x = defaultcolors.x;
+            colors->y = defaultcolors.y;
+            colors->z = defaultcolors.z;
+            if (has_alpha) { colors->w = defaultcolors.w; };
 
             Color_RGBA8 colorsRGBA;
-            colorsRGBA.r = defaultcolors.x / 255;
-            colorsRGBA.g = defaultcolors.y / 255;
-            colorsRGBA.b = defaultcolors.z / 255;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w / 255; };
+            colorsRGBA.r = defaultcolors.x;
+            colorsRGBA.g = defaultcolors.y;
+            colorsRGBA.b = defaultcolors.z;
+            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.

@@ -415,6 +415,13 @@ void Gameplay_Init(GameState* thisx) {
     PreRender_SetValues(&globalCtx->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
     globalCtx->transitionMode = 0;
+
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        globalCtx->transitionMode = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    }
+
     FrameAdvance_Init(&globalCtx->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&globalCtx->state);
