@@ -189,6 +189,7 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     }
 #endif
 
+    SDL_GL_MakeCurrent(wnd, ctx);
     SDL_GL_SetSwapInterval(1);
 
     SohImGui::WindowImpl window_impl;
