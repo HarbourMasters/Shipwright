@@ -102,12 +102,14 @@ namespace SohImGui {
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
 
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
-    void EnableWindow(const std::string& name, bool isEnabled=true);
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
+    void EnableWindow(const std::string& name, bool isEnabled = true);
+    void ToggleStatisticsWindow(bool isOpen = true);
+    void ToggleConsoleWindow(bool isOpen = true);
+
     void RequestCvarSaveOnNextTick();
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
-
 
 
 

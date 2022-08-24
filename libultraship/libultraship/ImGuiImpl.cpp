@@ -1886,86 +1886,6 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            if (ImGui::BeginMenu("Developer Tools"))
-            {
-                EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
-                Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
-                PaddedEnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled", true, false);
-                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-                PaddedEnhancementCheckbox("Fast File Select", "gSkipLogoTitle", true, false);
-                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-                if (CVar_GetS32("gSkipLogoTitle", 0)) {
-                    const char* FastFileSelect[5] = {
-                        "File N.1",
-                        "File N.2",
-                        "File N.3",
-                        "File select",
-                        "Zelda Map Select (require OoT Debug Mode)"
-                    };
-                    ImGui::Text("Loading :");
-                    EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
-                    PaddedEnhancementCheckbox("Create a new save if none", "gCreateNewSave", true, false);
-                    Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
-                };
-                PaddedSeparator();
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                static ImVec2 buttonSize(160.0f, 0.0f);
-                if (ImGui::Button(GetWindowButtonText("Stats", CVar_GetS32("gStatsEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gStatsEnabled", 0);
-                    CVar_SetS32("gStatsEnabled", !currentValue);
-                    statsWindowOpen = true;
-                    needs_save = true;
-                }
-                Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
-                InsertPadding();
-                if (ImGui::Button(GetWindowButtonText("Console", CVar_GetS32("gConsoleEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gConsoleEnabled", 0);
-                    CVar_SetS32("gConsoleEnabled", !currentValue);
-                    needs_save = true;
-                    if(CVar_GetS32("gConsoleEnabled", 0)){
-                        console->Open();
-                    } else {
-                        console->Close();
-                    }
-                }
-                Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
-                InsertPadding();
-                if (ImGui::Button(GetWindowButtonText("Save Editor", CVar_GetS32("gSaveEditorEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gSaveEditorEnabled", 0);
-                    CVar_SetS32("gSaveEditorEnabled", !currentValue);
-                    needs_save = true;
-                    customWindows["Save Editor"].enabled = CVar_GetS32("gSaveEditorEnabled", 0);
-                }
-                InsertPadding();
-                if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVar_GetS32("gCollisionViewerEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gCollisionViewerEnabled", 0);
-                    CVar_SetS32("gCollisionViewerEnabled", !currentValue);
-                    needs_save = true;
-                    customWindows["Collision Viewer"].enabled = CVar_GetS32("gCollisionViewerEnabled", 0);
-                }
-                InsertPadding();
-                if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVar_GetS32("gActorViewerEnabled", 0)).c_str(), buttonSize))
-                {
-                    bool currentValue = CVar_GetS32("gActorViewerEnabled", 0);
-                    CVar_SetS32("gActorViewerEnabled", !currentValue);
-                    needs_save = true;
-                    customWindows["Actor Viewer"].enabled = CVar_GetS32("gActorViewerEnabled", 0);
-                }
-                ImGui::PopStyleVar(3);
-                ImGui::PopStyleColor(1);
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
             clientDrawMenu();
 
             ImGui::PopStyleVar(1);
@@ -2532,6 +2452,17 @@ namespace SohImGui {
 
     void EnableWindow(const std::string& name, bool isEnabled) {
         customWindows[name].enabled = isEnabled;
+    }
+
+    void ToggleStatisticsWindow(bool isOpen) {
+        statsWindowOpen = isOpen;
+    }
+
+    void ToggleConsoleWindow(bool isOpen) {
+        if (isOpen)
+            console->Open();
+        else
+            console->Close();
     }
 
     void RequestCvarSaveOnNextTick() {
