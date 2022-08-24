@@ -2181,7 +2181,6 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
         if (gSaveContext.inventory.items[SLOT(ITEM_BEAN)] == ITEM_NONE) {
             INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
             AMMO(ITEM_BEAN) = 10;
-            BEANS_BOUGHT = 10;
         }
     }
 
