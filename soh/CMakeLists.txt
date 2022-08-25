@@ -181,9 +181,11 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
     "soh/Enhancements/randomizer/adult_trade_shuffle.h"
     "soh/Enhancements/randomizer/randomizer_check_objects.h"
+    "soh/Enhancements/randomizer/draw.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
@@ -291,6 +293,7 @@ set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
     "soh/Enhancements/randomizer/adult_trade_shuffle.c"
     "soh/Enhancements/randomizer/randomizer_check_objects.cpp"
+    "soh/Enhancements/randomizer/draw.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
 

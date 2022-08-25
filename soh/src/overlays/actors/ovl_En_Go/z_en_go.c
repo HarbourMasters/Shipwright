@@ -114,7 +114,7 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
             }
         case 0x00:
             if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) {
+                (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
                 if (gSaveContext.infTable[16] & 0x8000) {
                     return 0x3042;
                 } else {

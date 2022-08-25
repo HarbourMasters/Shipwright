@@ -521,9 +521,14 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
             case EXITEM_BOMBCHUS_COUNTER:
                 randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
                 break;
+            case EXITEM_BULLET_BAG:
+                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+                break;
         }
 
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        GetItemEntry_Draw(globalCtx, randoGetItem);
+        return;
     }
 
     GetItem_Draw(globalCtx, this->giDrawId);
@@ -536,7 +541,7 @@ void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
         GetItemEntry randoGetItem =
             Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-        GetItem_Draw(globalCtx, randoGetItem.gid);
+        GetItemEntry_Draw(globalCtx, randoGetItem);
     } else {
         GetItem_Draw(globalCtx, GID_HEART_PIECE);
     }

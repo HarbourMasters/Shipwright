@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
+#include "draw.h"
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -103,6 +104,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 Randomizer::~Randomizer() { 
     this->randoSettings.clear();
     this->itemLocations.clear();
+    this->randomizerMerchantPrices.clear();
 }
 
 std::unordered_map<s16, s16> getItemIdToItemId = {
@@ -545,6 +547,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
+    { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
@@ -771,6 +774,17 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_CUCCO_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_SHUFFLE_SCRUBS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Affordable") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Expensive") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Random Prices") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
                         break;
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
@@ -1103,9 +1117,10 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                     // todo handle prices
                     if (itemit.key() == "item") {
-
                         gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                         gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "price") {
+                        randomizerMerchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
                     }
                 }
             } else {
@@ -1145,7 +1160,7 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ? GI_SWORD_BGS : GI_RUPEE_BLUE;
+            return !gSaveContext.bgsFlag ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
@@ -1585,6 +1600,280 @@ std::string Randomizer::GetGanonText() const {
 
 std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
+}
+
+ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    struct ScrubIdentity scrubIdentity;
+
+    scrubIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    scrubIdentity.getItemId = GI_NONE;
+    scrubIdentity.itemPrice = -1;
+    scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0;
+
+    // Based on z_en_dns.c 93-113
+    switch (actorParams) {
+        case 0x00:
+            scrubIdentity.getItemId = GI_NUTS_5_2;
+            break;
+        case 0x01:
+            scrubIdentity.getItemId = GI_STICKS_1;
+            break;
+        case 0x02:
+            scrubIdentity.getItemId = GI_HEART_PIECE;
+            break;
+        case 0x03:
+            scrubIdentity.getItemId = GI_SEEDS_30;
+            break;
+        case 0x04:
+            scrubIdentity.getItemId = GI_SHIELD_DEKU;
+            break;
+        case 0x05:
+            scrubIdentity.getItemId = GI_BOMBS_5;
+            break;
+        case 0x06:
+            scrubIdentity.getItemId = GI_ARROWS_LARGE;
+            break;
+        case 0x07:
+            scrubIdentity.getItemId = GI_POTION_RED;
+            break;
+        case 0x08:
+            scrubIdentity.getItemId = GI_POTION_GREEN;
+            break;
+        case 0x09:
+            scrubIdentity.getItemId = GI_STICK_UPGRADE_20;
+            break;
+        case 0x0A:
+            scrubIdentity.getItemId = GI_NUT_UPGRADE_30;
+            break;
+    }
+
+    // TODO: Handle MQ scrubs
+    switch (sceneNum) {
+        case SCENE_DDAN: // Dodongo's Cavern
+            switch (actorParams) {
+                case 0x00:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
+                    scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
+                    break;
+                case 0x01:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
+                    scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
+                    break;
+                case 0x03:
+                case 0x06:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
+                    scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
+                    break;
+                case 0x04:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
+                    scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
+                    break;
+            }
+            break;
+        case SCENE_BDAN: // Jabu Jabu's Belly
+            switch (actorParams) {
+                case 0x00:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_JABU_JABUS_BELLY_DEKU_SCRUB;
+                    scrubIdentity.randomizerCheck = RC_JABU_JABUS_BELLY_DEKU_SCRUB;
+                    break;
+            }
+            break;
+        case SCENE_GANONTIKA: // Ganon's Castle
+            switch (actorParams) {
+                case 0x05:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
+                    scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
+                    break;
+                case 0x03:
+                case 0x06:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
+                    scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
+                    break;
+                case 0x07:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
+                    scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
+                    break;
+                case 0x08:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_LEFT;
+                    scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_LEFT;
+                    break;
+            }
+            break;
+        case SCENE_KAKUSIANA: // Grotto
+            switch (respawnData) { 
+                case 0xE6: // Hyrule Field Scrub Grotto
+                    switch (actorParams) {
+                        case 0x02:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO;
+                            scrubIdentity.randomizerCheck = RC_HF_DEKU_SCRUB_GROTTO;
+                            scrubIdentity.isShuffled = true;
+                            break;
+                    }
+                    break;
+                case 0xEB: // ZR Scrub Grotto
+                    switch (actorParams) {
+                        case 0x07:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_REAR;
+                            scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_REAR;
+                            break;
+                        case 0x08:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_FRONT;
+                            break;
+                    }
+                    break;
+                case 0xEE: // Sacred Forest Meadow Scrub Grotto
+                    switch (actorParams) {
+                        case 0x07:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_REAR;
+                            scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_REAR;
+                            break;
+                        case 0x08:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_FRONT;
+                            break;
+                    }
+                    break;
+                case 0xEF: // Lake Hylia Scrub Grotto
+                    switch (actorParams) {
+                        case 0x00:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_LEFT;
+                            scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_LEFT;
+                            break;
+                        case 0x05:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_RIGHT;
+                            scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_RIGHT;
+                            break;
+                        case 0x03:
+                        case 0x06:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_CENTER;
+                            scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_CENTER;
+                            break;
+                    }
+                    break;
+                case 0xF0: // Gerudo Valley Scrub Grotto
+                    switch (actorParams) {
+                        case 0x07:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_REAR;
+                            scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_REAR;
+                            break;
+                        case 0x08:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_FRONT;
+                            break;
+                    }
+                    break;
+                case 0xF5: // Lost Woods Scrub Grotto
+                    switch (actorParams) {
+                        case 0x03:
+                        case 0x06:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_REAR;
+                            scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_REAR;
+                            break;
+                        case 0x0A:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.isShuffled = true;
+                            break;
+                    }
+                    break;
+                case 0xF9: // Death Mountain Crater Scrub Grotto
+                    switch (actorParams) {
+                        case 0x00:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_LEFT;
+                            scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_LEFT;
+                            break;
+                        case 0x05:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_RIGHT;
+                            scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_RIGHT;
+                            break;
+                        case 0x03:
+                        case 0x06:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_CENTER;
+                            scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_CENTER;
+                            break;
+                    }
+                    break;
+                case 0xFB: // Gerudo City Scrub Grotto
+                    switch (actorParams) {
+                        case 0x00:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_LEFT;
+                            scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_LEFT;
+                            break;
+                        case 0x05:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_RIGHT;
+                            scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_RIGHT;
+                            break;
+                        case 0x03:
+                        case 0x06:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_CENTER;
+                            scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_CENTER;
+                            break;
+                    }
+                    break;
+                case 0xFC: // Lon Lon Ranch Scrub Grotto
+                    switch (actorParams) {
+                        case 0x00:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_LEFT;
+                            scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_LEFT;
+                            break;
+                        case 0x05:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_RIGHT;
+                            scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_RIGHT;
+                            break;
+                        case 0x03:
+                        case 0x06:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_CENTER;
+                            scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_CENTER;
+                            break;
+                    }
+                    break;
+                case 0xFD: // Desert Colossus Scrub Grotto
+                    switch (actorParams) {
+                        case 0x07:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
+                            scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
+                            break;
+                        case 0x08:
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
+                            scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
+                            break;
+                    }
+                    break;
+            }
+            break;
+        case SCENE_SPOT10: // Lost woods
+            switch (actorParams) {
+                case 0x00:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
+                    scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
+                    break;
+                case 0x01:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
+                    scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
+                    break;
+                case 0x09:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE;
+                    scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
+                    scrubIdentity.isShuffled = true;
+                    break;
+            }
+            break;
+        case SCENE_SPOT17: // Death Mountain Crater
+            switch (actorParams) {
+                case 0x05:
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB;
+                    scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB;
+                    break;
+            }
+            break;
+    }
+    
+    if (randomizerMerchantPrices.find(scrubIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
+        scrubIdentity.itemPrice = randomizerMerchantPrices[scrubIdentity.randomizerCheck];
+    }
+
+    return scrubIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -2180,10 +2469,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 62:
             switch (actorParams) {
-                case 2:
-                    return RC_HF_DEKU_SCRUB_GROTTO;
-                case 10:
-                    return RC_LW_DEKU_SCRUB_GROTTO_FRONT;
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
                 case -22988:
@@ -2448,8 +2733,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 91:
             switch (actorParams) {
-                case 9:
-                    return RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                 case 14365:
                     return RC_LW_GOSSIP_STONE;
                 case 27905:
@@ -2614,6 +2897,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
+    cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
@@ -3111,6 +3395,20 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                     PaddedSeparator();
 
+                    // Shuffle Scrubs
+                    ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+                        "\n"
+                        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                        "\n"
+                        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+                        "\n"
+                        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n"
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
+                    PaddedSeparator();
+
                     // Shuffle Tokens
                     ImGui::Text(Settings::Tokensanity.GetName().c_str());
                     InsertHelpHoverText("Shuffles Golden Skulltula Tokens into the item pool. This means "
@@ -3131,10 +3429,10 @@ void DrawRandoEditor(bool& open) {
                                         "expected to be collected after getting Sun's Song.");
                     PaddedSeparator();
 
+
                     // Shuffle Cows
                     SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                    InsertHelpHoverText(
-                        "Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                    InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
                     PaddedSeparator();
 
                     // Shuffle Adult Trade Quest
@@ -3332,8 +3630,8 @@ void DrawRandoEditor(bool& open) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3405,10 +3703,49 @@ void DrawRandoEditor(bool& open) {
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
 
-                // COLUMN 2 - HINT SETTINGS
+                // COLUMN 2 - WORLD SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("Coming soon");
+                
+                ImGui::PopItemWidth();
+
+                // COLUMN 3 - ITEM POOL & HINT SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
+                                    "\n"
+                                    "Plentiful - Extra major items are added to the pool.\n"
+                                    "\n"
+                                    "Balanced - Original item pool.\n"
+                                    "\n"
+                                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                                    "\n"
+                                    "Minimal - Most excess items are removed.");
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
+                                    "\n"
+                                    "Off - No ice traps.\n"
+                                    "\n"
+                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                    "\n"
+                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                    "\n"
+                                    "Mayhem - All added junk items will be Ice Traps.\n"
+                                    "\n"
+                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                    "in the base pool.");
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+
+                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -3458,40 +3795,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
-                ImGui::PopItemWidth();
 
-                // COLUMN 3 - ITEM POOL SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                PaddedSeparator();
-
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
@@ -3724,11 +4028,19 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
+// Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
+// to being generated at save load, with only messages specific to each scrub.
 void CreateScrubMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
-    const std::vector<u8> prices = { 10, 40 };
-    for (u8 price : prices) {
+    customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, 0,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
+            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
+        });
+
+    for (u32 price = 5; price <= 95; price += 5) {
         customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
@@ -4115,6 +4427,14 @@ void InitRandoItemTable() {
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
     }
     for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
+            && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
+        } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
+        } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
 }
