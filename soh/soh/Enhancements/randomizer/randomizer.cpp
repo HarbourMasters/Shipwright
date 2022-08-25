@@ -32,7 +32,7 @@ u8 generated;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
-const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
+const std::string Randomizer::merchantMessageTableID = "RandomizerScrubs";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
@@ -4030,10 +4030,10 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
 
 // Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
 // to being generated at save load, with only messages specific to each scrub.
-void CreateScrubMessages() {
+void CreateMerchantMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
-    customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, 0,
+    customMessageManager->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+    customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, 0,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
             "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
             "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
@@ -4041,7 +4041,7 @@ void CreateScrubMessages() {
         });
 
     for (u32 price = 5; price <= 95; price += 5) {
-        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
+        customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
@@ -4053,7 +4053,7 @@ void CreateScrubMessages() {
             });
     }
     customMessageManager->CreateMessage(
-        Randomizer::scrubMessageTableID, TEXT_BEAN_SALESMAN,
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
@@ -4323,7 +4323,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !")
     };
     CreateGetItemMessages(getItemMessages);
-    CreateScrubMessages();
+    CreateMerchantMessages();
     CreateRupeeMessages();
     CreateNaviRandoMessages();
 }
