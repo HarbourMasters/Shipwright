@@ -1267,13 +1267,14 @@ namespace SohImGui {
                     ImGui::PopStyleVar(3);
                     ImGui::PopStyleColor(1);
 
-                    // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
-                    PaddedEnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                    Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                    PaddedEnhancementCheckbox("D-pad Support in Text Choice", "gDpadText", true, false);
-                    PaddedEnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop", true, false);
+                    PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause", true, false);
+                    Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
+                        "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
+                    PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText", true, false);
+                    Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
+                        "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
                     PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                    Tooltip("Allows the D-pad to be used as extra C buttons");
+                    Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up to equip instead of navigate");
                     PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
                     Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                     PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);

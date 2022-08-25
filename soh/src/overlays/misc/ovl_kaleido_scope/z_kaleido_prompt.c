@@ -7,7 +7,7 @@ void KaleidoScope_UpdatePrompt(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
     s8 relStickX = input->rel.stick_x;
     s16 step;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
 
     if (((pauseCtx->state == 7) && (pauseCtx->unk_1EC == 1)) || (pauseCtx->state == 0xE) || (pauseCtx->state == 0x10)) {
         if ((pauseCtx->promptChoice == 0) && ((relStickX >= 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)))) {
