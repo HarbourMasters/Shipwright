@@ -181,6 +181,7 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
     "soh/Enhancements/randomizer/adult_trade_shuffle.h"
     "soh/Enhancements/randomizer/randomizer_check_objects.h"

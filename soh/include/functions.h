@@ -11,6 +11,7 @@ extern "C"
 
 #include "../../libultraship/libultraship/luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
@@ -558,6 +559,8 @@ s32 Flags_GetEventChkInf(s32 flag);
 void Flags_SetEventChkInf(s32 flag);
 s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
+s32 Flags_GetRandomizerInf(RandomizerInf flag);
+void Flags_SetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(GlobalContext* globalCtx, s16 arg1);
 s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
