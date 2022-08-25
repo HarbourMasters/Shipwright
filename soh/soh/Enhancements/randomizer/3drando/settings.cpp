@@ -2551,6 +2551,7 @@ namespace Settings {
     ShuffleFrogSongRupees.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES]);
 
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
+    ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);

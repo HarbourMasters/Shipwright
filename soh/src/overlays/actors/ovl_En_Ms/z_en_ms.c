@@ -152,7 +152,8 @@ void EnMs_Sell(EnMs* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         Rupees_ChangeBy((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? 60 : -sPrices[BEANS_BOUGHT]);
         this->actor.parent = NULL;
-        this->actionFunc = EnMs_TalkAfterPurchase;
+        this->actionFunc =
+            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
     } else {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
             GiveItemEntryFromActor(&this->actor, globalCtx,

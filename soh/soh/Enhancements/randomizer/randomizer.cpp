@@ -548,6 +548,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
+    { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS},
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -774,6 +775,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
+                    case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_RANDOM_TRIALS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -2616,6 +2618,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
+    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3147,6 +3150,11 @@ void DrawRandoEditor(bool& open) {
                                         "D-pad.\n"
                                         "\n"
                                         "If disabled, only the Claim Check will be found in the pool.");
+                    PaddedSeparator();
+
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
+                    InsertHelpHoverText("Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean Salesman to sell a"
+                                        "random item at a price of 60 rupees.");
                     PaddedSeparator();
 
                     if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
