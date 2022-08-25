@@ -40,7 +40,7 @@ void BgGndNisekabe_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void BgGndNisekabe_Update(Actor* thisx, GlobalContext* globalCtx) {
     BgGndNisekabe* this = (BgGndNisekabe*)thisx;
 
-    if (globalCtx->actorCtx.unk_03 != 0) {
+    if (globalCtx->actorCtx.lensActive) {
         this->actor.flags |= ACTOR_FLAG_7;
     } else {
         this->actor.flags &= ~ACTOR_FLAG_7;

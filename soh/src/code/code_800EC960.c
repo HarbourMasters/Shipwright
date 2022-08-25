@@ -825,11 +825,11 @@ NatureAmbienceDataIO sNatureAmbienceDataIO[20] = {
 };
 
 u32 sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-s32 sOcarinaABtnMap = BTN_A;
-s32 sOcarinaCUPBtnMap = BTN_CUP;
-s32 sOcarinaCDownBtnMap = BTN_CDOWN;
-s32 sOcarinaCLeftBtnMap = BTN_CLEFT;
-s32 sOcarinaCRightBtnMap = BTN_CRIGHT;
+s32 sOcarinaD5BtnMap = BTN_CUP;
+s32 sOcarinaB4BtnMap = BTN_CLEFT;
+s32 sOcarinaA4BtnMap = BTN_CRIGHT;
+s32 sOcarinaF4BtnMap = BTN_CDOWN;
+s32 sOcarinaD4BtnMap = BTN_A;
 u8 sOcarinaInpEnabled = 0;
 s8 D_80130F10 = 0; // "OCA", ocarina active?
 u8 sCurOcarinaBtnVal = 0xFF;
@@ -1013,9 +1013,9 @@ OcarinaNote sOcarinaSongs[OCARINA_SONG_MAX][20] = {
 
 OcarinaNote* sPlaybackSong = sOcarinaSongs[0];
 u8 sFrogsSongNotes[14] = {
-    OCARINA_NOTE_A,       OCARINA_NOTE_C_LEFT,  OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_DOWN, OCARINA_NOTE_C_LEFT,
-    OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_DOWN,  OCARINA_NOTE_A,       OCARINA_NOTE_C_DOWN, OCARINA_NOTE_A,
-    OCARINA_NOTE_C_DOWN,  OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_LEFT,  OCARINA_NOTE_A,
+    OCARINA_NOTE_D4, OCARINA_NOTE_B4, OCARINA_NOTE_A4, OCARINA_NOTE_F4, OCARINA_NOTE_B4,
+    OCARINA_NOTE_A4, OCARINA_NOTE_F4, OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_D4,
+    OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D4,
 };
 u8* gFrogsSongPtr = sFrogsSongNotes;
 u8 sRecordingState = 0;
@@ -1044,124 +1044,124 @@ OcarinaSongInfo gOcarinaSongNotes[OCARINA_SONG_MAX] = {
     // Minuet
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
       } },
     // Bolero
     { 8,
       {
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
       } },
     // Serenade
     { 5,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
       } },
     // Requiem
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
       } },
     // Nocturne
     { 7,
       {
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
       } },
     // Prelude
     { 6,
       {
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
       } },
     // Sarias
     { 6,
       {
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
       } },
     // Epona
     { 6,
       {
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
       } },
     // Lullaby
     { 6,
       {
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
       } },
     // Suns
     { 6,
       {
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
       } },
     // Song of Time
     { 6,
       {
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
       } },
     // Storms
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
       } },
     // Scarecrow
     { 8, { 0, 0, 0, 0, 0, 0, 0, 0 } },
@@ -1246,26 +1246,51 @@ void Audio_StepFreqLerp(FreqLerp* lerp);
 void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
-void Audio_PlayFanfare_Rando(ItemID getItemId);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 
-// Function originally not called, so repurposing for DPad input
-void func_800EC960(u8 dpad) {
-    if (dpad) {
-        sOcarinaAllowedBtnMask =
-            (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
-        sOcarinaABtnMap = BTN_A;
-        sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
-        sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
-        sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
-        sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
+// Right stick as virtual C buttons
+#define RSTICK_UP    0x100000
+#define RSTICK_DOWN  0x200000
+#define RSTICK_LEFT  0x400000
+#define RSTICK_RIGHT 0x800000
+
+// Function originally not called, so repurposing for control mapping
+void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
+    if (customControls) {
+        sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
+        sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
+        sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
+        sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
     } else {
-        sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-        sOcarinaABtnMap = BTN_A;
-        sOcarinaCUPBtnMap = BTN_CUP;
-        sOcarinaCDownBtnMap = BTN_CDOWN;
-        sOcarinaCLeftBtnMap = BTN_CLEFT;
-        sOcarinaCRightBtnMap = BTN_CRIGHT;
+        sOcarinaD5BtnMap = BTN_CUP;
+        sOcarinaB4BtnMap = BTN_CLEFT;
+        sOcarinaA4BtnMap = BTN_CRIGHT;
+        sOcarinaF4BtnMap = BTN_CDOWN;
+        sOcarinaD4BtnMap = BTN_A;
     }
+
+    if (dpad) {
+        sOcarinaD5BtnMap |= BTN_DUP;
+        sOcarinaB4BtnMap |= BTN_DLEFT;
+        sOcarinaA4BtnMap |= BTN_DRIGHT;
+        sOcarinaF4BtnMap |= BTN_DDOWN;
+    }
+
+    if (rStick) {
+        sOcarinaD5BtnMap |= RSTICK_UP;
+        sOcarinaB4BtnMap |= RSTICK_LEFT;
+        sOcarinaA4BtnMap |= RSTICK_RIGHT;
+        sOcarinaF4BtnMap |= RSTICK_DOWN;
+    }
+
+    sOcarinaAllowedBtnMask = (
+        sOcarinaD5BtnMap |
+        sOcarinaB4BtnMap |
+        sOcarinaA4BtnMap |
+        sOcarinaF4BtnMap |
+        sOcarinaD4BtnMap
+    );
 }
 
 void Audio_GetOcaInput(void) {
@@ -1279,6 +1304,22 @@ void Audio_GetOcaInput(void) {
     sPrevOcarinaBtnPress = sp18;
     sCurOcaStick.x = input->rel.stick_x;
     sCurOcaStick.y = input->rel.stick_y;
+
+    s8 rstick_x = input->cur.right_stick_x;
+    s8 rstick_y = input->cur.right_stick_y;
+    const s8 sensitivity = 64;
+    if (rstick_x > sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_RIGHT;
+    }
+    if (rstick_x < -sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_LEFT;
+    }
+    if (rstick_y > sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_UP;
+    }
+    if (rstick_y < -sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_DOWN;
+    }
 }
 
 f32 Audio_OcaAdjStick(s8 inp) {
@@ -1496,7 +1537,17 @@ void func_800ED200(void) {
     u8 j;
     u8 k;
 
-    if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
+    u32 disableSongBtnMap;
+    if (CVar_GetS32("gCustomOcarinaControls", 0)) {
+        disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    } else {
+        disableSongBtnMap = BTN_L;
+    }
+
+    if (
+        CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap)
+        && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
+    ) {
         func_800ECC04((u16)D_80130F3C);
         return;
     }
@@ -1549,7 +1600,9 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool dpad = CVar_GetS32("gDpadOcarinaText", 0);
+    bool customControls = CVar_GetS32("gCustomOcarinaControls", 0);
+    bool dpad = CVar_GetS32("gDpadOcarina", 0);
+    bool rStick = CVar_GetS32("gRStickOcarina", 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
@@ -1570,35 +1623,47 @@ void func_800ED458(s32 arg0) {
             D_8016BA18 &= phi_v1_2;
         }
 
-        func_800EC960(dpad);
-        if (D_8016BA18 & sOcarinaABtnMap) {
-            osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaABtnMap);
+        Audio_OcaUpdateBtnMap(customControls, dpad, rStick);
+        if (D_8016BA18 & sOcarinaD4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
             sCurOcarinaBtnIdx = 0;
-        } else if (D_8016BA18 & sOcarinaCDownBtnMap) {
-            osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaCDownBtnMap);
+        } else if (D_8016BA18 & sOcarinaF4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaF4BtnMap);
             sCurOcarinaBtnVal = 5;
             sCurOcarinaBtnIdx = 1;
-        } else if (D_8016BA18 & sOcarinaCRightBtnMap) {
-            osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaCRightBtnMap);
+        } else if (D_8016BA18 & sOcarinaA4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 9;
             sCurOcarinaBtnIdx = 2;
-        } else if (D_8016BA18 & sOcarinaCLeftBtnMap) {
-            osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaCRightBtnMap);
+        } else if (D_8016BA18 & sOcarinaB4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 0xB;
             sCurOcarinaBtnIdx = 3;
-        } else if (D_8016BA18 & sOcarinaCUPBtnMap) {
-            osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaCUPBtnMap);
+        } else if (D_8016BA18 & sOcarinaD5BtnMap) {
+            osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaD5BtnMap);
             sCurOcarinaBtnVal = 0xE;
             sCurOcarinaBtnIdx = 4;
         }
 
-        if (sCurOcarinaBtnVal != 0xFF && sCurOcarinaBtnPress & 0x10 && sRecordingState != 2) {
+        u32 noteSharpBtnMap;
+        if (customControls) {
+            noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+        } else {
+            noteSharpBtnMap = BTN_R;
+        }
+        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteSharpBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x80;
             sCurOcarinaBtnVal++;
         }
 
-        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & 0x2000) && (sRecordingState != 2)) {
+        u32 noteFlatBtnMap;
+        if (customControls) {
+            noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+        } else {
+            noteFlatBtnMap = BTN_Z;
+        }
+        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteFlatBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x40;
             sCurOcarinaBtnVal--;
         }
@@ -3892,42 +3957,51 @@ void Audio_ResetSfxChannelState(void) {
 
 // Function to play "get-item" fanfares according to the type of item obtained (used in rando)
 // Longer fanfares for medallions/stones/songs are behind the Cvar
-void Audio_PlayFanfare_Rando(ItemID getItemId) {
+void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
     s32 temp1;
+    s16 getItemId = getItem.getItemId;
+    s16 itemId = getItem.itemId;
 
-    if (((getItemId >= GI_RUPEE_GREEN) && (getItemId <= GI_RUPEE_RED)) ||
-        ((getItemId >= GI_RUPEE_PURPLE) && (getItemId <= GI_RUPEE_GOLD)) ||
-        ((getItemId >= GI_RUPEE_GREEN_LOSE) && (getItemId <= GI_RUPEE_PURPLE_LOSE)) || (getItemId == GI_HEART)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-    } else {
-        if ((getItemId == GI_HEART_CONTAINER_2) || (getItemId == GI_HEART_CONTAINER) ||
-            ((getItemId == GI_HEART_PIECE) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-            temp1 = NA_BGM_HEART_GET | 0x900;
+    if (getItem.modIndex == MOD_NONE) {
+        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
+            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
-            temp1 = (getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
-        }
-        // If we get a skulltula token or the "WINNER" heart, play "get small item"
-        if (getItemId == GI_SKULL_TOKEN || getItemId == GI_HEART_PIECE_WIN) {
-            temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
-        }
-        // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
-        if (getItemId == GI_HEART_PIECE_WIN && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
-            temp1 = NA_BGM_HEART_GET | 0x900;
-        }
-        // If the setting is toggled on and we get special quest items (longer fanfares):
-        if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
-            // If we get a medallion, play the "get a medallion" fanfare
-            if ((getItemId >= GI_MEDALLION_LIGHT) && (getItemId <= GI_MEDALLION_SPIRIT)) {
-                temp1 = NA_BGM_MEDALLION_GET | 0x900;
+            if (itemId == ITEM_HEART_CONTAINER ||
+                ((itemId == ITEM_HEART_PIECE_2) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                temp1 = NA_BGM_HEART_GET | 0x900;
+            } else {
+                temp1 = (itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
-            // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
-            if ((getItemId >= GI_STONE_KOKIRI) && (getItemId <= GI_STONE_ZORA)) {
-                temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+            // If we get a skulltula token or the "WINNER" heart, play "get small item"
+            // Also make sure "WINNER" heart is not the 4th heart piece.
+            if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
+                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
+                temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
-            // If the item we're getting is a song, play the "learned a song" fanfare
-            if ((getItemId >= GI_ZELDAS_LULLABY) && (getItemId <= GI_PRELUDE_OF_LIGHT)) {
-                temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+            // If the setting is toggled on and we get special quest items (longer fanfares):
+            if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+                // If we get a medallion, play the "get a medallion" fanfare
+                if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
+                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                }
+                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                if ((itemId >= ITEM_KOKIRI_EMERALD) && (itemId <= ITEM_ZORA_SAPPHIRE)) {
+                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                }
+                // If the item we're getting is a song, play the "learned a song" fanfare
+                if ((itemId >= ITEM_SONG_MINUET) && (itemId <= ITEM_SONG_STORMS)) {
+                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                }
             }
+            Audio_PlayFanfare(temp1);
+        } 
+    } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+            (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        } else {
+            // Just in case nothing else matches.
+            temp1 = NA_BGM_ITEM_GET | 0x900;
         }
         Audio_PlayFanfare(temp1);
     }

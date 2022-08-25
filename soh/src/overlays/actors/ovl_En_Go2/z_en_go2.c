@@ -287,6 +287,13 @@ void EnGo2_GetItem(EnGo2* this, GlobalContext* globalCtx, s32 getItemId) {
                   fabsf(this->actor.yDistToPlayer) + 1.0f);
 }
 
+void EnGo2_GetItemEntry(EnGo2* this, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    this->getItemId = getItemEntry.getItemId;
+    this->getItemEntry = getItemEntry;
+    GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, this->actor.xzDistToPlayer + 1.0f,
+                  fabsf(this->actor.yDistToPlayer) + 1.0f);
+}
+
 s32 EnGo2_GetDialogState(EnGo2* this, GlobalContext* globalCtx) {
     s16 dialogState = Message_GetState(&globalCtx->msgCtx);
 
@@ -335,8 +342,6 @@ u16 EnGo2_GetTextIdGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
-    s32 bombBagUpgrade;
-
     switch (Message_GetState(&globalCtx->msgCtx)) {
         case TEXT_STATE_CLOSING:
             return 2;
@@ -345,11 +350,10 @@ s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
                 if (this->actor.textId == 0x3012) {
                     this->actionFunc = EnGo2_SetupGetItem;
                     if(!gSaveContext.n64ddFlag) {
-                        bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;    
+                        EnGo2_GetItem(this, globalCtx, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
                     } else {
-                        bombBagUpgrade = Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
+                        EnGo2_GetItemEntry(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40));
                     }
-                    EnGo2_GetItem(this, globalCtx, bombBagUpgrade);
                     Message_CloseTextbox(globalCtx);
                     gSaveContext.infTable[17] |= 0x4000;
                     return 2;
@@ -412,10 +416,10 @@ s16 EnGo2_GetStateGoronDmtRollingSmall(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.eventChkInf[2] & 0x8 ? 0x3021 : gSaveContext.infTable[14] & 0x1 ? 0x302A : 0x3008;
@@ -435,10 +439,10 @@ s16 EnGo2_GetStateGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x1 ? 0x3015 : 0x3014;
@@ -458,10 +462,10 @@ s16 EnGo2_GetStateGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x10 ? 0x3017 : 0x3016;
@@ -481,10 +485,10 @@ s16 EnGo2_GetStateGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityLowestFloor(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return CUR_UPG_VALUE(UPG_STRENGTH) != 0    ? 0x302C
@@ -543,7 +547,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
                 }
                 
                 gSaveContext.infTable[16] |= 0x200;
-                EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                EnGo2_GetItemEntry(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
                 this->actionFunc = EnGo2_SetupGetItem;
                 Flags_SetTreasure(globalCtx, 0x1F);
                 return 2;
@@ -622,7 +626,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
                         return 0;
                     }
 
-                    EnGo2_GetItem(this, globalCtx, Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    EnGo2_GetItemEntry(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
                     Flags_SetTreasure(globalCtx, 0x1F);
                 } else {
                     EnGo2_GetItem(this, globalCtx, GI_SWORD_BGS);
@@ -653,12 +657,14 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
             if (Message_ShouldAdvance(globalCtx)) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (globalCtx->msgCtx.choiceIndex == 0) {
-                        u32 getItemId = GI_PRESCRIPTION;
                         if (gSaveContext.n64ddFlag) {
-                            getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                             Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                            EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                        } else {
+                            u32 getItemId = GI_PRESCRIPTION;
+                            EnGo2_GetItem(this, globalCtx, getItemId);
                         }
-                        EnGo2_GetItem(this, globalCtx, getItemId);
                         this->actionFunc = EnGo2_SetupGetItem;
                         return 2;
                     }
@@ -1575,6 +1581,7 @@ void EnGo2_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_216 = this->actor.shape.rot.z;
     this->unk_26E = 1;
     this->path = Path_GetByIndex(globalCtx, (this->actor.params & 0x3E0) >> 5, 0x1F);
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     switch (this->actor.params & 0x1F) {
         case GORON_CITY_ENTRANCE:
         case GORON_CITY_ISLAND:
@@ -1582,7 +1589,7 @@ void EnGo2_Init(Actor* thisx, GlobalContext* globalCtx) {
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
             if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                 (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;
@@ -1814,8 +1821,11 @@ void EnGo2_SetupGetItem(EnGo2* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnGo2_SetGetItem;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, this->actor.xzDistToPlayer + 1.0f,
-                      fabsf(this->actor.yDistToPlayer) + 1.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        }
     }
 }
 
@@ -1887,12 +1897,14 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, GlobalContext* globalCtx) {
                 this->unk_26E = 2;
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
-                u32 getItemId = GI_CLAIM_CHECK;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetItemIdFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                    EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                } else {
+                    u32 getItemId = GI_CLAIM_CHECK;
+                    EnGo2_GetItem(this, globalCtx, getItemId);
                 }
-                EnGo2_GetItem(this, globalCtx, getItemId);
                 this->actionFunc = EnGo2_SetupGetItem;
                 this->goronState = 0;
             }

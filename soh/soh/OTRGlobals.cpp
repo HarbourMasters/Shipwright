@@ -3,8 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
-#include <locale>
-#include "GlobalCtx2.h"
+#include <fstream>
+
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -29,9 +29,11 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include <soh/Enhancements/randomizer/randomizer.h>
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
@@ -41,6 +43,9 @@
 #include "Hooks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
+#include "Lib/Fast3D/gfx_pc.h"
+#include "Lib/Fast3D/gfx_rendering_api.h"
+
 #ifdef __APPLE__
 #include <SDL_scancode.h>
 #else
@@ -49,21 +54,24 @@
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
+#elif defined(__WIIU__)
+#include "WiiUImpl.h"
 #endif
 
 #include <Audio.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include <functions.h>
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
+ItemTableManager* ItemTableManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
+    context = Ship::Window::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
-    context->GetWindow()->Init();
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -155,6 +163,145 @@ extern "C" void OTRAudio_Exit() {
     audio.thread.join();
 }
 
+extern "C" void VanillaItemTable_Init() {
+    GetItemEntry getItemTable[] = {
+        GET_ITEM(ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_5),
+        GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, MOD_NONE, GI_NUTS_5),
+        GET_ITEM(ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBCHUS_10),
+        GET_ITEM(ITEM_BOW, OBJECT_GI_BOW, GID_BOW, 0x31, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOW),
+        GET_ITEM(ITEM_SLINGSHOT, OBJECT_GI_PACHINKO, GID_SLINGSHOT, 0x30, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SLINGSHOT),
+        GET_ITEM(ITEM_BOOMERANG, OBJECT_GI_BOOMERANG, GID_BOOMERANG, 0x35, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOOMERANG),
+        GET_ITEM(ITEM_STICK, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, MOD_NONE, GI_STICKS_1),
+        GET_ITEM(ITEM_HOOKSHOT, OBJECT_GI_HOOKSHOT, GID_HOOKSHOT, 0x36, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HOOKSHOT),
+        GET_ITEM(ITEM_LONGSHOT, OBJECT_GI_HOOKSHOT, GID_LONGSHOT, 0x4F, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_LONGSHOT),
+        GET_ITEM(ITEM_LENS, OBJECT_GI_GLASSES, GID_LENS, 0x39, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_LENS),
+        GET_ITEM(ITEM_LETTER_ZELDA, OBJECT_GI_LETTER, GID_LETTER_ZELDA, 0x69, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_LETTER_ZELDA),
+        GET_ITEM(ITEM_OCARINA_TIME, OBJECT_GI_OCARINA, GID_OCARINA_TIME, 0x3A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_OCARINA_OOT),
+        GET_ITEM(ITEM_HAMMER, OBJECT_GI_HAMMER, GID_HAMMER, 0x38, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HAMMER),
+        GET_ITEM(ITEM_COJIRO, OBJECT_GI_NIWATORI, GID_COJIRO, 0x02, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_COJIRO),
+        GET_ITEM(ITEM_BOTTLE, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x42, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOTTLE),
+        GET_ITEM(ITEM_POTION_RED, OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POTION_RED),
+        GET_ITEM(ITEM_POTION_GREEN, OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POTION_GREEN),
+        GET_ITEM(ITEM_POTION_BLUE, OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POTION_BLUE),
+        GET_ITEM(ITEM_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_FAIRY),
+        GET_ITEM(ITEM_MILK_BOTTLE, OBJECT_GI_MILK, GID_MILK, 0x98, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MILK_BOTTLE),
+        GET_ITEM(ITEM_LETTER_RUTO, OBJECT_GI_BOTTLE_LETTER, GID_LETTER_RUTO, 0x99, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_LETTER_RUTO),
+        GET_ITEM(ITEM_BEAN, OBJECT_GI_BEAN, GID_BEAN, 0x48, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BEAN),
+        GET_ITEM(ITEM_MASK_SKULL, OBJECT_GI_SKJ_MASK, GID_MASK_SKULL, 0x10, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_SKULL),
+        GET_ITEM(ITEM_MASK_SPOOKY, OBJECT_GI_REDEAD_MASK, GID_MASK_SPOOKY, 0x11, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_SPOOKY),
+        GET_ITEM(ITEM_CHICKEN, OBJECT_GI_NIWATORI, GID_CHICKEN, 0x48, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_CHICKEN),
+        GET_ITEM(ITEM_MASK_KEATON, OBJECT_GI_KI_TAN_MASK, GID_MASK_KEATON, 0x12, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_KEATON),
+        GET_ITEM(ITEM_MASK_BUNNY, OBJECT_GI_RABIT_MASK, GID_MASK_BUNNY, 0x13, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_BUNNY),
+        GET_ITEM(ITEM_MASK_TRUTH, OBJECT_GI_TRUTH_MASK, GID_MASK_TRUTH, 0x17, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_TRUTH),
+        GET_ITEM(ITEM_POCKET_EGG, OBJECT_GI_EGG, GID_EGG, 0x01, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POCKET_EGG),
+        GET_ITEM(ITEM_POCKET_CUCCO, OBJECT_GI_NIWATORI, GID_CHICKEN, 0x48, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POCKET_CUCCO),
+        GET_ITEM(ITEM_ODD_MUSHROOM, OBJECT_GI_MUSHROOM, GID_ODD_MUSHROOM, 0x03, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_ODD_MUSHROOM),
+        GET_ITEM(ITEM_ODD_POTION, OBJECT_GI_POWDER, GID_ODD_POTION, 0x04, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_ODD_POTION),
+        GET_ITEM(ITEM_SAW, OBJECT_GI_SAW, GID_SAW, 0x05, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SAW),
+        GET_ITEM(ITEM_SWORD_BROKEN, OBJECT_GI_BROKENSWORD, GID_SWORD_BROKEN, 0x08, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SWORD_BROKEN),
+        GET_ITEM(ITEM_PRESCRIPTION, OBJECT_GI_PRESCRIPTION, GID_PRESCRIPTION, 0x09, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_PRESCRIPTION),
+        GET_ITEM(ITEM_FROG, OBJECT_GI_FROG, GID_FROG, 0x0D, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_FROG),
+        GET_ITEM(ITEM_EYEDROPS, OBJECT_GI_EYE_LOTION, GID_EYEDROPS, 0x0E, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_EYEDROPS),
+        GET_ITEM(ITEM_CLAIM_CHECK, OBJECT_GI_TICKETSTONE, GID_CLAIM_CHECK, 0x0A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_CLAIM_CHECK),
+        GET_ITEM(ITEM_SWORD_KOKIRI, OBJECT_GI_SWORD_1, GID_SWORD_KOKIRI, 0xA4, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SWORD_KOKIRI),
+        GET_ITEM(ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD, GID_SWORD_BGS, 0x4B, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SWORD_KNIFE),
+        GET_ITEM(ITEM_SHIELD_DEKU, OBJECT_GI_SHIELD_1, GID_SHIELD_DEKU, 0x4C, 0xA0, CHEST_ANIM_SHORT, MOD_NONE, GI_SHIELD_DEKU),
+        GET_ITEM(ITEM_SHIELD_HYLIAN, OBJECT_GI_SHIELD_2, GID_SHIELD_HYLIAN, 0x4D, 0xA0, CHEST_ANIM_SHORT, MOD_NONE, GI_SHIELD_HYLIAN),
+        GET_ITEM(ITEM_SHIELD_MIRROR, OBJECT_GI_SHIELD_3, GID_SHIELD_MIRROR, 0x4E, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SHIELD_MIRROR),
+        GET_ITEM(ITEM_TUNIC_GORON, OBJECT_GI_CLOTHES, GID_TUNIC_GORON, 0x50, 0xA0, CHEST_ANIM_LONG, MOD_NONE, GI_TUNIC_GORON),
+        GET_ITEM(ITEM_TUNIC_ZORA, OBJECT_GI_CLOTHES, GID_TUNIC_ZORA, 0x51, 0xA0, CHEST_ANIM_LONG, MOD_NONE, GI_TUNIC_ZORA),
+        GET_ITEM(ITEM_BOOTS_IRON, OBJECT_GI_BOOTS_2, GID_BOOTS_IRON, 0x53, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOOTS_IRON),
+        GET_ITEM(ITEM_BOOTS_HOVER, OBJECT_GI_HOVERBOOTS, GID_BOOTS_HOVER, 0x54, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOOTS_HOVER),
+        GET_ITEM(ITEM_QUIVER_40, OBJECT_GI_ARROWCASE, GID_QUIVER_40, 0x56, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_QUIVER_40),
+        GET_ITEM(ITEM_QUIVER_50, OBJECT_GI_ARROWCASE, GID_QUIVER_50, 0x57, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_QUIVER_50),
+        GET_ITEM(ITEM_BOMB_BAG_20, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_20, 0x58, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOMB_BAG_20),
+        GET_ITEM(ITEM_BOMB_BAG_30, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_30, 0x59, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOMB_BAG_30),
+        GET_ITEM(ITEM_BOMB_BAG_40, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_40, 0x5A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BOMB_BAG_40),
+        GET_ITEM(ITEM_GAUNTLETS_SILVER, OBJECT_GI_GLOVES, GID_GAUNTLETS_SILVER, 0x5B, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_GAUNTLETS_SILVER),
+        GET_ITEM(ITEM_GAUNTLETS_GOLD, OBJECT_GI_GLOVES, GID_GAUNTLETS_GOLD, 0x5C, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_GAUNTLETS_GOLD),
+        GET_ITEM(ITEM_SCALE_SILVER, OBJECT_GI_SCALE, GID_SCALE_SILVER, 0xCD, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SCALE_SILVER),
+        GET_ITEM(ITEM_SCALE_GOLDEN, OBJECT_GI_SCALE, GID_SCALE_GOLDEN, 0xCE, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SCALE_GOLD),
+        GET_ITEM(ITEM_STONE_OF_AGONY, OBJECT_GI_MAP, GID_STONE_OF_AGONY, 0x68, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_STONE_OF_AGONY),
+        GET_ITEM(ITEM_GERUDO_CARD, OBJECT_GI_GERUDO, GID_GERUDO_CARD, 0x7B, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_GERUDO_CARD),
+        GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_OCARINA_FAIRY),
+        GET_ITEM(ITEM_SEEDS, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT, MOD_NONE, GI_SEEDS_5),
+        GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HEART_CONTAINER),
+        GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xC2, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HEART_PIECE),
+        GET_ITEM(ITEM_KEY_BOSS, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, 0xC7, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_KEY_BOSS),
+        GET_ITEM(ITEM_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, 0x67, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_COMPASS),
+        GET_ITEM(ITEM_DUNGEON_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, 0x66, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MAP),
+        GET_ITEM(ITEM_KEY_SMALL, OBJECT_GI_KEY, GID_KEY_SMALL, 0x60, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_KEY_SMALL),
+        GET_ITEM(ITEM_MAGIC_SMALL, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0x52, 0x6F, CHEST_ANIM_SHORT, MOD_NONE, GI_MAGIC_SMALL),
+        GET_ITEM(ITEM_MAGIC_LARGE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0x52, 0x6E, CHEST_ANIM_SHORT, MOD_NONE, GI_MAGIC_LARGE),
+        GET_ITEM(ITEM_WALLET_ADULT, OBJECT_GI_PURSE, GID_WALLET_ADULT, 0x5E, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_WALLET_ADULT),
+        GET_ITEM(ITEM_WALLET_GIANT, OBJECT_GI_PURSE, GID_WALLET_GIANT, 0x5F, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_WALLET_GIANT),
+        GET_ITEM(ITEM_WEIRD_EGG, OBJECT_GI_EGG, GID_EGG, 0x9A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_WEIRD_EGG),
+        GET_ITEM(ITEM_HEART, OBJECT_GI_HEART, GID_HEART, 0x55, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HEART),
+        GET_ITEM(ITEM_ARROWS_SMALL, OBJECT_GI_ARROW, GID_ARROWS_SMALL, 0xE6, 0x48, CHEST_ANIM_SHORT, MOD_NONE, GI_ARROWS_SMALL),
+        GET_ITEM(ITEM_ARROWS_MEDIUM, OBJECT_GI_ARROW, GID_ARROWS_MEDIUM, 0xE6, 0x49, CHEST_ANIM_SHORT, MOD_NONE, GI_ARROWS_MEDIUM),
+        GET_ITEM(ITEM_ARROWS_LARGE, OBJECT_GI_ARROW, GID_ARROWS_LARGE, 0xE6, 0x4A, CHEST_ANIM_SHORT, MOD_NONE, GI_ARROWS_LARGE),
+        GET_ITEM(ITEM_RUPEE_GREEN, OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0x6F, 0x00, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_GREEN),
+        GET_ITEM(ITEM_RUPEE_BLUE, OBJECT_GI_RUPY, GID_RUPEE_BLUE, 0xCC, 0x01, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_BLUE),
+        GET_ITEM(ITEM_RUPEE_RED, OBJECT_GI_RUPY, GID_RUPEE_RED, 0xF0, 0x02, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_RED),
+        GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HEART_CONTAINER_2),
+        GET_ITEM(ITEM_MILK, OBJECT_GI_MILK, GID_MILK, 0x98, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MILK),
+        GET_ITEM(ITEM_MASK_GORON, OBJECT_GI_GOLONMASK, GID_MASK_GORON, 0x14, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_GORON),
+        GET_ITEM(ITEM_MASK_ZORA, OBJECT_GI_ZORAMASK, GID_MASK_ZORA, 0x15, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_ZORA),
+        GET_ITEM(ITEM_MASK_GERUDO, OBJECT_GI_GERUDOMASK, GID_MASK_GERUDO, 0x16, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_MASK_GERUDO),
+        GET_ITEM(ITEM_BRACELET, OBJECT_GI_BRACELET, GID_BRACELET, 0x79, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BRACELET),
+        GET_ITEM(ITEM_RUPEE_PURPLE, OBJECT_GI_RUPY, GID_RUPEE_PURPLE, 0xF1, 0x14, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_PURPLE),
+        GET_ITEM(ITEM_RUPEE_GOLD, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0xF2, 0x13, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_GOLD),
+        GET_ITEM(ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD, GID_SWORD_BGS, 0x0C, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_SWORD_BGS),
+        GET_ITEM(ITEM_ARROW_FIRE, OBJECT_GI_M_ARROW, GID_ARROW_FIRE, 0x70, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_ARROW_FIRE),
+        GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x71, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_ARROW_ICE),
+        GET_ITEM(ITEM_ARROW_LIGHT, OBJECT_GI_M_ARROW, GID_ARROW_LIGHT, 0x72, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_ARROW_LIGHT),
+        GET_ITEM(ITEM_SKULL_TOKEN, OBJECT_GI_SUTARU, GID_SKULL_TOKEN, 0xB4, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_SKULL_TOKEN),
+        GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_GODDESS, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_DINS_FIRE),
+        GET_ITEM(ITEM_FARORES_WIND, OBJECT_GI_GODDESS, GID_FARORES_WIND, 0xAE, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_FARORES_WIND),
+        GET_ITEM(ITEM_NAYRUS_LOVE, OBJECT_GI_GODDESS, GID_NAYRUS_LOVE, 0xAF, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_NAYRUS_LOVE),
+        GET_ITEM(ITEM_BULLET_BAG_30, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BULLET_BAG_30),
+        GET_ITEM(ITEM_BULLET_BAG_40, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BULLET_BAG_40),
+        GET_ITEM(ITEM_STICKS_5, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, MOD_NONE, GI_STICKS_5),
+        GET_ITEM(ITEM_STICKS_10, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, MOD_NONE, GI_STICKS_10),
+        GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, MOD_NONE, GI_NUTS_5_2),
+        GET_ITEM(ITEM_NUTS_10, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, MOD_NONE, GI_NUTS_10),
+        GET_ITEM(ITEM_BOMB, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_1),
+        GET_ITEM(ITEM_BOMBS_10, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_10),
+        GET_ITEM(ITEM_BOMBS_20, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_20),
+        GET_ITEM(ITEM_BOMBS_30, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_30),
+        GET_ITEM(ITEM_SEEDS_30, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT, MOD_NONE, GI_SEEDS_30),
+        GET_ITEM(ITEM_BOMBCHUS_5, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBCHUS_5),
+        GET_ITEM(ITEM_BOMBCHUS_20, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBCHUS_20),
+        GET_ITEM(ITEM_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_FISH),
+        GET_ITEM(ITEM_BUG, OBJECT_GI_INSECT, GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BUGS),
+        GET_ITEM(ITEM_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BLUE_FIRE),
+        GET_ITEM(ITEM_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_POE),
+        GET_ITEM(ITEM_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BIG_POE),
+        GET_ITEM(ITEM_KEY_SMALL, OBJECT_GI_KEY, GID_KEY_SMALL, 0xF3, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_DOOR_KEY),
+        GET_ITEM(ITEM_RUPEE_GREEN, OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0xF4, 0x00, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_GREEN_LOSE),
+        GET_ITEM(ITEM_RUPEE_BLUE, OBJECT_GI_RUPY, GID_RUPEE_BLUE, 0xF5, 0x01, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_BLUE_LOSE),
+        GET_ITEM(ITEM_RUPEE_RED, OBJECT_GI_RUPY, GID_RUPEE_RED, 0xF6, 0x02, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_RED_LOSE),
+        GET_ITEM(ITEM_RUPEE_PURPLE, OBJECT_GI_RUPY, GID_RUPEE_PURPLE, 0xF7, 0x14, CHEST_ANIM_SHORT, MOD_NONE, GI_RUPEE_PURPLE_LOSE),
+        GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xFA, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_HEART_PIECE_WIN),
+        GET_ITEM(ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK, GID_STICK, 0x90, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_STICK_UPGRADE_20),
+        GET_ITEM(ITEM_STICK_UPGRADE_30, OBJECT_GI_STICK, GID_STICK, 0x91, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_STICK_UPGRADE_30),
+        GET_ITEM(ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_NUT_UPGRADE_30),
+        GET_ITEM(ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS, GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_NUT_UPGRADE_40),
+        GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BULLET_BAG_50),
+        GET_ITEM_NONE,
+        GET_ITEM_NONE,
+    };
+    ItemTableManager::Instance->AddItemTable(MOD_NONE);
+    for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
+        // The vanilla item table array started with ITEM_BOMBS_5,
+        // but the GetItemID enum started with GI_NONE. Then everywhere
+        // that table was accessed used `GetItemID - 1`. This allows the
+        // "first" item of the new map to start at 1, syncing it up with
+        // the GetItemID values and removing the need for the `- 1`
+        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i+1, getItemTable[i]);
+    }
+}
+
 extern "C" void OTRExtScanner() {
     auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
 
@@ -171,10 +318,13 @@ extern "C" void OTRExtScanner() {
 extern "C" void InitOTR() {
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
+#elif defined(__WIIU__)
+    Ship::WiiU::Init();
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
+    ItemTableManager::Instance = new ItemTableManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -187,11 +337,13 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
+    GameControlEditor::Init();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
     InitItemTracker();
     OTRExtScanner();
+    VanillaItemTable_Init();
 }
 
 extern "C" void DeinitOTR() {
@@ -231,13 +383,14 @@ extern "C" uint64_t GetPerfCounter() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
-    OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
+    OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
 }
 
 extern "C" void Graph_StartFrame() {
+#ifndef __WIIU__
     // Why -1?
-    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+    int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
+    OTRGlobals::Instance->context->SetLastScancode(-1);
 
     switch (dwScancode - 1) {
         case SDL_SCANCODE_F5: {
@@ -292,7 +445,15 @@ extern "C" void Graph_StartFrame() {
             break;
         }
     }
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+#endif
+    OTRGlobals::Instance->context->StartFrame();
+}
+
+void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+    for (const auto& m : mtx_replacements) {
+        gfx_run(Commands, m);
+        gfx_end_frame();
+    }
 }
 
 // C->C++ Bridge
@@ -333,12 +494,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+    OTRGlobals::Instance->context->SetTargetFps(fps);
 
     int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
+    RunCommands(commands, mtx_replacements);
 
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
@@ -351,29 +512,19 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
-   /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
-        OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;*/
+   /* if (OTRGlobals::Instance->context->lastScancode != -1)
+        OTRGlobals::Instance->context->lastScancode = -1;*/
 
 }
 
 float divisor_num = 0.0f;
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
-    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
+    OTRGlobals::Instance->context->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
-    return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
-}
-
-extern "C" int32_t OTRGetLastScancode()
-{
-    return OTRGlobals::Instance->context->GetWindow()->lastScancode;
-}
-
-extern "C" void OTRResetScancode()
-{
-    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+    return OTRGlobals::Instance->context->GetPixelDepth(x, y);
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion()
@@ -1185,7 +1336,7 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1316,15 +1467,15 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetCurrentWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
@@ -1356,33 +1507,33 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" bool AudioPlayer_Init(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Init();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Init();
     }
 
     return false;
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Buffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Buffered();
     }
 }
 
 extern "C" int AudioPlayer_GetDesiredBuffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->GetDesiredBuffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->GetDesiredBuffered();
     }
 }
 
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        OTRGlobals::Instance->context->GetAudioPlayer()->Play(buf, len);
     }
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
@@ -1401,14 +1552,6 @@ extern "C" void Hooks_ExecuteAudioInit() {
 extern "C" void* getN64WeirdFrame(s32 i) {
     char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
-}
-
-extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
-}
-
-extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
 }
 
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
@@ -1439,18 +1582,17 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
-    int price = 0;
-    switch (scrubTextId) {
-        case TEXT_SCRUB_POH:
-            price = 10;
-            break;
-        case TEXT_SCRUB_STICK_UPGRADE:
-        case TEXT_SCRUB_NUT_UPGRADE:
-            price = 40;
-            break;
-    }
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
+    u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
@@ -1474,24 +1616,54 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
     return hintText;
 }
 
-extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+    return giEntry;
 }
 
-extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
+    return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
+}
+
+extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    s16 getItemModIndex;
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(
+            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+        getItemModIndex = MOD_NONE;
+    } else {
+        getItemModIndex = MOD_RANDOMIZER;
+    }
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+}
+
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    s16 getItemModIndex;
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
+        getItemModIndex = MOD_NONE;
+    } else {
+        getItemModIndex = MOD_RANDOMIZER;
+    }
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
 extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
     return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
-         Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+         Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+    return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 
-extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
+    s16 giid;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        giid = player->getItemEntry.getItemId;
+    } else {
+        giid = player->getItemId;
+    }
     const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
@@ -1506,7 +1678,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             messageEntry =
-                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+                Randomizer_GetCustomGetItemMessage(GET_PLAYER(globalCtx));
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
@@ -1544,8 +1716,15 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_GetGanonHintText();
             }
-        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
-            messageEntry = Randomizer_GetScrubMessage(textId);
+        } else if (textId >= 0x9000 && textId <= 0x905F) {
+            messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
+        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
+                   textId == TEXT_HUGE_RUPEE)) {
+            messageEntry = Randomizer::GetRupeeMessage(textId);
+            // In rando, replace Navi's general overworld hints with rando-related gameplay tips
+        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+            messageEntry = Randomizer_GetNaviMessage();
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -1575,7 +1754,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =

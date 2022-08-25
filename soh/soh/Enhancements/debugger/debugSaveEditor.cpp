@@ -533,15 +533,18 @@ void DrawBGSItemFlag(uint8_t itemID) {
     ImGui::SameLine();
     int tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
-    ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &hasItem);
-    if (hasItem) {
-        gSaveContext.adultTradeItems |= (1 << tradeIndex);
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
-            INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
+    bool shouldHaveItem = hasItem;
+    ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
+    if (hasItem != shouldHaveItem) {
+        if (shouldHaveItem) {
+            gSaveContext.adultTradeItems |= (1 << tradeIndex);
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
+                INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
+            }
+        } else {
+            gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
+            Inventory_ReplaceItem(gGlobalCtx, itemID, Randomizer_GetNextAdultTradeItem());
         }
-    } else {
-        gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
-        Inventory_ReplaceItem(gGlobalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
     }
 }
 
@@ -586,6 +589,9 @@ void DrawInventoryTab() {
             if (ImGui::BeginPopup(itemPopupPicker)) {
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    if (selectedIndex == SLOT_TRADE_ADULT) {
+                        gSaveContext.adultTradeItems = 0;
+                    }
                     ImGui::CloseCurrentPopup();
                 }
                 SetLastItemHoverText("None");
@@ -616,17 +622,13 @@ void DrawInventoryTab() {
                     if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
-                        // Set adult trade item flag if you're playing adult trade shuffle in rando
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
                         if (gSaveContext.n64ddFlag &&
-                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
-                            selectedIndex == SLOT_TRADE_ADULT) {
-                                if (slotEntry.id == ITEM_NONE) {
-                                    gSaveContext.adultTradeItems = 0;
-                                } else if (slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
-                                    uint32_t tradeID = slotEntry.id - ITEM_POCKET_EGG;
-                                    gSaveContext.adultTradeItems |= tradeID;
-                                }
-                            }
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+                            selectedIndex == SLOT_TRADE_ADULT &&
+                            slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                        }
                         ImGui::CloseCurrentPopup();
                     }
                     SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
@@ -909,15 +911,19 @@ void DrawFlagsTab() {
             setMask <<= 1;
         }
 
-        static bool keepGsCountUpdated = true;
-        ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
-        InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags");
-        int32_t gsCount = 0;
-        if (keepGsCountUpdated) {
-            for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
-                gsCount += std::popcount(static_cast<uint32_t>(gSaveContext.gsFlags[gsFlagIndex]));
+        // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
+        // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
+        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS))) {
+            static bool keepGsCountUpdated = true;
+            ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
+            InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
+            int32_t gsCount = 0;
+            if (keepGsCountUpdated) {
+                for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
+                    gsCount += std::popcount(static_cast<uint32_t>(gSaveContext.gsFlags[gsFlagIndex]));
+                }
+                gSaveContext.inventory.gsTokens = gsCount;
             }
-            gSaveContext.inventory.gsTokens = gsCount;
         }
     });
 
@@ -985,7 +991,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("A");
             InsertHelpHoverText("First-time overworld entrance cs related");
-            DrawFlagArray16("eci1", gSaveContext.eventChkInf[10]);
+            DrawFlagArray16("eci10", gSaveContext.eventChkInf[10]);
         });
 
         DrawGroupWithBorder([&]() {

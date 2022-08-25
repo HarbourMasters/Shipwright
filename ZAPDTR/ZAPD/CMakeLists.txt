@@ -465,6 +465,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
                PNG::PNG
                Threads::Threads
        )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "ZAPDUtils;"
+        "libultraship;"
+        PNG::PNG
+    )
 else()
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
 	find_package(Threads REQUIRED)
@@ -478,7 +484,7 @@ else()
 	)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 add_library(pathconf OBJECT pathconf.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
 else()

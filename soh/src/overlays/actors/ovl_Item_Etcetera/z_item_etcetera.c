@@ -21,6 +21,7 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, GlobalContext* globalCtx);
 void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -132,11 +133,11 @@ void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
         }
         Actor_Kill(&this->actor);
     } else {
-        if (gSaveContext.n64ddFlag) {
-            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
-            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
         }
     }
 }
@@ -155,11 +156,11 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
     } else {
         if (0) {} // Necessary to match
 
-        if (gSaveContext.n64ddFlag) {
-            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
-            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
         }
 
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
@@ -224,18 +225,15 @@ void ItemEtcetera_Update(Actor* thisx, GlobalContext* globalCtx) {
 
 void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    if (globalCtx->actorCtx.unk_03 != 0) {
+    if (globalCtx->actorCtx.lensActive) {
         func_8002EBCC(&this->actor, globalCtx, 0);
         func_8002ED80(&this->actor, globalCtx, 0);
 
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
-            s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
-            if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-                (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-            }
-            if (randoGetItemId != GI_NONE) {
-                GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+            if (randoGetItem.itemId != ITEM_NONE) {
+                GetItemEntry_Draw(globalCtx, randoGetItem);
                 return;
             }
         }
@@ -249,20 +247,20 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 type = this->actor.params & 0xFF;
 
     if (gSaveContext.n64ddFlag) {
-        s32 randoGetItemId = GI_NONE;
+        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
-            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
-            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
-        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
-            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
-        }
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
 
-        if (randoGetItemId != GI_NONE) {
-            this->giDrawId = Randomizer_GetItemModelFromId(randoGetItemId);
+        if (randoGetItem.itemId != RG_NONE) {
+            func_8002EBCC(&this->actor, globalCtx, 0);
+            func_8002ED80(&this->actor, globalCtx, 0);
+            GetItemEntry_Draw(globalCtx, randoGetItem);
+            return;
         }
     }
 

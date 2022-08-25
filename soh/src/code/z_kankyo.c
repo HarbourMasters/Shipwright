@@ -4,7 +4,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -37,8 +36,8 @@ typedef struct {
 } LightningBolt; // size = 0x20
 
 typedef struct {
-    /* 0x00 */ s32 unk0;
-    /* 0x04 */ s32 unk1;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
 } Struct_8011FAF0; // size = 0x8
 
 Struct_8011FAF0 D_8011FAF0[] = {
@@ -216,7 +215,7 @@ u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
 s32 func_8006F0A0(s32 a0) {
-    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk0) + D_8011FAF0[a0 >> 15 & 7].unk1;
+    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 
     return ret;
 }
@@ -1460,8 +1459,6 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_RING,    LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
-    static u32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1518,7 +1515,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
-            FrameInterpolation_RecordOpenChild("Lens Flare", epoch + i * 25);
+            FrameInterpolation_RecordOpenChild("Lens Flare", i);
 
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
@@ -1643,8 +1640,6 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Vec3f unused = { 0.0f, 0.0f, 0.0f };
     Vec3f windDirection = { 0.0f, 0.0f, 0.0f };
     Player* player = GET_PLAYER(globalCtx);
-    static u32 epoch = 0;
-    epoch++;
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
         OPEN_DISPS(gfxCtx);
@@ -1674,7 +1669,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-            FrameInterpolation_RecordOpenChild("Rain Drop", epoch + i * 25);
+            FrameInterpolation_RecordOpenChild("Rain Drop", i);
 
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
@@ -1710,7 +1705,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-                FrameInterpolation_RecordOpenChild("Droplet Ring", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Droplet Ring", i);
                 
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
@@ -1926,13 +1921,11 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     s32 pad[2];
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
-    static u32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
-        FrameInterpolation_RecordOpenChild("Lightning Bolt", epoch + i * 25);
+        FrameInterpolation_RecordOpenChild("Lightning Bolt", i);
 
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:
@@ -2049,21 +2042,6 @@ void Environment_PlaySceneSequence(GlobalContext* globalCtx) {
     Audio_SetEnvReverb(globalCtx->roomCtx.curRoom.echo);
 }
 
-bool HatchPocketEgg(GlobalContext* globalCtx) {
-    if (!gSaveContext.n64ddFlag) {
-        return Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
-    }
-
-    if (!(gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(ITEM_POCKET_EGG))) { 
-         return 0;
-    }
-
-    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
-    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
-    Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
-    return 1;
-}
-
 // updates bgm/sfx and other things as the day progresses
 void func_80075B44(GlobalContext* globalCtx) {
     switch (globalCtx->envCtx.unk_E0) {
@@ -2117,7 +2095,7 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     HatchPocketEgg(globalCtx)) &&
+                     Inventory_HatchPocketCucco(globalCtx)) &&
                     globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }
@@ -2470,7 +2448,7 @@ void Environment_AdjustLights(GlobalContext* globalCtx, f32 arg1, f32 arg2, f32 
     f32 temp;
     s32 i;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5 && func_800C0CB8(globalCtx)) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5 && func_800C0CB8(globalCtx)) {
         arg1 = CLAMP_MIN(arg1, 0.0f);
         arg1 = CLAMP_MAX(arg1, 1.0f);
 
