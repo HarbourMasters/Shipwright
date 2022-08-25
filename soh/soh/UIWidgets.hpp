@@ -34,6 +34,7 @@ namespace UIWidgets {
     void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false);
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton = false);
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
 }
 

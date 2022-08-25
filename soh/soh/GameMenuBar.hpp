@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 namespace GameMenuBar {
+    void SetupHooks();
     void Draw();
 }
 

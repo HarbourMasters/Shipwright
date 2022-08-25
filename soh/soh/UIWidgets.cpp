@@ -248,6 +248,75 @@ namespace UIWidgets {
         }
     }
 
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
+        float val = CVar_GetFloat(cvarName, defaultValue);
+
+        if (!isPercentage)
+            ImGui::Text(text, val);
+        else
+            ImGui::Text(text, static_cast<int>(100 * val));
+
+        Spacer(0);
+
+        if(PlusMinusButton) {
+            std::string MinusBTNName = " - ##";
+            MinusBTNName += cvarName;
+            if (ImGui::Button(MinusBTNName.c_str())) {
+                if (!isPercentage)
+                    val -= 0.1f;
+                else
+                    val -= 0.01f;
+                CVar_SetFloat(cvarName, val);
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+        }
+        if (PlusMinusButton) {
+    #ifdef __WIIU__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+    #else
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+    #endif
+        }
+        if (ImGui::SliderFloat(id, &val, min, max, format))
+        {
+            CVar_SetFloat(cvarName, val);
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+        if (PlusMinusButton) {
+            ImGui::PopItemWidth();
+        }
+        if(PlusMinusButton) {
+            std::string PlusBTNName = " + ##";
+            PlusBTNName += cvarName;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            if (ImGui::Button(PlusBTNName.c_str())) {
+                if (!isPercentage)
+                    val += 0.1f;
+                else
+                    val += 0.01f;
+                CVar_SetFloat(cvarName, val);
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+        }
+
+        if (val < min)
+        {
+            val = min;
+            CVar_SetFloat(cvarName, val);
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+
+        if (val > max)
+        {
+            val = max;
+            CVar_SetFloat(cvarName, val);
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+    }
+
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom) {
         if (padTop)
             Spacer(0);

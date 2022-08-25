@@ -87,17 +87,29 @@ namespace SohImGui {
 
     void DrawMainMenuAndCalculateGameSize(void);
     void RegisterMenuDrawMethod(std::function<void(void)> drawMethod);
+    void AddSetupHooksDelegate(std::function<void(void)> setupHooksMethod);
 
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
+    void DrawSettings();
 
     Backend WindowBackend();
     float WindowRefreshRate();
 
+    std::pair<const char*, const char*>* GetAvailableRenderingBackends();
+    std::pair<const char*, const char*> GetCurrentRenderingBackend();
+    void SetCurrentRenderingBackend(uint8_t index, std::pair<const char*, const char*>);
+
+    const char** GetSupportedTextureFilters();
+
+    void SetResolutionMultiplier(float multiplier);
+    void SetMSAALevel(uint32_t value);
+
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
     void EnableWindow(const std::string& name, bool isEnabled = true);
 
+    void ToggleInputEditorWindow(bool isOpen = true);
     void ToggleStatisticsWindow(bool isOpen = true);
 
     void ToggleConsoleWindow(bool isOpen = true);

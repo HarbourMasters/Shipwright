@@ -321,6 +321,7 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     Ship::WiiU::Init();
 #endif
+    SohImGui::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     SohImGui::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();

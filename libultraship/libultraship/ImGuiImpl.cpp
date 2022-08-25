@@ -76,6 +76,8 @@ bool oldCursorState = true;
     ImGui::PopStyleColor(); \
     PaddedSeparator(false, true);
 
+#define BindButton(btn, status) ImGui::Image(GetTextureByID(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
+
 #define TOGGLE_BTN ImGuiKey_F1
 #define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
 #define HOOK(b) if(b) needs_save = true;
@@ -83,14 +85,6 @@ OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
-
-enum SeqPlayers {
-    /* 0 */ SEQ_BGM_MAIN,
-    /* 1 */ SEQ_FANFARE,
-    /* 2 */ SEQ_SFX,
-    /* 3 */ SEQ_BGM_SUB,
-    /* 4 */ SEQ_MAX
-};
 
 namespace SohImGui {
 
@@ -102,6 +96,7 @@ namespace SohImGui {
     static ImVector<ImRect> s_GroupPanelLabelStack;
 
     std::function<void(void)> clientDrawMenu;
+    std::function<void(void)> clientSetupHooks;
 
 
     bool p_open = false;
@@ -134,15 +129,8 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
-    void UpdateAudio() {
-        Audio_SetGameVolume(SEQ_BGM_MAIN, CVar_GetFloat("gMainMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_BGM_SUB, CVar_GetFloat("gSubMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_FANFARE, CVar_GetFloat("gSFXMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
-    }
-
     void InitSettings() {
-        Ship::RegisterHook<Ship::AudioInit>(UpdateAudio);
+        clientSetupHooks();
         Ship::RegisterHook<Ship::GfxInit>([] {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
             if (CVar_GetS32("gConsoleEnabled", 0)) {
@@ -156,8 +144,6 @@ namespace SohImGui {
             } else {
                 controller->Close();
             }
-
-        	UpdateAudio();
         });
     }
 
@@ -532,21 +518,6 @@ namespace SohImGui {
             needs_save = false;
         }
         ImGuiProcessEvent(event);
-    }
-
-#define BindButton(btn, status) ImGui::Image(GetTextureByID(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
-
-    void BindAudioSlider(const char* name, const char* key, float defaultValue, SeqPlayers playerId)
-    {
-        float value = CVar_GetFloat(key, defaultValue);
-
-        ImGui::Text(name, static_cast<int>(100 * value));
-        if (ImGui::SliderFloat((std::string("##") + key).c_str(), &value, 0.0f, 1.0f, "")) {
-            const float volume = floorf(value * 100) / 100;
-            CVar_SetFloat(key, volume);
-            needs_save = true;
-            Audio_SetGameVolume(playerId, volume);
-        }
     }
 
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
@@ -1059,154 +1030,6 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            if (ImGui::BeginMenu("Settings"))
-            {
-                if (ImGui::BeginMenu("Audio")) {
-                    EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
-                    InsertPadding();
-                    BindAudioSlider("Main Music Volume: %d %%", "gMainMusicVolume", 1.0f, SEQ_BGM_MAIN);
-                    InsertPadding();
-                    BindAudioSlider("Sub Music Volume: %d %%", "gSubMusicVolume", 1.0f, SEQ_BGM_SUB);
-                    InsertPadding();
-                    BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
-                    InsertPadding();
-                    BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
-
-                    ImGui::EndMenu();
-                }
-
-                InsertPadding();
-
-                if (ImGui::BeginMenu("Controller")) {
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
-                    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                    if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVar_GetS32("gControllerConfigurationEnabled", 0)).c_str()))
-                    {
-                        bool currentValue = CVar_GetS32("gControllerConfigurationEnabled", 0);
-                        CVar_SetS32("gControllerConfigurationEnabled", !currentValue);
-                        needs_save = true;
-                        if (CVar_GetS32("gControllerConfigurationEnabled", 0)) {
-                            controller->Open();
-                        } else {
-                            controller->Close();
-                        }
-                    }
-                    ImGui::PopStyleColor(1);
-                    ImGui::PopStyleVar(3);
-                #ifndef __SWITCH__
-                    PaddedEnhancementCheckbox("Use Controller Navigation", "gControlNav", true, false);
-                    Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-                #endif
-                    PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
-                    Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                    InsertPadding();
-                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
-                    EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                    Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
-                    ImGui::PopItemWidth();
-
-                    ImGui::EndMenu();
-                }
-
-                InsertPadding();
-
-                if (ImGui::BeginMenu("Graphics")) {
-                #ifndef __APPLE__
-                    EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true, true);
-                    Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-                    gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
-                #endif
-                #ifndef __WIIU__
-                    PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, false, true, false);
-                    Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
-                    gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
-                #endif
-
-                    if (impl.backend == Backend::DX11)
-                    {
-                        const char* cvar = "gExtraLatencyThreshold";
-                        int val = CVar_GetS32(cvar, 80);
-                        val = MAX(MIN(val, 360), 0);
-                        int fps = val;
-
-                        InsertPadding();
-
-                        if (fps == 0)
-                        {
-                            ImGui::Text("Jitter fix: Off");
-                        }
-                        else
-                        {
-                            ImGui::Text("Jitter fix: >= %d FPS", fps);
-                        }
-
-                        std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
-                        std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
-                        if (ImGui::Button(MinusBTNELT.c_str())) {
-                            val--;
-                            CVar_SetS32(cvar, val);
-                            needs_save = true;
-                        }
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-                        if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
-                        {
-                            CVar_SetS32(cvar, val);
-                            needs_save = true;
-                        }
-                        ImGui::PopItemWidth();
-                        Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
-
-                        ImGui::SameLine();
-                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                        if (ImGui::Button(PlusBTNELT.c_str())) {
-                            val++;
-                            CVar_SetS32(cvar, val);
-                            needs_save = true;
-                        }
-
-                        InsertPadding();
-                    }
-
-                    ImGui::Text("Renderer API (Needs reload)");
-                    if (ImGui::BeginCombo("##RApi", backends[lastBackendID].second)) {
-                        for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
-                            if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
-                                pConf->setString("Window.GfxBackend", backends[i].first);
-                                lastBackendID = i;
-                            }
-                        }
-                        ImGui::EndCombo();
-                    }
-
-                    EXPERIMENTAL();
-
-                    ImGui::Text("Texture Filter (Needs reload)");
-                    EnhancementCombobox("gTextureFilter", filters, 3, 0);
-
-                    InsertPadding();
-
-                    overlay->DrawSettings();
-
-                    ImGui::EndMenu();
-                }
-
-                InsertPadding();
-
-                if (ImGui::BeginMenu("Languages")) {
-                    EnhancementRadioButton("English", "gLanguages", 0);
-                    EnhancementRadioButton("German", "gLanguages", 1);
-                    EnhancementRadioButton("French", "gLanguages", 2);
-                    ImGui::EndMenu();
-                }
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
             clientDrawMenu();
 
             ImGui::PopStyleVar(1);
@@ -1299,6 +1122,10 @@ namespace SohImGui {
 
     void RegisterMenuDrawMethod(std::function<void(void)> drawMethod) {
         clientDrawMenu = drawMethod;
+    }
+
+    void AddSetupHooksDelegate(std::function<void(void)> setupHooksMethod) {
+        clientSetupHooks = setupHooksMethod;
     }
 
     void DrawFramebufferAndGameInput(void) {
@@ -1395,12 +1222,41 @@ namespace SohImGui {
         }
     }
 
+    void DrawSettings() {
+        overlay->DrawSettings();
+    }
+
     Backend WindowBackend() {
         return impl.backend;
     }
 
     float WindowRefreshRate() {
         return gfx_get_detected_hz();
+    }
+
+    std::pair<const char*, const char*>* GetAvailableRenderingBackends() {
+        return backends;
+    }
+
+    std::pair<const char*, const char*> GetCurrentRenderingBackend() {
+        return backends[lastBackendID];
+    }
+
+    void SetCurrentRenderingBackend(uint8_t index, std::pair<const char*, const char*> backend) {
+        Window::GetInstance()->GetConfig()->setString("Window.GfxBackend", backend.first);
+        lastBackendID = index;
+    }
+
+    const char** GetSupportedTextureFilters() {
+        return filters;
+    }
+
+    void SetResolutionMultiplier(float multiplier) {
+        gfx_current_dimensions.internal_mul = multiplier;
+    }
+
+    void SetMSAALevel(uint32_t value) {
+        gfx_msaa_level = value;
     }
 
     void BindCmd(const std::string& cmd, CommandEntry entry) {
@@ -1427,6 +1283,13 @@ namespace SohImGui {
 
     void EnableWindow(const std::string& name, bool isEnabled) {
         customWindows[name].enabled = isEnabled;
+    }
+
+    void ToggleInputEditorWindow(bool isOpen) {
+        if (isOpen)
+            controller->Open();
+        else
+            controller->Close();
     }
 
     void ToggleStatisticsWindow(bool isOpen) {
