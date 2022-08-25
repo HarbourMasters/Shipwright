@@ -9,6 +9,7 @@
 #define UIWidgets_hpp
 
 #include <string>
+#include <vector>
 #include <stdint.h>
 #include <ImGui/imgui.h>
 

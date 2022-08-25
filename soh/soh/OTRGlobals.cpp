@@ -1,4 +1,4 @@
-#include "OTRGlobals.h"
+﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -52,9 +52,9 @@
 #endif
 
 #ifdef __SWITCH__
-#include "SwitchImpl.h"
+#include <libultraship/SwitchImpl.h>
 #elif defined(__WIIU__)
-#include "WiiUImpl.h"
+#include <libultraship/WiiUImpl.h>
 #endif
 
 #include <libultraship/Audio.h>

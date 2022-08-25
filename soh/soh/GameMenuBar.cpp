@@ -18,6 +18,10 @@
 #include <ultra64/pi.h>
 #include <ultra64/sptask.h>
 
+#ifdef __SWITCH__
+#include <libultraship/SwitchImpl.h>
+#endif
+
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
 
@@ -1128,14 +1132,14 @@ namespace GameMenuBar {
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
-            int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
+            int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
             ImGui::Text("Switch performance mode");
             if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
-                for (int sId = 0; sId <= SwitchProfiles::POWERSAVINGM3; sId++) {
+                for (int sId = 0; sId <= Ship::SwitchProfiles::POWERSAVINGM3; sId++) {
                     if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
                         SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
                         CVar_SetS32("gSwitchPerfMode", sId);
-                        Switch::ApplyOverclock();
+                        Ship::Switch::ApplyOverclock();
                         SohImGui::RequestCvarSaveOnNextTick();
                     }
 
