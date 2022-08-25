@@ -389,4 +389,20 @@ namespace Ship {
 			Commands[command] = entry;
 		}
 	}
+
+	std::string Console::GetCurrentChannel() {
+		return currentChannel;
+	}
+
+	bool Console::IsOpened() {
+		return opened;
+	}
+
+	void Console::Close() {
+		opened = false;
+	}
+
+	void Console::Open() {
+		opened = true;
+	}
 }

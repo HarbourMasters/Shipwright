@@ -189,7 +189,7 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[2];
+    u16 randomizerInf[4];
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 isyounglinkfountain;//TODO change to camel case

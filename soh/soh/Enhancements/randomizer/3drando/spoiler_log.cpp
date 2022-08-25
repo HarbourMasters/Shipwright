@@ -663,15 +663,24 @@ static void WriteHints(int language) {
 static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
+        std::string placedItemName;
 
         switch (language) {
-            case 0:
-            default:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-                break;
-            case 2:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().french;
-                break;
+          case 0:
+          default:
+            location->GetPlacedItemName().english;
+            break;
+          case 2:
+            location->GetPlacedItemName().french;
+            break;
+        }
+
+        // Eventually check for other things here like fake name
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+          jsonData["locations"][location->GetName()]["item"] = placedItemName;
+          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else {
+          jsonData["locations"][location->GetName()] = placedItemName;
         }
     }
 }
