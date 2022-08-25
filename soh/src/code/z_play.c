@@ -282,6 +282,9 @@ void Gameplay_Init(GameState* thisx) {
         for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
             if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
                 break;
+            } 
+            else if (gSaveContext.cutsceneIndex == 32768) {
+                break;
             }
 
             else if (gSaveContext.isfirstindex == 0) {
@@ -346,8 +349,8 @@ void Gameplay_Init(GameState* thisx) {
                     break;
                 }
 
-                
-            }
+
+            } 
 
             else if (i == 249) {
                 break;

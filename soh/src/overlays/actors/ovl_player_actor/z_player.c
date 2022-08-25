@@ -2954,6 +2954,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                         (gSaveContext.magic >= sMagicSpellCosts[temp]))) {
                     this->itemActionParam = actionParam;
                     this->unk_6AD = 4;
+
                 }
                 else {
                     func_80078884(NA_SE_SY_ERROR);
