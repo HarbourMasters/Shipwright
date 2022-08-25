@@ -605,7 +605,11 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                        if (dungeons[j].id == SCENE_GANON) {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GANONTIKA, DrawDungeonItem));
+                        } else {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                        }
                         break;
                     case ITEM_KEY_BOSS:
                         dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
