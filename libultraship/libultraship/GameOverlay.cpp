@@ -167,7 +167,7 @@ namespace Ship {
 				if (ImGui::Selectable(name.c_str(), name == this->CurrentFont)) {
 					this->CurrentFont = name;
 					CVar_SetString("gOverlayFont", ImStrdup(name.c_str()));
-					SohImGui::needs_save = true;
+                    SohImGui::RequestCvarSaveOnNextTick();
 				}
 
 			}

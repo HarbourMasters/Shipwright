@@ -28,8 +28,6 @@
     ImGui::PopStyleColor(); \
     UIWidgets::PaddedSeparator(false, true);
 
-#define BindButton(btn, status) ImGui::Image(GetTextureByID(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
-
 bool isBetaQuestEnabled = false;
 
 extern "C" {

@@ -7,11 +7,12 @@
 
 #include "UIWidgets.hpp"
 
-#include <ImGui/imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 #include <libultraship/ImGuiImpl.h>
 #include <libultraship/Cvar.h>
+
+#include <ultra64/types.h>
 
 namespace UIWidgets {
 
@@ -47,6 +48,41 @@ namespace UIWidgets {
 
     char* WrappedText(const std::string& text, unsigned int charactersPerLine) {
         return WrappedText(text.c_str(), charactersPerLine);
+    }
+
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha)
+    {
+        Color_RGBA8 defaultColors;
+        defaultColors.r = default_colors.x;
+        defaultColors.g = default_colors.y;
+        defaultColors.b = default_colors.z;
+        defaultColors.a = default_colors.w;
+
+        Color_RGBA8 cvarColor = CVar_GetRGBA(cvarname, defaultColors);
+
+        ColorArray.x = cvarColor.r / 255.0;
+        ColorArray.y = cvarColor.g / 255.0;
+        ColorArray.z = cvarColor.b / 255.0;
+        ColorArray.w = cvarColor.a / 255.0;
+    }
+
+    void SetLastItemHoverText(const std::string& text) {
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
+    }
+
+    // Adds a "?" next to the previous ImGui item with a custom tooltip
+    void InsertHelpHoverText(const std::string& text) {
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
     }
 
 
@@ -167,6 +203,19 @@ namespace UIWidgets {
         EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic);
 
         if (padBottom) Spacer(0);
+    }
+
+    void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
+        if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
+            for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
+                if (ImGui::Selectable(items[settingIndex].c_str())) {
+                    CVar_SetS32(cvarName, settingIndex);
+                    SohImGui::RequestCvarSaveOnNextTick();
+
+                }
+            }
+            ImGui::EndCombo();
+        }
     }
 
     void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
@@ -349,5 +398,126 @@ namespace UIWidgets {
         }
         ImGui::SameLine();
         ImGui::Text("%s", text);
+    }
+
+    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Reset";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Reset";
+        if (ImGui::Button(MakeInvisible.c_str())) {
+            colors->x = defaultcolors.x;
+            colors->y = defaultcolors.y;
+            colors->z = defaultcolors.z;
+            if (has_alpha) { colors->w = defaultcolors.w; };
+
+            Color_RGBA8 colorsRGBA;
+            colorsRGBA.r = defaultcolors.x;
+            colorsRGBA.g = defaultcolors.y;
+            colorsRGBA.b = defaultcolors.z;
+            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
+
+            CVar_SetRGBA(cvarName, colorsRGBA);
+            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+        Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
+    }
+
+    void RandomizeColor(const char* cvarName, ImVec4* colors) {
+        Color_RGBA8 NewColors = {0,0,0,255};
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Random";
+        std::string FullName = "Random";
+        FullName += MakeInvisible;
+        if (ImGui::Button(FullName.c_str())) {
+            s16 RND_R = rand() % (255 - 0);
+            s16 RND_G = rand() % (255 - 0);
+            s16 RND_B = rand() % (255 - 0);
+            colors->x = (float)RND_R / 255;
+            colors->y = (float)RND_G / 255;
+            colors->z = (float)RND_B / 255;
+            NewColors.r = fmin(fmax(colors->x, 0), 255);
+            NewColors.g = fmin(fmax(colors->y, 0), 255);
+            NewColors.b = fmin(fmax(colors->z, 0), 255);
+            CVar_SetRGBA(cvarName, NewColors);
+            CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+        Tooltip("Chooses a random color\nOverwrites previously chosen color");
+    }
+
+    void RainbowColor(const char* cvarName, ImVec4* colors) {
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Rainbow";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Rainbow";
+
+        EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
+        Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
+    }
+
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
+        LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
+
+        ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+
+        if (!TitleSameLine) {
+            ImGui::Text("%s", text);
+            flags = ImGuiColorEditFlags_NoLabel;
+        }
+
+        ImGui::PushID(cvarName);
+
+        if (!has_alpha) {
+            if (ImGui::ColorEdit3(text, (float*)&ColorRGBA, flags))
+            {
+                Color_RGBA8 colors;
+                colors.r = ColorRGBA.x * 255.0;
+                colors.g = ColorRGBA.y * 255.0;
+                colors.b = ColorRGBA.z * 255.0;
+                colors.a = ColorRGBA.w * 255.0;
+
+                CVar_SetRGBA(cvarName, colors);
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+        }
+        else
+        {
+            if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags))
+            {
+                Color_RGBA8 colors;
+                colors.r = ColorRGBA.x / 255;
+                colors.g = ColorRGBA.y / 255;
+                colors.b = ColorRGBA.z / 255;
+                colors.a = ColorRGBA.w / 255;
+
+                CVar_SetRGBA(cvarName, colors);
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+        }
+
+        ImGui::PopID();
+
+        //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
+        ImGui::PushItemWidth(-FLT_MIN);
+        ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
+        ImGui::SameLine();
+        RandomizeColor(cvarName, &ColorRGBA);
+        if (allow_rainbow) {
+            if (ImGui::GetContentRegionAvail().x > 185) {
+                ImGui::SameLine();
+            }
+            RainbowColor(cvarName, &ColorRGBA);
+        }
+        ImGui::NewLine();
+        ImGui::PopItemWidth();
     }
 }
