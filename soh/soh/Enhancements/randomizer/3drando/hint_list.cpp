@@ -1865,50 +1865,50 @@ void HintTable_Init() {
 
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the evil one's key will&be given from the start.",
-                /*french*/"Aussi, la clé du Malin sera&possession même du héros.",
+                     Text{"And the %revil one%w's key will&be given %rfrom the start%w.",
+                /*french*/"Aussi, la clé du %rMalin%w sera&possession %rmême du héros%w.",
                /*spanish*/"Y obtendrás la llave del #señor del mal# desde el #inicio#."},
     });
 
     hintTable[GANON_BK_VANILLA_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the evil one's key will&be kept in a big chest&inside its tower.",
-                /*french*/"Aussi, la clé du #Malin# sera&encoffrée #dans sa tour#.",
+                     Text{"And the %revil one%w's key will&be kept in a big chest&%rinside its tower%w.",
+                /*french*/"Aussi, la clé du %rMalin%w sera&encoffrée %rdans sa tour%w.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en un gran cofre de #su torre#."},
     });
 
     hintTable[GANON_BK_OWN_DUNGEON_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the evil one's key will&be hidden somewhere inside&its castle.",
-                /*french*/"Aussi, la clé du #Malin# sera&cachée #dans son vaste château#.",
+                     Text{"And the %revil one%w's key will&be hidden somewhere %rinside&its castle%w.",
+                /*french*/"Aussi, la clé du %rMalin%w sera&cachée %rdans son vaste château%w.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en #algún lugar de su castillo#."},
     });
 
     hintTable[GANON_BK_OVERWORLD_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be hidden #outside of dungeons# in Hyrule.",
-                /*french*/"Aussi, la clé du #Malin# se&trouve #hors des donjons# d'Hyrule.",
+                     Text{"And the %revil one%w's key will&be hidden %routside of&dungeons%w in Hyrule.",
+                /*french*/"Aussi, la clé du %rMalin%w se&trouve %rhors des donjons%w d'Hyrule.",
                /*spanish*/"Y la llave del #señor del mal# aguardará #fuera de las mazmorras# de Hyrule."},
     });
 
     hintTable[GANON_BK_ANY_DUNGEON_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be hidden #inside a dungeon# in Hyrule.",
-                /*french*/"Aussi, la clé du #Malin# se&trouve #dans un donjon# d'Hyrule.",
+                     Text{"And the %revil one%w's key will&be hidden %rinside a&dungeon%w in Hyrule.",
+                /*french*/"Aussi, la clé du %rMalin%w se&trouve %rdans un donjon%w d'Hyrule.",
                /*spanish*/"Y la llave del #señor del mal# aguardará #en una mazmorra# de Hyrule."},
     });
 
     hintTable[GANON_BK_ANYWHERE_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be hidden somewhere #in Hyrule#.",
-                /*french*/"Aussi, la clé du #Malin# se&trouve quelque part #dans Hyrule#.",
+                     Text{"And the %revil one%w's key will&be hidden somewhere&%rin Hyrule%w.",
+                /*french*/"Aussi, la clé du %rMalin%w se&trouve quelque part %rdans Hyrule%w.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en #cualquier lugar de Hyrule#."},
     });
 
     hintTable[GANON_BK_TRIFORCE_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be given to the Hero once the #Triforce# is completed.",
-                /*french*/"Aussi, la clé du #Malin# se&révèlera une fois la #Triforce#&assemblée.",
+                     Text{"And the %revil one%w's key will&be given to the Hero once&the %rTriforce%w is completed.",
+                /*french*/"Aussi, la clé du %rMalin%w se&révèlera une fois la %rTriforce%w&assemblée.",
                /*spanish*/"Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#."},
     });
 

@@ -17,10 +17,13 @@ s32 func_80AFB748(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB768(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx);
+void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx);
+void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx);
 
 s32 textId = 0xB4;
 s32 giveItemId = ITEM_SKULL_TOKEN;
 s32 getItemId;
+GetItemEntry getItem;
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -97,31 +100,26 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
+
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                    if (getItemId == GI_ICE_TRAP) {
-                        player->getItemId = GI_ICE_TRAP;
-                        player->pendingIceTrap = true;
-                        textId = 0xF8;
-                    } else {
-                        textId = sGetItemTable[getItemId - 1].textId;
-                        giveItemId = sGetItemTable[getItemId - 1].itemId;
-                        Item_Give(globalCtx, giveItemId);
-                    }
-                    player->getItemId = getItemId;
+                    Randomizer_UpdateSkullReward(this, globalCtx);
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
-                if ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != GI_ICE_TRAP) {
+                if ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != RG_ICE_TRAP) {
                     player->actor.freezeTimer = 20;
                 }
+
                 Message_StartTextbox(globalCtx, textId, NULL);
 
-                if (gSaveContext.n64ddFlag) {
-                    Audio_PlayFanfare_Rando(getItemId);
+                if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
+                    Randomizer_GiveSkullReward(this, globalCtx);
+                    Audio_PlayFanfare_Rando(getItem);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
+
+                player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                 this->actionFunc = func_80AFB950;
             } else {
                 Collider_UpdateCylinder(&this->actor, &this->collider);
@@ -134,33 +132,27 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
-
     Math_SmoothStepToF(&this->actor.scale.x, 0.25f, 0.4f, 1.0f, 0.0f);
     Actor_SetScale(&this->actor, this->actor.scale.x);
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (getItemId == GI_ICE_TRAP) {
-                player->getItemId = GI_ICE_TRAP;
-                player->pendingIceTrap = true;
-                textId = 0xF8;
-            } else {
-                textId = sGetItemTable[getItemId - 1].textId;
-                giveItemId = sGetItemTable[getItemId - 1].itemId;
-                Item_Give(globalCtx, giveItemId);
-            }
-            player->getItemId = getItemId;
+            Randomizer_UpdateSkullReward(this, globalCtx);
         } else {
             Item_Give(globalCtx, giveItemId);
         }
+
         Message_StartTextbox(globalCtx, textId, NULL);
-        if (gSaveContext.n64ddFlag) {
-            Audio_PlayFanfare_Rando(getItemId);
+
+        if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
+            Randomizer_GiveSkullReward(this, globalCtx);
+            Audio_PlayFanfare_Rando(getItem);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
+
+        player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         this->actionFunc = func_80AFB950;
     }
 }
@@ -169,7 +161,7 @@ void func_80AFB950(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING &&
-        ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != GI_ICE_TRAP)) {
+        ((CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) && getItemId != RG_ICE_TRAP)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
@@ -195,16 +187,40 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
-            getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_DEFENSE) {
-                EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemId);
-            }
-            if (getItemId != ITEM_SKULL_TOKEN) {
+            getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItem);
+            if (getItem.itemId != ITEM_SKULL_TOKEN) {
                 f32 mtxScale = 1.5f;
                 Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
             }
-            GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(getItemId));
+            GetItemEntry_Draw(globalCtx, getItem);
         }
         
     }
+}
+
+void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+    getItemId = getItem.getItemId;
+    if (getItemId == RG_ICE_TRAP) {
+        player->getItemEntry = getItem;
+        player->pendingIceTrap = true;
+        textId = 0xF8;
+    } else {
+        textId = getItem.textId;
+        giveItemId = getItem.itemId;
+    }
+}
+
+void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (getItem.modIndex == MOD_NONE) {
+        Item_Give(globalCtx, giveItemId);
+    } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        Randomizer_Item_Give(globalCtx, getItem);
+    }
+    player->getItemEntry = getItem;
 }

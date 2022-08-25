@@ -314,12 +314,14 @@ void func_80B20768(EnToryo* this, GlobalContext* globalCtx) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
         } else {
-            s32 itemId = GI_SWORD_BROKEN;
             if (gSaveContext.n64ddFlag) {
-                itemId = Randomizer_GetItemIdFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
+                GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
                 Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SAW);
+                GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 100.0f, 10.0f);
+            } else {
+                s32 itemId = GI_SWORD_BROKEN;
+                func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 10.0f);
             }
-            func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 10.0f);
         }
         return;
     }

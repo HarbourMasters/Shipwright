@@ -322,7 +322,7 @@ void Player_SetBootData(GlobalContext* globalCtx, Player* this) {
     IREG(69) = bootRegs[15];
     MREG(95) = bootRegs[16];
 
-    if (globalCtx->roomCtx.curRoom.unk_03 == 2) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_2) {
         REG(45) = 500;
     }
 }
@@ -615,7 +615,7 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
     TextTriggerEntry* triggerEntry;
     s32 var;
 
-    if (globalCtx->roomCtx.curRoom.unk_02 == 3) { // Room is hot
+    if (globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) { // Room is hot
         var = 0;
     } else if ((this->unk_840 > 80) &&
                ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->unk_840 >= 300))) { // Deep underwater
@@ -1170,7 +1170,13 @@ void Player_DrawGetItemImpl(GlobalContext* globalCtx, Player* this, Vec3f* refPo
     Matrix_RotateZYX(0, globalCtx->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    GetItem_Draw(globalCtx, drawIdPlusOne - 1);
+    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
+    if (this->getItemEntry.drawFunc != NULL &&
+        (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+        this->getItemEntry.drawFunc(globalCtx, &this->getItemEntry);
+    } else {
+        GetItem_Draw(globalCtx, drawIdPlusOne - 1);
+    }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

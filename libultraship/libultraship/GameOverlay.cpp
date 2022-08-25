@@ -9,7 +9,7 @@
 #include "Utils/StringHelper.h"
 
 namespace Ship {
-	bool OverlayCommand(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+	bool GameOverlay::OverlayCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
 		if (args.size() < 3) {
 			return CMD_FAILED;
 		}
@@ -45,7 +45,7 @@ namespace Ship {
 
 	void GameOverlay::LoadFont(const std::string& name, const std::string& path, float fontSize) {
 		ImGuiIO& io = ImGui::GetIO();
-		std::shared_ptr<Archive> base = GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive();
+		std::shared_ptr<Archive> base = Window::GetInstance()->GetResourceManager()->GetArchive();
 		std::shared_ptr<File> font = std::make_shared<File>();
 		base->LoadFile(path, false, font);
 		if (font->bIsLoaded) {
