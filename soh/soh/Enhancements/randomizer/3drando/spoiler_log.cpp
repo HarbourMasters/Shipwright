@@ -668,10 +668,10 @@ static void WriteAllLocations(int language) {
         switch (language) {
           case 0:
           default:
-            location->GetPlacedItemName().english;
+            placedItemName = location->GetPlacedItemName().english;
             break;
           case 2:
-            location->GetPlacedItemName().french;
+            placedItemName = location->GetPlacedItemName().french;
             break;
         }
 
