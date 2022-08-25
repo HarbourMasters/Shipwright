@@ -216,7 +216,9 @@ namespace GameControlEditor {
     }
 
     // Copied from InputEditor::DrawButton
-    // CurrentPort is indexed started at 1 here due to the Generic tab
+    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditor
+    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
+    // Work is needed in InputEditor to be able to use its function directly (see #1242)
     void DrawButton(const char* label, int n64Btn) {
         auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
         auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
@@ -261,7 +263,10 @@ namespace GameControlEditor {
         }
     }
 
-    // Controller dropdown copied from InputEditor::DrawControllerSchema
+    // Controller dropdown (everything here except the DrawButton lines) copied from InputEditor::DrawControllerSchema
+    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditor
+    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
+    // Work is needed in InputEditor to be able to use its dropdown directly (see #1242)
     void DrawCustomButtons() {
         auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
         auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);

@@ -1267,12 +1267,13 @@ namespace SohImGui {
                     ImGui::PopStyleVar(3);
                     ImGui::PopStyleColor(1);
 
-                    PaddedEnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName", true, false);
-                    Tooltip("Navigate Pause and File Select with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
+                    // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
+                    PaddedEnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                    Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
                     PaddedEnhancementCheckbox("D-pad Support in Text Choice", "gDpadText", true, false);
                     PaddedEnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop", true, false);
                     PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                    Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up to equip instead of navigate");
+                    Tooltip("Allows the D-pad to be used as extra C buttons");
                     PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
                     Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                     PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
