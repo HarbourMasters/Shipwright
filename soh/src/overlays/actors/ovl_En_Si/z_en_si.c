@@ -205,6 +205,7 @@ void Randomizer_GetSkullReward(EnSi* this, GlobalContext* globalCtx) {
     getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
     getItemId = getItem.getItemId;
     if (getItemId == RG_ICE_TRAP) {
+        player->getItemEntry = getItem;
         player->pendingIceTrap = true;
         textId = 0xF8;
     } else {
