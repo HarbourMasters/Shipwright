@@ -1198,8 +1198,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
 
         case RG_MAGIC_BEAN:
             return GI_BEAN;
-        case RG_MAGIC_BEAN_PACK:
-            return GI_BEAN; //todo make it 10 of them
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
