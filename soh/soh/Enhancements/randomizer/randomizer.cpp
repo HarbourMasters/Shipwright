@@ -15,6 +15,8 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include <stdexcept>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -806,202 +808,6 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
-std::unordered_map<s16, s16> getItemIdToItemId = {
-    { GI_BOW, ITEM_BOW },
-    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
-    { GI_DINS_FIRE, ITEM_DINS_FIRE },
-    { GI_SLINGSHOT, ITEM_SLINGSHOT },
-    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
-    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
-    { GI_HOOKSHOT, ITEM_HOOKSHOT },
-    { GI_LONGSHOT, ITEM_LONGSHOT },
-    { GI_ARROW_ICE, ITEM_ARROW_ICE },
-    { GI_FARORES_WIND, ITEM_FARORES_WIND },
-    { GI_BOOMERANG, ITEM_BOOMERANG },
-    { GI_LENS, ITEM_LENS },
-    { GI_HAMMER, ITEM_HAMMER },
-    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
-    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
-    { GI_BOTTLE, ITEM_BOTTLE },
-    { GI_POTION_RED, ITEM_POTION_RED },
-    { GI_POTION_GREEN, ITEM_POTION_GREEN },
-    { GI_POTION_BLUE, ITEM_POTION_BLUE },
-    { GI_FAIRY, ITEM_FAIRY },
-    { GI_FISH, ITEM_FISH },
-    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
-    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
-    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
-    { GI_BUGS, ITEM_BUG },
-    { GI_BIG_POE, ITEM_BIG_POE },
-    { GI_POE, ITEM_POE },
-    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
-    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
-    { GI_POCKET_EGG, ITEM_POCKET_EGG },
-    { GI_COJIRO, ITEM_COJIRO },
-    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
-    { GI_ODD_POTION, ITEM_ODD_POTION },
-    { GI_SAW, ITEM_SAW },
-    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
-    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
-    { GI_FROG, ITEM_FROG },
-    { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
-};
-
-std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
-                                               { GI_BOMBS_5, GID_BOMB },
-                                               { GI_NUTS_5, GID_NUTS },
-                                               { GI_BOMBCHUS_10, GID_BOMBCHU },
-                                               { GI_BOW, GID_BOW },
-                                               { GI_SLINGSHOT, GID_SLINGSHOT },
-                                               { GI_BOOMERANG, GID_BOOMERANG },
-                                               { GI_STICKS_1, GID_STICK },
-                                               { GI_HOOKSHOT, GID_HOOKSHOT },
-                                               { GI_LONGSHOT, GID_LONGSHOT },
-                                               { GI_LENS, GID_LENS },
-                                               { GI_LETTER_ZELDA, GID_LETTER_ZELDA },
-                                               { GI_OCARINA_OOT, GID_OCARINA_TIME },
-                                               { GI_HAMMER, GID_HAMMER },
-                                               { GI_COJIRO, GID_COJIRO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BOTTLE, GID_BOTTLE },
-                                               { GI_POTION_RED, GID_POTION_RED },
-                                               { GI_POTION_GREEN, GID_POTION_GREEN },
-                                               { GI_POTION_BLUE, GID_POTION_BLUE },
-                                               { GI_FAIRY, GID_FAIRY },
-                                               { GI_MILK_BOTTLE, GID_MILK },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BEAN, GID_BEAN },
-                                               { GI_MASK_SKULL, GID_MASK_SKULL },
-                                               { GI_MASK_SPOOKY, GID_MASK_SPOOKY },
-                                               { GI_CHICKEN, GID_CHICKEN },
-                                               { GI_MASK_KEATON, GID_MASK_KEATON },
-                                               { GI_MASK_BUNNY, GID_MASK_BUNNY },
-                                               { GI_MASK_TRUTH, GID_MASK_TRUTH },
-                                               { GI_POCKET_EGG, GID_EGG },
-                                               { GI_POCKET_CUCCO, GID_CHICKEN },
-                                               { GI_ODD_MUSHROOM, GID_ODD_MUSHROOM },
-                                               { GI_ODD_POTION, GID_ODD_POTION },
-                                               { GI_SAW, GID_SAW },
-                                               { GI_SWORD_BROKEN, GID_SWORD_BROKEN },
-                                               { GI_PRESCRIPTION, GID_PRESCRIPTION },
-                                               { GI_FROG, GID_FROG },
-                                               { GI_EYEDROPS, GID_EYEDROPS },
-                                               { GI_CLAIM_CHECK, GID_CLAIM_CHECK },
-                                               { GI_SWORD_KOKIRI, GID_SWORD_KOKIRI },
-                                               { GI_SWORD_KNIFE, GID_SWORD_BGS },
-                                               { GI_SHIELD_DEKU, GID_SHIELD_DEKU },
-                                               { GI_SHIELD_HYLIAN, GID_SHIELD_HYLIAN },
-                                               { GI_SHIELD_MIRROR, GID_SHIELD_MIRROR },
-                                               { GI_TUNIC_GORON, GID_TUNIC_GORON },
-                                               { GI_TUNIC_ZORA, GID_TUNIC_ZORA },
-                                               { GI_BOOTS_IRON, GID_BOOTS_IRON },
-                                               { GI_BOOTS_HOVER, GID_BOOTS_HOVER },
-                                               { GI_QUIVER_40, GID_QUIVER_40 },
-                                               { GI_QUIVER_50, GID_QUIVER_50 },
-                                               { GI_BOMB_BAG_20, GID_BOMB_BAG_20 },
-                                               { GI_BOMB_BAG_30, GID_BOMB_BAG_30 },
-                                               { GI_BOMB_BAG_40, GID_BOMB_BAG_40 },
-                                               { GI_GAUNTLETS_SILVER, GID_GAUNTLETS_SILVER },
-                                               { GI_GAUNTLETS_GOLD, GID_GAUNTLETS_GOLD },
-                                               { GI_SCALE_SILVER, GID_SCALE_SILVER },
-                                               { GI_SCALE_GOLD, GID_SCALE_GOLDEN },
-                                               { GI_STONE_OF_AGONY, GID_STONE_OF_AGONY },
-                                               { GI_GERUDO_CARD, GID_GERUDO_CARD },
-                                               { GI_OCARINA_FAIRY, GID_OCARINA_FAIRY },
-                                               { GI_SEEDS_5, GID_SEEDS },
-                                               { GI_HEART_CONTAINER, GID_HEART_CONTAINER },
-                                               { GI_HEART_PIECE, GID_HEART_PIECE },
-                                               { GI_KEY_BOSS, GID_KEY_BOSS },
-                                               { GI_COMPASS, GID_COMPASS },
-                                               { GI_MAP, GID_DUNGEON_MAP },
-                                               { GI_KEY_SMALL, GID_KEY_SMALL },
-                                               { GI_MAGIC_SMALL, GID_MAGIC_SMALL },
-                                               { GI_MAGIC_LARGE, GID_MAGIC_LARGE },
-                                               { GI_WALLET_ADULT, GID_WALLET_ADULT },
-                                               { GI_WALLET_GIANT, GID_WALLET_GIANT },
-                                               { GI_WEIRD_EGG, GID_EGG },
-                                               { GI_HEART, GID_HEART },
-                                               { GI_ARROWS_SMALL, GID_ARROWS_SMALL },
-                                               { GI_ARROWS_MEDIUM, GID_ARROWS_MEDIUM },
-                                               { GI_ARROWS_LARGE, GID_ARROWS_LARGE },
-                                               { GI_RUPEE_GREEN, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED, GID_RUPEE_RED },
-                                               { GI_HEART_CONTAINER_2, GI_HEART_CONTAINER_2 },
-                                               { GI_MILK, GID_MILK },
-                                               { GI_MASK_GORON, GID_MASK_GORON },
-                                               { GI_MASK_ZORA, GID_MASK_ZORA },
-                                               { GI_MASK_GERUDO, GID_MASK_GERUDO },
-                                               { GI_BRACELET, GID_BRACELET },
-                                               { GI_RUPEE_PURPLE, GID_RUPEE_PURPLE },
-                                               { GI_RUPEE_GOLD, GID_RUPEE_GOLD },
-                                               { GI_SWORD_BGS, GID_SWORD_BGS },
-                                               { GI_ARROW_FIRE, GID_ARROW_FIRE },
-                                               { GI_ARROW_ICE, GID_ARROW_ICE },
-                                               { GI_ARROW_LIGHT, GID_ARROW_LIGHT },
-                                               { GI_SKULL_TOKEN, GID_SKULL_TOKEN },
-                                               { GI_DINS_FIRE, GID_DINS_FIRE },
-                                               { GI_FARORES_WIND, GID_FARORES_WIND },
-                                               { GI_NAYRUS_LOVE, GID_NAYRUS_LOVE },
-                                               { GI_BULLET_BAG_30, GID_BULLET_BAG },
-                                               { GI_BULLET_BAG_40, GID_BULLET_BAG },
-                                               { GI_STICKS_5, GID_STICK },
-                                               { GI_STICKS_10, GID_STICK },
-                                               { GI_NUTS_5_2, GID_NUTS },
-                                               { GI_NUTS_10, GID_NUTS },
-                                               { GI_BOMBS_1, GID_BOMB },
-                                               { GI_BOMBS_10, GID_BOMB },
-                                               { GI_BOMBS_20, GID_BOMB },
-                                               { GI_BOMBS_30, GID_BOMB },
-                                               { GI_SEEDS_30, GID_SEEDS },
-                                               { GI_BOMBCHUS_5, GID_BOMBCHU },
-                                               { GI_BOMBCHUS_20, GID_BOMBCHU },
-                                               { GI_FISH, GID_FISH },
-                                               { GI_BUGS, GID_BUG },
-                                               { GI_BLUE_FIRE, GID_BLUE_FIRE },
-                                               { GI_POE, GID_POE },
-                                               { GI_BIG_POE, GID_BIG_POE },
-                                               { GI_DOOR_KEY, GID_KEY_SMALL },
-                                               { GI_RUPEE_GREEN_LOSE, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE_LOSE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED_LOSE, GID_RUPEE_RED },
-                                               { GI_RUPEE_PURPLE_LOSE, GID_RUPEE_PURPLE },
-                                               { GI_HEART_PIECE_WIN, GID_HEART_PIECE },
-                                               { GI_STICK_UPGRADE_20, GID_STICK },
-                                               { GI_STICK_UPGRADE_30, GID_STICK },
-                                               { GI_NUT_UPGRADE_30, GID_NUTS },
-                                               { GI_NUT_UPGRADE_40, GID_NUTS },
-                                               { GI_BULLET_BAG_50, GID_BULLET_BAG_50 },
-                                               { GI_ZELDAS_LULLABY, GID_SONG_ZELDA },
-                                               { GI_EPONAS_SONG, GID_SONG_EPONA },
-                                               { GI_SARIAS_SONG, GID_SONG_SARIA },
-                                               { GI_SUNS_SONG, GID_SONG_SUN },
-                                               { GI_SONG_OF_TIME, GID_SONG_TIME },
-                                               { GI_SONG_OF_STORMS, GID_SONG_STORM },
-                                               { GI_MINUET_OF_FOREST, GID_SONG_MINUET },
-                                               { GI_BOLERO_OF_FIRE, GID_SONG_BOLERO },
-                                               { GI_SERENADE_OF_WATER, GID_SONG_SERENADE },
-                                               { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
-                                               { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
-                                               { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
-                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
-                                               { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
-                                               { GI_STONE_GORON, GID_GORON_RUBY },
-                                               { GI_STONE_ZORA, GID_ZORA_SAPPHIRE },
-                                               { GI_MEDALLION_FOREST, GID_MEDALLION_FOREST },
-                                               { GI_MEDALLION_FIRE, GID_MEDALLION_FIRE },
-                                               { GI_MEDALLION_WATER, GID_MEDALLION_WATER },
-                                               { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
-                                               { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
-                                               { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
-                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
-                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
-                                               { GI_ICE_TRAP, GID_RUPEE_GOLD },
-                                               { GI_ICE_TRAP, GID_MAXIMUM },
-                                               { GI_TEXT_0, GID_MAXIMUM } };
-
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "No Item", RG_NONE },
     { "Rien", RG_NONE },
@@ -1417,18 +1223,6 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
     { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE }
 };
-
-s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
-    if (getItemIdToItemId.count(getItemId) == 0) {
-        return -1;
-    }
-
-    return getItemIdToItemId[getItemId];
-}
-
-s16 Randomizer::GetItemModelFromId(s16 itemId) {
-    return itemIdToModel[itemId];
-}
 
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
@@ -2008,14 +1802,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MAGIC_BEAN_PACK:
             return GI_BEAN; //todo make it 10 of them
 
-        case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
-
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
 
         case RG_ZELDAS_LETTER:
             return GI_LETTER_ZELDA;
+        case RG_RUTOS_LETTER:
+            return GI_LETTER_RUTO;
 
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
@@ -2138,9 +1931,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
-                    return GI_SINGLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                    return GI_DOUBLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_DOUBLE;
             }
             return GI_RUPEE_BLUE;
 
@@ -2160,52 +1953,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-        case RG_BOTTLE_WITH_RED_POTION:
-            return GI_BOTTLE_WITH_RED_POTION;
-        case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_BOTTLE_WITH_GREEN_POTION;
-        case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_BOTTLE_WITH_BLUE_POTION;
-        case RG_BOTTLE_WITH_FAIRY:
-            return GI_BOTTLE_WITH_FAIRY;
-        case RG_BOTTLE_WITH_FISH:
-            return GI_BOTTLE_WITH_FISH;
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BOTTLE_WITH_BLUE_FIRE;
-        case RG_BOTTLE_WITH_BUGS:
-            return GI_BOTTLE_WITH_BUGS;
-        case RG_BOTTLE_WITH_POE:
-            return GI_BOTTLE_WITH_POE;
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
-        case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BOTTLE_WITH_BIG_POE;
-
-        case RG_ZELDAS_LULLABY:
-            return GI_ZELDAS_LULLABY;
-        case RG_EPONAS_SONG:
-            return GI_EPONAS_SONG;
-        case RG_SARIAS_SONG:
-            return GI_SARIAS_SONG;
-        case RG_SUNS_SONG:
-            return GI_SUNS_SONG;
-        case RG_SONG_OF_TIME:
-            return GI_SONG_OF_TIME;
-        case RG_SONG_OF_STORMS:
-            return GI_SONG_OF_STORMS;
-
-        case RG_MINUET_OF_FOREST:
-            return GI_MINUET_OF_FOREST;
-        case RG_BOLERO_OF_FIRE:
-            return GI_BOLERO_OF_FIRE;
-        case RG_SERENADE_OF_WATER:
-            return GI_SERENADE_OF_WATER;
-        case RG_REQUIEM_OF_SPIRIT:
-            return GI_REQUIEM_OF_SPIRIT;
-        case RG_NOCTURNE_OF_SHADOW:
-            return GI_NOCTURNE_OF_SHADOW;
-        case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;
 
         // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
@@ -2268,26 +2015,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_GANONS_CASTLE_KEY_RING:
             return GI_RUPEE_BLUE;
 
-        case RG_KOKIRI_EMERALD:
-            return GI_STONE_KOKIRI;
-        case RG_GORON_RUBY:
-            return GI_STONE_GORON;
-        case RG_ZORA_SAPPHIRE:
-            return GI_STONE_ZORA;
-
-        case RG_FOREST_MEDALLION:
-            return GI_MEDALLION_FOREST;
-        case RG_FIRE_MEDALLION:
-            return GI_MEDALLION_FIRE;
-        case RG_WATER_MEDALLION:
-            return GI_MEDALLION_WATER;
-        case RG_SPIRIT_MEDALLION:
-            return GI_MEDALLION_SPIRIT;
-        case RG_SHADOW_MEDALLION:
-            return GI_MEDALLION_SHADOW;
-        case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;
-
         case RG_RECOVERY_HEART:
             return GI_HEART;
 
@@ -2307,10 +2034,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-
-        case RG_ICE_TRAP:
-            return GI_ICE_TRAP;
-
         case RG_MILK:
             return GI_MILK; //todo logic around needing a bottle?
 
@@ -2365,9 +2088,136 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HINT:
             return GI_RUPEE_BLUE; //todo
 
-        default:
+        default: {
+            if (!IsItemVanilla(randoGet)) {
+                return (GetItemID)randoGet;
+            }
             return ogItemId;
+        }
     }
+}
+
+bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
+    switch (randoGet) {
+        case RG_NONE:
+        case RG_KOKIRI_SWORD: 
+        case RG_GIANTS_KNIFE: 
+        case RG_BIGGORON_SWORD:
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_IRON_BOOTS:
+        case RG_HOVER_BOOTS:
+        case RG_BOOMERANG:
+        case RG_LENS_OF_TRUTH:
+        case RG_MEGATON_HAMMER:
+        case RG_STONE_OF_AGONY:
+        case RG_DINS_FIRE:
+        case RG_FARORES_WIND:
+        case RG_NAYRUS_LOVE:
+        case RG_FIRE_ARROWS:
+        case RG_ICE_ARROWS:
+        case RG_LIGHT_ARROWS:
+        case RG_GERUDO_MEMBERSHIP_CARD:
+        case RG_MAGIC_BEAN:
+        case RG_WEIRD_EGG: 
+        case RG_ZELDAS_LETTER:
+        case RG_RUTOS_LETTER:
+        case RG_POCKET_EGG:
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+        case RG_GOLD_SKULLTULA_TOKEN:
+        case RG_PROGRESSIVE_HOOKSHOT:
+        case RG_PROGRESSIVE_STRENGTH:
+        case RG_PROGRESSIVE_BOMB_BAG:
+        case RG_PROGRESSIVE_BOW:
+        case RG_PROGRESSIVE_SLINGSHOT:
+        case RG_PROGRESSIVE_WALLET:
+        case RG_PROGRESSIVE_SCALE:
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_OCARINA:
+        case RG_PROGRESSIVE_GORONSWORD:
+        case RG_EMPTY_BOTTLE:
+        case RG_BOTTLE_WITH_MILK:
+        case RG_RECOVERY_HEART:
+        case RG_GREEN_RUPEE:
+        case RG_BLUE_RUPEE:
+        case RG_RED_RUPEE:
+        case RG_PURPLE_RUPEE:
+        case RG_HUGE_RUPEE:
+        case RG_PIECE_OF_HEART:
+        case RG_HEART_CONTAINER:
+        case RG_MILK:
+        case RG_BOMBS_5:
+        case RG_BOMBS_10:
+        case RG_BOMBS_20:
+        case RG_BOMBCHU_5:
+        case RG_BOMBCHU_10:
+        case RG_BOMBCHU_20:
+        case RG_BOMBCHU_DROP:
+        case RG_ARROWS_5:
+        case RG_ARROWS_10:
+        case RG_ARROWS_30:
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_DEKU_SEEDS_30:
+        case RG_DEKU_STICK_1:
+        case RG_RED_POTION_REFILL:
+        case RG_GREEN_POTION_REFILL:
+        case RG_BLUE_POTION_REFILL:
+        case RG_TREASURE_GAME_HEART:
+        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_ARROWS_30:
+        case RG_BUY_ARROWS_50:
+        case RG_BUY_BOMBS_525:
+        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_STICK_1:
+        case RG_BUY_BOMBS_10:
+        case RG_BUY_FISH:
+        case RG_BUY_RED_POTION_30:
+        case RG_BUY_GREEN_POTION:
+        case RG_BUY_BLUE_POTION:
+        case RG_BUY_HYLIAN_SHIELD:
+        case RG_BUY_DEKU_SHIELD:
+        case RG_BUY_GORON_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+        case RG_BUY_HEART:
+        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHU_5:
+        case RG_BUY_DEKU_SEEDS_30:
+        case RG_SOLD_OUT:
+        case RG_BUY_BLUE_FIRE:
+        case RG_BUY_BOTTLE_BUG:
+        case RG_BUY_POE:
+        case RG_BUY_FAIRYS_SPIRIT:
+        case RG_BUY_ARROWS_10:
+        case RG_BUY_BOMBS_20:
+        case RG_BUY_BOMBS_30:
+        case RG_BUY_BOMBS_535:
+        case RG_BUY_RED_POTION_40:
+        case RG_BUY_RED_POTION_50:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
+    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    return IsItemVanilla(randoGet);
 }
 
 std::string Randomizer::GetAdultAltarText() const {
@@ -4738,31 +4588,116 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
                     "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
                     "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
                     "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_FISH, ITEM_FISH,
                     "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
                     "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
                     "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
                     "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_POE, ITEM_POE,
                     "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();
 }
 
+class ExtendedVanillaTableInvalidItemIdException: public std::exception {
+    private:
+    s16 itemID;
+
+    public:
+      ExtendedVanillaTableInvalidItemIdException(s16 itemID): itemID(itemID) {}
+      std::string what() {
+        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
+        "item, try adding it to randoGetItemTable instead.";
+      }
+};
+
+void InitRandoItemTable() {
+    // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
+    GetItemEntry extendedVanillaGetItemTable[] = {
+        GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_LIGHT_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_FOREST_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_FIRE_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_WATER_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_SHADOW_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_SPIRIT_MEDALLION),
+
+        GET_ITEM(ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_KOKIRI_EMERALD),
+        GET_ITEM(ITEM_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_GORON_RUBY),
+        GET_ITEM(ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZORA_SAPPHIRE),
+
+        GET_ITEM(ITEM_SONG_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZELDAS_LULLABY),
+        GET_ITEM(ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SUNS_SONG),
+        GET_ITEM(ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_EPONAS_SONG),
+        GET_ITEM(ITEM_SONG_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_STORMS),
+        GET_ITEM(ITEM_SONG_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_TIME),
+        GET_ITEM(ITEM_SONG_SARIA, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SARIAS_SONG),
+
+        GET_ITEM(ITEM_SONG_MINUET, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_MINUET_OF_FOREST),
+        GET_ITEM(ITEM_SONG_BOLERO, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_BOLERO_OF_FIRE),
+        GET_ITEM(ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SERENADE_OF_WATER),
+        GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_NOCTURNE_OF_SHADOW),
+        GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_REQUIEM_OF_SPIRIT),
+        GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_PRELUDE_OF_LIGHT),
+    };
+
+    // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
+    // RandomizerGet enum values for both.
+    GetItemEntry randoGetItemTable[] = {
+        GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
+        GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_MAGIC_SINGLE),
+        GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_MAGIC_DOUBLE),
+        GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_DOUBLE_DEFENSE),
+
+        GET_ITEM(RG_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_FAIRY),
+        GET_ITEM(RG_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_FISH),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_FIRE),
+        GET_ITEM(RG_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
+        GET_ITEM(RG_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
+        GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
+    };
+    ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
+    for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
+    }
+    for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
+    }
+}
+
+
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
+    InitRandoItemTable();
 }
 
 extern "C" {

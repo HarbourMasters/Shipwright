@@ -133,13 +133,9 @@ source_group("Source Files\\CustomImpl\\Utils" FILES ${Source_Files__CustomImpl_
 set(Source_Files__Globals
     "Cvar.cpp"
     "Cvar.h"
-    "GlobalCtx2.cpp"
-    "GlobalCtx2.h"
     "LUSMacros.h"
     "Window.cpp"
     "Window.h"
-    "WindowShim.cpp"
-    "WindowShim.h"
 )
 source_group("Source Files\\Globals" FILES ${Source_Files__Globals})
 
@@ -571,6 +567,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
+            $<$<CONFIG:Debug>:
+                /Od;
+                /Oi-
+            >
             $<$<CONFIG:Release>:
                 /std:c++latest;
                 /Oi;
