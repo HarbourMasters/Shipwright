@@ -25,14 +25,6 @@ namespace SohImGui {
         dLoadSettings,
     };
 
-    // Enumeration for disabled checkbox graphics
-    enum class ImGuiCheckboxGraphics
-    {
-        Cross,
-        Checkmark,
-        None
-    };
-
     typedef struct {
         Backend backend;
         union {

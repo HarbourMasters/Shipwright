@@ -173,7 +173,6 @@ set(Header_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
     "soh/Enhancements/debugger/debugSaveEditor.h"
-    "soh/Enhancements/debugger/ImGuiHelpers.h"
 )
 source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__soh__Enhancements__debugger})
 
@@ -282,7 +281,6 @@ set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
     "soh/Enhancements/debugger/debugSaveEditor.cpp"
-    "soh/Enhancements/debugger/ImGuiHelpers.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__soh__Enhancements__debugger})
 
