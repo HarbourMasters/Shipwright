@@ -19,6 +19,7 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
+    std::unordered_map<RandomizerCheck, u16> randomizerMerchantPrices;
     s16 GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
     s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
@@ -50,6 +51,7 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
+    ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     static void CreateCustomMessages();
