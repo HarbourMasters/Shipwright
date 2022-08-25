@@ -1,5 +1,6 @@
 #include "CustomMessageManager.h"
 #include <algorithm>
+#include <stdint.h>
 
 using namespace std::literals::string_literals;
 
@@ -80,9 +81,8 @@ bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t tex
     return messageInsertResult.second;
 }
 
-
-
-bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messageEntry) {
+bool CustomMessageManager::CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid,
+                                                CustomMessageEntry messageEntry) {
     FormatCustomMessage(messageEntry.english, iid);
     FormatCustomMessage(messageEntry.german, iid);
     FormatCustomMessage(messageEntry.french, iid);

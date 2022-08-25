@@ -22,7 +22,7 @@ typedef struct EnCow {
 } EnCow; // size = 0x0280
 
 typedef struct CowInfo {
-    int cowId;
+    RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } CowInfo;
 

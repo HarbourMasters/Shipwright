@@ -2,7 +2,8 @@
 
 #include <string>
 #include <memory>
-#include "GlobalCtx2.h"
+#include <mutex>
+#include <condition_variable>
 
 namespace Ship {
 	class Archive;

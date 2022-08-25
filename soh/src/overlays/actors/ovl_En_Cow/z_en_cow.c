@@ -218,51 +218,51 @@ void func_809DF730(EnCow* this, GlobalContext* globalCtx) {
 CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
     struct CowInfo cowInfo;
     
-    cowInfo.cowId = -1;
+    cowInfo.randomizerInf = -1;
     cowInfo.randomizerCheck = RC_UNKNOWN_CHECK;
 
     switch (globalCtx->sceneNum) {
         case SCENE_SOUKO: // Lon Lon Tower
             if (this->actor.world.pos.x == -229 && this->actor.world.pos.z == 157) {
-                cowInfo.cowId = 0;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LLR_TOWER_LEFT_COW;
                 cowInfo.randomizerCheck = RC_LLR_TOWER_LEFT_COW;
             } else if (this->actor.world.pos.x == -142 && this->actor.world.pos.z == -140) {
-                cowInfo.cowId = 1;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LLR_TOWER_RIGHT_COW;
                 cowInfo.randomizerCheck = RC_LLR_TOWER_RIGHT_COW;
             }
             break;
         case SCENE_MALON_STABLE:
             if (this->actor.world.pos.x == 116 && this->actor.world.pos.z == -254) {
-                cowInfo.cowId = 2;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LLR_STABLES_RIGHT_COW;
                 cowInfo.randomizerCheck = RC_LLR_STABLES_RIGHT_COW;
             } else if (this->actor.world.pos.x == -122 && this->actor.world.pos.z == -254) {
-                cowInfo.cowId = 3;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LLR_STABLES_LEFT_COW;
                 cowInfo.randomizerCheck = RC_LLR_STABLES_LEFT_COW;
             }
             break;
         case SCENE_KAKUSIANA: // Grotto
             if (this->actor.world.pos.x == 2444 && this->actor.world.pos.z == -471) {
-                cowInfo.cowId = 4;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_DMT_COW_GROTTO_COW;
                 cowInfo.randomizerCheck = RC_DMT_COW_GROTTO_COW;
             } else if (this->actor.world.pos.x == 3485 && this->actor.world.pos.z == -291) {
-                cowInfo.cowId = 5;
+                cowInfo.randomizerInf = RAND_INF_COWS_MILKED_HF_COW_GROTTO_COW;
                 cowInfo.randomizerCheck = RC_HF_COW_GROTTO_COW;
             }
             break;
         case SCENE_LINK_HOME:
-            cowInfo.cowId = 6;
+            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LINKS_HOUSE_COW;
             cowInfo.randomizerCheck = RC_KF_LINKS_HOUSE_COW;
             break;
         case SCENE_LABO: // Impa's house
-            cowInfo.cowId = 7;
+            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_KAK_IMPAS_HOUSE_COW;
             cowInfo.randomizerCheck = RC_KAK_IMPAS_HOUSE_COW;
             break;
         case SCENE_SPOT09: // Gerudo Valley
-            cowInfo.cowId = 8;
+            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_GV_COW;
             cowInfo.randomizerCheck = RC_GV_COW;
             break;
-        case SCENE_SPOT08: // Jabu's Belly
-            cowInfo.cowId = 9;
+        case SCENE_BDAN: // Jabu's Belly
+            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_JABU_JABUS_BELLY_MQ_COW;
             cowInfo.randomizerCheck = RC_JABU_JABUS_BELLY_MQ_COW;
             break;
     }
@@ -290,8 +290,8 @@ void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx) {
 void EnCow_SetCowMilked(EnCow* this, GlobalContext* globalCtx) {
     CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
     Player* player = GET_PLAYER(globalCtx);
-    player->pendingFlag.flagID = cowInfo.cowId;
-    player->pendingFlag.flagType = FLAG_COW_MILKED;
+    player->pendingFlag.flagID = cowInfo.randomizerInf;
+    player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
 }
 
 void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
@@ -337,14 +337,14 @@ void func_809DF8FC(EnCow* this, GlobalContext* globalCtx) {
 
 bool EnCow_HasBeenMilked(EnCow* this, GlobalContext* globalCtx) {
     CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
-    return gSaveContext.cowsMilked[cowInfo.cowId];
+    return Flags_GetRandomizerInf(cowInfo.randomizerInf);
 }
 
 void EnCow_GivePlayerRandomizedItem(EnCow* this, GlobalContext* globalCtx) {
     if (!EnCow_HasBeenMilked(this, globalCtx)) {
         CowInfo cowInfo = EnCow_GetInfo(this, globalCtx);
-        GetItemID itemId = Randomizer_GetItemIdFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
-        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 100.0f);
+        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowInfo.randomizerCheck, GI_MILK);
+        GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 100.0f);
     } else {
         // once we've gotten the rando reward from the cow,
         // return them to the their default action function
