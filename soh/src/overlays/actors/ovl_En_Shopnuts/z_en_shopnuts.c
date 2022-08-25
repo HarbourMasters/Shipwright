@@ -69,6 +69,15 @@ void EnShopnuts_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
+    if (gSaveContext.n64ddFlag) {
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(globalCtx->sceneNum, this->actor.params, respawnData);
+
+        if (scrubIdentity.isShuffled && Flags_GetRandomizerInf(scrubIdentity.randomizerInf)) {
+            Actor_Kill(&this->actor);
+        }
+    }
+
     if (((this->actor.params == 0x0002) && (gSaveContext.itemGetInf[0] & 0x800)) ||
         ((this->actor.params == 0x0009) && (gSaveContext.infTable[25] & 4)) ||
         ((this->actor.params == 0x000A) && (gSaveContext.infTable[25] & 8))) {

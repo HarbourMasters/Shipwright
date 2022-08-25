@@ -1,5 +1,14 @@
 #pragma once
 
+#include <stdint.h>
+#include "z64item.h"
+#include "randomizer_inf.h"
+
+// This should probably go in a less rando-specific location
+// but the best location will probably be in the modding engine
+// which doesn't exist yet.
+typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+
 typedef struct {
     char tex[512];
     uint16_t width;
@@ -753,6 +762,7 @@ typedef enum {
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
+    RC_GANONDORF_HINT,
     RC_MAX
 } RandomizerCheck;
 
@@ -807,6 +817,8 @@ typedef enum {
     RG_PROGRESSIVE_STICK_UPGRADE,
     RG_PROGRESSIVE_BOMBCHUS,
     RG_PROGRESSIVE_MAGIC_METER,
+    RG_MAGIC_SINGLE, // Added for refactor of GetItemEntries
+    RG_MAGIC_DOUBLE, // Added for refactor of GetItemEntries
     RG_PROGRESSIVE_OCARINA,
     RG_PROGRESSIVE_GORONSWORD,
     RG_EMPTY_BOTTLE,
@@ -948,7 +960,8 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
-    RG_HINT
+    RG_HINT,
+    RG_MAX
 } RandomizerGet;
 
 typedef enum {
@@ -976,6 +989,7 @@ typedef enum {
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
+    RSK_SHUFFLE_SCRUBS,
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
@@ -993,13 +1007,7 @@ typedef enum {
     RSK_SKIP_CHILD_ZELDA,
     RSK_STARTING_CONSUMABLES,
     RSK_FULL_WALLETS,
-    RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH,
     RSK_LANGUAGE,
-    RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD,
     RSK_SHUFFLE_CHEST_MINIGAME,
     RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
@@ -1015,3 +1023,11 @@ typedef enum {
     RSK_SHUFFLE_INTERIORS_ENTRANCES,
     RSK_SHUFFLE_GROTTOS_ENTRANCES
 } RandomizerSettingKey;
+
+typedef struct ScrubIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+    GetItemID getItemId;
+    int32_t itemPrice;
+    bool isShuffled;
+} ScrubIdentity;

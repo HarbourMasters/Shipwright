@@ -712,7 +712,7 @@ void EnBb_Down(EnBb* this, GlobalContext* globalCtx) {
             this->actor.velocity.y = 10.0f;
         }
         this->actor.bgCheckFlags &= ~1;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, false);
         Math_SmoothStepToS(&this->actor.world.rot.y, -this->actor.yawTowardsPlayer, 1, 0xBB8, 0);
     }
     this->actor.shape.rot.y = this->actor.world.rot.y;
@@ -1112,7 +1112,7 @@ void EnBb_Stunned(EnBb* this, GlobalContext* globalCtx) {
         } else {
             this->actor.velocity.y = 0.0f;
         }
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, false);
     }
     if (this->actor.colorFilterTimer == 0) {
         this->actor.shape.yOffset = 200.0f;

@@ -132,35 +132,35 @@ u8 CheckMedallionCount() {
 u8 CheckDungeonCount() {
     u8 dungeonCount = 0;
 
-    if (gSaveContext.dungeonsDone[0] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[1] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[2] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[3] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[4] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[5] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[6] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
         dungeonCount++;
     }
 
-    if (gSaveContext.dungeonsDone[7] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
         dungeonCount++;
     }
 

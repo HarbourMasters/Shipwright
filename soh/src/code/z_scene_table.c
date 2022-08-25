@@ -23,6 +23,8 @@
 
 #include "overlays/actors/ovl_Bg_Dodoago/z_bg_dodoago.h"
 
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+
 #define ENTRANCE(scene, spawn, continueBgm, displayTitleCard, fadeIn, fadeOut)                                     \
     {                                                                                                              \
         scene, spawn,                                                                                              \
@@ -2136,7 +2138,11 @@ void func_8009EE44(GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
-    if ((globalCtx->roomCtx.unk_74[0] == 0) && (INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO)) {
+	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+        playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
+    }
+    if ((globalCtx->roomCtx.unk_74[0] == 0) && playerHasCojiro) {
         if (globalCtx->roomCtx.unk_74[1] == 50) {
             func_8002F7DC(&GET_PLAYER(globalCtx)->actor, NA_SE_EV_CHICKEN_CRY_M);
             globalCtx->roomCtx.unk_74[0] = 1;
@@ -2401,12 +2407,14 @@ void func_8009FE58(GlobalContext* globalCtx) {
         temp = 0.020000001f;
 
         if (globalCtx->pauseCtx.state == 0) {
-            func_800AA76C(&globalCtx->view, ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
-                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
-                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
-            func_800AA78C(&globalCtx->view, 1.f + (0.79999995f * temp * Math_SinS(D_8012A3A0)),
-                          1.f + (0.39999998f * temp * Math_CosS(D_8012A3A0)), 1.f + (1 * temp * Math_CosS(D_8012A39C)));
-            func_800AA7AC(&globalCtx->view, 0.95f);
+            View_SetDistortionOrientation(&globalCtx->view,
+                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
+                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
+                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
+            View_SetDistortionScale(&globalCtx->view, 1.f + (0.79999995f * temp * Math_SinS(D_8012A3A0)),
+                                    1.f + (0.39999998f * temp * Math_CosS(D_8012A3A0)),
+                                    1.f + (1 * temp * Math_CosS(D_8012A39C)));
+            View_SetDistortionSpeed(&globalCtx->view, 0.95f);
         }
 
         switch (globalCtx->roomCtx.unk_74[0]) {

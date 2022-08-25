@@ -341,7 +341,8 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     switch (this->unk_1C6) {
         case 0:
             if (CVar_GetS32("gUseChargedCol",0)) {
-                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged2ColR",255), CVar_GetS32("gCharged2ColG",255), CVar_GetS32("gCharged2ColB",170), (u8)(this->unk_1B0 * 255));
+                Color_RGB8 SpinColor = {255, 255, 170};
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetRGB("gCharged2Col", SpinColor).r, CVar_GetRGB("gCharged2Col", SpinColor).g, CVar_GetRGB("gCharged2Col", SpinColor).b, (u8)(this->unk_1B0 * 255));
             } else {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, (u8)(this->unk_1B0 * 255));
             }
@@ -350,7 +351,8 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
             break;
         case 1:
             if (CVar_GetS32("gUseChargedCol",0)) {
-                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged1ColR",170), CVar_GetS32("gCharged1ColG",255), CVar_GetS32("gCharged1ColB",255), (u8)(this->unk_1B0 * 255));
+                Color_RGB8 SpinColor = {255, 255, 170};
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetRGB("gCharged1Col", SpinColor).r, CVar_GetRGB("gCharged1Col", SpinColor).g, CVar_GetRGB("gCharged1Col", SpinColor).b, (u8)(this->unk_1B0 * 255));
             } else {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, (u8)(this->unk_1B0 * 255));
             }
@@ -382,8 +384,10 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     if (this->unk_1B8 >= 0.85f) {
         phi_f14 = (D_80AA046C[(globalCtx->gameplayFrames & 7)] * 6.0f) + 1.0f;
         if (CVar_GetS32("gUseChargedCol",0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged2ColR",255), CVar_GetS32("gCharged2ColG",255), CVar_GetS32("gCharged2ColB",170), this->unk_1C8);
-            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gCharged2ColEnvR",255), CVar_GetS32("gCharged2ColEnvG",100), CVar_GetS32("gCharged2ColEnvB",0), 128);
+            Color_RGB8 SpinColor1 = {255, 255, 170};
+            Color_RGB8 SpinColor2 = {255, 100, 0};
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetRGB("gCharged2Col", SpinColor1).r, CVar_GetRGB("gCharged2Col", SpinColor1).g, CVar_GetRGB("gCharged2Col", SpinColor1).b, this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetRGB("gCharged2ColEnv", SpinColor2).r, CVar_GetRGB("gCharged2ColEnv", SpinColor2).g, CVar_GetRGB("gCharged2ColEnv", SpinColor2).b, 128);
         } else {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, this->unk_1C8);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 100, 0, 128);
@@ -393,8 +397,10 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     } else {
         phi_f14 = (D_80AA046C[globalCtx->gameplayFrames & 7] * 2.0f) + 1.0f;
         if (CVar_GetS32("gUseChargedCol",0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged1ColR",170), CVar_GetS32("gCharged1ColG",255), CVar_GetS32("gCharged1ColB",255), this->unk_1C8);
-            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gCharged1ColEnvR",0), CVar_GetS32("gCharged1ColEnvG",100), CVar_GetS32("gCharged1ColEnvB",255), 128);
+            Color_RGB8 SpinColor1 = {170, 255, 255};
+            Color_RGB8 SpinColor2 = {20, 100, 255};
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetRGB("gCharged1Col", SpinColor1).r, CVar_GetRGB("gCharged1Col", SpinColor1).g, CVar_GetRGB("gCharged1Col", SpinColor1).b, this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetRGB("gCharged1ColEnv", SpinColor2).r, CVar_GetRGB("gCharged1ColEnv", SpinColor2).g, CVar_GetRGB("gCharged1ColEnv", SpinColor2).b, 128);
         } else {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, this->unk_1C8);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);

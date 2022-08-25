@@ -40,6 +40,7 @@ typedef struct EnNiwLady {
     /* 0x0284 */ s32 getItemId;
     /* 0x0288 */ struct_80034A14_arg1 unk_288;
     /* 0x02B0 */ ColliderCylinder collider;
+    /* 0x02FC */ GetItemEntry getItemEntry;
 } EnNiwLady; // size = 0x02FC
 
 #endif
