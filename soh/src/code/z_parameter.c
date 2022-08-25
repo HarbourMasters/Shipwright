@@ -1644,6 +1644,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
+            gSaveContext.bgsFlag = 1;
 
             if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF 
                 ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) { // In rando, when buying Giant's Knife, also check
