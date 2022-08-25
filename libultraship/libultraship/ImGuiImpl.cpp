@@ -1274,7 +1274,7 @@ namespace SohImGui {
                     Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
                         "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
                     PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                    Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up to equip instead of navigate");
+                    Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
                     PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
                     Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                     PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
