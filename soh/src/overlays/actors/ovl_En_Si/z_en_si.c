@@ -205,13 +205,13 @@ void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx) {
     getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
     getItemId = getItem.getItemId;
     if (getItemId == RG_ICE_TRAP) {
-        player->getItemEntry = getItem;
         player->pendingIceTrap = true;
         textId = 0xF8;
     } else {
         textId = getItem.textId;
         giveItemId = getItem.itemId;
     }
+    player->getItemEntry = getItem;
 }
 
 void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx) {
@@ -222,5 +222,8 @@ void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx) {
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
         Randomizer_Item_Give(globalCtx, getItem);
     }
-    player->getItemEntry = getItem;
+    // RANDOTOD: Move this into Item_Give() or some other more central location
+    if (getItem.getItemId == GI_SWORD_BGS) {
+        gSaveContext.bgsFlag = true;
+    }
 }
