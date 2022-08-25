@@ -17,7 +17,7 @@ s32 func_80AFB748(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB768(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx);
-void Randomizer_GetSkullReward(EnSi* this, GlobalContext* globalCtx);
+void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx);
 void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx);
 
 s32 textId = 0xB4;
@@ -102,7 +102,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
 
                 if (gSaveContext.n64ddFlag) {
-                    Randomizer_GetSkullReward(this, globalCtx);
+                    Randomizer_UpdateSkullReward(this, globalCtx);
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
@@ -138,7 +138,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
-            Randomizer_GetSkullReward(this, globalCtx);
+            Randomizer_UpdateSkullReward(this, globalCtx);
         } else {
             Item_Give(globalCtx, giveItemId);
         }
@@ -199,7 +199,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void Randomizer_GetSkullReward(EnSi* this, GlobalContext* globalCtx) {
+void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
