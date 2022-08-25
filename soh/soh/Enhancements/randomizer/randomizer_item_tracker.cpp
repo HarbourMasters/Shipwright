@@ -608,6 +608,7 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
                         dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
                         break;
                     case ITEM_KEY_BOSS:
+                        // Swap Ganon's Castle boss key to the right scene ID manually
                         if (dungeons[j].id == SCENE_GANONTIKA) {
                             dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANON, DrawDungeonItem));
                         } else {
