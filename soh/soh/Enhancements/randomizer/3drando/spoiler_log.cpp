@@ -679,8 +679,10 @@ static void WriteAllLocations(int language) {
           case 0:
           default:
             location->GetPlacedItemName().english;
+            break;
           case 2:
             location->GetPlacedItemName().french;
+            break;
         }
 
         // Eventually check for other things here like fake name
