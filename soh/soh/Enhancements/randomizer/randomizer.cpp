@@ -3745,11 +3745,11 @@ void CreateScrubMessages() {
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
-            "I tried to be a magic bean salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, "
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, "
             "want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "I tried to be a magic bean salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, "
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth beans!^Anyway, "
             "want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "J'ai essayé d'être un vendeur de&haricots magiques, mais j'étais&mauvais au niveau du marketing et&ça me "
+            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça me "
             "courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
