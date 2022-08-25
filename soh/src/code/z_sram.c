@@ -704,7 +704,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.n64ddFlag = 1;
 
         // Sets all rando flags to false
-        for (s32 i = 0; i < RAND_INF_MAX; i++) {
+        for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
             gSaveContext.randomizerInf[i] = 0;
         }
 
