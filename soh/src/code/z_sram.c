@@ -791,7 +791,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = getItem.getItemId;
 
             if (getItem.modIndex == MOD_NONE) {
-                if(getItem.itemId >= ITEM_KOKIRI_EMERALD && getItem.itemId <= ITEM_MEDALLION_LIGHT) {
+                if (getItem.itemId >= ITEM_MEDALLION_FOREST && getItem.itemId <= ITEM_ZORA_SAPPHIRE) {
                     GiveLinkDungeonReward(getItem.getItemId);
                 } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
                         giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
