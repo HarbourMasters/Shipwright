@@ -3741,7 +3741,7 @@ void CreateScrubMessages() {
             });
     }
     customMessageManager->CreateMessage(
-        Randomizer::scrubMessageTableID, 0x405E,
+        Randomizer::scrubMessageTableID, TEXT_BEAN_SALESMAN,
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,

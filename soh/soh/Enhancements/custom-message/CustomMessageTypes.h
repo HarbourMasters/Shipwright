@@ -16,7 +16,7 @@ typedef enum {
     TEXT_RED_RUPEE = 0xF0,
     TEXT_PURPLE_RUPEE = 0xF1,
     TEXT_HUGE_RUPEE = 0xF2,
-    TEXT_BEAN_SALESEMAN = 0x405E
+    TEXT_BEAN_SALESMAN = 0x405E
 } TextIDs;
 
 #ifdef __cplusplus
