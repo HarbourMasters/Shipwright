@@ -7,13 +7,6 @@
 #include <algorithm>
 #include <vector>
 
-#include <cstddef>
-#include <PR/ultra64/types.h>
-#include <PR/ultra64/sptask.h>
-#include <PR/ultra64/pi.h>
-#include <PR/ultra64/message.h>
-#include "../../soh/include/z64audio.h"
-#include "Archive.h"
 #include "Console.h"
 #include "Hooks.h"
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -27,7 +20,6 @@
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
-#include "UltraController.h"
 
 #ifdef __WIIU__
 #include <gx2/registers.h> // GX2SetViewport / GX2SetScissor
@@ -91,8 +83,6 @@ namespace SohImGui {
     std::function<void(void)> clientDrawMenu;
     std::function<void(void)> clientSetupHooks;
 
-
-    bool p_open = false;
     bool needs_save = false;
     int lastBackendID = 0;
     bool statsWindowOpen;
@@ -795,6 +785,10 @@ namespace SohImGui {
         return gfx_get_detected_hz();
     }
 
+    Ship::GameOverlay* GetGameOverlay() {
+        return overlay;
+    }
+
     std::pair<const char*, const char*>* GetAvailableRenderingBackends() {
         return backends;
     }
@@ -846,6 +840,10 @@ namespace SohImGui {
         customWindows[name].enabled = isEnabled;
     }
 
+    Ship::InputEditor* GetInputEditor() {
+        return controller;
+    }
+
     void ToggleInputEditorWindow(bool isOpen) {
         if (isOpen)
             controller->Open();
@@ -855,6 +853,10 @@ namespace SohImGui {
 
     void ToggleStatisticsWindow(bool isOpen) {
         statsWindowOpen = isOpen;
+    }
+
+    std::shared_ptr<Ship::Console> GetConsole() {
+        return console;
     }
 
     void ToggleConsoleWindow(bool isOpen) {

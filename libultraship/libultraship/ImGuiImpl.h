@@ -76,11 +76,6 @@ namespace SohImGui {
         WindowDrawFunc drawFunc;
     } CustomWindow;
 
-    extern std::shared_ptr<Ship::Console> console;
-    extern Ship::InputEditor* controller;
-    extern Ship::GameOverlay* overlay;
-
-
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
 
@@ -108,9 +103,13 @@ namespace SohImGui {
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
     void EnableWindow(const std::string& name, bool isEnabled = true);
 
+    Ship::GameOverlay* GetGameOverlay();
+
+    Ship::InputEditor* GetInputEditor();
     void ToggleInputEditorWindow(bool isOpen = true);
     void ToggleStatisticsWindow(bool isOpen = true);
 
+    std::shared_ptr<Ship::Console> GetConsole();
     void ToggleConsoleWindow(bool isOpen = true);
     void DispatchConsoleCommand(const std::string& line);
 
@@ -120,8 +119,6 @@ namespace SohImGui {
 
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, Ship::CommandEntry entry);
-
-
 
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
