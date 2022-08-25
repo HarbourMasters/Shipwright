@@ -709,11 +709,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.randomizerInf[i] = 0;
         }
 
-         // Sets all scrubs to not purchased when generating a rando save.
-        for (u8 i = 0; i < NUM_SCRUBS; i++) {
-            gSaveContext.scrubsPurchased[i] = 0;
-        }
-
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
         gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal

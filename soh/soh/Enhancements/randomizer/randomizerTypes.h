@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include "z64item.h"
+#include "randomizer_inf.h"
 
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
@@ -1019,7 +1020,7 @@ typedef enum {
 } RandomizerSettingKey;
 
 typedef struct ScrubIdentity {
-    int32_t scrubId;
+    RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
     GetItemID getItemId;
     int32_t itemPrice;

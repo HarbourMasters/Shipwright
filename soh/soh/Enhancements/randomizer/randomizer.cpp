@@ -104,7 +104,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 Randomizer::~Randomizer() { 
     this->randoSettings.clear();
     this->itemLocations.clear();
-    this->scrubPrices.clear();
+    this->randomizerMerchantPrices.clear();
 }
 
 std::unordered_map<s16, s16> getItemIdToItemId = {
@@ -1118,8 +1118,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                         gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        scrubPrices[gSaveContext.itemLocations[index].check] = itemit.value();
-                        // TODO: Handle shop prices
+                        randomizerMerchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
                     }
                 }
             } else {
@@ -1606,12 +1605,12 @@ std::string Randomizer::GetGanonHintText() const {
 ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
     struct ScrubIdentity scrubIdentity;
 
-    scrubIdentity.scrubId = -1;
     scrubIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     scrubIdentity.getItemId = GI_NONE;
     scrubIdentity.itemPrice = -1;
     scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0;
 
+    // Based on z_en_dns.c 93-113
     switch (actorParams) {
         case 0x00:
             scrubIdentity.getItemId = GI_NUTS_5_2;
@@ -1653,20 +1652,20 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_DDAN: // Dodongo's Cavern
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x00;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
                     break;
                 case 0x01:
-                    scrubIdentity.scrubId = 0x01;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
                     break;
                 case 0x03:
                 case 0x06:
-                    scrubIdentity.scrubId = 0x02;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
                     break;
                 case 0x04:
-                    scrubIdentity.scrubId = 0x03;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
                     break;
             }
@@ -1674,7 +1673,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_BDAN: // Jabu Jabu's Belly
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x04;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_JABU_JABUS_BELLY_DEKU_SCRUB;
                     scrubIdentity.randomizerCheck = RC_JABU_JABUS_BELLY_DEKU_SCRUB;
                     break;
             }
@@ -1682,20 +1681,20 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_GANONTIKA: // Ganon's Castle
             switch (actorParams) {
                 case 0x05:
-                    scrubIdentity.scrubId = 0x05;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
                     break;
                 case 0x03:
                 case 0x06:
-                    scrubIdentity.scrubId = 0x06;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
                     break;
                 case 0x07:
-                    scrubIdentity.scrubId = 0x07;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
                     break;
                 case 0x08:
-                    scrubIdentity.scrubId = 0x08;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_LEFT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_LEFT;
                     break;
             }
@@ -1705,7 +1704,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xE6: // Hyrule Field Scrub Grotto
                     switch (actorParams) {
                         case 0x02:
-                            scrubIdentity.scrubId = 0x09;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO;
                             scrubIdentity.randomizerCheck = RC_HF_DEKU_SCRUB_GROTTO;
                             scrubIdentity.isShuffled = true;
                             break;
@@ -1714,11 +1713,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEB: // ZR Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x0A;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x0B;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1726,11 +1725,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEE: // Sacred Forest Meadow Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x0C;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x0D;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1738,16 +1737,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEF: // Lake Hylia Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x0E;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x0F;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x10;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1755,11 +1754,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xF0: // Gerudo Valley Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x11;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x12;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1768,11 +1767,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                     switch (actorParams) {
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x13;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x0A:
-                            scrubIdentity.scrubId = 0x14;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.isShuffled = true;
                             break;
@@ -1781,16 +1780,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xF9: // Death Mountain Crater Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x15;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x16;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x17;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1798,16 +1797,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFB: // Gerudo City Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x18;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x19;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x1A;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1815,16 +1814,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFC: // Lon Lon Ranch Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x1B;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x1C;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x1D;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1832,11 +1831,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFD: // Desert Colossus Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x1E;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x1F;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1846,15 +1845,15 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_SPOT10: // Lost woods
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x20;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
                     break;
                 case 0x01:
-                    scrubIdentity.scrubId = 0x21;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
                     break;
                 case 0x09:
-                    scrubIdentity.scrubId = 0x22;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                     scrubIdentity.isShuffled = true;
                     break;
@@ -1863,15 +1862,15 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_SPOT17: // Death Mountain Crater
             switch (actorParams) {
                 case 0x05:
-                    scrubIdentity.scrubId = 0x23;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB;
                     scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB;
                     break;
             }
             break;
     }
     
-    if (scrubPrices.find(scrubIdentity.randomizerCheck) != scrubPrices.end()) {
-        scrubIdentity.itemPrice = scrubPrices[scrubIdentity.randomizerCheck];
+    if (randomizerMerchantPrices.find(scrubIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
+        scrubIdentity.itemPrice = randomizerMerchantPrices[scrubIdentity.randomizerCheck];
     }
 
     return scrubIdentity;
@@ -3398,9 +3397,13 @@ void DrawRandoEditor(bool& open) {
                     // Shuffle Scrubs
                     ImGui::Text(Settings::Scrubsanity.GetName().c_str());
                     InsertHelpHoverText(
-                        "Off - Scrubs will not be shuffled.\n"
+                        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
                         "\n"
                         "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                        "\n"
+                        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+                        "\n"
+                        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n"
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
                     PaddedSeparator();
@@ -4019,6 +4022,8 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
+// Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
+// to being generated at save load, with only messages specific to each scrub.
 void CreateScrubMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);

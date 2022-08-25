@@ -1040,7 +1040,7 @@ int Fill() {
     std::vector<uint32_t> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
-    // Add prices for scrubsanity
+    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
     if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
       for (size_t i = 0; i < ScrubLocations.size(); i++) {
         Location(ScrubLocations[i])->SetScrubsanityPrice(10);

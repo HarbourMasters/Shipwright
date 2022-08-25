@@ -181,6 +181,8 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;
             this->dnsItemEntry->setRupeesAndFlags = EnDns_RandomizerPurchase;
             this->dnsItemEntry->itemAmount = 1;
+            // Currently the textID is simply identified by the item price since that is the only thing
+            // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
             this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
         }
     }
@@ -205,7 +207,7 @@ void EnDns_ChangeAnim(EnDns* this, u8 index) {
 /* Item give checking functions */
 
 u32 EnDns_RandomizerPurchaseableCheck(EnDns* this) {
-    if (gSaveContext.rupees < this->dnsItemEntry->itemPrice || gSaveContext.scrubsPurchased[this->scrubIdentity.scrubId] == 1) {
+    if (gSaveContext.rupees < this->dnsItemEntry->itemPrice || Flags_GetRandomizerInf(this->scrubIdentity.randomizerInf)) {
         return 0;
     }
     return 4;
@@ -309,7 +311,7 @@ u32 func_809EF9A4(EnDns* this) {
 /* Paying and flagging functions */
 void EnDns_RandomizerPurchase(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
-    gSaveContext.scrubsPurchased[this->scrubIdentity.scrubId] = 1;
+    Flags_SetRandomizerInf(this->scrubIdentity.randomizerInf);
 }
 
 void func_809EF9F8(EnDns* this) {
@@ -514,6 +516,8 @@ void EnDns_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
     if (gSaveContext.n64ddFlag && this->scrubIdentity.isShuffled) {
+        // Currently the textID is simply identified by the item price since that is the only thing
+        // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
         this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
     }
     Actor_SetFocus(&this->actor, 60.0f);

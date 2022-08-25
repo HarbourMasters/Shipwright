@@ -761,10 +761,6 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-
-    SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
-    });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -922,10 +918,6 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-
-    SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
-    });
 }
 
 void SaveManager::SaveBase() {
@@ -1078,10 +1070,6 @@ void SaveManager::SaveBase() {
 
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
-    });
-
-    SaveManager::Instance->SaveArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.scrubsPurchased[i]);
     });
 }
 

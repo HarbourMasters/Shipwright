@@ -184,7 +184,6 @@ typedef struct {
     char ganonText[250];
     u8 seedIcons[5];
     u16 randomizerInf[2];
-    u8 scrubsPurchased[35];
     u8 temporaryWeapon;
     u16 adultTradeItems;
 } SaveContext; // size = 0x1428

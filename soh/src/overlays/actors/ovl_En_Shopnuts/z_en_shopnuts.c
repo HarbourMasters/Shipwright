@@ -73,7 +73,7 @@ void EnShopnuts_Init(Actor* thisx, GlobalContext* globalCtx) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(globalCtx->sceneNum, this->actor.params, respawnData);
 
-        if (scrubIdentity.isShuffled && gSaveContext.scrubsPurchased[scrubIdentity.scrubId] == 1) {
+        if (scrubIdentity.isShuffled && Flags_GetRandomizerInf(scrubIdentity.randomizerInf)) {
             Actor_Kill(&this->actor);
         }
     }

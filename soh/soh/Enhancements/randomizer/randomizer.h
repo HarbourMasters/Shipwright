@@ -19,7 +19,7 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    std::unordered_map<RandomizerCheck, u16> scrubPrices;
+    std::unordered_map<RandomizerCheck, u16> randomizerMerchantPrices;
     s16 GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
     s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
