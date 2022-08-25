@@ -2698,12 +2698,18 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
     cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
     cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
-    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleEntrances", 0);
+    cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
+
+    // Still used in 3DS logic, but not in our UI. Instead, enable if any of the entrance rando options are enabled.
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) || 
+                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+
     cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
     cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
-    cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -2749,11 +2755,6 @@ void DrawRandoEditor(bool& open) {
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
-    const char* randoShuffleEntrances[2] = { "Off", "On" };
-    const char* randoShuffleDungeonsEntrances[2] = { "Off", "On" };
-    const char* randoShuffleOverworldEntrances[2] = { "Off", "On" };
-    const char* randoShuffleInteriorsEntrances[2] = { "Off", "On" };
-    const char* randoShuffleGrottosEntrances[2] = { "Off", "On" };
     const char* randoBombchusInLogic[2] = { "Off", "On" };
     const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
     const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
@@ -3452,7 +3453,46 @@ void DrawRandoEditor(bool& open) {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
-                ImGui::Text("Coming soon");
+                
+                // Shuffle Dungeon Entrances
+                // RANDOTODO: Add option to shuffle Ganon's Castle
+                SohImGui::EnhancementCheckbox("Shuffle Dungeon Entrances", "gRandomizeShuffleDungeonsEntrances");
+                InsertHelpHoverText(
+                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds."
+                    "However, Ganon's Castle is not shuffled.\n"
+                    "\n"
+                    "Additionally, the entrance of Deku Tree, Fire Temple and Bottom of the Well are opened for both child and adult."
+                );
+
+                PaddedSeparator();
+
+                // Shuffle Overworld Entrances
+                SohImGui::EnhancementCheckbox("Shuffle Overworld Entrances", "gRandomizeShuffleOverworldEntrances");
+                InsertHelpHoverText(
+                    "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld areas.\n"
+                    "\n"
+                    "Some entrances are unshuffled to avoid issues:\n"
+                    "- Hyrule Castle Courtyard and Garden entrance\n"
+                    "- Both Market Back Alley entrances\n"
+                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)."
+                );
+
+                PaddedSeparator();
+
+                // Shuffle Interior Entrances
+                // RANDOTODO: Add ALL option. Below is 3DS "Simple" option
+                SohImGui::EnhancementCheckbox("Shuffle Interior Entrances", "gRandomizeShuffleInteriorsEntrances");
+                InsertHelpHoverText(
+                    "Shuffle the pool of interior entrances which contains most Houses and all Great Fairies."
+                );
+
+                PaddedSeparator();
+
+                // Shuffle Grotto Entrances
+                SohImGui::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances");
+                InsertHelpHoverText(
+                    "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
+                );
                 
                 ImGui::PopItemWidth();
 
