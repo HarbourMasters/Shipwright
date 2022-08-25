@@ -27,7 +27,7 @@ extern GlobalContext* gGlobalCtx;
 
 #include <libultraship/Cvar.h>
 
-#define CMD_REGISTER SohImGui::BindCmd
+#define CMD_REGISTER SohImGui::GetConsole()->AddCommand
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {

@@ -296,26 +296,6 @@ namespace SohImGui {
         }
     }
 
-    void ShowCursor(bool hide, Dialogues d) {
-        if (d == Dialogues::dLoadSettings) {
-            Window::GetInstance()->ShowCursor(hide);
-            return;
-        }
-
-        if (d == Dialogues::dConsole && CVar_GetS32("gOpenMenuBar", 0)) {
-            return;
-        }
-        if (!Window::GetInstance()->IsFullscreen()) {
-            oldCursorState = false;
-            return;
-        }
-
-        if (oldCursorState != hide) {
-            oldCursorState = hide;
-            Window::GetInstance()->ShowCursor(hide);
-        }
-    }
-
     void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
         const auto res = Window::GetInstance()->GetResourceManager()->LoadFile(path);
@@ -336,49 +316,7 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
-        GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = static_cast<Ship::Texture*>(Window::GetInstance()->GetResourceManager()->LoadResource(path).get());
-
-        std::vector<uint8_t> texBuffer;
-        texBuffer.reserve(res->width * res->height * 4);
-
-        switch (res->texType) {
-        case Ship::TextureType::RGBA32bpp:
-            texBuffer.assign(res->imageData, res->imageData + (res->width * res->height * 4));
-            break;
-        case Ship::TextureType::GrayscaleAlpha8bpp:
-            for (int32_t i = 0; i < res->width * res->height; i++) {
-                uint8_t ia = res->imageData[i];
-                uint8_t color = ((ia >> 4) & 0xF) * 255 / 15;
-                uint8_t alpha = (ia & 0xF) * 255 / 15;
-                texBuffer.push_back(color);
-                texBuffer.push_back(color);
-                texBuffer.push_back(color);
-                texBuffer.push_back(alpha);
-            }
-            break;
-        default:
-            // TODO convert other image types
-            SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
-            return;
-        }
-
-        for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= tint.x;
-            texBuffer[pixel * 4 + 1] *= tint.y;
-            texBuffer[pixel * 4 + 2] *= tint.z;
-            texBuffer[pixel * 4 + 3] *= tint.w;
-        }
-
-        const auto asset = new GameAsset{ api->new_texture() };
-
-        api->select_texture(0, asset->textureId);
-        api->set_sampler_parameters(0, false, 0, 0);
-        api->upload_texture(texBuffer.data(), res->width, res->height);
-
-        DefaultAssets[name] = asset;
-    }
+    // MARK: - Public API
 
     void Init(WindowImpl window_impl) {
         CVar_Load();
@@ -608,19 +546,19 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::Begin("Debug Stats", &statsWindowOpen, ImGuiWindowFlags_NoFocusOnAppearing);
 
-#if defined(_WIN32)
+    #if defined(_WIN32)
             ImGui::Text("Platform: Windows");
-#elif defined(__APPLE__)
+    #elif defined(__APPLE__)
             ImGui::Text("Platform: macOS");
-#elif defined(__SWITCH__)
+    #elif defined(__SWITCH__)
             ImGui::Text("Platform: Nintendo Switch");
-#elif defined(__WIIU__)
+    #elif defined(__WIIU__)
             ImGui::Text("Platform: Nintendo Wii U");
-#elif defined(__linux__)
+    #elif defined(__linux__)
             ImGui::Text("Platform: Linux");
-#else
+    #else
             ImGui::Text("Platform: Unknown");
-#endif
+    #endif
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
             ImGui::End();
             ImGui::PopStyleColor();
@@ -785,10 +723,6 @@ namespace SohImGui {
         return gfx_get_detected_hz();
     }
 
-    Ship::GameOverlay* GetGameOverlay() {
-        return overlay;
-    }
-
     std::pair<const char*, const char*>* GetAvailableRenderingBackends() {
         return backends;
     }
@@ -814,10 +748,6 @@ namespace SohImGui {
         gfx_msaa_level = value;
     }
 
-    void BindCmd(const std::string& cmd, CommandEntry entry) {
-        console->AddCommand(cmd, entry);
-    }
-
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
         if (customWindows.contains(name)) {
             SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
@@ -838,6 +768,10 @@ namespace SohImGui {
 
     void EnableWindow(const std::string& name, bool isEnabled) {
         customWindows[name].enabled = isEnabled;
+    }
+
+    Ship::GameOverlay* GetGameOverlay() {
+        return overlay;
     }
 
     Ship::InputEditor* GetInputEditor() {
@@ -879,25 +813,88 @@ namespace SohImGui {
     }
 
     ImTextureID GetTextureByID(int id) {
-#ifdef ENABLE_DX11
+    #ifdef ENABLE_DX11
         if (impl.backend == Backend::DX11)
         {
             ImTextureID gfx_d3d11_get_texture_by_id(int id);
             return gfx_d3d11_get_texture_by_id(id);
         }
-#endif
-#ifdef __WIIU__
+    #endif
+    #ifdef __WIIU__
         if (impl.backend == Backend::GX2)
         {
             return gfx_gx2_texture_for_imgui(id);
         }
-#endif
+    #endif
 
         return reinterpret_cast<ImTextureID>(id);
     }
 
-    void BeginGroupPanel(const char* name, const ImVec2& size)
-    {
+    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
+        GfxRenderingAPI* api = gfx_get_current_rendering_api();
+        const auto res = static_cast<Ship::Texture*>(Window::GetInstance()->GetResourceManager()->LoadResource(path).get());
+
+        std::vector<uint8_t> texBuffer;
+        texBuffer.reserve(res->width * res->height * 4);
+
+        switch (res->texType) {
+        case Ship::TextureType::RGBA32bpp:
+            texBuffer.assign(res->imageData, res->imageData + (res->width * res->height * 4));
+            break;
+        case Ship::TextureType::GrayscaleAlpha8bpp:
+            for (int32_t i = 0; i < res->width * res->height; i++) {
+                uint8_t ia = res->imageData[i];
+                uint8_t color = ((ia >> 4) & 0xF) * 255 / 15;
+                uint8_t alpha = (ia & 0xF) * 255 / 15;
+                texBuffer.push_back(color);
+                texBuffer.push_back(color);
+                texBuffer.push_back(color);
+                texBuffer.push_back(alpha);
+            }
+            break;
+        default:
+            // TODO convert other image types
+            SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
+            return;
+        }
+
+        for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
+            texBuffer[pixel * 4 + 0] *= tint.x;
+            texBuffer[pixel * 4 + 1] *= tint.y;
+            texBuffer[pixel * 4 + 2] *= tint.z;
+            texBuffer[pixel * 4 + 3] *= tint.w;
+        }
+
+        const auto asset = new GameAsset{ api->new_texture() };
+
+        api->select_texture(0, asset->textureId);
+        api->set_sampler_parameters(0, false, 0, 0);
+        api->upload_texture(texBuffer.data(), res->width, res->height);
+
+        DefaultAssets[name] = asset;
+    }
+
+    void ShowCursor(bool hide, Dialogues d) {
+        if (d == Dialogues::dLoadSettings) {
+            Window::GetInstance()->ShowCursor(hide);
+            return;
+        }
+
+        if (d == Dialogues::dConsole && CVar_GetS32("gOpenMenuBar", 0)) {
+            return;
+        }
+        if (!Window::GetInstance()->IsFullscreen()) {
+            oldCursorState = false;
+            return;
+        }
+
+        if (oldCursorState != hide) {
+            oldCursorState = hide;
+            Window::GetInstance()->ShowCursor(hide);
+        }
+    }
+
+    void BeginGroupPanel(const char* name, const ImVec2& size) {
         ImGui::BeginGroup();
 
         // auto cursorPos = ImGui::GetCursorScreenPos();
@@ -931,13 +928,13 @@ namespace SohImGui {
 
         ImGui::PopStyleVar(2);
 
-#if IMGUI_VERSION_NUM >= 17301
+    #if IMGUI_VERSION_NUM >= 17301
         ImGui::GetCurrentWindow()->ContentRegionRect.Max.x -= frameHeight * 0.5f;
         ImGui::GetCurrentWindow()->WorkRect.Max.x -= frameHeight * 0.5f;
         ImGui::GetCurrentWindow()->InnerRect.Max.x -= frameHeight * 0.5f;
-#else
+    #else
         ImGui::GetCurrentWindow()->ContentsRegionRect.Max.x -= frameHeight * 0.5f;
-#endif
+    #endif
         ImGui::GetCurrentWindow()->Size.x -= frameHeight;
 
         auto itemWidth = ImGui::CalcItemWidth();
@@ -1002,13 +999,13 @@ namespace SohImGui {
 
         ImGui::PopStyleVar(2);
 
-#if IMGUI_VERSION_NUM >= 17301
+    #if IMGUI_VERSION_NUM >= 17301
         ImGui::GetCurrentWindow()->ContentRegionRect.Max.x += frameHeight * 0.5f;
         ImGui::GetCurrentWindow()->WorkRect.Max.x += frameHeight * 0.5f;
         ImGui::GetCurrentWindow()->InnerRect.Max.x += frameHeight * 0.5f;
-#else
+    #else
         ImGui::GetCurrentWindow()->ContentsRegionRect.Max.x += frameHeight * 0.5f;
-#endif
+    #endif
         ImGui::GetCurrentWindow()->Size.x += frameHeight;
 
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
