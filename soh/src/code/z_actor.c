@@ -4705,6 +4705,20 @@ void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
 }
 
+/**
+ * Tests if "randomizerInf" flag is set.
+ */
+s32 Flags_GetRandomizerInf(RandomizerInf flag) {
+    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "randomizerInf" flag.
+ */
+void Flags_SetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
 u32 func_80035BFC(GlobalContext* globalCtx, s16 arg1) {
     u16 retTextId = 0;
 

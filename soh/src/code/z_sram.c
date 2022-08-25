@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
@@ -702,19 +703,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         fileChooseCtx->n64ddFlag = 1;
         gSaveContext.n64ddFlag = 1;
 
-        // Sets all the dungeons to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/82
-        for (u8 i = 0; i < NUM_DUNGEONS; i++) {
-            gSaveContext.dungeonsDone[i] = 0;
-        }
-
-        // Sets all Ganon's Trials to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/131
-        for (u8 i = 0; i < NUM_TRIALS; i++) {
-            gSaveContext.trialsDone[i] = 0;
-        }
-
-        // Sets all cows to unmilked when generating a rando save.
-        for (u8 i = 0; i < NUM_COWS; i++) {
-            gSaveContext.cowsMilked[i] = 0;
+        // Sets all rando flags to false
+        for (s32 i = 0; i < RAND_INF_MAX; i++) {
+            gSaveContext.randomizerInf[i] = 0;
         }
 
         // Set Cutscene flags to skip them

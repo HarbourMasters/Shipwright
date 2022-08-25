@@ -6083,8 +6083,8 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
-        case FLAG_COW_MILKED:
-            gSaveContext.cowsMilked[this->pendingFlag.flagID] = 1;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
             break;
         case FLAG_EVENT_CHECK_INF:
             Flags_SetEventChkInf(this->pendingFlag.flagID);

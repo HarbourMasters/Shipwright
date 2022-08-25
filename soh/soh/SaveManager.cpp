@@ -758,15 +758,8 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
 }
 
@@ -922,15 +915,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
 }
 
@@ -1082,15 +1068,8 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->SaveArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.cowsMilked[i]);
+    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
 }
 

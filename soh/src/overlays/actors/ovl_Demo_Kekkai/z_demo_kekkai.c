@@ -76,27 +76,27 @@ s32 DemoKekkai_CheckEventFlag(s32 params) {
 u32 TrialsDoneCount() {
     u8 trialCount = 0;
 
-    if (gSaveContext.trialsDone[0] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL)) {
         trialCount++;
     }
 
-    if (gSaveContext.trialsDone[1] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
         trialCount++;
     }
 
-    if (gSaveContext.trialsDone[2] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL)) {
         trialCount++;
     }
 
-    if (gSaveContext.trialsDone[3] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL)) {
         trialCount++;
     }
 
-    if (gSaveContext.trialsDone[4] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL)) {
         trialCount++;
     }
 
-    if (gSaveContext.trialsDone[5] == 1) {
+    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL)) {
         trialCount++;
     }
 
@@ -249,22 +249,22 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         switch (thisx->params) {
             case KEKKAI_WATER:
-                gSaveContext.trialsDone[2] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL);
                 break;
             case KEKKAI_LIGHT:
-                gSaveContext.trialsDone[5] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
                 break;
             case KEKKAI_FIRE:
-                gSaveContext.trialsDone[1] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL);
                 break;
             case KEKKAI_SHADOW:
-                gSaveContext.trialsDone[3] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL);
                 break;
             case KEKKAI_SPIRIT:
-                gSaveContext.trialsDone[4] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL);
                 break;
             case KEKKAI_FOREST:
-                gSaveContext.trialsDone[0] = 1;
+                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL);
                 break;
         }
         Flags_SetEventChkInf(eventFlags[thisx->params]);
