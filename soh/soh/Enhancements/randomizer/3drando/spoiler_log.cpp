@@ -676,13 +676,13 @@ static void WriteAllLocations(int language) {
         std::string placedItemName;
 
         switch (language) {
-            case 0:
-            default:
-                placedItemName = location->GetPlacedItemName().english;
-                break;
-            case 2:
-                placedItemName = location->GetPlacedItemName().french;
-                break;
+          case 0:
+          default:
+              placedItemName = location->GetPlacedItemName().english;
+              break;
+          case 2:
+              placedItemName = location->GetPlacedItemName().french;
+              break;
         }
 
         // Eventually check for other things here like fake name
