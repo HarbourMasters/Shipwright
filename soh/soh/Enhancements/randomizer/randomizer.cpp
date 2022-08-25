@@ -3327,8 +3327,8 @@ void DrawRandoEditor(bool& open) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Hint & Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3400,7 +3400,15 @@ void DrawRandoEditor(bool& open) {
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
 
-                // COLUMN 2 - HINT SETTINGS
+                // COLUMN 2 - WORLD SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("Coming soon");
+                
+                ImGui::PopItemWidth();
+
+                // COLUMN 3 - HINT & ITEM POOL SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
@@ -3453,12 +3461,9 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
-                ImGui::PopItemWidth();
 
-                // COLUMN 3 - ITEM POOL SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
+                PaddedSeparator();
+
                 ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
                 InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
                                     "\n"
