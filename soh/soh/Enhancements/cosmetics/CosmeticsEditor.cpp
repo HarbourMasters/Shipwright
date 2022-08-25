@@ -26,7 +26,7 @@ const char* RainbowColorCvarList[] = {
     "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
 const char* MarginCvarList[] {
-    "gHearts", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
+    "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
     "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
@@ -44,7 +44,6 @@ ImVec4 GetRandomValue(int MaximumPossible){
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
-    //std::random_shuffle(ColorSection, ColorSection + SectionSize);
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
@@ -477,7 +476,7 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Hearts counts", "gHearts");
             DrawPositionsRadioBoxes("gHeartsCount");
-            DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-25,ImGui::GetWindowViewport()->Size.x);
+            DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
             ImGui::NewLine();
             ImGui::EndTable();

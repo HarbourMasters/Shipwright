@@ -40,7 +40,6 @@ namespace Ship {
 	public:
 		virtual ~Controller() = default;
 		Controller();
-		void Read(OSContPad* pad, int32_t virtualSlot);
 		virtual void ReadFromSource(int32_t virtualSlot) = 0;
 		virtual void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) = 0;
 		virtual bool Connected() const = 0;
@@ -49,8 +48,12 @@ namespace Ship {
 		virtual void CreateDefaultBinding(int32_t virtualSlot) = 0;
 		virtual void ClearRawPress() = 0;
 		virtual int32_t ReadRawPress() = 0;
+		virtual const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) = 0;
+		virtual const std::string GetControllerName() = 0;
+		void Read(OSContPad* pad, int32_t virtualSlot);
 		void SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode);
-		std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
+		std::shared_ptr<ControllerAttachment> GetAttachment();
+		std::shared_ptr<DeviceProfile> getProfile(int32_t virtualSlot);
 		int8_t& getLeftStickX(int32_t virtualSlot);
 		int8_t& getLeftStickY(int32_t virtualSlot);
 		int8_t& getRightStickX(int32_t virtualSlot);
@@ -58,11 +61,8 @@ namespace Ship {
 		int32_t& getPressedButtons(int32_t virtualSlot);
 		float& getGyroX(int32_t virtualSlot);
 		float& getGyroY(int32_t virtualSlot);
-		std::shared_ptr<DeviceProfile> getProfile(int32_t virtualSlot);
-		bool IsRumbling() { return isRumbling; }
-		std::string GetGuid() { return GUID; }
-		virtual const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) = 0;
-		virtual const std::string GetControllerName() = 0;
+		bool IsRumbling();
+		std::string GetGuid();
 
 		protected:
 			std::shared_ptr<ControllerAttachment> Attachment;
