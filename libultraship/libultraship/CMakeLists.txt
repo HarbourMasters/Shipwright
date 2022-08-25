@@ -121,6 +121,7 @@ set(Source_Files__CustomImpl
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
 set(Source_Files__CustomImpl__Hooks
+    "Hooks.cpp"
     "Hooks.h"
 )
 source_group("Source Files\\CustomImpl\\Hooks" FILES ${Source_Files__CustomImpl__Hooks})
