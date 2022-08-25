@@ -85,7 +85,7 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
@@ -97,7 +97,7 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
     { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
 };
@@ -114,7 +114,7 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
     { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
 };
 
@@ -124,7 +124,7 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
     { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GANON, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
     { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
     { SCENE_MEN, { ITEM_KEY_SMALL } },
     { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } },
@@ -141,7 +141,7 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_DDAN, "DCVN" },
     { SCENE_BDAN, "JABU" },
     { SCENE_ICE_DOUKUTO, "ICE" },
-    { SCENE_GANON, "GANON" },
+    { SCENE_GANONTIKA, "GANON" },
     { SCENE_MEN, "GTG" },
     { SCENE_GERUDOWAY, "HIDE" },
 };
@@ -288,7 +288,7 @@ ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
                 case SCENE_HAKADANCH:
                     result.y = 3;
                     break;
-                case SCENE_GANON:
+                case SCENE_GANONTIKA:
                     result.y = 2;
                     break;
                 case SCENE_MEN:
@@ -608,7 +608,12 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
                         dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
                         break;
                     case ITEM_KEY_BOSS:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                        // Swap Ganon's Castle boss key to the right scene ID manually
+                        if (dungeons[j].id == SCENE_GANONTIKA) {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANON, DrawDungeonItem));
+                        } else {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                        }
                         break;
                     case ITEM_DUNGEON_MAP:
                         dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[j].id, DrawDungeonItem));
