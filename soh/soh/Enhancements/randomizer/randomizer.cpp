@@ -3328,7 +3328,7 @@ void DrawRandoEditor(bool& open) {
             if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint & Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3408,10 +3408,41 @@ void DrawRandoEditor(bool& open) {
                 
                 ImGui::PopItemWidth();
 
-                // COLUMN 3 - HINT & ITEM POOL SETTINGS
+                // COLUMN 3 - ITEM POOL & HINT SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
+                                    "\n"
+                                    "Plentiful - Extra major items are added to the pool.\n"
+                                    "\n"
+                                    "Balanced - Original item pool.\n"
+                                    "\n"
+                                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                                    "\n"
+                                    "Minimal - Most excess items are removed.");
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
+                                    "\n"
+                                    "Off - No ice traps.\n"
+                                    "\n"
+                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                    "\n"
+                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                    "\n"
+                                    "Mayhem - All added junk items will be Ice Traps.\n"
+                                    "\n"
+                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                    "in the base pool.");
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+
+                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -3462,36 +3493,6 @@ void DrawRandoEditor(bool& open) {
                     ImGui::Unindent();
                 }
 
-                PaddedSeparator();
-
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                PaddedSeparator();
-
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
