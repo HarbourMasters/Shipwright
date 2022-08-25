@@ -7,31 +7,25 @@
 namespace Ship {
 	class DummyController final : public Controller {
 	public:
-		DummyController(const std::string& CUID, const std::string& KeyName, bool Connected) {
-			GUID = CUID;
-			isConnected = Connected;
-			ButtonName = KeyName;
-		}
-
+		DummyController(const std::string& CUID, const std::string& KeyName, bool Connected);
 		std::map<std::vector<std::string>, int32_t> ReadButtonPress();
-		void ReadFromSource(int32_t slot) override {}
-		const std::string GetControllerName() override { return GUID; }
-		const std::string GetButtonName(int slot, int n64Button) override { return ButtonName; }
-		void WriteToSource(int32_t slot, ControllerCallback* controller) override { }
-		bool Connected() const override { return isConnected; }
-		bool CanRumble() const override { return false; }
-		bool CanGyro()   const override { return false; }
-
-		void ClearRawPress() override {}
-		int32_t ReadRawPress() override { return -1; }
-		bool HasPadConf() const { return true; }
-		std::optional<std::string> GetPadConfSection() { return "Unk"; }
-		void CreateDefaultBinding(int32_t slot) override {}
+		void ReadFromSource(int32_t virtualSlot) override;
+		const std::string GetControllerName() override;
+		const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) override;
+		void WriteToSource(int32_t slot, ControllerCallback* controller) override;
+		bool Connected() const override;
+		bool CanRumble() const override;
+		bool CanGyro() const override;
+		void ClearRawPress() override;
+		int32_t ReadRawPress() override;
+		bool HasPadConf() const;
+		std::optional<std::string> GetPadConfSection();
+		void CreateDefaultBinding(int32_t virtualSlot) override;
 	protected:
 		std::string ButtonName;
 		bool isConnected = false;
-		std::string GetControllerType() { return "Unk"; }
-		std::string GetConfSection() { return "Unk"; }
-		std::string GetBindingConfSection() { return "Unk"; }
+		std::string GetControllerType();
+		std::string GetConfSection();
+		std::string GetBindingConfSection();
 	};
 }

@@ -87,6 +87,7 @@ set(Source_Files__Controller
     "KeyboardController.cpp"
     "KeyboardController.h"
     "UltraController.h"
+    "DummyController.cpp"
     "DummyController.h"
 )
 

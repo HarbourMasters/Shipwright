@@ -21,7 +21,7 @@ namespace Ship {
 		size_t GetNumVirtualDevices();
 		uint8_t* GetControllerBits();
 	private:
-		std::vector<int> virtualDevices = {};
+		std::vector<int32_t> virtualDevices = {};
 		std::vector<std::shared_ptr<Controller>> physicalDevices = {};
 		uint8_t* controllerBits = nullptr;
 	};
