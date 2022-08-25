@@ -2001,18 +2001,21 @@ namespace SohImGui {
 
                 if (ImGui::BeginMenu("Rando Enhancements"))
                 {
-                    EnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
+                    EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
                     Tooltip(
-                        "Play unique fanfares when obtaining quest items "
-                        "(medallions/stones/songs). Note that these fanfares are longer than usual."
+                        "Replace Navi's overworld quest hints with rando-related gameplay hints."
                     );
                     PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
                     Tooltip(
                         "When obtaining rupees, randomize what the rupee is called in the textbox."
                     );
-                    PaddedEnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi", true, false);
+                    PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
                     Tooltip(
-                        "Replace Navi's overworld quest hints with rando-related gameplay hints."
+                        "Matches the color of small keys and boss keys to the dungeon they belong to. This helps identify keys from afar and adds a little bit of flair.");
+                    PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares", true, false);
+                    Tooltip(
+                        "Play unique fanfares when obtaining quest items "
+                        "(medallions/stones/songs). Note that these fanfares are longer than usual."
                     );
                     ImGui::EndMenu();
                 }

@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
+#include "draw.h"
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -1158,7 +1159,7 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ? GI_SWORD_BGS : GI_RUPEE_BLUE;
+            return !gSaveContext.bgsFlag ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
@@ -3620,8 +3621,8 @@ void DrawRandoEditor(bool& open) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3693,10 +3694,49 @@ void DrawRandoEditor(bool& open) {
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
 
-                // COLUMN 2 - HINT SETTINGS
+                // COLUMN 2 - WORLD SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("Coming soon");
+                
+                ImGui::PopItemWidth();
+
+                // COLUMN 3 - ITEM POOL & HINT SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
+                                    "\n"
+                                    "Plentiful - Extra major items are added to the pool.\n"
+                                    "\n"
+                                    "Balanced - Original item pool.\n"
+                                    "\n"
+                                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                                    "\n"
+                                    "Minimal - Most excess items are removed.");
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
+                                    "\n"
+                                    "Off - No ice traps.\n"
+                                    "\n"
+                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                    "\n"
+                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                    "\n"
+                                    "Mayhem - All added junk items will be Ice Traps.\n"
+                                    "\n"
+                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                    "in the base pool.");
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+
+                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -3746,40 +3786,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
-                ImGui::PopItemWidth();
 
-                // COLUMN 3 - ITEM POOL SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                PaddedSeparator();
-
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
@@ -4349,6 +4356,14 @@ void InitRandoItemTable() {
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
     }
     for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
+            && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
+        } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
+        } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
 }

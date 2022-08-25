@@ -73,7 +73,7 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if ((gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[2]) ||
+    if ((gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
         (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         return 0x402B;
     } else if (gSaveContext.eventChkInf[3] & 8) {
