@@ -32,7 +32,7 @@ u8 generated;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
-const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
+const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
@@ -551,6 +551,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
+    { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS},
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -788,6 +789,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
+                    case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_RANDOM_TRIALS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -1211,8 +1213,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
 
         case RG_MAGIC_BEAN:
             return GI_BEAN;
-        case RG_MAGIC_BEAN_PACK:
-            return GI_BEAN; //todo make it 10 of them
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
@@ -2900,6 +2900,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
+    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3445,6 +3446,11 @@ void DrawRandoEditor(bool& open) {
                                         "D-pad.\n"
                                         "\n"
                                         "If disabled, only the Claim Check will be found in the pool.");
+                    PaddedSeparator();
+
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
+                    InsertHelpHoverText("Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean Salesman to sell a"
+                                        "random item at a price of 60 rupees.");
                     PaddedSeparator();
 
                     if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
@@ -4024,10 +4030,10 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
 
 // Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
 // to being generated at save load, with only messages specific to each scrub.
-void CreateScrubMessages() {
+void CreateMerchantMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
-    customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, 0,
+    customMessageManager->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+    customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, 0,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
             "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
             "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
@@ -4035,7 +4041,7 @@ void CreateScrubMessages() {
         });
 
     for (u32 price = 5; price <= 95; price += 5) {
-        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
+        customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
@@ -4046,6 +4052,18 @@ void CreateScrubMessages() {
                   std::to_string(price) + " Rubis%w!\x07\x10\xA3"
             });
     }
+    customMessageManager->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
+            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
+            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
+            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
+            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
+        });
 }
 
 void CreateRupeeMessages() {
@@ -4190,75 +4208,122 @@ void Randomizer::CreateCustomMessages() {
     const std::vector<GetItemMessage> getItemMessages = {
         GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
                   "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
-                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
-                               "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+            "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
         GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", 
-                               "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
+                            "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+                            "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
         GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-                                "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-                                "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FISH, ITEM_FISH,
-                                "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
-                                "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
-                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
-                               "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, 
-                                "You got a %rFairy in a Bottle%w!&Use it wisely!",
-                                "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
-                               "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
-                               "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_POE, ITEM_POE,
-                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
-                               "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
+                            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+                            "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre "
+                            "%rénergie vitale%w&ainsi que votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_FISH, ITEM_FISH,
+            "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+            "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu "
+            "%wen&serait friand!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_BUGS, ITEM_BUG, "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+            "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
+                            "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+            "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+            "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+            "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+            "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_POE, ITEM_POE,
+            "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+            "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+                            "You found a %pBottom of the &Well %wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
+                            "You found a %yGerudo Training &Grounds %wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
-        
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!", "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!", "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!", "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!", "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!", "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!", "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!", "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!",
+                            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!",
+                            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!",
+                            "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!",
+                            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+                            "You found the %pBottom of the &Well %wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
+                  "You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
+                  "Du hast eine %rPackung&Magic Beans%w! Finde&einen geeigneten Platz fur einen&Garten und pflanze sie. Dann^warte auf etwas Lustiges passiert!",
+                  "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !")
     };
     CreateGetItemMessages(getItemMessages);
-    CreateScrubMessages();
+    CreateMerchantMessages();
     CreateRupeeMessages();
     CreateNaviRandoMessages();
 }
@@ -4355,6 +4420,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
         GET_ITEM(RG_ICE_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
+        GET_ITEM(RG_MAGIC_BEAN_PACK, OBJECT_GI_BEAN, GID_BEAN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK)
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
