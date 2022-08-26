@@ -2179,12 +2179,14 @@ namespace SohImGui {
     }
 
     void applyEnhancementPresetDefault(void) {
-        // D-pad Support on Pause and File Select
-        CVar_SetS32("gDpadPauseName", 0);
-        // D-pad Support in Ocarina and Text Choice
-        CVar_SetS32("gDpadOcarinaText", 0);
-        // D-pad Support for Browsing Shop Items
-        CVar_SetS32("gDpadShop", 0);
+        // D-pad Support on Pause
+        CVar_SetS32("gDpadPause", 0);
+        // D-pad Support in text and file select
+        CVar_SetS32("gDpadText", 0);
+        // Play Ocarina with D-pad
+        CVar_SetS32("gDpadOcarina", 0);
+        // Play Ocarina with Right Stick
+        CVar_SetS32("gRStickOcarina", 0);
         // D-pad as Equip Items
         CVar_SetS32("gDpadEquips", 0);
         // Allow the cursor to be on any slot
@@ -2193,6 +2195,14 @@ namespace SohImGui {
         CVar_SetS32("gDpadNoDropOcarinaInput", 0);
         // Answer Navi Prompt with L Button
         CVar_SetS32("gNaviOnL", 0);
+        // Invert Camera X Axis
+        CVar_SetS32("gInvertXAxis", 0);
+        // Invert Camera Y Axis
+        CVar_SetS32("gInvertYAxis", 0);
+        // Right Stick Aiming
+        CVar_SetS32("gRightStickAiming", 0);
+        // Auto-Center First Person View
+        CVar_SetS32("gAutoCenterView", 0);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);
@@ -2323,6 +2333,8 @@ namespace SohImGui {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Pull out Ocarina to Summon Scarecrow
+        CVar_SetS32("gSkipScarecrow", 1);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);
@@ -2371,21 +2383,27 @@ namespace SohImGui {
         CVar_SetS32("gN64WeirdFrames", 0);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 0);
-
+        // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
-        // D-pad Support in Ocarina and Text Choice
-        CVar_SetS32("gDpadOcarinaText", 1);
-        // D-pad Support for Browsing Shop Items
-        CVar_SetS32("gDpadShop", 1);
+        // D-pad Support on Pause
+        CVar_SetS32("gDpadPause", 1);
+        // D-pad Support in text and file select
+        CVar_SetS32("gDpadText", 1);
+        // Play Ocarina with D-pad
+        CVar_SetS32("gDpadOcarina", 1);
+        // Play Ocarina with Right Stick
+        CVar_SetS32("gRStickOcarina", 1);
         // D-pad as Equip Items
         CVar_SetS32("gDpadEquips", 1);
         // Prevent Dropped Ocarina Inputs
         CVar_SetS32("gDpadNoDropOcarinaInput", 1);
+        // Right Stick Aiming
+        CVar_SetS32("gRightStickAiming", 1);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 5);
@@ -2421,6 +2439,8 @@ namespace SohImGui {
         CVar_SetS32("gGravediggingTourFix", 1);
         // Fix Deku Nut upgrade
         CVar_SetS32("gDekuNutUpgradeFix", 1);
+        // Fix Navi text HUD position
+        CVar_SetS32("gNaviTextFix", 1);
 
         // Red Ganon blood
         CVar_SetS32("gRedGanonBlood", 1);
@@ -2438,7 +2458,7 @@ namespace SohImGui {
         // Biggoron Forge Time (0 to 3)
         CVar_SetS32("gForgeTime", 0);
         // Vine/Ladder Climb speed (+0 to +12)
-        CVar_SetS32("gClimbSpeed", 1);
+        CVar_SetS32("gClimbSpeed", 3);
         // Faster Heavy Block Lift
         CVar_SetS32("gFasterHeavyBlockLift", 1);
         // No Forced Navi
@@ -2459,20 +2479,24 @@ namespace SohImGui {
         CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
+        // Always Win Goron Pot
+        CVar_SetS32("gGoronPot", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
 
         // Equipment Toggle
         CVar_SetS32("gEquipmentCanBeRemoved", 1);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 1);
+        // Link's Cow in Both Time Periods
+        CVar_SetS32("gCowOfTime", 1);
 
         // Enable 3D Dropped items/projectiles
         CVar_SetS32("gNewDrops", 1);
 
         // Fix Anubis fireballs
         CVar_SetS32("gAnubisFix", 1);
+        // Fix Megaton Hammer crouch stab
+        CVar_SetS32("gCrouchStabHammerFix", 1);
     }
 
     void applyEnhancementPresetRandomizer(void) {
@@ -2493,7 +2517,7 @@ namespace SohImGui {
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
         // Pull out Ocarina to Summon Scarecrow
-        CVar_SetS32("gSkipScarecrow", 0);
+        CVar_SetS32("gSkipScarecrow", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
