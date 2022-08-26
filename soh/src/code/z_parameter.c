@@ -2186,6 +2186,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
             AMMO(ITEM_BEAN) = 10;
         }
+        return RG_NONE;
     }
 
     if (item == RG_DOUBLE_DEFENSE) {
