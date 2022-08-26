@@ -88,13 +88,11 @@ Randomizer::Randomizer() {
     Sprite ootOcarinaSprite = { dgOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
 
-    for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
-        for (auto locationIt : areaIt.second) {
-            SpoilerfileCheckNameToEnum[locationIt.rcSpoilerName] = locationIt.rc;
-        }
-        SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
-        SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
+    for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
+        SpoilerfileCheckNameToEnum[rcObject.rcSpoilerName] = rcObject.rc;
     }
+    SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
+    SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 }
 
 Sprite* Randomizer::GetSeedTexture(uint8_t index) {
@@ -3825,11 +3823,11 @@ void DrawRandoEditor(bool& open) {
                 locationSearch.Draw();
 
                 ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
-                for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto locationIt : areaIt.second) {
-                        if (locationIt.visibleInImgui && !excludedLocations.count(locationIt.rc) &&
-                            locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+                    for (auto [randomizerCheck, rcObject] : rcObjects) {
+                        if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
+                            locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
 
                             hasItems = true;
                             break;
@@ -3838,13 +3836,13 @@ void DrawRandoEditor(bool& open) {
 
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                            for (auto locationIt : areaIt.second) {
-                                if (locationIt.visibleInImgui && !excludedLocations.count(locationIt.rc) &&
-                                    locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                            for (auto [randomizerCheck, rcObject] : rcObjects) {
+                                if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
+                                    locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
 
-                                    if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(locationIt.rc);
+                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(rcObject.rc);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
                                         for (auto excludedLocationIt : excludedLocations) {
@@ -3855,7 +3853,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::needs_save = true;
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(locationIt.rcShortName.c_str());
+                                    ImGui::Text(rcObject.rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -3869,10 +3867,10 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
 
                 ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
-                for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+                for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto locationIt : areaIt.second) {
-                        if (locationIt.visibleInImgui && excludedLocations.count(locationIt.rc)) {
+                    for (auto [randomizerCheck, rcObject] : rcObjects) {
+                        if (rcObject.visibleInImgui && excludedLocations.count(rcObject.rc)) {
                             hasItems = true;
                             break;
                         }
@@ -3880,11 +3878,11 @@ void DrawRandoEditor(bool& open) {
 
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                            for (auto locationIt : areaIt.second) {
-                                auto elfound = excludedLocations.find(locationIt.rc);
-                                if (locationIt.visibleInImgui && elfound != excludedLocations.end()) {
-                                    if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
+                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                            for (auto [randomizerCheck, rcObject] : rcObjects) {
+                                auto elfound = excludedLocations.find(rcObject.rc);
+                                if (rcObject.visibleInImgui && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
@@ -3896,7 +3894,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::needs_save = true;
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(locationIt.rcShortName.c_str());
+                                    ImGui::Text(rcObject.rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();

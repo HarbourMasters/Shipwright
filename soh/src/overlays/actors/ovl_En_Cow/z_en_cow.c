@@ -250,7 +250,7 @@ CowInfo EnCow_GetInfo(EnCow* this, GlobalContext* globalCtx) {
             }
             break;
         case SCENE_LINK_HOME:
-            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_LINKS_HOUSE_COW;
+            cowInfo.randomizerInf = RAND_INF_COWS_MILKED_KF_LINKS_HOUSE_COW;
             cowInfo.randomizerCheck = RC_KF_LINKS_HOUSE_COW;
             break;
         case SCENE_LABO: // Impa's house

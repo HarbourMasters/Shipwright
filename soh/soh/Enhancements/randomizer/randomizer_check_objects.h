@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <z64.h>
 
 // Check types based on main settings
 typedef enum {
@@ -64,11 +65,27 @@ typedef enum {
     RCAREA_INVALID
 } RandomizerCheckArea;
 
+typedef enum {
+    RCFLAGTYPE_EVENT_CHECK_INF,
+    RCFLAGTYPE_ITEM_GET_INF,
+    RCFLAGTYPE_INF_TABLE,
+    RCFLAGTYPE_SCENE_FLAG,
+    RCFLAGTYPE_RANDOMIZER_INF,
+    RCFLAGTYPE_CUSTOM,
+    RCFLAGTYPE_NONE,
+} RandomizerCheckFlagType;
+
 typedef struct {
     RandomizerCheck rc;
     RandomizerCheckVanillaOrMQ vOrMQ;
     RandomizerCheckType rcType;
     RandomizerCheckArea rcArea;
+    RandomizerCheckFlagType rcFlagType;
+    s32 rcFlag;
+    ActorID actorId;
+    SceneID sceneId;
+    std::vector<s32> identifyParams;
+    GetItemID ogItemId;
     bool visibleInImgui;
     std::string rcShortName;
     std::string rcSpoilerName;
@@ -78,6 +95,7 @@ namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);
     bool AreaIsOverworld(RandomizerCheckArea area);
     std::string GetRCAreaName(RandomizerCheckArea area);
-    std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> GetAllRCObjects();
+    std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
+    std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
     void UpdateImGuiVisibility();
 }
