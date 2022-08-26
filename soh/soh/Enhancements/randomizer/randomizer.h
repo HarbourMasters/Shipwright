@@ -6,6 +6,7 @@
 #include "../../../include/z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_check_objects.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #define NUM_NAVI_MESSAGES 15
@@ -46,12 +47,13 @@ class Randomizer {
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s16 actorParams, s16 otherParams);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
-    CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
+    ScrubIdentity IdentifyScrub(s16 sceneNum, s16 actorParams, s16 respawnData);
+    CowIdentity IdentifyCow(s16 sceneNum, s16 posX, s16 posZ);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
     static void CreateCustomMessages();
