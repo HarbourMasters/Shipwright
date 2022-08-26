@@ -3196,7 +3196,7 @@ void DrawRandoEditor(bool& open) {
     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
     SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-    if (CVar_GetS32("gRandomizer", 0) == 1) {
+    if (CVar_GetS32("gRandomizer", 0)) {
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
         if (ImGui::Button("Generate Seed")) {
             if (CVar_GetS32("gRandoGenerating", 0) == 0) {
@@ -3216,7 +3216,7 @@ void DrawRandoEditor(bool& open) {
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
 
-    if (CVar_GetS32("gRandomizer", 0) == 1 &&
+    if (CVar_GetS32("gRandomizer", 0) &&
         ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Main Rules")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -3462,6 +3462,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Cows
                 SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
                 InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+
                 PaddedSeparator();
 
                 // Shuffle Adult Trade Quest
@@ -3480,47 +3481,41 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
-                if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
-                    // Shuffle Kokiri Sword
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(),
-                                                    "gRandomizeShuffleKokiriSword");
-                    InsertHelpHoverText(
-                        "Shuffles the Kokiri Sword into the item pool.\n"
-                        "\n"
-                        "This will require the use of sticks until the Kokiri Sword is found."
-                    );
-                    PaddedSeparator();
-                }
+                // Shuffle Kokiri Sword
+                // Disabled when Start with Kokiri Sword is active
+                bool disableShuffleKokiriSword = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
+                const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(),
+                                                "gRandomizeShuffleKokiriSword", disableShuffleKokiriSword,
+                                                disableShuffleKokiriSwordText);
+                InsertHelpHoverText(
+                    "Shuffles the Kokiri Sword into the item pool.\n"
+                    "\n"
+                    "This will require the use of sticks until the Kokiri Sword is found."
+                );
 
-                if (CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
-                    // Shuffle Ocarinas
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(),
-                                                    "gRandomizeShuffleOcarinas");
-                    InsertHelpHoverText(
-                        "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
-                        "\n"
-                        "This will require finding an Ocarina before being able to play songs.");
-                    PaddedSeparator();
-                }
+                PaddedSeparator();
+
+                // Shuffle Ocarinas
+                // Disabled when Start with Ocarina is active
+                bool disableShuffleOcarinas = CVar_GetS32("gRandomizeStartingOcarina", 0);
+                const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas",
+                                              disableShuffleOcarinas, disableShuffleOcarinasText);
+                InsertHelpHoverText(
+                    "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
+                    "\n"
+                    "This will require finding an Ocarina before being able to play songs."
+                );
+
+                PaddedSeparator();
 
                 // Shuffle Weird Egg
                 // Disabled when Skip Child Zelda is active
-                if (!disableEditingRandoSettings) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                        ImGui::GetStyle().Alpha *
-                                            (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
-                }
-                SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(),
-                                                "gRandomizeShuffleWeirdEgg");
-                if (!disableEditingRandoSettings) {
-                    ImGui::PopStyleVar();
-                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                        CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
-                        ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
-                    }
-                    ImGui::PopItemFlag();
-                }
+                bool disableShuffleWeirdEgg = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+                const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg",
+                                              disableShuffleWeirdEgg, disableShuffleWeirdEggText);
                 InsertHelpHoverText(
                     "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                     "\"Skip Child Zelda\" disables this feature.\n"
@@ -3713,22 +3708,9 @@ void DrawRandoEditor(bool& open) {
 
                 // Skip child stealth
                 // Disabled when Skip Child Zelda is active
-                if (!disableEditingRandoSettings) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                        ImGui::GetStyle().Alpha *
-                                            (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
-                }
-                SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
-                                              "gRandomizeSkipChildStealth");
-                if (!disableEditingRandoSettings) {
-                    ImGui::PopStyleVar();
-                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                        CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
-                        ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
-                    }
-                    ImGui::PopItemFlag();
-                }
+                bool disableChildStealth = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+                const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
+                SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
                 InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
                 PaddedSeparator();
 
