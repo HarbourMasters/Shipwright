@@ -1574,8 +1574,8 @@ extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }
 
-extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
 }
 
 extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
@@ -1621,15 +1621,15 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
 }
 
-extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
     s16 getItemModIndex;
     if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(
-            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams))) {
         getItemModIndex = MOD_NONE;
     } else {
         getItemModIndex = MOD_RANDOMIZER;
     }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromActor(actorId, sceneNum, actorParams, ogId);
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
@@ -1700,7 +1700,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
 
             RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, globalCtx->sceneNum, actorParams);
 
             messageEntry = Randomizer_GetHintFromCheck(hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {

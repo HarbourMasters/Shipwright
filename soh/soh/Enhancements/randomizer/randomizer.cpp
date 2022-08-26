@@ -1139,13 +1139,10 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
     }
 }
 
-s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    s16 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
-    return itemId;
-}
+s16 Randomizer::GetRandomizedItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
+    RandomizerCheck randomizerCheck = GetCheckFromActor(actorId, sceneNum, actorParams);
 
-s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
+    return GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
 
 s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
@@ -1884,7 +1881,7 @@ s16 Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerChec
     return GetItemFromGet(this->itemLocations[randomizerCheck], ogId);
 }
 
-RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
         return RC_UNKNOWN_CHECK;
     }

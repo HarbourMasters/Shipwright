@@ -21,7 +21,6 @@ class Randomizer {
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     std::unordered_map<RandomizerCheck, u16> randomizerMerchantPrices;
     s16 GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
-    s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
@@ -46,14 +45,14 @@ class Randomizer {
     void LoadHintLocations(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
-    RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams);
+    RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
-    s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+    s16 GetRandomizedItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
     static void CreateCustomMessages();
     static std::string RandomizeRupeeName(std::string message, int language);
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
