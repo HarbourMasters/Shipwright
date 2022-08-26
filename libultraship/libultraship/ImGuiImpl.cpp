@@ -2334,7 +2334,7 @@ namespace SohImGui {
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
         // Pull out Ocarina to Summon Scarecrow
-        CVar_SetS32("gSkipScarecrow", 1);
+        CVar_SetS32("gSkipScarecrow", 0);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);
