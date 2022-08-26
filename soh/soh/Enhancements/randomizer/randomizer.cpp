@@ -3219,12 +3219,12 @@ void DrawRandoEditor(bool& open) {
 
     if (CVar_GetS32("gRandomizer", 0) &&
         ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("Main Rules")) {
+        if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Misc World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Entrance Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3676,12 +3676,12 @@ void DrawRandoEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Other")) {
+        if (ImGui::BeginTabItem("Misc")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoMisc", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3745,53 +3745,11 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndChild();
 
-                // COLUMN 2 - WORLD SETTINGS
+                // COLUMN 2 - HINT SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildWorldSettings", ImVec2(0, -8));
+                ImGui::BeginChild("ChildHintSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                ImGui::Text("Coming soon");
-                
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-
-                // COLUMN 3 - ITEM POOL & HINT SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildItemPoolHintSettings", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                PaddedSeparator();
-
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
-
-                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -3814,33 +3772,80 @@ void DrawRandoEditor(bool& open) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     ImGui::Indent();
                     ImGui::Text(Settings::ClearerHints.GetName().c_str());
-                    InsertHelpHoverText("Sets the difficulty of hints.\n"
-                                        "\n"
-                                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
-                                        "Ex: Kokiri Sword > a butter knife\n"
-                                        "\n"
-                                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
-                                        "Ex: Kokiri Sword > a sword\n"
-                                        "\n"
-                                        "Clear - Hints are clearly written and are unique for each item.\n"
-                                        "Ex: Kokiri Sword > the Kokiri Sword");
+                    InsertHelpHoverText(
+                        "Sets the difficulty of hints.\n"
+                        "\n"
+                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
+                        "Ex: Kokiri Sword > a butter knife\n"
+                        "\n"
+                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
+                        "Ex: Kokiri Sword > a sword\n"
+                        "\n"
+                        "Clear - Hints are clearly written and are unique for each item.\n"
+                        "Ex: Kokiri Sword > the Kokiri Sword"
+                    );
                     SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                     // Hint Distribution
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     ImGui::Text(Settings::HintDistribution.GetName().c_str());
-                    InsertHelpHoverText("Sets how many hints will be useful.\n"
-                                        "\n"
-                                        "Useless - Only junk hints.\n"
-                                        "\n"
-                                        "Balanced - Recommended hint spread.\n"
-                                        "\n"
-                                        "Strong - More useful hints.\n"
-                                        "\n"
-                                        "Very Strong - Many powerful hints.");
+                    InsertHelpHoverText(
+                        "Sets how many hints will be useful.\n"
+                        "\n"
+                        "Useless - Only junk hints.\n"
+                        "\n"
+                        "Balanced - Recommended hint spread.\n"
+                        "\n"
+                        "Strong - More useful hints.\n"
+                        "\n"
+                        "Very Strong - Many powerful hints."
+                    );
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
+                
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
+
+                // COLUMN 3 - ITEM POOL SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildItemPoolSettings", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Item Pool Settings
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText(
+                    "Sets how many major items appear in the item pool.\n"
+                    "\n"
+                    "Plentiful - Extra major items are added to the pool.\n"
+                    "\n"
+                    "Balanced - Original item pool.\n"
+                    "\n"
+                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                    "\n"
+                    "Minimal - Most excess items are removed."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText(
+                    "Sets how many items are replaced by ice traps.\n"
+                    "\n"
+                    "Off - No ice traps.\n"
+                    "\n"
+                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                    "\n"
+                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                    "\n"
+                    "Mayhem - All added junk items will be Ice Traps.\n"
+                    "\n"
+                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                    "in the base pool."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
