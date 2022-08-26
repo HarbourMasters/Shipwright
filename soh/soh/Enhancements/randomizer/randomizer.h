@@ -51,6 +51,7 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+    CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
     static void CreateCustomMessages();

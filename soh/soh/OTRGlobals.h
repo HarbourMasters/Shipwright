@@ -97,6 +97,7 @@ void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);

@@ -1026,3 +1026,8 @@ typedef struct ScrubIdentity {
     int32_t itemPrice;
     bool isShuffled;
 } ScrubIdentity;
+
+typedef struct CowIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowIdentity;

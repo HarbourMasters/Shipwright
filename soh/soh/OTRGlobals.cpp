@@ -1582,6 +1582,10 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
     return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
 }
 
+extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
 }
