@@ -3211,6 +3211,7 @@ void DrawRandoEditor(bool& open) {
         // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
         // ImGui::Text("Settings File: %s", presetfilepath.c_str());
     }
+
     PaddedSeparator();
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
@@ -3412,8 +3413,8 @@ void DrawRandoEditor(bool& open) {
                     "  - Bottom of the Well Lens of Truth location\n"
                     "  - Gerudo Training Ground's Ice Arrows location\n"
                     "\n"
-                    "Anywhere - Songs can appear at any location.");
-
+                    "Anywhere - Songs can appear at any location."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
 
                 PaddedSeparator();
@@ -3485,9 +3486,8 @@ void DrawRandoEditor(bool& open) {
                 // Disabled when Start with Kokiri Sword is active
                 bool disableShuffleKokiriSword = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
                 const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
-                SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(),
-                                                "gRandomizeShuffleKokiriSword", disableShuffleKokiriSword,
-                                                disableShuffleKokiriSwordText);
+                SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(), "gRandomizeShuffleKokiriSword",
+                                                disableShuffleKokiriSword, disableShuffleKokiriSwordText);
                 InsertHelpHoverText(
                     "Shuffles the Kokiri Sword into the item pool.\n"
                     "\n"
