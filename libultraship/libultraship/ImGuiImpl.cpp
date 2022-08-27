@@ -2495,8 +2495,6 @@ namespace SohImGui {
 
         // Fix Anubis fireballs
         CVar_SetS32("gAnubisFix", 1);
-        // Fix Megaton Hammer crouch stab
-        CVar_SetS32("gCrouchStabHammerFix", 1);
     }
 
     void applyEnhancementPresetRandomizer(void) {
