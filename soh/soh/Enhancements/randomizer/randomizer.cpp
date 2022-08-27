@@ -3408,7 +3408,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
                     if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
                         SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                       "gRandomizeGanonTrialCount", 0, 6, "", 6);
+                                                       "gRandomizeGanonTrialCount", 1, 6, "", 6);
                         InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower."
                                             "The specific trials you need to complete will be randomly selected.");
                     }
