@@ -271,27 +271,10 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
     DemoKekkai* this = (DemoKekkai*)thisx;
 
     if (gSaveContext.n64ddFlag) {
-        switch (thisx->params) {
-            case KEKKAI_WATER:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL);
-                break;
-            case KEKKAI_LIGHT:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
-                break;
-            case KEKKAI_FIRE:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL);
-                break;
-            case KEKKAI_SHADOW:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL);
-                break;
-            case KEKKAI_SPIRIT:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL);
-                break;
-            case KEKKAI_FOREST:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL);
-                break;
-        }
-        Flags_SetEventChkInf(eventFlags[thisx->params]);
+        Flags_SetRandomizerInf(trialParamToRandInf(thisx->params));
+        // May or may not be needed. Not sure if needed for anything
+        // that randoInf isn't already covering. Leaving it for safety.
+        Flags_SetEventChkInf(eventFlags[thisx->params]); 
     }
 
     if (globalCtx->csCtx.frames == csFrames[this->actor.params]) {
