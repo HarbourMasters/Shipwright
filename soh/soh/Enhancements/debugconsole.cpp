@@ -36,6 +36,7 @@ uint32_t minishLink;
 uint32_t gravityLevel;
 uint32_t resetLinkScale;
 uint32_t invisibleLink;
+uint32_t oneHitKO;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
@@ -631,7 +632,13 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        oneHitKO = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] One-hit KO value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -975,7 +982,7 @@ void DebugConsole_Init(void) {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("ohko", { OneHitKOHandler, "Activates one hit KO.", {
+    CMD_REGISTER("ohko", { OneHitKOHandler, "Activates one hit KO. Any damage kills Link and he cannot gain health in this mode.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 

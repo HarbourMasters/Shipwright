@@ -3607,8 +3607,7 @@ s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u
     }
 
     s32 modifiedDamage = damage;
-    if (modified)
-    {
+    if (modified) {
        modifiedDamage *= (1 << CVar_GetS32("gDamageMul", 0));
     }
 

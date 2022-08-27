@@ -10,6 +10,8 @@
 #include <assert.h>
 #endif
 
+#include "soh/Enhancements/debugconsole.h"
+
 
 static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
 static uint16_t DO_ACTION_TEX_WIDTH() {
@@ -2640,6 +2642,14 @@ s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange) {
     // "＊＊＊＊＊ Fluctuation=%d (now=%d, max=%d) ＊＊＊"
     osSyncPrintf("＊＊＊＊＊  増減=%d (now=%d, max=%d)  ＊＊＊", healthChange, gSaveContext.health,
                  gSaveContext.healthCapacity);
+
+    // If one-hit ko mode is on, any damage kills you and you cannot gain health.
+    if (oneHitKO) {
+        if (healthChange < 0)
+            gSaveContext.health = 0;
+        
+        return 0;
+    }
 
     // clang-format off
     if (healthChange > 0) { Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &D_801333D4, 4,
