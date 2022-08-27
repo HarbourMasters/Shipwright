@@ -4,6 +4,7 @@
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
@@ -513,6 +514,53 @@ void GiveLinkDungeonItem(GetItemID getItemId) {
     }
 }
 
+void GiveLinkAdultTradeItem(GetItemID giid) {
+    ItemID item;
+    switch (giid) {
+        case GI_POCKET_EGG:
+            item = ITEM_POCKET_EGG;
+            break;
+        case GI_POCKET_CUCCO:
+            item = ITEM_POCKET_CUCCO;
+            break;
+        case GI_COJIRO:
+            item = ITEM_COJIRO;
+            break;
+        case GI_ODD_MUSHROOM:
+            item = ITEM_ODD_MUSHROOM;
+            break;
+        case GI_ODD_POTION:
+            item = ITEM_ODD_POTION;
+            break;
+        case GI_SAW:
+            item = ITEM_SAW;
+            break;
+        case GI_SWORD_BROKEN:
+            item = ITEM_SWORD_BROKEN;
+            break;
+        case GI_PRESCRIPTION:
+            item = ITEM_PRESCRIPTION;
+            break;
+        case GI_FROG:
+            item = ITEM_FROG;
+            break;
+        case GI_EYEDROPS:
+            item = ITEM_EYEDROPS;
+            break;
+        case GI_CLAIM_CHECK:
+            item = ITEM_CLAIM_CHECK;
+            break;
+    }
+    if ((item == ITEM_SAW) && CVar_GetS32("gDekuNutUpgradeFix", 0) == 0) {
+        gSaveContext.itemGetInf[1] |= 0x8000;
+    }
+
+    if (item >= ITEM_POCKET_EGG) {
+        gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
+    }
+    INV_CONTENT(item) = item;
+}
+
 void GiveLinksPocketMedallion() {
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
@@ -856,6 +904,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     GiveLinkDekuNutUpgrade(giid);
                 } else if (giid == GI_SKULL_TOKEN) {
                     GiveLinkSkullToken();
+                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK) {
+                    GiveLinkAdultTradeItem(giid);
                 } else {
                     s32 iid = getItem.itemId;
                     if (iid != -1) INV_CONTENT(iid) = iid;
