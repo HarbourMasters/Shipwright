@@ -33,7 +33,8 @@ extern GlobalContext* gGlobalCtx;
 
 uint32_t giantLink;
 uint32_t minishLink;
-uint32_t gravityLevel;
+uint32_t paperLink;
+uint32_t gravityLevel = 1;
 uint32_t resetLinkScale;
 uint32_t invisibleLink;
 uint32_t oneHitKO;
@@ -656,11 +657,18 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        paperLink = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), 0.0f, 2.0f);
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::console->SendErrorMessage("[SOH] Paper Link value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     // TODO: Implement
+    return CMD_FAILED;
 }
 
 static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
