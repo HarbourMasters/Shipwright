@@ -109,17 +109,17 @@ Randomizer::~Randomizer() {
 
 std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
     { "the Forest Trial", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "l'épreuve de la forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
+    { "l'épreuve de la Forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
     { "the Fire Trial", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "l'épreuve du feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
+    { "l'épreuve du Feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
     { "the Water Trial", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "l'épreuve de l'eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
+    { "l'épreuve de l'Eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
     { "the Spirit Trial", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "l'épreuve de l'esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
+    { "l'épreuve de l'Esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
     { "the Shadow Trial", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "l'épreuve de l'ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
+    { "l'épreuve de l'Ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
     { "the Light Trial", RAND_INF_TRIALS_DONE_LIGHT_TRIAL },
-    { "l'épreuve de la lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
+    { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
 };
 
 std::unordered_map<s16, s16> getItemIdToItemId = {
