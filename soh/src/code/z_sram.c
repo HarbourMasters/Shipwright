@@ -309,6 +309,11 @@ void GiveLinkDekuNutUpgrade(GetItemID giid) {
     }
 }
 
+void GiveLinkSkullToken() {
+    gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+    gSaveContext.inventory.gsTokens++;
+}
+
 void GiveLinkMagic(GetItemID giid) {
     if (giid == RG_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
@@ -849,6 +854,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     GiveLinkDekuStickUpgrade(giid);
                 } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
                     GiveLinkDekuNutUpgrade(giid);
+                } else if (giid == GI_SKULL_TOKEN) {
+                    GiveLinkSkullToken();
                 } else {
                     s32 iid = getItem.itemId;
                     if (iid != -1) INV_CONTENT(iid) = iid;
