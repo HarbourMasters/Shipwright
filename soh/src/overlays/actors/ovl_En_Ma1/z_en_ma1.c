@@ -200,10 +200,14 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
     if (!LINK_IS_CHILD) {
         return 0;
     }
+    // Causes Malon to appear in the market if you haven't met her yet.
     if (((globalCtx->sceneNum == SCENE_MARKET_NIGHT) || (globalCtx->sceneNum == SCENE_MARKET_DAY)) &&
         !(gSaveContext.eventChkInf[1] & 0x10) && !(gSaveContext.infTable[8] & 0x800)) {
         return 1;
     }
+    // Causes Malon to appear at Hyrule Castle if you've met her already and either we're vanilla and Talon hasn't
+    // left Hyrule Castle, or if we're randomized and haven't obtained her check. If we haven't met Malon yet, this
+    // sets the flag for meeting her.
     if ((globalCtx->sceneNum == SCENE_SPOT15) && (!(gSaveContext.eventChkInf[1] & 0x10) || 
         (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()))) {
         if (gSaveContext.infTable[8] & 0x800) {
@@ -213,13 +217,18 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
             return 0;
         }
     }
+    // Malon asleep in her bed if Talon has left Hyrule Castle and it is nighttime.
     if ((globalCtx->sceneNum == SCENE_SOUKO) && IS_NIGHT && (gSaveContext.eventChkInf[1] & 0x10)) {
         return 1;
     }
+    // Don't spawn Malon if none of the above are true and we are not in Lon Lon Ranch.
     if (globalCtx->sceneNum != SCENE_SPOT20) {
         return 0;
     }
-    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10) && ((gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()) || !gSaveContext.n64ddFlag)) {
+    // If we've gotten this far, we're in Lon Lon Ranch. Spawn Malon if it is daytime, Talon has left Hyrule Castle, and
+    // either we are not randomized, or we are and we have received Malon's item at Hyrule Castle.
+    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10) && 
+        ((gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()) || !gSaveContext.n64ddFlag)) {
         return 1;
     }
     return 0;
@@ -300,10 +309,14 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
+    // If Talon has not left Hyrule Castle, we are randomized and ahve not obtained Malon's HC Check, we are not randomized
+    // and have Epona's Song, or we are randomized and have obtained Malon's Epona's Song Check. This sets Malon's idle
+    // singing animation in such a way that she has dialog but does not give items or respond to the Ocarina.
     if (!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
         (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
+    // If none of the above conditions were true, set Malon up to teach Epona's Song.
     } else {
         if (gSaveContext.n64ddFlag) { // Skip straight to "let's sing it together" textbox in the ranch
             gSaveContext.eventChkInf[1] |= 0x40;
@@ -332,10 +345,15 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
 
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10) && (gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward())) {
+    // If we're at Hyrule Castle, and either Talon has left or we're randomized and have obtained Malon's HC Check
+    if ((globalCtx->sceneNum == SCENE_SPOT15) && ((!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()))) {
+        // Only kill Malon's Actor here in vanilla. If we're in rando and speak to her we don't want her to pop
+        // out of existence immediately. The init function will properly kill her actor on the next scene load.
         if (!gSaveContext.n64ddFlag) {
             Actor_Kill(&this->actor);
         }
+    // If Talon has not run away, or we're randomized and have not received Malon's HC Check, or we're
+    // not randomized and have obtained Epona's Song, put Malon in the state to give Link the HC reward.
     } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
