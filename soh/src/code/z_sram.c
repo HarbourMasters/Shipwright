@@ -558,7 +558,7 @@ void GiveLinkAdultTradeItem(GetItemID giid) {
     if (item >= ITEM_POCKET_EGG) {
         gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
     }
-    INV_CONTENT(item) = item;
+    INV_CONTENT(ITEM_TRADE_ADULT) = item;
 }
 
 void GiveLinksPocketMedallion() {
@@ -788,6 +788,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.eventChkInf[3] |= 0x800;
         gSaveContext.eventChkInf[12] |= 1;
 
+        // shuffle adult trade quest
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            gSaveContext.adultTradeItems = 0;
+        }
+
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
@@ -904,7 +909,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     GiveLinkDekuNutUpgrade(giid);
                 } else if (giid == GI_SKULL_TOKEN) {
                     GiveLinkSkullToken();
-                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK) {
+                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK || giid == GI_COJIRO) {
                     GiveLinkAdultTradeItem(giid);
                 } else {
                     s32 iid = getItem.itemId;
@@ -1020,11 +1025,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
-        }
-
-        // shuffle adult trade quest
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-            gSaveContext.adultTradeItems = 0;
         }
 
         // complete mask quest
