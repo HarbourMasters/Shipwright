@@ -1009,20 +1009,15 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
-    s16* TitleCard_Colors[3] = {255,255,255};
-        if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_B_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_B_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_B_U_PrimB", 255);
-        } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_OW_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_OW_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_OW_U_PrimB", 255);
-        } else {
-            TitleCard_Colors[0] = 255;
-            TitleCard_Colors[1] = 255;
-            TitleCard_Colors[2] = 255;
-        }
+    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
+    Color_RGB8 TitleCard_Colors = {255,255,255};
+    if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
+        TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
+        TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    } else {
+        TitleCard_Colors = TitleCard_Colors_ori;
+    }
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (DECR(titleCtx->durationTimer) == 0) {
@@ -1032,9 +1027,9 @@ void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors[0], 20);
-            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors[1], 20);
-            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors[2], 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors.r, 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors.g, 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors.b, 20);
         }
     }
 }
@@ -1195,7 +1190,8 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     actor->uncullZoneDownward = 700.0f;
     if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -1955,6 +1951,15 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This function does not require an actor for giving
+ * the player an item, instead setting the player as their own interactRangeActor and getItemDirection.
+ * 
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \return true if the player can receive an item, false if not.
+ */
 s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -1979,6 +1984,22 @@ s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntr
     return false;
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This uses data from the actor link is receiving
+ * the item from to set the player's interactRangeActor and getItemDirection. It also checks
+ * a range from which Link must be from said actor in order to receive the item.
+ *
+ * \param actor the actor link is receiving an item from. Will usually be a chest but can also
+ * be an npc.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \param xzRange the distance on the x and z axes that the player can be from the target
+ * actor to receive the item.
+ * \param yRange the distance on the y axis that the player can be from the target actor
+ * to receive the item.
+ * \return true if the player can receive an item, false if not.
+ */
 s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -2005,6 +2026,15 @@ s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry 
     return false;
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This is a wrapper function around `GiveItemEntryFromActor`
+ * that supplies a fixed xzRange of 50.0f and a fixed yRange of 10.0f.
+ *
+ * \param actor the target actor that link is receiving an item from.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ */
 void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     GiveItemEntryFromActor(actor, globalCtx, getItemEntry, 50.0f, 10.0f);
 }
@@ -2806,7 +2836,8 @@ s32 func_800314D4(GlobalContext* globalCtx, Actor* actor, Vec3f* arg2, f32 arg3)
 
     if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         return true;
     }
 
@@ -4672,6 +4703,20 @@ s32 Flags_GetInfTable(s32 flag) {
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "randomizerInf" flag is set.
+ */
+s32 Flags_GetRandomizerInf(RandomizerInf flag) {
+    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "randomizerInf" flag.
+ */
+void Flags_SetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
 u32 func_80035BFC(GlobalContext* globalCtx, s16 arg1) {

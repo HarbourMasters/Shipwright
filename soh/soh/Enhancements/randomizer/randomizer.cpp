@@ -14,12 +14,12 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
+#include "draw.h"
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -33,7 +33,30 @@ u8 generated;
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::shopMessageTableID = "RandomizerShops";
-const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
+const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
+const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
+const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
+
+static const char* englishRupeeNames[44] = {
+    "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
+    "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
+    "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
+    "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
+    "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
+    "Shillings", "Pounds",    "Glimmer",     "Potch"
+};
+
+static const char* germanRupeeNames[1] = { 
+    "Rubine"
+};
+
+static const char* frenchRupeeNames[36] = {
+    "Rubis",       "Bitcoin", "Bananes",   "Euros",     "Dollars", "Émeraudes",  "Joyaux",   "Diamants",
+    "Balles",      "Pokémon", "Pièces",    "Lunes",     "Étoiles", "Dogecoin",   "Anneaux",  "Radis",
+    "Pokédollars", "Zennies", "Pépètes",   "Mailles",   "Éthers",  "Clochettes", "Capsules", "Gils",
+    "Champignons", "Blés",    "Halos",     "Munnies",   "Orens",   "Florens",    "Crédits",  "Galds",
+    "Bling",       "Orbes",   "Baguettes", "Croissants"
+};
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -82,7 +105,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 Randomizer::~Randomizer() { 
     this->randoSettings.clear();
     this->itemLocations.clear();
-    this->scrubPrices.clear();
+    this->randomizerMerchantPrices.clear();
 }
 
 std::unordered_map<s16, s16> getItemIdToItemId = {
@@ -530,6 +553,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
+    { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS},
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -871,6 +895,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
+                    case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_RANDOM_TRIALS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -1201,8 +1226,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                         gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        scrubPrices[gSaveContext.itemLocations[index].check] = itemit.value();
-                        // TODO: Handle shop prices
+                        randomizerMerchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
                     }
                 }
             } else {
@@ -1245,7 +1269,7 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 2) ? GI_SWORD_BGS : GI_RUPEE_BLUE;
+            return !gSaveContext.bgsFlag ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
@@ -1302,8 +1326,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
 
         case RG_MAGIC_BEAN:
             return GI_BEAN;
-        case RG_MAGIC_BEAN_PACK:
-            return GI_BEAN; //todo make it 10 of them
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
@@ -1729,12 +1751,12 @@ std::string Randomizer::GetGanonHintText() const {
 ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
     struct ScrubIdentity scrubIdentity;
 
-    scrubIdentity.scrubId = -1;
     scrubIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     scrubIdentity.getItemId = GI_NONE;
     scrubIdentity.itemPrice = -1;
     scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0;
 
+    // Based on z_en_dns.c 93-113
     switch (actorParams) {
         case 0x00:
             scrubIdentity.getItemId = GI_NUTS_5_2;
@@ -1776,20 +1798,20 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_DDAN: // Dodongo's Cavern
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x00;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT;
                     break;
                 case 0x01:
-                    scrubIdentity.scrubId = 0x01;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS;
                     break;
                 case 0x03:
                 case 0x06:
-                    scrubIdentity.scrubId = 0x02;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT;
                     break;
                 case 0x04:
-                    scrubIdentity.scrubId = 0x03;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
                     scrubIdentity.randomizerCheck = RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY;
                     break;
             }
@@ -1797,7 +1819,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_BDAN: // Jabu Jabu's Belly
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x04;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_JABU_JABUS_BELLY_DEKU_SCRUB;
                     scrubIdentity.randomizerCheck = RC_JABU_JABUS_BELLY_DEKU_SCRUB;
                     break;
             }
@@ -1805,31 +1827,30 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_GANONTIKA: // Ganon's Castle
             switch (actorParams) {
                 case 0x05:
-                    scrubIdentity.scrubId = 0x05;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT;
                     break;
                 case 0x03:
                 case 0x06:
-                    scrubIdentity.scrubId = 0x06;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT;
                     break;
                 case 0x07:
-                    scrubIdentity.scrubId = 0x07;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT;
                     break;
                 case 0x08:
-                    scrubIdentity.scrubId = 0x08;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GANONS_CASTLE_DEKU_SCRUB_LEFT;
                     scrubIdentity.randomizerCheck = RC_GANONS_CASTLE_DEKU_SCRUB_LEFT;
                     break;
             }
             break;
         case SCENE_KAKUSIANA: // Grotto
-            // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
             switch (respawnData) { 
                 case 0xE6: // Hyrule Field Scrub Grotto
                     switch (actorParams) {
                         case 0x02:
-                            scrubIdentity.scrubId = 0x09;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO;
                             scrubIdentity.randomizerCheck = RC_HF_DEKU_SCRUB_GROTTO;
                             scrubIdentity.isShuffled = true;
                             break;
@@ -1838,11 +1859,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEB: // ZR Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x0A;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x0B;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_ZR_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_ZR_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1850,11 +1871,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEE: // Sacred Forest Meadow Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x0C;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x0D;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_SFM_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_SFM_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1862,16 +1883,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xEF: // Lake Hylia Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x0E;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x0F;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x10;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LH_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_LH_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1879,11 +1900,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xF0: // Gerudo Valley Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x11;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x12;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GV_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_GV_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1892,11 +1913,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                     switch (actorParams) {
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x13;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x0A:
-                            scrubIdentity.scrubId = 0x14;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.isShuffled = true;
                             break;
@@ -1905,16 +1926,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xF9: // Death Mountain Crater Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x15;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x16;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x17;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1922,16 +1943,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFB: // Gerudo City Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x18;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x19;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x1A;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_GC_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_GC_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1939,16 +1960,16 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFC: // Lon Lon Ranch Scrub Grotto
                     switch (actorParams) {
                         case 0x00:
-                            scrubIdentity.scrubId = 0x1B;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_LEFT;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_LEFT;
                             break;
                         case 0x05:
-                            scrubIdentity.scrubId = 0x1C;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_RIGHT;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_RIGHT;
                             break;
                         case 0x03:
                         case 0x06:
-                            scrubIdentity.scrubId = 0x1D;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LLR_DEKU_SCRUB_GROTTO_CENTER;
                             scrubIdentity.randomizerCheck = RC_LLR_DEKU_SCRUB_GROTTO_CENTER;
                             break;
                     }
@@ -1956,11 +1977,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
                 case 0xFD: // Desert Colossus Scrub Grotto
                     switch (actorParams) {
                         case 0x07:
-                            scrubIdentity.scrubId = 0x1E;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
                             scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR;
                             break;
                         case 0x08:
-                            scrubIdentity.scrubId = 0x1F;
+                            scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
                             scrubIdentity.randomizerCheck = RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT;
                             break;
                     }
@@ -1970,15 +1991,15 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_SPOT10: // Lost woods
             switch (actorParams) {
                 case 0x00:
-                    scrubIdentity.scrubId = 0x20;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT;
                     break;
                 case 0x01:
-                    scrubIdentity.scrubId = 0x21;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT;
                     break;
                 case 0x09:
-                    scrubIdentity.scrubId = 0x22;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE;
                     scrubIdentity.randomizerCheck = RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                     scrubIdentity.isShuffled = true;
                     break;
@@ -1987,15 +2008,15 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         case SCENE_SPOT17: // Death Mountain Crater
             switch (actorParams) {
                 case 0x05:
-                    scrubIdentity.scrubId = 0x23;
+                    scrubIdentity.randomizerInf = RAND_INF_SCRUBS_PURCHASED_DMC_DEKU_SCRUB;
                     scrubIdentity.randomizerCheck = RC_DMC_DEKU_SCRUB;
                     break;
             }
             break;
     }
     
-    if (scrubPrices.find(scrubIdentity.randomizerCheck) != scrubPrices.end()) {
-        scrubIdentity.itemPrice = scrubPrices[scrubIdentity.randomizerCheck];
+    if (randomizerMerchantPrices.find(scrubIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
+        scrubIdentity.itemPrice = randomizerMerchantPrices[scrubIdentity.randomizerCheck];
     }
 
     return scrubIdentity;
@@ -3310,6 +3331,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
+    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3804,6 +3826,20 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                     PaddedSeparator();
 
+                    // Shuffle Scrubs
+                    ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+                        "\n"
+                        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                        "\n"
+                        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+                        "\n"
+                        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n"
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
+                    PaddedSeparator();
+
                     // Shuffle Tokens
                     ImGui::Text(Settings::Tokensanity.GetName().c_str());
                     InsertHelpHoverText("Shuffles Golden Skulltula Tokens into the item pool. This means "
@@ -3824,34 +3860,24 @@ void DrawRandoEditor(bool& open) {
                                         "expected to be collected after getting Sun's Song.");
                     PaddedSeparator();
 
-                         // Shopsanity
-                        ImGui::Text(Settings::Shopsanity.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Off - All shop items will be the same as vanilla.\n"
-                            "\n"
-                            "0 - Vanilla shop items will be shuffled among different shops.\n"
-                            "\n"
-                            "1-4 - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
-                            "\n"
-                            "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
-                        PaddedSeparator();
+                    // Shopsanity
+                    ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                    InsertHelpHoverText(
+                        "Off - All shop items will be the same as vanilla.\n"
+                        "\n"
+                        "0 - Vanilla shop items will be shuffled among different shops.\n"
+                        "\n"
+                        "1-4 - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
+                        "\n"
+                        "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
+                    PaddedSeparator();
 
-                        // Shuffle Scrubs
-                        ImGui::Text(Settings::Scrubsanity.GetName().c_str());
-                        InsertHelpHoverText(
-                            "Off - Scrubs will not be shuffled.\n"
-                            "\n"
-                            "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
-                        );
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
-                        PaddedSeparator();
-
-                        // Shuffle Cows
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                        InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                        PaddedSeparator();
+                    // Shuffle Cows
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
+                    InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                    PaddedSeparator();
 
                     // Shuffle Adult Trade Quest
                     SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
@@ -3864,6 +3890,11 @@ void DrawRandoEditor(bool& open) {
                                         "D-pad.\n"
                                         "\n"
                                         "If disabled, only the Claim Check will be found in the pool.");
+                    PaddedSeparator();
+
+                    SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
+                    InsertHelpHoverText("Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean Salesman to sell a"
+                                        "random item at a price of 60 rupees.");
                     PaddedSeparator();
 
                     if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
@@ -4043,8 +4074,8 @@ void DrawRandoEditor(bool& open) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -4116,10 +4147,49 @@ void DrawRandoEditor(bool& open) {
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
 
-                // COLUMN 2 - HINT SETTINGS
+                // COLUMN 2 - WORLD SETTINGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("Coming soon");
+                
+                ImGui::PopItemWidth();
+
+                // COLUMN 3 - ITEM POOL & HINT SETTINGS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
+                                    "\n"
+                                    "Plentiful - Extra major items are added to the pool.\n"
+                                    "\n"
+                                    "Balanced - Original item pool.\n"
+                                    "\n"
+                                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                                    "\n"
+                                    "Minimal - Most excess items are removed.");
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
+                                    "\n"
+                                    "Off - No ice traps.\n"
+                                    "\n"
+                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                    "\n"
+                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                    "\n"
+                                    "Mayhem - All added junk items will be Ice Traps.\n"
+                                    "\n"
+                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                    "in the base pool.");
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+
+                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -4169,40 +4239,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
-                ImGui::PopItemWidth();
 
-                // COLUMN 3 - ITEM POOL SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                PaddedSeparator();
-
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
@@ -4435,11 +4472,20 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
-void CreateScrubMessages() {
+// Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
+// to being generated at save load, with only messages specific to each scrub.
+void CreateMerchantMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
-    for (u32 price = 0; price <= 95; price += 5) {
-        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
+    customMessageManager->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+    customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, 0,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
+            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
+        });
+
+    for (u32 price = 5; price <= 95; price += 5) {
+        customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
@@ -4450,6 +4496,154 @@ void CreateScrubMessages() {
                   std::to_string(price) + " Rubis%w!\x07\x10\xA3"
             });
     }
+    customMessageManager->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
+            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
+            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
+            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
+            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
+        });
+}
+
+void CreateRupeeMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);
+    const std::vector<u8> rupees = { TEXT_BLUE_RUPEE, TEXT_RED_RUPEE, TEXT_PURPLE_RUPEE, TEXT_HUGE_RUPEE };
+    std::string rupeeText = " ";
+    for (u8 rupee : rupees) {
+        switch (rupee) {
+            case TEXT_BLUE_RUPEE:
+                rupeeText = "\x05\x03 5 #RUPEE#\x05\x00";
+                break;
+            case TEXT_RED_RUPEE:
+                rupeeText = "\x05\x01 20 #RUPEE#\x05\x00";
+                break;
+            case TEXT_PURPLE_RUPEE:
+                rupeeText = "\x05\x05 50 #RUPEE#\x05\x00";
+                break;
+            case TEXT_HUGE_RUPEE:
+                rupeeText = "\x05\x06 200 #RUPEE#\x05\x00";
+                break;
+        }
+        customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+                "You found" + rupeeText + " !",
+                "Du hast" + rupeeText + "  gefunden!",
+                "Vous obtenez" + rupeeText + " !"
+        });
+    }
+}
+
+std::string Randomizer::RandomizeRupeeName(std::string message, int language) {
+    int randomIndex;
+    std::string replaceWith;
+    switch (language) {
+        case LANGUAGE_ENG:
+            randomIndex = rand() % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
+            replaceWith = englishRupeeNames[randomIndex];
+            break;
+        case LANGUAGE_GER:
+            randomIndex = rand() % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
+            replaceWith = germanRupeeNames[randomIndex];
+            break;
+        case LANGUAGE_FRA:
+            randomIndex = rand() % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
+            replaceWith = frenchRupeeNames[randomIndex];
+            break;
+    }
+    std::string replaceString = "#RUPEE#";
+    size_t pos = message.find(replaceString);
+    size_t len = replaceString.length();
+    message.replace(pos, len, replaceWith);
+    CustomMessageManager::Instance->FormatCustomMessage(message);
+    return message;
+}
+
+CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
+    CustomMessageEntry messageEntry =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    messageEntry.english = Randomizer::RandomizeRupeeName(messageEntry.english, LANGUAGE_ENG);
+    messageEntry.german = Randomizer::RandomizeRupeeName(messageEntry.german, LANGUAGE_GER);
+    messageEntry.french = Randomizer::RandomizeRupeeName(messageEntry.french, LANGUAGE_FRA);
+    return messageEntry;
+}
+
+CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = { 
+    
+    { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
+      "%cFehlt dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!", 
+      "%cIl te manque une %wPetite Clé %cdans&un donjon? C'est peut-être le %rboss&%cqui l'a!" }, 
+
+    { "%cSometimes you can use the %rMegaton&Hammer %cinstead of bombs!", 
+      "%cManchmal kannst du den %rStahlhammer&%cstatt Bomben verwenden!",
+      "%cParfois, tu peux utiliser la %rMasse&des Titans %cau lieu de tes bombes!" }, 
+
+    { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do&you know where they are?",
+      "%cEs gibt drei %gDeku-Händler %cin Hyrule&die mysteriöse Gegenstände&verkaufen. Weißt du wo Sie sind?",
+      "%cIl y a trois %gPestes Marchandes%c en&Hyrule qui vendent des %wobjets&mystérieux%c. Tu sais où elles sont?" },
+
+    { "%cStuck on this seed? You could &throw in the towel and check the&%wspoiler log%c...",
+      "%cHängst du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
+      "%cSi tu es coincé sur cette seed,&tu peux toujours jeter l'éponge&et regader le %wSpoiler log%c..." },
+
+    { "%cDid you know that the %yHover&Boots %ccan be used to cross&%wquicksand%c?", 
+      "%cWusstest du, dass du mit den&%yGleitstiefeln %cTreibsand %wüberqueren&kannst%c?",
+      "%cEst-ce que tu savais que les %rBottes&des airs %cpouvaient être utilisées&pour traverser les %wsables mouvants%c?" },
+
+    { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!", 
+      "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem du von&der Baustelle aus mit einem %rHuhn&%cspringst!",
+      "%cTu peux atteindre l'arrière de la&%wMaison d'Impa %cen sautant depuis la&maison en construction avec une&%rcocotte%c!" },
+
+    { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?", 
+      "%cDie %yGeister-Prüfung %cin %pGanons&Schloss %chat irgendwo eine&%wversteckte Kiste%c. Weißt du schon&wo?",
+      "%cL'%yÉpreuve de l'Esprit%c dans le %pChâteau&de Ganon %ca un coffre caché quelque&part. Je suppose que tu le savais&déjà?" },
+
+    { "%cYou know the %wBombchu Bowling&Alley%c? I heard %wonly two of the &prizes %care worthwhile. The rest &is junk!", 
+      "%cKennst du die %wMinenbowlingbahn%c?&Ich habe gehört dass sich nur &%wzwei der Preise%c lohnen. Der Rest&ist Krimskrams!",
+      "%cEst-ce que tu savais qu'au %wBowling&Teigneux%c, il n'y a que les %wdeux&premiers prix %cqui sont intéréssant?" },
+
+    { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
+      "%cBenutzt du auch genügend %wDeku&Nüsse%c? Ich habe mal gesehen dass&man damit %rKrabbelminen %cdetonieren&kann!",
+      "%cTu es sûr d'utiliser tes %wNoix Mojo &%ccorrectement? J'en ai déjà vu&exploser des %rChoux-Péteurs%c!" },
+
+    { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your safety!", 
+      "%cVielleicht verbleibt dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. Dies&ist zu deiner Sicherheit!",
+      "%cIl se peut que tu aies une %wPetite&Clé %cen trop dans le %bTemple de l'Eau&%cou le %rTemple du Feu%c. C'est pour ta&propre sécurité!" },
+
+    { "%cIf you can't pick up a %rbomb&flower %cwith your hands, you can&still detonate it with %rfire %cor&with %warrows%c!", 
+      "%cNur weil du eine %rDonnerblume&%cnicht hochheben kannst, so kannst&du sie immernoch mit %rFeuer %coder&%wPfeilen %cdetonieren!",
+      "%cSi tu ne peux pas ramasser&un %rChoux-Péteur %cavec tes mains, tu&peux toujours le faire exploser&avec du %rFeu %cou avec des %wflèches%c!" },
+
+    { "%cEven an adult can't push large&blocks without some %wextra&strength%c!", 
+      "%cSelbst ein Erwachsener kann ohne&etwas %wzusätzliche Kraft %ckeine&großen Blöcke verschieben!",
+      "%cMême un adulte ne peut pas pousser&de grands blocs sans un petit %wgain&de force%c!" },
+
+    { "%cI've heard that %rFlare Dancer&%cis weak to the %wMaster Sword%c!&Have you tried it?", 
+      "%cIch habe gehört dass der&%rFlammenderwisch %ceine Schwäche für&das %wMasterschwert %caufweist. Hast du&es schonmal versucht einzusetzen?",
+      "%cJ'ai entendu dire que les %rDanse-&Flammes %csont faîbles face à l'%wÉpée de&Légende%c! Est-ce que tu as essayé?" },
+
+    { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!", 
+      "%cFehlt dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuch&Sie mit einem %wKrug %cabzuwerfen!",
+      "%cSi tu n'as pas d'arme pour tuer&une %raraignée%c, pourquoi n'essayerais&-tu pas de lui jetter une %wjarre&%cà la figure?" },
+
+    { "%cI hear the patch of %wsoft soil&%cin %bZora's River %cis the only one&that isn't home to a %rspider%c!", 
+      "%cIch habe gehört dass die Stelle&%wfeuchten Bodens %cim %bZora-Fluss %cals&einzige keine %rSkulltula %cbeherbergt.",
+      "%cJ'ai entendu dire que la %wterre meuble&%cqui se trouve à la %bRivière Zora %cest&la seule qui ne contienne pas&d'%raraignée%c." },
+};
+
+void CreateNaviRandoMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
+    for (u8 i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
+        customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
+                                              NaviMessages[i].german, NaviMessages[i].french });
+    }
 }
 
 void Randomizer::CreateCustomMessages() {
@@ -4458,75 +4652,124 @@ void Randomizer::CreateCustomMessages() {
     const std::vector<GetItemMessage> getItemMessages = {
         GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
                   "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
-                               "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
-                               "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+            "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
         GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                               "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", 
-                               "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
+                            "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+                            "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
         GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-                                "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-                                "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FISH, ITEM_FISH,
-                                "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
-                                "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
-                               "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
-                               "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, 
-                                "You got a %rFairy in a Bottle%w!&Use it wisely!",
-                                "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-                               "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
-                               "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-                               "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
-                               "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_POE, ITEM_POE,
-                               "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
-                               "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
+                            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+                            "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre "
+                            "%rénergie vitale%w&ainsi que votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_FISH, ITEM_FISH,
+            "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+            "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu "
+            "%wen&serait friand!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_BUGS, ITEM_BUG, "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+            "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
+                            "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+            "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+            "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+            "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+            "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
+        GIMESSAGE_NO_GERMAN(
+            RG_BOTTLE_WITH_POE, ITEM_POE,
+            "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+            "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!", "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+                            "You found a %pBottom of the &Well %wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %Puits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
+                            "You found a %yGerudo Training &Grounds %wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!",
+                            "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!", "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
-        
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!", "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!", "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!", "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!", "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!", "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!", "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!",
+                            "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!", "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!", "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the &Well %wCompass!", "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!", "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!",
+                            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!",
+                            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!",
+                            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!",
+                            "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!",
+                            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+                            "You found the %pBottom of the &Well %wCompass!",
+                            "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!",
+                            "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
+                  "You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
+                  "Du hast eine %rPackung&Magic Beans%w! Finde&einen geeigneten Platz fur einen&Garten und pflanze sie. Dann^warte auf etwas Lustiges passiert!",
+                  "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !")
     };
     CreateGetItemMessages(getItemMessages);
-    CreateScrubMessages();
+    CreateMerchantMessages();
+    CreateRupeeMessages();
+    CreateNaviRandoMessages();
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {
@@ -4621,12 +4864,21 @@ void InitRandoItemTable() {
         GET_ITEM(RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
         GET_ITEM(RG_ICE_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
+        GET_ITEM(RG_MAGIC_BEAN_PACK, OBJECT_GI_BEAN, GID_BEAN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK)
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
     }
     for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
+            && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
+        } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
+        } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
 }

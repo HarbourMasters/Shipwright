@@ -11,14 +11,19 @@ typedef enum {
     TEXT_ALTAR_CHILD = 0x7040,
     TEXT_ALTAR_ADULT = 0x7088,
     TEXT_GANONDORF = 0x70CC,
-    TEXT_GANONDORF_NOHINT = 0x70CD
+    TEXT_GANONDORF_NOHINT = 0x70CD,
+    TEXT_BLUE_RUPEE = 0xCC,
+    TEXT_RED_RUPEE = 0xF0,
+    TEXT_PURPLE_RUPEE = 0xF1,
+    TEXT_HUGE_RUPEE = 0xF2,
+    TEXT_BEAN_SALESMAN = 0x405E
 } TextIDs;
 
 #ifdef __cplusplus
 
 typedef struct {
     u16 giid;
-    u16 iid;
+    ItemID iid;
     std::string english;
     std::string german;
     std::string french;

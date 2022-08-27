@@ -598,6 +598,170 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
     u16 offsetX;
     u16 offsetY;
 
+    s16 Top_HUD_Margin = CVar_GetS32("gHUDMargin_T", 0);
+    s16 Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
+    s16 Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
+    s16 Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
+
+    s16 X_Margins_CL;
+    s16 X_Margins_CR;
+    s16 X_Margins_CD;
+    s16 Y_Margins_CL;
+    s16 Y_Margins_CR;
+    s16 Y_Margins_CD;
+    s16 X_Margins_BtnB;
+    s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
+    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        Y_Margins_BtnB = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_BtnB = 0;
+        Y_Margins_BtnB = 0;
+    }
+    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        Y_Margins_CL = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CL = 0;
+        Y_Margins_CL = 0;
+    }
+    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        Y_Margins_CR = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CR = 0;
+        Y_Margins_CR = 0;
+    }
+    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        Y_Margins_CD = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CD = 0;
+        Y_Margins_CD = 0;
+    }
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[7][2] = {
+        { C_LEFT_BUTTON_X+X_Margins_CL, C_LEFT_BUTTON_Y+Y_Margins_CL },
+        { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD },
+        { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y+Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y+Y_Margins_DPad_Items }, 
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y+Y_Margins_DPad_Items }, 
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
+    };
+    s16 DPad_ItemsOffset[4][2] = {
+        { 7,-8},//Up
+        { 7,24},//Down
+        {-9, 8},//Left
+        {23, 8},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        sCButtonPosY[3] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        sCButtonPosY[4] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        sCButtonPosY[5] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        sCButtonPosY[6] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[3] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            sCButtonPosX[4] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            sCButtonPosX[5] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            sCButtonPosX[6] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        }
+    } else {
+        sCButtonPosX[3] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[3][0]);
+        sCButtonPosX[4] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        sCButtonPosX[5] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        sCButtonPosX[6] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        sCButtonPosY[3] = ItemIconPos_ori[3][1];
+        sCButtonPosY[4] = ItemIconPos_ori[4][1];
+        sCButtonPosY[5] = ItemIconPos_ori[5][1];
+        sCButtonPosY[6] = ItemIconPos_ori[6][1];
+    }
+    //C button Left
+    if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+        sCButtonPosY[0] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+        if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[0] = CVar_GetS32("gCBtnLPosX", 0);
+        }
+    } else {
+        sCButtonPosX[0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
+        sCButtonPosY[0] = ItemIconPos_ori[0][1];
+    }
+    //C Button down
+    if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+        sCButtonPosY[1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+        if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[1] = CVar_GetS32("gCBtnDPosX", 0);
+        }
+    } else {
+        sCButtonPosX[1] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
+        sCButtonPosY[1] = ItemIconPos_ori[1][1];
+    }
+    //C button Right
+    if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+        sCButtonPosY[2] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+        if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[2] = CVar_GetS32("gCBtnRPosX", 0);
+        }
+    } else {
+        sCButtonPosX[2] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
+        sCButtonPosY[2] = ItemIconPos_ori[2][1];
+    }
+
+    sCButtonPosX[0] = sCButtonPosX[0] - 160;
+    sCButtonPosY[0] = 120 - sCButtonPosY[0];
+    sCButtonPosX[1] = sCButtonPosX[1] - 160;
+    sCButtonPosY[1] = 120 - sCButtonPosY[1];
+    sCButtonPosX[2] = sCButtonPosX[2] - 160;
+    sCButtonPosY[2] = 120 - sCButtonPosY[2];
+    sCButtonPosX[3] = sCButtonPosX[3] - 160;
+    sCButtonPosY[3] = 120 - sCButtonPosY[3];
+    sCButtonPosX[4] = sCButtonPosX[4] - 160;
+    sCButtonPosY[4] = 120 - sCButtonPosY[4];
+    sCButtonPosX[5] = sCButtonPosX[5] - 160;
+    sCButtonPosY[5] = 120 - sCButtonPosY[5];
+    sCButtonPosX[6] = sCButtonPosX[6] - 160;
+    sCButtonPosY[6] = 120 - sCButtonPosY[6];
+
     if (sEquipState == 0) {
         pauseCtx->equipAnimAlpha += 14;
         if (pauseCtx->equipAnimAlpha > 255) {
@@ -628,7 +792,7 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
         offsetX = ABS(pauseCtx->equipAnimX - bowItemVtx->v.ob[0] * 10) / sEquipMoveTimer;
         offsetY = ABS(pauseCtx->equipAnimY - bowItemVtx->v.ob[1] * 10) / sEquipMoveTimer;
     } else {
-        offsetX = ABS(pauseCtx->equipAnimX - OTRGetRectDimensionFromRightEdge(sCButtonPosX[pauseCtx->equipTargetCBtn]) * 10) / sEquipMoveTimer;
+        offsetX = ABS(pauseCtx->equipAnimX - sCButtonPosX[pauseCtx->equipTargetCBtn] * 10) / sEquipMoveTimer;
         offsetY = ABS(pauseCtx->equipAnimY - sCButtonPosY[pauseCtx->equipTargetCBtn] * 10) / sEquipMoveTimer;
     }
 
@@ -658,7 +822,7 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
                 pauseCtx->equipAnimY += offsetY;
             }
         } else {
-            if (pauseCtx->equipAnimX >= OTRGetRectDimensionFromRightEdge(sCButtonPosX[pauseCtx->equipTargetCBtn]) * 10) {
+            if (pauseCtx->equipAnimX >= sCButtonPosX[pauseCtx->equipTargetCBtn] * 10) {
                 pauseCtx->equipAnimX -= offsetX;
             } else {
                 pauseCtx->equipAnimX += offsetX;

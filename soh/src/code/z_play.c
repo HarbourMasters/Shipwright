@@ -255,10 +255,10 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemEntry.getItemId && getItemEntry.getItemId != GI_ICE_TRAP)) &&
-            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xC1);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0xC1;
         }
     }
 }
@@ -415,6 +415,13 @@ void Gameplay_Init(GameState* thisx) {
     PreRender_SetValues(&globalCtx->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
     globalCtx->transitionMode = 0;
+
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        globalCtx->transitionMode = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    }
+
     FrameAdvance_Init(&globalCtx->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&globalCtx->state);

@@ -5,6 +5,7 @@
 #include "z64math.h"
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizer_inf.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -182,10 +183,7 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u8 dungeonsDone[8];
-    u8 trialsDone[6];
-    u8 cowsMilked[10];
-    u8 scrubsPurchased[35];
+    u16 randomizerInf[4];
     u8 shopItemsPurchased[48];
     u8 temporaryWeapon;
     u16 adultTradeItems;

@@ -110,6 +110,9 @@ set(Header_Files__include
     "include/ichain.h"
     "include/macro.inc"
     "include/macros.h"
+    "include/message_data_fmt.h"
+    "include/message_data_static.h"
+    "include/message_data_textbox_types.h"
     #"include/math_n64.h"
     "include/regs.h"
     "include/segment_symbols.h"
@@ -178,9 +181,11 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
     "soh/Enhancements/randomizer/adult_trade_shuffle.h"
     "soh/Enhancements/randomizer/randomizer_check_objects.h"
+    "soh/Enhancements/randomizer/draw.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
@@ -288,6 +293,7 @@ set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
     "soh/Enhancements/randomizer/adult_trade_shuffle.c"
     "soh/Enhancements/randomizer/randomizer_check_objects.cpp"
+    "soh/Enhancements/randomizer/draw.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
 
@@ -1758,15 +1764,15 @@ if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /sdl-;
-                /w
+                /w;
+                /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl-;
                 /Gy;
                 /W3
             >
+            /sdl-;
             /permissive-;
             /MP;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -2001,14 +2007,6 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
-endif()
-
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-install(CODE "
-    include(InstallRequiredSystemLibraries)
-    include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
-    ")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")

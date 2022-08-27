@@ -11,6 +11,7 @@ extern "C"
 
 #include "../../libultraship/libultraship/luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
@@ -454,6 +455,7 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
 s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
 void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry);
@@ -557,6 +559,8 @@ s32 Flags_GetEventChkInf(s32 flag);
 void Flags_SetEventChkInf(s32 flag);
 s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
+s32 Flags_GetRandomizerInf(RandomizerInf flag);
+void Flags_SetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(GlobalContext* globalCtx, s16 arg1);
 s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
@@ -858,6 +862,7 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx);
 void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx);
 void Cutscene_SetSegment(GlobalContext* globalCtx, void* segment);
 void GetItem_Draw(GlobalContext* globalCtx, s16 drawId);
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 void SoundSource_InitAll(GlobalContext* globalCtx);
 void SoundSource_UpdateAll(GlobalContext* globalCtx);
 void SoundSource_PlaySfxAtFixedWorldPos(GlobalContext* globalCtx, Vec3f* pos, s32 duration, u16 sfxId);

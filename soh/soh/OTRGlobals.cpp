@@ -3,8 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
-#include <locale>
-#include "GlobalCtx2.h"
+#include <fstream>
+
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -33,6 +33,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include <soh/Enhancements/randomizer/randomizer.h>
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
@@ -41,6 +42,9 @@
 #include <Utils/StringHelper.h>
 #include "Hooks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
+
+#include "Lib/Fast3D/gfx_pc.h"
+#include "Lib/Fast3D/gfx_rendering_api.h"
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -65,10 +69,9 @@ CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
+    context = Ship::Window::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
-    context->GetWindow()->Init();
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -380,14 +383,14 @@ extern "C" uint64_t GetPerfCounter() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
-    OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
+    OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
 }
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
     // Why -1?
-    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->GetLastScancode();
-    OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
+    int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
+    OTRGlobals::Instance->context->SetLastScancode(-1);
 
     switch (dwScancode - 1) {
         case SDL_SCANCODE_F5: {
@@ -443,7 +446,14 @@ extern "C" void Graph_StartFrame() {
         }
     }
 #endif
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+    OTRGlobals::Instance->context->StartFrame();
+}
+
+void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+    for (const auto& m : mtx_replacements) {
+        gfx_run(Commands, m);
+        gfx_end_frame();
+    }
 }
 
 // C->C++ Bridge
@@ -484,12 +494,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+    OTRGlobals::Instance->context->SetTargetFps(fps);
 
     int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
+    RunCommands(commands, mtx_replacements);
 
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
@@ -502,19 +512,19 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
-   /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
-        OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;*/
+   /* if (OTRGlobals::Instance->context->lastScancode != -1)
+        OTRGlobals::Instance->context->lastScancode = -1;*/
 
 }
 
 float divisor_num = 0.0f;
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
-    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
+    OTRGlobals::Instance->context->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
-    return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
+    return OTRGlobals::Instance->context->GetPixelDepth(x, y);
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion()
@@ -1326,7 +1336,7 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1457,15 +1467,15 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetCurrentWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
@@ -1497,33 +1507,33 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" bool AudioPlayer_Init(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Init();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Init();
     }
 
     return false;
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Buffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->Buffered();
     }
 }
 
 extern "C" int AudioPlayer_GetDesiredBuffered(void) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->GetDesiredBuffered();
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        return OTRGlobals::Instance->context->GetAudioPlayer()->GetDesiredBuffered();
     }
 }
 
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
-    if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
-        OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
+    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
+        OTRGlobals::Instance->context->GetAudioPlayer()->Play(buf, len);
     }
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
         auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
@@ -1581,7 +1591,12 @@ extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorP
 }
 
 extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, itemPrice);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
+    u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetShopMessage(s16 shopItemId) {
@@ -1610,7 +1625,7 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
     return giEntry;
 }
 
@@ -1641,12 +1656,12 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
-extern "C" u32 Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
     return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
          Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 
-extern "C" u32 Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
 
@@ -1713,6 +1728,15 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
         } else if (textId >= 0x9100 && textId <= 0x9160) {
             messageEntry = Randomizer_GetShopMessage((textId & ((1 << 8) - 1)));
+        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
+                   textId == TEXT_HUGE_RUPEE)) {
+            messageEntry = Randomizer::GetRupeeMessage(textId);
+            // In rando, replace Navi's general overworld hints with rando-related gameplay tips
+        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+            messageEntry = Randomizer_GetNaviMessage();
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -1742,7 +1766,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =

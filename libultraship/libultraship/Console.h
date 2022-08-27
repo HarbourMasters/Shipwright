@@ -6,8 +6,6 @@
 #include <functional>
 
 #include "Lib/ImGui/imgui.h"
-#define NOGDI
-#define WIN32_LEAN_AND_MEAN
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -95,10 +93,9 @@ namespace Ship {
 		void Append(const std::string& channel, spdlog::level::level_enum priority, const char* fmt, ...);
 		bool HasCommand(const std::string& command);
 		void AddCommand(const std::string& command, CommandEntry entry);
-
-		std::string GetCurrentChannel() { return currentChannel; }
-		bool IsOpened() { return opened;  }
-		void Close() { opened = false; }
-		void Open() { opened = true;  }
+		std::string GetCurrentChannel();
+		bool IsOpened();
+		void Close();
+		void Open();
 	};
 }

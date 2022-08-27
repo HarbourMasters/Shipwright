@@ -16,7 +16,7 @@
 extern "C" SaveContext gSaveContext;
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
@@ -137,10 +137,10 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -758,19 +758,8 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
-    });
-
-    SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
 
     SaveManager::Instance->LoadArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
@@ -930,19 +919,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
-    });
-
-    SaveManager::Instance->LoadArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.scrubsPurchased[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
 
     SaveManager::Instance->LoadArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
@@ -1098,19 +1076,8 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.dungeonsDone[i]);
-    });
-
-    SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
-
-    SaveManager::Instance->SaveArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.cowsMilked[i]);
-    });
-
-    SaveManager::Instance->SaveArray("scrubsPurchased", ARRAY_COUNT(gSaveContext.scrubsPurchased), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.scrubsPurchased[i]);
+    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
 
     SaveManager::Instance->SaveArray("shopItemsPurchased", ARRAY_COUNT(gSaveContext.shopItemsPurchased), [](size_t i) {
