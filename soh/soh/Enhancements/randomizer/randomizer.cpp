@@ -3399,17 +3399,13 @@ void DrawRandoEditor(bool& open) {
                     PaddedSeparator();
 
                     // Random Ganon's Trials
-                    ImGui::Text("Random Ganon's Trials");
                     SohImGui::EnhancementCheckbox("Random Ganon's Trials", "gRandomizeGanonTrial");
-                    InsertHelpHoverText("Sets a random number or required trials to enter\nGanon's Tower.");
+                    InsertHelpHoverText("Sets a random number or required trials to enter Ganon's Tower.");
                     if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
                         SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                        "gRandomizeGanonTrialCount", 0, 6, "", 6);
                         InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                     }
-                    // SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
-                    // InsertHelpHoverText(
-                    //     "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
                 }
 
                 // COLUMN 2 - Shuffle Settings
