@@ -4719,10 +4719,6 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
-void Flags_UnsetRandomizerInf(RandomizerInf flag) {
-    gSaveContext.randomizerInf[flag >> 4] &= ~(flag & 0xF);
-}
-
 u32 func_80035BFC(GlobalContext* globalCtx, s16 arg1) {
     u16 retTextId = 0;
 

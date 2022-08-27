@@ -561,7 +561,6 @@ s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
 s32 Flags_GetRandomizerInf(RandomizerInf flag);
 void Flags_SetRandomizerInf(RandomizerInf flag);
-void Flags_UnsetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(GlobalContext* globalCtx, s16 arg1);
 s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
