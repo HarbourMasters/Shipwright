@@ -520,27 +520,6 @@ static void WriteRequiredTrials() {
     }
 }
 
-// Writes the required trails to the spoiler log, if there are any.
-// static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
-//   auto parentNode = spoilerLog.NewElement("required-trials");
-
-//   for (const auto* trial : Trial::trialList) {
-//     if (trial->IsSkipped()) {
-//       continue;
-//     }
-
-//     auto node = parentNode->InsertNewChildElement("trial");
-//     // PURPLE TODO: LOCALIZATION
-//     std::string name = trial->GetName().GetEnglish();
-//     name[0] = toupper(name[0]); // Capitalize T in "The"
-//     node->SetAttribute("name", name.c_str());
-//   }
-
-//   if (!parentNode->NoChildren()) {
-//     spoilerLog.RootElement()->InsertEndChild(parentNode);
-//   }
-// }
-
 // Writes the intended playthrough to the spoiler log, separated into spheres.
 static void WritePlaythrough() {
   // auto playthroughNode = spoilerLog.NewElement("playthrough");
