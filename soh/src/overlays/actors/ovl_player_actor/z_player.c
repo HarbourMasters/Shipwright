@@ -6104,7 +6104,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
 
             GetItemEntry giEntry;
-            if (this->getItemEntry.objectId == OBJECT_INVALID) {
+            if (this->getItemEntry.objectId == OBJECT_INVALID || (this->getItemId != this->getItemEntry.getItemId)) {
                 giEntry = ItemTable_Retrieve(this->getItemId);
             } else {
                 giEntry = this->getItemEntry;
@@ -9430,6 +9430,7 @@ static EffectBlureInit2 D_8085470C = {
 static Vec3s D_80854730 = { -57, 3377, 0 };
 
 void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeader* skelHeader) {
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     this->ageProperties = &sAgeProperties[gSaveContext.linkAge];
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->swordEffectIndex = TOTAL_EFFECT_COUNT;
