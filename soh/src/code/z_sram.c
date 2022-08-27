@@ -7,7 +7,6 @@
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
-#define NUM_TRIALS 6
 #define NUM_COWS 10
 #define NUM_SCRUBS 35
 
@@ -760,6 +759,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Sets all rando flags to false
         for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
             gSaveContext.randomizerInf[i] = 0;
+        }
+
+        // Set all trials to cleared if trial count is random or anything other than 6
+        if (Randomizer_GetSettingValue(RSK_RANDOM_TRIALS) || (Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != 6)) {
+            for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+                if (!Randomizer_IsTrialRequired(i)) {
+                    Flags_SetRandomizerInf(i);
+                }
+            }
         }
 
         // Set Cutscene flags to skip them
