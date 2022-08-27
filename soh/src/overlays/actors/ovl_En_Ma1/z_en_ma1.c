@@ -90,7 +90,16 @@ static void* sEyeTextures[] = {
     gMalonChildEyeClosedTex,
 };
 
+bool Randomizer_ObtainedMalonHCReward() {
+    return Flags_GetEventChkInf(0x12);
+}
+
 u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* thisx) {
+    // Special case for Malon Hyrule Castle Text. Placing it here at the beginning
+    // has the added benefit of circumventing mask text if wearing bunny hood.
+    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_SPOT15) {
+        return Randomizer_ObtainedMalonHCReward() ? 0x2044 : 0x2043;
+    }
     u16 faceReaction = Text_GetFaceReaction(globalCtx, 0x17);
 
     if (faceReaction != 0) {
@@ -195,7 +204,8 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
         !(gSaveContext.eventChkInf[1] & 0x10) && !(gSaveContext.infTable[8] & 0x800)) {
         return 1;
     }
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && !(gSaveContext.eventChkInf[1] & 0x10)) {
+    if ((globalCtx->sceneNum == SCENE_SPOT15) && (!(gSaveContext.eventChkInf[1] & 0x10) || 
+        (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()))) {
         if (gSaveContext.infTable[8] & 0x800) {
             return 1;
         } else {
@@ -209,7 +219,7 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
     if (globalCtx->sceneNum != SCENE_SPOT20) {
         return 0;
     }
-    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10)) {
+    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10) && ((gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()) || !gSaveContext.n64ddFlag)) {
         return 1;
     }
     return 0;
@@ -290,7 +300,7 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
         (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
@@ -322,9 +332,11 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
 
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10)) {
-        Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
+    if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10) && (gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward())) {
+        if (!gSaveContext.n64ddFlag) {
+            Actor_Kill(&this->actor);
+        }
+    } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
             globalCtx->msgCtx.stateTimer = 4;
