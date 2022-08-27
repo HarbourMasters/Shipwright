@@ -309,9 +309,11 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    // If Talon has not left Hyrule Castle, we are randomized and ahve not obtained Malon's HC Check, we are not randomized
-    // and have Epona's Song, or we are randomized and have obtained Malon's Epona's Song Check. This sets Malon's idle
-    // singing animation in such a way that she has dialog but does not give items or respond to the Ocarina.
+   // To avoid missing a check, we want Malon to have the actionFunc for singing, but not reacting to Ocarina, if any of
+   // the following are true.
+   // 1. Talon has not left Hyrule Castle.
+   // 2. We are Randomized and have not obtained Malon's Weird Egg Check.
+   // 3. We are not Randomized and have obtained Epona's Song
     if (!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
         (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
@@ -345,15 +347,15 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
 
-    // If we're at Hyrule Castle, and either Talon has left or we're randomized and have obtained Malon's HC Check
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && ((!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()))) {
-        // Only kill Malon's Actor here in vanilla. If we're in rando and speak to her we don't want her to pop
-        // out of existence immediately. The init function will properly kill her actor on the next scene load.
-        if (!gSaveContext.n64ddFlag) {
-            Actor_Kill(&this->actor);
-        }
-    // If Talon has not run away, or we're randomized and have not received Malon's HC Check, or we're
-    // not randomized and have obtained Epona's Song, put Malon in the state to give Link the HC reward.
+    // We want to Kill Malon's Actor outside of randomizer when Talon is freed. In Randomizer we don't kill Malon's
+    // Actor here, otherwise if we wake up Talon first and then get her check she will spontaneously
+    // disappear.
+    if ((globalCtx->sceneNum == SCENE_SPOT15) && (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10)) {
+        Actor_Kill(&this->actor);
+    // We want Malon to give the Weird Egg Check (see function below) in the following situations:
+    // 1. Talon as not left Hyrule Castle (Vanilla) OR
+    // 2. We haven't obtained Malon's Weird Egg Check (Randomizer only) OR
+    // 3. We have Epona's Song? (Vanilla only, not sure why it's here but I didn't write that one)
     } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
