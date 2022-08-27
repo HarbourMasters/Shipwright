@@ -3025,7 +3025,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
     const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
-    const char* randoGanonsTrial[2] = { "Off", "On" };
+    const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3399,12 +3399,18 @@ void DrawRandoEditor(bool& open) {
                     PaddedSeparator();
 
                     // Random Ganon's Trials
-                    SohImGui::EnhancementCheckbox("Random Ganon's Trials", "gRandomizeGanonTrial");
-                    InsertHelpHoverText("Sets a random number or required trials to enter Ganon's Tower.");
-                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
+                    ImGui::Text("Ganon's Trials");
+                    InsertHelpHoverText("Sets the number of Ganon's Trials required to dispel the barrier\n\n"
+                                        "Skip - No Trials are required and the barrier is already dispelled.\n\n"
+                                        "Set Number - Select a number of trials that will be required from the"
+                                        "slider below. Which specific trials you need to complete will be random.\n\n"
+                                        "Random Number - A Random number and set of trials will be required.");
+                    SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
                         SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                        "gRandomizeGanonTrialCount", 0, 6, "", 6);
-                        InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
+                        InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower."
+                                            "The specific trials you need to complete will be randomly selected.");
                     }
                 }
 

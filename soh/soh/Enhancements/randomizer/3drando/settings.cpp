@@ -2517,8 +2517,16 @@ namespace Settings {
     BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
-    RandomGanonsTrials.SetSelectedIndex(cvarSettings[RSK_RANDOM_TRIALS]);
-    GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    if (cvarSettings[RSK_RANDOM_TRIALS] == 2) {
+        RandomGanonsTrials.SetSelectedIndex(1);
+    } else {
+        RandomGanonsTrials.SetSelectedIndex(0);
+    }
+    if (cvarSettings[RSK_RANDOM_TRIALS] == 0) {
+        GanonsTrialsCount.SetSelectedIndex(0);
+    } else {
+        GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
