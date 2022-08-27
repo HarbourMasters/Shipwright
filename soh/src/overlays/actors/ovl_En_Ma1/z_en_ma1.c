@@ -205,16 +205,15 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
         !(gSaveContext.eventChkInf[1] & 0x10) && !(gSaveContext.infTable[8] & 0x800)) {
         return 1;
     }
-    // Causes Malon to appear at Hyrule Castle if you've met her already and either we're vanilla and Talon hasn't
-    // left Hyrule Castle, or if we're randomized and haven't obtained her check. If we haven't met Malon yet, this
-    // sets the flag for meeting her.
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && (!(gSaveContext.eventChkInf[1] & 0x10) || 
-        (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()))) {
-        if (gSaveContext.infTable[8] & 0x800) {
-            return 1;
-        } else {
-            gSaveContext.infTable[8] |= 0x800;
-            return 0;
+    if ((globalCtx->sceneNum == SCENE_SPOT15) &&  // if we're at hyrule castle
+        (!(gSaveContext.eventChkInf[1] & 0x10) || // and talon hasn't left
+         (gSaveContext.n64ddFlag &&
+          !Randomizer_ObtainedMalonHCReward()))) { // or we're rando'd and haven't gotten malon's HC check
+        if (gSaveContext.infTable[8] & 0x800) {    // if we've met malon
+            return 1;                              // make her appear at the castle
+        } else {                                   // if we haven't met malon
+            gSaveContext.infTable[8] |= 0x800;     // set the flag for meeting malon
+            return 0;                              // don't make her appear at the castle
         }
     }
     // Malon asleep in her bed if Talon has left Hyrule Castle and it is nighttime.
