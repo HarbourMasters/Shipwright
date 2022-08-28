@@ -2017,6 +2017,11 @@ namespace SohImGui {
                         "Play unique fanfares when obtaining quest items "
                         "(medallions/stones/songs). Note that these fanfares are longer than usual."
                     );
+                    PaddedEnhancementCheckbox("Enhanced Magic Arrows", "gEnhancedMagicArrows", true, false);
+                    Tooltip(
+                        "Allows Ice Arrows to melt red ice and allows Light Arrows "
+                        "to activate Sun Switches."
+                    );
                     ImGui::EndMenu();
                 }
 
