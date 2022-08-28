@@ -3042,19 +3042,10 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
     const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    const char* randoShuffleTokens[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
-    const char* randoShuffleCows[2] = { "Off", "On" };
-    const char* randoShuffleKokiriSword[2] = { "Off", "On" };
-    const char* randoShuffleOcarinas[2] = { "Off", "On" };
-    const char* randoShuffleWeirdEgg[2] = { "Off", "On" };
-    const char* randoShuffleGerudoToken[2] = { "Off", "On" };
-    const char* randoShuffleMagicBeans[2] = { "Off", "On" };
     const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
-    const char* randoShuffleFrogSongRupees[2] = { "Off", "On" };
-    const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
     const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -3067,168 +3058,17 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGanonsBossKey[6] = { "Vanilla",     "Own dungeon", "Start with",
                                                  "Any Dungeon", "Overworld",   "Anywhere" };
 
-    // Timesaver Settings
-    const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
-
     // Misc Settings
     const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
-    const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
     const char* randoStartingTime[2] = { "Day", "Night" };
-    const char* randoChestAnimations[2] = { "Always Fast", "Match contents" };
     const char* randoChestSizeAndColor[2] = { "Vanilla", "Match contents" };
-    const char* randoOpenInfoMenuWith[6] = { "Select", "Start", "D-Pad Up", "D-Pad Down", "D-Pad Right", "D-Pad Left" };
     const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
     const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
-
-    // SFX Settings
-    const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
-    const char* randoSFXFanfares[3] = { "Normal", "No Fanfares", "Random" };
-    const char* randoSFXLowHP[29] = { "Default",
-                                      "Completely Random",
-                                      "Random Ear-Safe",
-                                      "None",
-                                      "Bark",
-                                      "Bomb Bounce",
-                                      "Bongo Bongo Low",
-                                      "Business Scrub",
-                                      "Carrot Refill",
-                                      "Cluck",
-                                      "Drawbridge Set",
-                                      "Guay",
-                                      "HP Recover",
-                                      "Horse Trot",
-                                      "Iront Boots",
-                                      "Moo",
-                                      "Mweep!",
-                                      "Navi \"Hey!\"",
-                                      "Navi Random",
-                                      "Notification",
-                                      "Pot Shattering",
-                                      "Ribbit",
-                                      "Rupee (Silver)",
-                                      "Soft Beep",
-                                      "Switch",
-                                      "Sword Bonk",
-                                      "Tambourine",
-                                      "Timer",
-                                      "Zelda Gasp (Adult)" };
-    const char* randoSFXHorse[13] = {
-        "Default",       "Completely Random", "Random Ear-Safe", "Random Choice", "None",
-        "Armos",         "Child Scream",      "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Scream", "Ruto Wiggle",       "Stalchild Attack"
-    };
-    const char* randoSFXNightfall[13] = {
-        "Default",        "Completely Random",    "Random Ear-Safe", "Random Choice", "None",
-        "Cockadoodiedoo", "Gold Skulltula Token", "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Moan",    "Talon Snore",          "Thunder"
-    };
-    const char* randoSFXHoverBoots[11] = {
-        "Default",      "Completely Random",  "Random Ear-Safe", "Random Choice", "None",      "Bark",
-        "Cartoon Fall", "Flare Dancer Laugh", "Mweep!",          "Shabom Pop",    "Tambourine"
-    };
-    const char* randoSFXOcarina[7] = { "Dafault", "Random Choice", "Flute", "Harp", "Whistle", "Malon", "Grind Organ" };
-    const char* randoSFXMenu[65] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random Choise",
-                                     "None",
-                                     "Bark",
-                                     "Bomb Bounce",
-                                     "Bongo Bongo High",
-                                     "Bongo Bongo Low",
-                                     "Bottle Cork",
-                                     "Bow Twang",
-                                     "Bubble Laugh",
-                                     "Carrot Refill",
-                                     "Change Item",
-                                     "Child Pant",
-                                     "Cluck",
-                                     "Deku Baba",
-                                     "Drawbridge Set",
-                                     "Dusk Howl",
-                                     "Fanfare (Light)",
-                                     "Fanfare (Mediaum)",
-                                     "Field Shrub",
-                                     "Flare Dancer Startled",
-                                     "Ganondorf \"Teh!\"",
-                                     "Gohma Larva Croak",
-                                     "Gold Skulltula Token",
-                                     "Goron Wake",
-                                     "Guay",
-                                     "Gunshot",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Hammer Bonk",
-                                     "Horse Trot",
-                                     "Iron Boots",
-                                     "Iron Knuckle",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Notification",
-                                     "Phantom Ganon Laugh",
-                                     "Plant Explode",
-                                     "Pot Shattering",
-                                     "Redead Moan",
-                                     "Ribbit",
-                                     "Rupee",
-                                     "Rupee (Silver)",
-                                     "Ruto Crash",
-                                     "Ruto Lift",
-                                     "Ruto Thrown",
-                                     "Scrub Emerge",
-                                     "Shabom Bounce",
-                                     "Shabom Pop",
-                                     "Shellblade",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Spit Nut",
-                                     "Switch",
-                                     "Sword Bonk",
-                                     "Talon \"Hmmm\"",
-                                     "Talon Snore",
-                                     "Talon Surprised",
-                                     "Tambourine",
-                                     "Target Ennemy",
-                                     "Target Neutral",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
-    const char* randoSFXNavi[32] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random  Choice",
-                                     "None",
-                                     "Bark",
-                                     "Business Scrub",
-                                     "Carrot Refill",
-                                     "Click",
-                                     "Dusk Howl",
-                                     "Exploding Crate",
-                                     "Explosion",
-                                     "Great Fairy",
-                                     "Guay",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Horse Neigh",
-                                     "Ice Shattering",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Navi \"Hello!\"",
-                                     "Notification",
-                                     "Poe",
-                                     "Pot Shattering",
-                                     "Redead Scream",
-                                     "Ribit",
-                                     "Ruto Giggle",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Tambourine",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
 
     ImGui::SetNextWindowSize(ImVec2(920, 563), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -3275,7 +3115,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - OPEN SETTINGS
+                // COLUMN 1 - Open Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildOpenSettings", ImVec2(0, -8));
@@ -3346,10 +3186,10 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndChild();
 
-                // COLUMN 2 - Shuffle Settings
+                // COLUMN 2 - Misc World Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleSettings", ImVec2(0,-8));
+                ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Gerudo Fortress
@@ -3427,31 +3267,36 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
-                // Random Ganon's Trials
+                // Ganon's Trials
+                ImGui::PushItemWidth(-FLT_MIN);
                 ImGui::Text("Ganon's Trials");
                 InsertHelpHoverText(
-                    "Sets the number of Ganon's Trials required to dispel the barrier\n\n"
-                    "Skip - No Trials are required and the barrier is already dispelled.\n\n"
+                    "Sets the number of Ganon's Trials required to dispel the barrier.\n"
+                    "\n"
+                    "Skip - No Trials are required and the barrier is already dispelled.\n"
+                    "\n"
                     "Set Number - Select a number of trials that will be required from the"
-                    "slider below. Which specific trials you need to complete will be random.\n\n"
+                    "slider below. Which specific trials you need to complete will be random.\n"
+                    "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
                 SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                ImGui::PopItemWidth();
                 if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
+                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6);
+                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true);
                     InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                 }
 
                 PaddedSeparator();
 
-                ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 3 - Shuffle Dungeon Items
+                // COLUMN 3 - Shuffle Entrances
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
+                ImGui::BeginChild("ChildShuffleEntrances", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 ImGui::Text("Coming soon");
@@ -3478,10 +3323,10 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - STARTING EQUIPMENT
+                // COLUMN 1 - Shuffle Items
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
+                ImGui::BeginChild("ChildShuffleItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Songs
@@ -3516,7 +3361,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "All Tokens - Shuffle all 100 GS tokens."
                 );
-                SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
+                SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, 4, 0);
 
                 ImGui::Dummy(ImVec2(0,0));
 
@@ -3591,10 +3436,10 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 2 - STARTING ITEMS
+                // COLUMN 2 - Shuffle NPCs & Merchants
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
+                ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Scrubs
@@ -3657,10 +3502,10 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 3 - STARTING SONGS
+                // COLUMN 3 - Shuffle Dungeon Items
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
+                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
@@ -3675,7 +3520,8 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
                     "\n"
-                    "Anywhere - Spiritual stones and medallions can appear anywhere.");
+                    "Anywhere - Spiritual stones and medallions can appear anywhere."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
 
                 PaddedSeparator();
@@ -3815,28 +3661,33 @@ void DrawRandoEditor(bool& open) {
                 const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
                 SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
                 InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+
                 PaddedSeparator();
 
                 // Skip child zelda
                 SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                 InsertHelpHoverText("Start with Zelda's Letter in your inventory and skip the sequence up "
                                     "until after meeting Zelda. Disables the ability to shuffle Weird Egg.");
+
                 PaddedSeparator();
 
                 // Skip Epona race
                 SohImGui::EnhancementCheckbox(Settings::SkipEponaRace.GetName().c_str(), "gRandomizeSkipEponaRace");
                 InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
+
                 PaddedSeparator();
 
                 // Skip tower escape
                 SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
                 InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
+
                 PaddedSeparator();
 
                 // Complete mask quest
                 SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
                                               "gRandomizeCompleteMaskQuest");
                 InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
+
                 PaddedSeparator();
 
                 // Enable Glitch-Useful Cutscenes
@@ -3851,10 +3702,10 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndChild();
 
-                // COLUMN 2 - HINT SETTINGS
+                // COLUMN 2 - Item Pool & Hint Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildHintSettings", ImVec2(0, -8));
+                ImGui::BeginChild("ChildItemPoolHintSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Item Pool Settings
@@ -3950,10 +3801,10 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 3 - ITEM POOL SETTINGS
+                // COLUMN 3 - Additional Features
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildItemPoolSettings", ImVec2(0, -8));
+                ImGui::BeginChild("ChildAdditionalFeatures", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
@@ -3964,14 +3815,16 @@ void DrawRandoEditor(bool& open) {
                 SohImGui::EnhancementCheckbox("WIP - Blue Ice Arrows", "gRandomizeBlueIceArrows", true, "In development");
                 InsertHelpHoverText(
                     "Ice Arrows act like Blue Fire, making them able to melt red ice. "
-                    "Item placement logic will respect this option, so it might be required to use this to progress.");
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                );
 
                 PaddedSeparator();
 
                 SohImGui::EnhancementCheckbox("WIP - Sunlight Arrows", "gRandomizeSunlightArrows", true, "In development");
                 InsertHelpHoverText(
                     "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
-                    "Item placement logic will respect this option, so it might be required to use this to progress.");
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                );
 
                 PaddedSeparator();
 
