@@ -1562,8 +1562,16 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
@@ -1583,7 +1591,7 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
 }
 
 extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, itemPrice);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, itemPrice);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
@@ -1721,6 +1729,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
         } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             messageEntry = Randomizer_GetNaviMessage();
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

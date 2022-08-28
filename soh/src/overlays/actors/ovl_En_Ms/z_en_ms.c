@@ -125,11 +125,19 @@ void EnMs_Talk(EnMs* this, GlobalContext* globalCtx) {
     } else if (Message_ShouldAdvance(globalCtx)) {
         switch (globalCtx->msgCtx.choiceIndex) {
             case 0: // yes
-                if (gSaveContext.rupees < sPrices[BEANS_BOUGHT]) {
+                if (gSaveContext.rupees <
+                    ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS))
+                         ? 60
+                         : sPrices[BEANS_BOUGHT])) {
                     Message_ContinueTextbox(globalCtx, 0x4069); // not enough rupees text
                     return;
                 }
-                func_8002F434(&this->actor, globalCtx, GI_BEAN, 90.0f, 10.0f);
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
+                    GiveItemEntryFromActor(&this->actor, globalCtx, 
+                        Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
+                } else {
+                    func_8002F434(&this->actor, globalCtx, GI_BEAN, 90.0f, 10.0f);
+                }
                 this->actionFunc = EnMs_Sell;
                 return;
             case 1: // no
@@ -142,11 +150,18 @@ void EnMs_Talk(EnMs* this, GlobalContext* globalCtx) {
 
 void EnMs_Sell(EnMs* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
-        Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
+        Rupees_ChangeBy((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? -60 : -sPrices[BEANS_BOUGHT]);
         this->actor.parent = NULL;
-        this->actionFunc = EnMs_TalkAfterPurchase;
+        this->actionFunc =
+            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_BEAN, 90.0f, 10.0f);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
+            GiveItemEntryFromActor(&this->actor, globalCtx,
+                                   Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
+            BEANS_BOUGHT = 10;
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_BEAN, 90.0f, 10.0f);
+        }
     }
 }
 

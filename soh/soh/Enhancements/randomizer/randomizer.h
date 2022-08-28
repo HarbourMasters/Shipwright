@@ -14,6 +14,7 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
+    std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
@@ -24,6 +25,7 @@ class Randomizer {
     s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
+    void ParseRequiredTrialsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
 
@@ -34,7 +36,7 @@ class Randomizer {
 
     static const std::string getItemMessageTableID;
     static const std::string hintMessageTableID;
-    static const std::string scrubMessageTableID;
+    static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
 
@@ -44,7 +46,9 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
-    void LoadItemLocations(const char* spoilerFileName, bool silent);
+    void LoadRequiredTrials(const char* spoilerFileName);
+    void LoadItemLocations(const char* spoilerFileName,bool silent);
+    bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams);
     std::string GetChildAltarText() const;
