@@ -94,7 +94,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 400, ICHAIN_STOP),
 };
 
-bool enhancedIceArrow = false;
+bool enhancedIceArrowDC = false;
 
 void BgBreakwall_SetupAction(BgBreakwall* this, BgBreakwallActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -105,7 +105,7 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
-    enhancedIceArrow = (gSaveContext.n64ddFlag && (CVar_GetS32("gEnhancedMagicArrows", 0) != 0));
+    enhancedIceArrowDC = (gSaveContext.n64ddFlag && (CVar_GetS32("gEnhancedMagicArrows", 0) != 0));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -126,7 +126,7 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
         Collider_InitQuad(globalCtx, &this->collider);
         Collider_SetQuad(globalCtx, &this->collider, &this->dyna.actor, &sQuadInit);
         // If "Blue Fire Arrows" are enabled, set up this collider for them
-        if (enhancedIceArrow) {
+        if (enhancedIceArrowDC) {
             Collider_InitQuad(globalCtx, &this->colliderIceArrow);
             Collider_SetQuad(globalCtx, &this->colliderIceArrow, &this->dyna.actor, &sIceArrowQuadInit);
         }
@@ -259,7 +259,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, GlobalContext* globalCtx) {
 void BgBreakwall_Wait(BgBreakwall* this, GlobalContext* globalCtx) {
     bool blueFireArrowHit = false;
     // If "Blue Fire Arrows" enabled, check this collider for a hit
-    if (enhancedIceArrow) {
+    if (enhancedIceArrowDC) {
         if (this->colliderIceArrow.base.acFlags & AC_HIT) {
             this->colliderIceArrow.base.acFlags &= ~AC_HIT;
             if ((this->colliderIceArrow.base.ac != NULL) && (this->colliderIceArrow.base.ac->id == ACTOR_EN_ARROW)) {
@@ -358,7 +358,7 @@ void BgBreakwall_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             Collider_SetQuadVertices(&this->collider, &colQuad[0], &colQuad[1], &colQuad[2], &colQuad[3]);
             CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-            if (enhancedIceArrow) {
+            if (enhancedIceArrowDC) {
                 Collider_SetQuadVertices(&this->colliderIceArrow, &colQuad[0], &colQuad[1], &colQuad[2], &colQuad[3]);
                 CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderIceArrow.base);
             }
