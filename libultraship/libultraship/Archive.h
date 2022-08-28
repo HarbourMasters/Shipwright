@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include "Resource.h"
-//#include "Lib/StrHash64.h"
 #include "StormLib.h"
 
 

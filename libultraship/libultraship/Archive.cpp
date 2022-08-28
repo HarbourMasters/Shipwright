@@ -39,7 +39,7 @@ namespace Ship {
 		std::copy(archivePath.begin(), archivePath.end(), t_filename);
 
 		bool success = SFileCreateArchive(t_filename, MPQ_CREATE_LISTFILE | MPQ_CREATE_ATTRIBUTES | MPQ_CREATE_ARCHIVE_V2, fileCapacity, &archive->mainMPQ);
-		int error = GetLastError();
+		int32_t error = GetLastError();
 
 		delete[] t_filename;
 
@@ -50,7 +50,7 @@ namespace Ship {
 		}
 		else
 		{
-			SPDLOG_ERROR("({}) We tried to create an archive, but it has fallen and cannot get up.");
+			SPDLOG_ERROR("({}) We tried to create an archive, but it has fallen and cannot get up.", error);
 			return nullptr;
 		}
 	}
@@ -64,12 +64,6 @@ namespace Ship {
 		}
 
 		bool attempt = SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle);
-
-		//if (!attempt)
-		//{
-			//std::string filePathAlt = StringHelper::Replace(filePath, "/", "\\");
-			//attempt |= SFileOpenFileEx(mainMPQ, filePathAlt.c_str(), 0, &fileHandle);
-		//}
 
 		if (!attempt) {
 			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());

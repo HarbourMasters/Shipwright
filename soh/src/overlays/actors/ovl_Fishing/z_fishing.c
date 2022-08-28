@@ -1766,8 +1766,6 @@ static f32 sSinkingLureSizes[] = {
 void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
     s16 i;
     f32 scale;
-    static u32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1780,7 +1778,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
 
         for (i = SINKING_LURE_SEG_COUNT - 1; i >= 0; i--) {
             if ((i + D_80B7FEA0) < SINKING_LURE_SEG_COUNT) {
-                FrameInterpolation_RecordOpenChild("Fishing Lures 1", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Fishing Lures 1", i);
                 Matrix_Translate(sSinkingLurePos[i].x, sSinkingLurePos[i].y, sSinkingLurePos[i].z, MTXMODE_NEW);
                 scale = sSinkingLureSizes[i + D_80B7FEA0] * 0.04f;
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -1799,7 +1797,7 @@ void Fishing_DrawSinkingLure(GlobalContext* globalCtx) {
 
         for (i = SINKING_LURE_SEG_COUNT - 1; i >= 0; i--) {
             if ((i + D_80B7FEA0) < SINKING_LURE_SEG_COUNT) {
-                FrameInterpolation_RecordOpenChild("Fishing Lures 2", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Fishing Lures 2", i);
                 Matrix_Translate(sSinkingLurePos[i].x, sSinkingLurePos[i].y, sSinkingLurePos[i].z, MTXMODE_NEW);
                 scale = sSinkingLureSizes[i + D_80B7FEA0] * 0.04f;
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -5002,6 +5000,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                  (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) &&
                 Message_ShouldAdvance(globalCtx)) {
                 s32 getItemId;
+                GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
                 Message_CloseTextbox(globalCtx);
 
@@ -5056,9 +5055,12 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE) :
-                                                GI_HEART_PIECE; 
+                                if (!gSaveContext.n64ddFlag) {
+                                    getItemId = GI_HEART_PIECE;
+                                } else {
+                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
+                                    getItemId = getItemEntry.getItemId;
+                                }
                             }
                         }
                     } else {
@@ -5066,9 +5068,12 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD) :
-                                                GI_SCALE_GOLD; 
+                                if (!gSaveContext.n64ddFlag) {
+                                    getItemId = GI_SCALE_GOLD;
+                                } else {
+                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                                    getItemId = getItemEntry.getItemId;
+                                }
                             }
                         }
                     }
@@ -5078,7 +5083,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 }
 
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+                if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+                    func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+                } else {
+                    GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
+                }
                 this->unk_15C = 23;
             }
             break;
@@ -5142,9 +5151,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
-                    func_8002F434(&this->actor, globalCtx,
-                                  Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD), 2000.0f,
-                                  1000.0f);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
                 }
             }
             break;

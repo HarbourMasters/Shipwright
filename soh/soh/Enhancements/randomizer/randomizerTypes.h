@@ -1,5 +1,10 @@
 #pragma once
 
+// This should probably go in a less rando-specific location
+// but the best location will probably be in the modding engine
+// which doesn't exist yet.
+typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+
 typedef struct {
     char tex[512];
     uint16_t width;
@@ -806,6 +811,8 @@ typedef enum {
     RG_PROGRESSIVE_STICK_UPGRADE,
     RG_PROGRESSIVE_BOMBCHUS,
     RG_PROGRESSIVE_MAGIC_METER,
+    RG_MAGIC_SINGLE, // Added for refactor of GetItemEntries
+    RG_MAGIC_DOUBLE, // Added for refactor of GetItemEntries
     RG_PROGRESSIVE_OCARINA,
     RG_PROGRESSIVE_GORONSWORD,
     RG_EMPTY_BOTTLE,
@@ -947,7 +954,8 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
-    RG_HINT
+    RG_HINT,
+    RG_MAX
 } RandomizerGet;
 
 typedef enum {

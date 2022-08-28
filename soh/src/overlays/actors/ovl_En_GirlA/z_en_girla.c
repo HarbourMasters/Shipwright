@@ -633,7 +633,8 @@ s32 EnGirlA_CanBuy_Unk20(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombchus(GlobalContext* globalCtx, EnGirlA* this) {
-    if (AMMO(ITEM_BOMBCHU) >= 50) {
+    // When in rando, don't allow buying bombchus when the player doesn't have a bomb bag
+    if (AMMO(ITEM_BOMBCHU) >= 50 || (gSaveContext.n64ddFlag && CUR_CAPACITY(UPG_BOMB_BAG) == 0)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {

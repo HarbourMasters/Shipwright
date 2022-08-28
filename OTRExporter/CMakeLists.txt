@@ -94,9 +94,3 @@ if (NOT TARGET ZAPDUtils)
 endif()
 
 add_subdirectory(OTRExporter)
-
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/extract_assets.py filedata)
-string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out" filedata "${filedata}")
-file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" "${filedata}")
-file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
