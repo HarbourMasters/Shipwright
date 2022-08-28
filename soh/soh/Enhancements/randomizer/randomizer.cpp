@@ -3219,12 +3219,12 @@ void DrawRandoEditor(bool& open) {
 
     if (CVar_GetS32("gRandomizer", 0) &&
         ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("World")) {
+        if (ImGui::BeginTabItem("World Settings")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Misc World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Entrance Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle Entrances", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3299,8 +3299,16 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
+                ImGui::EndChild();
+
+                // COLUMN 2 - Shuffle Settings
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildShuffleSettings", ImVec2(0,-8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
                 // Gerudo Fortress
-                ImGui::Text(Settings::GerudoFortress.GetName().c_str());
+                ImGui::Text("Gerudo Fortress Carpenters");
                 InsertHelpHoverText(
                     "Sets the amount of carpenters required to repair the bridge "
                     "in Gerudo Valley.\n"
@@ -3316,7 +3324,7 @@ void DrawRandoEditor(bool& open) {
                 PaddedSeparator();
 
                 // Rainbow Bridge
-                ImGui::Text(Settings::Bridge.GetName().c_str());
+                ImGui::Text("Rainbow Bridge Requirements");
                 InsertHelpHoverText(
                     "Alters the requirements to open the bridge to Ganon's Castle.\n"
                     "\n"
@@ -3393,12 +3401,45 @@ void DrawRandoEditor(bool& open) {
                     "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower."
                 );
 
+                PaddedSeparator();
+
+                ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 2 - Shuffle Settings
+                // COLUMN 3 - Shuffle Dungeon Items
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleSettings", ImVec2(0,-8));
+                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text("Coming soon");
+
+                PaddedSeparator();
+
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Shuffle Items")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
+                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - STARTING EQUIPMENT
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Songs
@@ -3419,21 +3460,6 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
-                // Shuffle Scrubs
-                ImGui::Text(Settings::Scrubsanity.GetName().c_str());
-                InsertHelpHoverText(
-                    "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
-                    "\n"
-                    "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
-                    "\n"
-                    "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
-                    "\n"
-                    "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n"
-                );
-                SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
-
-                PaddedSeparator();
-
                 // Shuffle Tokens
                 ImGui::Text(Settings::Tokensanity.GetName().c_str());
                 InsertHelpHoverText(
@@ -3450,34 +3476,12 @@ void DrawRandoEditor(bool& open) {
                 );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
 
-                PaddedSeparator();
+                ImGui::Dummy(ImVec2(0,0));
 
                 SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
                 InsertHelpHoverText(
                     "All Golden Skulltulas that require nighttime to appear will only be "
                     "expected to be collected after getting Sun's Song."
-                );
-
-                PaddedSeparator();
-
-                // Shuffle Cows
-                SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-
-                PaddedSeparator();
-
-                // Shuffle Adult Trade Quest
-                SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
-                                                "gRandomizeShuffleAdultTrade");
-                InsertHelpHoverText(
-                    "Adds all of the adult trade quest items into the pool, each of which "
-                    "can be traded for a unique reward.\n"
-                    "\n"
-                    "You will be able to choose which of your owned adult trade items is visible "
-                    "in the inventory by selecting the item with A and using the control stick or "
-                    "D-pad.\n"
-                    "\n"
-                    "If disabled, only the Claim Check will be found in the pool."
                 );
 
                 PaddedSeparator();
@@ -3542,9 +3546,38 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
+
+                // COLUMN 2 - STARTING ITEMS
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Shuffle Scrubs
+                ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                InsertHelpHoverText(
+                    "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
+                    "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+                    "\n"
+                    "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                    "\n"
+                    "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+                    "\n"
+                    "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
+                SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
+
+                PaddedSeparator();
+
+                // Shuffle Cows
+                SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
+                InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+
+                PaddedSeparator();
+
                 // Shuffle Frog Song Rupees
-                SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(),
-                                                "gRandomizeShuffleFrogSongRupees");
+                SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
                 InsertHelpHoverText(
                     "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
                     "you to earn items by playing songs at the Frog Choir.\n"
@@ -3553,13 +3586,31 @@ void DrawRandoEditor(bool& open) {
                     "the Song of Storms and the frog song minigame."
                 );
 
+                PaddedSeparator();
+
+                // Shuffle Adult Trade Quest
+                SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
+                                                "gRandomizeShuffleAdultTrade");
+                InsertHelpHoverText(
+                    "Adds all of the adult trade quest items into the pool, each of which "
+                    "can be traded for a unique reward.\n"
+                    "\n"
+                    "You will be able to choose which of your owned adult trade items is visible "
+                    "in the inventory by selecting the item with A and using the control stick or "
+                    "D-pad.\n"
+                    "\n"
+                    "If disabled, only the Claim Check will be found in the pool."
+                );
+
+                PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
-                // COLUMN 3 - Shuffle Dungeon Items
+                // COLUMN 3 - STARTING SONGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
+                ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
@@ -3668,6 +3719,8 @@ void DrawRandoEditor(bool& open) {
                 );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
 
+                PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
                 ImGui::EndTable();
@@ -3676,12 +3729,12 @@ void DrawRandoEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Misc")) {
+        if (ImGui::BeginTabItem("Misc Settings")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoMisc", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Additional Features", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3741,7 +3794,10 @@ void DrawRandoEditor(bool& open) {
                                               "gRandomizeEnableGlitchCutscenes");
                 InsertHelpHoverText(
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
+                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise."
+                );
+
+                PaddedSeparator();
 
                 ImGui::EndChild();
 
@@ -3750,6 +3806,42 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildHintSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
+
+                // Item Pool Settings
+                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                InsertHelpHoverText(
+                    "Sets how many major items appear in the item pool.\n"
+                    "\n"
+                    "Plentiful - Extra major items are added to the pool.\n"
+                    "\n"
+                    "Balanced - Original item pool.\n"
+                    "\n"
+                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                    "\n"
+                    "Minimal - Most excess items are removed."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                PaddedSeparator();
+
+                // Ice Traps
+                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                InsertHelpHoverText(
+                    "Sets how many items are replaced by ice traps.\n"
+                    "\n"
+                    "Off - No ice traps.\n"
+                    "\n"
+                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                    "\n"
+                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                    "\n"
+                    "Mayhem - All added junk items will be Ice Traps.\n"
+                    "\n"
+                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                    "in the base pool."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+
+                PaddedSeparator();
 
                 // Gossip Stone Hints
                 ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -3765,7 +3857,6 @@ void DrawRandoEditor(bool& open) {
                     "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
                     "\n"
                     "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
-
                 SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
                 if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                     // Hint Clarity
@@ -3803,7 +3894,9 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
-                
+
+                PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -3813,39 +3906,24 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildItemPoolSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                // Item Pool Settings
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText(
-                    "Sets how many major items appear in the item pool.\n"
-                    "\n"
-                    "Plentiful - Extra major items are added to the pool.\n"
-                    "\n"
-                    "Balanced - Original item pool.\n"
-                    "\n"
-                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                    "\n"
-                    "Minimal - Most excess items are removed."
-                );
-                SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+
                 PaddedSeparator();
 
-                // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                SohImGui::EnhancementCheckbox("WIP - Blue Ice Arrows", "gRandomizeBlueIceArrows", true, "In development");
                 InsertHelpHoverText(
-                    "Sets how many items are replaced by ice traps.\n"
-                    "\n"
-                    "Off - No ice traps.\n"
-                    "\n"
-                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                    "\n"
-                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                    "\n"
-                    "Mayhem - All added junk items will be Ice Traps.\n"
-                    "\n"
-                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                    "in the base pool."
-                );
-                SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+                    "Ice Arrows act like Blue Fire, making them able to melt red ice. "
+                    "Item placement logic will respect this option, so it might be required to use this to progress.");
+
+                PaddedSeparator();
+
+                SohImGui::EnhancementCheckbox("WIP - Sunlight Arrows", "gRandomizeSunlightArrows", true, "In development");
+                InsertHelpHoverText(
+                    "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
+                    "Item placement logic will respect this option, so it might be required to use this to progress.");
+
+                PaddedSeparator();
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
@@ -4045,6 +4123,8 @@ void DrawRandoEditor(bool& open) {
                 SohImGui::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(),
                                               "gRandomizeStartingDekuShield");
 
+                PaddedSeparator();
+
                 ImGui::EndChild();
 
                 // COLUMN 2 - STARTING ITEMS
@@ -4057,8 +4137,6 @@ void DrawRandoEditor(bool& open) {
                 SohImGui::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
                 PaddedSeparator();
-                SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
 
                 ImGui::EndChild();
 
@@ -4068,6 +4146,8 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
 
                 ImGui::Text("Coming soon");
+
+                PaddedSeparator();
 
                 ImGui::EndChild();
                 ImGui::EndTable();
