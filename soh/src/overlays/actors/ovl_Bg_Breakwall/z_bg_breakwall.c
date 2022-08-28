@@ -257,7 +257,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, GlobalContext* globalCtx) {
  * despawn itself.
  */
 void BgBreakwall_Wait(BgBreakwall* this, GlobalContext* globalCtx) {
-    bool blueFireArrowCheck = false;
+    bool blueFireArrowHit = false;
     // If "Blue Fire Arrows" enabled, check this collider for a hit
     if (enhancedIceArrow) {
         if (this->colliderIceArrow.base.acFlags & AC_HIT) {
@@ -266,13 +266,13 @@ void BgBreakwall_Wait(BgBreakwall* this, GlobalContext* globalCtx) {
 
                 if (this->colliderIceArrow.base.ac->child != NULL &&
                     this->colliderIceArrow.base.ac->child->id == ACTOR_ARROW_ICE) {
-                    blueFireArrowCheck = true;
+                    blueFireArrowHit = true;
                 }
             }
         }
     }
     
-    if (this->collider.base.acFlags & 2 || blueFireArrowCheck) {
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 

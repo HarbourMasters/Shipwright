@@ -249,12 +249,15 @@ void ObjLightswitch_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
 
     // Unset the switch flag on room exit to prevent the rock in the wall from 
     // vanishing on its own after activating the sun switch by Light Arrow
+    // Also prevents the cobra mirror from rotating to face the sun on its own
+    // Makes sun switches temporary when activated by Light Arrows (will turn off on room exit)
     if (activatedByLightArrow && enhancedLightArrow) {
         switch (this->actor.params >> 4 & 3) {
             case OBJLIGHTSWITCH_TYPE_STAY_ON:
             case OBJLIGHTSWITCH_TYPE_2:
             case OBJLIGHTSWITCH_TYPE_1:
-                if (this->actor.room != 25) { // Don't unset the flag for the chain platform
+                // Except for this one, because we want the chain platform to stay down for good
+                if (this->actor.room != 25) {
                     Flags_UnsetSwitch(globalCtx, this->actor.params >> 8 & 0x3F);
                 }
                 activatedByLightArrow = false;
@@ -359,6 +362,7 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
             if (!Flags_GetSwitch(globalCtx, this->actor.params >> 8 & 0x3F)) {
                 ObjLightswitch_SetupTurnOff(this);
             }
+            // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
             if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
                     activatedByLightArrow = false;
@@ -372,6 +376,7 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
             }
             break;
         case OBJLIGHTSWITCH_TYPE_2:
+            // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
             if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
                     activatedByLightArrow = false;
