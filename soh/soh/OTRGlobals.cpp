@@ -1562,8 +1562,16 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {

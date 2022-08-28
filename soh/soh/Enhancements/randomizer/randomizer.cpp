@@ -107,6 +107,21 @@ Randomizer::~Randomizer() {
     this->randomizerMerchantPrices.clear();
 }
 
+std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
+    { "the Forest Trial", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
+    { "l'épreuve de la Forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
+    { "the Fire Trial", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
+    { "l'épreuve du Feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
+    { "the Water Trial", RAND_INF_TRIALS_DONE_WATER_TRIAL },
+    { "l'épreuve de l'Eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
+    { "the Spirit Trial", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
+    { "l'épreuve de l'Esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
+    { "the Shadow Trial", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
+    { "l'épreuve de l'Ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
+    { "the Light Trial", RAND_INF_TRIALS_DONE_LIGHT_TRIAL },
+    { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
+};
+
 std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_BOW, ITEM_BOW },
     { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
@@ -673,6 +688,12 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
     itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
 }
 
+void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseRequiredTrialsFile(spoilerFileName);
+    }
+}
+
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1091,6 +1112,25 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     }
 }
 
+void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream) {
+        return;
+    }
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json trialsJson = spoilerFileJson["requiredTrials"];
+
+        for (auto it = trialsJson.begin(); it != trialsJson.end(); it++) {
+            this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
+        }
+    } catch (const std::exception& e) {
+        return;
+    }
+}
+
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1139,6 +1179,10 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         return;
     }
+}
+
+bool Randomizer::IsTrialRequired(RandomizerInf trial) {
+    return this->trialsRequired.contains(trial);
 }
 
 s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
@@ -2981,7 +3025,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
     const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
-    const char* randoGanonsTrial[2] = { "Off", "On" };
+    const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3355,21 +3399,18 @@ void DrawRandoEditor(bool& open) {
                     PaddedSeparator();
 
                     // Random Ganon's Trials
-                    /*
-                    ImGui::Text("Random Ganon's Trials");
-                    InsertHelpHoverText("Sets a random number or required trials to enter\nGanon's Tower.");
-                    SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 2, 0);
-                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
-                        ImGui::PopItemWidth();
+                    ImGui::Text("Ganon's Trials");
+                    InsertHelpHoverText("Sets the number of Ganon's Trials required to dispel the barrier\n\n"
+                                        "Skip - No Trials are required and the barrier is already dispelled.\n\n"
+                                        "Set Number - Select a number of trials that will be required from the"
+                                        "slider below. Which specific trials you need to complete will be random.\n\n"
+                                        "Random Number - A Random number and set of trials will be required.");
+                    SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
                         SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                       "gRandomizeGanonTrialCount", 0, 6, "", 6);
+                                                       "gRandomizeGanonTrialCount", 1, 6, "", 6);
                         InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
-                    RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
                     }
-                    */
-                    SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
-                    InsertHelpHoverText(
-                        "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
                 }
 
                 // COLUMN 2 - Shuffle Settings
