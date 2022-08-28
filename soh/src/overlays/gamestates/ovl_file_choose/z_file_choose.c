@@ -433,6 +433,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         Randomizer_LoadSettings(fileLoc);
         Randomizer_LoadHintLocations(fileLoc);
+        Randomizer_LoadRequiredTrials(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
     }

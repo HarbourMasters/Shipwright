@@ -2181,6 +2181,14 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
         return RG_NONE;
     }
 
+    if (item == RG_MAGIC_BEAN_PACK) {
+        if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+            AMMO(ITEM_BEAN) = 10;
+        }
+        return RG_NONE;
+    }
+
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.doubleDefense = true;
         gSaveContext.inventory.defenseHearts = 20;
@@ -2227,9 +2235,9 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-               (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-               (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
-               (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
+                (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
+                (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
+                (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
             case RG_DEKU_TREE_MAP:
@@ -2326,7 +2334,6 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
 
     return temp;
 }
-
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;

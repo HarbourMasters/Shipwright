@@ -99,7 +99,9 @@ RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 acto
 ScrubIdentity Randomizer_IdentifyScrub(s16 sceneNum, s16 actorParams, s16 respawnData);
 CowIdentity Randomizer_IdentifyCow(s16 sceneNum, s16 posX, s16 posZ);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
+void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);

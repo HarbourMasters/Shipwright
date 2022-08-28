@@ -1290,6 +1290,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetI
             switch (giEntry.itemId) {
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
+                case RG_MAGIC_BEAN_PACK:
                     color_slot = 0;
                     break;
                 case RG_DOUBLE_DEFENSE:

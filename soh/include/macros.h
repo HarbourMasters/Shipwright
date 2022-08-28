@@ -260,5 +260,6 @@ extern GraphicsContext* __gfxCtx;
 
 #define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 
+#define NUM_TRIALS 6
 
 #endif

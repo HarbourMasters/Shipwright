@@ -1016,7 +1016,8 @@ typedef enum {
     RSK_COMPLETE_MASK_QUEST,
     RSK_ENABLE_GLITCH_CUTSCENES,
     RSK_SKULLS_SUNS_SONG,
-    RSK_SHUFFLE_ADULT_TRADE
+    RSK_SHUFFLE_ADULT_TRADE,
+    RSK_SHUFFLE_MAGIC_BEANS
 } RandomizerSettingKey;
 
 typedef struct ScrubIdentity {
