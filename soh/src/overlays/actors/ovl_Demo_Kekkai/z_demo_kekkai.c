@@ -64,11 +64,32 @@ static u8 sEnergyColors[] = {
     /* Forest  prim */ 255, 255, 170, /* env */ 0,   200, 0,
 };
 
+// Translates from the barrier's actor params to their corresponding randInf flags.
+RandomizerInf trialParamToRandInf(u16 params) {
+    switch (params) {
+        case KEKKAI_LIGHT:
+            return RAND_INF_TRIALS_DONE_LIGHT_TRIAL;
+        case KEKKAI_FOREST:
+            return RAND_INF_TRIALS_DONE_FOREST_TRIAL;
+        case KEKKAI_FIRE:
+            return RAND_INF_TRIALS_DONE_FIRE_TRIAL;
+        case KEKKAI_WATER:
+            return RAND_INF_TRIALS_DONE_WATER_TRIAL;
+        case KEKKAI_SPIRIT:
+            return RAND_INF_TRIALS_DONE_SPIRIT_TRIAL;
+        case KEKKAI_SHADOW:
+            return RAND_INF_TRIALS_DONE_SHADOW_TRIAL;
+    }
+}
+
 s32 DemoKekkai_CheckEventFlag(s32 params) {
     static s32 eventFlags[] = { 0xC3, 0xBC, 0xBF, 0xBE, 0xBD, 0xAD, 0xBB };
 
     if ((params < KEKKAI_TOWER) || (params > KEKKAI_FOREST)) {
         return true;
+    }
+    if (gSaveContext.n64ddFlag) {
+        return Flags_GetRandomizerInf(trialParamToRandInf(params));
     }
     return Flags_GetEventChkInf(eventFlags[params]);
 }
@@ -128,8 +149,7 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->collider2.dim.yShift = 300;
 
             if (gSaveContext.n64ddFlag) {
-                int trialsToComplete = Randomizer_GetSettingValue(RSK_TRIAL_COUNT);
-                if (trialsToComplete <= TrialsDoneCount()) {
+                if (TrialsDoneCount() == NUM_TRIALS) {
                     Actor_Kill(thisx);
                     return;
                 }
@@ -141,6 +161,10 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
         case KEKKAI_SHADOW:
         case KEKKAI_SPIRIT:
         case KEKKAI_FOREST:
+            if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(trialParamToRandInf(thisx->params))) {
+                Actor_Kill(thisx);
+                return;
+            }
             this->energyAlpha = 1.0f;
             this->orbScale = 1.0f;
             Actor_SetScale(thisx, 0.1f);
@@ -247,27 +271,10 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
     DemoKekkai* this = (DemoKekkai*)thisx;
 
     if (gSaveContext.n64ddFlag) {
-        switch (thisx->params) {
-            case KEKKAI_WATER:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL);
-                break;
-            case KEKKAI_LIGHT:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
-                break;
-            case KEKKAI_FIRE:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL);
-                break;
-            case KEKKAI_SHADOW:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL);
-                break;
-            case KEKKAI_SPIRIT:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL);
-                break;
-            case KEKKAI_FOREST:
-                Flags_SetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL);
-                break;
-        }
-        Flags_SetEventChkInf(eventFlags[thisx->params]);
+        Flags_SetRandomizerInf(trialParamToRandInf(thisx->params));
+        // May or may not be needed. Not sure if needed for anything
+        // that randoInf isn't already covering. Leaving it for safety.
+        Flags_SetEventChkInf(eventFlags[thisx->params]); 
     }
 
     if (globalCtx->csCtx.frames == csFrames[this->actor.params]) {
