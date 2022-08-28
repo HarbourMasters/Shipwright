@@ -3618,6 +3618,14 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
+                SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
+                InsertHelpHoverText(
+                    "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
+                    "Salesman to sell a random item at a price of 60 rupees."
+                );
+
+                PaddedSeparator();
+
                 // Shuffle Frog Song Rupees
                 SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
                 InsertHelpHoverText(
