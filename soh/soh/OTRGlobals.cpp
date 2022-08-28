@@ -1588,14 +1588,6 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
-extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
-}
-
-extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
-}
-
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
