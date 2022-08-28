@@ -73,6 +73,36 @@ static ColliderJntSphInit sColliderJntSphInit = {
     1,
     sColliderJntSphElementInit,
 };
+// Collider info used for "Enhanced Arrows"
+static ColliderJntSphElementInit sColliderLightArrowElementInit[] = {
+    {
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0x00202000, 0x00, 0x00 },
+            TOUCH_NONE,
+            BUMP_ON,
+            OCELEM_ON,
+        },
+        { 0, { { 0, 0, 0 }, 19 }, 100 },
+    },
+};
+// Sphere collider used for "Enhanced Arrows"
+static ColliderJntSphInit sColliderLightArrowInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON | AC_TYPE_PLAYER,
+        OC1_ON | OC1_TYPE_ALL,
+        OC2_TYPE_2,
+        COLSHAPE_JNTSPH,
+    },
+    1,
+    sColliderLightArrowElementInit,
+};
+
+bool activatedByLightArrow = false;
+bool enhancedLightArrow = false;
 
 static CollisionCheckInfoInit sColChkInfoInit = { 0, 12, 60, MASS_IMMOVABLE };
 
@@ -91,9 +121,15 @@ static InitChainEntry sInitChain[] = {
 
 void ObjLightswitch_InitCollider(ObjLightswitch* this, GlobalContext* globalCtx) {
     s32 pad;
+    enhancedLightArrow = (gSaveContext.n64ddFlag && (CVar_GetS32("gEnhancedMagicArrows", 0) != 0));
 
     Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderJntSphInit, this->colliderItems);
+    // If "Enhanced Arrows" is enabled, set up the collider to allow Light Arrow hits
+    if (enhancedLightArrow) {
+        Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderLightArrowInit, this->colliderItems);
+    } else {
+        Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderJntSphInit, this->colliderItems);
+    }
     Matrix_SetTranslateRotateYXZ(this->actor.world.pos.x,
                                  this->actor.world.pos.y + (this->actor.shape.yOffset * this->actor.scale.y),
                                  this->actor.world.pos.z, &this->actor.shape.rot);
@@ -211,6 +247,23 @@ void ObjLightswitch_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     ObjLightswitch* this = (ObjLightswitch*)thisx;
 
+    // Unset the switch flag on room exit to prevent the rock in the wall from 
+    // vanishing on its own after activating the sun switch by Light Arrow
+    if (activatedByLightArrow && enhancedLightArrow) {
+        switch (this->actor.params >> 4 & 3) {
+            case OBJLIGHTSWITCH_TYPE_STAY_ON:
+            case OBJLIGHTSWITCH_TYPE_2:
+            case OBJLIGHTSWITCH_TYPE_1:
+                if (this->actor.room != 25) { // Don't unset the flag for the chain platform
+                    Flags_UnsetSwitch(globalCtx, this->actor.params >> 8 & 0x3F);
+                }
+                activatedByLightArrow = false;
+                break;
+            case OBJLIGHTSWITCH_TYPE_BURN:
+                break;
+        }
+    }
+
     Collider_DestroyJntSph(globalCtx, &this->collider);
 }
 
@@ -221,8 +274,11 @@ void ObjLightswitch_SetupOff(ObjLightswitch* this) {
     this->color[1] = 125 << 6;
     this->color[2] = 255 << 6;
     this->alpha = 255 << 6;
+    if (enhancedLightArrow) {
+        activatedByLightArrow = false;
+    }
 }
-
+// A Sun Switch that is currently turned off
 void ObjLightswitch_Off(ObjLightswitch* this, GlobalContext* globalCtx) {
     switch (this->actor.params >> 4 & 3) {
         case OBJLIGHTSWITCH_TYPE_STAY_ON:
@@ -230,6 +286,13 @@ void ObjLightswitch_Off(ObjLightswitch* this, GlobalContext* globalCtx) {
             if (this->collider.base.acFlags & AC_HIT) {
                 ObjLightswitch_SetupTurnOn(this);
                 ObjLightswitch_SetSwitchFlag(this, globalCtx);
+                // Remember if we've been activated by a Light Arrow, so we can
+                // prevent the switch from immediately turning back off
+                if (enhancedLightArrow) {
+                    if (this->collider.base.ac != NULL && this->collider.base.ac->id == ACTOR_EN_ARROW) {
+                        activatedByLightArrow = true;
+                    }
+                }
             }
             break;
         case OBJLIGHTSWITCH_TYPE_1:
@@ -289,12 +352,17 @@ void ObjLightswitch_SetupOn(ObjLightswitch* this) {
     this->flameRingRotSpeed = -0xAA;
     this->timer = 0;
 }
-
+// A Sun Switch that is currently turned on
 void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
     switch (this->actor.params >> 4 & 3) {
         case OBJLIGHTSWITCH_TYPE_STAY_ON:
             if (!Flags_GetSwitch(globalCtx, this->actor.params >> 8 & 0x3F)) {
                 ObjLightswitch_SetupTurnOff(this);
+            }
+            if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
+                if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
+                    activatedByLightArrow = false;
+                }
             }
             break;
         case OBJLIGHTSWITCH_TYPE_1:
@@ -304,10 +372,18 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
             }
             break;
         case OBJLIGHTSWITCH_TYPE_2:
+            if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
+                if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
+                    activatedByLightArrow = false;
+                }
+            }
             if (!(this->collider.base.acFlags & AC_HIT)) {
                 if (this->timer >= 7) {
-                    ObjLightswitch_SetupTurnOff(this);
-                    ObjLightswitch_ClearSwitchFlag(this, globalCtx);
+                    // If we aren't using Enhanced Light Arrows, let the switch turn off normally
+                    if (!activatedByLightArrow) {
+                        ObjLightswitch_SetupTurnOff(this);
+                        ObjLightswitch_ClearSwitchFlag(this, globalCtx);
+                    }
                 } else {
                     this->timer++;
                 }
