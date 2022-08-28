@@ -12606,7 +12606,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             giEntry = this->getItemEntry;
         }
         this->unk_84F = 1;
-        equipItem = giEntry->itemId;
+        equipItem = giEntry.itemId;
         equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
                    ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
                     CVar_GetS32("gNoRestrictAge", 0));
