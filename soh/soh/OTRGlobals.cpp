@@ -34,6 +34,7 @@
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include <soh/Enhancements/randomizer/randomizer.h>
+#include <soh/Enhancements/randomizer/randomizer_identify_actor.h>
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"

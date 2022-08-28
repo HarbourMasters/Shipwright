@@ -1,9 +1,8 @@
 #pragma once
 #include "randomizerTypes.h"
+#include "z64.h"
 #include <string>
-#include <vector>
 #include <map>
-#include <z64.h>
 
 // Check types based on main settings
 typedef enum {
@@ -65,26 +64,19 @@ typedef enum {
     RCAREA_INVALID
 } RandomizerCheckArea;
 
-typedef enum {
-    RCFLAGTYPE_EVENT_CHECK_INF,
-    RCFLAGTYPE_ITEM_GET_INF,
-    RCFLAGTYPE_INF_TABLE,
-    RCFLAGTYPE_SCENE_FLAG,
-    RCFLAGTYPE_RANDOMIZER_INF,
-    RCFLAGTYPE_CUSTOM,
-    RCFLAGTYPE_NONE,
-} RandomizerCheckFlagType;
+#define TWO_ACTOR_PARAMS(a, b) (int32_t)a << 16 | (int32_t)b
+
+#define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
+    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
 
 typedef struct {
     RandomizerCheck rc;
     RandomizerCheckVanillaOrMQ vOrMQ;
     RandomizerCheckType rcType;
     RandomizerCheckArea rcArea;
-    RandomizerCheckFlagType rcFlagType;
-    s32 rcFlag;
     ActorID actorId;
     SceneID sceneId;
-    std::vector<s32> identifyParams;
+    int32_t actorParams;
     GetItemID ogItemId;
     bool visibleInImgui;
     std::string rcShortName;

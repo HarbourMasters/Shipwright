@@ -6,6 +6,8 @@
 #include "../../../include/z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_identify_actor.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 #include <soh/Enhancements/randomizer/randomizer_check_objects.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
@@ -50,8 +52,8 @@ class Randomizer {
     void LoadItemLocations(const char* spoilerFileName,bool silent);
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
-    RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s16 actorParams, s16 otherParams);
+    RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
+    RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;

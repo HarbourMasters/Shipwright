@@ -10,6 +10,7 @@
 #include "Window.h"
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include "Enhancements/randomizer/randomizer_identify_actor.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 
