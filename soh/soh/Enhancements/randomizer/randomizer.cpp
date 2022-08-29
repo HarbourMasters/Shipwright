@@ -875,6 +875,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_GERUDO_KEYS:
+                        if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        }
+                        if (it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        if (it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
                     case RSK_KEYSANITY:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -1461,9 +1474,14 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_SHADOW_TEMPLE_SMALL_KEY:
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
         case RG_GANONS_CASTLE_SMALL_KEY:
             if (GetRandoSettingValue(RSK_KEYSANITY) < 3) {
+                return GI_KEY_SMALL;
+            } else {
+                return randoGet;
+            }
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == 0) {
                 return GI_KEY_SMALL;
             } else {
                 return randoGet;
@@ -1686,10 +1704,14 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_SHADOW_TEMPLE_SMALL_KEY:
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
         case RG_GANONS_CASTLE_SMALL_KEY:
             if (GetRandoSettingValue(RSK_KEYSANITY) > 2) {
                 return false;
+            }
+            return true;
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS != 0)) {
+                return false
             }
             return true;
         case RG_FOREST_TEMPLE_BOSS_KEY:
