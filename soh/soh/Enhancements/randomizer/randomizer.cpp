@@ -878,14 +878,11 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_GERUDO_KEYS:
                         if (it.value() == "Vanilla") {
                             gSaveContext.randoSettings[index].value = 0;
-                        }
-                        if (it.value() == "Any Dungeon") {
+                        } else if (it.value() == "Any Dungeon") {
                             gSaveContext.randoSettings[index].value = 1;
-                        }
-                        if (it.value() == "Overworld") {
+                        } else if (it.value() == "Overworld") {
                             gSaveContext.randoSettings[index].value = 2;
-                        }
-                        if (it.value() == "Anywhere") {
+                        } else if (it.value() == "Anywhere") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                     case RSK_KEYSANITY:
