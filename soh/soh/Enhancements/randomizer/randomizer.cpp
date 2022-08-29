@@ -1533,7 +1533,7 @@ CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
 GetItemID Randomizer::GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
     CanObtainResult canObtain = Randomizer::CanObtainRandomizerGet(randoGet);
 
-    if (canObtain !== CAN_OBTAIN) {
+    if (canObtain != CAN_OBTAIN) {
         return GI_RUPEE_BLUE;
     }
 
@@ -1549,11 +1549,12 @@ GetItemID Randomizer::GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItem
         // Equipment
         case RG_KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
-        // TODO Progressive?
-        case RG_PROGRESSIVE_GORONSWORD:
+        case RG_PROGRESSIVE_GORONSWORD: //todo progressive?
             return GI_SWORD_BGS;
-        // case RG_GIANTS_KNIFE:
-        // case RG_BIGGORON_SWORD:
+        case RG_GIANTS_KNIFE:
+            return GI_SWORD_KNIFE;
+        case RG_BIGGORON_SWORD:
+            return GI_SWORD_BGS;
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
