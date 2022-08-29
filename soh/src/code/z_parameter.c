@@ -1690,12 +1690,35 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
-        if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
-            gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
-            return ITEM_NONE;
+        // Small key exceptions for rando with keysanity off.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
+                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
+                    gSaveContext.inventory.dungeonKeys[13] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[13]++;
+                    return ITEM_NONE;
+                }
+            }
+
+            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
+                    gSaveContext.inventory.dungeonKeys[6] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[6]++;
+                    return ITEM_NONE;
+                }
+            }
         } else {
-            gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
-            return ITEM_NONE;
+            if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
+                gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
+                return ITEM_NONE;
+            } else {
+                gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+                return ITEM_NONE;
+            }
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
