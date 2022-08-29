@@ -1020,6 +1020,14 @@ typedef enum {
     RSK_SHUFFLE_MAGIC_BEANS
 } RandomizerSettingKey;
 
+typedef enum {
+    CAN_OBTAIN,
+    CANT_OBTAIN_MISC,
+    CANT_OBTAIN_ALREADY_HAVE,
+    CANT_OBTAIN_NEED_UPGRADE,
+    CANT_OBTAIN_NEED_EMPTY_BOTTLE,
+} CanObtainResult;
+
 typedef struct ScrubIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;

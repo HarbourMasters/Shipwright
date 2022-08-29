@@ -2534,6 +2534,22 @@ s32 Inventory_HasEmptyBottle(void) {
     }
 }
 
+bool Inventory_HasEmptyBottleSlot(void) {
+    u8* items = gSaveContext.inventory.items;
+
+    if (items[SLOT_BOTTLE_1] == ITEM_NONE) {
+        return true;
+    } else if (items[SLOT_BOTTLE_2] == ITEM_NONE) {
+        return true;
+    } else if (items[SLOT_BOTTLE_3] == ITEM_NONE) {
+        return true;
+    } else if (items[SLOT_BOTTLE_4] == ITEM_NONE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     u8* items = gSaveContext.inventory.items;
 
