@@ -1216,10 +1216,8 @@ CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
         // Equipment
         case RG_KOKIRI_SWORD:
             return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        // TODO
-        // case RG_PROGRESSIVE_GORONSWORD:
-        // case RG_GIANTS_KNIFE:
-        // case RG_BIGGORON_SWORD:
+        case RG_BIGGORON_SWORD:
+            return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
             return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -1287,6 +1285,7 @@ CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
         case RG_BUY_BOMBCHU_5:
+            // TODO: We'll need to account for GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC) whenever that's added
             return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
@@ -1365,6 +1364,8 @@ CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
         // case RG_EYEBALL_FROG:
         // case RG_EYEDROPS:
         // case RG_CLAIM_CHECK:
+        // case RG_PROGRESSIVE_GORONSWORD:
+        // case RG_GIANTS_KNIFE:
 
         // Misc Items
         case RG_STONE_OF_AGONY:
