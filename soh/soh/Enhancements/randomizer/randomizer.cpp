@@ -2209,6 +2209,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_BOMBS_535:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
+        //RANDO TODO: Fix this to return false if keysanity is on.
         case RG_FOREST_TEMPLE_SMALL_KEY:
         case RG_FIRE_TEMPLE_SMALL_KEY:
         case RG_WATER_TEMPLE_SMALL_KEY:
