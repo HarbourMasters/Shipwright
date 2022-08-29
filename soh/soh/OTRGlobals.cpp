@@ -1631,13 +1631,19 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
 
 extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(
-            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
+    RandomizerCheck randomizerCheck = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
         getItemModIndex = MOD_NONE;
     } else {
         getItemModIndex = MOD_RANDOMIZER;
     }
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+
+    // This feels awkward, maybe in the future each mod will have it's own obtainability check
+    if (OTRGlobals::Instance->gRandomizer->GetCanObtainFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
+        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
@@ -1649,6 +1655,12 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
         getItemModIndex = MOD_RANDOMIZER;
     }
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+
+    // This feels awkward, maybe in the future each mod will have it's own obtainability check
+    if (OTRGlobals::Instance->gRandomizer->GetCanObtainFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
+        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 

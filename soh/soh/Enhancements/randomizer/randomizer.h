@@ -21,7 +21,6 @@ class Randomizer {
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     std::unordered_map<RandomizerCheck, u16> randomizerMerchantPrices;
-    CanObtainResult CanObtainRandomizerGet(RandomizerGet randoGet);
     GetItemID GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     s16 GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
@@ -59,6 +58,7 @@ class Randomizer {
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+    CanObtainResult GetCanObtainFromRandomizerCheck(RandomizerCheck randomizerCheck);
     static void CreateCustomMessages();
     static std::string RandomizeRupeeName(std::string message, int language);
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);

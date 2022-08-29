@@ -1194,8 +1194,8 @@ s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, Get
     return GetItemIDFromRandomizerGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
-    switch (randoGet) {
+CanObtainResult Randomizer::GetCanObtainFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+    switch (this->itemLocations[randomizerCheck]) {
         case RG_NONE:
         case RG_TRIFORCE:
         case RG_HINT:
@@ -1532,12 +1532,6 @@ CanObtainResult Randomizer::CanObtainRandomizerGet(RandomizerGet randoGet) {
 }
 
 GetItemID Randomizer::GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
-    CanObtainResult canObtain = Randomizer::CanObtainRandomizerGet(randoGet);
-
-    if (canObtain != CAN_OBTAIN) {
-        return GI_RUPEE_BLUE;
-    }
-
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
