@@ -1708,7 +1708,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             return true;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
             if (GetRandoSettingValue(RSK_GERUDO_KEYS != 0)) {
-                return false
+                return false;
             }
             return true;
         case RG_FOREST_TEMPLE_BOSS_KEY:
