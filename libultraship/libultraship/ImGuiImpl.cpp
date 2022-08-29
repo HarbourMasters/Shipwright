@@ -255,7 +255,7 @@ namespace SohImGui {
 #ifdef __WIIU__
         case Backend::GX2:
             if (!ImGui_ImplWiiU_ProcessInput((ImGui_ImplWiiU_ControllerInput*)event.gx2.input)) {
-                
+
             }
             break;
 #else
@@ -699,7 +699,7 @@ namespace SohImGui {
 
         if (disabled) {
             ImGui::PopStyleVar(1);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disabledTooltipText != "") {
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
                 ImGui::SetTooltip("%s", disabledTooltipText);
             }
             ImGui::PopItemFlag();
@@ -791,7 +791,7 @@ namespace SohImGui {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
         if (PlusMinusButton) {
-        #ifdef __WIIU__
+        #if defined(__WIIU__) || defined(__SWITCH__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -1166,7 +1166,11 @@ namespace SohImGui {
                         }
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                        #if defined(__WIIU__) || defined(__SWITCH__)
+                            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+                        #else
+                            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                        #endif
                         if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                         {
                             CVar_SetS32(cvar, val);
@@ -1312,7 +1316,7 @@ namespace SohImGui {
                         PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                         PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
-                        Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song."); 
+                        Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                         PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
@@ -1426,7 +1430,7 @@ namespace SohImGui {
                             Tooltip("Changes the amount of health restored by Half Milk");
                             EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
                             Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
-                            
+
                             ImGui::Separator();
 
                             EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
@@ -1435,7 +1439,7 @@ namespace SohImGui {
                             Tooltip("Changes the amount of health restored by Fairies");
                             EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
                             Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
-                            
+
                             ImGui::Separator();
 
                             EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
@@ -1676,7 +1680,7 @@ namespace SohImGui {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                #ifdef __WIIU__
+                #if defined(__WIIU__) || defined(__SWITCH__)
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
                 #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
