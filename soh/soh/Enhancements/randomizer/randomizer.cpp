@@ -4234,11 +4234,11 @@ CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = {
 
     { "%cThe people of Hyrule sometimes&have %witems %cfor you, but they won't&like it if you're %wwearing a mask%c!", 
       "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür dich, aber Sie mögen&es nicht wenn du %wMasken trägst%c!",
-      "%cF16" },
+      "%cIl se peut que les habitants d'Hyrule&aient des %wobjets %cpour toi. Par contre,&ils risquent de ne pas trop apprécier&le fait que tu %wportes un masque%c!" },
 
-    { "%cIf you get trapped somewhere, you&might have to %wsave your game %cand&reset%c!", 
-      "%cSolltest du irgendwo eingeschloßen&sein, mußt du vielleicht dein %wSpiel&speichern %cund neustarten!",
-      "%cF17" },
+    { "%cIf you get trapped somewhere, you&might have to %wsave your game %cand&%wreset%c!", 
+      "%cSolltest du irgendwo eingeschloßen&sein, mußt du vielleicht dein %wSpiel&speichern %cund %wneustarten%c!",
+      "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 };
 
 void CreateNaviRandoMessages() {
