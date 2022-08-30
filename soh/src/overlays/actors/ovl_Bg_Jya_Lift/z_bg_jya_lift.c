@@ -98,7 +98,7 @@ void BgJyaLift_DelayMove(BgJyaLift* this, GlobalContext* globalCtx) {
         if (this->moveDelay >= 20) {
             // Skip this cutscene if using Enhanced Arrows, since activating the switch while
             // not standing on the platform will cause the cutscene to show the unloaded room
-            if (!(gSaveContext.n64ddFlag && CVar_GetS32("gEnhancedMagicArrows", 0) != 0)) {
+            if (!(gSaveContext.n64ddFlag && CVar_GetS32("gSunLightArrows", 0) != 0)) {
                 OnePointCutscene_Init(globalCtx, 3430, -99, &this->dyna.actor, MAIN_CAM);
             }
             BgJyaLift_SetupMove(this);

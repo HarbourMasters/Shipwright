@@ -73,7 +73,7 @@ static ColliderJntSphInit sColliderJntSphInit = {
     1,
     sColliderJntSphElementInit,
 };
-// Collider info used for "Enhanced Arrows"
+// Collider info used for "Sunlight Arrows"
 static ColliderJntSphElementInit sColliderLightArrowElementInit[] = {
     {
         {
@@ -87,7 +87,7 @@ static ColliderJntSphElementInit sColliderLightArrowElementInit[] = {
         { 0, { { 0, 0, 0 }, 19 }, 100 },
     },
 };
-// Sphere collider used for "Enhanced Arrows"
+// Sphere collider used for "Sunlight Arrows"
 static ColliderJntSphInit sColliderLightArrowInit = {
     {
         COLTYPE_NONE,
@@ -102,7 +102,7 @@ static ColliderJntSphInit sColliderLightArrowInit = {
 };
 
 bool activatedByLightArrow = false;
-bool enhancedLightArrow = false;
+bool sunLightArrows = false;
 
 static CollisionCheckInfoInit sColChkInfoInit = { 0, 12, 60, MASS_IMMOVABLE };
 
@@ -121,11 +121,11 @@ static InitChainEntry sInitChain[] = {
 
 void ObjLightswitch_InitCollider(ObjLightswitch* this, GlobalContext* globalCtx) {
     s32 pad;
-    enhancedLightArrow = (gSaveContext.n64ddFlag && (CVar_GetS32("gEnhancedMagicArrows", 0) != 0));
+    sunLightArrows = (gSaveContext.n64ddFlag && (CVar_GetS32("gSunLightArrows", 0) != 0));
 
     Collider_InitJntSph(globalCtx, &this->collider);
-    // If "Enhanced Arrows" is enabled, set up the collider to allow Light Arrow hits
-    if (enhancedLightArrow) {
+    // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits
+    if (sunLightArrows) {
         Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderLightArrowInit, this->colliderItems);
     } else {
         Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderJntSphInit, this->colliderItems);
@@ -251,7 +251,7 @@ void ObjLightswitch_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     // vanishing on its own after activating the sun switch by Light Arrow
     // Also prevents the cobra mirror from rotating to face the sun on its own
     // Makes sun switches temporary when activated by Light Arrows (will turn off on room exit)
-    if (activatedByLightArrow && enhancedLightArrow) {
+    if (activatedByLightArrow && sunLightArrows) {
         switch (this->actor.params >> 4 & 3) {
             case OBJLIGHTSWITCH_TYPE_STAY_ON:
             case OBJLIGHTSWITCH_TYPE_2:
@@ -277,7 +277,7 @@ void ObjLightswitch_SetupOff(ObjLightswitch* this) {
     this->color[1] = 125 << 6;
     this->color[2] = 255 << 6;
     this->alpha = 255 << 6;
-    if (enhancedLightArrow) {
+    if (sunLightArrows) {
         activatedByLightArrow = false;
     }
 }
@@ -291,7 +291,7 @@ void ObjLightswitch_Off(ObjLightswitch* this, GlobalContext* globalCtx) {
                 ObjLightswitch_SetSwitchFlag(this, globalCtx);
                 // Remember if we've been activated by a Light Arrow, so we can
                 // prevent the switch from immediately turning back off
-                if (enhancedLightArrow) {
+                if (sunLightArrows) {
                     if (this->collider.base.ac != NULL && this->collider.base.ac->id == ACTOR_EN_ARROW) {
                         activatedByLightArrow = true;
                     }
@@ -363,7 +363,7 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
                 ObjLightswitch_SetupTurnOff(this);
             }
             // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
-            if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
+            if (sunLightArrows && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
                     activatedByLightArrow = false;
                 }
@@ -377,7 +377,7 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
             break;
         case OBJLIGHTSWITCH_TYPE_2:
             // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
-            if (enhancedLightArrow && (this->collider.base.acFlags & AC_HIT)) {
+            if (sunLightArrows && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
                     activatedByLightArrow = false;
                 }

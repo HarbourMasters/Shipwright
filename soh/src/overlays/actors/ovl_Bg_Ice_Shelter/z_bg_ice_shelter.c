@@ -95,7 +95,7 @@ static ColliderCylinderInit sIceArrowCylinderInit = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
-bool enhancedIceArrow = false;
+bool blueFireArrows = false;
 
 void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
     static s16 cylinderRadii[] = { 47, 33, 44, 41, 100 };
@@ -103,11 +103,11 @@ void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
-    enhancedIceArrow = (gSaveContext.n64ddFlag && (CVar_GetS32("gEnhancedMagicArrows", 0) != 0));
+    blueFireArrows = (gSaveContext.n64ddFlag && (CVar_GetS32("gBlueFireArrows", 0) != 0));
 
     Collider_InitCylinder(globalCtx, &this->cylinder1);
     // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
-    if (enhancedIceArrow) {
+    if (blueFireArrows) {
         Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &sIceArrowCylinderInit);
     } else {
         Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &sCylinder1Init);
@@ -325,7 +325,7 @@ void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
         }
     }
     // If we have "Blue Fire Arrows" enabled, check both cylinders for a hit
-    if (enhancedIceArrow) {
+    if (blueFireArrows) {
         CheckIceArrowHit(this, this->cylinder1, type, globalCtx);
         CheckIceArrowHit(this, this->cylinder2, type, globalCtx);
     }
