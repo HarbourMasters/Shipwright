@@ -875,6 +875,16 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_GERUDO_KEYS:
+                        if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
                     case RSK_KEYSANITY:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -1409,7 +1419,71 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-            
+
+        case RG_DEKU_TREE_MAP:
+        case RG_DODONGOS_CAVERN_MAP:
+        case RG_JABU_JABUS_BELLY_MAP:
+        case RG_FOREST_TEMPLE_MAP:
+        case RG_FIRE_TEMPLE_MAP:
+        case RG_WATER_TEMPLE_MAP:
+        case RG_SPIRIT_TEMPLE_MAP:
+        case RG_SHADOW_TEMPLE_MAP:
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_ICE_CAVERN_MAP:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+                return GI_MAP;
+            } else {
+                return randoGet;
+            }
+
+        case RG_DEKU_TREE_COMPASS:
+        case RG_DODONGOS_CAVERN_COMPASS:
+        case RG_JABU_JABUS_BELLY_COMPASS:
+        case RG_FOREST_TEMPLE_COMPASS:
+        case RG_FIRE_TEMPLE_COMPASS:
+        case RG_WATER_TEMPLE_COMPASS:
+        case RG_SPIRIT_TEMPLE_COMPASS:
+        case RG_SHADOW_TEMPLE_COMPASS:
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_ICE_CAVERN_COMPASS:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+                return GI_COMPASS;
+            } else {
+                return randoGet;
+            }
+
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
+                return GI_KEY_BOSS;
+            } else {
+                return randoGet;
+            }
+
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_KEYSANITY) < 3) {
+                return GI_KEY_SMALL;
+            } else {
+                return randoGet;
+            }
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == 0) {
+                return GI_KEY_SMALL;
+            } else {
+                return randoGet;
+            }
+
         // todo test this with keys in own dungeon
         case RG_TREASURE_GAME_SMALL_KEY:
             return GI_DOOR_KEY;
@@ -1619,6 +1693,61 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_BOMBS_535:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
+            return true;
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_KEYSANITY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != 0) {
+                return false;
+            }
+            return true;
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_DEKU_TREE_COMPASS:
+        case RG_DODONGOS_CAVERN_COMPASS:
+        case RG_JABU_JABUS_BELLY_COMPASS:
+        case RG_FOREST_TEMPLE_COMPASS:
+        case RG_FIRE_TEMPLE_COMPASS:
+        case RG_WATER_TEMPLE_COMPASS:
+        case RG_SPIRIT_TEMPLE_COMPASS:
+        case RG_SHADOW_TEMPLE_COMPASS:
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_ICE_CAVERN_COMPASS:
+        case RG_DEKU_TREE_MAP:
+        case RG_DODONGOS_CAVERN_MAP:
+        case RG_JABU_JABUS_BELLY_MAP:
+        case RG_FOREST_TEMPLE_MAP:
+        case RG_FIRE_TEMPLE_MAP:
+        case RG_WATER_TEMPLE_MAP:
+        case RG_SPIRIT_TEMPLE_MAP:
+        case RG_SHADOW_TEMPLE_MAP:
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_ICE_CAVERN_MAP:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) > 2) {
+                return false;
+            }
             return true;
         default:
             return false;
