@@ -8,7 +8,7 @@
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
-#define NUM_NAVI_MESSAGES 15
+#define NUM_NAVI_MESSAGES 17
 
 class Randomizer {
   private:
