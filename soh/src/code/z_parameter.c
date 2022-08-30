@@ -1711,14 +1711,12 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                     return ITEM_NONE;
                 }
             }
+        if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
+            gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
+            return ITEM_NONE;
         } else {
-            if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
-                gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
-                return ITEM_NONE;
-            } else {
-                gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
-                return ITEM_NONE;
-            }
+            gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+            return ITEM_NONE;
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
