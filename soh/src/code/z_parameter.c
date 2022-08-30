@@ -1711,6 +1711,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                     return ITEM_NONE;
                 }
             }
+        }
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             return ITEM_NONE;
