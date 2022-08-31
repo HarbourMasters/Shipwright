@@ -279,7 +279,13 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
         Message_CloseTextbox(globalCtx);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            gallery->signal = ENSYATEKI_START;
+            if(CVar_GetS32("gInstantShootingGalleryWin", 0)) {
+                gallery->hitCount = 10;
+                gallery->signal = ENSYATEKI_END;
+            }
+            else {
+                gallery->signal = ENSYATEKI_START;
+            }
             this->actionFunc = EnSyatekiMan_WaitForGame;
         }
     }
@@ -383,7 +389,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                     break;
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
-                    func_8008EF44(globalCtx, 15);
+                    func_8008EF44(globalCtx, CVar_GetS32(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15));
                     this->actionFunc = EnSyatekiMan_RestartGame;
                     break;
                 default:

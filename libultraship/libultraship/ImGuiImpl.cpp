@@ -1450,6 +1450,18 @@ namespace SohImGui {
 
                         InsertPadding();
 
+                        if (ImGui::BeginMenu("Shooting Gallery")) {
+                            EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin");
+                            Tooltip("Skips the shooting gallery minigame");
+                            PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
+                            Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                            PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
+                            Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                            ImGui::EndMenu();
+                        }
+
+                        InsertPadding();
+
                         if (ImGui::BeginMenu("Fishing")) {
                             EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                             Tooltip("All fish will be caught instantly");
@@ -2289,6 +2301,13 @@ namespace SohImGui {
         CVar_SetS32("gFairyReviveHealth", 1);
         // Fairy Revive Percent Restore
         CVar_SetS32("gFairyRevivePercentRestore", 0);
+
+        // Instant Shooting Gallery Win
+        CVar_SetS32("gInstantShootingGalleryWin", 0);
+        // Child Shooting Gallery Ammunition (10 to 30)
+        CVar_SetS32("gChildShootingGalleryAmmunition", 15);
+        // Adult Shooting Gallery Ammunition (10 to 30)
+        CVar_SetS32("gAdultShootingGalleryAmmunition", 15);
 
         // Instant Fishing
         CVar_SetS32("gInstantFishing", 0);
