@@ -3233,7 +3233,7 @@ void DrawRandoEditor(bool& open) {
 
     if (CVar_GetS32("gRandomizer", 0) &&
         ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("World Settings")) {
+        if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3440,7 +3440,7 @@ void DrawRandoEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Shuffle Items")) {
+        if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoStartingInventory", 3,
                                   ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -3754,7 +3754,7 @@ void DrawRandoEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Misc Settings")) {
+        if (ImGui::BeginTabItem("Misc")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoMisc", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
