@@ -468,12 +468,10 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         giantLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (giantLink) {
-            paperLink = 0;
+        if (giantLink)
             minishLink = 0;
-        } else {
+        else
             resetLinkScale = 1;
-        }
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -489,14 +487,13 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     try {
+        resetLinkScale = 1;
         minishLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
 
-        if (minishLink) {
-            paperLink = 0;
+        if (minishLink)
             giantLink = 0;
-        } else {
+        else
             resetLinkScale = 1;
-        }
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -662,12 +659,6 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         paperLink = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), 0.0f, 2.0f);
-        if (paperLink) {
-            minishLink = 0;
-            giantLink = 0;
-        } else {
-            resetLinkScale = 1;
-        }
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::console->SendErrorMessage("[SOH] Paper Link value must be a number.");
