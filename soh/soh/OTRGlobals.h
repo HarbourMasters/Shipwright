@@ -21,7 +21,6 @@ public:
     std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
-    uint16_t getItemModIndex;
 
     OTRGlobals();
     ~OTRGlobals();

@@ -60,7 +60,6 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
     globalCtx->cUpElfMsgs = nullptr;
     globalCtx->setupPathList = nullptr;
     globalCtx->numSetupActors = 0;
-    OTRGlobals::Instance->getItemModIndex = MOD_NONE;
     Object_InitBank(globalCtx, &globalCtx->objectCtx);
     LightContext_Init(globalCtx, &globalCtx->lightCtx);
     TransitionActor_InitContext(&globalCtx->state, &globalCtx->transiActorCtx);
