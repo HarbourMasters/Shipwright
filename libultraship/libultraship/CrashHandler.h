@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-void ErrorHandler(int sig);
 void SetupHandlerLinux(void);
 
 #ifdef __cplusplus

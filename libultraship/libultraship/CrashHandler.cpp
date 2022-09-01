@@ -15,8 +15,8 @@ extern "C" void DeinitOTR(void);
 
 static void PrintRegisters(ucontext_t* ctx) {
 	char regbuffer[1024];
-#if defined(__x86_64__)
 	SPDLOG_CRITICAL("Registers:");
+#if defined(__x86_64__)
 	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]);
 	SPDLOG_CRITICAL("RAX: {} ", regbuffer);
 	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]);
@@ -53,6 +53,27 @@ static void PrintRegisters(ucontext_t* ctx) {
 	SPDLOG_CRITICAL("RIP: {} ", regbuffer);
 	snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
 	SPDLOG_CRITICAL("EFLAGS: {} ", regbuffer);
+#else
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
+	SPDLOG_CRITICAL("EDI : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ESI]);
+	SPDLOG_CRITICAL("ESI : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EBP]);
+	SPDLOG_CRITICAL("EBP : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ESP]);
+	SPDLOG_CRITICAL("ESP : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EBX]);
+	SPDLOG_CRITICAL("EBX : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EDX]);
+	SPDLOG_CRITICAL("EDX : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ECX]);
+	SPDLOG_CRITICAL("ECX : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EAX]);
+	SPDLOG_CRITICAL("EAX : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EIP]);
+	SPDLOG_CRITICAL("EIP : {} ", regbuffer);
+	snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EFL]);
+	SPDLOG_CRITICAL("EFL : {} ", regbuffer);
 #endif
 }
 
