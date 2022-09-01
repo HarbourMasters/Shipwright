@@ -95,7 +95,7 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
 
     switch (thisx->params & 0xF0) {
         case 0x90:
-            if (gSaveContext.bgsFlag) {
+            if (gSaveContext.bgsFlag && !gSaveContext.n64ddFlag) {
                 return 0x305E;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
                 if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
@@ -859,7 +859,7 @@ void func_80A405CC(EnGo* this, GlobalContext* globalCtx) {
 
 void EnGo_BiggoronActionFunc(EnGo* this, GlobalContext* globalCtx) {
     if (((this->actor.params & 0xF0) == 0x90) && (this->unk_1E0.unk_00 == 2)) {
-        if (gSaveContext.bgsFlag) {
+        if (gSaveContext.bgsFlag && !gSaveContext.n64ddFlag) {
             this->unk_1E0.unk_00 = 0;
         } else {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
