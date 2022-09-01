@@ -871,9 +871,12 @@ void EnGirlA_BuyEvent_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
 void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 
+	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
+    // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
         return;
     }
+
     switch (this->actor.params) {
         case SI_BOMBCHU_10_2:
             gSaveContext.itemGetInf[0] |= 0x40;
@@ -1065,6 +1068,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->canBuyFunc = itemEntry->canBuyFunc;
         this->itemGiveFunc = itemEntry->itemGiveFunc;
         this->buyEventFunc = itemEntry->buyEventFunc;
+        // If chus are in logic, make the 10 pack affordable without a wallet upgrade
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
             this->getItemId == GI_BOMBCHUS_10) {
             this->basePrice = 99;
