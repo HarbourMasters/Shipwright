@@ -1701,7 +1701,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_BOMBS_535:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
-            return true;
         case RG_FOREST_TEMPLE_SMALL_KEY:
         case RG_FIRE_TEMPLE_SMALL_KEY:
         case RG_WATER_TEMPLE_SMALL_KEY:
