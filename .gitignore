@@ -9,6 +9,7 @@ __pycache__/
 .idea/
 cmake-build-debug
 venv/
+.cache/
 
 # Project-specific ignores
 build/
@@ -410,6 +411,7 @@ oot.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
+imgui.ini
 
 # Switch Stuff
 
