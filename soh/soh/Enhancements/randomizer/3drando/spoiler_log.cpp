@@ -501,25 +501,23 @@ static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
   }
 }
 
-// Writes the required trails to the spoiler log, if there are any.
-static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("required-trials");
-
-  for (const auto* trial : Trial::trialList) {
-    if (trial->IsSkipped()) {
-      continue;
+// Writes the required trials to the spoiler log, if there are any.
+static void WriteRequiredTrials() {
+    for (const auto& trial : Trial::trialList) {
+        if (trial->IsRequired()) {
+            std::string trialName;
+            switch (gSaveContext.language) {
+                case LANGUAGE_FRA:
+                    trialName = trial->GetName().GetFrench();
+                    break;
+                case LANGUAGE_ENG:
+                default:
+                    trialName = trial->GetName().GetEnglish();
+                    break;
+            }
+            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
+        }
     }
-
-    auto node = parentNode->InsertNewChildElement("trial");
-    // PURPLE TODO: LOCALIZATION
-    std::string name = trial->GetName().GetEnglish();
-    name[0] = toupper(name[0]); // Capitalize T in "The"
-    node->SetAttribute("name", name.c_str());
-  }
-
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
@@ -673,15 +671,24 @@ static void WriteHints(int language) {
 static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
+        std::string placedItemName;
 
         switch (language) {
-            case 0:
-            default:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-                break;
-            case 2:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().french;
-                break;
+          case 0:
+          default:
+            placedItemName = location->GetPlacedItemName().english;
+            break;
+          case 2:
+            placedItemName = location->GetPlacedItemName().french;
+            break;
+        }
+
+        // Eventually check for other things here like fake name
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+          jsonData["locations"][location->GetName()]["item"] = placedItemName;
+          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else {
+          jsonData["locations"][location->GetName()] = placedItemName;
         }
     }
 }
@@ -714,7 +721,7 @@ const char* SpoilerLog_Write(int language) {
     //    WriteEnabledGlitches(spoilerLog);
     //}
     //WriteMasterQuestDungeons(spoilerLog);
-    //WriteRequiredTrials(spoilerLog);
+    WriteRequiredTrials();
     WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
 
@@ -764,7 +771,7 @@ bool PlacementLog_Write() {
     WriteEnabledTricks(placementLog);
     WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
-    WriteRequiredTrials(placementLog);
+    //WriteRequiredTrials(placementLog);
 
     placementtxt = "\n" + placementtxt;
 

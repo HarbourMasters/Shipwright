@@ -333,4 +333,17 @@ namespace Ship {
 	const std::string* ResourceMgr::HashToString(uint64_t Hash) const {
 		return OTR->HashToString(Hash);
 	}
+
+	std::shared_ptr<Archive> ResourceMgr::GetArchive() {
+		return OTR;
+	}
+
+	std::shared_ptr<Window> ResourceMgr::GetContext() {
+		return Context;
+	}
+
+	std::shared_ptr<Resource> ResourceMgr::LoadResource(const std::string& FilePath) {
+		return LoadResource(FilePath.c_str());
+	}
+
 }

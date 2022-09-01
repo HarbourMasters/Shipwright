@@ -4,10 +4,11 @@
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
-#define NUM_TRIALS 6
 #define NUM_COWS 10
+#define NUM_SCRUBS 35
 
 /**
  *  Initialize new save.
@@ -308,6 +309,11 @@ void GiveLinkDekuNutUpgrade(GetItemID giid) {
     }
 }
 
+void GiveLinkSkullToken() {
+    gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+    gSaveContext.inventory.gsTokens++;
+}
+
 void GiveLinkMagic(GetItemID giid) {
     if (giid == RG_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
@@ -505,6 +511,53 @@ void GiveLinkDungeonItem(GetItemID getItemId) {
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
     }
+}
+
+void GiveLinkAdultTradeItem(GetItemID giid) {
+    ItemID item;
+    switch (giid) {
+        case GI_POCKET_EGG:
+            item = ITEM_POCKET_EGG;
+            break;
+        case GI_POCKET_CUCCO:
+            item = ITEM_POCKET_CUCCO;
+            break;
+        case GI_COJIRO:
+            item = ITEM_COJIRO;
+            break;
+        case GI_ODD_MUSHROOM:
+            item = ITEM_ODD_MUSHROOM;
+            break;
+        case GI_ODD_POTION:
+            item = ITEM_ODD_POTION;
+            break;
+        case GI_SAW:
+            item = ITEM_SAW;
+            break;
+        case GI_SWORD_BROKEN:
+            item = ITEM_SWORD_BROKEN;
+            break;
+        case GI_PRESCRIPTION:
+            item = ITEM_PRESCRIPTION;
+            break;
+        case GI_FROG:
+            item = ITEM_FROG;
+            break;
+        case GI_EYEDROPS:
+            item = ITEM_EYEDROPS;
+            break;
+        case GI_CLAIM_CHECK:
+            item = ITEM_CLAIM_CHECK;
+            break;
+    }
+    if ((item == ITEM_SAW) && CVar_GetS32("gDekuNutUpgradeFix", 0) == 0) {
+        gSaveContext.itemGetInf[1] |= 0x8000;
+    }
+
+    if (item >= ITEM_POCKET_EGG) {
+        gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
+    }
+    INV_CONTENT(ITEM_TRADE_ADULT) = item;
 }
 
 void GiveLinksPocketMedallion() {
@@ -708,6 +761,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.randomizerInf[i] = 0;
         }
 
+        // Set all trials to cleared if trial count is random or anything other than 6
+        if (Randomizer_GetSettingValue(RSK_RANDOM_TRIALS) || (Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != 6)) {
+            for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+                if (!Randomizer_IsTrialRequired(i)) {
+                    Flags_SetRandomizerInf(i);
+                }
+            }
+        }
+
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
         gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal
@@ -733,6 +795,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Skip cutscene before Nabooru fight
         gSaveContext.eventChkInf[3] |= 0x800;
         gSaveContext.eventChkInf[12] |= 1;
+
+        // shuffle adult trade quest
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            gSaveContext.adultTradeItems = 0;
+        }
 
         // Give Link's pocket item
         GiveLinksPocketMedallion();
@@ -791,7 +858,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = getItem.getItemId;
 
             if (getItem.modIndex == MOD_NONE) {
-                if(getItem.itemId >= ITEM_KOKIRI_EMERALD && getItem.itemId <= ITEM_MEDALLION_LIGHT) {
+                if (getItem.itemId >= ITEM_MEDALLION_FOREST && getItem.itemId <= ITEM_ZORA_SAPPHIRE) {
                     GiveLinkDungeonReward(getItem.getItemId);
                 } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
                         giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
@@ -848,6 +915,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     GiveLinkDekuStickUpgrade(giid);
                 } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
                     GiveLinkDekuNutUpgrade(giid);
+                } else if (giid == GI_SKULL_TOKEN) {
+                    GiveLinkSkullToken();
+                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK || giid == GI_COJIRO) {
+                    GiveLinkAdultTradeItem(giid);
                 } else {
                     s32 iid = getItem.itemId;
                     if (iid != -1) INV_CONTENT(iid) = iid;
@@ -962,11 +1033,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
-        }
-
-        // shuffle adult trade quest
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-            gSaveContext.adultTradeItems = 0;
         }
 
         // complete mask quest

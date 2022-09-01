@@ -1562,8 +1562,16 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
@@ -1578,18 +1586,12 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
-    int price = 0;
-    switch (scrubTextId) {
-        case TEXT_SCRUB_POH:
-            price = 10;
-            break;
-        case TEXT_SCRUB_STICK_UPGRADE:
-        case TEXT_SCRUB_NUT_UPGRADE:
-            price = 40;
-            break;
-    }
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, itemPrice);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
@@ -1650,13 +1652,12 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
-extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
-    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
-         Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
-}
-
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
+}
+
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+    return Randomizer_ItemIsIceTrap(randomizerCheck, ogId) && actor->parent != NULL;
 }
 
 extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
@@ -1718,8 +1719,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_GetGanonHintText();
             }
-        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
-            messageEntry = Randomizer_GetScrubMessage(textId);
+        } else if (textId >= 0x9000 && textId <= 0x905F) {
+            messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
         } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
@@ -1727,6 +1728,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
         } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             messageEntry = Randomizer_GetNaviMessage();
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);

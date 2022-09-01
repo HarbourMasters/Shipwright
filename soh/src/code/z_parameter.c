@@ -1642,12 +1642,16 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
 
+        // Both Giant's Knife and Biggoron Sword have the same Item ID, so this part handles both of them
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF 
-                ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) { // In rando, when buying Giant's Knife, also check
-                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; // for 0xE in case we don't have Kokiri Sword
+            // In rando, when buying Giant's Knife, also check
+            // for 0xE in case we don't have Kokiri Sword
+            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
+
+                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; 
+
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
                     Interface_LoadItemIcon1(globalCtx, 0);
@@ -1686,6 +1690,28 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
+        // Small key exceptions for rando with keysanity off.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
+                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
+                    gSaveContext.inventory.dungeonKeys[13] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[13]++;
+                    return ITEM_NONE;
+                }
+            }
+
+            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
+                    gSaveContext.inventory.dungeonKeys[6] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[6]++;
+                    return ITEM_NONE;
+                }
+            }
+        }
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             return ITEM_NONE;
@@ -2177,6 +2203,14 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
         return RG_NONE;
     }
 
+    if (item == RG_MAGIC_BEAN_PACK) {
+        if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+            AMMO(ITEM_BEAN) = 10;
+        }
+        return RG_NONE;
+    }
+
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.doubleDefense = true;
         gSaveContext.inventory.defenseHearts = 20;
@@ -2223,9 +2257,9 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-               (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-               (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
-               (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
+                (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
+                (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
+                (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
         int mapIndex = gSaveContext.mapIndex;
         switch (item) {
             case RG_DEKU_TREE_MAP:
@@ -2322,7 +2356,6 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
 
     return temp;
 }
-
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
