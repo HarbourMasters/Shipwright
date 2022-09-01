@@ -1453,7 +1453,7 @@ namespace SohImGui {
                         if (ImGui::BeginMenu("Shooting Gallery")) {
                             EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin");
                             Tooltip("Skips the shooting gallery minigame");
-                            EnhancementCheckbox("Non-randomized Rupees as Adult", "gConstantAdultGallery");
+                            EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery");
                             Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
                             PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
                             Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
