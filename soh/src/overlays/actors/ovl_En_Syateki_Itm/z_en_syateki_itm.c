@@ -128,7 +128,7 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (this->unkTimer == 0) {
-        if (LINK_IS_ADULT) {
+        if (LINK_IS_ADULT && !(CVar_Get("gConstantAdultGallery", 0))) {
             for (i = 0, j = 0; i < SYATEKI_ROUND_MAX; i++) {
                 if (this->roundFlags[i]) {
                     j++;

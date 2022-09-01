@@ -1453,6 +1453,8 @@ namespace SohImGui {
                         if (ImGui::BeginMenu("Shooting Gallery")) {
                             EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin");
                             Tooltip("Skips the shooting gallery minigame");
+                            EnhancementCheckbox("Non-randomized Rupees as Adult", "gConstantAdultGallery");
+                            Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
                             PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
                             Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
                             PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
@@ -2304,6 +2306,8 @@ namespace SohImGui {
 
         // Instant Shooting Gallery Win
         CVar_SetS32("gInstantShootingGalleryWin", 0);
+        // Non-randomized Rupees as Adult
+        CVar_GetS32("gConstantAdultGallery", 0);
         // Child Shooting Gallery Ammunition (10 to 30)
         CVar_SetS32("gChildShootingGalleryAmmunition", 15);
         // Adult Shooting Gallery Ammunition (10 to 30)
