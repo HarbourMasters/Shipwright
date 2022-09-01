@@ -36,14 +36,14 @@ const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
-static const char* englishRupeeNames[52] = {
+static const char* englishRupeeNames[53] = {
     "Rupees",     "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
     "Emeralds",   "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
     "Dogecoin",   "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
     "Bells",      "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
     "Zenny",      "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
     "Shillings",  "Pounds",    "Glimmer",     "Potch",      "Robux",      "V-Bucks",  "Bratwürste", "Mesetas",
-    "Bath Salts", "Coal",      "Euro",        "Spoons"
+    "Bath Salts", "Coal",      "Euro",        "Spoons",     "Cucumbers"
 };
 
 static const char* germanRupeeNames[41] = {
