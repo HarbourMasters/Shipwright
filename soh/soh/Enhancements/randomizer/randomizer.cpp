@@ -36,17 +36,23 @@ const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
-static const char* englishRupeeNames[44] = {
+static const char* englishRupeeNames[52] = {
     "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
     "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
     "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
     "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
     "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
-    "Shillings", "Pounds",    "Glimmer",     "Potch"
+    "Shillings", "Pounds",    "Glimmer",     "Potch",      "Robux",      "V-Bucks",  "Bratwürste", "Mesetas",
+    "Coal",      "Euro",      "Spoons",      "Cucumbers"
 };
 
-static const char* germanRupeeNames[1] = { 
-    "Rubine"
+static const char* germanRupeeNames[41] = {
+    "Rubine",     "Mäuse",       "Kröten",        "Münzen",     "Euro",       "Mark",     "Bananen",
+    "Gummibären", "Bonbons",     "Diamanten",     "Bratwürste", "Bitcoin",    "Dogecoin", "Monde",
+    "Sterne",     "Brause UFOs", "Taler",         "Sternis",    "Schillinge", "Freunde",  "Seelen",
+    "Gil",        "Zenny",       "Pfandflaschen", "Knochen",    "Pilze",      "Smaragde", "Kronkorken",
+    "Pokédollar", "Brötchen",    "EXP",           "Wagenchips", "Moos",       "Knete",    "Kohle",
+    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze"
 };
 
 static const char* frenchRupeeNames[36] = {
