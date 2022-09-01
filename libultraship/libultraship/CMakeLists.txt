@@ -334,6 +334,12 @@ set(Source_Files__Resources__mpq
 )
 source_group("Source Files\\Resources\\mpq" FILES ${Source_Files__Resources__mpq})
 
+set(Source_Files__Crash_Handler
+    "CrashHandler.cpp"
+    "CrashHandler.h"
+)
+source_group("Source Files\\Crash Handler" FILES ${Source_Files__Crash_Handler})
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 set(Source_Files__Darwin
     "OSXFolderManager.mm"
@@ -388,6 +394,7 @@ set(ALL_FILES
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
+    ${Source_Files__Crash_Handler}
     ${Source_Files__Darwin}
     ${Source_Files__NintendoSwitch}
     ${Source_Files__CafeOS}
