@@ -1373,6 +1373,8 @@ namespace SohImGui {
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                         PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                         Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
+                        PaddedEnhancementCheckbox("Always Win Dampe Grave Digging Game On First Dig", "gDampeWin", true, false);
+                        Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando");
                         InsertPadding();
 
                         if (ImGui::BeginMenu("Potion Values"))
