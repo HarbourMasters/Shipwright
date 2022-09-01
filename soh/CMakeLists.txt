@@ -1688,7 +1688,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
 				"ENABLE_DX11;"
-                #"ENABLE_CROWD_CONTROL"
+                "ENABLE_CROWD_CONTROL"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
