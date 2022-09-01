@@ -896,6 +896,16 @@ string_view gkDurabilityRandomSafe    = "Each Giant's Knife will get a random du
                                         "between 10 and 50, with an average of 30.";       //
                                                                                            //
 /*------------------------------                                                           //
+|      BLUE FIRE ARROWS        |                                                           //
+------------------------------*/                                                           //
+string_view blueFireArrowsDesc        = "Ice Arrows gain the ability to melt red ice\n"    //
+                                        "and break the mud walls in Dodongo's Cavern.";    //
+/*------------------------------                                                           //
+|       SUNLIGHT ARROWS        |                                                           //
+------------------------------*/                                                           //
+string_view sunlightArrowsDesc        = "Light Arrows gain the ability to activate sun\n"  //
+                                        "switches.";                                       //
+/*------------------------------                                                           //
 |         MULTIPLAYER          |                                                           //
 ------------------------------*/                                                           //
 string_view mp_EnabledDesc            = "Enables multiplayer.\n"                           //

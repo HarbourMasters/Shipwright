@@ -458,6 +458,8 @@ typedef struct {
     uint8_t ingameSpoilers;
     uint8_t menuOpeningButton;
     uint8_t randomTrapDmg;
+    uint8_t blueFireArrows;
+    uint8_t sunLightArrows;
 
     uint8_t faroresWindAnywhere;
     uint8_t stickAsAdult;
@@ -960,6 +962,8 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option IngameSpoilers;
   extern Option MenuOpeningButton;
   extern Option RandomTrapDmg;
+  extern Option BlueFireArrows;
+  extern Option SunlightArrows;
   extern bool HasNightStart;
 
   extern Option FaroresWindAnywhere;

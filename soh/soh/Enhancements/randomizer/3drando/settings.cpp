@@ -304,6 +304,8 @@ namespace Settings {
   Option IngameSpoilers      = Option::Bool("Ingame Spoilers",        {"Hide", "Show"},                                                       {ingameSpoilersHideDesc, ingameSpoilersShowDesc });
   Option MenuOpeningButton   = Option::U8  ("Open Info Menu with",    {"Select","Start","D-Pad Up","D-Pad Down","D-Pad Right","D-Pad Left",}, {menuButtonDesc});
   Option RandomTrapDmg       = Option::U8  ("Random Trap Damage",     {"Off", "Basic", "Advanced"},                                           {randomTrapDmgDesc, basicTrapDmgDesc, advancedTrapDmgDesc},                                                       OptionCategory::Setting,    1); // Basic
+  Option BlueFireArrows      = Option::Bool("Blue Fire Arrows",       {"No", "Yes"},                                                          {blueFireArrowsDesc});
+  Option SunlightArrows      = Option::Bool("Sunlight Arrows",        {"No", "Yes"},                                                          {sunlightArrowsDesc});
   bool HasNightStart         = false;
   std::vector<Option *> miscOptions = {
     &GossipStoneHints,
@@ -320,6 +322,8 @@ namespace Settings {
     &IngameSpoilers,
     &MenuOpeningButton,
     &RandomTrapDmg,
+    &BlueFireArrows,
+    &SunlightArrows
   };
 
   //Item Usability Settings
@@ -1322,6 +1326,8 @@ namespace Settings {
     ctx.ingameSpoilers       = (IngameSpoilers) ? 1 : 0;
     ctx.menuOpeningButton    = MenuOpeningButton.Value<uint8_t>();
     ctx.randomTrapDmg        = RandomTrapDmg.Value<uint8_t>();
+    ctx.blueFireArrows       = (BlueFireArrows) ? 1 : 0;
+    ctx.sunLightArrows       = (SunlightArrows) ? 1 : 0;
 
     ctx.faroresWindAnywhere  = (FaroresWindAnywhere) ? 1 : 0;
     ctx.stickAsAdult         = (StickAsAdult) ? 1 : 0;
@@ -2567,6 +2573,8 @@ namespace Settings {
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
+    BlueFireArrows.SetSelectedIndex(cvarSettings[RSK_BLUE_FIRE_ARROWS]);
+    SunlightArrows.SetSelectedIndex(cvarSettings[RSK_SUNLIGHT_ARROWS]);
 
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
