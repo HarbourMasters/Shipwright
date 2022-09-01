@@ -791,7 +791,7 @@ namespace SohImGui {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
         if (PlusMinusButton) {
-        #ifdef __WIIU__
+        #if defined(__SWITCH__) || defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -1166,7 +1166,11 @@ namespace SohImGui {
                         }
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    #if defined(__SWITCH__) || defined(__WIIU__)
+                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+                    #else
                         ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                    #endif
                         if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                         {
                             CVar_SetS32(cvar, val);
@@ -1676,7 +1680,7 @@ namespace SohImGui {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                #ifdef __WIIU__
+                #if defined(__SWITCH__) || defined(__WIIU__)
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
                 #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
