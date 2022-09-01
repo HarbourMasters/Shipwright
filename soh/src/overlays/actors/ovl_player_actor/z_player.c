@@ -11118,6 +11118,12 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->actor.scale.z = 0.001f;
     }
 
+    if (paperLink != 0) {
+        this->actor.scale.x = paperLink == 1 ? 0.001f : 0.01f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z =  paperLink == 2 ? 0.001f : 0.01f;
+    }
+
     if (resetLinkScale == 1) {
         this->actor.scale.x = 0.01f;
         this->actor.scale.y = 0.01f;
