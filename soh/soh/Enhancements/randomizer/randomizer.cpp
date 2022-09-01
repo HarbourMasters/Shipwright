@@ -3236,15 +3236,15 @@ void DrawRandoEditor(bool& open) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Misc World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Area Access", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle Entrances", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - Open Settings
+                // COLUMN 1 - Area Access
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildOpenSettings", ImVec2(0, -8));
@@ -3315,7 +3315,7 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndChild();
 
-                // COLUMN 2 - Misc World Settings
+                // COLUMN 2 - World Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
@@ -3754,11 +3754,11 @@ void DrawRandoEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Misc")) {
+        if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoMisc", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hints", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Additional Features", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
@@ -3795,7 +3795,7 @@ void DrawRandoEditor(bool& open) {
 
                 // Skip child zelda
                 SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
-                InsertHelpHoverText("Start with Zelda's Letter in your inventory and skip the sequence up "
+                InsertHelpHoverText("Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
                                     "until after meeting Zelda. Disables the ability to shuffle Weird Egg.");
 
                 PaddedSeparator();
@@ -3816,16 +3816,6 @@ void DrawRandoEditor(bool& open) {
                 SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
                                               "gRandomizeCompleteMaskQuest");
                 InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
-
-                PaddedSeparator();
-
-                // Enable Glitch-Useful Cutscenes
-                SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
-                                              "gRandomizeEnableGlitchCutscenes");
-                InsertHelpHoverText(
-                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise."
-                );
 
                 PaddedSeparator();
 
@@ -3941,7 +3931,7 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
-                SohImGui::EnhancementCheckbox("WIP - Blue Ice Arrows", "gRandomizeBlueIceArrows", true, "In development");
+                SohImGui::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueIceArrows", true, "In development");
                 InsertHelpHoverText(
                     "Ice Arrows act like Blue Fire, making them able to melt red ice. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."
@@ -4098,6 +4088,16 @@ void DrawRandoEditor(bool& open) {
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
                 SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+
+                PaddedSeparator();
+
+                // Enable Glitch-Useful Cutscenes
+                SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
+                                              "gRandomizeEnableGlitchCutscenes");
+                InsertHelpHoverText(
+                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
+                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
+
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
