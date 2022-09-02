@@ -1027,7 +1027,7 @@ typedef enum {
     CANT_OBTAIN_ALREADY_HAVE,
     CANT_OBTAIN_NEED_UPGRADE,
     CANT_OBTAIN_NEED_EMPTY_BOTTLE,
-} CanObtainResult;
+} ItemObtainability;
 
 typedef struct ScrubIdentity {
     RandomizerInf randomizerInf;

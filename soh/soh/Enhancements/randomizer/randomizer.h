@@ -58,7 +58,7 @@ class Randomizer {
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     s16 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     s16 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-    CanObtainResult GetCanObtainFromRandomizerCheck(RandomizerCheck randomizerCheck);
+    ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     static void CreateCustomMessages();
     static std::string RandomizeRupeeName(std::string message, int language);
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);

@@ -1212,7 +1212,7 @@ s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, Get
     return GetItemIDFromRandomizerGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-CanObtainResult Randomizer::GetCanObtainFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
     switch (this->itemLocations[randomizerCheck]) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -1294,16 +1294,22 @@ CanObtainResult Randomizer::GetCanObtainFromRandomizerCheck(RandomizerCheck rand
                 default:
                     return CANT_OBTAIN_ALREADY_HAVE;
             }
-        case RG_PROGRESSIVE_BOMBCHUS:
-            return INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return CAN_OBTAIN;
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
         case RG_BUY_BOMBCHU_5:
-            // TODO: We'll need to account for GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC) whenever that's added
+            // If Bombchus aren't in logic, you need a bomb bag to purchase them
+            // If they are in logic, you need to have already obtained them somewhere else
+            if (GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+                return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            } else {
+                return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            }
+        case RG_BOMBCHU_DROP:
             return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {

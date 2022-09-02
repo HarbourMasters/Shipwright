@@ -1640,7 +1640,7 @@ extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 
     // This feels awkward, maybe in the future each mod will have it's own obtainability check
-    if (OTRGlobals::Instance->gRandomizer->GetCanObtainFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
+    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
         return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
 
@@ -1657,7 +1657,7 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 
     // This feels awkward, maybe in the future each mod will have it's own obtainability check
-    if (OTRGlobals::Instance->gRandomizer->GetCanObtainFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
+    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
         return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
 
