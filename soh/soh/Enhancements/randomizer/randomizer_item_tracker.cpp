@@ -225,6 +225,14 @@ std::vector<uint32_t> buttonMap = {
     BTN_DRIGHT
 };
 
+typedef enum {
+  ITEM_TRACKER_NUMBER_NONE,
+  ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY,
+  ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY,
+  ITEM_TRACKER_NUMBER_CAPACITY,
+  ITEM_TRACKER_NUMBER_AMMO,
+} ItemTrackerNumberOption;
+
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
@@ -325,7 +333,7 @@ void DrawItemCount(ItemTrackerItem item) {
             ImGui::Text("%d", (int)currentAndMax.x);
             ImGui::PopStyleColor();
         } else {
-            if (CVar_GetS32("gItemTrackerDisplayCurrentMax", 0) == 1) {
+            if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CAPACITY) {
                 std::string currentAndMaxString = std::to_string((int)currentAndMax.x) + "/" + std::to_string((int)currentAndMax.y);
 
                 ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
@@ -876,8 +884,9 @@ void DrawItemTrackerOptions(bool& open) {
     PaddedSeparator();
     SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
     SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
-    PaddedEnhancementCheckbox("Display \"Current/Max\" values", "gItemTrackerDisplayCurrentMax", 0);
-    if (CVar_GetS32("gItemTrackerDisplayCurrentMax", 0) == 0) {
+    
+    LabeledComboBoxRightAligned("Ammo/Capacity Tracking", "gItemTrackerCapacityTrack", { "No Numbers", "Current Capacity", "Current Ammo", "currentCapacity/maxCapacity", "currentAmmo/currentCapacity" }, 0);
+    if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
     }
 
