@@ -1496,9 +1496,9 @@ namespace SohImGui {
                     PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                     Tooltip("Allows graves to be pulled when child during the day");
                     PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
-                    Tooltip("Allows Ice Arrows to melt red ice");
+                    Tooltip("Allows Ice Arrows to melt red ice (may need to reload the room when first enabled)");
                     PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
-                    Tooltip("Allows Light Arrows to activate sun switches");
+                    Tooltip("Allows Light Arrows to activate sun switches (may need to reload the room when first enabled)");
                     ImGui::EndMenu();
                 }
 
