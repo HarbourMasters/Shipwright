@@ -289,6 +289,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BULLET_BAG_50),
         GET_ITEM_NONE,
         GET_ITEM_NONE,
+        GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
     };
     ItemTableManager::Instance->AddItemTable(MOD_NONE);
     for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
@@ -1613,7 +1614,7 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
 }
 
