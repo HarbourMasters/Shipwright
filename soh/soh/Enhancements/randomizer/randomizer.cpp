@@ -1333,9 +1333,6 @@ s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, Get
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-// TODO: This is being used for shops, but we kinda don't want it to be. We
-// need to split this into two methods, one that determines whether or not you can get an item
-// and another than determines what you get
 s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch (randoGet) {
         case RG_NONE:
@@ -1349,19 +1346,15 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             return !gSaveContext.bgsFlag ? GI_SWORD_BGS : GI_RUPEE_BLUE;
 
         case RG_DEKU_SHIELD:
-        case RG_BUY_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
-        case RG_BUY_HYLIAN_SHIELD:
         case RG_HYLIAN_SHIELD:
             return GI_SHIELD_HYLIAN;
         case RG_MIRROR_SHIELD:
             return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? GI_SHIELD_MIRROR : GI_RUPEE_BLUE;
 
         case RG_GORON_TUNIC:
-        case RG_BUY_GORON_TUNIC:
             return GI_TUNIC_GORON;
         case RG_ZORA_TUNIC:
-        case RG_BUY_ZORA_TUNIC:
             return GI_TUNIC_ZORA;
 
         case RG_IRON_BOOTS:
@@ -1643,7 +1636,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             return GI_RUPEE_BLUE;
 
         case RG_RECOVERY_HEART:
-        case RG_BUY_HEART:
             return GI_HEART;
 
         case RG_GREEN_RUPEE:
@@ -1662,52 +1654,21 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-    
-        // TODO: Logic around needing a bottle?
         case RG_MILK:
-            return GI_MILK;
-        case RG_BUY_FISH:
-            return GI_FISH;
-        case RG_BUY_BLUE_FIRE:
-            return GI_BLUE_FIRE;
-        case RG_BUY_BOTTLE_BUG:
-            return GI_BUGS;
-        case RG_BUY_POE:
-            return GI_POE;
-        case RG_BUY_FAIRYS_SPIRIT:
-            return GI_FAIRY;
-        case RG_RED_POTION_REFILL:
-        case RG_BUY_RED_POTION_30:
-        case RG_BUY_RED_POTION_40:
-        case RG_BUY_RED_POTION_50:
-            return GI_POTION_RED;
-        case RG_GREEN_POTION_REFILL:
-        case RG_BUY_GREEN_POTION:
-            return GI_POTION_GREEN;
-        case RG_BLUE_POTION_REFILL:
-        case RG_BUY_BLUE_POTION:
-            return GI_POTION_BLUE;
+            return GI_MILK; //todo logic around needing a bottle?
 
         case RG_BOMBS_5:
-        case RG_BUY_BOMBS_525:
-        case RG_BUY_BOMBS_535:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
         case RG_BOMBS_10:
-        case RG_BUY_BOMBS_10:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
         case RG_BOMBS_20:
-        case RG_BUY_BOMBS_20:
-        case RG_BUY_BOMBS_30: // TODO: Is there not a 30 bomb item?
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
 
         case RG_BOMBCHU_5:
-        case RG_BUY_BOMBCHU_5:
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_10:
             return GI_BOMBCHUS_10;
         case RG_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_20:
             return GI_BOMBCHUS_20;
         case RG_BOMBCHU_DROP:
             return GI_BOMBCHUS_5; //todo figure out what we want to do for chu drops
@@ -1715,27 +1676,26 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_ARROWS_5:
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_SMALL : GI_RUPEE_BLUE;
         case RG_ARROWS_10:
-        case RG_BUY_ARROWS_10:
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_MEDIUM : GI_RUPEE_BLUE;
         case RG_ARROWS_30:
-        case RG_BUY_ARROWS_30:
-        case RG_BUY_ARROWS_50: // TODO: Is there not a 50 arrow item?
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_LARGE : GI_RUPEE_BLUE;
 
         case RG_DEKU_NUTS_5:
-        case RG_BUY_DEKU_NUT_5:
             return GI_NUTS_5;
         case RG_DEKU_NUTS_10:
-        case RG_BUY_DEKU_NUT_10:
             return GI_NUTS_10;
 
         case RG_DEKU_SEEDS_30:
-        case RG_BUY_DEKU_SEEDS_30:
             return CUR_UPG_VALUE(UPG_BULLET_BAG) ? GI_SEEDS_30 : GI_RUPEE_BLUE;
 
         case RG_DEKU_STICK_1:
-        case RG_BUY_DEKU_STICK_1:
             return GI_STICKS_1;
+
+        // RANDOTODO these won't be used until we implement shopsanity/scrub shuffle
+        case RG_RED_POTION_REFILL:
+        case RG_GREEN_POTION_REFILL:
+        case RG_BLUE_POTION_REFILL:
+            return GI_NONE;
 
         case RG_TREASURE_GAME_HEART:
             return GI_HEART_PIECE_WIN;
