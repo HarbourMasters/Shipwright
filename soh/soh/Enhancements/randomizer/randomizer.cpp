@@ -734,7 +734,7 @@ void Randomizer::LoadShopMessages(const char* spoilerFileName) {
     for (int index = 0; index < shopItemRandomizerChecks.size(); ++index) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
         std::string shopItemName = GetEnumToSpoilerfileName[this->itemLocations[shopItemCheck]];
-        u16 shopItemPrice = scrubPrices[shopItemCheck];
+        u16 shopItemPrice = randomizerMerchantPrices[shopItemCheck];
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::shopMessageTableID, index, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
                 "\x08%r" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
@@ -2299,8 +2299,8 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
             break;
     }
 
-    if (scrubPrices.find(shopItemIdentity.randomizerCheck) != scrubPrices.end()) {
-        shopItemIdentity.itemPrice = scrubPrices[shopItemIdentity.randomizerCheck];
+    if (randomizerMerchantPrices.find(shopItemIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
+        shopItemIdentity.itemPrice = randomizerMerchantPrices[shopItemIdentity.randomizerCheck];
     }
 
     return shopItemIdentity;
