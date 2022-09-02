@@ -1216,7 +1216,11 @@ GetItemID Randomizer::GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorPar
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
-    switch (this->itemLocations[randomizerCheck]) {
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck));
+}
+
+ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+    switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
         case RG_HINT:
