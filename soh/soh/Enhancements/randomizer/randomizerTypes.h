@@ -1042,6 +1042,6 @@ typedef struct ShopItemIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
     GetItemID ogItemId;
+    int32_t enGirlAShopItem;
     int32_t itemPrice;
-    bool isShuffled;
 } ShopItemIdentity;

@@ -751,6 +751,39 @@ std::vector<RandomizerCheck> shopItemRandomizerChecks = {
     RC_MARKET_BOMBCHU_SHOP_ITEM_8,
 };
 
+// Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
+std::unordered_map<RandomizerGet, int32_t> randomizerGetToEnGirlShopItem = {
+    { RG_BUY_DEKU_NUT_5,    0x00 },
+    { RG_BUY_ARROWS_30,     0x01 },
+    { RG_BUY_ARROWS_50,     0x02 },
+    { RG_BUY_BOMBS_525,     0x03 },
+    { RG_BUY_DEKU_NUT_10,   0x04 },
+    { RG_BUY_DEKU_STICK_1,  0x05 },
+    { RG_BUY_BOMBS_10,      0x06 },
+    { RG_BUY_FISH,          0x07 },
+    { RG_BUY_RED_POTION_30, 0x08 },
+    { RG_BUY_GREEN_POTION,  0x09 },
+    { RG_BUY_BLUE_POTION,   0x0A },
+    { RG_BUY_HYLIAN_SHIELD, 0x0C },
+    { RG_BUY_DEKU_SHIELD,   0x0D },
+    { RG_BUY_GORON_TUNIC,   0x0E },
+    { RG_BUY_ZORA_TUNIC,    0x0F },
+    { RG_BUY_HEART,         0x10 },
+    { RG_BUY_BOMBCHU_10,    0x15 },
+    { RG_BUY_BOMBCHU_20,    0x16 },
+    { RG_BUY_DEKU_SEEDS_30, 0x1D },
+    { RG_BUY_BLUE_FIRE,     0x27 },
+    { RG_BUY_BOTTLE_BUG,    0x28 },
+    { RG_BUY_POE,           0x2A },
+    { RG_BUY_FAIRYS_SPIRIT, 0x2B },
+    { RG_BUY_ARROWS_10,     0x2C },
+    { RG_BUY_BOMBS_20,      0x2D },
+    { RG_BUY_BOMBS_30,      0x2E },
+    { RG_BUY_BOMBS_535,     0x2F },
+    { RG_BUY_RED_POTION_40, 0x30 },
+    { RG_BUY_RED_POTION_50, 0x31 },
+};
+
 void Randomizer::LoadShopMessages(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseHintLocationsFile(spoilerFileName);
@@ -2512,7 +2545,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
     shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     shopItemIdentity.ogItemId = GI_NONE;
     shopItemIdentity.itemPrice = -1;
-    shopItemIdentity.isShuffled = GetRandoSettingValue(RSK_SHOPSANITY) > 0;
+    shopItemIdentity.enGirlAShopItem = -1;
 
     switch (sceneNum) {
         case SCENE_SHOP1:
@@ -2869,6 +2902,10 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
                     break;
             }
             break;
+    }
+
+    if (randomizerGetToEnGirlShopItem.find(GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck)) != randomizerGetToEnGirlShopItem.end()) {
+        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck)];
     }
 
     if (randomizerMerchantPrices.find(shopItemIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {

@@ -684,7 +684,7 @@ static void WriteAllLocations(int language) {
         }
 
         // Eventually check for other things here like fake name
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice() || location->GetPrice() > 0) {
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
           jsonData["locations"][location->GetName()]["item"] = placedItemName;
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         } else {
