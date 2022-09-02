@@ -1203,13 +1203,16 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    s16 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
-    return itemId;
+RandomizerGet Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
-s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
-    return GetItemIDFromRandomizerGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
+RandomizerGet Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+    return this->itemLocations[randomizerCheck];
+}
+
+GetItemID Randomizer::GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    return GetItemIdFromRandomizerGet(GetRandomizerGetFromActor(actorId, sceneNum, actorParams), ogItemId);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
@@ -1555,7 +1558,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
     }
 }
 
-GetItemID Randomizer::GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
+GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -2382,11 +2385,11 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-s16 Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return GetItemIDFromRandomizerGet(this->itemLocations[randomizerCheck], ogId);
+GetItemID Randomizer::GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId) {
+    return GetItemIdFromRandomizerGet(this->itemLocations[randomizerCheck], ogItemId);
 }
 
-RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
         return RC_UNKNOWN_CHECK;
     }
