@@ -105,7 +105,7 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
-    blueFireArrowsDC = (gSaveContext.n64ddFlag && (CVar_GetS32("gBlueFireArrows", 0) != 0));
+    blueFireArrowsDC = (CVar_GetS32("gBlueFireArrows", 0) != 0);
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);

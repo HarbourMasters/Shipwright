@@ -103,7 +103,7 @@ void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
-    blueFireArrows = (gSaveContext.n64ddFlag && (CVar_GetS32("gBlueFireArrows", 0) != 0));
+    blueFireArrows = (CVar_GetS32("gBlueFireArrows", 0) != 0);
 
     Collider_InitCylinder(globalCtx, &this->cylinder1);
     // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
