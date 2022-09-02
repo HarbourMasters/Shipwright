@@ -1041,7 +1041,7 @@ typedef struct ScrubIdentity {
 typedef struct ShopItemIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
-    GetItemID getItemId;
+    GetItemID ogItemId;
     int32_t itemPrice;
     bool isShuffled;
 } ShopItemIdentity;

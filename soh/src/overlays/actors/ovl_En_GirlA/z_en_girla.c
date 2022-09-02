@@ -393,7 +393,7 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
     } else {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
             if (Object_IsLoaded(&globalCtx->objectCtx, getItemEntry.objectId)) {
                 this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, getItemEntry.objectId);
@@ -740,17 +740,29 @@ s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
 
 s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
-    // TOOD: Call some some sort of Randomizer equivalent Item_CheckObtainability method to determine if they can buy
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    ItemObtainability itemObtainability = Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
 
-    if (gSaveContext.rupees < shopItemIdentity.itemPrice) {
-        return CANBUY_RESULT_NEED_RUPEES;
+    if (itemObtainability == CANT_OBTAIN_NEED_EMPTY_BOTTLE) {
+        return CANBUY_RESULT_NEED_BOTTLE;
+    }
+    
+    if (itemObtainability == CANT_OBTAIN_NEED_UPGRADE) {
+        return CANBUY_RESULT_CANT_GET_NOW_5;
     }
 
     // TOOD: We should put a sold out sign instead of preventing them from buying again
     // TODO: Need to allow repeated buys for some items
-    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+    if (
+        Flags_GetRandomizerInf(shopItemIdentity.randomizerInf) || 
+        itemObtainability == CANT_OBTAIN_ALREADY_HAVE || 
+        itemObtainability == CANT_OBTAIN_MISC
+    ) {
         return CANBUY_RESULT_CANT_GET_NOW;
+    }
+
+    if (gSaveContext.rupees < shopItemIdentity.itemPrice) {
+        return CANBUY_RESULT_NEED_RUPEES;
     }
 
     return CANBUY_RESULT_SUCCESS_FANFARE;
@@ -886,7 +898,7 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
         Item_Give(globalCtx, getItemEntry.itemId);
@@ -1070,7 +1082,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             itemEntry->objID = getItemEntry.objectId;
             itemEntry->giDrawId = getItemEntry.gid;
             itemEntry->getItemId = getItemEntry.getItemId;
