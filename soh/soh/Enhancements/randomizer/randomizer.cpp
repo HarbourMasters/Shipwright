@@ -709,6 +709,14 @@ std::vector<RandomizerCheck> shopItemRandomizerChecks = {
     RC_ZD_SHOP_ITEM_6,
     RC_ZD_SHOP_ITEM_7,
     RC_ZD_SHOP_ITEM_8,
+    RC_KAK_BAZAAR_ITEM_1,
+    RC_KAK_BAZAAR_ITEM_2,
+    RC_KAK_BAZAAR_ITEM_3,
+    RC_KAK_BAZAAR_ITEM_4,
+    RC_KAK_BAZAAR_ITEM_5,
+    RC_KAK_BAZAAR_ITEM_6,
+    RC_KAK_BAZAAR_ITEM_7,
+    RC_KAK_BAZAAR_ITEM_8,
     RC_KAK_POTION_SHOP_ITEM_1,
     RC_KAK_POTION_SHOP_ITEM_2,
     RC_KAK_POTION_SHOP_ITEM_3,
@@ -717,6 +725,14 @@ std::vector<RandomizerCheck> shopItemRandomizerChecks = {
     RC_KAK_POTION_SHOP_ITEM_6,
     RC_KAK_POTION_SHOP_ITEM_7,
     RC_KAK_POTION_SHOP_ITEM_8,
+    RC_MARKET_BAZAAR_ITEM_1,
+    RC_MARKET_BAZAAR_ITEM_2,
+    RC_MARKET_BAZAAR_ITEM_3,
+    RC_MARKET_BAZAAR_ITEM_4,
+    RC_MARKET_BAZAAR_ITEM_5,
+    RC_MARKET_BAZAAR_ITEM_6,
+    RC_MARKET_BAZAAR_ITEM_7,
+    RC_MARKET_BAZAAR_ITEM_8,
     RC_MARKET_POTION_SHOP_ITEM_1,
     RC_MARKET_POTION_SHOP_ITEM_2,
     RC_MARKET_POTION_SHOP_ITEM_3,
@@ -2211,52 +2227,51 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
 ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
     struct ShopItemIdentity shopItemIdentity;
 
-    shopItemIdentity.shopItemId = -1;
     shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     shopItemIdentity.getItemId = GI_NONE;
     shopItemIdentity.itemPrice = -1;
-    shopItemIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0;
+    shopItemIdentity.isShuffled = GetRandoSettingValue(RSK_SHOPSANITY) > 0;
 
     switch (sceneNum) {
         case SCENE_KOKIRI_SHOP:
             switch (actorParams) {
                 case 0x0D:
-                    shopItemIdentity.shopItemId = 0x00;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_SHIELD_DEKU;
                     break;
                 case 0x00:
-                    shopItemIdentity.shopItemId = 0x01;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_NUTS_5_2;
                     break;
                 case 0x04:
-                    shopItemIdentity.shopItemId = 0x02;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_NUTS_10;
                     break;
                 case 0x05:
-                    shopItemIdentity.shopItemId = 0x03;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_STICKS_1;
                     break;
                 case 0x1D:
-                    shopItemIdentity.shopItemId = 0x04;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_SEEDS_30;
                     break;
                 case 0x2C:
-                    shopItemIdentity.shopItemId = 0x05;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_ARROWS_SMALL;
                     break;
                 case 0x01:
-                    shopItemIdentity.shopItemId = 0x06;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_ARROWS_MEDIUM;
                     break;
                 case 0x10:
-                    shopItemIdentity.shopItemId = 0x07;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_8;
                     shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_8;
                     shopItemIdentity.getItemId = GI_HEART;
                     break;
@@ -2265,43 +2280,43 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
         case SCENE_GOLON:
             switch (actorParams) {
                 case 0x03:
-                    shopItemIdentity.shopItemId = 0x08;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_BOMBS_5;
                     break;
                 case 0x06:
-                    shopItemIdentity.shopItemId = 0x09;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_BOMBS_10;
                     break;
                 case 0x2D:
-                    shopItemIdentity.shopItemId = 0x0A;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_BOMBS_20;
                     break;
                 case 0x2E:
-                    shopItemIdentity.shopItemId = 0x0B;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_BOMBS_30;
                     break;
                 case 0x0E:
-                    shopItemIdentity.shopItemId = 0x0C;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_TUNIC_GORON;
                     break;
                 case 0x10:
-                    shopItemIdentity.shopItemId = 0x0D;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_HEART;
                     break;
                 case 0x30:
-                    shopItemIdentity.shopItemId = 0x0E;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_POTION_RED;
                     break;
                 // TODO: Not a huge issue because shopsanity won't use this slot, but it has the same actorParam as another
                 // case 0x10:
-                //     shopItemIdentity.shopItemId = 0x0F;
+                //     shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_8;
                 //     shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_8;
                 //     shopItemIdentity.getItemId = GI_HEART;
                 //     break;
@@ -2310,42 +2325,42 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
         case SCENE_ZOORA:
             switch (actorParams) {
                 case 0x0F:
-                    shopItemIdentity.shopItemId = 0x10;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_TUNIC_ZORA;
                     break;
                 case 0x2C:
-                    shopItemIdentity.shopItemId = 0x11;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_ARROWS_SMALL;
                     break;
                 case 0x10:
-                    shopItemIdentity.shopItemId = 0x12;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_HEART;
                     break;
                 case 0x01:
-                    shopItemIdentity.shopItemId = 0x13;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_ARROWS_MEDIUM;
                     break;
                 case 0x00:
-                    shopItemIdentity.shopItemId = 0x14;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_NUTS_5_2;
                     break;
                 case 0x02:
-                    shopItemIdentity.shopItemId = 0x15;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_ARROWS_LARGE;
                     break;
                 case 0x07:
-                    shopItemIdentity.shopItemId = 0x16;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_FISH;
                     break;
                 case 0x31:
-                    shopItemIdentity.shopItemId = 0x17;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_8;
                     shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_8;
                     shopItemIdentity.getItemId = GI_POTION_RED;
                     break;
@@ -2354,42 +2369,42 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
         case SCENE_DRAG:
             switch (actorParams) {
                 case 0x09:
-                    shopItemIdentity.shopItemId = 0x18;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_POTION_GREEN;
                     break;
                 case 0x27:
-                    shopItemIdentity.shopItemId = 0x19;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_BLUE_FIRE;
                     break;
                 case 0x08:
-                    shopItemIdentity.shopItemId = 0x1A;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_POTION_RED;
                     break;
                 case 0x2B:
-                    shopItemIdentity.shopItemId = 0x1B;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_FAIRY;
                     break;
                 case 0x00:
-                    shopItemIdentity.shopItemId = 0x1C;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_NUTS_5_2;
                     break;
                 case 0x28:
-                    shopItemIdentity.shopItemId = 0x1D;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_BUGS;
                     break;
                 case 0x2A:
-                    shopItemIdentity.shopItemId = 0x1E;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_POE;
                     break;
                 case 0x07:
-                    shopItemIdentity.shopItemId = 0x1F;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_8;
                     shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_8;
                     shopItemIdentity.getItemId = GI_FISH;
                     break;
@@ -2398,42 +2413,42 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
         case SCENE_ALLEY_SHOP:
             switch (actorParams) {
                 case 0x09:
-                    shopItemIdentity.shopItemId = 0x20;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_POTION_GREEN;
                     break;
                 case 0x27:
-                    shopItemIdentity.shopItemId = 0x21;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_BLUE_FIRE;
                     break;
                 case 0x08:
-                    shopItemIdentity.shopItemId = 0x22;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_POTION_RED;
                     break;
                 case 0x2B:
-                    shopItemIdentity.shopItemId = 0x23;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_FAIRY;
                     break;
                 case 0x00:
-                    shopItemIdentity.shopItemId = 0x24;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_NUTS_5_2;
                     break;
                 case 0x28:
-                    shopItemIdentity.shopItemId = 0x25;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_BUGS;
                     break;
                 case 0x2A:
-                    shopItemIdentity.shopItemId = 0x26;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_POE;
                     break;
                 case 0x07:
-                    shopItemIdentity.shopItemId = 0x27;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_8;
                     shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_8;
                     shopItemIdentity.getItemId = GI_FISH;
                     break;
@@ -2442,42 +2457,42 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
         case SCENE_NIGHT_SHOP:
             switch (actorParams) {
                 case 0x18:
-                    shopItemIdentity.shopItemId = 0x28;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_1;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_1;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_10;
                     break;
                 case 0x1C:
-                    shopItemIdentity.shopItemId = 0x29;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_2;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_2;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_10;
                     break;
                 case 0x19:
-                    shopItemIdentity.shopItemId = 0x2A;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_3;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_3;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_10;
                     break;
                 case 0x15:
-                    shopItemIdentity.shopItemId = 0x2B;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_4;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_4;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_10;
                     break;
                 case 0x1A:
-                    shopItemIdentity.shopItemId = 0x2C;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_5;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_5;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_20;
                     break;
                 case 0x16:
-                    shopItemIdentity.shopItemId = 0x2D;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_6;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_20;
                     break;
                 case 0x1B:
-                    shopItemIdentity.shopItemId = 0x2E;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_7;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_20;
                     break;
                 case 0x17:
-                    shopItemIdentity.shopItemId = 0x2F;
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8;
                     shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_8;
                     shopItemIdentity.getItemId = GI_BOMBCHUS_20;
                     break;

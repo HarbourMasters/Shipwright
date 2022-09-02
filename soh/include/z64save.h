@@ -183,8 +183,7 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[4];
-    u8 shopItemsPurchased[48];
+    u16 randomizerInf[8];
     u8 temporaryWeapon;
     u16 adultTradeItems;
 } SaveContext; // size = 0x1428

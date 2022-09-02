@@ -9,7 +9,6 @@
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10
 #define NUM_SCRUBS 35
-#define NUM_SHOP_ITEMS 35
 
 /**
  *  Initialize new save.
@@ -760,11 +759,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Sets all rando flags to false
         for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
             gSaveContext.randomizerInf[i] = 0;
-        }
-
-        // Sets all shop items to not purchased when generating a rando save.
-        for (u8 i = 0; i < NUM_SHOP_ITEMS; i++) {
-            gSaveContext.shopItemsPurchased[i] = 0;
         }
 
         // Set all trials to cleared if trial count is random or anything other than 6
