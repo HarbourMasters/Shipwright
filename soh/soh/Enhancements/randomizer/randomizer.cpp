@@ -4418,21 +4418,6 @@ void DrawRandoEditor(bool& open) {
 
                 PaddedSeparator();
 
-                // Shopsanity
-                ImGui::Text(Settings::Shopsanity.GetName().c_str());
-                InsertHelpHoverText(
-                    "Off - All shop items will be the same as vanilla.\n"
-                    "\n"
-                    "0 Items - Vanilla shop items will be shuffled among different shops.\n"
-                    "\n"
-                    "1-4 Items - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
-                    "\n"
-                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
-                );
-                SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
-
-                PaddedSeparator();
-
                 // Shuffle Gerudo Membership Card
                 SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
                                                 "gRandomizeShuffleGerudoToken");
@@ -4453,6 +4438,21 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
+
+                // Shopsanity
+                ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                InsertHelpHoverText(
+                    "Off - All shop items will be the same as vanilla.\n"
+                    "\n"
+                    "0 Items - Vanilla shop items will be shuffled among different shops.\n"
+                    "\n"
+                    "1-4 Items - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
+                    "\n"
+                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
+                );
+                SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
+
+                PaddedSeparator();
 
                 // Shuffle Scrubs
                 ImGui::Text(Settings::Scrubsanity.GetName().c_str());
