@@ -1495,6 +1495,10 @@ namespace SohImGui {
                     Tooltip("Injects Golden Skulltula total count in pickup messages");
                     PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                     Tooltip("Allows graves to be pulled when child during the day");
+                    PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
+                    Tooltip("Allows Ice Arrows to melt red ice");
+                    PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
+                    Tooltip("Allows Light Arrows to activate sun switches");
                     ImGui::EndMenu();
                 }
 
@@ -2322,6 +2326,10 @@ namespace SohImGui {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Blue Fire Arrows
+        CVar_SetS32("gBlueFireArrows", 0);
+        // Sunlight Arrows
+        CVar_SetS32("gSunlightArrows", 0);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);

@@ -14,6 +14,7 @@ typedef struct BgBreakwall {
     /* 0x0168 */ s8 colType;
     /* 0x0169 */ s8 bankIndex;
     /* 0x016C */ ColliderQuad collider;
+                 ColliderQuad colliderIceArrow; // For "Blue Fire Arrows" enhancement
     /* 0x01EC */ BgBreakwallActionFunc actionFunc;
 } BgBreakwall; // size = 0x01F0
 
