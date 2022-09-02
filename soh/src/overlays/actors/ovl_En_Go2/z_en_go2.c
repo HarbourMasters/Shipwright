@@ -595,7 +595,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
 u16 EnGo2_GetTextIdGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (gSaveContext.bgsFlag) {
+    if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
         player->exchangeItemId = EXCH_ITEM_CLAIM_CHECK;
         return 0x305E;
     } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
@@ -622,10 +622,6 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
                 }
                 
                 if(gSaveContext.n64ddFlag) {
-                    if (INV_CONTENT(ITEM_CLAIM_CHECK) != ITEM_CLAIM_CHECK) {
-                        return 0;
-                    }
-
                     EnGo2_GetItemEntry(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
                     Flags_SetTreasure(globalCtx, 0x1F);
                 } else {
@@ -1063,7 +1059,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, GlobalContext* globalCtx, Player* play
     u16 textId;
 
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
-        if (gSaveContext.bgsFlag) {
+        if ((!gSaveContext.n64ddFlag && gSaveContext.bgsFlag)) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_CLAIM_CHECK) {
                 this->actor.textId = 0x3003;
             } else {
@@ -1071,16 +1067,20 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, GlobalContext* globalCtx, Player* play
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (!gSaveContext.bgsFlag && (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)) {
+        } else if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_CLAIM_CHECK) {
-                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                if (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F)) {
+                    textId = 0x3003;
+                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
                 }
                 this->actor.textId = textId;
             } else {
-                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                if (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F)) {
+                    textId = 0x305E;
+                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;

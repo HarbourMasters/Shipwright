@@ -32,6 +32,8 @@ private:
 #endif
 
 #ifndef __cplusplus
+void InitOTR(void);
+void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
 void InitAudio();

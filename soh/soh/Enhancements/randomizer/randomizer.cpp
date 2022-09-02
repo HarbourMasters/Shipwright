@@ -36,17 +36,23 @@ const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 
-static const char* englishRupeeNames[44] = {
+static const char* englishRupeeNames[52] = {
     "Rupees",    "Bitcoin",   "Bananas",     "Cornflakes", "Gummybears", "Floopies", "Dollars",    "Lemmings",
     "Emeralds",  "Bucks",     "Rubles",      "Diamonds",   "Moons",      "Stars",    "Mana",       "Doll Hairs",
     "Dogecoin",  "Mushrooms", "Experience",  "Friends",    "Coins",      "Rings",    "Gil",        "Pokédollars",
     "Bells",     "Orbs",      "Bottle Caps", "Simoleons",  "Pokémon",    "Toys",     "Smackaroos", "Zorkmids",
     "Zenny",     "Bones",     "Souls",       "Studs",      "Munny",      "Rubies",   "Gald",       "Gold",
-    "Shillings", "Pounds",    "Glimmer",     "Potch"
+    "Shillings", "Pounds",    "Glimmer",     "Potch",      "Robux",      "V-Bucks",  "Bratwürste", "Mesetas",
+    "Coal",      "Euro",      "Spoons",      "Cucumbers"
 };
 
-static const char* germanRupeeNames[1] = { 
-    "Rubine"
+static const char* germanRupeeNames[41] = {
+    "Rubine",     "Mäuse",       "Kröten",        "Münzen",     "Euro",       "Mark",     "Bananen",
+    "Gummibären", "Bonbons",     "Diamanten",     "Bratwürste", "Bitcoin",    "Dogecoin", "Monde",
+    "Sterne",     "Brause UFOs", "Taler",         "Sternis",    "Schillinge", "Freunde",  "Seelen",
+    "Gil",        "Zenny",       "Pfandflaschen", "Knochen",    "Pilze",      "Smaragde", "Kronkorken",
+    "Pokédollar", "Brötchen",    "EXP",           "Wagenchips", "Moos",       "Knete",    "Kohle",
+    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze"
 };
 
 static const char* frenchRupeeNames[36] = {
@@ -575,6 +581,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+    { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -816,6 +823,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_COMPLETE_MASK_QUEST:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
+                    case RSK_BOMBCHUS_IN_LOGIC:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -875,6 +883,16 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_GERUDO_KEYS:
+                        if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Any Dungeon") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Overworld") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "Anywhere") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
                     case RSK_KEYSANITY:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -1781,6 +1799,70 @@ GetItemID Randomizer::GetItemIDFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
 
+        case RG_DEKU_TREE_MAP:
+        case RG_DODONGOS_CAVERN_MAP:
+        case RG_JABU_JABUS_BELLY_MAP:
+        case RG_FOREST_TEMPLE_MAP:
+        case RG_FIRE_TEMPLE_MAP:
+        case RG_WATER_TEMPLE_MAP:
+        case RG_SPIRIT_TEMPLE_MAP:
+        case RG_SHADOW_TEMPLE_MAP:
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_ICE_CAVERN_MAP:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+                return GI_MAP;
+            } else {
+                return (GetItemID)randoGet;
+            }
+
+        case RG_DEKU_TREE_COMPASS:
+        case RG_DODONGOS_CAVERN_COMPASS:
+        case RG_JABU_JABUS_BELLY_COMPASS:
+        case RG_FOREST_TEMPLE_COMPASS:
+        case RG_FIRE_TEMPLE_COMPASS:
+        case RG_WATER_TEMPLE_COMPASS:
+        case RG_SPIRIT_TEMPLE_COMPASS:
+        case RG_SHADOW_TEMPLE_COMPASS:
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_ICE_CAVERN_COMPASS:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+                return GI_COMPASS;
+            } else {
+                return (GetItemID)randoGet;
+            }
+
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
+                return GI_KEY_BOSS;
+            } else {
+                return (GetItemID)randoGet;
+            }
+
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_KEYSANITY) < 3) {
+                return GI_KEY_SMALL;
+            } else {
+                return (GetItemID)randoGet;
+            }
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == 0) {
+                return GI_KEY_SMALL;
+            } else {
+                return (GetItemID)randoGet;
+            }
+
         case RG_RECOVERY_HEART:
         case RG_BUY_HEART:
             return GI_HEART;
@@ -1934,6 +2016,61 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_BOMBS_535:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
+            return true;
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_KEYSANITY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != 0) {
+                return false;
+            }
+            return true;
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2) {
+                return false;
+            }
+            return true;
+        case RG_DEKU_TREE_COMPASS:
+        case RG_DODONGOS_CAVERN_COMPASS:
+        case RG_JABU_JABUS_BELLY_COMPASS:
+        case RG_FOREST_TEMPLE_COMPASS:
+        case RG_FIRE_TEMPLE_COMPASS:
+        case RG_WATER_TEMPLE_COMPASS:
+        case RG_SPIRIT_TEMPLE_COMPASS:
+        case RG_SHADOW_TEMPLE_COMPASS:
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_ICE_CAVERN_COMPASS:
+        case RG_DEKU_TREE_MAP:
+        case RG_DODONGOS_CAVERN_MAP:
+        case RG_JABU_JABUS_BELLY_MAP:
+        case RG_FOREST_TEMPLE_MAP:
+        case RG_FIRE_TEMPLE_MAP:
+        case RG_WATER_TEMPLE_MAP:
+        case RG_SPIRIT_TEMPLE_MAP:
+        case RG_SHADOW_TEMPLE_MAP:
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_ICE_CAVERN_MAP:
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) > 2) {
+                return false;
+            }
             return true;
         default:
             return false;
@@ -3260,6 +3397,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
+    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -4063,7 +4201,18 @@ void DrawRandoEditor(bool& open) {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::PushItemWidth(-FLT_MIN);
-                ImGui::Text("Coming soon");
+                
+                // Bombchus in Logic
+                SohImGui::EnhancementCheckbox(Settings::BombchusInLogic.GetName().c_str(), "gRandomizeBombchusInLogic");
+                InsertHelpHoverText(
+                    "Bombchus are properly considered in logic.\n"
+                    "\n"
+                    "The first Bombchu pack will always be 20, and subsequent packs will be "
+                    "5 or 10 based on how many you have.\n"
+                    "Once found, they can be replenished at the Bombchu shop.\n"
+                    "\n"
+                    "Bombchu Bowling is opened by obtaining Bombchus."
+                );
                 
                 ImGui::PopItemWidth();
 

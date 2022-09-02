@@ -1662,7 +1662,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padmgr);
 void PadMgr_HandlePreNMI(PadMgr* padmgr);
 // This function must remain commented out, because it is called incorrectly in
 // fault.c (actual bug in game), and the compiler notices and won't compile it
-// void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
+void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
 void PadMgr_Init(PadMgr* padmgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id, OSPri priority, void* stack);
 void Sched_SwapFrameBuffer(CfbInfo* cfbInfo);
 void func_800C84E4(SchedContext* sc, CfbInfo* cfbInfo);
