@@ -121,7 +121,7 @@ static InitChainEntry sInitChain[] = {
 
 void ObjLightswitch_InitCollider(ObjLightswitch* this, GlobalContext* globalCtx) {
     s32 pad;
-    sunLightArrows = (CVar_GetS32("gSunLightArrows", 0) != 0);
+    sunLightArrows = (CVar_GetS32("gSunlightArrows", 0) != 0);
 
     Collider_InitJntSph(globalCtx, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits
