@@ -1022,6 +1022,14 @@ typedef enum {
     RSK_BOMBCHUS_IN_LOGIC
 } RandomizerSettingKey;
 
+typedef enum {
+    CAN_OBTAIN,
+    CANT_OBTAIN_MISC,
+    CANT_OBTAIN_ALREADY_HAVE,
+    CANT_OBTAIN_NEED_UPGRADE,
+    CANT_OBTAIN_NEED_EMPTY_BOTTLE,
+} ItemObtainability;
+
 typedef struct ScrubIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
