@@ -233,77 +233,102 @@ typedef enum {
   ITEM_TRACKER_NUMBER_AMMO,
 } ItemTrackerNumberOption;
 
+struct ItemTrackerNumbers {
+  int currentCapacity;
+  int maxCapacity;
+  int currentAmmo;
+};
+
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
 }
 
-ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
-    ImVec2 result = { 0, 0 };
-
+ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
+    ItemTrackerNumbers result;
+    result.currentCapacity = 0;
+    result.maxCapacity = 0;
+    result.currentAmmo = 0;
+    
     switch (item.id) {
         case ITEM_STICK:
-            result.x = CUR_CAPACITY(UPG_STICKS);
-            result.y = 30;
+            result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
+            result.maxCapacity = 30;
+            result.currentAmmo = AMMO(ITEM_STICK);
             break;
         case ITEM_NUT:
-            result.x = CUR_CAPACITY(UPG_NUTS);
-            result.y = 40;
+            result.currentCapacity = CUR_CAPACITY(UPG_NUTS);
+            result.maxCapacity = 40;
+            result.currentAmmo = AMMO(ITEM_NUT);
             break;
         case ITEM_BOMB:
-            result.x = CUR_CAPACITY(UPG_BOMB_BAG);
-            result.y = 40;
+            result.currentCapacity = CUR_CAPACITY(UPG_BOMB_BAG);
+            result.maxCapacity = 40;
+            result.currentAmmo = AMMO(ITEM_BOMB);
             break;
         case ITEM_BOW:
-            result.x = CUR_CAPACITY(UPG_QUIVER);
-            result.y = 50;
+            result.currentCapacity = CUR_CAPACITY(UPG_QUIVER);
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_BOW);
             break;
         case ITEM_SLINGSHOT:
-            result.x = CUR_CAPACITY(UPG_BULLET_BAG);
-            result.y = 50;
+            result.currentCapacity = CUR_CAPACITY(UPG_BULLET_BAG);
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_SLINGSHOT);
             break;
         case ITEM_WALLET_ADULT:
+            result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
+            result.maxCapacity = 200;
+            result.currentAmmo = gSaveContext.rupees;
+            break;
         case ITEM_WALLET_GIANT:
-            result.x = CUR_CAPACITY(UPG_WALLET);
-            result.y = 500;
+            result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
+            result.maxCapacity = 500;
+            result.currentAmmo = gSaveContext.rupees;
+            break;
+        case ITEM_BOMBCHU:
+            result.currentCapacity = 50;
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
         case ITEM_BEAN:
-            result.x = AMMO(ITEM_BEAN);
-            result.y = 10;
+            result.currentCapacity = 10;
+            result.maxCapacity = 10;
+            result.currentAmmo = AMMO(ITEM_BEAN);
             break;
         case QUEST_SKULL_TOKEN:
-            result.x = gSaveContext.inventory.gsTokens;
-            result.y = 100;
+            result.maxCapacity = 100;
+            result.currentAmmo = gSaveContext.inventory.gsTokens;
             break;
         case ITEM_KEY_SMALL:
-            result.x = gSaveContext.inventory.dungeonKeys[item.data];
+            result.currentCapacity = gSaveContext.inventory.dungeonKeys[item.data];
             switch (item.data) {
                 case SCENE_BMORI1:
-                    result.y = 5;
+                    result.maxCapacity = 5;
                     break;
                 case SCENE_HIDAN:
-                    result.y = 8;
+                    result.maxCapacity = 8;
                     break;
                 case SCENE_MIZUSIN:
-                    result.y = 6;
+                    result.maxCapacity = 6;
                     break;
                 case SCENE_JYASINZOU:
-                    result.y = 5;
+                    result.maxCapacity = 5;
                     break;
                 case SCENE_HAKADAN:
-                    result.y = 5;
+                    result.maxCapacity = 5;
                     break;
                 case SCENE_HAKADANCH:
-                    result.y = 3;
+                    result.maxCapacity = 3;
                     break;
                 case SCENE_GANONTIKA:
-                    result.y = 2;
+                    result.maxCapacity = 2;
                     break;
                 case SCENE_MEN:
-                    result.y = 9;
+                    result.maxCapacity = 9;
                     break;
                 case SCENE_GERUDOWAY:
-                    result.y = 4;
+                    result.maxCapacity = 4;
                     break;
             }
             break;
@@ -314,7 +339,7 @@ ImVec2 GetItemCurrentAndMax(ItemTrackerItem item) {
 
 void DrawItemCount(ItemTrackerItem item) {
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
-    ImVec2 currentAndMax = GetItemCurrentAndMax(item);
+    ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
 
     if (!IsValidSaveFile()) {
@@ -323,33 +348,62 @@ void DrawItemCount(ItemTrackerItem item) {
         return;
     }
 
-    if (currentAndMax.x > 0) {
-        if (currentAndMax.x >= currentAndMax.y) {
-            std::string currentString = std::to_string((int)currentAndMax.x);
+    if (currentAndMax.currentCapacity > 0) {
+        if (currentAndMax.currentCapacity >= currentAndMax.maxCapacity) {
+            std::string currentString = std::to_string((int)currentAndMax.currentCapacity);
             float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
             ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%d", (int)currentAndMax.x);
+            ImGui::Text("%d", (int)currentAndMax.currentCapacity);
             ImGui::PopStyleColor();
         } else {
-            if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CAPACITY) {
-                std::string currentAndMaxString = std::to_string((int)currentAndMax.x) + "/" + std::to_string((int)currentAndMax.y);
+            switch (CVar_GetS32("gItemTrackerCapacityTrack", 0)) {
+                case ITEM_TRACKER_NUMBER_NONE:
+                    break;
+                case ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY:
+                {
+                    std::string currentString = std::to_string((int)currentAndMax.currentCapacity);
+                    float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
-                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
-                ImGui::Text("%d/", (int)currentAndMax.x);
-                ImGui::SameLine(0, 0.0f);
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%d", (int)currentAndMax.y);
-                ImGui::PopStyleColor();
-            } else if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_NONE) {
-                return;
-            } else {
-                std::string currentString = std::to_string((int)currentAndMax.x);
-                float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
+                    ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
+                    ImGui::Text("%d", (int)currentAndMax.currentCapacity);
+                }
+                    break;
+                case ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY:
+                {
+                    std::string currentString = std::to_string((int)currentAndMax.currentAmmo);
+                    float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
-                ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
-                ImGui::Text("%d", (int)currentAndMax.x);
+                    ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
+                    ImGui::Text("%d", (int)currentAndMax.currentAmmo);
+                }
+                    break;
+                case ITEM_TRACKER_NUMBER_CAPACITY:
+                {
+                    std::string currentAndMaxString = std::to_string((int)currentAndMax.currentCapacity) + "/" + std::to_string((int)currentAndMax.maxCapacity);
+
+                    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
+                    ImGui::Text("%d/", (int)currentAndMax.currentCapacity);
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%d", (int)currentAndMax.maxCapacity);
+                    ImGui::PopStyleColor();
+                }
+                    break;
+                case ITEM_TRACKER_NUMBER_AMMO:
+                {
+                    std::string currentAndMaxString = std::to_string((int)currentAndMax.currentAmmo) + "/" + std::to_string((int)currentAndMax.maxCapacity);
+
+                    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
+                    ImGui::Text("%d/", (int)currentAndMax.currentAmmo);
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%d", (int)currentAndMax.maxCapacity);
+                    ImGui::PopStyleColor();
+                }
+                    break;
+
             }
         }
     }
