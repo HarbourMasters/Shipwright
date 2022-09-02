@@ -342,6 +342,8 @@ void DrawItemCount(ItemTrackerItem item) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("%d", (int)currentAndMax.y);
                 ImGui::PopStyleColor();
+            } else if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_NONE) {
+                return;
             } else {
                 std::string currentString = std::to_string((int)currentAndMax.x);
                 float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
@@ -885,7 +887,7 @@ void DrawItemTrackerOptions(bool& open) {
     SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
     SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
     
-    LabeledComboBoxRightAligned("Ammo/Capacity Tracking", "gItemTrackerCapacityTrack", { "No Numbers", "Current Capacity", "Current Ammo", "currentCapacity/maxCapacity", "currentAmmo/currentCapacity" }, 0);
+    LabeledComboBoxRightAligned("Ammo/Capacity Tracking", "gItemTrackerCapacityTrack", { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" }, 0);
     if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
     }
