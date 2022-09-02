@@ -2233,6 +2233,95 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
     shopItemIdentity.isShuffled = GetRandoSettingValue(RSK_SHOPSANITY) > 0;
 
     switch (sceneNum) {
+        case SCENE_SHOP1:
+            if (LINK_IS_ADULT) {
+                switch (actorParams) {
+                    case 0x0C:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_1;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_1;
+                        shopItemIdentity.getItemId = GI_SHIELD_HYLIAN;
+                        break;
+                    case 0x2F:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_2;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_2;
+                        shopItemIdentity.getItemId = GI_BOMBS_5;
+                        break;
+                    case 0x00:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_3;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_3;
+                        shopItemIdentity.getItemId = GI_NUTS_5_2;
+                        break;
+                    case 0x10:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_4;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_4;
+                        shopItemIdentity.getItemId = GI_HEART;
+                        break;
+                    case 0x2C:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_5;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_5;
+                        shopItemIdentity.getItemId = GI_ARROWS_SMALL;
+                        break;
+                    case 0x02:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_6;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_6;
+                        shopItemIdentity.getItemId = GI_ARROWS_LARGE;
+                        break;
+                    case 0x05:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_7;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_7;
+                        shopItemIdentity.getItemId = GI_STICKS_1;
+                        break;
+                    case 0x01:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_8;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_8;
+                        shopItemIdentity.getItemId = GI_ARROWS_MEDIUM;
+                        break;
+                }
+            } else {
+                switch (actorParams) {
+                    case 0x0C:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_1;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_1;
+                        shopItemIdentity.getItemId = GI_SHIELD_HYLIAN;
+                        break;
+                    case 0x2F:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_2;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_2;
+                        shopItemIdentity.getItemId = GI_BOMBS_5;
+                        break;
+                    case 0x00:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_3;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_3;
+                        shopItemIdentity.getItemId = GI_NUTS_5_2;
+                        break;
+                    case 0x10:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_4;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_4;
+                        shopItemIdentity.getItemId = GI_HEART;
+                        break;
+                    case 0x2C:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_5;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_5;
+                        shopItemIdentity.getItemId = GI_ARROWS_SMALL;
+                        break;
+                    case 0x02:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_6;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_6;
+                        shopItemIdentity.getItemId = GI_ARROWS_LARGE;
+                        break;
+                    case 0x05:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_7;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_7;
+                        shopItemIdentity.getItemId = GI_STICKS_1;
+                        break;
+                    case 0x01:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_8;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_8;
+                        shopItemIdentity.getItemId = GI_ARROWS_MEDIUM;
+                        break;
+                }
+            }
+            break;
         case SCENE_KOKIRI_SHOP:
             switch (actorParams) {
                 case 0x0D:
