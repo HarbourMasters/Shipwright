@@ -1608,7 +1608,7 @@ extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
 }
 
 extern "C" CustomMessageEntry Randomizer_GetShopMessage(s16 shopItemId) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::shopMessageTableID, shopItemId);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, shopItemId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {

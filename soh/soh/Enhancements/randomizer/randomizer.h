@@ -36,7 +36,6 @@ class Randomizer {
 
     static const std::string getItemMessageTableID;
     static const std::string hintMessageTableID;
-    static const std::string shopMessageTableID;
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
