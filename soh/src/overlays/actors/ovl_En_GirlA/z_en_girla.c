@@ -749,7 +749,7 @@ s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
 
-    return CANBUY_RESULT_SUCCESS;
+    return CANBUY_RESULT_SUCCESS_FANFARE;
 }
 
 void EnGirlA_ItemGive_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
@@ -879,6 +879,7 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
+// This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.getItemId);
@@ -888,6 +889,9 @@ void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         Randomizer_Item_Give(globalCtx, getItemEntry);
     }
+
+    Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
+    Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_BuyEvent_ShieldDiscount(GlobalContext* globalCtx, EnGirlA* this) {
@@ -945,6 +949,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
     }
 }
 
+// This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS_FANFARE
 void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);

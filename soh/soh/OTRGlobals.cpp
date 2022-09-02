@@ -1733,7 +1733,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         } else if (textId >= 0x9000 && textId <= 0x905F) {
             messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
-        } else if (textId >= 0x9100 && textId <= 0x9160) {
+        } else if (textId >= 0x9100 && textId <= 0x9180) {
             messageEntry = Randomizer_GetShopMessage((textId & ((1 << 8) - 1)));
         } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
