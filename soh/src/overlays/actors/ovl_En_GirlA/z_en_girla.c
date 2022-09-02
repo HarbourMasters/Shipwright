@@ -644,8 +644,16 @@ s32 EnGirlA_CanBuy_Unk20(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombchus(GlobalContext* globalCtx, EnGirlA* this) {
-    // When in rando, don't allow buying bombchus when the player doesn't have a bomb bag
-    if (AMMO(ITEM_BOMBCHU) >= 50 || (gSaveContext.n64ddFlag && CUR_CAPACITY(UPG_BOMB_BAG) == 0)) {
+    // When in rando, don't allow buying bombchus when the player doesn't have required explosives
+    // If bombchus are in logic, the player needs to have bombchus; otherwise they need a bomb bag
+    if (gSaveContext.n64ddFlag) {
+        u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
+        if ((!bombchusInLogic && CUR_CAPACITY(UPG_BOMB_BAG) == 0) ||
+            (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
+            return CANBUY_RESULT_CANT_GET_NOW;
+        }
+    }
+    if (AMMO(ITEM_BOMBCHU) >= 50) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
@@ -901,6 +909,14 @@ void EnGirlA_BuyEvent_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this) {
+    Rupees_ChangeBy(-this->basePrice);
+
+	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
+    // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+        return;
+    }
+
     switch (this->actor.params) {
         case SI_BOMBCHU_10_2:
             gSaveContext.itemGetInf[0] |= 0x40;
@@ -927,7 +943,6 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
             gSaveContext.itemGetInf[0] |= 0x20;
             break;
     }
-    Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
@@ -1138,7 +1153,13 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->canBuyFunc = itemEntry->canBuyFunc;
         this->itemGiveFunc = itemEntry->itemGiveFunc;
         this->buyEventFunc = itemEntry->buyEventFunc;
-        this->basePrice = itemEntry->price;
+        // If chus are in logic, make the 10 pack affordable without a wallet upgrade
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+            this->getItemId == GI_BOMBCHUS_10) {
+            this->basePrice = 99;
+        } else {
+            this->basePrice = itemEntry->price;
+        }
         this->itemCount = itemEntry->count;
         this->hiliteFunc = itemEntry->hiliteFunc;
         this->giDrawId = itemEntry->giDrawId;

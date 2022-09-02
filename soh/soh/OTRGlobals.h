@@ -32,6 +32,8 @@ private:
 #endif
 
 #ifndef __cplusplus
+void InitOTR(void);
+void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
 void InitAudio();
@@ -100,7 +102,9 @@ ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respaw
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorParams);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadShopMessages(const char* spoilerFileName);
+void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);

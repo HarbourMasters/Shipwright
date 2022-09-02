@@ -2517,18 +2517,16 @@ namespace Settings {
     BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
-    RandomGanonsTrials.SetSelectedIndex(cvarSettings[RSK_RANDOM_TRIALS]);
-    // RANDTODO: Switch this back once Ganon's Trials Count is properly implemented.
-    //GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
-    switch (cvarSettings[RSK_TRIAL_COUNT]) { 
-        case 0:
-            GanonsTrialsCount.SetSelectedIndex(6);
-            break;
-        case 1:
-            GanonsTrialsCount.SetSelectedIndex(0);
-            break;
+    if (cvarSettings[RSK_RANDOM_TRIALS] == 2) {
+        RandomGanonsTrials.SetSelectedIndex(1);
+    } else {
+        RandomGanonsTrials.SetSelectedIndex(0);
     }
-
+    if (cvarSettings[RSK_RANDOM_TRIALS] == 0) {
+        GanonsTrialsCount.SetSelectedIndex(0);
+    } else {
+        GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
@@ -2563,6 +2561,9 @@ namespace Settings {
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
+
+    BombchusInLogic.SetSelectedIndex(cvarSettings[RSK_BOMBCHUS_IN_LOGIC]);
+    AmmoDrops.SetSelectedIndex(AMMODROPS_VANILLA); // Ensure logic knows bombchu drops aren't implemented yet
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);

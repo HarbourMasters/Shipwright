@@ -1566,8 +1566,16 @@ extern "C" void Randomizer_LoadShopMessages(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadShopMessages(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
@@ -1656,13 +1664,12 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
-extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
-    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
-         Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
-}
-
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
+}
+
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+    return Randomizer_ItemIsIceTrap(randomizerCheck, ogId) && actor->parent != NULL;
 }
 
 extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
@@ -1737,6 +1744,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = Randomizer_GetNaviMessage();
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
+        } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+                   (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

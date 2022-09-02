@@ -7,7 +7,6 @@
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
-#define NUM_TRIALS 6
 #define NUM_COWS 10
 #define NUM_SCRUBS 35
 #define NUM_SHOP_ITEMS 35
@@ -559,7 +558,7 @@ void GiveLinkAdultTradeItem(GetItemID giid) {
     if (item >= ITEM_POCKET_EGG) {
         gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
     }
-    INV_CONTENT(item) = item;
+    INV_CONTENT(ITEM_TRADE_ADULT) = item;
 }
 
 void GiveLinksPocketMedallion() {
@@ -768,6 +767,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.shopItemsPurchased[i] = 0;
         }
 
+        // Set all trials to cleared if trial count is random or anything other than 6
+        if (Randomizer_GetSettingValue(RSK_RANDOM_TRIALS) || (Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != 6)) {
+            for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+                if (!Randomizer_IsTrialRequired(i)) {
+                    Flags_SetRandomizerInf(i);
+                }
+            }
+        }
+
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
         gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal
@@ -793,6 +801,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Skip cutscene before Nabooru fight
         gSaveContext.eventChkInf[3] |= 0x800;
         gSaveContext.eventChkInf[12] |= 1;
+
+        // shuffle adult trade quest
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            gSaveContext.adultTradeItems = 0;
+        }
 
         // Give Link's pocket item
         GiveLinksPocketMedallion();
@@ -853,6 +866,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             if (getItem.modIndex == MOD_NONE) {
                 if (getItem.itemId >= ITEM_MEDALLION_FOREST && getItem.itemId <= ITEM_ZORA_SAPPHIRE) {
                     GiveLinkDungeonReward(getItem.getItemId);
+                } else if (getItem.itemId >= ITEM_SONG_MINUET && getItem.itemId <= ITEM_SONG_STORMS) {
+                    GiveLinkSong(getItem.getItemId);
                 } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
                         giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
                     GiveLinkRupeesByGetItemId(giid);
@@ -910,7 +925,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     GiveLinkDekuNutUpgrade(giid);
                 } else if (giid == GI_SKULL_TOKEN) {
                     GiveLinkSkullToken();
-                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK) {
+                } else if (giid >= GI_POCKET_EGG && giid <= GI_CLAIM_CHECK || giid == GI_COJIRO) {
                     GiveLinkAdultTradeItem(giid);
                 } else {
                     s32 iid = getItem.itemId;
@@ -1026,11 +1041,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
-        }
-
-        // shuffle adult trade quest
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-            gSaveContext.adultTradeItems = 0;
         }
 
         // complete mask quest

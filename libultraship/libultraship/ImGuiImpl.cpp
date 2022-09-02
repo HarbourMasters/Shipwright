@@ -2011,7 +2011,9 @@ namespace SohImGui {
                     );
                     PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
                     Tooltip(
-                        "Matches the color of small keys and boss keys to the dungeon they belong to. This helps identify keys from afar and adds a little bit of flair.");
+                        "Matches the color of small keys and boss keys to the dungeon they belong to. "
+                        "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
+                        "applies to seeds with keys and boss keys shuffled to Any Dungeon, Overworld, or Anywhere.");
                     PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares", true, false);
                     Tooltip(
                         "Play unique fanfares when obtaining quest items "

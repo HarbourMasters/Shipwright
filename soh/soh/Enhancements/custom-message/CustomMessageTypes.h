@@ -1,6 +1,8 @@
 #pragma once
 
 typedef enum {
+    TEXT_BUY_BOMBCHU_10_PROMPT = 0x8C,
+    TEXT_BUY_BOMBCHU_10_DESC = 0xBC,
     TEXT_GS_NO_FREEZE = 0xB4,
     TEXT_GS_FREEZE = 0xB5,
     TEXT_RANDOMIZER_CUSTOM_ITEM = 0xF8,
