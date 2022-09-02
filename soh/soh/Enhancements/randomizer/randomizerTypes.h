@@ -1020,6 +1020,7 @@ typedef enum {
     RSK_SHUFFLE_MAGIC_BEANS,
     RSK_BLUE_FIRE_ARROWS,
     RSK_SUNLIGHT_ARROWS
+    RSK_BOMBCHUS_IN_LOGIC
 } RandomizerSettingKey;
 
 typedef struct ScrubIdentity {

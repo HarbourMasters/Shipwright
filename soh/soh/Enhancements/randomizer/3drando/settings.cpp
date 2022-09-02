@@ -2567,6 +2567,9 @@ namespace Settings {
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
+    BombchusInLogic.SetSelectedIndex(cvarSettings[RSK_BOMBCHUS_IN_LOGIC]);
+    AmmoDrops.SetSelectedIndex(AMMODROPS_VANILLA); // Ensure logic knows bombchu drops aren't implemented yet
+
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);
     
