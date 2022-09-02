@@ -1471,8 +1471,13 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_WATER_TEMPLE_BOSS_KEY:
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-        case RG_GANONS_CASTLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
+                return GI_KEY_BOSS;
+            } else {
+                return randoGet;
+            }
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) < 3) {
                 return GI_KEY_BOSS;
             } else {
                 return randoGet;
