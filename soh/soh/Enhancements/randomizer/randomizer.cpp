@@ -4348,7 +4348,7 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueIceArrows", true, "In development");
+                UIWidgets::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueFireArrows", true, "In development");
                 UIWidgets::InsertHelpHoverText(
                     "Ice Arrows act like Blue Fire, making them able to melt red ice. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."
