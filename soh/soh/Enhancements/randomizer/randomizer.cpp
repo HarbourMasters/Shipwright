@@ -567,12 +567,13 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
+    { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
-    { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS},
+    { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -966,6 +967,17 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Overworld") {
                             gSaveContext.randoSettings[index].value = 2;
                         } else if (it.value() == "All Tokens") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                        break;
+                    case RSK_LINKS_POCKET:
+                        if (it.value() == "Dungeon Reward") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Advancement") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Anything") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if (it.value() == "Nothing") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
@@ -3457,6 +3469,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
+    // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
+    cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
+                                        CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -4506,6 +4521,13 @@ void DrawRandoEditor(bool& open) {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
+                // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
+                // TODO: Show this but disabled when we have options for disabled Comboboxes.
+                if (CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0) {
+                    ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
+                    SohImGui::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, 0);
+                    PaddedSeparator();
+                }
 
                 SohImGui::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(),
                                               "gRandomizeStartingKokiriSword");

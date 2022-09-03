@@ -560,10 +560,16 @@ void GiveLinkAdultTradeItem(GetItemID giid) {
     INV_CONTENT(ITEM_TRADE_ADULT) = item;
 }
 
-void GiveLinksPocketMedallion() {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+void GiveLinksPocketItem() {
+    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) < 3)  {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
-    GiveLinkDungeonReward(getItemEntry.getItemId);
+        if (getItemEntry.modIndex == MOD_NONE) {
+            Item_Give(NULL, getItemEntry.itemId);
+        } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+            Randomizer_Item_Give(NULL, getItemEntry);
+        }
+    }
 }
 
 /**
@@ -802,7 +808,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         // Give Link's pocket item
-        GiveLinksPocketMedallion();
+        GiveLinksPocketItem();
 
         int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
