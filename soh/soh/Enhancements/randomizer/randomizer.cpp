@@ -4464,7 +4464,7 @@ void DrawRandoEditor(bool& open) {
 
                 // Shopsanity
                 ImGui::Text(Settings::Shopsanity.GetName().c_str());
-                InsertHelpHoverText(
+                UIWidgets::InsertHelpHoverText(
                     "Off - All shop items will be the same as vanilla.\n"
                     "\n"
                     "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -4473,9 +4473,9 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
                 );
-                SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
 
-                PaddedSeparator();
+                UIWidgets::PaddedSeparator();
 
                 // Shuffle Scrubs
                 ImGui::Text(Settings::Scrubsanity.GetName().c_str());
