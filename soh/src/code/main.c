@@ -3,6 +3,8 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
+#include "../libultraship/CrashHandler.h"
+
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -38,6 +40,12 @@ void Main_LogSystemHeap(void) {
 
 void main(int argc, char** argv)
 {
+#ifdef __linux__
+    SetupHandlerLinux();
+#elif _WIN32
+    SetUnhandledExceptionFilter(seh_filter);
+#endif
+
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
