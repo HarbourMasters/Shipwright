@@ -4348,7 +4348,7 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueFireArrows", true, "In development");
+                UIWidgets::EnhancementCheckbox("Blue Fire Arrows", "gRandomizeBlueFireArrows");
                 UIWidgets::InsertHelpHoverText(
                     "Ice Arrows act like Blue Fire, making them able to melt red ice. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."
@@ -4356,7 +4356,7 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("WIP - Sunlight Arrows", "gRandomizeSunlightArrows", true, "In development");
+                UIWidgets::EnhancementCheckbox("Sunlight Arrows", "gRandomizeSunlightArrows");
                 UIWidgets::InsertHelpHoverText(
                     "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."

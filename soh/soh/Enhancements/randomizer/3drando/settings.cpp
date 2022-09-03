@@ -304,8 +304,8 @@ namespace Settings {
   Option IngameSpoilers      = Option::Bool("Ingame Spoilers",        {"Hide", "Show"},                                                       {ingameSpoilersHideDesc, ingameSpoilersShowDesc });
   Option MenuOpeningButton   = Option::U8  ("Open Info Menu with",    {"Select","Start","D-Pad Up","D-Pad Down","D-Pad Right","D-Pad Left",}, {menuButtonDesc});
   Option RandomTrapDmg       = Option::U8  ("Random Trap Damage",     {"Off", "Basic", "Advanced"},                                           {randomTrapDmgDesc, basicTrapDmgDesc, advancedTrapDmgDesc},                                                       OptionCategory::Setting,    1); // Basic
-  Option BlueFireArrows      = Option::Bool("Blue Fire Arrows",       {"No", "Yes"},                                                          {blueFireArrowsDesc});
-  Option SunlightArrows      = Option::Bool("Sunlight Arrows",        {"No", "Yes"},                                                          {sunlightArrowsDesc});
+  Option BlueFireArrows      = Option::Bool("Blue Fire Arrows",       {"Off", "On"},                                                          {blueFireArrowsDesc});
+  Option SunlightArrows      = Option::Bool("Sunlight Arrows",        {"Off", "On"},                                                          {sunlightArrowsDesc});
   bool HasNightStart         = false;
   std::vector<Option *> miscOptions = {
     &GossipStoneHints,

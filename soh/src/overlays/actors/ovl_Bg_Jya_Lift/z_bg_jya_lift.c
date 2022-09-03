@@ -98,7 +98,8 @@ void BgJyaLift_DelayMove(BgJyaLift* this, GlobalContext* globalCtx) {
         if (this->moveDelay >= 20) {
             // Skip this cutscene if using Sunlight Arrows in rando, since activating the switch while
             // not standing on the platform will cause the cutscene to show the unloaded central room
-            if (!(gSaveContext.n64ddFlag && CVar_GetS32("gSunlightArrows", 0) != 0)) {
+            if (!(gSaveContext.n64ddFlag &&
+                  (CVar_GetS32("gSunlightArrows", 0) || Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)))) {
                 OnePointCutscene_Init(globalCtx, 3430, -99, &this->dyna.actor, MAIN_CAM);
             }
             BgJyaLift_SetupMove(this);
