@@ -3,7 +3,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
-#include "../libultraship/CrashHandler.h"
+#include <libultraship/CrashHandler.h>
 
 
 s32 gScreenWidth = SCREEN_WIDTH;
