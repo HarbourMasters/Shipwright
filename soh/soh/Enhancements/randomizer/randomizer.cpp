@@ -1327,15 +1327,15 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
         case RG_BUY_BOMBCHU_5:
+        case RG_BOMBCHU_DROP:
             // If Bombchus aren't in logic, you need a bomb bag to purchase them
             // If they are in logic, you need to have already obtained them somewhere else
+            // Bombchu Drop is only used as a bowling reward, so it needs the same logic
             if (GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
                 return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
             } else {
                 return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
             }
-        case RG_BOMBCHU_DROP:
-            return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -1694,7 +1694,13 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_OCARINA_OOT;
             }
         case RG_PROGRESSIVE_BOMBCHUS:
-            return GI_BOMBCHUS_20;
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                return GI_BOMBCHUS_20;
+            }
+            if (AMMO(ITEM_BOMBCHU) < 5) {
+                return GI_BOMBCHUS_10;
+            }
+            return GI_BOMBCHUS_5;
         case RG_BOMBCHU_5:
         case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
