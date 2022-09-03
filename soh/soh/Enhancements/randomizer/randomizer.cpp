@@ -595,6 +595,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
     { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE },
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
+    { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
 };
 
@@ -823,6 +824,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_COMPLETE_MASK_QUEST:
+                    case RSK_SKIP_SCARECROWS_SONG:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
                     case RSK_BOMBCHUS_IN_LOGIC:
                         if(it.value() == "Off") {
@@ -3466,6 +3468,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
     cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVar_GetS32("gRandomizeCompleteMaskQuest", 0);
+    cvarSettings[RSK_SKIP_SCARECROWS_SONG] = CVar_GetS32("gRandomizeSkipScarecrowsSong", 0);
     cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVar_GetS32("gRandomizeEnableGlitchCutscenes", 0);
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
@@ -4175,6 +4178,15 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
                                               "gRandomizeCompleteMaskQuest");
                 UIWidgets::InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
+
+                UIWidgets::PaddedSeparator();
+
+                // Skip Scarecrow Song
+                UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(),
+                                               "gRandomizeSkipScarecrowsSong");
+                UIWidgets::InsertHelpHoverText(
+                    "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will automatically summon him."
+                );
 
                 UIWidgets::PaddedSeparator();
 

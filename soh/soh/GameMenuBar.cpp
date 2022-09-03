@@ -23,8 +23,8 @@
 #endif
 
 #include "UIWidgets.hpp"
+#include "include/global.h"
 #include "include/z64audio.h"
-#include "include/variables.h"
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
@@ -689,8 +689,13 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                     UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
+                    bool forceSkipScarecrow = gSaveContext.n64ddFlag &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
+                    const char* forceSkipScarecrowText =
+                        "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
                     UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
-                    UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false,
+                                                         forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
                     UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                     UIWidgets::PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                     UIWidgets::Tooltip("Allow Link to put items away without having to wait around");
