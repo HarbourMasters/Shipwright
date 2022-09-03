@@ -2561,8 +2561,10 @@ namespace Settings {
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
+    // RANDOTODO: Implement ammo drops entirely. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
+    AmmoDrops.SetSelectedIndex(cvarSettings[RSK_ENABLE_BOMBCHU_DROPS]);
+
     BombchusInLogic.SetSelectedIndex(cvarSettings[RSK_BOMBCHUS_IN_LOGIC]);
-    AmmoDrops.SetSelectedIndex(AMMODROPS_VANILLA); // Ensure logic knows bombchu drops aren't implemented yet
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);

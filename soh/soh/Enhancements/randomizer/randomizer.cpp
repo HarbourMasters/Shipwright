@@ -582,6 +582,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+    { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
@@ -831,6 +832,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
+                    // Uses Ammo Drops option for now. "Off" not yet implemented
+                    case RSK_ENABLE_BOMBCHU_DROPS:
+                        if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On + Bombchu") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
                     case RSK_STARTING_MAPS_COMPASSES:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -3429,6 +3439,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
+    cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
@@ -4300,6 +4311,14 @@ void DrawRandoEditor(bool& open) {
                     "Once found, they can be replenished at the Bombchu shop.\n"
                     "\n"
                     "Bombchu Bowling is opened by obtaining Bombchus."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Enable Bombchu Drops
+                UIWidgets::EnhancementCheckbox("Enable Bombchu Drops", "gRandomizeEnableBombchuDrops");
+                UIWidgets::InsertHelpHoverText(
+                    "Once you obtain bombchus for the first time, refills can be found in bushes and other places where bomb drops can normally spawn."
                 );
 
                 UIWidgets::PaddedSeparator();
