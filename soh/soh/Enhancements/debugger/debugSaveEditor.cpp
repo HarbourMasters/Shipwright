@@ -1343,6 +1343,10 @@ void DrawFlagsTab() {
 
     for (int i = 0; i < flagTables.size(); i++) {
         FlagTable& flagTable = flagTables[i];
+        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag) {
+            continue;
+        }
+
         if (ImGui::TreeNode(flagTable.name)) {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
