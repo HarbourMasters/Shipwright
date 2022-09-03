@@ -59,20 +59,20 @@ static ColliderQuadInit sQuadInit = {
     { { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } } },
 };
 
-// This quad only used for "Blue Fire Arrows" enhancement
+// Replacement quad used for "Blue Fire Arrows" enhancement
 static ColliderQuadInit sIceArrowQuadInit = {
     {
         COLTYPE_NONE,
         AT_NONE,
-        AC_ON | AC_TYPE_PLAYER,
+        AC_ON | AC_TYPE_PLAYER | AC_TYPE_OTHER,
         OC1_NONE,
         OC2_TYPE_2,
         COLSHAPE_QUAD,
     },
     {
         ELEMTYPE_UNK0,
-        { 0x00000000, 0x00, 0x00 },
-        { 0xFFCFFFFF, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        { 0x00001048, 0x00, 0x00 },
         TOUCH_NONE,
         BUMP_ON,
         OCELEM_NONE,
@@ -123,12 +123,14 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
 
         ActorShape_Init(&this->dyna.actor.shape, 0.0f, NULL, 0.0f);
-        Collider_InitQuad(globalCtx, &this->collider);
-        Collider_SetQuad(globalCtx, &this->collider, &this->dyna.actor, &sQuadInit);
+
         // If "Blue Fire Arrows" are enabled, set up this collider for them
         if (blueFireArrowsDC) {
-            Collider_InitQuad(globalCtx, &this->colliderIceArrow);
-            Collider_SetQuad(globalCtx, &this->colliderIceArrow, &this->dyna.actor, &sIceArrowQuadInit);
+            Collider_InitQuad(globalCtx, &this->collider);
+            Collider_SetQuad(globalCtx, &this->collider, &this->dyna.actor, &sIceArrowQuadInit);
+        } else {
+            Collider_InitQuad(globalCtx, &this->collider);
+            Collider_SetQuad(globalCtx, &this->collider, &this->dyna.actor, &sQuadInit);
         }
     } else {
         this->dyna.actor.world.pos.y -= 40.0f;
@@ -260,12 +262,11 @@ void BgBreakwall_Wait(BgBreakwall* this, GlobalContext* globalCtx) {
     bool blueFireArrowHit = false;
     // If "Blue Fire Arrows" enabled, check this collider for a hit
     if (blueFireArrowsDC) {
-        if (this->colliderIceArrow.base.acFlags & AC_HIT) {
-            this->colliderIceArrow.base.acFlags &= ~AC_HIT;
-            if ((this->colliderIceArrow.base.ac != NULL) && (this->colliderIceArrow.base.ac->id == ACTOR_EN_ARROW)) {
+        if (this->collider.base.acFlags & AC_HIT) {
+            if ((this->collider.base.ac != NULL) && (this->collider.base.ac->id == ACTOR_EN_ARROW)) {
 
-                if (this->colliderIceArrow.base.ac->child != NULL &&
-                    this->colliderIceArrow.base.ac->child->id == ACTOR_ARROW_ICE) {
+                if (this->collider.base.ac->child != NULL &&
+                    this->collider.base.ac->child->id == ACTOR_ARROW_ICE) {
                     blueFireArrowHit = true;
                 }
             }
@@ -358,10 +359,6 @@ void BgBreakwall_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             Collider_SetQuadVertices(&this->collider, &colQuad[0], &colQuad[1], &colQuad[2], &colQuad[3]);
             CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-            if (blueFireArrowsDC) {
-                Collider_SetQuadVertices(&this->colliderIceArrow, &colQuad[0], &colQuad[1], &colQuad[2], &colQuad[3]);
-                CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderIceArrow.base);
-            }
         }
 
         CLOSE_DISPS(globalCtx->state.gfxCtx);
