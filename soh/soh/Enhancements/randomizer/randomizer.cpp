@@ -1475,8 +1475,13 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
         case RG_WATER_TEMPLE_BOSS_KEY:
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-        case RG_GANONS_CASTLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
+                return GI_KEY_BOSS;
+            } else {
+                return randoGet;
+            }
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) < 3) {
                 return GI_KEY_BOSS;
             } else {
                 return randoGet;
@@ -3192,19 +3197,10 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
     const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    const char* randoShuffleTokens[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
-    const char* randoShuffleCows[2] = { "Off", "On" };
-    const char* randoShuffleKokiriSword[2] = { "Off", "On" };
-    const char* randoShuffleOcarinas[2] = { "Off", "On" };
-    const char* randoShuffleWeirdEgg[2] = { "Off", "On" };
-    const char* randoShuffleGerudoToken[2] = { "Off", "On" };
-    const char* randoShuffleMagicBeans[2] = { "Off", "On" };
     const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
-    const char* randoShuffleFrogSongRupees[2] = { "Off", "On" };
-    const char* randoShuffleAdultTrade[2] = { "Off", "On" };
 
     // Shuffle Dungeon Items Settings
     const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -3217,170 +3213,19 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGanonsBossKey[6] = { "Vanilla",     "Own dungeon", "Start with",
                                                  "Any Dungeon", "Overworld",   "Anywhere" };
 
-    // Timesaver Settings
-    const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
-
     // Misc Settings
     const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
-    const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
     const char* randoStartingTime[2] = { "Day", "Night" };
-    const char* randoChestAnimations[2] = { "Always Fast", "Match contents" };
     const char* randoChestSizeAndColor[2] = { "Vanilla", "Match contents" };
-    const char* randoOpenInfoMenuWith[6] = { "Select", "Start", "D-Pad Up", "D-Pad Down", "D-Pad Right", "D-Pad Left" };
     const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
     const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
-    // SFX Settings
-    const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
-    const char* randoSFXFanfares[3] = { "Normal", "No Fanfares", "Random" };
-    const char* randoSFXLowHP[29] = { "Default",
-                                      "Completely Random",
-                                      "Random Ear-Safe",
-                                      "None",
-                                      "Bark",
-                                      "Bomb Bounce",
-                                      "Bongo Bongo Low",
-                                      "Business Scrub",
-                                      "Carrot Refill",
-                                      "Cluck",
-                                      "Drawbridge Set",
-                                      "Guay",
-                                      "HP Recover",
-                                      "Horse Trot",
-                                      "Iront Boots",
-                                      "Moo",
-                                      "Mweep!",
-                                      "Navi \"Hey!\"",
-                                      "Navi Random",
-                                      "Notification",
-                                      "Pot Shattering",
-                                      "Ribbit",
-                                      "Rupee (Silver)",
-                                      "Soft Beep",
-                                      "Switch",
-                                      "Sword Bonk",
-                                      "Tambourine",
-                                      "Timer",
-                                      "Zelda Gasp (Adult)" };
-    const char* randoSFXHorse[13] = {
-        "Default",       "Completely Random", "Random Ear-Safe", "Random Choice", "None",
-        "Armos",         "Child Scream",      "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Scream", "Ruto Wiggle",       "Stalchild Attack"
-    };
-    const char* randoSFXNightfall[13] = {
-        "Default",        "Completely Random",    "Random Ear-Safe", "Random Choice", "None",
-        "Cockadoodiedoo", "Gold Skulltula Token", "Great Fairy",     "Moo",           "Mweep!",
-        "Redead Moan",    "Talon Snore",          "Thunder"
-    };
-    const char* randoSFXHoverBoots[11] = {
-        "Default",      "Completely Random",  "Random Ear-Safe", "Random Choice", "None",      "Bark",
-        "Cartoon Fall", "Flare Dancer Laugh", "Mweep!",          "Shabom Pop",    "Tambourine"
-    };
-    const char* randoSFXOcarina[7] = { "Dafault", "Random Choice", "Flute", "Harp", "Whistle", "Malon", "Grind Organ" };
-    const char* randoSFXMenu[65] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random Choise",
-                                     "None",
-                                     "Bark",
-                                     "Bomb Bounce",
-                                     "Bongo Bongo High",
-                                     "Bongo Bongo Low",
-                                     "Bottle Cork",
-                                     "Bow Twang",
-                                     "Bubble Laugh",
-                                     "Carrot Refill",
-                                     "Change Item",
-                                     "Child Pant",
-                                     "Cluck",
-                                     "Deku Baba",
-                                     "Drawbridge Set",
-                                     "Dusk Howl",
-                                     "Fanfare (Light)",
-                                     "Fanfare (Mediaum)",
-                                     "Field Shrub",
-                                     "Flare Dancer Startled",
-                                     "Ganondorf \"Teh!\"",
-                                     "Gohma Larva Croak",
-                                     "Gold Skulltula Token",
-                                     "Goron Wake",
-                                     "Guay",
-                                     "Gunshot",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Hammer Bonk",
-                                     "Horse Trot",
-                                     "Iron Boots",
-                                     "Iron Knuckle",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Notification",
-                                     "Phantom Ganon Laugh",
-                                     "Plant Explode",
-                                     "Pot Shattering",
-                                     "Redead Moan",
-                                     "Ribbit",
-                                     "Rupee",
-                                     "Rupee (Silver)",
-                                     "Ruto Crash",
-                                     "Ruto Lift",
-                                     "Ruto Thrown",
-                                     "Scrub Emerge",
-                                     "Shabom Bounce",
-                                     "Shabom Pop",
-                                     "Shellblade",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Spit Nut",
-                                     "Switch",
-                                     "Sword Bonk",
-                                     "Talon \"Hmmm\"",
-                                     "Talon Snore",
-                                     "Talon Surprised",
-                                     "Tambourine",
-                                     "Target Ennemy",
-                                     "Target Neutral",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
-    const char* randoSFXNavi[32] = { "Default",
-                                     "Completely Random",
-                                     "Random Ear-Safe",
-                                     "Random  Choice",
-                                     "None",
-                                     "Bark",
-                                     "Business Scrub",
-                                     "Carrot Refill",
-                                     "Click",
-                                     "Dusk Howl",
-                                     "Exploding Crate",
-                                     "Explosion",
-                                     "Great Fairy",
-                                     "Guay",
-                                     "HP Low",
-                                     "HP Recover",
-                                     "Horse Neigh",
-                                     "Ice Shattering",
-                                     "Moo",
-                                     "Mweep!",
-                                     "Navi \"Hello!\"",
-                                     "Notification",
-                                     "Poe",
-                                     "Pot Shattering",
-                                     "Redead Scream",
-                                     "Ribit",
-                                     "Ruto Giggle",
-                                     "Skulltula",
-                                     "Soft Beep",
-                                     "Tambourine",
-                                     "Timer",
-                                     "Zelda Gasp (Adult)" };
-
-    ImGui::SetNextWindowSize(ImVec2(830, 600), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(920, 563), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -3391,7 +3236,7 @@ void DrawRandoEditor(bool& open) {
     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
     SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-    if (CVar_GetS32("gRandomizer", 0) == 1) {
+    if (CVar_GetS32("gRandomizer", 0)) {
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
         if (ImGui::Button("Generate Seed")) {
             if (CVar_GetS32("gRandoGenerating", 0) == 0) {
@@ -3406,317 +3251,416 @@ void DrawRandoEditor(bool& open) {
         // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
         // ImGui::Text("Settings File: %s", presetfilepath.c_str());
     }
+
     PaddedSeparator();
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
 
-    if (CVar_GetS32("gRandomizer", 0) == 1 &&
+    if (CVar_GetS32("gRandomizer", 0) &&
         ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("Main Rules")) {
+        if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Area Access", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle Entrances", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - Area Access
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildOpenSettings", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Forest
+                ImGui::Text(Settings::OpenForest.GetName().c_str());
+                InsertHelpHoverText(
+                    "Closed - Kokiri sword & shield are required to access "
+                    "the Deku Tree, and completing the Deku Tree is required to "
+                    "access the Hyrule Field exit.\n"
+                    "\n"
+                    "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
+                    "Field but Mido still requires the Kokiri sword and Deku shield "
+                    "to access the tree.\n"
+                    "\n"
+                    "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
+                    "boy no longer blocks the path out of the forest."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
+
+                PaddedSeparator();
+
+                // Kakariko Gate
+                ImGui::Text(Settings::OpenKakariko.GetName().c_str());
+                InsertHelpHoverText(
+                    "Closed - The gate will remain closed until Zelda's letter "
+                    "is shown to the guard.\n"
+                    "\n"
+                    "Open - The gate is always open. The happy mask shop "
+                    "will open immediately after obtaining Zelda's letter."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
+
+                PaddedSeparator();
+
+                // Door of Time
+                ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
+                InsertHelpHoverText(
+                    "Closed - The Ocarina of Time, the Song of Time and all "
+                    "three spiritual stones are required to open the Door of Time.\n"
+                    "\n"
+                    "Song only - Play the Song of Time in front of the Door of "
+                    "Time to open it.\n"
+                    "\n"
+                    "Open - The Door of Time is permanently open with no requirements."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
+
+                PaddedSeparator();
+
+                // Zora's Fountain
+                ImGui::Text(Settings::ZorasFountain.GetName().c_str());
+                InsertHelpHoverText(
+                    "Closed - King Zora obstructs the way to Zora's Fountain. "
+                    "Ruto's letter must be shown as child Link in order to move "
+                    "him in both time periods.\n"
+                    "\n"
+                    "Closed as child - Ruto's Letter is only required to move King Zora "
+                    "as child Link. Zora's Fountain starts open as adult.\n"
+                    "\n"
+                    "Open - King Zora has already mweeped out of the way in both "
+                    "time periods. Ruto's Letter is removed from the item pool."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
+
+                PaddedSeparator();
+
+                ImGui::EndChild();
+
+                // COLUMN 2 - World Settings
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Gerudo Fortress
+                ImGui::Text("Gerudo Fortress Carpenters");
+                InsertHelpHoverText(
+                    "Sets the amount of carpenters required to repair the bridge "
+                    "in Gerudo Valley.\n"
+                    "\n"
+                    "Normal - All 4 carpenters are required to be saved.\n"
+                    "\n"
+                    "Fast - Only the bottom left carpenter requires rescuing.\n"
+                    "\n"
+                    "Open - The bridge is repaired from the start."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
+
+                PaddedSeparator();
+
+                // Rainbow Bridge
+                ImGui::Text("Rainbow Bridge Requirements");
+                InsertHelpHoverText(
+                    "Alters the requirements to open the bridge to Ganon's Castle.\n"
+                    "\n"
+                    "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light Arrows.\n"
+                    "\n"
+                    "Always open - No requirements.\n"
+                    "\n"
+                    "Stones - Obtain the specified amount of spiritual stones.\n"
+                    "\n"
+                    "Medallions - Obtain the specified amount of medallions.\n"
+                    "\n"
+                    "Dungeon rewards - Obtain the specified total sum of spiritual "
+                    "stones or medallions.\n"
+                    "\n"
+                    "Dungeons - Complete the specified amount of dungeons. Dungeons "
+                    "are considered complete after stepping in to the blue warp after "
+                    "the boss.\n"
+                    "\n"
+                    "Tokens - Obtain the specified amount of Skulltula tokens."
+                );
+
+                SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                ImGui::PopItemWidth();
+                switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                        "gRandomizeStoneCount", 1, 3, "", 3, true);
+                        break;
+                    case 3:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                        "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                        break;
+                    case 4:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                        "gRandomizeRewardCount", 1, 9, "", 9, true);
+                        break;
+                    case 5:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                        break;
+                    case 6:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
+                                                        "gRandomizeTokenCount", 1, 100, "", 100, true);
+                        break;
+                }
+
+                PaddedSeparator();
+
+                // Ganon's Trials
+                ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("Ganon's Trials");
+                InsertHelpHoverText(
+                    "Sets the number of Ganon's Trials required to dispel the barrier.\n"
+                    "\n"
+                    "Skip - No Trials are required and the barrier is already dispelled.\n"
+                    "\n"
+                    "Set Number - Select a number of trials that will be required from the"
+                    "slider below. Which specific trials you need to complete will be random.\n"
+                    "\n"
+                    "Random Number - A Random number and set of trials will be required."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                ImGui::PopItemWidth();
+                if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
+                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                    SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
+                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true);
+                    InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
+                }
+
+                PaddedSeparator();
+
+                ImGui::EndChild();
+
+                // COLUMN 3 - Shuffle Entrances
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildShuffleEntrances", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                ImGui::Text("Coming soon");
+
+                PaddedSeparator();
+
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Items")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
+                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - OPEN SETTINGS
+                // COLUMN 1 - Shuffle Items
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildShuffleItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                if (CVar_GetS32("gRandomizeAllOpenSettings", 0) != 1) {
-                    // Forest
-                    ImGui::Text(Settings::OpenForest.GetName().c_str());
-                    InsertHelpHoverText("Closed - Kokiri sword & shield are required to access "
-                                        "the Deku Tree, and completing the Deku Tree is required to "
-                                        "access the Hyrule Field exit.\n"
-                                        "\n"
-                                        "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                                        "Field but Mido still requires the Kokiri sword and Deku shield "
-                                        "to access the tree.\n"
-                                        "\n"
-                                        "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                                        "boy no longer blocks the path out of the forest.");
-                    SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
-                    PaddedSeparator();
-                    // Kakariko Gate
-                    ImGui::Text(Settings::OpenKakariko.GetName().c_str());
-                    InsertHelpHoverText("Closed - The gate will remain closed until Zelda's letter "
-                                        "is shown to the guard.\n"
-                                        "\n"
-                                        "Open - The gate is always open. The happy mask shop "
-                                        "will open immediately after obtaining Zelda's letter.");
-                    SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
-                    PaddedSeparator();
+                // Shuffle Songs
+                ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
+                InsertHelpHoverText(
+                    "Song locations - Songs will only appear at locations that normally teach songs.\n"
+                    "\n"
+                    "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
+                    "The 4 remaining songs are located at:\n"
+                    "  - Zelda's lullaby location\n"
+                    "  - Ice Cavern's Serenade of Water location\n"
+                    "  - Bottom of the Well Lens of Truth location\n"
+                    "  - Gerudo Training Ground's Ice Arrows location\n"
+                    "\n"
+                    "Anywhere - Songs can appear at any location."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
 
-                    // Door of Time
-                    ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
-                    InsertHelpHoverText("Closed - The Ocarina of Time, the Song of Time and all "
-                                        "three spiritual stones are required to open the Door of Time.\n"
-                                        "\n"
-                                        "Song only - Play the Song of Time in front of the Door of "
-                                        "Time to open it.\n"
-                                        "\n"
-                                        "Open - The Door of Time is permanently open with no requirements.");
-                    SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
-                    PaddedSeparator();
+                PaddedSeparator();
 
-                    // Zora's Fountain
-                    ImGui::Text(Settings::ZorasFountain.GetName().c_str());
-                    InsertHelpHoverText("Closed - King Zora obstructs the way to Zora's Fountain. "
-                                        "Ruto's letter must be shown as child Link in order to move "
-                                        "him in both time periods.\n"
-                                        "\n"
-                                        "Closed as child - Ruto's Letter is only required to move King Zora "
-                                        "as child Link. Zora's Fountain starts open as adult.\n"
-                                        "\n"
-                                        "Open - King Zora has already mweeped out of the way in both "
-                                        "time periods. Ruto's Letter is removed from the item pool.");
-                    SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
-                    PaddedSeparator();
+                // Shuffle Tokens
+                ImGui::Text(Settings::Tokensanity.GetName().c_str());
+                InsertHelpHoverText(
+                    "Shuffles Golden Skulltula Tokens into the item pool. This means "
+                    "Golden Skulltulas can contain other items as well.\n"
+                    "\n"
+                    "Off - GS tokens will not be shuffled.\n"
+                    "\n"
+                    "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
+                    "\n"
+                    "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
+                    "\n"
+                    "All Tokens - Shuffle all 100 GS tokens."
+                );
+                SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, 4, 0);
 
-                    // Gerudo Fortress
-                    ImGui::Text(Settings::GerudoFortress.GetName().c_str());
-                    InsertHelpHoverText("Sets the amount of carpenters required to repair the bridge "
-                                        "in Gerudo Valley.\n"
-                                        "\n"
-                                        "Normal - All 4 carpenters are required to be saved.\n"
-                                        "\n"
-                                        "Fast - Only the bottom left carpenter requires rescuing.\n"
-                                        "\n"
-                                        "Open - The bridge is repaired from the start.");
-                    SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
-                    PaddedSeparator();
+                ImGui::Dummy(ImVec2(0,0));
 
-                    // Rainbow Bridge
-                    ImGui::Text(Settings::Bridge.GetName().c_str());
-                    InsertHelpHoverText("Alters the requirements to open the bridge to Ganon's Castle.\n"
-                                        "\n"
-                                        "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light Arrows.\n"
-                                        "\n"
-                                        "Always open - No requirements.\n"
-                                        "\n"
-                                        "Stones - Obtain the specified amount of spiritual stones.\n"
-                                        "\n"
-                                        "Medallions - Obtain the specified amount of medallions.\n"
-                                        "\n"
-                                        "Dungeon rewards - Obtain the specified total sum of spiritual "
-                                        "stones or medallions.\n"
-                                        "\n"
-                                        "Dungeons - Complete the specified amount of dungeons. Dungeons "
-                                        "are considered complete after stepping in to the blue warp after "
-                                        "the boss.\n"
-                                        "\n"
-                                        "Tokens - Obtain the specified amount of Skulltula tokens.");
-                    SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
-                    ImGui::PopItemWidth();
-                    switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                            SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                           "gRandomizeStoneCount", 1, 3, "", 3, true);
-                            break;
-                        case 3:
-                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                            SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                           "gRandomizeMedallionCount", 1, 6, "", 6, true);
-                            break;
-                        case 4:
-                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                            SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                           "gRandomizeRewardCount", 1, 9, "", 9, true);
-                            break;
-                        case 5:
-                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                            SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                           "gRandomizeDungeonCount", 1, 8, "", 8, true);
-                            break;
-                        case 6:
-                            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                            SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                           "gRandomizeTokenCount", 1, 100, "", 100, true);
-                            break;
-                    }
-                    PaddedSeparator();
+                SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                InsertHelpHoverText(
+                    "All Golden Skulltulas that require nighttime to appear will only be "
+                    "expected to be collected after getting Sun's Song."
+                );
 
-                    // Random Ganon's Trials
-                    ImGui::Text("Ganon's Trials");
-                    InsertHelpHoverText("Sets the number of Ganon's Trials required to dispel the barrier\n\n"
-                                        "Skip - No Trials are required and the barrier is already dispelled.\n\n"
-                                        "Set Number - Select a number of trials that will be required from the"
-                                        "slider below. Which specific trials you need to complete will be random.\n\n"
-                                        "Random Number - A Random number and set of trials will be required.");
-                    SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
-                    if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
-                        SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                       "gRandomizeGanonTrialCount", 1, 6, "", 6);
-                        InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
-                    }
-                }
+                PaddedSeparator();
 
-                // COLUMN 2 - Shuffle Settings
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
+                // Shuffle Kokiri Sword
+                // Disabled when Start with Kokiri Sword is active
+                bool disableShuffleKokiriSword = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
+                const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(), "gRandomizeShuffleKokiriSword",
+                                                disableShuffleKokiriSword, disableShuffleKokiriSwordText);
+                InsertHelpHoverText(
+                    "Shuffles the Kokiri Sword into the item pool.\n"
+                    "\n"
+                    "This will require the use of sticks until the Kokiri Sword is found."
+                );
 
-                    // Shuffle Songs
-                    ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Song locations - Songs will only appear at locations that normally teach songs.\n"
-                        "\n"
-                        "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
-                        "The 4 remaining songs are located at:\n"
-                        "  - Zelda's lullaby location\n"
-                        "  - Ice Cavern's Serenade of Water location\n"
-                        "  - Bottom of the Well Lens of Truth location\n"
-                        "  - Gerudo Training Ground's Ice Arrows location\n"
-                        "\n"
-                        "Anywhere - Songs can appear at any location.");
+                PaddedSeparator();
 
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
-                    PaddedSeparator();
+                // Shuffle Ocarinas
+                // Disabled when Start with Ocarina is active
+                bool disableShuffleOcarinas = CVar_GetS32("gRandomizeStartingOcarina", 0);
+                const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas",
+                                              disableShuffleOcarinas, disableShuffleOcarinasText);
+                InsertHelpHoverText(
+                    "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
+                    "\n"
+                    "This will require finding an Ocarina before being able to play songs."
+                );
 
-                    // Shuffle Scrubs
-                    ImGui::Text(Settings::Scrubsanity.GetName().c_str());
-                    InsertHelpHoverText(
-                        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
-                        "\n"
-                        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
-                        "\n"
-                        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
-                        "\n"
-                        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n"
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
-                    PaddedSeparator();
+                PaddedSeparator();
 
-                    // Shuffle Tokens
-                    ImGui::Text(Settings::Tokensanity.GetName().c_str());
-                    InsertHelpHoverText("Shuffles Golden Skulltula Tokens into the item pool. This means "
-                                        "Golden Skulltulas can contain other items as well.\n"
-                                        "\n"
-                                        "Off - GS tokens will not be shuffled.\n"
-                                        "\n"
-                                        "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
-                                        "\n"
-                                        "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
-                                        "\n"
-                                        "All Tokens - Shuffle all 100 GS tokens.");
-                    SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
-                    PaddedSeparator();
+                // Shuffle Weird Egg
+                // Disabled when Skip Child Zelda is active
+                bool disableShuffleWeirdEgg = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+                const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
+                SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg",
+                                              disableShuffleWeirdEgg, disableShuffleWeirdEggText);
+                InsertHelpHoverText(
+                    "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
+                    "\"Skip Child Zelda\" disables this feature.\n"
+                    "\n"
+                    "The Weird Egg is required to unlock several events:\n"
+                    "  - Zelda's Lullaby from Impa\n"
+                    "  - Saria's song in Sacred Forest Meadow\n"
+                    "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
+                    "  - Zelda's letter for Kakariko gate (if set to closed)\n"
+                    "  - Happy Mask Shop sidequest\n"
+                );
 
-                    SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
-                    InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
-                                        "expected to be collected after getting Sun's Song.");
-                    PaddedSeparator();
+                PaddedSeparator();
 
+                // Shuffle Gerudo Membership Card
+                SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
+                                                "gRandomizeShuffleGerudoToken");
+                InsertHelpHoverText(
+                    "Shuffles the Gerudo Membership Card into the item pool.\n"
+                    "\n"
+                    "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
+                    "the gate to Haunted Wasteland and the Horseback Archery minigame."
+                );
 
-                    // Shuffle Cows
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                    InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-                    PaddedSeparator();
+                PaddedSeparator();
 
-                    // Shuffle Adult Trade Quest
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
-                                                  "gRandomizeShuffleAdultTrade");
-                    InsertHelpHoverText("Adds all of the adult trade quest items into the pool, each of which "
-                                        "can be traded for a unique reward.\n"
-                                        "\n"
-                                        "You will be able to choose which of your owned adult trade items is visible "
-                                        "in the inventory by selecting the item with A and using the control stick or "
-                                        "D-pad.\n"
-                                        "\n"
-                                        "If disabled, only the Claim Check will be found in the pool.");
-                    PaddedSeparator();
-
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
-                    InsertHelpHoverText("Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean Salesman to sell a"
-                                        "random item at a price of 60 rupees.");
-                    PaddedSeparator();
-
-                    if (CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
-                        // Shuffle Kokiri Sword
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(),
-                                                      "gRandomizeShuffleKokiriSword");
-                        InsertHelpHoverText("Shuffles the Kokiri Sword into the item pool.\n"
-                                            "\n"
-                                            "This will require the use of sticks until the Kokiri Sword is found.");
-                        PaddedSeparator();
-                    }
-
-                    if (CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
-                        // Shuffle Ocarinas
-                        SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(),
-                                                      "gRandomizeShuffleOcarinas");
-                        InsertHelpHoverText(
-                            "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
-                            "\n"
-                            "This will require finding an Ocarina before being able to play songs.");
-                        PaddedSeparator();
-                    }
-
-                    // Shuffle Weird Egg
-                    // Disabled when Skip Child Zelda is active
-                    if (!disableEditingRandoSettings) {
-                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
-                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                            ImGui::GetStyle().Alpha *
-                                                (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
-                    }
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(),
-                                                  "gRandomizeShuffleWeirdEgg");
-                    if (!disableEditingRandoSettings) {
-                        ImGui::PopStyleVar();
-                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                            CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
-                            ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
-                        }
-                        ImGui::PopItemFlag();
-                    }
-                    InsertHelpHoverText("Shuffles the Weird Egg from Malon in to the item pool. Enabling "
-                                        "\"Skip Child Zelda\" disables this feature.\n"
-                                        "\n"
-                                        "The Weird Egg is required to unlock several events:\n"
-                                        "  - Zelda's Lullaby from Impa\n"
-                                        "  - Saria's song in Sacred Forest Meadow\n"
-                                        "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
-                                        "  - Zelda's letter for Kakariko gate (if set to closed)\n"
-                                        "  - Happy Mask Shop sidequest\n");
-                    PaddedSeparator();
-
-                    // Shuffle Gerudo Membership Card
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
-                                                  "gRandomizeShuffleGerudoToken");
-                    InsertHelpHoverText("Shuffles the Gerudo Membership Card into the item pool.\n"
-                                        "\n"
-                                        "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
-                                        "the gate to Haunted Wasteland and the Horseback Archery minigame.");
-                    PaddedSeparator();
-
-                    // Shuffle Frog Song Rupees
-                    SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(),
-                                                  "gRandomizeShuffleFrogSongRupees");
-                    InsertHelpHoverText("Shuffles 5 Purple Rupees into to the item pool, and allows\n"
-                                        "you to earn items by playing songs at the Frog Choir.\n"
-                                        "\n"
-                                        "This setting does not effect the item earned from playing\n"
-                                        "the Song of Storms and the frog song minigame.");
-                }
                 ImGui::PopItemWidth();
+                ImGui::EndChild();
+
+                // COLUMN 2 - Shuffle NPCs & Merchants
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                // Shuffle Scrubs
+                ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                InsertHelpHoverText(
+                    "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
+                    "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+                    "\n"
+                    "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+                    "\n"
+                    "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+                    "\n"
+                    "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
+                SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
+
+                PaddedSeparator();
+
+                // Shuffle Cows
+                SohImGui::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
+                InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+
+                PaddedSeparator();
+
+                SohImGui::EnhancementCheckbox(Settings::ShuffleMagicBeans.GetName().c_str(), "gRandomizeShuffleBeans");
+                InsertHelpHoverText(
+                    "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
+                    "Salesman to sell a random item at a price of 60 rupees."
+                );
+
+                PaddedSeparator();
+
+                // Shuffle Frog Song Rupees
+                SohImGui::EnhancementCheckbox(Settings::ShuffleFrogSongRupees.GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
+                InsertHelpHoverText(
+                    "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                    "you to earn items by playing songs at the Frog Choir.\n"
+                    "\n"
+                    "This setting does not effect the item earned from playing\n"
+                    "the Song of Storms and the frog song minigame."
+                );
+
+                PaddedSeparator();
+
+                // Shuffle Adult Trade Quest
+                SohImGui::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
+                                                "gRandomizeShuffleAdultTrade");
+                InsertHelpHoverText(
+                    "Adds all of the adult trade quest items into the pool, each of which "
+                    "can be traded for a unique reward.\n"
+                    "\n"
+                    "You will be able to choose which of your owned adult trade items is visible "
+                    "in the inventory by selecting the item with A and using the control stick or "
+                    "D-pad.\n"
+                    "\n"
+                    "If disabled, only the Claim Check will be found in the pool."
+                );
+
+                PaddedSeparator();
+
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
 
                 // COLUMN 3 - Shuffle Dungeon Items
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
@@ -3731,98 +3675,117 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
                     "\n"
-                    "Anywhere - Spiritual stones and medallions can appear anywhere.");
+                    "Anywhere - Spiritual stones and medallions can appear anywhere."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
+
                 PaddedSeparator();
 
                 // Maps & Compasses
                 ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
-                InsertHelpHoverText("Start with - You will start with Maps & Compasses from all dungeons.\n"
-                                    "\n"
-                                    "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                                    "\n"
-                                    "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                                    "\n"
-                                    "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                                    "\n"
-                                    "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                                    "\n"
-                                    "Anywhere - Maps & Compasses can appear anywhere in the world.");
+                InsertHelpHoverText(
+                    "Start with - You will start with Maps & Compasses from all dungeons.\n"
+                    "\n"
+                    "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+                    "\n"
+                    "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+                    "\n"
+                    "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+                    "\n"
+                    "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Maps & Compasses can appear anywhere in the world."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, 2);
+
                 PaddedSeparator();
 
                 // Keysanity
                 ImGui::Text(Settings::Keysanity.GetName().c_str());
-                InsertHelpHoverText("Start with - You will start with all Small Keys from all dungeons.\n"
-                                    "\n"
-                                    "Vanilla - Small Keys will appear in their vanilla locations.\n"
-                                    "\n"
-                                    "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
-                                    "\n"
-                                    "Any dungeon - Small Keys can only appear inside of any dungon.\n"
-                                    "\n"
-                                    "Overworld - Small Keys can only appear outside of dungeons.\n"
-                                    "\n"
-                                    "Anywhere - Small Keys can appear anywhere in the world.");
+                InsertHelpHoverText(
+                    "Start with - You will start with all Small Keys from all dungeons.\n"
+                    "\n"
+                    "Vanilla - Small Keys will appear in their vanilla locations.\n"
+                    "\n"
+                    "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
+                    "\n"
+                    "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+                    "\n"
+                    "Overworld - Small Keys can only appear outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Small Keys can appear anywhere in the world."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 2);
+
                 PaddedSeparator();
 
                 // Gerudo Keys
                 ImGui::Text(Settings::GerudoKeys.GetName().c_str());
-                InsertHelpHoverText("Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
-                                    "\n"
-                                    "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
-                                    "\n"
-                                    "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
-                                    "\n"
-                                    "Anywhere - Thieve's Hideout Keys can appear anywhere in the world.");
+                InsertHelpHoverText(
+                    "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
+                    "\n"
+                    "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
+                    "\n"
+                    "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, 0);
+
                 PaddedSeparator();
 
                 // Boss Keysanity
                 ImGui::Text(Settings::BossKeysanity.GetName().c_str());
-                InsertHelpHoverText("Start with - You will start with Boss keys from all dungeons.\n"
-                                    "\n"
-                                    "Vanilla - Boss Keys will appear in their vanilla locations.\n"
-                                    "\n"
-                                    "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
-                                    "\n"
-                                    "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
-                                    "\n"
-                                    "Overworld - Boss Keys can only appear outside of dungeons.\n"
-                                    "\n"
-                                    "Anywhere - Boss Keys can appear anywhere in the world.");
+                InsertHelpHoverText(
+                    "Start with - You will start with Boss keys from all dungeons.\n"
+                    "\n"
+                    "Vanilla - Boss Keys will appear in their vanilla locations.\n"
+                    "\n"
+                    "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                    "\n"
+                    "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                    "\n"
+                    "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Boss Keys can appear anywhere in the world."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, 2);
+
                 PaddedSeparator();
 
                 // Ganon's Boss Key
                 ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
-                InsertHelpHoverText("Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
-                                    "\n"
-                                    "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
-                                    "\n"
-                                    "Start with - Places Ganon's Boss Key in your starting inventory."
-                                    "\n"
-                                    "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
-                                    "\n"
-                                    "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
-                                    "\n"
-                                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.");
+                InsertHelpHoverText(
+                    "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
+                    "\n"
+                    "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
+                    "\n"
+                    "Start with - Places Ganon's Boss Key in your starting inventory."
+                    "\n"
+                    "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
+                    "\n"
+                    "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
+                    "\n"
+                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
 
+                PaddedSeparator();
+
                 ImGui::PopItemWidth();
+                ImGui::EndChild();
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Other")) {
+        if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool & Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Item Pool & Hints", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Additional Features", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
@@ -3831,120 +3794,97 @@ void DrawRandoEditor(bool& open) {
                 // COLUMN 1 - TIME SAVERS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildTimeSavers", ImVec2(0, -8));
 
                 // Cuccos to return
                 SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
                                                "gRandomizeCuccosToReturn", 0, 7, "", 7, true);
                 InsertHelpHoverText("The amount of cuccos needed to claim the reward from Anju the cucco lady");
+
                 PaddedSeparator();
 
                 // Big Poe Target Count
                 SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                "gRandomizeBigPoeTargetCount", 1, 10, "", 10, true);
                 InsertHelpHoverText("The Poe collector will give a reward for turning in this many Big Poes.");
+
                 PaddedSeparator();
 
                 // Skip child stealth
                 // Disabled when Skip Child Zelda is active
-                if (!disableEditingRandoSettings) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                        ImGui::GetStyle().Alpha *
-                                            (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
-                }
-                SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
-                                              "gRandomizeSkipChildStealth");
-                if (!disableEditingRandoSettings) {
-                    ImGui::PopStyleVar();
-                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                        CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
-                        ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
-                    }
-                    ImGui::PopItemFlag();
-                }
+                bool disableChildStealth = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+                const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
+                SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
                 InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+
                 PaddedSeparator();
 
                 // Skip child zelda
                 SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
-                InsertHelpHoverText("Start with Zelda's Letter in your inventory and skip the sequence up "
+                InsertHelpHoverText("Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
                                     "until after meeting Zelda. Disables the ability to shuffle Weird Egg.");
+
                 PaddedSeparator();
 
                 // Skip Epona race
                 SohImGui::EnhancementCheckbox(Settings::SkipEponaRace.GetName().c_str(), "gRandomizeSkipEponaRace");
                 InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
+
                 PaddedSeparator();
 
                 // Skip tower escape
                 SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
                 InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
+
                 PaddedSeparator();
 
                 // Complete mask quest
                 SohImGui::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
                                               "gRandomizeCompleteMaskQuest");
                 InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
+
                 PaddedSeparator();
 
-                // Enable Glitch-Useful Cutscenes
-                SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
-                                              "gRandomizeEnableGlitchCutscenes");
-                InsertHelpHoverText(
-                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
+                ImGui::EndChild();
 
-                // COLUMN 2 - WORLD SETTINGS
+                // COLUMN 2 - Item Pool & Hint Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::PushItemWidth(-FLT_MIN);
-                
-                // Bombchus in Logic
-                SohImGui::EnhancementCheckbox(Settings::BombchusInLogic.GetName().c_str(), "gRandomizeBombchusInLogic");
-                InsertHelpHoverText(
-                    "Bombchus are properly considered in logic.\n"
-                    "\n"
-                    "The first Bombchu pack will always be 20, and subsequent packs will be "
-                    "5 or 10 based on how many you have.\n"
-                    "Once found, they can be replenished at the Bombchu shop.\n"
-                    "\n"
-                    "Bombchu Bowling is opened by obtaining Bombchus."
-                );
-                
-                ImGui::PopItemWidth();
-
-                // COLUMN 3 - ITEM POOL & HINT SETTINGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildItemPoolHintSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
+                // Item Pool Settings
                 ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many major items appear in the item pool.\n"
-                                    "\n"
-                                    "Plentiful - Extra major items are added to the pool.\n"
-                                    "\n"
-                                    "Balanced - Original item pool.\n"
-                                    "\n"
-                                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                                    "\n"
-                                    "Minimal - Most excess items are removed.");
+                InsertHelpHoverText(
+                    "Sets how many major items appear in the item pool.\n"
+                    "\n"
+                    "Plentiful - Extra major items are added to the pool.\n"
+                    "\n"
+                    "Balanced - Original item pool.\n"
+                    "\n"
+                    "Scarce - Some excess items are removed, including health upgrades.\n"
+                    "\n"
+                    "Minimal - Most excess items are removed."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
                 PaddedSeparator();
 
                 // Ice Traps
                 ImGui::Text(Settings::IceTrapValue.GetName().c_str());
-                InsertHelpHoverText("Sets how many items are replaced by ice traps.\n"
-                                    "\n"
-                                    "Off - No ice traps.\n"
-                                    "\n"
-                                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                    "\n"
-                                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                    "\n"
-                                    "Mayhem - All added junk items will be Ice Traps.\n"
-                                    "\n"
-                                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                    "in the base pool.");
+                InsertHelpHoverText(
+                    "Sets how many items are replaced by ice traps.\n"
+                    "\n"
+                    "Off - No ice traps.\n"
+                    "\n"
+                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                    "\n"
+                    "Extra - Chance to replace added junk items with additional ice traps.\n"
+                    "\n"
+                    "Mayhem - All added junk items will be Ice Traps.\n"
+                    "\n"
+                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                    "in the base pool."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
 
                 PaddedSeparator();
@@ -3963,42 +3903,92 @@ void DrawRandoEditor(bool& open) {
                     "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
                     "\n"
                     "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
-
                 SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
                 if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                     // Hint Clarity
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     ImGui::Indent();
                     ImGui::Text(Settings::ClearerHints.GetName().c_str());
-                    InsertHelpHoverText("Sets the difficulty of hints.\n"
-                                        "\n"
-                                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
-                                        "Ex: Kokiri Sword > a butter knife\n"
-                                        "\n"
-                                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
-                                        "Ex: Kokiri Sword > a sword\n"
-                                        "\n"
-                                        "Clear - Hints are clearly written and are unique for each item.\n"
-                                        "Ex: Kokiri Sword > the Kokiri Sword");
+                    InsertHelpHoverText(
+                        "Sets the difficulty of hints.\n"
+                        "\n"
+                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
+                        "Ex: Kokiri Sword > a butter knife\n"
+                        "\n"
+                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
+                        "Ex: Kokiri Sword > a sword\n"
+                        "\n"
+                        "Clear - Hints are clearly written and are unique for each item.\n"
+                        "Ex: Kokiri Sword > the Kokiri Sword"
+                    );
                     SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                     // Hint Distribution
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     ImGui::Text(Settings::HintDistribution.GetName().c_str());
-                    InsertHelpHoverText("Sets how many hints will be useful.\n"
-                                        "\n"
-                                        "Useless - Only junk hints.\n"
-                                        "\n"
-                                        "Balanced - Recommended hint spread.\n"
-                                        "\n"
-                                        "Strong - More useful hints.\n"
-                                        "\n"
-                                        "Very Strong - Many powerful hints.");
+                    InsertHelpHoverText(
+                        "Sets how many hints will be useful.\n"
+                        "\n"
+                        "Useless - Only junk hints.\n"
+                        "\n"
+                        "Balanced - Recommended hint spread.\n"
+                        "\n"
+                        "Strong - More useful hints.\n"
+                        "\n"
+                        "Very Strong - Many powerful hints."
+                    );
                     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
 
+                PaddedSeparator();
+
                 ImGui::PopItemWidth();
+                ImGui::EndChild();
+
+                // COLUMN 3 - Additional Features
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildAdditionalFeatures", ImVec2(0, -8));
+                ImGui::PushItemWidth(-FLT_MIN);
+
+                SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+
+                PaddedSeparator();
+
+                // Bombchus in Logic
+                SohImGui::EnhancementCheckbox(Settings::BombchusInLogic.GetName().c_str(), "gRandomizeBombchusInLogic");
+                InsertHelpHoverText(
+                    "Bombchus are properly considered in logic.\n"
+                    "\n"
+                    "The first Bombchu pack will always be 20, and subsequent packs will be "
+                    "5 or 10 based on how many you have.\n"
+                    "Once found, they can be replenished at the Bombchu shop.\n"
+                    "\n"
+                    "Bombchu Bowling is opened by obtaining Bombchus."
+                );
+
+                PaddedSeparator();
+
+                SohImGui::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueIceArrows", true, "In development");
+                InsertHelpHoverText(
+                    "Ice Arrows act like Blue Fire, making them able to melt red ice. "
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                );
+
+                PaddedSeparator();
+
+                SohImGui::EnhancementCheckbox("WIP - Sunlight Arrows", "gRandomizeSunlightArrows", true, "In development");
+                InsertHelpHoverText(
+                    "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                );
+
+                PaddedSeparator();
+
+                ImGui::PopItemWidth();
+                ImGui::EndChild();
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
@@ -4132,31 +4122,50 @@ void DrawRandoEditor(bool& open) {
                 ImGui::TableNextColumn();
                 ImGui::PushItemWidth(170.0);
                 ImGui::Text("Logic Rules");
-                InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
-                                    "\n"
-                                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.");
+                InsertHelpHoverText(
+                    "Glitchless - No glitches are required, but may require some minor tricks.\n"
+                    "\n"
+                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                );
                 SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+
+                PaddedSeparator();
+
+                // Enable Glitch-Useful Cutscenes
+                SohImGui::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
+                                              "gRandomizeEnableGlitchCutscenes");
+                InsertHelpHoverText(
+                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
+                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
+
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
             if (ImGui::BeginTable("tableRandoTricksGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Enable Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Enable Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Disabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - ENABLE TRICKS
+                // COLUMN 1 - DISABLED TRICKS AND GLITCHES
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildTricksGlitchesDisabled", ImVec2(0, -8));
+
                 ImGui::Text("Coming soon");
 
-                // COLUMN 2 - ENABLE GLITCHES
+                ImGui::EndChild();
+
+                // COLUMN 2 - ENABLED TRICKS AND GLITCHES
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildTricksGlitchesEnabled", ImVec2(0, -8));
+
                 ImGui::Text("Coming soon");
 
+                ImGui::EndChild();
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
@@ -4178,28 +4187,41 @@ void DrawRandoEditor(bool& open) {
                 // COLUMN 1 - STARTING EQUIPMENT
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
+
                 SohImGui::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(),
                                               "gRandomizeStartingKokiriSword");
                 PaddedSeparator();
                 SohImGui::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(),
                                               "gRandomizeStartingDekuShield");
 
+                PaddedSeparator();
+
+                ImGui::EndChild();
+
                 // COLUMN 2 - STARTING ITEMS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
+
                 SohImGui::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
                 PaddedSeparator();
                 SohImGui::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
                 PaddedSeparator();
-                SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+
+                ImGui::EndChild();
 
                 // COLUMN 3 - STARTING SONGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
+
                 ImGui::Text("Coming soon");
 
+                PaddedSeparator();
+
+                ImGui::EndChild();
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
