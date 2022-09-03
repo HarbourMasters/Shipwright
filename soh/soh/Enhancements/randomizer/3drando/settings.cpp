@@ -2561,7 +2561,7 @@ namespace Settings {
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
-    // RANDOTODO: Implement ammo drops entirely. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
+    // RANDOTODO: Implement disabling ammo drops. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
     AmmoDrops.SetSelectedIndex(cvarSettings[RSK_ENABLE_BOMBCHU_DROPS]);
 
     BombchusInLogic.SetSelectedIndex(cvarSettings[RSK_BOMBCHUS_IN_LOGIC]);
