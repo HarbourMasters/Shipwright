@@ -841,6 +841,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
+                        break;
                     case RSK_STARTING_MAPS_COMPASSES:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
