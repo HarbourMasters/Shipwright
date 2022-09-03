@@ -1000,9 +1000,9 @@ void DrawItemTrackerOptions(bool& open) {
             LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 8);
         }
     }
-    PaddedSeparator();
-    SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
-    SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
+    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
     
     LabeledComboBoxRightAligned("Ammo/Capacity Tracking", "gItemTrackerCapacityTrack", { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" }, 0);
     if (CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 0) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
