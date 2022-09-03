@@ -1350,7 +1350,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0));
             }
-            UIWidgets::Spacer(0);
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gItemTrackerEnabled", 0);
@@ -1358,8 +1358,41 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0));
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
+                CVar_SetS32("gItemTrackerSettingsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
+
+            UIWidgets::PaddedSeparator();
+
+            if (ImGui::BeginMenu("Rando Enhancements"))
+            {
+                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                UIWidgets::Tooltip(
+                    "Replace Navi's overworld quest hints with rando-related gameplay hints."
+                );
+                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
+                UIWidgets::Tooltip(
+                    "When obtaining rupees, randomize what the rupee is called in the textbox."
+                );
+                UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
+                UIWidgets::Tooltip(
+                    "Matches the color of small keys and boss keys to the dungeon they belong to. "
+                    "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
+                    "applies to seeds with keys and boss keys shuffled to Any Dungeon, Overworld, or Anywhere.");
+                UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares", true, false);
+                UIWidgets::Tooltip(
+                    "Play unique fanfares when obtaining quest items "
+                    "(medallions/stones/songs). Note that these fanfares are longer than usual."
+                );
+                ImGui::EndMenu();
+            }
 
             ImGui::EndMenu();
         }
