@@ -24,6 +24,7 @@
 
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
+#include "include/variables.h"
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
