@@ -16,28 +16,28 @@ namespace Ship {
 
 		if (CVar_Get(args[2].c_str()) != nullptr) {
 			const char* key = args[2].c_str();
-			GameOverlay* overlay = SohImGui::overlay;
+			GameOverlay* overlay = SohImGui::GetGameOverlay();
 			if (args[1] == "add") {
 				if (!overlay->RegisteredOverlays.contains(key)) {
 					overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
-					SohImGui::console->SendInfoMessage("Added overlay: %s", key);
+                    SohImGui::GetConsole()->SendInfoMessage("Added overlay: %s", key);
 				}
 				else {
-					SohImGui::console->SendErrorMessage("Overlay already exists: %s", key);
+                    SohImGui::GetConsole()->SendErrorMessage("Overlay already exists: %s", key);
 				}
 			}
 			else if (args[1] == "remove") {
 				if (overlay->RegisteredOverlays.contains(key)) {
 					overlay->RegisteredOverlays.erase(key);
-					SohImGui::console->SendInfoMessage("Removed overlay: %s", key);
+                    SohImGui::GetConsole()->SendInfoMessage("Removed overlay: %s", key);
 				}
 				else {
-					SohImGui::console->SendErrorMessage("Overlay not found: %s", key);
+                    SohImGui::GetConsole()->SendErrorMessage("Overlay not found: %s", key);
 				}
 			}
 		}
 		else {
-			SohImGui::console->SendErrorMessage("CVar {} does not exist", args[2].c_str());
+            SohImGui::GetConsole()->SendErrorMessage("CVar {} does not exist", args[2].c_str());
 		}
 
 		return CMD_SUCCESS;
@@ -124,7 +124,7 @@ namespace Ship {
 		else
 			text_display_end = text_end;
 
-		GameOverlay* overlay = SohImGui::overlay;
+		GameOverlay* overlay = SohImGui::GetGameOverlay();
 
 		ImFont* font = overlay->CurrentFont == "Default" ? g.Font : overlay->Fonts[overlay->CurrentFont];
 		const float font_size = font->FontSize;
@@ -157,7 +157,7 @@ namespace Ship {
 			}
 		}
 
-		SohImGui::console->AddCommand("overlay", { OverlayCommand, "Draw an overlay using a cvar value" });
+		SohImGui::GetConsole()->AddCommand("overlay", { OverlayCommand, "Draw an overlay using a cvar value" });
 	}
 
 	void GameOverlay::DrawSettings() {
@@ -167,7 +167,7 @@ namespace Ship {
 				if (ImGui::Selectable(name.c_str(), name == this->CurrentFont)) {
 					this->CurrentFont = name;
 					CVar_SetString("gOverlayFont", ImStrdup(name.c_str()));
-					SohImGui::needs_save = true;
+                    SohImGui::RequestCvarSaveOnNextTick();
 				}
 
 			}
