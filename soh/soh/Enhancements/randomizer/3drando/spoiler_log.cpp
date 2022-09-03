@@ -11,7 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 #include <cstdio>
 #include <cstdlib>
@@ -26,7 +26,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include "Window.h"
+#include <libultraship/Window.h>
 
 using json = nlohmann::json;
 

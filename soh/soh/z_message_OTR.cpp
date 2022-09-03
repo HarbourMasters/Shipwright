@@ -1,13 +1,13 @@
 #include "OTRGlobals.h"
-#include "ResourceMgr.h"
-#include "Scene.h"
-#include "Utils/StringHelper.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/Scene.h>
+#include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <Text.h>
+#include <libultraship/Text.h>
 #include <message_data_static.h>
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
-#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include "Enhancements/custom-message/CustomMessageManager.h"
+#include "Enhancements/custom-message/CustomMessageTypes.h"
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;

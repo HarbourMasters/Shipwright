@@ -1,10 +1,10 @@
-﻿#include "OTRGlobals.h"
-#include "ResourceMgr.h"
-#include "Scene.h"
-#include "Utils/StringHelper.h"
+#include "OTRGlobals.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/Scene.h>
+#include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include "Vertex.h"
+#include <libultraship/Vertex.h>
 
 extern "C" void Gameplay_InitScene(GlobalContext * globalCtx, s32 spawn);
 extern "C" void Gameplay_InitEnvironment(GlobalContext * globalCtx, s16 skyboxId);
@@ -60,7 +60,6 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
     globalCtx->cUpElfMsgs = nullptr;
     globalCtx->setupPathList = nullptr;
     globalCtx->numSetupActors = 0;
-    OTRGlobals::Instance->getItemModIndex = MOD_NONE;
     Object_InitBank(globalCtx, &globalCtx->objectCtx);
     LightContext_Init(globalCtx, &globalCtx->lightCtx);
     TransitionActor_InitContext(&globalCtx->state, &globalCtx->transiActorCtx);

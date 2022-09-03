@@ -12,7 +12,7 @@
 #include "trial.hpp"
 #include "entrance.hpp"
 #include "z64item.h"
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
 using namespace Logic;
