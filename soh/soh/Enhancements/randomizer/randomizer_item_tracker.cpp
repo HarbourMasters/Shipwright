@@ -518,7 +518,7 @@ void DrawNotes(bool resizeable = false) {
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        SohImGui::needs_save = true;
+        SohImGui::RequestCvarSaveOnNextTick();
     }
     ImGui::EndGroup();
 }
