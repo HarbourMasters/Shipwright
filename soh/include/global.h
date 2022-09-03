@@ -6,7 +6,7 @@
 #include "macros.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 
 
 
