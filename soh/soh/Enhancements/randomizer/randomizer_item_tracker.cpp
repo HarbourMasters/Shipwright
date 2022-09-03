@@ -249,7 +249,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     result.currentCapacity = 0;
     result.maxCapacity = 0;
     result.currentAmmo = 0;
-    
+
     switch (item.id) {
         case ITEM_STICK:
             result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
@@ -393,17 +393,24 @@ void DrawItemCount(ItemTrackerItem item) {
                     break;
                 case ITEM_TRACKER_NUMBER_AMMO:
                 {
-                    std::string currentAndMaxString = std::to_string((int)currentAndMax.currentAmmo) + "/" + std::to_string((int)currentAndMax.maxCapacity);
+                    std::string currentAndMaxString = std::to_string((int)currentAndMax.currentAmmo) + "/" + std::to_string((int)currentAndMax.currentCapacity);
 
                     ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
+                    if (currentAndMax.currentAmmo == 0) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(150, 150, 150, 255));
+                    } else if (currentAndMax.currentAmmo == currentAndMax.currentCapacity) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                    }
                     ImGui::Text("%d/", (int)currentAndMax.currentAmmo);
+                    ImGui::PopStyleColor();
                     ImGui::SameLine(0, 0.0f);
                     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%d", (int)currentAndMax.maxCapacity);
+                    ImGui::Text("%d", (int)currentAndMax.currentCapacity);
                     ImGui::PopStyleColor();
                 }
                     break;
-
             }
         }
     }
