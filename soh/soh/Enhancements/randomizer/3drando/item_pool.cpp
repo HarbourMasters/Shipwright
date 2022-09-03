@@ -9,7 +9,7 @@
 #include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "z64item.h"
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 
 using namespace Settings;
