@@ -7,7 +7,7 @@
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
-#include "Window.h"
+#include <libultraship/Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
@@ -21,7 +21,6 @@ public:
     std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
-    uint16_t getItemModIndex;
 
     OTRGlobals();
     ~OTRGlobals();
@@ -97,13 +96,13 @@ void* getN64WeirdFrame(s32 i);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);
-GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);

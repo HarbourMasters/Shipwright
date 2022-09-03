@@ -11,7 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 #include <cstdio>
 #include <cstdlib>
@@ -26,7 +26,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include "Window.h"
+#include <libultraship/Window.h>
 
 using json = nlohmann::json;
 
@@ -346,7 +346,8 @@ static void WriteSettings(const bool printAll = false) {
             setting->GetName() == "Skip Epona Race" ||
             setting->GetName() == "Skip Tower Escape" ||
             setting->GetName() == "Skip Child Stealth" ||
-            setting->GetName() == "Complete Mask Quest" || 
+            setting->GetName() == "Complete Mask Quest" ||
+            setting->GetName() == "Skip Scarecrow's Song" ||
             setting->GetName() == "Enable Glitch-Useful Cutscenes") {
             std::string settingName = menu->name + ":" + setting->GetName();
             jsonData["settings"][settingName] = setting->GetSelectedOptionText();

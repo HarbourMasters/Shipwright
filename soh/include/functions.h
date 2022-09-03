@@ -1063,6 +1063,7 @@ u8 Item_CheckObtainability(u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);
+bool Inventory_HasEmptyBottleSlot(void);
 s32 Inventory_HasSpecificBottle(u8 bottleItem);
 void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 cButton);
 s32 Inventory_ConsumeFairy(GlobalContext* globalCtx);

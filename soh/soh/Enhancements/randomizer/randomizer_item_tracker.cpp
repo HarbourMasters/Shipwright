@@ -1,14 +1,13 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "../libultraship/Hooks.h"
-#include "../libultraship/UltraController.h"
-#include "../debugger/ImGuiHelpers.h"
+#include <libultraship/ImGuiImpl.h>
+#include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
+#include <libultraship/Hooks.h>
 
 extern "C" {
 #include <z64.h>
@@ -474,7 +473,7 @@ void DrawEquip(ItemTrackerItem item) {
     ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -490,7 +489,7 @@ void DrawQuest(ItemTrackerItem item) {
 
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 };
 
 void DrawItem(ItemTrackerItem item) {
@@ -541,7 +540,7 @@ void DrawItem(ItemTrackerItem item) {
     DrawItemCount(item);
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawBottle(ItemTrackerItem item) {
@@ -556,7 +555,7 @@ void DrawBottle(ItemTrackerItem item) {
     ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -594,7 +593,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawSong(ItemTrackerItem item) {
@@ -605,8 +604,10 @@ void DrawSong(ItemTrackerItem item) {
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
+
+static ImVector<char> itemTrackerNotes;
 
 void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
@@ -633,12 +634,15 @@ void DrawNotes(bool resizeable = false) {
                                                 (void*)itemTrackerNotes);
         }
     };
-    static ImVector<char> itemTrackerNotes;
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
+    if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
     ImGui::EndGroup();
 }
 
@@ -770,7 +774,7 @@ void LabeledComboBoxRightAligned(const char* label, const char* cvar, std::vecto
         for (int i = 0; i < options.size(); i++) {
             if (ImGui::Selectable(options[i].c_str())) {
                 CVar_SetS32(cvar, i);
-                SohImGui::needs_save = true;
+                SohImGui::RequestCvarSaveOnNextTick();
                 shouldUpdateVectors = true;
             }
         }
@@ -787,7 +791,7 @@ void PaddedEnhancementCheckbox(const char* text, const char* cvarName, s32 defau
     bool val = (bool)CVar_GetS32(cvarName, defaultValue);
         if (ImGui::Checkbox(text, &val)) {
             CVar_SetS32(cvarName, val);
-            SohImGui::needs_save = true;
+            SohImGui::RequestCvarSaveOnNextTick();
             shouldUpdateVectors = true;
         }
     if (padBottom) {
@@ -981,7 +985,7 @@ void DrawItemTrackerOptions(bool& open) {
         CVar_SetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVar_SetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
         CVar_SetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
-        SohImGui::needs_save = true;
+        SohImGui::RequestCvarSaveOnNextTick();
     }
     ImGui::PopItemWidth();
 
@@ -1048,5 +1052,13 @@ void InitItemTracker() {
     }; // Float value, 1 = 255 in rgb value.
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         buttonsPressed = cont_pad;
+    });
+    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+        const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        strcpy(itemTrackerNotes.Data, initialTrackerNotes);
+    });
+    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        SohImGui::RequestCvarSaveOnNextTick();
     });
 }

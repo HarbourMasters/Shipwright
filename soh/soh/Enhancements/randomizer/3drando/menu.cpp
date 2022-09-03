@@ -13,8 +13,8 @@
 #include "spoiler_log.hpp"
 #include "location_access.hpp"
 #include "debug.hpp"
-#include <Lib/spdlog/include/spdlog/spdlog.h>
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include <spdlog/spdlog.h>
+#include "../../randomizer/randomizerTypes.h"
 
 namespace {
 bool seedChanged;

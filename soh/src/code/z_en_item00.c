@@ -515,13 +515,13 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (!Actor_HasParent(&this->actor, globalCtx)) {
-        if (!gSaveContext.n64ddFlag) {
-            if (getItemId != GI_NONE) {
+        if (getItemId != GI_NONE) {
+            if (!gSaveContext.n64ddFlag) {
                 func_8002F554(&this->actor, globalCtx, getItemId);
+            } else {
+                getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
+                GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
             }
-        } else {
-            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
     }
 
@@ -686,7 +686,7 @@ void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
                 func_8002F434(&this->actor, globalCtx, this->getItemId, 50.0f, 80.0f);
             } else {
                 GetItemEntry getItemEntry =
-                    Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+                    Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, this->getItemId);
                 GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 50.0f, 80.0f);
             }
             this->unk_15A++;
@@ -911,7 +911,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             func_8002F554(&this->actor, globalCtx, getItemId);
         } else {
-            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
             getItemId = getItem.getItemId;
             GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
@@ -1380,7 +1380,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         GetItemEntry randoGetItemEntry =
-            Randomizer_GetRandomizedItem(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, this->getItemId);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
         GetItemEntry_Draw(globalCtx, randoGetItemEntry);
     } else {
@@ -1442,7 +1442,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         GetItemEntry randoGetItemEntry =
-            Randomizer_GetRandomizedItem(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
         GetItemEntry_Draw(globalCtx, randoGetItemEntry);
     } else {
@@ -1507,7 +1507,8 @@ s16 func_8001F404(s16 dropId) {
         }
     }
 
-    if (CVar_GetS32("gBombchuDrops", 0) &&
+    if ((CVar_GetS32("gBombchuDrops", 0) || 
+        (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
