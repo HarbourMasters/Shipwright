@@ -88,7 +88,7 @@ s32 DemoKekkai_CheckEventFlag(s32 params) {
     if ((params < KEKKAI_TOWER) || (params > KEKKAI_FOREST)) {
         return true;
     }
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag && params > KEKKAI_TOWER) {
         return Flags_GetRandomizerInf(trialParamToRandInf(params));
     }
     return Flags_GetEventChkInf(eventFlags[params]);

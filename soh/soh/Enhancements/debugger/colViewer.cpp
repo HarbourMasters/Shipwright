@@ -1,12 +1,12 @@
 #include "colViewer.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "ImGuiHelpers.h"
+#include <libultraship/ImGuiImpl.h>
 #include "../../frame_interpolation.h"
+#include "../../UIWidgets.hpp"
 
 #include <vector>
 #include <string>
 #include <cmath>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -62,42 +62,42 @@ void DrawColViewerWindow(bool& open) {
         ImGui::End();
         return;
     }
-    SohImGui::EnhancementCheckbox("Enabled", "gColViewerEnabled");
+    UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    SohImGui::EnhancementCombo("Scene", "gColViewerScene", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Bg Actors", "gColViewerBgActors", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Col Check", "gColViewerColCheck", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Waterbox", "gColViewerWaterbox", ColRenderSettingNames);
+    UIWidgets::EnhancementCombo("Scene", "gColViewerScene", ColRenderSettingNames);
+    UIWidgets::EnhancementCombo("Bg Actors", "gColViewerBgActors", ColRenderSettingNames);
+    UIWidgets::EnhancementCombo("Col Check", "gColViewerColCheck", ColRenderSettingNames);
+    UIWidgets::EnhancementCombo("Waterbox", "gColViewerWaterbox", ColRenderSettingNames);
 
-    SohImGui::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
-    InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
+    UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
+    UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
                         "with the scene geometry, but can cause other artifacts.");
-    SohImGui::EnhancementCheckbox("Shaded", "gColViewerShaded");
-    InsertHelpHoverText("Applies the scene's shading to the collision display.");
+    UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
+    UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
     // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
     const std::string colorHelpText = "View and change the colors used for collision display.";
     if (ImGui::TreeNode("Colors")) {
-        InsertHelpHoverText(colorHelpText);
+        UIWidgets::InsertHelpHoverText(colorHelpText);
 
-        SohImGui::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
-        SohImGui::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
+        UIWidgets::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
+        UIWidgets::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
                                    false);
-        SohImGui::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
-        SohImGui::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
+        UIWidgets::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
+        UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
                                    specialSurface_col, ImVec4(192, 255, 192, 255), false);
-        SohImGui::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
+        UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
                                    interactable_col, ImVec4(192, 0, 192, 255), false);
-        SohImGui::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
-        SohImGui::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
-        SohImGui::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
-        SohImGui::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
-        SohImGui::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
-        SohImGui::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
+        UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
+        UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
+        UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
+        UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
+        UIWidgets::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
+        UIWidgets::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
 
         ImGui::TreePop();
     } else {
-        InsertHelpHoverText(colorHelpText);
+        UIWidgets::InsertHelpHoverText(colorHelpText);
     }
 
     ImGui::End();

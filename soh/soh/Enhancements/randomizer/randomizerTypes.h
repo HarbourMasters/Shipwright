@@ -1021,7 +1021,17 @@ typedef enum {
     RSK_BLUE_FIRE_ARROWS,
     RSK_SUNLIGHT_ARROWS,
     RSK_BOMBCHUS_IN_LOGIC
+    RSK_BOMBCHUS_IN_LOGIC,
+    RSK_LINKS_POCKET
 } RandomizerSettingKey;
+
+typedef enum {
+    CAN_OBTAIN,
+    CANT_OBTAIN_MISC,
+    CANT_OBTAIN_ALREADY_HAVE,
+    CANT_OBTAIN_NEED_UPGRADE,
+    CANT_OBTAIN_NEED_EMPTY_BOTTLE,
+} ItemObtainability;
 
 typedef struct ScrubIdentity {
     RandomizerInf randomizerInf;
