@@ -187,7 +187,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
-            getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->actor.params, GI_SKULL_TOKEN);
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItem);
             if (getItem.itemId != ITEM_SKULL_TOKEN) {
                 f32 mtxScale = 1.5f;
@@ -202,7 +202,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
 void Randomizer_UpdateSkullReward(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    getItem = Randomizer_GetRandomizedItem(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+    getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->actor.params, GI_SKULL_TOKEN);
     getItemId = getItem.getItemId;
     if (getItemId == RG_ICE_TRAP) {
         player->pendingIceTrap = true;

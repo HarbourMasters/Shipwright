@@ -1203,87 +1203,556 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-s16 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    s16 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
-    return itemId;
+RandomizerGet Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
-s16 Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
+RandomizerGet Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+    return this->itemLocations[randomizerCheck];
 }
 
-s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
+GetItemID Randomizer::GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    return GetItemIdFromRandomizerGet(GetRandomizerGetFromActor(actorId, sceneNum, actorParams), ogItemId);
+}
+
+ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck));
+}
+
+ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+    switch (randoGet) {
+        case RG_NONE:
+        case RG_TRIFORCE:
+        case RG_HINT:
+        case RG_MAX:
+        case RG_SOLD_OUT:
+        // TODO: Implement key rings
+        case RG_FOREST_TEMPLE_KEY_RING:
+        case RG_FIRE_TEMPLE_KEY_RING:
+        case RG_WATER_TEMPLE_KEY_RING:
+        case RG_SPIRIT_TEMPLE_KEY_RING:
+        case RG_SHADOW_TEMPLE_KEY_RING:
+        case RG_BOTTOM_OF_THE_WELL_KEY_RING:
+        case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
+        case RG_GERUDO_FORTRESS_KEY_RING:
+        case RG_GANONS_CASTLE_KEY_RING:
+            return CANT_OBTAIN_MISC;
+
+        // Equipment
+        case RG_KOKIRI_SWORD:
+            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BIGGORON_SWORD:
+            return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DEKU_SHIELD:
+        case RG_BUY_DEKU_SHIELD:
+            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_HYLIAN_SHIELD:
+        case RG_BUY_HYLIAN_SHIELD:
+            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MIRROR_SHIELD:
+            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GORON_TUNIC:
+        case RG_BUY_GORON_TUNIC:
+            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ZORA_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_IRON_BOOTS:
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_HOVER_BOOTS:
+            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Inventory Items
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+            return CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+            return CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_BOMB_BAG:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BOMBS_5:
+        case RG_BOMBS_10:
+        case RG_BOMBS_20:
+        case RG_BUY_BOMBS_525:
+        case RG_BUY_BOMBS_535:
+        case RG_BUY_BOMBS_10:
+        case RG_BUY_BOMBS_20:
+        case RG_BUY_BOMBS_30:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+        case RG_PROGRESSIVE_BOW:
+            return CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ARROWS_5:
+        case RG_ARROWS_10:
+        case RG_ARROWS_30:
+        case RG_BUY_ARROWS_10:
+        case RG_BUY_ARROWS_30:
+        case RG_BUY_ARROWS_50:
+            return CUR_UPG_VALUE(UPG_QUIVER) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+        case RG_PROGRESSIVE_SLINGSHOT:
+            return CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DEKU_SEEDS_30:
+        case RG_BUY_DEKU_SEEDS_30:
+            return CUR_UPG_VALUE(UPG_BULLET_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+        case RG_PROGRESSIVE_OCARINA:
+            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
+                case ITEM_NONE:
+                case ITEM_OCARINA_FAIRY:
+                    return CAN_OBTAIN;
+                case ITEM_OCARINA_TIME:
+                default:
+                    return CANT_OBTAIN_ALREADY_HAVE;
+            }
+        case RG_BOMBCHU_5:
+        case RG_BOMBCHU_10:
+        case RG_BOMBCHU_20:
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return CAN_OBTAIN;
+        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHU_5:
+            // If Bombchus aren't in logic, you need a bomb bag to purchase them
+            // If they are in logic, you need to have already obtained them somewhere else
+            if (GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+                return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            } else {
+                return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            }
+        case RG_BOMBCHU_DROP:
+            return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+        case RG_PROGRESSIVE_HOOKSHOT:
+            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
+                case ITEM_NONE:
+                case ITEM_HOOKSHOT:
+                    return CAN_OBTAIN;
+                case ITEM_LONGSHOT:
+                default:
+                    return CANT_OBTAIN_ALREADY_HAVE;
+            }
+        case RG_BOOMERANG:
+            return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_LENS_OF_TRUTH:
+            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MAGIC_BEAN:
+        case RG_MAGIC_BEAN_PACK:
+            return BEANS_BOUGHT < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MEGATON_HAMMER:
+            return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_ARROWS:
+            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ICE_ARROWS:
+            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_LIGHT_ARROWS:
+            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DINS_FIRE:
+            return INV_CONTENT(ITEM_DINS_FIRE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FARORES_WIND:
+            return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_NAYRUS_LOVE:
+            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Bottles
+        case RG_EMPTY_BOTTLE:
+        case RG_BOTTLE_WITH_MILK:
+        case RG_BOTTLE_WITH_RED_POTION:
+        case RG_BOTTLE_WITH_GREEN_POTION:
+        case RG_BOTTLE_WITH_BLUE_POTION:
+        case RG_BOTTLE_WITH_FAIRY:
+        case RG_BOTTLE_WITH_FISH:
+        case RG_BOTTLE_WITH_BLUE_FIRE:
+        case RG_BOTTLE_WITH_BUGS:
+        case RG_BOTTLE_WITH_POE:
+        case RG_RUTOS_LETTER:
+        case RG_BOTTLE_WITH_BIG_POE:
+            return Inventory_HasEmptyBottleSlot() ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Bottle Refills
+        case RG_MILK:
+        case RG_RED_POTION_REFILL:
+        case RG_GREEN_POTION_REFILL:
+        case RG_BLUE_POTION_REFILL:
+        case RG_BUY_FISH:
+        case RG_BUY_RED_POTION_30:
+        case RG_BUY_GREEN_POTION:
+        case RG_BUY_BLUE_POTION:
+        case RG_BUY_BLUE_FIRE:
+        case RG_BUY_BOTTLE_BUG:
+        case RG_BUY_POE:
+        case RG_BUY_FAIRYS_SPIRIT:
+        case RG_BUY_RED_POTION_40:
+        case RG_BUY_RED_POTION_50:
+            return Inventory_HasEmptyBottle() ? CAN_OBTAIN : CANT_OBTAIN_NEED_EMPTY_BOTTLE;
+
+        // Trade Items
+        // TODO: Do we want to be strict about any of this?
+        // case RG_WEIRD_EGG:
+        // case RG_ZELDAS_LETTER:
+        // case RG_POCKET_EGG:
+        // case RG_COJIRO:
+        // case RG_ODD_MUSHROOM:
+        // case RG_ODD_POTION:
+        // case RG_POACHERS_SAW:
+        // case RG_BROKEN_SWORD:
+        // case RG_PRESCRIPTION:
+        // case RG_EYEBALL_FROG:
+        // case RG_EYEDROPS:
+        // case RG_CLAIM_CHECK:
+        // case RG_PROGRESSIVE_GORONSWORD:
+        // case RG_GIANTS_KNIFE:
+
+        // Misc Items
+        case RG_STONE_OF_AGONY:
+            return !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GERUDO_MEMBERSHIP_CARD:
+            return !CHECK_QUEST_ITEM(QUEST_GERUDO_CARD) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DOUBLE_DEFENSE:
+            return !gSaveContext.doubleDefense ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GOLD_SKULLTULA_TOKEN:
+            return gSaveContext.inventory.gsTokens < 100 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_STRENGTH:
+            return CUR_UPG_VALUE(UPG_STRENGTH) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_WALLET:
+            return CUR_UPG_VALUE(UPG_WALLET) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SCALE:
+            return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_MAGIC_METER:
+        case RG_MAGIC_SINGLE:
+        case RG_MAGIC_DOUBLE:
+            return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Songs
+        case RG_ZELDAS_LULLABY:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_EPONAS_SONG:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_EPONA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SARIAS_SONG:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SUNS_SONG:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_SUN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SONG_OF_TIME:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_TIME) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SONG_OF_STORMS:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_STORMS) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MINUET_OF_FOREST:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_MINUET) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BOLERO_OF_FIRE:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_BOLERO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SERENADE_OF_WATER:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_REQUIEM_OF_SPIRIT:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_REQUIEM) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_NOCTURNE_OF_SHADOW:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_NOCTURNE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PRELUDE_OF_LIGHT:
+            return !CHECK_QUEST_ITEM(QUEST_SONG_PRELUDE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Dungeon Items
+        case RG_DEKU_TREE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DODONGOS_CAVERN_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_JABU_JABUS_BELLY_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FOREST_TEMPLE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_TEMPLE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_WATER_TEMPLE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SPIRIT_TEMPLE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SHADOW_TEMPLE_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ICE_CAVERN_MAP:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DEKU_TREE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DODONGOS_CAVERN_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_JABU_JABUS_BELLY_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FOREST_TEMPLE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_TEMPLE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_WATER_TEMPLE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SPIRIT_TEMPLE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SHADOW_TEMPLE_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ICE_CAVERN_COMPASS:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_WATER_TEMPLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        // TODO: Handle MQ key counts
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] < 8 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_WATER_TEMPLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] < 6 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_MEN] < 9 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDOWAY] < 4 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_TREASURE_GAME_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_TAKARAYA] < 6 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        // Dungeon Rewards
+        case RG_KOKIRI_EMERALD:
+            return !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GORON_RUBY:
+            return !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_ZORA_SAPPHIRE:
+            return !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FOREST_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FIRE_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_WATER_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SPIRIT_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SHADOW_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_LIGHT_MEDALLION:
+            return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+
+        case RG_RECOVERY_HEART:
+        case RG_GREEN_RUPEE:
+        case RG_BLUE_RUPEE:
+        case RG_RED_RUPEE:
+        case RG_PURPLE_RUPEE:
+        case RG_HUGE_RUPEE:
+        case RG_PIECE_OF_HEART:
+        case RG_HEART_CONTAINER:
+        case RG_ICE_TRAP:
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_DEKU_STICK_1:
+        case RG_TREASURE_GAME_HEART:
+        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_STICK_1:
+        case RG_BUY_HEART:
+        default:
+            return CAN_OBTAIN;
+    }
+}
+
+GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
+        case RG_TRIFORCE:
+        case RG_HINT:
+        case RG_MAX:
+        case RG_SOLD_OUT:
+            return GI_NONE;
 
+        // Equipment
         case RG_KOKIRI_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? GI_SWORD_KOKIRI : GI_RUPEE_BLUE;
+            return GI_SWORD_KOKIRI;
+        case RG_PROGRESSIVE_GORONSWORD: //todo progressive?
+            return GI_SWORD_BGS;
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return !gSaveContext.bgsFlag ? GI_SWORD_BGS : GI_RUPEE_BLUE;
-
+            return GI_SWORD_BGS;
         case RG_DEKU_SHIELD:
+        case RG_BUY_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
         case RG_HYLIAN_SHIELD:
+        case RG_BUY_HYLIAN_SHIELD:
             return GI_SHIELD_HYLIAN;
         case RG_MIRROR_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? GI_SHIELD_MIRROR : GI_RUPEE_BLUE;
-
+            return GI_SHIELD_MIRROR;
         case RG_GORON_TUNIC:
+        case RG_BUY_GORON_TUNIC:
             return GI_TUNIC_GORON;
         case RG_ZORA_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
             return GI_TUNIC_ZORA;
-
         case RG_IRON_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? GI_BOOTS_IRON : GI_RUPEE_BLUE;
+            return GI_BOOTS_IRON;
         case RG_HOVER_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? GI_BOOTS_HOVER : GI_RUPEE_BLUE;
+            return GI_BOOTS_HOVER;
 
+        // Inventory Items
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+                case 0:
+                case 1:
+                    return GI_STICK_UPGRADE_20;
+                case 2:
+                    return GI_STICK_UPGRADE_30;
+            }
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+                case 0:
+                case 1:
+                    return GI_NUT_UPGRADE_30;
+                case 2:
+                    return GI_NUT_UPGRADE_40;
+            }
+        case RG_PROGRESSIVE_BOMB_BAG:
+            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+                case 0:
+                    return GI_BOMB_BAG_20;
+                case 1:
+                    return GI_BOMB_BAG_30;
+                case 2:
+                    return GI_BOMB_BAG_40;
+            }
+        case RG_BOMBS_5:
+        case RG_BUY_BOMBS_525:
+        case RG_BUY_BOMBS_535:
+            return GI_BOMBS_5;
+        case RG_BOMBS_10:
+        case RG_BUY_BOMBS_10:
+            return GI_BOMBS_10;
+        case RG_BOMBS_20:
+        case RG_BUY_BOMBS_20:
+            return GI_BOMBS_20;
+        case RG_BUY_BOMBS_30:
+            return GI_BOMBS_30;
+        case RG_PROGRESSIVE_BOW:
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                case 0:
+                    return GI_BOW;
+                case 1:
+                    return GI_QUIVER_40;
+                case 2:
+                    return GI_QUIVER_50;
+            }
+        case RG_ARROWS_5:
+        case RG_BUY_ARROWS_10:
+            return GI_ARROWS_SMALL;
+        case RG_ARROWS_10:
+        case RG_BUY_ARROWS_30:
+            return GI_ARROWS_MEDIUM;
+        case RG_ARROWS_30:
+        case RG_BUY_ARROWS_50:
+            return GI_ARROWS_LARGE;
+        case RG_PROGRESSIVE_SLINGSHOT:
+            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+                case 0:
+                    return GI_SLINGSHOT;
+                case 1:
+                    return GI_BULLET_BAG_40;
+                case 2:
+                    return GI_BULLET_BAG_50;
+            }
+        case RG_DEKU_SEEDS_30:
+        case RG_BUY_DEKU_SEEDS_30:
+            return GI_SEEDS_30;
+        case RG_PROGRESSIVE_OCARINA:
+            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
+                case ITEM_NONE:
+                    return GI_OCARINA_FAIRY;
+                case ITEM_OCARINA_FAIRY:
+                    return GI_OCARINA_OOT;
+            }
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return GI_BOMBCHUS_20;
+        case RG_BOMBCHU_5:
+        case RG_BUY_BOMBCHU_5:
+        case RG_BOMBCHU_DROP:
+            return GI_BOMBCHUS_5;
+        case RG_BOMBCHU_10:
+        case RG_BUY_BOMBCHU_10:
+            return GI_BOMBCHUS_10;
+        case RG_BOMBCHU_20:
+        case RG_BUY_BOMBCHU_20:
+            return GI_BOMBCHUS_20;
+        case RG_PROGRESSIVE_HOOKSHOT:
+            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
+                case ITEM_NONE:
+                    return GI_HOOKSHOT;
+                case ITEM_HOOKSHOT:
+                    return GI_LONGSHOT;
+            }
         case RG_BOOMERANG:
-            return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? GI_BOOMERANG : GI_RUPEE_BLUE;
-
+            return GI_BOOMERANG;
         case RG_LENS_OF_TRUTH:
-            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? GI_LENS : GI_RUPEE_BLUE;
-
-        case RG_MEGATON_HAMMER:
-            return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? GI_HAMMER : GI_RUPEE_BLUE;
-
-        case RG_STONE_OF_AGONY:
-            return GI_STONE_OF_AGONY;
-
-        case RG_DINS_FIRE:
-            return INV_CONTENT(ITEM_DINS_FIRE) == ITEM_NONE ? GI_DINS_FIRE : GI_RUPEE_BLUE;
-        case RG_FARORES_WIND:
-            return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? GI_FARORES_WIND : GI_RUPEE_BLUE;
-        case RG_NAYRUS_LOVE:
-            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? GI_NAYRUS_LOVE : GI_RUPEE_BLUE;
-
-        case RG_FIRE_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE ? GI_ARROW_FIRE : GI_RUPEE_BLUE;
-        case RG_ICE_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? GI_ARROW_ICE : GI_RUPEE_BLUE;
-        case RG_LIGHT_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? GI_ARROW_LIGHT : GI_RUPEE_BLUE;
-        
-        case RG_DOUBLE_DEFENSE:
-            return !gSaveContext.doubleDefense ? (GetItemID)RG_DOUBLE_DEFENSE : GI_RUPEE_BLUE;
-
-        case RG_GERUDO_MEMBERSHIP_CARD:
-            return GI_GERUDO_CARD;
-
+            return GI_LENS;
         case RG_MAGIC_BEAN:
             return GI_BEAN;
+        case RG_MEGATON_HAMMER:
+            return GI_HAMMER;
+        case RG_FIRE_ARROWS:
+            return GI_ARROW_FIRE;
+        case RG_ICE_ARROWS:
+            return GI_ARROW_ICE;
+        case RG_LIGHT_ARROWS:
+            return GI_ARROW_LIGHT;
+        case RG_DINS_FIRE:
+            return GI_DINS_FIRE;
+        case RG_FARORES_WIND:
+            return GI_FARORES_WIND;
+        case RG_NAYRUS_LOVE:
+            return GI_NAYRUS_LOVE;
 
-        case RG_WEIRD_EGG:
-            return GI_WEIRD_EGG;
-
-        case RG_ZELDAS_LETTER:
-            return GI_LETTER_ZELDA;
+        // Bottles
+        case RG_EMPTY_BOTTLE:
+            return GI_BOTTLE;
+        case RG_BOTTLE_WITH_MILK:
+            return GI_MILK_BOTTLE;
         case RG_RUTOS_LETTER:
             return GI_LETTER_RUTO;
 
+        // Bottle Refills
+        case RG_MILK:
+            return GI_MILK;
+        case RG_RED_POTION_REFILL:
+        case RG_BUY_RED_POTION_30:
+        case RG_BUY_RED_POTION_40:
+        case RG_BUY_RED_POTION_50:
+            return GI_POTION_RED;
+        case RG_GREEN_POTION_REFILL:
+        case RG_BUY_GREEN_POTION:
+            return GI_POTION_GREEN;
+        case RG_BLUE_POTION_REFILL:
+        case RG_BUY_BLUE_POTION:
+            return GI_POTION_BLUE;
+        case RG_BUY_FISH:
+            return GI_FISH;
+        case RG_BUY_BLUE_FIRE:
+            return GI_BLUE_FIRE;
+        case RG_BUY_BOTTLE_BUG:
+            return GI_BUGS;
+        case RG_BUY_POE:
+            return GI_POE;
+        case RG_BUY_FAIRYS_SPIRIT:
+            return GI_FAIRY;
+
+        // Trade Items
+        case RG_WEIRD_EGG:
+            return GI_WEIRD_EGG;
+        case RG_ZELDAS_LETTER:
+            return GI_LETTER_ZELDA;
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
         case RG_COJIRO:
@@ -1304,19 +1773,14 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             return GI_EYEDROPS;
         case RG_CLAIM_CHECK:
             return GI_CLAIM_CHECK;
-        
+
+        // Misc Items
+        case RG_STONE_OF_AGONY:
+            return GI_STONE_OF_AGONY;
+        case RG_GERUDO_MEMBERSHIP_CARD:
+            return GI_GERUDO_CARD;
         case RG_GOLD_SKULLTULA_TOKEN:
             return GI_SKULL_TOKEN;
-
-        case RG_PROGRESSIVE_HOOKSHOT:
-            switch (gSaveContext.inventory.items[SLOT_HOOKSHOT]) {
-                case ITEM_NONE:
-                    return GI_HOOKSHOT;
-                case ITEM_HOOKSHOT:
-                    return GI_LONGSHOT;
-            }
-            return GI_RUPEE_BLUE;
-
         case RG_PROGRESSIVE_STRENGTH:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
@@ -1326,41 +1790,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
                 case 2:
                     return GI_GAUNTLETS_GOLD;
             }
-            return GI_RUPEE_BLUE;
-        
-        case RG_PROGRESSIVE_BOMB_BAG:
-            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case 0:
-                    return GI_BOMB_BAG_20;
-                case 1:
-                    return GI_BOMB_BAG_30;
-                case 2:
-                    return GI_BOMB_BAG_40;
-            }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_BOW:
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                case 0:
-                    return GI_BOW;
-                case 1:
-                    return GI_QUIVER_40;
-                case 2:
-                    return GI_QUIVER_50;
-            }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_SLINGSHOT:
-            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
-                case 0:
-                    return GI_SLINGSHOT;
-                case 1:
-                    return GI_BULLET_BAG_40;
-                case 2:
-                    return GI_BULLET_BAG_50;
-            }
-            return GI_RUPEE_BLUE;
-
         case RG_PROGRESSIVE_WALLET:
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
@@ -1368,8 +1797,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
                 case 1:
                     return GI_WALLET_GIANT;
             }
-            return GI_RUPEE_BLUE;
-
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
@@ -1377,37 +1804,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
                 case 1:
                     return GI_SCALE_GOLD;
             }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
-                case 0:
-                case 1:
-                    return GI_NUT_UPGRADE_30;
-                case 2:
-                    return GI_NUT_UPGRADE_40;
-            }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
-                case 0:
-                case 1:
-                    return GI_STICK_UPGRADE_20;
-                case 2:
-                    return GI_STICK_UPGRADE_30;
-            }
-            return GI_RUPEE_BLUE;
-        
-        case RG_PROGRESSIVE_BOMBCHUS:
-        	if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-                return GI_BOMBCHUS_20;
-            }
-            if (AMMO(ITEM_BOMBCHU) < 5) {
-                return GI_BOMBCHUS_10;
-            }
-            return GI_BOMBCHUS_5;
-        
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
@@ -1415,24 +1811,6 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
                 case 1:
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_NONE) {
-                case 1:
-                    return GI_OCARINA_FAIRY;
-                case 0:
-                    return GI_OCARINA_OOT;
-            }
-            return GI_RUPEE_BLUE;
-
-        case RG_PROGRESSIVE_GORONSWORD:
-            return GI_SWORD_BGS; //todo progressive?
-
-        case RG_EMPTY_BOTTLE:
-            return GI_BOTTLE;
-        case RG_BOTTLE_WITH_MILK:
-            return GI_MILK_BOTTLE;
 
         case RG_DEKU_TREE_MAP:
         case RG_DODONGOS_CAVERN_MAP:
@@ -1447,7 +1825,7 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
                 return GI_MAP;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
 
         case RG_DEKU_TREE_COMPASS:
@@ -1463,7 +1841,7 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
                 return GI_COMPASS;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
 
         case RG_FOREST_TEMPLE_BOSS_KEY:
@@ -1474,13 +1852,13 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
                 return GI_KEY_BOSS;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
         case RG_GANONS_CASTLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) < 3) {
                 return GI_KEY_BOSS;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
 
         case RG_FOREST_TEMPLE_SMALL_KEY:
@@ -1494,34 +1872,18 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             if (GetRandoSettingValue(RSK_KEYSANITY) < 3) {
                 return GI_KEY_SMALL;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
         case RG_GERUDO_FORTRESS_SMALL_KEY:
             if (GetRandoSettingValue(RSK_GERUDO_KEYS) == 0) {
                 return GI_KEY_SMALL;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
 
-        // todo test this with keys in own dungeon
-        case RG_TREASURE_GAME_SMALL_KEY:
-            return GI_DOOR_KEY;
-
-        // todo keyrings
-        case RG_FOREST_TEMPLE_KEY_RING:
-        case RG_FIRE_TEMPLE_KEY_RING:
-        case RG_WATER_TEMPLE_KEY_RING:
-        case RG_SPIRIT_TEMPLE_KEY_RING:
-        case RG_SHADOW_TEMPLE_KEY_RING:
-        case RG_BOTTOM_OF_THE_WELL_KEY_RING:
-        case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
-        case RG_GERUDO_FORTRESS_KEY_RING:
-        case RG_GANONS_CASTLE_KEY_RING:
-            return GI_RUPEE_BLUE;
-
         case RG_RECOVERY_HEART:
+        case RG_BUY_HEART:
             return GI_HEART;
-
         case RG_GREEN_RUPEE:
             return GI_RUPEE_GREEN;
         case RG_BLUE_RUPEE:
@@ -1532,73 +1894,33 @@ s16 Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
             return GI_RUPEE_PURPLE;
         case RG_HUGE_RUPEE:
             return GI_RUPEE_GOLD;
-
         case RG_PIECE_OF_HEART:
             return GI_HEART_PIECE;
         case RG_HEART_CONTAINER:
-            // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-        case RG_MILK:
-            return GI_MILK; //todo logic around needing a bottle?
-
-        case RG_BOMBS_5:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
-        case RG_BOMBS_10:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
-        case RG_BOMBS_20:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
-
-        case RG_BOMBCHU_5:
-            return GI_BOMBCHUS_5;
-        case RG_BOMBCHU_10:
-            return GI_BOMBCHUS_10;
-        case RG_BOMBCHU_20:
-            return GI_BOMBCHUS_20;
-        case RG_BOMBCHU_DROP:
-            return GI_BOMBCHUS_5; //todo figure out what we want to do for chu drops
-
-        case RG_ARROWS_5:
-            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_SMALL : GI_RUPEE_BLUE;
-        case RG_ARROWS_10:
-            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_MEDIUM : GI_RUPEE_BLUE;
-        case RG_ARROWS_30:
-            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_LARGE : GI_RUPEE_BLUE;
-
+        
         case RG_DEKU_NUTS_5:
+        case RG_BUY_DEKU_NUT_5:
             return GI_NUTS_5;
         case RG_DEKU_NUTS_10:
+        case RG_BUY_DEKU_NUT_10:
             return GI_NUTS_10;
-
-        case RG_DEKU_SEEDS_30:
-            return CUR_UPG_VALUE(UPG_BULLET_BAG) ? GI_SEEDS_30 : GI_RUPEE_BLUE;
-
         case RG_DEKU_STICK_1:
+        case RG_BUY_DEKU_STICK_1:
             return GI_STICKS_1;
-
-        // RANDOTODO these won't be used until we implement shopsanity/scrub shuffle
-        case RG_RED_POTION_REFILL:
-        case RG_GREEN_POTION_REFILL:
-        case RG_BLUE_POTION_REFILL:
-            return GI_NONE;
-
+        case RG_TREASURE_GAME_SMALL_KEY:
+            return GI_DOOR_KEY;
         case RG_TREASURE_GAME_HEART:
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
-            return GI_RUPEE_GREEN_LOSE; //todo figure out how this works outside of the game
-
-        case RG_TRIFORCE:
-            return GI_RUPEE_BLUE; //todo figure out what this is/does
-
-        case RG_HINT:
-            return GI_RUPEE_BLUE; //todo
-
+            return GI_RUPEE_GREEN_LOSE;
         default:
             if (!IsItemVanilla(randoGet)) {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
             return ogItemId;
-        }
     }
+}
 
 bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
     switch (randoGet) {
@@ -2072,11 +2394,11 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-s16 Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return GetItemFromGet(this->itemLocations[randomizerCheck], ogId);
+GetItemID Randomizer::GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId) {
+    return GetItemIdFromRandomizerGet(this->itemLocations[randomizerCheck], ogItemId);
 }
 
-RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
         return RC_UNKNOWN_CHECK;
     }

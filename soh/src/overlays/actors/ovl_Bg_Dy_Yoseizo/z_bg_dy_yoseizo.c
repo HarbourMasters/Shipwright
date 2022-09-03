@@ -70,7 +70,7 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
 
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
-    GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->fountainType + 1, GI_NONE);
 
     if (this->actor.parent == GET_PLAYER(globalCtx) && !Flags_GetTreasure(globalCtx, this->fountainType + 1) &&
         !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
