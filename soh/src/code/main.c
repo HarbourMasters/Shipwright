@@ -3,7 +3,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
-#include "../libultraship/CrashHandler.h"
+#include <libultraship/CrashHandler.h>
 
 
 s32 gScreenWidth = SCREEN_WIDTH;
@@ -42,6 +42,8 @@ int main(int argc, char** argv)
 {
 #ifdef __linux__
     SetupHandlerLinux();
+#elif _WIN32
+    SetUnhandledExceptionFilter(seh_filter);
 #endif
     
     GameConsole_Init();

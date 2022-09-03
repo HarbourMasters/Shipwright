@@ -2593,6 +2593,8 @@ namespace Settings {
 
     NightGSExpectSuns.SetSelectedIndex(cvarSettings[RSK_SKULLS_SUNS_SONG]);
 
+    LinksPocketItem.SetSelectedIndex(cvarSettings[RSK_LINKS_POCKET]);
+
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
 

@@ -1019,7 +1019,8 @@ typedef enum {
     RSK_SKULLS_SUNS_SONG,
     RSK_SHUFFLE_ADULT_TRADE,
     RSK_SHUFFLE_MAGIC_BEANS,
-    RSK_BOMBCHUS_IN_LOGIC
+    RSK_BOMBCHUS_IN_LOGIC,
+    RSK_LINKS_POCKET
 } RandomizerSettingKey;
 
 typedef enum {

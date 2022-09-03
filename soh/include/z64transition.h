@@ -2,7 +2,7 @@
 #define Z64TRANSITION_H
 
 #include "ultra64.h"
-#include "color.h"
+#include <libultraship/color.h>
 
 typedef struct {
     f32 unk_0;
