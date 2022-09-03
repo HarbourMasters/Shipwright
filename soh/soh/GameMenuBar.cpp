@@ -888,10 +888,25 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
-                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
-                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice");
-                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
-                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches");
+
+                // Blue Fire Arrows
+                bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
+                const char* forceEnableBlueFireArrowsText =
+                    "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
+                    forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.");
+
+                // Sunlight Arrows
+                bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
+                const char* forceEnableSunLightArrowsText =
+                    "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
+                    forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.");
+
                 ImGui::EndMenu();
             }
 
