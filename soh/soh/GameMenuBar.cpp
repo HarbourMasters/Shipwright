@@ -23,6 +23,7 @@
 #endif
 
 #include "UIWidgets.hpp"
+#include "include/global.h"
 #include "include/z64audio.h"
 
 #define EXPERIMENTAL() \
@@ -745,7 +746,12 @@ namespace GameMenuBar {
                     );
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                     UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                    UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false);
+                    bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
+                    const char* forceEnableBombchuDropsText =
+                        "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
+                    UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false,
+                                                         forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
                     UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
                     UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
