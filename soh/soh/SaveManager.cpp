@@ -1592,6 +1592,7 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+    Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
 }
 
 extern "C" bool Save_Exist(int fileNum) {

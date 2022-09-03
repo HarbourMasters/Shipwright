@@ -930,7 +930,11 @@ void InitItemTracker() {
         buttonsPressed = cont_pad;
     });
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
-        const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), "");
+        const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
+    });
+    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        SohImGui::RequestCvarSaveOnNextTick();
     });
 }
