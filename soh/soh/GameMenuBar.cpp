@@ -878,9 +878,9 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
                 UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
-                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice. May require a room reload if toggled during gameplay.");
+                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
                 UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
-                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches. May require a room reload if toggled during gameplay.");
+                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
                 ImGui::EndMenu();
             }
 
