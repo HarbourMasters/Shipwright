@@ -258,7 +258,7 @@ namespace Settings {
   Option SkipTowerEscape     = Option::Bool("Skip Tower Escape",      {"Don't Skip", "Skip"},                                                 {skipTowerEscapeDesc},                                                                                            OptionCategory::Setting,    SKIP);
   Option SkipEponaRace       = Option::Bool("Skip Epona Race",        {"Don't Skip", "Skip"},                                                 {skipEponaRaceDesc});
   Option SkipMinigamePhases  = Option::Bool("Minigames repetitions",  {"Don't Skip", "Skip"},                                                 {skipMinigamePhasesDesc});
-  Option FreeScarecrow       = Option::Bool("Free Scarecrow",         {"Off", "On"},                                                          {freeScarecrowDesc});
+  Option FreeScarecrow       = Option::Bool("Skip Scarecrow's Song",  {"Off", "On"},                                                          {freeScarecrowDesc});
   Option FourPoesCutscene    = Option::Bool("Four Poes Cutscene",     {"Don't Skip", "Skip"},                                                 {fourPoesDesc},                                                                                                   OptionCategory::Setting,    SKIP);
   Option LakeHyliaOwl        = Option::Bool("Lake Hylia Owl",         {"Don't Skip", "Skip"},                                                 {lakeHyliaOwlDesc},                                                                                               OptionCategory::Setting,    SKIP);
   Option BigPoeTargetCount   = Option::U8  ("Big Poe Target Count",   {NumOpts(1, 10)},                                         {bigPoeTargetCountDesc});
@@ -2589,6 +2589,8 @@ namespace Settings {
     SkipTowerEscape.SetSelectedIndex(cvarSettings[RSK_SKIP_TOWER_ESCAPE]);
 
     CompleteMaskQuest.SetSelectedIndex(cvarSettings[RSK_COMPLETE_MASK_QUEST]);
+
+    FreeScarecrow.SetSelectedIndex(cvarSettings[RSK_SKIP_SCARECROWS_SONG]);
 
     EnableGlitchCutscenes.SetSelectedIndex(cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES]);
 
