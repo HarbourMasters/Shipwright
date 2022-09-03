@@ -25,7 +25,7 @@ namespace UIWidgets {
         std::string newText(text);
         const size_t tipLength = newText.length();
         int lastSpace = -1;
-        size_t currentLineLength = 0;
+        int currentLineLength = 0;
         for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
             if (newText[currentCharacter] == '\n') {
                 currentLineLength = 0;
