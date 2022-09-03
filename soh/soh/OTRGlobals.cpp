@@ -1637,6 +1637,10 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
 extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
     s16 getItemModIndex;
     RandomizerCheck randomizerCheck = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
+    // if we got unknown check here, we don't need to do anything else, just return the ogId.
+    if (randomizerCheck == RC_UNKNOWN_CHECK) {
+        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
+    }
     if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
         getItemModIndex = MOD_NONE;
     } else {
@@ -1653,6 +1657,11 @@ extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     s16 getItemModIndex;
+
+    // if we got unknown check here, we don't need to do anything else, just return the ogId.
+    if (randomizerCheck == RC_UNKNOWN_CHECK) {
+        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
+    }
     if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
         getItemModIndex = MOD_NONE;
     } else {
