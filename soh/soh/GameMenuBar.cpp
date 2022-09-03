@@ -896,7 +896,7 @@ namespace GameMenuBar {
                     "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
                     forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice. May require a room reload on first use.");
+                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
 
                 // Sunlight Arrows
                 bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
@@ -905,7 +905,7 @@ namespace GameMenuBar {
                     "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches. May require a room reload on first use.");
+                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
 
                 ImGui::EndMenu();
             }
