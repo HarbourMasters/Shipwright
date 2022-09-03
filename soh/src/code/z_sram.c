@@ -101,6 +101,9 @@ void GiveLinksPocketItem() {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
         if (getItemEntry.modIndex == MOD_NONE) {
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
             Item_Give(NULL, getItemEntry.itemId);
         } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
             Randomizer_Item_Give(NULL, getItemEntry);
@@ -400,6 +403,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = getItem.getItemId;
 
             if (getItem.modIndex == MOD_NONE) {
+                if (getItem.getItemId == GI_SWORD_BGS) {
+                    gSaveContext.bgsFlag = true;
+                }
                 Item_Give(NULL, getItem.itemId);
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
                 Randomizer_Item_Give(NULL, getItem);
