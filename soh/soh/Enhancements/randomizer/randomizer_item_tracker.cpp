@@ -1,13 +1,13 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include <soh/Enhancements/debugger/ImGuiHelpers.h>
+#include <libultraship/ImGuiImpl.h>
+#include "../../UIWidgets.hpp"
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -19,6 +19,7 @@ extern GlobalContext* gGlobalCtx;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
+
 
 typedef struct {
     uint32_t id;
@@ -252,7 +253,7 @@ void DrawEquip(uint32_t itemId) {
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
 std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
@@ -300,7 +301,7 @@ void DrawQuest(uint32_t itemId) {
 
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
 };
 
 std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
@@ -677,7 +678,7 @@ void DrawItem(uint32_t itemId) {
     }
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
 void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
@@ -688,7 +689,7 @@ void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
 
 typedef struct {
@@ -733,12 +734,12 @@ void DrawUpgrade(int32_t categoryId) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
         ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
-        SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+        UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     } else {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
         ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
-        SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+        UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     }
 }
 
@@ -804,7 +805,7 @@ void DrawSong(int32_t songId) {
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
-    SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
 }
 
 void DrawItemTracker(bool& open) {
@@ -983,12 +984,12 @@ void DrawItemTracker(bool& open) {
             } else {
                 minimalSpacingX = 32;
             }
-            SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
-            SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
-            SohImGui::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
-            SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
+            UIWidgets::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
+            UIWidgets::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
+            UIWidgets::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
+            UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
-            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
+            UIWidgets::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
                                            "");
             // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
             //                                16, "");
