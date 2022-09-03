@@ -2904,8 +2904,9 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, s32 actorParams) {
             break;
     }
 
-    if (randomizerGetToEnGirlShopItem.find(GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck)) != randomizerGetToEnGirlShopItem.end()) {
-        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck)];
+    RandomizerGet randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
+    if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
+        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
     }
 
     if (randomizerMerchantPrices.find(shopItemIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
