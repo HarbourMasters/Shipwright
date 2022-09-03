@@ -1136,6 +1136,8 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
         return;
     }
 
+    this->trialsRequired.clear();
+
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
