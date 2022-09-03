@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "Cvar.h"
+#include "Hooks.h"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include "spdlog/spdlog.h"
@@ -1570,6 +1571,7 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
+    Ship::ExecuteHooks<Ship::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {

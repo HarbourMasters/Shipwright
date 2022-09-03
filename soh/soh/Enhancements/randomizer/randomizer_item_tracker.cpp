@@ -485,6 +485,8 @@ void DrawSong(ItemTrackerItem item) {
     SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
 
+static ImVector<char> itemTrackerNotes;
+
 void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
@@ -510,12 +512,15 @@ void DrawNotes(bool resizeable = false) {
                                                 (void*)itemTrackerNotes);
         }
     };
-    static ImVector<char> itemTrackerNotes;
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
+    if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+        SohImGui::needs_save = true;
+    }
     ImGui::EndGroup();
 }
 
@@ -924,5 +929,9 @@ void InitItemTracker() {
     }; // Float value, 1 = 255 in rgb value.
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         buttonsPressed = cont_pad;
+    });
+    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+        const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), "");
+        strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
 }
