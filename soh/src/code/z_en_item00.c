@@ -519,7 +519,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 func_8002F554(&this->actor, globalCtx, getItemId);
             } else {
-                getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+                getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
                 GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
             }
         }

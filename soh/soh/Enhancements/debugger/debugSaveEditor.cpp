@@ -1,5 +1,6 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
+#include "../../OTRGlobals.h"
 #include <libultraship/ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
@@ -623,7 +624,7 @@ void DrawInventoryTab() {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         // Set adult trade item flag if you're playing adult trade shuffle in rando  
                         if (gSaveContext.n64ddFlag &&
-                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                             selectedIndex == SLOT_TRADE_ADULT &&
                             slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
                             gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
