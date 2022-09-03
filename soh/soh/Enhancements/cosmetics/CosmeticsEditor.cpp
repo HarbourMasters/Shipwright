@@ -1,11 +1,13 @@
 #include "CosmeticsEditor.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 #include <random>
 #include <algorithm>
-#include <PR/ultra64/types.h>
+#include <ultra64/types.h>
+
+#include "../../UIWidgets.hpp"
 
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
@@ -51,9 +53,9 @@ void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
         std::string cvarName = Element->CvarName;
         std::string Cvar_RBM = cvarName + "RBM";
         colors = RANDOMIZE_32(255);
-        NewColors.r = SohImGui::ClampFloatToInt(colors.x * 255, 0, 255);
-        NewColors.g = SohImGui::ClampFloatToInt(colors.y * 255, 0, 255);
-        NewColors.b = SohImGui::ClampFloatToInt(colors.z * 255, 0, 255);
+        NewColors.r = fmin(fmax(colors.x * 255, 0), 255);
+        NewColors.g = fmin(fmax(colors.y * 255, 0), 255);
+        NewColors.b = fmin(fmax(colors.z * 255, 0), 255);
         Element->ModifiedColor = colors;
         CVar_SetRGBA(cvarName.c_str(), NewColors);
         CVar_SetS32(Cvar_RBM.c_str(), 0);
@@ -149,9 +151,9 @@ void LoadRainbowColor(bool& open) {
         case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
         }
         Color_RGBA8 NewColorRGB = {
-            SohImGui::ClampFloatToInt(NewColor.x, 0, 255),
-            SohImGui::ClampFloatToInt(NewColor.y, 0, 255),
-            SohImGui::ClampFloatToInt(NewColor.z, 0, 255),
+            fmin(fmax(NewColor.x, 0), 255),
+            fmin(fmax(NewColor.y, 0), 255),
+            fmin(fmax(NewColor.z, 0), 255),
             255
         };
         if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
@@ -187,7 +189,7 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
     ImGui::SmallButton("?");
-    SohImGui::Tooltip(helptext.c_str());
+    UIWidgets::Tooltip(helptext.c_str());
     if (sameline) {
         //I do not use ImGui::SameLine(); because it make some element vanish.
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
@@ -197,96 +199,96 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
 void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarName){
     std::string CvarLabel = CvarName + "UseMargins";
     std::string Label = ElementName + " use margins";
-    SohImGui::EnhancementCheckbox(Label.c_str(), CvarLabel.c_str());
-    SohImGui::Tooltip("Using this allow you move the element with General margins sliders");
+    UIWidgets::EnhancementCheckbox(Label.c_str(), CvarLabel.c_str());
+    UIWidgets::Tooltip("Using this allow you move the element with General margins sliders");
 }
 void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = true){
     std::string CvarLabel = CvarName + "PosType";
-    SohImGui::EnhancementRadioButton("Original position", CvarLabel.c_str(), 0);
-    SohImGui::Tooltip("This will use original intended elements position");
-    SohImGui::EnhancementRadioButton("Anchor to the left", CvarLabel.c_str(), 1);
-    SohImGui::Tooltip("This will make your elements follow the left side of your game window");
-    SohImGui::EnhancementRadioButton("Anchor to the right", CvarLabel.c_str(), 2);
-    SohImGui::Tooltip("This will make your elements follow the right side of your game window");
+    UIWidgets::EnhancementRadioButton("Original position", CvarLabel.c_str(), 0);
+    UIWidgets::Tooltip("This will use original intended elements position");
+    UIWidgets::EnhancementRadioButton("Anchor to the left", CvarLabel.c_str(), 1);
+    UIWidgets::Tooltip("This will make your elements follow the left side of your game window");
+    UIWidgets::EnhancementRadioButton("Anchor to the right", CvarLabel.c_str(), 2);
+    UIWidgets::Tooltip("This will make your elements follow the right side of your game window");
     if (NoAnchorEnabled) {
-        SohImGui::EnhancementRadioButton("No anchors", CvarLabel.c_str(), 3);
-        SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements");
+        UIWidgets::EnhancementRadioButton("No anchors", CvarLabel.c_str(), 3);
+        UIWidgets::Tooltip("This will make your elements to not follow any side\nBetter used for center elements");
     }
-    SohImGui::EnhancementRadioButton("Hidden", CvarLabel.c_str(), 4);
-    SohImGui::Tooltip("This will make your elements hidden");
+    UIWidgets::EnhancementRadioButton("Hidden", CvarLabel.c_str(), 4);
+    UIWidgets::Tooltip("This will make your elements hidden");
 }
 void DrawTransitions(const std::string CvarName){
-    SohImGui::EnhancementRadioButton("Really slow fade (white)", CvarName.c_str(), 8);
+    UIWidgets::EnhancementRadioButton("Really slow fade (white)", CvarName.c_str(), 8);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Really slow fade (black)", CvarName.c_str(), 7);
+    UIWidgets::EnhancementRadioButton("Really slow fade (black)", CvarName.c_str(), 7);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Slow fade (white)", CvarName.c_str(), 10);
+    UIWidgets::EnhancementRadioButton("Slow fade (white)", CvarName.c_str(), 10);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Slow fade (black)", CvarName.c_str(), 9);
+    UIWidgets::EnhancementRadioButton("Slow fade (black)", CvarName.c_str(), 9);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Normal fade (white)", CvarName.c_str(), 3);
+    UIWidgets::EnhancementRadioButton("Normal fade (white)", CvarName.c_str(), 3);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Normal fade (black)", CvarName.c_str(), 2);
+    UIWidgets::EnhancementRadioButton("Normal fade (black)", CvarName.c_str(), 2);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Fast fade (white)", CvarName.c_str(), 5);
+    UIWidgets::EnhancementRadioButton("Fast fade (white)", CvarName.c_str(), 5);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Fast fade (black)", CvarName.c_str(), 4);
+    UIWidgets::EnhancementRadioButton("Fast fade (black)", CvarName.c_str(), 4);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Fast circle (white)", CvarName.c_str(), 40);
+    UIWidgets::EnhancementRadioButton("Fast circle (white)", CvarName.c_str(), 40);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Normal circle (black)", CvarName.c_str(), 32);
+    UIWidgets::EnhancementRadioButton("Normal circle (black)", CvarName.c_str(), 32);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Slow circle (white)", CvarName.c_str(), 41);
+    UIWidgets::EnhancementRadioButton("Slow circle (white)", CvarName.c_str(), 41);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Slow circle (black)", CvarName.c_str(), 33);
+    UIWidgets::EnhancementRadioButton("Slow circle (black)", CvarName.c_str(), 33);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Fast noise circle (white)", CvarName.c_str(), 42);
+    UIWidgets::EnhancementRadioButton("Fast noise circle (white)", CvarName.c_str(), 42);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Fast noise circle (black)", CvarName.c_str(), 34);
+    UIWidgets::EnhancementRadioButton("Fast noise circle (black)", CvarName.c_str(), 34);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Slow noise circle (white)", CvarName.c_str(), 43);
+    UIWidgets::EnhancementRadioButton("Slow noise circle (white)", CvarName.c_str(), 43);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Slow noise circle (black)", CvarName.c_str(), 35);
+    UIWidgets::EnhancementRadioButton("Slow noise circle (black)", CvarName.c_str(), 35);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Normal waves circle (white)", CvarName.c_str(), 44);
+    UIWidgets::EnhancementRadioButton("Normal waves circle (white)", CvarName.c_str(), 44);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Normal waves circle (black)", CvarName.c_str(), 36);
+    UIWidgets::EnhancementRadioButton("Normal waves circle (black)", CvarName.c_str(), 36);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Slow waves circle (white)", CvarName.c_str(), 45);
+    UIWidgets::EnhancementRadioButton("Slow waves circle (white)", CvarName.c_str(), 45);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Slow waves circle (black)", CvarName.c_str(), 37);
+    UIWidgets::EnhancementRadioButton("Slow waves circle (black)", CvarName.c_str(), 37);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Normal close circle (white)", CvarName.c_str(), 46);
+    UIWidgets::EnhancementRadioButton("Normal close circle (white)", CvarName.c_str(), 46);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Normal close circle (black)", CvarName.c_str(), 38);
+    UIWidgets::EnhancementRadioButton("Normal close circle (black)", CvarName.c_str(), 38);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Slow close circle (white)", CvarName.c_str(), 47);
+    UIWidgets::EnhancementRadioButton("Slow close circle (white)", CvarName.c_str(), 47);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Slow close circle (black)", CvarName.c_str(), 39);
+    UIWidgets::EnhancementRadioButton("Slow close circle (black)", CvarName.c_str(), 39);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Super fast circle (white)", CvarName.c_str(), 56);
+    UIWidgets::EnhancementRadioButton("Super fast circle (white)", CvarName.c_str(), 56);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Super fast circle (black)", CvarName.c_str(), 58);
+    UIWidgets::EnhancementRadioButton("Super fast circle (black)", CvarName.c_str(), 58);
     Table_NextLine();
-    SohImGui::EnhancementRadioButton("Super fast noise circle (white)", CvarName.c_str(), 57);
+    UIWidgets::EnhancementRadioButton("Super fast noise circle (white)", CvarName.c_str(), 57);
     Table_NextCol();
-    SohImGui::EnhancementRadioButton("Super fast noise circle (black)", CvarName.c_str(), 59);
+    UIWidgets::EnhancementRadioButton("Super fast noise circle (black)", CvarName.c_str(), 59);
 }
 void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX, int MaxX){
     std::string PosXCvar = CvarName+"PosX";
     std::string PosYCvar = CvarName+"PosY";
     std::string InvisibleLabelX = "##"+PosXCvar;
     std::string InvisibleLabelY = "##"+PosYCvar;
-    SohImGui::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0, true);
-    SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-    SohImGui::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0, true);
-    SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+    UIWidgets::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0, true);
+    UIWidgets::Tooltip("This slider is used to move Up and Down your elements.");
+    UIWidgets::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0, true);
+    UIWidgets::Tooltip("This slider is used to move Left and Right your elements.");
 }
 void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     std::string InvisibleLabel = "##"+CvarName;
     std::string CvarLabel = CvarName+"Scale";
     //Disabled for now. feature not done and several fixes needed to be merged.
-    //SohImGui::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
+    //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
 }
 void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
     for (s16 i = 0; i < SectionSize; i++) {
@@ -308,7 +310,7 @@ void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
             Table_NextLine();
         }
         Draw_HelpIcon(Tooltip.c_str());
-        SohImGui::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
+        UIWidgets::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
     }
 }
 void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize, bool isAllCosmetics = false){
@@ -335,21 +337,21 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
             CVar_SetS32("gCCparated", 1);
             GetRandomColorRGB(ColorSection, SectionSize);
         }
-        SohImGui::Tooltip(Tooltip_RNG.c_str());
+        UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
         if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
             GetDefaultColorRGB(ColorSection, SectionSize);
         }
-        SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
-        SohImGui::Tooltip(Tooltip_RNG.c_str());
+        UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+        UIWidgets::Tooltip(Tooltip_RNG.c_str());
         ImGui::EndTable();
     }
 }
 
 void Draw_Npcs(){
     DrawRandomizeResetButton("all NPCs", NPCs_section, SECTION_SIZE(NPCs_section));
-    SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
-    SohImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
+    UIWidgets::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
+    UIWidgets::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
     if (CVar_GetS32("gUseNaviCol",0)) { 
         DrawRandomizeResetButton("Navi's", Navi_Section, SECTION_SIZE(Navi_Section)); 
     };
@@ -360,8 +362,8 @@ void Draw_Npcs(){
         DrawColorSection(Navi_Section, SECTION_SIZE(Navi_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
-    SohImGui::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
+    UIWidgets::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
+    UIWidgets::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
     if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Fire colors##Keese", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Ice colors##Keese", FlagsCell, TablesCellsWidth/2);
@@ -369,8 +371,8 @@ void Draw_Npcs(){
         DrawColorSection(Keese_Section, SECTION_SIZE(Keese_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
-    SohImGui::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
+    UIWidgets::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
+    UIWidgets::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
     if (CVar_GetS32("gUseDogsCol",0) && ImGui::BeginTable("tableDogs", 2, FlagsTable)) {
         ImGui::TableSetupColumn("White Dog color", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Brown Dog color", FlagsCell, TablesCellsWidth/2);
@@ -381,8 +383,8 @@ void Draw_Npcs(){
 }
 void Draw_ItemsSkills(){
     DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section));
-    SohImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
-    SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+    UIWidgets::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
+    UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0)) {
         DrawRandomizeResetButton("Link's tunics", Tunics_Section, SECTION_SIZE(Tunics_Section));
     };
@@ -394,7 +396,7 @@ void Draw_ItemsSkills(){
         DrawColorSection(Tunics_Section, SECTION_SIZE(Tunics_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
+    UIWidgets::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
     if (CVar_GetS32("gUseArrowsCol",0)) {
         DrawRandomizeResetButton("elemental arrows", Arrows_section, SECTION_SIZE(Arrows_section));
     }
@@ -405,7 +407,7 @@ void Draw_ItemsSkills(){
         DrawColorSection(Arrows_section, SECTION_SIZE(Arrows_section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
+    UIWidgets::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
     if (CVar_GetS32("gUseSpellsCol",0)) {
         DrawRandomizeResetButton("spells", Spells_section, SECTION_SIZE(Spells_section));
     }
@@ -416,7 +418,7 @@ void Draw_ItemsSkills(){
         DrawColorSection(Spells_section, SECTION_SIZE(Spells_section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
+    UIWidgets::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
     if (CVar_GetS32("gUseChargedCol",0)) {
         DrawRandomizeResetButton("spins attack", SpinAtk_section, SECTION_SIZE(SpinAtk_section));
     }
@@ -427,13 +429,13 @@ void Draw_ItemsSkills(){
         DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
+    UIWidgets::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
     if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, FlagsTable)) {
         ImGui::TableSetupColumn("Custom Trails", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
         DrawColorSection(Trails_section, SECTION_SIZE(Trails_section));
-        SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        SohImGui::Tooltip("The longer the trails the weirder it become");
+        UIWidgets::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
+        UIWidgets::Tooltip("The longer the trails the weirder it become");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -455,18 +457,18 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
         ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
         SetMarginAll("All margins on",true);
-        SohImGui::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        UIWidgets::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
         ImGui::SameLine();
         SetMarginAll("All margins off",false);
-        SohImGui::Tooltip("Set all of the element to not use margin");
+        UIWidgets::Tooltip("Set all of the element to not use margin");
         ImGui::SameLine();
         ResetPositionAll();
-        SohImGui::Tooltip("Revert every element to use their original position and no margins");
+        UIWidgets::Tooltip("Revert every element to use their original position and no margins");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -775,7 +777,7 @@ void Draw_HUDButtons(){
                 DrawColorSection(C_Btn_Unified_section, SECTION_SIZE(C_Btn_Unified_section));
                 ImGui::EndTable();
             }
-            SohImGui::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
+            UIWidgets::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
             if (CVar_GetS32("gCCparated",0) && ImGui::CollapsingHeader("C Button individual colors")) {
                 if (ImGui::BeginTable("tableBTN_CSep", 1, FlagsTable)) {
                     ImGui::TableSetupColumn("C-Buttons individual colors", FlagsCell, TablesCellsWidth);
@@ -813,19 +815,19 @@ void Draw_General(){
         ImGui::TableSetupColumn("Custom Schemes", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
         Draw_HelpIcon("Change interface color to N64 style");
-        SohImGui::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
+        UIWidgets::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
         Table_NextCol();
         Draw_HelpIcon("Change interface color to GameCube style");
-        SohImGui::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
+        UIWidgets::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
         Table_NextCol();
         Draw_HelpIcon("Lets you change every interface color to your liking");
-        SohImGui::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
+        UIWidgets::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
         ImGui::EndTable();
     }
     if (CVar_GetS32("gHudColors",0) ==2 ){
         DrawRandomizeResetButton("interface (excluding buttons)", Misc_Interface_section, SECTION_SIZE(Misc_Interface_section));
         if (ImGui::CollapsingHeader("Hearts colors")) {
-            SohImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
+            UIWidgets::Tooltip("Hearts colors in general\nDD stand for Double Defense");
             if (ImGui::BeginTable("tableHearts", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("Hearts (normal)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
@@ -874,25 +876,25 @@ void Draw_General(){
                 ImGui::TableSetupColumn("transitionother1", FlagsCell, TablesCellsWidth/2);
                 ImGui::TableSetupColumn("transitionother2", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader(false);
-                SohImGui::EnhancementRadioButton("Originals", "gSceneTransitions", 255);
-                SohImGui::Tooltip("This will make the game use original scenes transitions");
+                UIWidgets::EnhancementRadioButton("Originals", "gSceneTransitions", 255);
+                UIWidgets::Tooltip("This will make the game use original scenes transitions");
                 Table_NextCol();
-                SohImGui::EnhancementRadioButton("None", "gSceneTransitions", 11);
-                SohImGui::Tooltip("This will make the game use no any scenes transitions");
+                UIWidgets::EnhancementRadioButton("None", "gSceneTransitions", 11);
+                UIWidgets::Tooltip("This will make the game use no any scenes transitions");
                 Table_NextLine();
-                SohImGui::EnhancementRadioButton("Desert mode (persistant)", "gSceneTransitions", 14);
-                SohImGui::Tooltip("This will make the game use the sand storm scenes transitions that will persist in map");
+                UIWidgets::EnhancementRadioButton("Desert mode (persistant)", "gSceneTransitions", 14);
+                UIWidgets::Tooltip("This will make the game use the sand storm scenes transitions that will persist in map");
                 Table_NextCol();
-                SohImGui::EnhancementRadioButton("Desert mode (non persistant)", "gSceneTransitions", 15);
-                SohImGui::Tooltip("This will make the game use the sand storm scenes transitions");
+                UIWidgets::EnhancementRadioButton("Desert mode (non persistant)", "gSceneTransitions", 15);
+                UIWidgets::Tooltip("This will make the game use the sand storm scenes transitions");
                 Table_NextLine();
-                SohImGui::EnhancementRadioButton("Normal fade (green)", "gSceneTransitions", 18);
-                SohImGui::Tooltip("This will make the game use a greenish fade in/out scenes transitions");
+                UIWidgets::EnhancementRadioButton("Normal fade (green)", "gSceneTransitions", 18);
+                UIWidgets::Tooltip("This will make the game use a greenish fade in/out scenes transitions");
                 Table_NextCol();
-                SohImGui::EnhancementRadioButton("Normal fade (blue)", "gSceneTransitions", 19);
-                SohImGui::Tooltip("This will make the game use a blue fade in/out scenes transitions");
+                UIWidgets::EnhancementRadioButton("Normal fade (blue)", "gSceneTransitions", 19);
+                UIWidgets::Tooltip("This will make the game use a blue fade in/out scenes transitions");
                 Table_NextLine();
-                SohImGui::EnhancementRadioButton("Triforce", "gSceneTransitions", 1);
+                UIWidgets::EnhancementRadioButton("Triforce", "gSceneTransitions", 1);
                 ImGui::EndTable();
             }
             if (ImGui::BeginTable("tabletransitionCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
@@ -948,6 +950,7 @@ void DrawCosmeticsEditor(bool& open) {
     }
     ImGui::End();
 }
+
 void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
     //LoadRainbowColor() will this way run in background once it's window is activated

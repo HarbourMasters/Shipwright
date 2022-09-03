@@ -1,14 +1,12 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "../libultraship/Hooks.h"
-#include "../libultraship/UltraController.h"
-#include "../debugger/ImGuiHelpers.h"
+#include <libultraship/ImGuiImpl.h>
+#include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>
