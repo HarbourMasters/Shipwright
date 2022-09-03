@@ -350,39 +350,36 @@ void DrawItemCount(ItemTrackerItem item) {
     }
 
     if (currentAndMax.currentCapacity > 0) {
-        /*if (currentAndMax.currentCapacity >= currentAndMax.maxCapacity) {
-            std::string currentString = std::to_string((int)currentAndMax.currentCapacity);
-            float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
-
-            ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%d", (int)currentAndMax.currentCapacity);
-            ImGui::PopStyleColor();
-        } else {
-        if (item.id == QUEST_SKULL_TOKEN) {
-            switch (CVar_GetS32("gItemTrackerCapacityTrack", 0)) {
-                case ITEM_TRACKER_NUMBER_NONE:
-                case ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY:
-                case ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY:
-                    std::string currentString = std::to_string((int)currentAndMax.currentAmmo);
-                    float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
-
-                    ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
-                    ImGui::Text("%d", (int)currentAndMax.currentAmmo);
-                    break;
-            }
-        }*/
-
         switch (CVar_GetS32("gItemTrackerCapacityTrack", 0)) {
             case ITEM_TRACKER_NUMBER_NONE:
                 break;
             case ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY:
             {
-                std::string currentString = std::to_string((int)currentAndMax.currentCapacity);
+                std::string currentString = std::to_string((int)currentAndMax.currentCapacity); // Init like that else it would mess up with centering
+
+                if (item.id == QUEST_SKULL_TOKEN) {
+                    std::string currentString = std::to_string((int)currentAndMax.currentAmmo);
+                } else {
+                    std::string currentString = std::to_string((int)currentAndMax.currentCapacity);
+                }
                 float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
                 ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
-                ImGui::Text("%d", (int)currentAndMax.currentCapacity);
+                if (item.id != QUEST_SKULL_TOKEN && currentAndMax.currentCapacity == currentAndMax.maxCapacity) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                } else if (item.id == QUEST_SKULL_TOKEN && currentAndMax.currentAmmo == currentAndMax.maxCapacity){
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+                } else {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                }
+
+                if (item.id == QUEST_SKULL_TOKEN) {
+                    ImGui::Text("%d", (int)currentAndMax.currentAmmo);
+                } else {
+                    ImGui::Text("%d", (int)currentAndMax.currentCapacity);
+                }
+                
+                ImGui::PopStyleColor();
             }
                 break;
             case ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY:
@@ -391,27 +388,48 @@ void DrawItemCount(ItemTrackerItem item) {
                 float x = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentString.c_str()).x / 2);
 
                 ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
+                if (currentAndMax.currentAmmo == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(150, 150, 150, 255));
+                } else if (item.id == QUEST_SKULL_TOKEN && currentAndMax.currentAmmo == currentAndMax.currentCapacity) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+                } else if (currentAndMax.currentAmmo == currentAndMax.currentCapacity) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                } else {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                }
                 ImGui::Text("%d", (int)currentAndMax.currentAmmo);
+                ImGui::PopStyleColor();
             }
                 break;
             case ITEM_TRACKER_NUMBER_CAPACITY:
             {
-                std::string currentAndMaxString="0";
+                std::string currentAndMaxString = std::to_string((int)currentAndMax.currentCapacity) + "/" + std::to_string((int)currentAndMax.maxCapacity); // This one is there for a correc tspacing initialisation, else it would mess it up
+                
                 if (item.id == QUEST_SKULL_TOKEN) {
                     std::string currentAndMaxString = std::to_string((int)currentAndMax.currentAmmo) + "/" + std::to_string((int)currentAndMax.maxCapacity);
+                    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 18));
+
+                    if (currentAndMax.currentAmmo == 0) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(150, 150, 150, 255));
+                    } else if (currentAndMax.currentAmmo == currentAndMax.currentCapacity) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                    }
+                    ImGui::Text("%d/", (int)currentAndMax.currentAmmo);
+                    ImGui::PopStyleColor();
                 } else {
                     std::string currentAndMaxString = std::to_string((int)currentAndMax.currentCapacity) + "/" + std::to_string((int)currentAndMax.maxCapacity);
-                }
-
-                ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
-
-                
-                if (item.id == QUEST_SKULL_TOKEN) {
-                    ImGui::Text("%d/", (int)currentAndMax.currentAmmo);
-                } else {
+                    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(currentAndMaxString.c_str()).x / 2), p.y - 14));
+                    if (currentAndMax.currentCapacity == currentAndMax.maxCapacity) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                    }
                     ImGui::Text("%d/", (int)currentAndMax.currentCapacity);
+                    ImGui::PopStyleColor();
                 }
-                
+
                 ImGui::SameLine(0, 0.0f);
                 if (item.id == QUEST_SKULL_TOKEN) {
                     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
