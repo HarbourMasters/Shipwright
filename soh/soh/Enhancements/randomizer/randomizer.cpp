@@ -1858,7 +1858,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) < 3) {
                 return GI_KEY_BOSS;
             } else {
-                return randoGet;
+                return (GetItemID)randoGet;
             }
 
         case RG_FOREST_TEMPLE_SMALL_KEY:
