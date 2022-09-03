@@ -685,7 +685,7 @@ namespace Logic {
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-    ScarecrowSong    = ScarecrowSong || (ChildScarecrow && AdultScarecrow);
+    ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
     Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
     DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
 
