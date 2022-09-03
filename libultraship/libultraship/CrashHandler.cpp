@@ -176,28 +176,28 @@ static void PrintRegisters(CONTEXT* ctx) {
     char regBuff[50];
 #if defined(_M_AMD64)
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rax);
-    SPDLOG_CRITICAL("Rax: {}", regBuff);
+    SPDLOG_CRITICAL("RAX: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rcx);
-    SPDLOG_CRITICAL("Rcx: {}", regBuff);
+    SPDLOG_CRITICAL("RCX: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rdx);
-    SPDLOG_CRITICAL("Rdx: {}", regBuff);
+    SPDLOG_CRITICAL("RDX: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rbx);
-    SPDLOG_CRITICAL("Rbx: {}", regBuff);
+    SPDLOG_CRITICAL("RBX: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rsp);
-    SPDLOG_CRITICAL("Rsp: {}", regBuff);
+    SPDLOG_CRITICAL("RSP: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rbp);
-    SPDLOG_CRITICAL("Rbp: {}", regBuff);
+    SPDLOG_CRITICAL("RBP: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rsi);
-    SPDLOG_CRITICAL("Rsi: {}", regBuff);
+    SPDLOG_CRITICAL("RSI: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rdi);
-    SPDLOG_CRITICAL("Rdi: {}", regBuff);
+    SPDLOG_CRITICAL("RDI: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R9);
     SPDLOG_CRITICAL("R9:  {}", regBuff);
@@ -221,37 +221,37 @@ static void PrintRegisters(CONTEXT* ctx) {
     SPDLOG_CRITICAL("R15: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rip);
-    SPDLOG_CRITICAL("PC:  {}", regBuff);
+    SPDLOG_CRITICAL("RIP: {}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->EFlags);
-    SPDLOG_CRITICAL("EFlags: {}", regBuff);
+    SPDLOG_CRITICAL("EFLAGS: {}", regBuff);
 #elif WINDOWS_32_BIT
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Edi);
-    SPDLOG_CRITICAL("Edi: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EDI: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Esi);
-    SPDLOG_CRITICAL("Esi: 0x{}", regBuff);
+    SPDLOG_CRITICAL("ESI: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ebx);
-    SPDLOG_CRITICAL("Ebx: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EBX: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ecx);
-    SPDLOG_CRITICAL("Ecx: 0x{}", ctx->Ecx);
+    SPDLOG_CRITICAL("ECX: 0x{}", ctx->Ecx);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Eax);
-    SPDLOG_CRITICAL("Eax: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EAX: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ebp);
-    SPDLOG_CRITICAL("Ebp: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EBP: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Esp);
-    SPDLOG_CRITICAL("Esp: 0x{}", regBuff);
+    SPDLOG_CRITICAL("ESP: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->EFlags);
-    SPDLOG_CRITICAL("EFlags: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EFLAGS: 0x{}", regBuff);
 
     snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Eip);
-    SPDLOG_CRITICAL("Eip: 0x{}", regBuff);
+    SPDLOG_CRITICAL("EIP: 0x{}", regBuff);
 #endif
 }
 
