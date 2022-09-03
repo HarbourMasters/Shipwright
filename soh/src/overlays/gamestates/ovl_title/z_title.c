@@ -10,7 +10,7 @@
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include <soh/Enhancements/bootcommands.h>
-#include "GameVersions.h"
+#include <libultraship/GameVersions.h>
 #include <soh/SaveManager.h>
 
 const char* GetGameVersionString();
@@ -301,6 +301,9 @@ void Title_Init(GameState* thisx) {
                 saveloading = true;
                 gSaveContext.fileNum = selectedfile;
                 Sram_OpenSave();
+                Randomizer_LoadSettings("");
+                Randomizer_LoadHintLocations("");
+                Randomizer_LoadItemLocations("", true);
                 gSaveContext.gameMode = 0;
                 gSaveContext.magic = gSaveContext.magic;
                 SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);

@@ -1,14 +1,13 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "../libultraship/Hooks.h"
-#include "../libultraship/UltraController.h"
-#include "../debugger/ImGuiHelpers.h"
+#include <libultraship/ImGuiImpl.h>
+#include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
+#include <libultraship/Hooks.h>
 
 extern "C" {
 #include <z64.h>
@@ -351,7 +350,7 @@ void DrawEquip(ItemTrackerItem item) {
     ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -367,7 +366,7 @@ void DrawQuest(ItemTrackerItem item) {
 
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 };
 
 void DrawItem(ItemTrackerItem item) {
@@ -418,7 +417,7 @@ void DrawItem(ItemTrackerItem item) {
     DrawItemCount(item);
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawBottle(ItemTrackerItem item) {
@@ -433,7 +432,7 @@ void DrawBottle(ItemTrackerItem item) {
     ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -471,7 +470,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
 void DrawSong(ItemTrackerItem item) {
@@ -482,7 +481,7 @@ void DrawSong(ItemTrackerItem item) {
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
 
 static ImVector<char> itemTrackerNotes;
@@ -652,7 +651,7 @@ void LabeledComboBoxRightAligned(const char* label, const char* cvar, std::vecto
         for (int i = 0; i < options.size(); i++) {
             if (ImGui::Selectable(options[i].c_str())) {
                 CVar_SetS32(cvar, i);
-                SohImGui::needs_save = true;
+                SohImGui::RequestCvarSaveOnNextTick();
                 shouldUpdateVectors = true;
             }
         }
@@ -669,7 +668,7 @@ void PaddedEnhancementCheckbox(const char* text, const char* cvarName, s32 defau
     bool val = (bool)CVar_GetS32(cvarName, defaultValue);
         if (ImGui::Checkbox(text, &val)) {
             CVar_SetS32(cvarName, val);
-            SohImGui::needs_save = true;
+            SohImGui::RequestCvarSaveOnNextTick();
             shouldUpdateVectors = true;
         }
     if (padBottom) {
@@ -863,7 +862,7 @@ void DrawItemTrackerOptions(bool& open) {
         CVar_SetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVar_SetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
         CVar_SetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
-        SohImGui::needs_save = true;
+        SohImGui::RequestCvarSaveOnNextTick();
     }
     ImGui::PopItemWidth();
 
@@ -878,9 +877,9 @@ void DrawItemTrackerOptions(bool& open) {
             LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 8);
         }
     }
-    PaddedSeparator();
-    SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
-    SohImGui::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
+    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
     PaddedEnhancementCheckbox("Display \"Current/Max\" values", "gItemTrackerDisplayCurrentMax", 0);
     if (CVar_GetS32("gItemTrackerDisplayCurrentMax", 0) == 0) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);

@@ -1575,6 +1575,17 @@ void func_80084BF4(GlobalContext* globalCtx, u16 flag) {
     }
 }
 
+/**
+ * @brief Adds the given item to Link's inventory.
+ * 
+ * NOTE: This function has been edited to be safe to use with a NULL globalCtx.
+ * If you need to add to this function, be sure you check if the globalCtx is not
+ * NULL before doing any operations requiring it.
+ * 
+ * @param globalCtx 
+ * @param item 
+ * @return u8 
+ */
 u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
@@ -1654,7 +1665,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
-                    Interface_LoadItemIcon1(globalCtx, 0);
+                    if (globalCtx != NULL) {
+                        Interface_LoadItemIcon1(globalCtx, 0);
+                    }
                 }
             }
             
@@ -1662,7 +1675,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0002;
-            Interface_LoadItemIcon1(globalCtx, 0);
+            if (globalCtx != NULL) {
+                Interface_LoadItemIcon1(globalCtx, 0);
+            }
         }
 
         return ITEM_NONE;
@@ -1677,7 +1692,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         // Boss Key, Compass, and Dungeon Map exceptions for rando.
-        if (gSaveContext.n64ddFlag) {
+        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
+        // but we check for a globalCtx here so the game won't crash if we do somehow get here.
+        if (gSaveContext.n64ddFlag && globalCtx != NULL) {
             if (globalCtx->sceneNum == 13) { // ganon's castle -> ganon's tower
                 gSaveContext.inventory.dungeonItems[10] |= 1;
             } else if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
@@ -1691,7 +1708,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
         // Small key exceptions for rando with keysanity off.
-        if (gSaveContext.n64ddFlag) {
+        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
+        // but we check for a globalCtx here so the game won't crash if we do somehow get here.
+        if (gSaveContext.n64ddFlag && globalCtx != NULL) {
             if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
                 if (gSaveContext.inventory.dungeonKeys[13] < 0) {
                     gSaveContext.inventory.dungeonKeys[13] = 1;
@@ -1828,7 +1847,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) {
                 gSaveContext.equips.buttonItems[i] = ITEM_LONGSHOT;
-                Interface_LoadItemIcon1(globalCtx, i);
+                if (globalCtx != NULL) {
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
             }
         }
         // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
@@ -1836,7 +1857,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
-                    Interface_LoadItemIcon1(globalCtx, i);
+                    if (globalCtx != NULL) {
+                        Interface_LoadItemIcon1(globalCtx, i);
+                    }
                 }
             }
         }
@@ -1844,7 +1867,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
-                    Interface_LoadItemIcon1(globalCtx, i);
+                    if (globalCtx != NULL) {
+                        Interface_LoadItemIcon1(globalCtx, i);
+                    }
                 }
             }
         }
@@ -1989,7 +2014,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_OCARINA_TIME;
-                    Interface_LoadItemIcon1(globalCtx, i);
+                    if (globalCtx != NULL) {
+                        Interface_LoadItemIcon1(globalCtx, i);
+                    }
                 }
             }
         }
@@ -1997,7 +2024,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_OCARINA_TIME;
-                    Interface_LoadItemIcon1(globalCtx, i);
+                    if (globalCtx != NULL) {
+                        Interface_LoadItemIcon1(globalCtx, i);
+                    }
                 }
             }
         }
@@ -2021,14 +2050,20 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
-        Health_ChangeBy(globalCtx, 0x10);
+        if (globalCtx != NULL) {
+            Health_ChangeBy(globalCtx, 0x10);
+        }
         return item;
     } else if (item == ITEM_MAGIC_SMALL) {
         if (gSaveContext.unk_13F0 != 10) {
-            Magic_Fill(globalCtx);
+            if (globalCtx != NULL) {
+                Magic_Fill(globalCtx);
+            }
         }
 
-        func_80087708(globalCtx, 12, 5);
+        if (globalCtx != NULL) {
+            func_80087708(globalCtx, 12, 5);
+        }
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
@@ -2038,10 +2073,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return item;
     } else if (item == ITEM_MAGIC_LARGE) {
         if (gSaveContext.unk_13F0 != 10) {
-            Magic_Fill(globalCtx);
+            if (globalCtx != NULL) {
+                Magic_Fill(globalCtx);
+            }
         }
-
-        func_80087708(globalCtx, 24, 5);
+        if (globalCtx != NULL) {
+            func_80087708(globalCtx, 24, 5);
+        }
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
@@ -2080,7 +2118,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                     for (int buttonIndex = 1; buttonIndex < ARRAY_COUNT(gSaveContext.equips.buttonItems); buttonIndex++) {
                         if ((temp + i) == gSaveContext.equips.cButtonSlots[buttonIndex - 1]) {
                             gSaveContext.equips.buttonItems[buttonIndex] = item;
-                            Interface_LoadItemIcon2(globalCtx, buttonIndex);
+                            if (globalCtx != NULL) {
+                                Interface_LoadItemIcon2(globalCtx, buttonIndex);
+                            }
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(buttonIndex)] = BTN_ENABLED;
                             break;
                         }
@@ -2115,7 +2155,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 if (temp == gSaveContext.equips.buttonItems[i]) {
                     if (item != ITEM_SOLD_OUT) {
                         gSaveContext.equips.buttonItems[i] = item;
-                        Interface_LoadItemIcon1(globalCtx, i);
+                        if (globalCtx != NULL) {
+                            Interface_LoadItemIcon1(globalCtx, i);
+                        }
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
                     }
@@ -2132,7 +2174,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     INV_CONTENT(item) = item;
 
     // Autosave after getting items by default (cvars are not shown in the UI)
-    if (CVar_GetS32("gAutosave", 0)) {
+    if (CVar_GetS32("gAutosave", 0) && globalCtx != NULL) {
         if (CVar_GetS32("gAutosaveAllItems", 1)) {
             Gameplay_PerformSave(globalCtx);
         }
