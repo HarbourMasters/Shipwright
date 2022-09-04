@@ -1553,7 +1553,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MAGIC_BEAN:
         case RG_MAGIC_BEAN_PACK:
-            return BEANS_BOUGHT < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return AMMO(ITEM_BEAN) < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MEGATON_HAMMER:
             return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_ARROWS:
