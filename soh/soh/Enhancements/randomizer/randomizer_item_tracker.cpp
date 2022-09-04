@@ -375,14 +375,13 @@ void DrawItemCount(ItemTrackerItem item) {
                 } else {
                     currentColor = IM_COL_GREEN;
                 }
-            } else {
-                if (shouldDisplayMax) {
-                    currentString += "/";
-                    maxString = std::to_string(currentAndMax.currentCapacity);
-                }
-                if (currentAndMax.currentAmmo <= 0) {
-                    currentColor = IM_COL_GRAY;
-                }
+            }
+            if (shouldDisplayMax) {
+                currentString += "/";
+                maxString = std::to_string(currentAndMax.currentCapacity);
+            }
+            if (currentAndMax.currentAmmo <= 0) {
+                currentColor = IM_COL_GRAY;
             }
         } else {
             currentString = std::to_string(currentAndMax.currentCapacity);
