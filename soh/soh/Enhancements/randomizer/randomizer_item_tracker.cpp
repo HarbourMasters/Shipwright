@@ -947,6 +947,8 @@ void DrawItemTrackerOptions(bool& open) {
     
     ImGui::Text("Ammo/Capacity Tracking");
     UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 5, 1);
+    UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
+                                    "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
     if (CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
     }
