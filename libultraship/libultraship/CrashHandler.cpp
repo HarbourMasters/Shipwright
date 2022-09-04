@@ -334,7 +334,7 @@ static void printStack(CONTEXT* ctx) {
             SPDLOG_CRITICAL("In {}", module);
         }
     }
-    Ship::Window::GetInstance()->GetLogger()->flush();
+    // Ship::Window::GetInstance()->GetLogger()->flush();
     spdlog::shutdown();
     DeinitOTR();
 }
