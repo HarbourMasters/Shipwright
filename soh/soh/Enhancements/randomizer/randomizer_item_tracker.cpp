@@ -339,33 +339,33 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_WHITE IM_COL32(255, 255, 255, 255)
 #define IM_COL_RED IM_COL32(255, 0, 0, 255)
 #define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
-#define IM_COL_GRAY IM_COL32(150, 150, 150, 255)
+#define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
 
 void DrawItemCount(ItemTrackerItem item) {
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
-    int32_t trackerMode = CVar_GetS32("gItemTrackerCapacityTrack", 1);
+    int32_t trackerNumberDisplayMode = CVar_GetS32("gItemTrackerCapacityTrack", 1);
 
-    if (currentAndMax.currentCapacity > 0 && trackerMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
+    if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = "";
         ImU32 currentColor = IM_COL_WHITE;
         ImU32 maxColor = item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
 
         bool shouldAlignToLeft = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) &&
-            trackerMode != ITEM_TRACKER_NUMBER_CAPACITY &&
-            trackerMode != ITEM_TRACKER_NUMBER_AMMO;
+            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_CAPACITY &&
+            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_AMMO;
 
-        bool shouldDisplayAmmo = trackerMode == ITEM_TRACKER_NUMBER_AMMO ||
-            trackerMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
+        bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
+            trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
             // These items have a static capacity, so display ammo instead
             item.id == ITEM_BOMBCHU ||
             item.id == ITEM_BEAN ||
             item.id == QUEST_SKULL_TOKEN ||
             item.id == ITEM_KEY_SMALL;
 
-        bool shouldDisplayMax = trackerMode == ITEM_TRACKER_NUMBER_AMMO || trackerMode == ITEM_TRACKER_NUMBER_CAPACITY;
+        bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
 
         if (shouldDisplayAmmo) {
             currentString = std::to_string(currentAndMax.currentAmmo);
