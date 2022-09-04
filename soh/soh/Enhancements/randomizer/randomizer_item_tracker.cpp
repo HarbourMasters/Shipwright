@@ -511,9 +511,6 @@ void DrawNotes(bool resizeable = false) {
                                                 (void*)itemTrackerNotes);
         }
     };
-    if (itemTrackerNotes.empty()) {
-        itemTrackerNotes.push_back(0);
-    }
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
@@ -926,6 +923,10 @@ void InitItemTracker() {
         trackerBgB,
         trackerBgA
     }; // Float value, 1 = 255 in rgb value.
+    // Crashes when the itemTrackerNotes is empty, so add an empty character to it
+    if (itemTrackerNotes.empty()) {
+        itemTrackerNotes.push_back(0);
+    }
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         buttonsPressed = cont_pad;
     });
