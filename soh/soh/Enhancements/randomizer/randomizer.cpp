@@ -787,14 +787,46 @@ std::unordered_map<RandomizerGet, int32_t> randomizerGetToEnGirlShopItem = {
     { RG_BUY_RED_POTION_50, 0x31 },
 };
 
-void Randomizer::LoadShopMessages(const char* spoilerFileName) {
+void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
-    // TODO: Remove these after we make sure it's fine that they aren't here
-    // CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
-    // CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, 0,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
+            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
+        });
+    
+    // Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
+    // to being generated at save load, with only messages specific to each scrub.
+    for (u32 price = 5; price <= 95; price += 5) {
+        CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, price,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+            // RANDTODO: Translate the below string to German.
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
+                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
+            });
+    }
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
+            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
+            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
+            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
+            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
+        });
 
     // Make an inverse of std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum 
     // so that we can get the name of the item from the RandomizerCheck
@@ -5179,44 +5211,6 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
-// Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
-// to being generated at save load, with only messages specific to each scrub.
-void CreateMerchantMessages() {
-    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::merchantMessageTableID);
-    customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, 0,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
-            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
-        });
-
-    for (u32 price = 5; price <= 95; price += 5) {
-        customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, price,
-            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
-                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
-            // RANDTODO: Translate the below string to German.
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
-                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
-              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
-                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
-            });
-    }
-    customMessageManager->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
-            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
-            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
-        });
-}
-
 void CreateRupeeMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);
@@ -5490,7 +5484,6 @@ void Randomizer::CreateCustomMessages() {
                   "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !")
     };
     CreateGetItemMessages(getItemMessages);
-    CreateMerchantMessages();
     CreateRupeeMessages();
     CreateNaviRandoMessages();
 }

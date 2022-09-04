@@ -100,7 +100,7 @@ RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 acto
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorParams);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
-void Randomizer_LoadShopMessages(const char* spoilerFileName);
+void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);

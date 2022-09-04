@@ -44,7 +44,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
-    void LoadShopMessages(const char* spoilerFileName);
+    void LoadMerchantMessages(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     void LoadRequiredTrials(const char* spoilerFileName);
     bool IsTrialRequired(RandomizerInf trial);

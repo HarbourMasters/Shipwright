@@ -1567,8 +1567,8 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
-extern "C" void Randomizer_LoadShopMessages(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadShopMessages(spoilerFileName);
+extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages(spoilerFileName);
 }
 
 extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
