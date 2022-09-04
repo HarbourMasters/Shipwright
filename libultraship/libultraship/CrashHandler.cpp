@@ -3,8 +3,6 @@
 #include "CrashHandler.h"
 #include "Window.h"
 
-extern "C" void DeinitOTR(void);
-
 #if defined(__linux__)
 #include <csignal>
 #include <cstdio>
@@ -334,9 +332,8 @@ static void printStack(CONTEXT* ctx) {
             SPDLOG_CRITICAL("In {}", module);
         }
     }
-    Ship::Window::GetInstance()->GetLogger()->flush();
+    Ship::GlobalCtx2::GetInstance()->GetLogger()->flush();
     spdlog::shutdown();
-    DeinitOTR();
 }
 
 extern "C" LONG seh_filter(struct _EXCEPTION_POINTERS* ex) {
