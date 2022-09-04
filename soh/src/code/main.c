@@ -1,8 +1,10 @@
-#include "../libultraship/CrashHandler.h"
 #include "global.h"
 #include "vt.h"
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
+
+#include "../libultraship/CrashHandler.h"
+
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;

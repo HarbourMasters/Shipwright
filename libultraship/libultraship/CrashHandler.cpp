@@ -3,6 +3,16 @@
 #include "CrashHandler.h"
 #include "Window.h"
 
+#ifdef _WIN32
+
+#include <windows.h>
+#include <DbgHelp.h>
+
+#include <inttypes.h>
+#include <excpt.h>
+
+#endif
+
 extern "C" void DeinitOTR(void);
 
 #if defined(__linux__)
