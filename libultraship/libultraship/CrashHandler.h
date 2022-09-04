@@ -18,6 +18,12 @@ void SetupHandlerLinux(void);
 extern "C" {
 #endif
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#include <windows.h>
+
 LONG seh_filter(struct _EXCEPTION_POINTERS* ex);
 
 #ifdef __cplusplus
