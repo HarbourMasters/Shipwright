@@ -316,6 +316,7 @@
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="CollisionHeader.cpp" />
     <ClCompile Include="ControllerAttachment.cpp" />
+    <ClInclude Include="CrashHandler.cpp" />
     <ClCompile Include="Cutscene.cpp" />
     <ClCompile Include="DisplayList.cpp" />
     <ClCompile Include="GlobalCtx2.cpp" />
@@ -429,6 +430,7 @@
     <ClInclude Include="Archive.h" />
     <ClInclude Include="CollisionHeader.h" />
     <ClInclude Include="ControllerAttachment.h" />
+    <ClInclude Include="CrashHandler.h" />
     <ClInclude Include="DisplayList.h" />
     <ClInclude Include="GlobalCtx2.h" />
     <ClInclude Include="File.h" />
