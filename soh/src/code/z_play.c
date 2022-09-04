@@ -309,6 +309,12 @@ void Gameplay_Init(GameState* thisx) {
                 gSaveContext.isvoidoutordie = 0;
                 break;
             }
+
+            else if (gSaveContext.isHorseEvent == 1) {
+                gSaveContext.isHorseEvent = 0;
+                break;
+            }
+
             else if (gSaveContext.entranceOverrides[i].vanillaIndex == gSaveContext.entranceIndex) {
                 if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x0578) {
                     gSaveContext.isyounglinkfountain = 1;
