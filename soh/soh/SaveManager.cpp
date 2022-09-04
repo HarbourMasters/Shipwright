@@ -4,6 +4,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
+#include <libultraship/Hooks.h>
 #include <libultraship/Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
@@ -1570,6 +1571,7 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
+    Ship::ExecuteHooks<Ship::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {
@@ -1590,6 +1592,7 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+    Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
 }
 
 extern "C" bool Save_Exist(int fileNum) {
