@@ -664,7 +664,8 @@ void func_80A7A568(EnIn* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80A7B024;
         gSaveContext.timer1State = 0;
     } else if (this->unk_308.unk_00 == 2) {
-        if (globalCtx->msgCtx.choiceIndex == 0) {
+        if (globalCtx->msgCtx.choiceIndex == 0){
+            gSaveContext.isHorseEvent = 1;
             if (gSaveContext.rupees < 50) {
                 globalCtx->msgCtx.stateTimer = 4;
                 globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -701,6 +702,7 @@ void func_80A7A770(EnIn* this, GlobalContext* globalCtx) {
         this->actor.flags |= ACTOR_FLAG_16;
     } else if (this->unk_308.unk_00 == 2) {
         Rupees_ChangeBy(-50);
+        gSaveContext.isHorseEvent = 1;
         this->actor.flags &= ~ACTOR_FLAG_16;
         EnIn_ChangeAnim(this, ENIN_ANIM_3);
         this->actionFunc = func_80A7A848;
@@ -744,6 +746,7 @@ void func_80A7A940(EnIn* this, GlobalContext* globalCtx) {
         }
     }
     if (this->unk_308.unk_00 == 2) {
+        gSaveContext.isHorseEvent = 1;
         this->actor.flags &= ~ACTOR_FLAG_16;
         func_80A79BAC(this, globalCtx, 2, 0x26);
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x000F) | 0x0002;

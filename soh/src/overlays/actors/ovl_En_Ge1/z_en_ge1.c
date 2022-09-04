@@ -659,7 +659,7 @@ void EnGe1_WaitDoNothing(EnGe1* this, GlobalContext* globalCtx) {
 void EnGe1_BeginGame_Archery(EnGe1* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     Actor* horse;
-
+    gSaveContext.isHorseEvent = 1;
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(globalCtx)) {
         this->actor.flags &= ~ACTOR_FLAG_16;
 
