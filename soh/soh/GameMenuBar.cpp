@@ -1404,7 +1404,9 @@ namespace GameMenuBar {
                     disableKeyColors = false;
                 }
 
-                const char* disableKeyColorsText = "This setting is disabled because a savefile is loaded without any key shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
+                const char* disableKeyColorsText = 
+                    "This setting is disabled because a savefile is loaded without any key\n"
+                    "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
                 UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
                                                      disableKeyColors, disableKeyColorsText);
