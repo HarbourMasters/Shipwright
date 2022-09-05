@@ -110,7 +110,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 Randomizer::~Randomizer() { 
     this->randoSettings.clear();
     this->itemLocations.clear();
-    this->randomizerMerchantPrices.clear();
+    this->merchantPrices.clear();
 }
 
 std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
@@ -1205,7 +1205,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                         gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        randomizerMerchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
+                        merchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
                     }
                 }
             } else {
@@ -2416,8 +2416,8 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
             break;
     }
     
-    if (randomizerMerchantPrices.find(scrubIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
-        scrubIdentity.itemPrice = randomizerMerchantPrices[scrubIdentity.randomizerCheck];
+    if (merchantPrices.find(scrubIdentity.randomizerCheck) != merchantPrices.end()) {
+        scrubIdentity.itemPrice = merchantPrices[scrubIdentity.randomizerCheck];
     }
 
     return scrubIdentity;
