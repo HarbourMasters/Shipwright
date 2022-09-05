@@ -103,16 +103,6 @@ void SaveManager::LoadRandomizerVersion1() {
             randomizer->merchantPrices[rc] = price;
         });
     });
-
-    SaveManager::Instance->LoadArray("trialsRequired", NUM_TRIALS, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerInf inf;
-            SaveManager::Instance->LoadData("inf", inf);
-            bool required;
-            SaveManager::Instance->LoadData("price", required);
-            randomizer->trialsRequired[inf] = required;
-        });
-    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -169,14 +159,6 @@ void SaveManager::SaveRandomizer() {
         SaveManager::Instance->SaveStruct("", [&]() {
             SaveManager::Instance->SaveData("check", merchantPrices[i].first);
             SaveManager::Instance->SaveData("price", merchantPrices[i].second);
-        });
-    });
-
-    SaveManager::Instance->SaveArray("trialsRequired", NUM_TRIALS, [&](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&]() {
-            RandomizerInf inf = RandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL - i);
-            SaveManager::Instance->SaveData("inf", inf);
-            SaveManager::Instance->SaveData("required", randomizer->trialsRequired[inf]);
         });
     });
 }
