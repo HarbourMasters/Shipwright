@@ -91,6 +91,18 @@ void SaveManager::LoadRandomizerVersion1() {
     }
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    SaveManager::Instance->LoadArray("merchantPrices", NUM_SCRUBS, [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            RandomizerCheck rc;
+            SaveManager::Instance->LoadData("check", rc);
+            uint32_t price;
+            SaveManager::Instance->LoadData("price", price);
+            randomizer->merchantPrices[rc] = price;
+        });
+    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -135,6 +147,20 @@ void SaveManager::SaveRandomizer() {
     }
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    std::vector<std::pair<RandomizerCheck, u16>> merchantPrices;
+    for (const auto & [ check, price ] : randomizer->merchantPrices) {
+        merchantPrices.push_back(std::make_pair(check, price));
+    }
+
+    SaveManager::Instance->SaveArray("merchantPrices", NUM_SCRUBS, [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("check", merchantPrices[i].first);
+            SaveManager::Instance->SaveData("price", merchantPrices[i].second);
+        });
+    });
 }
 
 void SaveManager::Init() {

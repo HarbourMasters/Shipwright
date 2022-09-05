@@ -8,7 +8,6 @@
 
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10
-#define NUM_SCRUBS 35
 
 /**
  *  Initialize new save.
