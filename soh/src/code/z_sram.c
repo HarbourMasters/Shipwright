@@ -521,6 +521,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         // complete mask quest
         if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+            gSaveContext.infTable[7] |= 0x80;      // Soldier Wears Keaton Mask
             gSaveContext.itemGetInf[3] |= 0x100;   // Sold Keaton Mask
             gSaveContext.itemGetInf[3] |= 0x200;   // Sold Skull Mask
             gSaveContext.itemGetInf[3] |= 0x400;   // Sold Spooky Mask
