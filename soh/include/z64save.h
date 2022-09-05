@@ -175,7 +175,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
-    RandoSetting randoSettings[300];
+    RandoSetting randoSettings[RSK_MAX];
     ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
     char childAltarText[250];

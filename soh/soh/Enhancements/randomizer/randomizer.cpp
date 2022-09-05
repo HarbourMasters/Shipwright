@@ -1195,25 +1195,23 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        index = 0;
         for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                     // todo handle prices
                     if (itemit.key() == "item") {
-                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                        gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                        gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        randomizerMerchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
+                        randomizerMerchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
                     }
                 }
             } else {
-                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[it.value()];
             }
-
-            index++;
         }
 
         if(!silent) {
