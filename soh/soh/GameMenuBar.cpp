@@ -1392,7 +1392,22 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip(
                     "When obtaining rupees, randomize what the rupee is called in the textbox."
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false);
+
+                // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
+                bool disableKeyColors = true;
+
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) > 0 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2 || 
+                    !gSaveContext.n64ddFlag) {
+                    disableKeyColors = false;
+                }
+
+                const char* disableKeyColorsText = "This setting is disabled because a savefile is loaded without any key shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
+
+                UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
+                                                     disableKeyColors, disableKeyColorsText);
                 UIWidgets::Tooltip(
                     "Matches the color of small keys and boss keys to the dungeon they belong to. "
                     "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "

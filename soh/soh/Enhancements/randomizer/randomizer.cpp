@@ -907,6 +907,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Anywhere") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
+                        break;
                     case RSK_KEYSANITY:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = 0;            
