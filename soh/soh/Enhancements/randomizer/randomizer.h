@@ -14,13 +14,11 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    std::unordered_map<RandomizerCheck, u16> randomizerMerchantPrices;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseRequiredTrialsFile(const char* spoilerFileName);
@@ -37,6 +35,10 @@ class Randomizer {
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
+
+    // Public for now to be accessed by SaveManager, will be made private again soon :tm:
+    std::unordered_map<RandomizerInf, bool> trialsRequired;
+    std::unordered_map<RandomizerCheck, u16> merchantPrices;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
