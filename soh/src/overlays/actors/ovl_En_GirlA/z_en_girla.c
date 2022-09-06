@@ -1206,7 +1206,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->yRotation = 0;
         this->yRotationInit = this->actor.shape.rot.y;
 
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) && params != SI_SOLD_OUT) {
             ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 if (shopItemIdentity.enGirlAShopItem == -1) {
