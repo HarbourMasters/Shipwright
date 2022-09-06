@@ -101,8 +101,8 @@ static ColliderJntSphInit sColliderLightArrowInit = {
     sColliderLightArrowElementInit,
 };
 
-bool activatedByLightArrow = false;
-bool sunLightArrows = false;
+bool sunSwitchActivatedByLightArrow = false;
+bool sunLightArrowsEnabledOnSunSwitchLoad = false;
 
 static CollisionCheckInfoInit sColChkInfoInit = { 0, 12, 60, MASS_IMMOVABLE };
 
@@ -121,11 +121,13 @@ static InitChainEntry sInitChain[] = {
 
 void ObjLightswitch_InitCollider(ObjLightswitch* this, GlobalContext* globalCtx) {
     s32 pad;
-    sunLightArrows = CVar_GetS32("gSunlightArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
+
+    // Initialize this with the sun switch, so it can't be affected by toggling while the actor is loaded
+    sunLightArrowsEnabledOnSunSwitchLoad = CVar_GetS32("gSunlightArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
 
     Collider_InitJntSph(globalCtx, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits
-    if (sunLightArrows) {
+    if (sunLightArrowsEnabledOnSunSwitchLoad) {
         Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderLightArrowInit, this->colliderItems);
     } else {
         Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderJntSphInit, this->colliderItems);
@@ -251,7 +253,7 @@ void ObjLightswitch_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     // vanishing on its own after activating the sun switch by Light Arrow
     // Also prevents the cobra mirror from rotating to face the sun on its own
     // Makes sun switches temporary when activated by Light Arrows (will turn off on room exit)
-    if (activatedByLightArrow && sunLightArrows) {
+    if (sunSwitchActivatedByLightArrow) {
         switch (this->actor.params >> 4 & 3) {
             case OBJLIGHTSWITCH_TYPE_STAY_ON:
             case OBJLIGHTSWITCH_TYPE_2:
@@ -260,7 +262,7 @@ void ObjLightswitch_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
                 if (this->actor.room != 25) {
                     Flags_UnsetSwitch(globalCtx, this->actor.params >> 8 & 0x3F);
                 }
-                activatedByLightArrow = false;
+                sunSwitchActivatedByLightArrow = false;
                 break;
             case OBJLIGHTSWITCH_TYPE_BURN:
                 break;
@@ -277,8 +279,8 @@ void ObjLightswitch_SetupOff(ObjLightswitch* this) {
     this->color[1] = 125 << 6;
     this->color[2] = 255 << 6;
     this->alpha = 255 << 6;
-    if (sunLightArrows) {
-        activatedByLightArrow = false;
+    if (sunLightArrowsEnabledOnSunSwitchLoad) {
+        sunSwitchActivatedByLightArrow = false;
     }
 }
 // A Sun Switch that is currently turned off
@@ -291,9 +293,9 @@ void ObjLightswitch_Off(ObjLightswitch* this, GlobalContext* globalCtx) {
                 ObjLightswitch_SetSwitchFlag(this, globalCtx);
                 // Remember if we've been activated by a Light Arrow, so we can
                 // prevent the switch from immediately turning back off
-                if (sunLightArrows) {
+                if (sunLightArrowsEnabledOnSunSwitchLoad) {
                     if (this->collider.base.ac != NULL && this->collider.base.ac->id == ACTOR_EN_ARROW) {
-                        activatedByLightArrow = true;
+                        sunSwitchActivatedByLightArrow = true;
                     }
                 }
             }
@@ -363,9 +365,9 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
                 ObjLightswitch_SetupTurnOff(this);
             }
             // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
-            if (sunLightArrows && (this->collider.base.acFlags & AC_HIT)) {
+            if (sunLightArrowsEnabledOnSunSwitchLoad && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
-                    activatedByLightArrow = false;
+                    sunSwitchActivatedByLightArrow = false;
                 }
             }
             break;
@@ -377,15 +379,15 @@ void ObjLightswitch_On(ObjLightswitch* this, GlobalContext* globalCtx) {
             break;
         case OBJLIGHTSWITCH_TYPE_2:
             // If hit by sunlight after already being turned on, then behave as if originally activated by sunlight
-            if (sunLightArrows && (this->collider.base.acFlags & AC_HIT)) {
+            if (sunLightArrowsEnabledOnSunSwitchLoad && (this->collider.base.acFlags & AC_HIT)) {
                 if (this->collider.base.ac != NULL && this->collider.base.ac->id != ACTOR_EN_ARROW) {
-                    activatedByLightArrow = false;
+                    sunSwitchActivatedByLightArrow = false;
                 }
             }
             if (!(this->collider.base.acFlags & AC_HIT)) {
                 if (this->timer >= 7) {
                     // If we aren't using Enhanced Light Arrows, let the switch turn off normally
-                    if (!activatedByLightArrow) {
+                    if (!sunSwitchActivatedByLightArrow) {
                         ObjLightswitch_SetupTurnOff(this);
                         ObjLightswitch_ClearSwitchFlag(this, globalCtx);
                     }

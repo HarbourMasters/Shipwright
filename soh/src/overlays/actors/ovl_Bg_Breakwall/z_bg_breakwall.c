@@ -94,7 +94,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 400, ICHAIN_STOP),
 };
 
-bool blueFireArrowsDC = false;
+bool blueFireArrowsEnabledOnMudwallLoad = false;
 
 void BgBreakwall_SetupAction(BgBreakwall* this, BgBreakwallActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -105,7 +105,8 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
-    blueFireArrowsDC = CVar_GetS32("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
+    blueFireArrowsEnabledOnMudwallLoad = CVar_GetS32("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -125,7 +126,7 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
         ActorShape_Init(&this->dyna.actor.shape, 0.0f, NULL, 0.0f);
 
         // If "Blue Fire Arrows" are enabled, set up this collider for them
-        if (blueFireArrowsDC) {
+        if (blueFireArrowsEnabledOnMudwallLoad) {
             Collider_InitQuad(globalCtx, &this->collider);
             Collider_SetQuad(globalCtx, &this->collider, &this->dyna.actor, &sIceArrowQuadInit);
         } else {
@@ -261,7 +262,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, GlobalContext* globalCtx) {
 void BgBreakwall_Wait(BgBreakwall* this, GlobalContext* globalCtx) {
     bool blueFireArrowHit = false;
     // If "Blue Fire Arrows" enabled, check this collider for a hit
-    if (blueFireArrowsDC) {
+    if (blueFireArrowsEnabledOnMudwallLoad) {
         if (this->collider.base.acFlags & AC_HIT) {
             if ((this->collider.base.ac != NULL) && (this->collider.base.ac->id == ACTOR_EN_ARROW)) {
 
