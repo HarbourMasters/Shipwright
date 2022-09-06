@@ -98,7 +98,9 @@ void SaveManager::LoadRandomizerVersion1() {
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
         merchantPricesSize += NUM_SCRUBS;
     }
-    // TODO: Add shop item count when shopsanity is enabled
+    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 0) {
+        merchantPricesSize += NUM_SHOP_ITEMS;
+    }
 
     SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
