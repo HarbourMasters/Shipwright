@@ -632,6 +632,14 @@ public:
         }
     }
 
+    const char** GetOptions() {
+        const char** result = new const char*[options.size()];
+        for (int i = 0; i < options.size(); i++) {
+            result[i] = options[i].c_str();
+        }
+        return result;
+    }
+
     void SetOptions(std::vector<std::string> o) {
         options = std::move(o);
         SetToDefault();
@@ -657,9 +665,24 @@ public:
       return selectedOption == defaultOption;
     }
 
+    uint8_t GetDefault() {
+        return defaultOption;
+    }
+
     void SetToDefault() {
       SetSelectedIndex(defaultOption);
       hidden = defaultHidden;
+    }
+
+    std::string GetFullDescription() const {
+        std::string fullDescriptions = "";
+        for (size_t i = 0; i < optionDescriptions.size(); i++) {
+            if (i != 0) {
+                fullDescriptions += "\n\n";
+            }
+            fullDescriptions += std::string(optionDescriptions[i]);
+        }
+        return fullDescriptions;
     }
 
     std::string_view GetSelectedOptionDescription() const {
@@ -672,6 +695,11 @@ public:
 
     uint8_t GetSelectedOptionIndex() const {
       return selectedOption;
+    }
+
+    uint8_t GetValueFromOption(std::string option) {
+        auto result = std::find(options.begin(), options.end(), option);
+        return result == options.end() ? defaultOption : result - options.begin();
     }
 
     void NextOptionIndex() {

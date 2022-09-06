@@ -736,13 +736,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                 // human readable settings values so it'll have to do for now
                 switch(gSaveContext.randoSettings[index].key) {
                     case RSK_FOREST:
-                        if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Closed Deku") {
-                            gSaveContext.randoSettings[index].value = 2;
-                        }
+                        gSaveContext.randoSettings[index].value = Settings::OpenForest.GetValueFromOption(it.value());
                         break;
                     case RSK_KAK_GATE:
                         if(it.value() == "Closed") {
@@ -817,8 +811,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
-                    case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_COWS:
+                        gSaveContext.randoSettings[index].value = Settings::ShuffleCows.GetValueFromOption(it.value());
+                        break;
+                    case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_RANDOM_TRIALS:
@@ -3421,7 +3417,7 @@ void GenerateRandomizerImgui() {
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
-    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
+    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", Settings::OpenForest.GetDefault());
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
@@ -3446,7 +3442,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
-    cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
+    cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", Settings::ShuffleCows.GetDefault());
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
@@ -3528,7 +3524,6 @@ void DrawRandoEditor(bool& open) {
     const char* randoLogicRules[2] = { "Glitchless", "No logic" };
 
     // Open Settings
-    const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
     const char* randoKakarikoGate[2] = { "Closed", "Open" };
     const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
@@ -3633,19 +3628,8 @@ void DrawRandoEditor(bool& open) {
 
                 // Forest
                 ImGui::Text(Settings::OpenForest.GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Closed - Kokiri sword & shield are required to access "
-                    "the Deku Tree, and completing the Deku Tree is required to "
-                    "access the Hyrule Field exit.\n"
-                    "\n"
-                    "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                    "Field but Mido still requires the Kokiri sword and Deku shield "
-                    "to access the tree.\n"
-                    "\n"
-                    "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                    "boy no longer blocks the path out of the forest."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
+                UIWidgets::InsertHelpHoverText(Settings::OpenForest.GetFullDescription());
+                UIWidgets::EnhancementCombobox("gRandomizeForest", Settings::OpenForest.GetOptions(), Settings::OpenForest.GetOptionCount(), Settings::OpenForest.GetDefault());
 
                 UIWidgets::PaddedSeparator();
 
@@ -3969,7 +3953,7 @@ void DrawRandoEditor(bool& open) {
 
                 // Shuffle Cows
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleCows.GetName().c_str(), "gRandomizeShuffleCows");
-                UIWidgets::InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
+                UIWidgets::InsertHelpHoverText(Settings::ShuffleCows.GetFullDescription());
 
                 UIWidgets::PaddedSeparator();
 

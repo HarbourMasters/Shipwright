@@ -34,20 +34,15 @@ string_view logicVanilla              = "For those who want to play the game nor
 /*------------------------------                                                           //
 |           FOREST             |                                                           //
 ------------------------------*/                                                           //
-string_view forestOpen                = "Mido no longer blocks the path to the Deku Tree,\n"
-                                        "and the Kokiri boy no longer blocks the path out\n"
-                                        "of the forest.";                                  //
-string_view forestClosed              = "Beating Deku Tree is logically required to leave\n"
-                                        "the forest area (Kokiri Forest/Lost Woods/Sacred\n"
-                                        "Forest Meadow/Deku Tree), while the Kokiri Sword\n"
-                                        "and a Deku Shield are required to access the Deku\n"
-                                        "Tree. Items needed for this will be guaranteed\n" //
-                                        "inside the forest area. This setting is\n"        //
-                                        "incompatible with starting as adult.";            //
-string_view forestClosedDeku          = "The Kokiri boy no longer blocks the path out of\n"//
-                                        "the forest, but Mido still blocks the path to the\n"
-                                        "Deku Tree, requiring Kokiri Sword and Deku Shield\n"
-                                        "to access the Deku Tree.";                        //
+string_view forestOpen                = "Open - Mido no longer blocks the path to the Deku "
+                                        "Tree. Kokiri boy no longer blocks the path out of "
+                                        "the forest.";                                     //
+string_view forestClosed              = "Closed - Kokiri sword & shield are required to "  //
+                                        "access the Deku Tree, and completing the Deku Tree "
+                                        "is required to access the Hyrule Field exit.";    //
+string_view forestClosedDeku          = "Closed Deku - Kokiri boy no longer blocks the path "
+                                        "to Hyrule Field but Mido still requires the Kokiri "
+                                        "sword and Deku shield to access the tree.";       //
 /*------------------------------                                                           //
 |        KAKARIKO GATE         |                                                           //
 ------------------------------*/                                                           //
@@ -325,10 +320,8 @@ string_view scrubsRandomPrices        = "All Scrub prices will be between 0-95 r
 /*------------------------------                                                           //
 |         SHUFFLE COWS         |                                                           //
 ------------------------------*/                                                           //
-string_view shuffleCowsDesc           = "Enabling this will let cows give you items upon\n"//
-                                        "performing Epona's song in front of them. There\n"//
-                                        "are 9 cows, and an extra in MQ Jabu.";            //
-                                                                                           //
+string_view shuffleCowsDesc           = "Cows give a randomized item from the pool upon "  //
+                                        "performing Epona's Song in front of them.";       //
 /*------------------------------                                                           //
 |     SHUFFLE KOKIRI SWORD     |                                                           //
 ------------------------------*/                                                           //
