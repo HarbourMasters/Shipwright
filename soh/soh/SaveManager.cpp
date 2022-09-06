@@ -155,7 +155,7 @@ void SaveManager::SaveRandomizer() {
         merchantPrices.push_back(std::make_pair(check, price));
     }
 
-    SaveManager::Instance->SaveArray("merchantPrices", NUM_SCRUBS, [&](size_t i) {
+    SaveManager::Instance->SaveArray("merchantPrices", merchantPrices.size(), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
             SaveManager::Instance->SaveData("check", merchantPrices[i].first);
             SaveManager::Instance->SaveData("price", merchantPrices[i].second);
