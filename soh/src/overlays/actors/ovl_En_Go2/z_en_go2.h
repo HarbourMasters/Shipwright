@@ -104,6 +104,7 @@ typedef struct EnGo2 {
     /* 0x0598 */ char unk_598[0x02];
     /* 0x059A */ s16 camId;
     /* 0x059C */ s16 unk_59C;
+    /*        */ GetItemEntry getItemEntry;
 } EnGo2; // size = 0x05A0
 
 #endif

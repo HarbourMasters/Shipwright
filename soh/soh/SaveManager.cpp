@@ -4,7 +4,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include "spdlog/spdlog.h"

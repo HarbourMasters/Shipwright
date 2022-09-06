@@ -1,7 +1,7 @@
 #ifndef Z64_AUDIO_H
 #define Z64_AUDIO_H
 
-#include "endianness.h"
+#include <libultraship/endianness.h>
 
 #define MK_CMD(b0,b1,b2,b3) ((((b0) & 0xFF) << 0x18) | (((b1) & 0xFF) << 0x10) | (((b2) & 0xFF) << 0x8) | (((b3) & 0xFF) << 0))
 
@@ -815,7 +815,7 @@ typedef struct {
     /* 0x0E */ u8 ttl;        // duration after which the DMA can be discarded
 } SampleDma; // size = 0x10
 
-#include <PR/ultra64/abi.h>
+#include <ultra64/abi.h>
 
 typedef struct {
     /* 0x0000 */ char unk_0000;

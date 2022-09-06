@@ -1,8 +1,8 @@
 #include "debugconsole.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "../libultraship/Utils.h"
+#include <libultraship/ImGuiImpl.h>
+#include <libultraship/Utils.h>
 #include "savestates.h"
-#include "Console.h"
+#include <libultraship/Console.h>
 
 #include <vector>
 #include <string>
@@ -13,8 +13,8 @@
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 
-#include "Window.h"
-#include "Lib/ImGui/imgui_internal.h"
+#include <libultraship/Window.h>
+#include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
 
@@ -26,10 +26,10 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
-#define CMD_REGISTER SohImGui::BindCmd
+#define CMD_REGISTER SohImGui::GetConsole()->AddCommand
 
 uint32_t giantLink;
 uint32_t minishLink;
@@ -41,12 +41,12 @@ uint32_t oneHitKO;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
-        SohImGui::console->SendErrorMessage("Not enough arguments passed to actorspawn");
+        SohImGui::GetConsole()->SendErrorMessage("Not enough arguments passed to actorspawn");
         return CMD_FAILED;
     }
 
     if (gGlobalCtx == nullptr) {
-        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -82,7 +82,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
 
     if (Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
-        SohImGui::console->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
+        SohImGui::GetConsole()->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -90,13 +90,13 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
 
 static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.health = 0;
-    SohImGui::console->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
+    SohImGui::GetConsole()->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
     return CMD_SUCCESS;
 }
 
 static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -105,18 +105,18 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
     try {
         health = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Health value must be an integer.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Health value must be an integer.");
         return CMD_FAILED;
     }
 
     if (health < 0) {
-        SohImGui::console->SendErrorMessage("[SOH] Health value must be a positive integer");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Health value must be a positive integer");
         return CMD_SUCCESS;
     }
 
     gSaveContext.health = health * 0x10;
 
-    SohImGui::console->SendInfoMessage("[SOH] Player health updated to %d", health);
+    SohImGui::GetConsole()->SendInfoMessage("[SOH] Player health updated to %d", health);
     return CMD_SUCCESS;
 }
 
@@ -137,31 +137,31 @@ static bool RuppeHandler(std::shared_ptr<Ship::Console> Console, const std::vect
         rupeeAmount = std::stoi(args[1]);
     }
     catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Rupee count must be an integer.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
 
     if (rupeeAmount < 0) {
-        SohImGui::console->SendErrorMessage("[SOH] Rupee count must be positive");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Rupee count must be positive");
         return CMD_FAILED;
     }
 
     gSaveContext.rupees = rupeeAmount;
 
-    SohImGui::console->SendInfoMessage("Set rupee count to %u", rupeeAmount);
+    SohImGui::GetConsole()->SendInfoMessage("Set rupee count to %u", rupeeAmount);
     return CMD_SUCCESS;
 }
 
 static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
     Player* player = GET_PLAYER(gGlobalCtx);
 
     if (args.size() == 1) {
-        SohImGui::console->SendInfoMessage("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+        SohImGui::GetConsole()->SendInfoMessage("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
                                             player->actor.world.pos.y,
              player->actor.world.pos.z);
         return CMD_SUCCESS;
@@ -173,7 +173,7 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
     player->actor.world.pos.y = std::stof(args[2]);
     player->actor.world.pos.z = std::stof(args[3]);
 
-    SohImGui::console->SendInfoMessage("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+    SohImGui::GetConsole()->SendInfoMessage("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
                                         player->actor.world.pos.y,
          player->actor.world.pos.z);
     return CMD_SUCCESS;
@@ -181,7 +181,7 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 
 static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args) {
     if (gGlobalCtx == nullptr) {
-        SohImGui::console->SendErrorMessage("GlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
 
@@ -202,7 +202,7 @@ const static std::map<std::string, uint16_t> ammoItems{
 
 static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -211,19 +211,19 @@ static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     try {
         count = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("Ammo count must be an integer");
+        SohImGui::GetConsole()->SendErrorMessage("Ammo count must be an integer");
         return CMD_FAILED;
     }
 
     if (count < 0) {
-        SohImGui::console->SendErrorMessage("Ammo count must be positive");
+        SohImGui::GetConsole()->SendErrorMessage("Ammo count must be positive");
         return CMD_FAILED;
     }
 
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
-        SohImGui::console->SendErrorMessage("Invalid item passed");
+        SohImGui::GetConsole()->SendErrorMessage("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -245,7 +245,7 @@ const static std::map<std::string, uint16_t> bottleItems{
 
 static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -253,19 +253,19 @@ static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vec
     try {
         slot = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Bottle slot must be an integer.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
 
     if ((slot < 1) || (slot > 4)) {
-        SohImGui::console->SendErrorMessage("Invalid slot passed");
+        SohImGui::GetConsole()->SendErrorMessage("Invalid slot passed");
         return CMD_FAILED;
     }
 
     const auto& it = bottleItems.find(args[1]);
 
     if (it ==  bottleItems.end()) {
-        SohImGui::console->SendErrorMessage("Invalid item passed");
+        SohImGui::GetConsole()->SendErrorMessage("Invalid item passed");
         return CMD_FAILED;
     }
 
@@ -277,7 +277,7 @@ static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 
 static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -287,7 +287,7 @@ static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<s
 
 static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -298,7 +298,7 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 
 static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -307,7 +307,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     try {
         entrance = std::stoi(args[1], nullptr, 16);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Entrance value must be a Hex number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Entrance value must be a Hex number.");
         return CMD_FAILED;
     }
 
@@ -327,7 +327,7 @@ static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             gGlobalCtx->fadeTransition = 2;
             gSaveContext.nextTransition = 2;
     } else {
-        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -340,7 +340,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         gGlobalCtx->fadeTransition = 11;
         gSaveContext.nextTransition = 11;
     } else {
-        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -353,11 +353,11 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
                 gGlobalCtx->fadeTransition = 5;
         } else {
-            SohImGui::console->SendErrorMessage("Farore's wind not set!");
+            SohImGui::GetConsole()->SendErrorMessage("Farore's wind not set!");
         }
     }
     else {
-        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
     }
     
@@ -369,7 +369,7 @@ static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std:
         SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, FileChooseContext);
         gGlobalCtx->state.running = 0;
     } else {
-        SohImGui::console->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
@@ -386,10 +386,10 @@ static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            SohImGui::console->SendInfoMessage("[SOH] Saved state to slot %u", slot);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            SohImGui::console->SendErrorMessage("[SOH] Can not save a state outside of \"GamePlay\"");
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Can not save a state outside of \"GamePlay\"");
             return CMD_FAILED;
     }
 }
@@ -400,16 +400,16 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            SohImGui::console->SendInfoMessage("[SOH] Loaded state from slot (%u)", slot);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Loaded state from slot (%u)", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            SohImGui::console->SendErrorMessage("[SOH] Invalid State Slot Number (%u)", slot);
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid State Slot Number (%u)", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_STATE_EMPTY:
-            SohImGui::console->SendErrorMessage("[SOH] State Slot (%u) is empty", slot);
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] State Slot (%u) is empty", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            SohImGui::console->SendErrorMessage("[SOH] Can not load a state outside of \"GamePlay\"");
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Can not load a state outside of \"GamePlay\"");
             return CMD_FAILED;
     }
 
@@ -417,7 +417,7 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
 
 static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
     int slot;
@@ -425,24 +425,24 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
     try {
         slot = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] SaveState slot value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] SaveState slot value must be a number.");
         return CMD_FAILED;
     }
 
     if (slot < 0) {
-        SohImGui::console->SendErrorMessage("[SOH] Invalid slot passed. Slot must be between 0 and 2");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return CMD_FAILED;
     }
 
     OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
-    SohImGui::console->SendInfoMessage("[SOH] Slot %u selected",
+    SohImGui::GetConsole()->SendInfoMessage("[SOH] Slot %u selected",
                                         OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return CMD_SUCCESS;
 }
 
 static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -455,14 +455,14 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Invisible value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invisible value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -477,14 +477,14 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Giant value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Giant value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -499,7 +499,7 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Minish value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
         return CMD_FAILED;
     }
 }
@@ -522,7 +522,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
 
 static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -530,14 +530,14 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
         gravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), 0.0f, 2.0f);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Minish value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -556,7 +556,7 @@ static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 
 static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -565,14 +565,14 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
 
 static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
             return CMD_FAILED;
         }
 
@@ -584,28 +584,28 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Damage value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Damage value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
             return CMD_FAILED;
         }
 
         Health_ChangeBy(gGlobalCtx, value * 0x10);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Heal value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Heal value must be a number.");
         return CMD_FAILED;
     }
 }
@@ -622,7 +622,7 @@ static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std:
 
 static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
      if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -631,7 +631,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
 
 static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -639,14 +639,14 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
         oneHitKO = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] One-hit KO value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] One-hit KO value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -655,7 +655,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
 static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -669,7 +669,7 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
         }
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Paper Link value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Paper Link value must be a number.");
         return CMD_FAILED;
     }
 }
@@ -681,7 +681,7 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
 
 static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -690,7 +690,7 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
 
 static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -699,14 +699,14 @@ static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const st
         gSaveContext.rupees += value;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Rupee value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Rupee value must be a number.");
         return CMD_FAILED;
     }
 }
 
 static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
@@ -720,13 +720,13 @@ const static std::map<std::string, uint16_t> boots {
 
 static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
     const auto& it = boots.find(args[1]);
     if (it == ammoItems.end()) {
-        SohImGui::console->SendErrorMessage("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
+        SohImGui::GetConsole()->SendErrorMessage("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
         return CMD_FAILED;
     }
 
@@ -740,14 +740,14 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
 
 static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 2) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
 
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            SohImGui::console->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid value passed. Value must be greater than 0");
             return CMD_FAILED;
         }
 
@@ -756,7 +756,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
     
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::console->SendErrorMessage("[SOH] Knockback value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Knockback value must be a number.");
         return CMD_FAILED;
     }
 }
@@ -849,7 +849,7 @@ static bool SetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
     CVar_Save();
 
-    //SohImGui::console->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
+    //SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
 }
 
@@ -862,17 +862,17 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     if (cvar != nullptr)
     {
         if (cvar->type == CVarType::S32)
-            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
         else if (cvar->type == CVarType::Float)
-            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
         else if (cvar->type == CVarType::String)
-            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
         else if (cvar->type == CVarType::RGBA)
-            SohImGui::console->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
     }
     else
     {
-        SohImGui::console->SendInfoMessage("[SOH] Could not find variable %s", args[1].c_str());
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Could not find variable %s", args[1].c_str());
     }
 
 

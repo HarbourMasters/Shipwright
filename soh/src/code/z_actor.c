@@ -1009,20 +1009,15 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
-    s16* TitleCard_Colors[3] = {255,255,255};
-        if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_B_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_B_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_B_U_PrimB", 255);
-        } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_OW_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_OW_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_OW_U_PrimB", 255);
-        } else {
-            TitleCard_Colors[0] = 255;
-            TitleCard_Colors[1] = 255;
-            TitleCard_Colors[2] = 255;
-        }
+    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
+    Color_RGB8 TitleCard_Colors = {255,255,255};
+    if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
+        TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
+        TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    } else {
+        TitleCard_Colors = TitleCard_Colors_ori;
+    }
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (DECR(titleCtx->durationTimer) == 0) {
@@ -1032,9 +1027,9 @@ void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors[0], 20);
-            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors[1], 20);
-            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors[2], 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors.r, 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors.g, 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors.b, 20);
         }
     }
 }
@@ -1956,14 +1951,25 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
-s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This function does not require an actor for giving
+ * the player an item, instead setting the player as their own interactRangeActor and getItemDirection.
+ * 
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \return true if the player can receive an item, false if not.
+ */
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
-        if (((player->heldActor != NULL) && (getItemId > GI_NONE) && (getItemId < GI_MAX)) ||
+        if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
+            (gSaveContext.n64ddFlag && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & 0x20000800))) {
-            if ((getItemId != GI_NONE)) {
-                player->getItemId = getItemId;
+            if ((getItemEntry.getItemId != GI_NONE)) {
+                player->getItemEntry = getItemEntry;
+                player->getItemId = getItemEntry.getItemId;
                 player->interactRangeActor = &player->actor;
                 player->getItemDirection = player->actor.shape.rot.y;
                 return true;
@@ -1974,12 +1980,69 @@ s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
     return false;
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This uses data from the actor link is receiving
+ * the item from to set the player's interactRangeActor and getItemDirection. It also checks
+ * a range from which Link must be from said actor in order to receive the item.
+ *
+ * \param actor the actor link is receiving an item from. Will usually be a chest but can also
+ * be an npc.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \param xzRange the distance on the x and z axes that the player can be from the target
+ * actor to receive the item.
+ * \param yRange the distance on the y axis that the player can be from the target actor
+ * to receive the item.
+ * \return true if the player can receive an item, false if not.
+ */
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+            ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
+                (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+                    (!(player->stateFlags1 & 0x20000800))) {
+            if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
+                s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
+                s32 absYawDiff = ABS(yawDiff);
+
+                if ((getItemEntry.getItemId != GI_NONE) || (player->getItemDirection < absYawDiff)) {
+                    player->getItemEntry = getItemEntry;
+                    player->getItemId = getItemEntry.getItemId;
+                    player->interactRangeActor = actor;
+                    player->getItemDirection = absYawDiff;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This is a wrapper function around `GiveItemEntryFromActor`
+ * that supplies a fixed xzRange of 50.0f and a fixed yRange of 10.0f.
+ *
+ * \param actor the target actor that link is receiving an item from.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ */
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    GiveItemEntryFromActor(actor, globalCtx, getItemEntry, 50.0f, 10.0f);
+}
+
+// TODO: Rename to GiveItemIdFromActor or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && (getItemId > GI_NONE) &&
-             (getItemId < GI_MAX)) ||
+        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+            ((!gSaveContext.n64ddFlag && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (gSaveContext.n64ddFlag && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -1998,6 +2061,8 @@ s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzR
     return false;
 }
 
+// TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId) {
     func_8002F434(actor, globalCtx, getItemId, 50.0f, 10.0f);
 }
@@ -5995,7 +6060,7 @@ s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* ar
     return true;
 }
 
-s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
         // RANDOTODO update this logic when we implement keysanity
         // because 3drando replaces the keys not the rupees
@@ -6006,27 +6071,27 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
             switch(room) {
                 case 1:
                     if(!Flags_GetCollectible(globalCtx, 0x1B)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
                     }
                     break;
                 case 2:
                     if(!Flags_GetCollectible(globalCtx, 0x1C)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
                     }
                     break;
                 case 3:
                     if(!Flags_GetCollectible(globalCtx, 0x1D)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
                     }
                     break;
                 case 4:
                     if(!Flags_GetCollectible(globalCtx, 0x1E)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
                     }
                     break;
                 case 5:
                     if(!Flags_GetCollectible(globalCtx, 0x1F)) {
-                        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
                     }
                     break;
             }
@@ -6034,17 +6099,17 @@ s32 GetChestGameRandoGetItemId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) 
     }
 
     if(ogDrawId == GID_HEART_PIECE) {
-        return Randomizer_GetItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
+        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
     }
 
-    return GI_NONE;
+    return (GetItemEntry)GET_ITEM_NONE;
 }
 
 s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
-    s32 randoGetItemId = GetChestGameRandoGetItemId(room, ogDrawId, globalCtx);
+    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, globalCtx);
 
-    if(randoGetItemId != GI_NONE) {
-        return Randomizer_GetItemModelFromId(randoGetItemId);
+    if (randoGetItem.itemId != RG_NONE) {
+        return randoGetItem.gid;
     }
 
     return ogDrawId;
