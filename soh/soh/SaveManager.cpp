@@ -94,7 +94,13 @@ void SaveManager::LoadRandomizerVersion1() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    SaveManager::Instance->LoadArray("merchantPrices", NUM_SCRUBS, [&](size_t i) {
+    size_t merchantPricesSize = 0;
+    if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
+        merchantPricesSize += NUM_SCRUBS;
+    }
+    // TODO: Add shop item count when shopsanity is enabled
+
+    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerCheck rc;
             SaveManager::Instance->LoadData("check", rc);
