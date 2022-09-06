@@ -391,13 +391,17 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
     if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
         this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, shopItemEntries[params].objID);
     } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
         s16 objectId = shopItemEntries[params].objID;
 
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             if (shopItemIdentity.enGirlAShopItem == -1) {
-                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-                objectId = getItemEntry.objectId;
+                if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                    objectId = shopItemEntries[SI_SOLD_OUT].objID;
+                } else {
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                    objectId = getItemEntry.objectId;
+                }
             } else {
                 objectId = shopItemEntries[shopItemIdentity.enGirlAShopItem].objID;
             }
@@ -744,7 +748,7 @@ s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
     ItemObtainability itemObtainability = Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
 
@@ -902,7 +906,7 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
@@ -972,9 +976,21 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS_FANFARE
 void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
+    if (shopItemIdentity.enGirlAShopItem == -1) {
+        ShopItemEntry* itemEntry = &shopItemEntries[SI_SOLD_OUT];
+        this->actor.textId = itemEntry->itemDescTextId;
+        this->itemBuyPromptTextId = 0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
+        this->getItemId = itemEntry->getItemId;
+        this->canBuyFunc = itemEntry->canBuyFunc;
+        this->itemGiveFunc = itemEntry->itemGiveFunc;
+        this->buyEventFunc = itemEntry->buyEventFunc;
+        this->basePrice = itemEntry->price;
+        this->itemCount = itemEntry->count;
+        this->giDrawId = itemEntry->giDrawId;
+    }
 }
 
 void EnGirlA_Noop(EnGirlA* this, GlobalContext* globalCtx) {
@@ -1026,12 +1042,10 @@ void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
     }
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             if  (shopItemIdentity.enGirlAShopItem == -1) {
                 this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
-            } else {
-                this->actor.textId = &shopItemEntries[shopItemIdentity.enGirlAShopItem].itemDescTextId;
             }
         }
     }
@@ -1056,10 +1070,14 @@ void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this) {
         itemEntry = &shopItemEntries[this->actor.params];
 
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 if (shopItemIdentity.enGirlAShopItem == -1) {
-                    itemEntry->itemDescTextId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                        itemEntry = &shopItemEntries[SI_SOLD_OUT];
+                    } else {
+                        itemEntry->itemDescTextId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                    }
                 } else {
                     itemEntry->itemDescTextId = &shopItemEntries[shopItemIdentity.enGirlAShopItem].itemDescTextId;
                 }
@@ -1188,9 +1206,8 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->yRotation = 0;
         this->yRotationInit = this->actor.shape.rot.y;
 
-        // TODO: This is pretty verbose, pointers are making this difficult
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) && params != SI_SOLD_OUT) {
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 if (shopItemIdentity.enGirlAShopItem == -1) {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
@@ -1203,16 +1220,6 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
                     this->basePrice = shopItemIdentity.itemPrice;
                     this->itemCount = 1;
                     this->giDrawId = getItemEntry.gid;
-                } else {
-                    this->actor.textId = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->itemDescTextId;
-                    this->itemBuyPromptTextId = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->itemBuyPromptTextId;
-                    this->getItemId = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->getItemId;
-                    this->canBuyFunc = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->canBuyFunc;
-                    this->itemGiveFunc = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->itemGiveFunc;
-                    this->buyEventFunc = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->buyEventFunc;
-                    this->basePrice = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->price;
-                    this->itemCount = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->count;
-                    this->giDrawId = (&shopItemEntries[shopItemIdentity.enGirlAShopItem])->giDrawId;
                 }
             }
         }
@@ -1228,7 +1235,7 @@ void EnGirlA_Update2(EnGirlA* this, GlobalContext* globalCtx) {
     Actor_SetFocus(&this->actor, 5.0f);
     this->actor.shape.rot.x = 0.0f;
     if (this->actor.params != SI_SOLD_OUT) {
-        if (this->isSelected) {
+        if (this->isSelected && this->giDrawId != GID_SOLDOUT) {
             this->yRotation += 0x1F4;
         } else {
             Math_SmoothStepToS(&this->yRotation, 0, 10, 0x7D0, 0);
