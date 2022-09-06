@@ -427,6 +427,16 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
             this->shelfSlots[i] = NULL;
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, i);
+                if (shopItemIdentity.enGirlAShopItem == -1) {
+                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                        itemParams = SI_SOLD_OUT;
+                    }
+                } else {
+                    itemParams = shopItemIdentity.enGirlAShopItem;
+                }
+            }
 
             if (itemParams < 0) {
                 this->shelfSlots[i] = NULL;
@@ -1678,7 +1688,18 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, GlobalContext* globalCtx, 
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            GetItemEntry getItemEntry =
+                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
 }
 
 void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player* player) {
