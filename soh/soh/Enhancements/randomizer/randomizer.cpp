@@ -840,7 +840,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     for (int index = 0; index < shopItemRandomizerChecks.size(); ++index) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
         std::string shopItemName = GetEnumToSpoilerfileName[this->itemLocations[shopItemCheck]];
-        u16 shopItemPrice = randomizerMerchantPrices[shopItemCheck];
+        u16 shopItemPrice = merchantPrices[shopItemCheck];
         // TODO: Magic number 100, we don't to overwrite deku scrub messages
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, index + 100, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
@@ -2993,8 +2993,8 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
         shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
     }
 
-    if (randomizerMerchantPrices.find(shopItemIdentity.randomizerCheck) != randomizerMerchantPrices.end()) {
-        shopItemIdentity.itemPrice = randomizerMerchantPrices[shopItemIdentity.randomizerCheck];
+    if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
+        shopItemIdentity.itemPrice = merchantPrices[shopItemIdentity.randomizerCheck];
     }
 
     return shopItemIdentity;
