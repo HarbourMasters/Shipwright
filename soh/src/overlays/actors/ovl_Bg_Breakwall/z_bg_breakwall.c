@@ -106,7 +106,7 @@ void BgBreakwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnMudwallLoad = (CVar_GetS32("gBlueFireArrows", 0) != 0);
+    blueFireArrowsEnabledOnMudwallLoad = (CVar_GetS32("gBlueFireArrows", 0));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
