@@ -456,6 +456,28 @@ void Gameplay_Init(GameState* thisx) {
                     continue;
                 }
             }
+        } else if (gSaveContext.entranceIndex == 0x1D9) { // zora river desync from hf
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0EA) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else if (gSaveContext.entranceIndex == 0x311) { // zora river desync from river
+            for (i = 0; i < 250; i++) {
+                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0181) {
+                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+                    break;
+                } else if (i == 249) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
         }
     } 
 
