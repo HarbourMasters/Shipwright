@@ -1599,8 +1599,8 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
     return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
 }
 
-extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, actorParams);
+extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {

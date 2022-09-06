@@ -437,6 +437,9 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams);
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                    this->shelfSlots[i]->randoSlotIndex = i;
+                }
             }
         }
     }
@@ -1333,7 +1336,7 @@ void EnOssan_GiveItemWithFanfare(GlobalContext* globalCtx, EnOssan* this) {
     if (!gSaveContext.n64ddFlag) {
         func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->shelfSlots[this->cursorIndex]->actor.params);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);

@@ -57,7 +57,7 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
-    ShopItemIdentity IdentifyShopItem(s32 sceneNum, s32 actorParams);
+    ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     GetItemID GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId);
     GetItemID GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);

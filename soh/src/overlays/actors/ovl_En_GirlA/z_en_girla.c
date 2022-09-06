@@ -391,7 +391,7 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
     if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
         this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, shopItemEntries[params].objID);
     } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
         s16 objectId = shopItemEntries[params].objID;
 
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
@@ -744,7 +744,7 @@ s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
     ItemObtainability itemObtainability = Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
 
@@ -902,7 +902,7 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
@@ -972,7 +972,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS_FANFARE
 void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
@@ -1026,7 +1026,7 @@ void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
     }
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             if  (shopItemIdentity.enGirlAShopItem == -1) {
                 this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
@@ -1056,7 +1056,7 @@ void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this) {
         itemEntry = &shopItemEntries[this->actor.params];
 
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 if (shopItemIdentity.enGirlAShopItem == -1) {
                     itemEntry->itemDescTextId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
@@ -1190,7 +1190,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
 
         // TODO: This is pretty verbose, pointers are making this difficult
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->actor.params);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 if (shopItemIdentity.enGirlAShopItem == -1) {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);

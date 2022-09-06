@@ -98,7 +98,7 @@ void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
-ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, s32 actorParams);
+ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
