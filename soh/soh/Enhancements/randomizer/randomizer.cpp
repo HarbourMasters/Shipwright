@@ -2634,7 +2634,8 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     switch (sceneNum) {
         case SCENE_SHOP1:
-            if (LINK_IS_ADULT) {
+            // Bazaar (SHOP1) scene is reused, so use entranceIndex to determine if we're entering from KaK or market
+            if (gSaveContext.entranceIndex == 0xB7) {
                 switch (slotIndex) {
                     case 0:
                         shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_1;
