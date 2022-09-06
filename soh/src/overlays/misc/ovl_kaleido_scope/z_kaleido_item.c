@@ -381,7 +381,11 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             --INV_CONTENT(ITEM_TRADE_CHILD);
                         } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelX > 30 || pauseCtx->stickRelY < -30 || pauseCtx->stickRelY > 30) ||
                                    dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT)) {
-                            INV_CONTENT(ITEM_TRADE_CHILD) ^= ITEM_MASK_KEATON ^ ITEM_MASK_TRUTH;
+                            if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_LETTER_ZELDA) {
+                                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_MASK_KEATON;
+                            } else {
+                                INV_CONTENT(ITEM_TRADE_CHILD) ^= ITEM_MASK_KEATON ^ ITEM_MASK_TRUTH;
+                            }
                             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                         }
                         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
