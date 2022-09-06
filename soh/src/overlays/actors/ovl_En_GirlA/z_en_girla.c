@@ -978,6 +978,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
 void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
+    Rupees_ChangeBy(-this->basePrice);
     if (shopItemIdentity.enGirlAShopItem == -1) {
         ShopItemEntry* itemEntry = &shopItemEntries[SI_SOLD_OUT];
         this->actor.textId = itemEntry->itemDescTextId;
@@ -990,7 +991,6 @@ void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
         this->itemCount = itemEntry->count;
         this->giDrawId = itemEntry->giDrawId;
     }
-    Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_Noop(EnGirlA* this, GlobalContext* globalCtx) {
