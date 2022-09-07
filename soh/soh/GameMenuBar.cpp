@@ -376,6 +376,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
+        // Always Win Dampe Digging
+        CVar_SetS32("gDampeWin", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
