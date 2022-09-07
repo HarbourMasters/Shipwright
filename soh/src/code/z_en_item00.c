@@ -515,13 +515,13 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (!Actor_HasParent(&this->actor, globalCtx)) {
-        if (!gSaveContext.n64ddFlag) {
-            if (getItemId != GI_NONE) {
+        if (getItemId != GI_NONE) {
+            if (!gSaveContext.n64ddFlag) {
                 func_8002F554(&this->actor, globalCtx, getItemId);
+            } else {
+                getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+                GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
             }
-        } else {
-            getItem = Randomizer_GetRandomizedItem(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
-            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
     }
 

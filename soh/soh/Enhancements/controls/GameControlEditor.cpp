@@ -1,6 +1,6 @@
 #include "GameControlEditor.h"
-#include "Controller.h"
-#include "Window.h"
+#include "../Controller.h"
+#include "../Window.h"
 
 #include <string>
 #include <list>
@@ -8,12 +8,14 @@
 #include <utility>
 #include <iterator>
 
-#include "Lib/ImGui/imgui.h"
-#include "Lib/ImGui/imgui_internal.h"
-#include "Cvar.h"
-#include "UltraController.h"
-#include "Utils/StringHelper.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_internal.h>
+#include <libultraship/Cvar.h>
+#include <libultraship/UltraController.h>
+#include <Utils/StringHelper.h>
+#include <libultraship/ImGuiImpl.h>
+
+#include "../../UIWidgets.hpp"
 
 namespace GameControlEditor {
     const ImGuiTableFlags PANEL_TABLE_FLAGS =
@@ -53,7 +55,7 @@ namespace GameControlEditor {
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
         ImGui::SmallButton("?");
-        SohImGui::Tooltip(helptext.c_str());
+        UIWidgets::Tooltip(helptext.c_str());
     }
 
     typedef uint32_t N64ButtonMask;
@@ -118,7 +120,7 @@ namespace GameControlEditor {
             preview = "Unknown";
         }
 
-        SohImGui::InsertPadding();
+        UIWidgets::Spacer(0);
         ImVec2 cursorPos = ImGui::GetCursorPos();
         ImVec2 textSize = ImGui::CalcTextSize(mapping.label);
         ImGui::SetCursorPosY(cursorPos.y + textSize.y / 4);
@@ -139,7 +141,7 @@ namespace GameControlEditor {
             }
             ImGui::EndCombo();
         }
-        SohImGui::InsertPadding();
+        UIWidgets::Spacer(0);
     }
 
     void DrawOcarinaControlPanel() {
@@ -156,7 +158,7 @@ namespace GameControlEditor {
         
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        SohImGui::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
+        UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
 
         if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
             if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
@@ -193,10 +195,10 @@ namespace GameControlEditor {
                 ImGui::EndTable();
             }
         } else {
-            SohImGui::InsertPadding();
+            UIWidgets::Spacer(0);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
             ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
-            SohImGui::InsertPadding();
+            UIWidgets::Spacer(0);
         }
 
         SohImGui::BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
@@ -205,9 +207,9 @@ namespace GameControlEditor {
             ImGui::TableSetupColumn("Right stick", PANEL_TABLE_COLUMN_FLAGS);
             TableHelper::InitHeader(false);
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-            SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+            UIWidgets::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
             TableHelper::NextCol();
-            SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+            UIWidgets::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
             ImGui::EndTable();
         }
         SohImGui::EndGroupPanel();
@@ -304,20 +306,20 @@ namespace GameControlEditor {
         
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        SohImGui::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        SohImGui::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        SohImGui::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        SohImGui::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
-        DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-    }
-    
-    void DrawUI(bool& open) {
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+		UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+        UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+        UIWidgets::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        UIWidgets::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
+        UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+	}
+	
+	void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;

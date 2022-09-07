@@ -23,20 +23,17 @@ namespace Ship {
 		bool IsRunning();
 		bool DidLoadSuccessfully();
 
-		std::shared_ptr<Archive> GetArchive() { return OTR; }
-		std::shared_ptr<Window> GetContext() { return Context; }
-
+		std::shared_ptr<Archive> GetArchive();
+		std::shared_ptr<Window> GetContext();
 		const std::string* HashToString(uint64_t Hash) const;
-
 		void InvalidateResourceCache();
-
 		uint32_t GetGameVersion();
 		void SetGameVersion(uint32_t newGameVersion);
 		std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
 		std::shared_ptr<File> LoadFile(const std::string& FilePath);
 		std::shared_ptr<Resource> GetCachedFile(const char* FilePath) const;
 		std::shared_ptr<Resource> LoadResource(const char* FilePath);
-		std::shared_ptr<Resource> LoadResource(const std::string& FilePath) { return LoadResource(FilePath.c_str()); }
+		std::shared_ptr<Resource> LoadResource(const std::string& FilePath);
 		std::variant<std::shared_ptr<Resource>, std::shared_ptr<ResourcePromise>> LoadResourceAsync(const char* FilePath);
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(const std::string& SearchMask);

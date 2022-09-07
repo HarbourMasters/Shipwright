@@ -5,45 +5,45 @@
 #include <filesystem>
 #include <fstream>
 
-#include "ResourceMgr.h"
-#include "DisplayList.h"
-#include "PlayerAnimation.h"
-#include "Skeleton.h"
-#include "Window.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/DisplayList.h>
+#include <libultraship/PlayerAnimation.h>
+#include <libultraship/Skeleton.h>
+#include <libultraship/Window.h>
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
 #include <ultra64/gbi.h>
-#include <Animation.h>
+#include <libultraship/Animation.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
 #include <time.h>
 #endif
-#include <CollisionHeader.h>
-#include <Array.h>
-#include <Cutscene.h>
-#include "Lib/stb/stb_image.h"
+#include <libultraship/CollisionHeader.h>
+#include <libultraship/Array.h>
+#include <libultraship/Cutscene.h>
+#include <stb/stb_image.h>
 #define DRMP3_IMPLEMENTATION
-#include "Lib/dr_libs/mp3.h"
+#include <dr_libs/mp3.h>
 #define DRWAV_IMPLEMENTATION
-#include "Lib/dr_libs/wav.h"
-#include "AudioPlayer.h"
+#include <dr_libs/wav.h>
+#include <libultraship/AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
-#include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
+#include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/n64_weird_frame_data.inc"
-#include "soh/frame_interpolation.h"
+#include "frame_interpolation.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include "Hooks.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include <libultraship/Hooks.h>
+#include "Enhancements/custom-message/CustomMessageManager.h"
 
-#include "Lib/Fast3D/gfx_pc.h"
-#include "Lib/Fast3D/gfx_rendering_api.h"
+#include <Fast3D/gfx_pc.h>
+#include <Fast3D/gfx_rendering_api.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -52,15 +52,16 @@
 #endif
 
 #ifdef __SWITCH__
-#include "SwitchImpl.h"
+#include <libultraship/SwitchImpl.h>
 #elif defined(__WIIU__)
-#include "WiiUImpl.h"
+#include <libultraship/WiiUImpl.h>
 #endif
 
-#include <Audio.h>
-#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include <libultraship/Audio.h>
+#include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
-#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "Enhancements/item-tables/ItemTableManager.h"
+#include "GameMenuBar.hpp"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -289,6 +290,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG, MOD_NONE, GI_BULLET_BAG_50),
         GET_ITEM_NONE,
         GET_ITEM_NONE,
+        GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
     };
     ItemTableManager::Instance->AddItemTable(MOD_NONE);
     for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
@@ -320,6 +322,9 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     Ship::WiiU::Init();
 #endif
+    SohImGui::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
+    SohImGui::RegisterMenuDrawMethod(GameMenuBar::Draw);
+
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
@@ -1613,7 +1618,7 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(OTRGlobals::Instance->getItemModIndex, getItemID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
 }
 
