@@ -111,8 +111,8 @@ Randomizer::Randomizer() {
         SpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
         EnumToSpoilerfileGetName[item.GetRandomizerGet()] = {
             item.GetName().english,
-            item.GetName().french,
             item.GetName().english,
+            item.GetName().french,
         };
     }
 }
@@ -459,31 +459,22 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
 
-    // Make an inverse of std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum 
-    // so that we can get the name of the item from the RandomizerCheck
-    // TODO: We should probably just make the GetItemName in util.cpp more robust and use that instead. Currently
-    // it's not localized, doesn't have rando items, and quest items are separate, so we're doing this for now
-    std::unordered_map<RandomizerGet, std::string> GetEnumToSpoilerfileName;
-    for (auto& [name, get] : SpoilerfileGetNameToEnum) {
-        GetEnumToSpoilerfileName[get] = name;
-    }
-
     for (int index = 0; index < shopItemRandomizerChecks.size(); ++index) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
-        std::string shopItemName = GetEnumToSpoilerfileName[this->itemLocations[shopItemCheck]];
+        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[this->itemLocations[shopItemCheck]];
         u16 shopItemPrice = merchantPrices[shopItemCheck];
         // TODO: Magic number 100, we don't to overwrite deku scrub messages
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, index + 100, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-                "\x08%r" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
-                "\x08%r" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
-                "\x08%r" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
+                "\x08%r" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+                "\x08%r" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+                "\x08%r" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
         });
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, index + shopItemRandomizerChecks.size() + 100, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-                "\x08" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
-                "\x08" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
-                "\x08" + shopItemName + ": " + std::to_string(shopItemPrice) + " Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
+                "\x08" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+                "\x08" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+                "\x08" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
         });
     }
 }
