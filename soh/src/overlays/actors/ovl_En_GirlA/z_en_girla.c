@@ -1261,5 +1261,20 @@ void EnGirlA_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (this->hiliteFunc != NULL) {
         this->hiliteFunc(thisx, globalCtx, 0);
     }
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) && this->actor.params != SI_SOLD_OUT) {
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+            if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                if (shopItemIdentity.enGirlAShopItem == -1) {
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                    if (getItemEntry.drawFunc != NULL && 
+                        (CVar_GetS32("gRandoMatchKeyColors", 0) || getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+                        getItemEntry.drawFunc(globalCtx, &getItemEntry);
+                        return;
+                    }
+                }
+            }
+    }
+
     GetItem_Draw(globalCtx, this->giDrawId);
 }
