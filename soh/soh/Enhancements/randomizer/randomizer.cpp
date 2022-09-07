@@ -107,7 +107,6 @@ Randomizer::Randomizer() {
     for (auto item: *RandoMain::GetFullItemTable()) {
         // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
         if (item.GetName().english.empty()) continue;
-        SohImGui::GetConsole()->SendInfoMessage("GetFullItemTable %d %s %d", item.GetRandomizerGet(), item.GetName().english.c_str(), item.GetItemID());
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
         SpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
         EnumToSpoilerfileGetName[item.GetRandomizerGet()] = {
