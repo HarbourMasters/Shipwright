@@ -1,6 +1,4 @@
 #include "GameControlEditor.h"
-#include "../Controller.h"
-#include "../Window.h"
 
 #include <string>
 #include <list>
