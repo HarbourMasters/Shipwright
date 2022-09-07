@@ -6,6 +6,7 @@
 #include "keys.hpp"
 #include "hint_list.hpp"
 #include "settings.hpp"
+#include "../randomizerTypes.h"
 
 union ItemOverride_Value;
 
@@ -28,9 +29,9 @@ enum ItemType {
 class Item {
 public:
     Item() = default;
-  Item(Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
+  Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
        uint16_t price_ = 0);
-    Item(Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
          uint16_t price_ = 0);
     ~Item();
 
@@ -53,6 +54,10 @@ public:
 
     ItemType GetItemType() const {
         return type;
+    }
+
+    RandomizerGet GetRandomizerGet() {
+        return randomizerGet;
     }
 
     uint16_t GetPrice() const {
@@ -131,6 +136,7 @@ public:
     }
 
 private:
+    RandomizerGet randomizerGet;
     Text name;
     ItemType type;
     int  getItemId;
