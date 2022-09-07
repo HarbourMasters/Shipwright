@@ -6,7 +6,7 @@
 #include "shops.hpp"
 #include "debug.hpp"
 #include "keys.hpp"
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 //Location definitions
 static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;

@@ -23,7 +23,7 @@ typedef struct {
 #include <vector>
 #include <filesystem>
 
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 class SaveManager {
 public:
@@ -57,6 +57,7 @@ public:
 
     void CopyZeldaFile(int from, int to);
     void DeleteZeldaFile(int fileNum);
+    bool IsRandoFile();
 
     // Use a name of "" to save to an array. You must be in a SaveArray callback.
     template<typename T>

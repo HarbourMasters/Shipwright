@@ -4,7 +4,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include "spdlog/spdlog.h"
@@ -1205,6 +1205,10 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+}
+
+bool SaveManager::IsRandoFile() {
+    return gSaveContext.n64ddFlag != 0 ? true : false;
 }
 
 // Functionality required to convert old saves into versioned saves
