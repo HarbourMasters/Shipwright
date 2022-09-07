@@ -643,7 +643,6 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     }
 
     for(auto randoSetting : gSaveContext.randoSettings) {
-        if(randoSetting.key == RSK_NONE) break;
         this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
@@ -713,8 +712,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
     try {
         // clear out existing settings
-        // RANDOTODO don't use magic number for settings array size
-        for(size_t i = 0; i < 300; i++) {
+        for(size_t i = 0; i < RSK_MAX; i++) {
             gSaveContext.randoSettings[i].key = RSK_NONE;
             gSaveContext.randoSettings[i].value = 0;
         }
@@ -723,13 +721,12 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
 
-        int index = 0;
-
         for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
             // todo load into cvars for UI
             
             std::string numericValueString;
             if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                RandomizerSettingKey index = SpoilerfileSettingNameToEnum[it.key()];
                 gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
@@ -996,7 +993,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                 }
-                index++;
             }
         }
 
