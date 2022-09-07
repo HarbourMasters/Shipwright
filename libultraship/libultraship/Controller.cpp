@@ -112,4 +112,16 @@ namespace Ship {
 	std::shared_ptr<DeviceProfile> Controller::getProfile(int32_t virtualSlot) {
 		return profiles[virtualSlot];
 	}
+
+	std::shared_ptr<ControllerAttachment> Controller::GetAttachment() {
+		return Attachment;
+	}
+
+	bool Controller::IsRumbling() {
+		return isRumbling;
+	}
+
+	std::string Controller::GetGuid() {
+		return GUID;
+	}
 }

@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 
 #include <time.h>
@@ -218,7 +218,8 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-        Flags_SetEventChkInf(0xAA);
+        player->pendingFlag.flagID = 0xAA;
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
     }
 }
 
@@ -230,7 +231,8 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
             !Player_InBlockingCsMode(globalCtx, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xAC);
+            player->pendingFlag.flagID = 0xAC;
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
     }
 }
@@ -255,10 +257,10 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemEntry.getItemId && getItemEntry.getItemId != GI_ICE_TRAP)) &&
-            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xC1);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0xC1;
         }
     }
 }

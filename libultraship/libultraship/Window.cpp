@@ -86,7 +86,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-	    if (SohImGui::controller->IsOpened()) return;
+	    if (SohImGui::GetInputEditor()->IsOpened()) return;
 
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
@@ -580,5 +580,53 @@ namespace Ship {
         }
 
         saveFile.close();
+    }
+
+    bool Window::IsFullscreen() {
+	    return bIsFullscreen;
+    }
+
+    uint32_t Window::GetMenuBar() {
+	    return dwMenubar;
+    }
+
+    void Window::SetMenuBar(uint32_t dwMenuBar) {
+	    this->dwMenubar = dwMenuBar;
+    }
+
+    std::string Window::GetName() {
+	    return Name;
+    }
+
+    std::shared_ptr<ControlDeck> Window::GetControlDeck() {
+	    return ControllerApi;
+    }
+
+    std::shared_ptr<AudioPlayer> Window::GetAudioPlayer() {
+	    return APlayer;
+    }
+
+    std::shared_ptr<ResourceMgr> Window::GetResourceManager() {
+	    return ResMan;
+    }
+
+    std::shared_ptr<Mercury> Window::GetConfig() {
+	    return Config;
+    }
+
+    std::shared_ptr<spdlog::logger> Window::GetLogger() {
+	    return Logger;
+    }
+
+    const char* Window::GetKeyName(int32_t scancode) {
+	    return WmApi->get_key_name(scancode);
+    }
+
+    int32_t Window::GetLastScancode() {
+	    return lastScancode;
+    }
+
+    void Window::SetLastScancode(int32_t scanCode) {
+	    lastScancode = scanCode;
     }
 }
