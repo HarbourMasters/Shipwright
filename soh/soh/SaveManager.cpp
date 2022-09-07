@@ -90,6 +90,24 @@ void SaveManager::LoadRandomizerVersion1() {
     memcpy(gSaveContext.ganonText, ganonText.c_str(), ganonText.length());
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    size_t merchantPricesSize = 0;
+    if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
+        merchantPricesSize += NUM_SCRUBS;
+    }
+    // TODO: Add shop item count when shopsanity is enabled
+
+    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            RandomizerCheck rc;
+            SaveManager::Instance->LoadData("check", rc);
+            uint32_t price;
+            SaveManager::Instance->LoadData("price", price);
+            randomizer->merchantPrices[rc] = price;
+        });
+    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -121,6 +139,20 @@ void SaveManager::SaveRandomizer() {
     SaveManager::Instance->SaveData("ganonText", gSaveContext.ganonText);
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    std::vector<std::pair<RandomizerCheck, u16>> merchantPrices;
+    for (const auto & [ check, price ] : randomizer->merchantPrices) {
+        merchantPrices.push_back(std::make_pair(check, price));
+    }
+
+    SaveManager::Instance->SaveArray("merchantPrices", merchantPrices.size(), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("check", merchantPrices[i].first);
+            SaveManager::Instance->SaveData("price", merchantPrices[i].second);
+        });
+    });
 }
 
 void SaveManager::Init() {
