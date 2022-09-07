@@ -1,6 +1,6 @@
 #include "savestates.h"
 
-#include "GameVersions.h"
+#include <libultraship/GameVersions.h>
 
 #include <cstdio> // std::sprintf
 
@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <ImGuiImpl.h>
+#include <libultraship/ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -85,8 +85,8 @@ typedef struct SaveStateInfo {
     OnePointCsFull D_8011D8DC_copy[3];
     OnePointCsFull D_8011D954_copy[4];
     OnePointCsFull D_8011D9F4_copy[3];
-    int16_t D_8011DB08_copy;
-    int16_t D_8011DB0C_copy;
+    int16_t depthPhase_copy;
+    int16_t screenPlanePhase_copy;
     int32_t sOOBTimer_copy;
     f32 D_8015CE50_copy;
     f32 D_8015CE54_copy;
@@ -437,8 +437,8 @@ void SaveState::BackupCameraData(void) {
     memcpy(info->D_8011D8DC_copy, D_8011D8DC, sizeof(info->D_8011D8DC_copy));
     memcpy(info->D_8011D954_copy, D_8011D954, sizeof(info->D_8011D954_copy));
     memcpy(info->D_8011D9F4_copy, D_8011D9F4, sizeof(info->D_8011D9F4_copy));
-    info->D_8011DB08_copy = D_8011DB08;
-    info->D_8011DB0C_copy = D_8011DB0C;
+    info->depthPhase_copy = depthPhase;
+    info->screenPlanePhase_copy = screenPlanePhase;
     info->sOOBTimer_copy = sOOBTimer;
     info->D_8015CE50_copy = D_8015CE50;
     info->D_8015CE54_copy = D_8015CE54;
@@ -465,8 +465,8 @@ void SaveState::LoadCameraData(void) {
     memcpy(D_8011D8DC, info->D_8011D8DC_copy, sizeof(info->D_8011D8DC_copy));
     memcpy(D_8011D954, info->D_8011D954_copy, sizeof(info->D_8011D954_copy));
     memcpy(D_8011D9F4, info->D_8011D9F4_copy, sizeof(info->D_8011D9F4_copy));
-    D_8011DB08 = info->D_8011DB08_copy;
-    D_8011DB0C = info->D_8011DB0C_copy;
+    depthPhase = info->depthPhase_copy;
+    screenPlanePhase = info->screenPlanePhase_copy;
     sOOBTimer = info->sOOBTimer_copy;
     D_8015CE50 = info->D_8015CE50_copy;
     D_8015CE54 = info->D_8015CE54_copy;
@@ -823,7 +823,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    SohImGui::overlay->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -841,12 +841,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                SohImGui::overlay->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    SohImGui::overlay->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
@@ -862,7 +862,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gGlobalCtx == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        SohImGui::overlay->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -876,7 +876,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                SohImGui::overlay->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 

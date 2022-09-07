@@ -1,12 +1,12 @@
 #include "Console.h"
 
 #include "Cvar.h"
-#include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Utils.h"
+#include <sstream>
 
 namespace Ship {
 	std::string BuildUsage(const CommandEntry& entry) {
@@ -388,5 +388,21 @@ namespace Ship {
 		if (!HasCommand(command)) {
 			Commands[command] = entry;
 		}
+	}
+
+	std::string Console::GetCurrentChannel() {
+		return currentChannel;
+	}
+
+	bool Console::IsOpened() {
+		return opened;
+	}
+
+	void Console::Close() {
+		opened = false;
+	}
+
+	void Console::Open() {
+		opened = true;
 	}
 }

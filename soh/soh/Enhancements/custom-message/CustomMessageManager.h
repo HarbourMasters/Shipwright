@@ -89,7 +89,7 @@ class CustomMessageManager {
     with the provided giid (getItemID) as its key. This function also inserts the icon corresponding to
     the provided iid (itemID) at the beginning of each page of the textbox.
     */
-    bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
+    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessageEntry messages);
 
     /*
     Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,

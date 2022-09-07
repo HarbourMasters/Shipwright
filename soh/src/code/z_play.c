@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 
 #include <time.h>
@@ -201,8 +201,8 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
-        GiveItemWithoutActor(globalCtx, getItemId);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
@@ -216,9 +216,10 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
          gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
-        GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetEventChkInf(0xAA);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+        player->pendingFlag.flagID = 0xAA;
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
     }
 }
 
@@ -228,9 +229,10 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
             !Player_InBlockingCsMode(globalCtx, player)) {
-            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
-            GiveItemWithoutActor(globalCtx, getItemId);
-            Flags_SetEventChkInf(0xAC);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+            player->pendingFlag.flagID = 0xAC;
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
     }
 }
@@ -242,22 +244,23 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
-        GiveItemWithoutActor(globalCtx, getItemId);
-        player->pendingFlag.flagID = 0x1E;
-        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
+        if (player->pendingFlag.flagType == FLAG_NONE && GiveItemEntryWithoutActor(globalCtx, getItem)) {
+            player->pendingFlag.flagID = 0x1E;
+            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        }
     }
 }
 
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
     if (gSaveContext.entranceIndex == 0x05E0) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemId && getItemId != GI_ICE_TRAP)) &&
-            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
-            GiveItemWithoutActor(globalCtx, getItemId);
-            Flags_SetEventChkInf(0xC1);
+        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0xC1;
         }
     }
 }
@@ -306,7 +309,7 @@ void Gameplay_Init(GameState* thisx) {
     Audio_SetExtraFilter(0);
     Quake_Init();
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(globalCtx->cameraPtrs); i++) {
         globalCtx->cameraPtrs[i] = NULL;
     }
 
@@ -414,6 +417,13 @@ void Gameplay_Init(GameState* thisx) {
     PreRender_SetValues(&globalCtx->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
     globalCtx->transitionMode = 0;
+
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        globalCtx->transitionMode = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    }
+
     FrameAdvance_Init(&globalCtx->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&globalCtx->state);
@@ -1932,7 +1942,7 @@ void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
 }
 
 s32 func_800C0CB8(GlobalContext* globalCtx) {
-    return (globalCtx->roomCtx.curRoom.mesh->polygon.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
+    return (globalCtx->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
            (YREG(15) != 0x40) && (globalCtx->sceneNum != SCENE_HAIRAL_NIWA);
 }
 

@@ -137,7 +137,7 @@ void MagicDark_DimLighting(GlobalContext* globalCtx, f32 intensity) {
     f32 colorScale;
     f32 fogScale;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5) {
         intensity = CLAMP_MIN(intensity, 0.0f);
         intensity = CLAMP_MAX(intensity, 1.0f);
         fogScale = intensity - 0.2f;
@@ -198,6 +198,10 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
     MagicDark* this = (MagicDark*)thisx;
     s32 pad;
     u16 gameplayFrames = globalCtx->gameplayFrames;
+    Color_RGB8 Spell_env_ori = {0, 100, 255};
+    Color_RGB8 Spell_col_ori = {170, 255, 255};
+    Color_RGB8 Spell_env = CVar_GetRGB("gNL_Diamond_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVar_GetRGB("gNL_Diamond_Col", Spell_col_ori);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -221,8 +225,8 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gUseSpellsCol",0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gNL_Diamond_ColR",170), CVar_GetS32("gNL_Diamond_ColG",255), CVar_GetS32("gNL_Diamond_ColB",255), (s32)(this->primAlpha * 0.6f) & 0xFF);
-            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gNL_Diamond_EnvR",100), CVar_GetS32("gNL_Diamond_EnvG",100), CVar_GetS32("gNL_Diamond_EnvB",255), 128);
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 128);
         } else {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);

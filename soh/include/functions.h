@@ -10,6 +10,7 @@ extern "C"
 #endif
 
 #include "../../libultraship/libultraship/luslog.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
@@ -60,7 +61,9 @@ void Locale_ResetRegion(void);
 u32 func_80001F48(void);
 u32 func_80001F8C(void);
 u32 Locale_IsRegionNative(void);
-#if !defined(__APPLE__) && !defined(__SWITCH__)
+#ifdef __WIIU__
+void _assert(const char* exp, const char* file, s32 line);
+#elif !defined(__APPLE__) && !defined(__SWITCH__)
 void __assert(const char* exp, const char* file, s32 line);
 #endif
 #if defined(__APPLE__) && defined(NDEBUG)
@@ -76,7 +79,7 @@ OSPiHandle* osDriveRomInit(void);
 void StackCheck_Init(StackEntry* entry, void* stackTop, void* stackBottom, u32 initValue, s32 minSpace,
                      const char* name);
 void StackCheck_Cleanup(StackEntry* entry);
-StackStatus StackCheck_GetState(StackEntry* entry);
+s32 StackCheck_GetState(StackEntry* entry);
 u32 StackCheck_CheckAll(void);
 u32 StackCheck_Check(StackEntry* entry);
 f32 LogUtils_CheckFloatRange(const char* exp, s32 line, const char* valueName, f32 value, const char* minName, f32 min,
@@ -451,7 +454,10 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
-s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId);
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry);
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry);
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId);
 void func_8002F580(Actor* actor, GlobalContext* globalCtx);
@@ -475,7 +481,7 @@ void func_8002F948(Actor* actor, u16 sfxId);
 void func_8002F974(Actor* actor, u16 sfxId);
 void func_8002F994(Actor* actor, s32 arg1);
 s32 func_8002F9EC(GlobalContext* globalCtx, Actor* actor, CollisionPoly* poly, s32 bgId, Vec3f* pos);
-void func_800304B0(GlobalContext* globalCtx);
+void Actor_DisableLens(GlobalContext* globalCtx);
 void func_800304DC(GlobalContext* globalCtx, ActorContext* actorCtx, ActorEntry* actorEntry);
 void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx);
 s32 func_800314D4(GlobalContext* globalCtx, Actor* actorB, Vec3f* arg2, f32 arg3);
@@ -1048,6 +1054,7 @@ void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button);
 void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button);
 void func_80084BF4(GlobalContext* globalCtx, u16 flag);
 u8 Item_Give(GlobalContext* globalCtx, u8 item);
+u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem);
@@ -1355,13 +1362,13 @@ void func_800AA4A8(View* view, f32 fovy, f32 near, f32 far);
 void func_800AA4E0(View* view, f32* fovy, f32* near, f32* far);
 void View_SetViewport(View* view, Viewport* viewport);
 void View_GetViewport(View* view, Viewport* viewport);
-void func_800AA76C(View* view, f32 arg1, f32 arg2, f32 arg3);
-void func_800AA78C(View* view, f32 arg1, f32 arg2, f32 arg3);
-s32 func_800AA7AC(View* view, f32 arg1);
-void func_800AA7B8(View* view);
-void func_800AA814(View* view);
-void func_800AA840(View* view, Vec3f vec1, Vec3f vec2, f32 arg3);
-s32 func_800AA890(View* view, Mtx* mtx);
+void View_SetDistortionOrientation(View* view, f32 rotX, f32 rotY, f32 rotZ);
+void View_SetDistortionScale(View* view, f32 scaleX, f32 scaleY, f32 scaleZ);
+s32 View_SetDistortionSpeed(View* view, f32 speed);
+void View_InitDistortion(View* view);
+void View_ClearDistortion(View* view);
+void View_SetDistortion(View* view, Vec3f orientation, Vec3f scale, f32 speed);
+s32 View_StepDistortion(View* view, Mtx* projectionMtx);
 void func_800AAA50(View* view, s32 arg1);
 s32 func_800AAA9C(View* view);
 s32 func_800AB0A8(View* view);
@@ -1649,7 +1656,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padmgr);
 void PadMgr_HandlePreNMI(PadMgr* padmgr);
 // This function must remain commented out, because it is called incorrectly in
 // fault.c (actual bug in game), and the compiler notices and won't compile it
-// void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
+void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
 void PadMgr_Init(PadMgr* padmgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id, OSPri priority, void* stack);
 void Sched_SwapFrameBuffer(CfbInfo* cfbInfo);
 void func_800C84E4(SchedContext* sc, CfbInfo* cfbInfo);

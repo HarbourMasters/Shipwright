@@ -722,7 +722,7 @@ s32 EnFirefly_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
                                void* thisx, Gfx** gfx) {
     EnFirefly* this = (EnFirefly*)thisx;
 
-    if ((this->actor.draw == EnFirefly_DrawInvisible) && (globalCtx->actorCtx.unk_03 == 0)) {
+    if ((this->actor.draw == EnFirefly_DrawInvisible) && !globalCtx->actorCtx.lensActive) {
         *dList = NULL;
     } else if (limbIndex == 1) {
         pos->y += 2300.0f;
@@ -735,6 +735,11 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
+    static Color_RGB8 fireAuraPrimColor_ori = { 255, 255, 100 };
+    static Color_RGB8 fireAuraEnvColor_ori = { 255, 50, 0 };
+    static Color_RGB8 iceAuraPrimColor_ori = { 100, 200, 255 };
+    static Color_RGB8 iceAuraEnvColor_ori = { 0, 0, 255 };
+
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -747,20 +752,20 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     s16 effLife;
     EnFirefly* this = (EnFirefly*)thisx;
     if (CVar_GetS32("gUseKeeseCol", 0)) {
-        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetS32("gKeese1_Ef_PrimR", 255), CVar_GetS32("gKeese1_Ef_PrimG", 255), CVar_GetS32("gKeese1_Ef_PrimB", 100), 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetS32("gKeese1_Ef_EnvR", 255), CVar_GetS32("gKeese1_Ef_Env", 50), CVar_GetS32("gKeese1_Ef_EnvB", 0), 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetS32("gKeese2_Ef_PrimR", 100), CVar_GetS32("gKeese2_Ef_PrimG", 200), CVar_GetS32("gKeese2_Ef_PrimB", 255), 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetS32("gKeese2_Ef_EnvR", 0), CVar_GetS32("gKeese2_Ef_Env", 0), CVar_GetS32("gKeese2_Ef_EnvB", 255), 0 };
+        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).r,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).g,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).b, 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).r,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).g,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).b, 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).r,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).g,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).b, 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).r,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).g,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).b, 0 };
         fireAuraPrimColor = fireAuraPrimColor_custom;
         fireAuraEnvColor = fireAuraEnvColor_custom;
         iceAuraPrimColor = iceAuraPrimColor_custom;
         iceAuraEnvColor = iceAuraEnvColor_custom;
     } else {
         //Original colors are back there
-        Color_RGBA8 fireAuraPrimColor_custom = { 255, 255, 100, 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { 255, 50, 0, 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { 100, 200, 255, 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { 0, 0, 255, 0 };
+        Color_RGBA8 fireAuraPrimColor_custom = { fireAuraPrimColor_ori.r, fireAuraPrimColor_ori.g, fireAuraPrimColor_ori.b, 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { fireAuraEnvColor_ori.r, fireAuraEnvColor_ori.g, fireAuraEnvColor_ori.b, 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { iceAuraPrimColor_ori.r, iceAuraPrimColor_ori.g, iceAuraPrimColor_ori.b, 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { iceAuraEnvColor_ori.r, iceAuraEnvColor_ori.g, iceAuraEnvColor_ori.b, 0 };
         fireAuraPrimColor = fireAuraPrimColor_custom;
         fireAuraEnvColor = fireAuraEnvColor_custom;
         iceAuraPrimColor = iceAuraPrimColor_custom;

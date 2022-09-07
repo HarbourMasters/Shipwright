@@ -1,20 +1,22 @@
 #include "randomizer.h"
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <variables.h>
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
-#include <soh/Enhancements/debugger/ImGuiHelpers.h>
-#include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
-#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+#include "../../UIWidgets.hpp"
+#include <ImGui/imgui_internal.h>
+#include "../custom-message/CustomMessageManager.h"
+#include "../custom-message/CustomMessageTypes.h"
+#include "../item-tables/ItemTableManager.h"
+#include <stdexcept>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -806,202 +808,6 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
-std::unordered_map<s16, s16> getItemIdToItemId = {
-    { GI_BOW, ITEM_BOW },
-    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
-    { GI_DINS_FIRE, ITEM_DINS_FIRE },
-    { GI_SLINGSHOT, ITEM_SLINGSHOT },
-    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
-    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
-    { GI_HOOKSHOT, ITEM_HOOKSHOT },
-    { GI_LONGSHOT, ITEM_LONGSHOT },
-    { GI_ARROW_ICE, ITEM_ARROW_ICE },
-    { GI_FARORES_WIND, ITEM_FARORES_WIND },
-    { GI_BOOMERANG, ITEM_BOOMERANG },
-    { GI_LENS, ITEM_LENS },
-    { GI_HAMMER, ITEM_HAMMER },
-    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
-    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
-    { GI_BOTTLE, ITEM_BOTTLE },
-    { GI_POTION_RED, ITEM_POTION_RED },
-    { GI_POTION_GREEN, ITEM_POTION_GREEN },
-    { GI_POTION_BLUE, ITEM_POTION_BLUE },
-    { GI_FAIRY, ITEM_FAIRY },
-    { GI_FISH, ITEM_FISH },
-    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
-    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
-    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
-    { GI_BUGS, ITEM_BUG },
-    { GI_BIG_POE, ITEM_BIG_POE },
-    { GI_POE, ITEM_POE },
-    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
-    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
-    { GI_POCKET_EGG, ITEM_POCKET_EGG },
-    { GI_COJIRO, ITEM_COJIRO },
-    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
-    { GI_ODD_POTION, ITEM_ODD_POTION },
-    { GI_SAW, ITEM_SAW },
-    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
-    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
-    { GI_FROG, ITEM_FROG },
-    { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
-};
-
-std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
-                                               { GI_BOMBS_5, GID_BOMB },
-                                               { GI_NUTS_5, GID_NUTS },
-                                               { GI_BOMBCHUS_10, GID_BOMBCHU },
-                                               { GI_BOW, GID_BOW },
-                                               { GI_SLINGSHOT, GID_SLINGSHOT },
-                                               { GI_BOOMERANG, GID_BOOMERANG },
-                                               { GI_STICKS_1, GID_STICK },
-                                               { GI_HOOKSHOT, GID_HOOKSHOT },
-                                               { GI_LONGSHOT, GID_LONGSHOT },
-                                               { GI_LENS, GID_LENS },
-                                               { GI_LETTER_ZELDA, GID_LETTER_ZELDA },
-                                               { GI_OCARINA_OOT, GID_OCARINA_TIME },
-                                               { GI_HAMMER, GID_HAMMER },
-                                               { GI_COJIRO, GID_COJIRO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BOTTLE, GID_BOTTLE },
-                                               { GI_POTION_RED, GID_POTION_RED },
-                                               { GI_POTION_GREEN, GID_POTION_GREEN },
-                                               { GI_POTION_BLUE, GID_POTION_BLUE },
-                                               { GI_FAIRY, GID_FAIRY },
-                                               { GI_MILK_BOTTLE, GID_MILK },
-                                               { GI_LETTER_RUTO, GID_LETTER_RUTO },
-                                               { GI_BEAN, GID_BEAN },
-                                               { GI_MASK_SKULL, GID_MASK_SKULL },
-                                               { GI_MASK_SPOOKY, GID_MASK_SPOOKY },
-                                               { GI_CHICKEN, GID_CHICKEN },
-                                               { GI_MASK_KEATON, GID_MASK_KEATON },
-                                               { GI_MASK_BUNNY, GID_MASK_BUNNY },
-                                               { GI_MASK_TRUTH, GID_MASK_TRUTH },
-                                               { GI_POCKET_EGG, GID_EGG },
-                                               { GI_POCKET_CUCCO, GID_CHICKEN },
-                                               { GI_ODD_MUSHROOM, GID_ODD_MUSHROOM },
-                                               { GI_ODD_POTION, GID_ODD_POTION },
-                                               { GI_SAW, GID_SAW },
-                                               { GI_SWORD_BROKEN, GID_SWORD_BROKEN },
-                                               { GI_PRESCRIPTION, GID_PRESCRIPTION },
-                                               { GI_FROG, GID_FROG },
-                                               { GI_EYEDROPS, GID_EYEDROPS },
-                                               { GI_CLAIM_CHECK, GID_CLAIM_CHECK },
-                                               { GI_SWORD_KOKIRI, GID_SWORD_KOKIRI },
-                                               { GI_SWORD_KNIFE, GID_SWORD_BGS },
-                                               { GI_SHIELD_DEKU, GID_SHIELD_DEKU },
-                                               { GI_SHIELD_HYLIAN, GID_SHIELD_HYLIAN },
-                                               { GI_SHIELD_MIRROR, GID_SHIELD_MIRROR },
-                                               { GI_TUNIC_GORON, GID_TUNIC_GORON },
-                                               { GI_TUNIC_ZORA, GID_TUNIC_ZORA },
-                                               { GI_BOOTS_IRON, GID_BOOTS_IRON },
-                                               { GI_BOOTS_HOVER, GID_BOOTS_HOVER },
-                                               { GI_QUIVER_40, GID_QUIVER_40 },
-                                               { GI_QUIVER_50, GID_QUIVER_50 },
-                                               { GI_BOMB_BAG_20, GID_BOMB_BAG_20 },
-                                               { GI_BOMB_BAG_30, GID_BOMB_BAG_30 },
-                                               { GI_BOMB_BAG_40, GID_BOMB_BAG_40 },
-                                               { GI_GAUNTLETS_SILVER, GID_GAUNTLETS_SILVER },
-                                               { GI_GAUNTLETS_GOLD, GID_GAUNTLETS_GOLD },
-                                               { GI_SCALE_SILVER, GID_SCALE_SILVER },
-                                               { GI_SCALE_GOLD, GID_SCALE_GOLDEN },
-                                               { GI_STONE_OF_AGONY, GID_STONE_OF_AGONY },
-                                               { GI_GERUDO_CARD, GID_GERUDO_CARD },
-                                               { GI_OCARINA_FAIRY, GID_OCARINA_FAIRY },
-                                               { GI_SEEDS_5, GID_SEEDS },
-                                               { GI_HEART_CONTAINER, GID_HEART_CONTAINER },
-                                               { GI_HEART_PIECE, GID_HEART_PIECE },
-                                               { GI_KEY_BOSS, GID_KEY_BOSS },
-                                               { GI_COMPASS, GID_COMPASS },
-                                               { GI_MAP, GID_DUNGEON_MAP },
-                                               { GI_KEY_SMALL, GID_KEY_SMALL },
-                                               { GI_MAGIC_SMALL, GID_MAGIC_SMALL },
-                                               { GI_MAGIC_LARGE, GID_MAGIC_LARGE },
-                                               { GI_WALLET_ADULT, GID_WALLET_ADULT },
-                                               { GI_WALLET_GIANT, GID_WALLET_GIANT },
-                                               { GI_WEIRD_EGG, GID_EGG },
-                                               { GI_HEART, GID_HEART },
-                                               { GI_ARROWS_SMALL, GID_ARROWS_SMALL },
-                                               { GI_ARROWS_MEDIUM, GID_ARROWS_MEDIUM },
-                                               { GI_ARROWS_LARGE, GID_ARROWS_LARGE },
-                                               { GI_RUPEE_GREEN, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED, GID_RUPEE_RED },
-                                               { GI_HEART_CONTAINER_2, GI_HEART_CONTAINER_2 },
-                                               { GI_MILK, GID_MILK },
-                                               { GI_MASK_GORON, GID_MASK_GORON },
-                                               { GI_MASK_ZORA, GID_MASK_ZORA },
-                                               { GI_MASK_GERUDO, GID_MASK_GERUDO },
-                                               { GI_BRACELET, GID_BRACELET },
-                                               { GI_RUPEE_PURPLE, GID_RUPEE_PURPLE },
-                                               { GI_RUPEE_GOLD, GID_RUPEE_GOLD },
-                                               { GI_SWORD_BGS, GID_SWORD_BGS },
-                                               { GI_ARROW_FIRE, GID_ARROW_FIRE },
-                                               { GI_ARROW_ICE, GID_ARROW_ICE },
-                                               { GI_ARROW_LIGHT, GID_ARROW_LIGHT },
-                                               { GI_SKULL_TOKEN, GID_SKULL_TOKEN },
-                                               { GI_DINS_FIRE, GID_DINS_FIRE },
-                                               { GI_FARORES_WIND, GID_FARORES_WIND },
-                                               { GI_NAYRUS_LOVE, GID_NAYRUS_LOVE },
-                                               { GI_BULLET_BAG_30, GID_BULLET_BAG },
-                                               { GI_BULLET_BAG_40, GID_BULLET_BAG },
-                                               { GI_STICKS_5, GID_STICK },
-                                               { GI_STICKS_10, GID_STICK },
-                                               { GI_NUTS_5_2, GID_NUTS },
-                                               { GI_NUTS_10, GID_NUTS },
-                                               { GI_BOMBS_1, GID_BOMB },
-                                               { GI_BOMBS_10, GID_BOMB },
-                                               { GI_BOMBS_20, GID_BOMB },
-                                               { GI_BOMBS_30, GID_BOMB },
-                                               { GI_SEEDS_30, GID_SEEDS },
-                                               { GI_BOMBCHUS_5, GID_BOMBCHU },
-                                               { GI_BOMBCHUS_20, GID_BOMBCHU },
-                                               { GI_FISH, GID_FISH },
-                                               { GI_BUGS, GID_BUG },
-                                               { GI_BLUE_FIRE, GID_BLUE_FIRE },
-                                               { GI_POE, GID_POE },
-                                               { GI_BIG_POE, GID_BIG_POE },
-                                               { GI_DOOR_KEY, GID_KEY_SMALL },
-                                               { GI_RUPEE_GREEN_LOSE, GID_RUPEE_GREEN },
-                                               { GI_RUPEE_BLUE_LOSE, GID_RUPEE_BLUE },
-                                               { GI_RUPEE_RED_LOSE, GID_RUPEE_RED },
-                                               { GI_RUPEE_PURPLE_LOSE, GID_RUPEE_PURPLE },
-                                               { GI_HEART_PIECE_WIN, GID_HEART_PIECE },
-                                               { GI_STICK_UPGRADE_20, GID_STICK },
-                                               { GI_STICK_UPGRADE_30, GID_STICK },
-                                               { GI_NUT_UPGRADE_30, GID_NUTS },
-                                               { GI_NUT_UPGRADE_40, GID_NUTS },
-                                               { GI_BULLET_BAG_50, GID_BULLET_BAG_50 },
-                                               { GI_ZELDAS_LULLABY, GID_SONG_ZELDA },
-                                               { GI_EPONAS_SONG, GID_SONG_EPONA },
-                                               { GI_SARIAS_SONG, GID_SONG_SARIA },
-                                               { GI_SUNS_SONG, GID_SONG_SUN },
-                                               { GI_SONG_OF_TIME, GID_SONG_TIME },
-                                               { GI_SONG_OF_STORMS, GID_SONG_STORM },
-                                               { GI_MINUET_OF_FOREST, GID_SONG_MINUET },
-                                               { GI_BOLERO_OF_FIRE, GID_SONG_BOLERO },
-                                               { GI_SERENADE_OF_WATER, GID_SONG_SERENADE },
-                                               { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
-                                               { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
-                                               { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
-                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
-                                               { GI_STONE_KOKIRI, GID_KOKIRI_EMERALD },
-                                               { GI_STONE_GORON, GID_GORON_RUBY },
-                                               { GI_STONE_ZORA, GID_ZORA_SAPPHIRE },
-                                               { GI_MEDALLION_FOREST, GID_MEDALLION_FOREST },
-                                               { GI_MEDALLION_FIRE, GID_MEDALLION_FIRE },
-                                               { GI_MEDALLION_WATER, GID_MEDALLION_WATER },
-                                               { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
-                                               { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
-                                               { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
-                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
-                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
-                                               { GI_ICE_TRAP, GID_RUPEE_GOLD },
-                                               { GI_ICE_TRAP, GID_MAXIMUM },
-                                               { GI_TEXT_0, GID_MAXIMUM } };
-
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "No Item", RG_NONE },
     { "Rien", RG_NONE },
@@ -1417,18 +1223,6 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
     { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE }
 };
-
-s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
-    if (getItemIdToItemId.count(getItemId) == 0) {
-        return -1;
-    }
-
-    return getItemIdToItemId[getItemId];
-}
-
-s16 Randomizer::GetItemModelFromId(s16 itemId) {
-    return itemIdToModel[itemId];
-}
 
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
@@ -2008,14 +1802,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MAGIC_BEAN_PACK:
             return GI_BEAN; //todo make it 10 of them
 
-        case RG_DOUBLE_DEFENSE:
-            return GI_DOUBLE_DEFENSE;
-
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
 
         case RG_ZELDAS_LETTER:
             return GI_LETTER_ZELDA;
+        case RG_RUTOS_LETTER:
+            return GI_LETTER_RUTO;
 
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
@@ -2138,9 +1931,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
-                    return GI_SINGLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                    return GI_DOUBLE_MAGIC;
+                    return (GetItemID)RG_MAGIC_DOUBLE;
             }
             return GI_RUPEE_BLUE;
 
@@ -2160,52 +1953,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOTTLE;
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
-        case RG_BOTTLE_WITH_RED_POTION:
-            return GI_BOTTLE_WITH_RED_POTION;
-        case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_BOTTLE_WITH_GREEN_POTION;
-        case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_BOTTLE_WITH_BLUE_POTION;
-        case RG_BOTTLE_WITH_FAIRY:
-            return GI_BOTTLE_WITH_FAIRY;
-        case RG_BOTTLE_WITH_FISH:
-            return GI_BOTTLE_WITH_FISH;
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BOTTLE_WITH_BLUE_FIRE;
-        case RG_BOTTLE_WITH_BUGS:
-            return GI_BOTTLE_WITH_BUGS;
-        case RG_BOTTLE_WITH_POE:
-            return GI_BOTTLE_WITH_POE;
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
-        case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BOTTLE_WITH_BIG_POE;
-
-        case RG_ZELDAS_LULLABY:
-            return GI_ZELDAS_LULLABY;
-        case RG_EPONAS_SONG:
-            return GI_EPONAS_SONG;
-        case RG_SARIAS_SONG:
-            return GI_SARIAS_SONG;
-        case RG_SUNS_SONG:
-            return GI_SUNS_SONG;
-        case RG_SONG_OF_TIME:
-            return GI_SONG_OF_TIME;
-        case RG_SONG_OF_STORMS:
-            return GI_SONG_OF_STORMS;
-
-        case RG_MINUET_OF_FOREST:
-            return GI_MINUET_OF_FOREST;
-        case RG_BOLERO_OF_FIRE:
-            return GI_BOLERO_OF_FIRE;
-        case RG_SERENADE_OF_WATER:
-            return GI_SERENADE_OF_WATER;
-        case RG_REQUIEM_OF_SPIRIT:
-            return GI_REQUIEM_OF_SPIRIT;
-        case RG_NOCTURNE_OF_SHADOW:
-            return GI_NOCTURNE_OF_SHADOW;
-        case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;
 
         // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
@@ -2268,26 +2015,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_GANONS_CASTLE_KEY_RING:
             return GI_RUPEE_BLUE;
 
-        case RG_KOKIRI_EMERALD:
-            return GI_STONE_KOKIRI;
-        case RG_GORON_RUBY:
-            return GI_STONE_GORON;
-        case RG_ZORA_SAPPHIRE:
-            return GI_STONE_ZORA;
-
-        case RG_FOREST_MEDALLION:
-            return GI_MEDALLION_FOREST;
-        case RG_FIRE_MEDALLION:
-            return GI_MEDALLION_FIRE;
-        case RG_WATER_MEDALLION:
-            return GI_MEDALLION_WATER;
-        case RG_SPIRIT_MEDALLION:
-            return GI_MEDALLION_SPIRIT;
-        case RG_SHADOW_MEDALLION:
-            return GI_MEDALLION_SHADOW;
-        case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;
-
         case RG_RECOVERY_HEART:
             return GI_HEART;
 
@@ -2307,10 +2034,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-
-        case RG_ICE_TRAP:
-            return GI_ICE_TRAP;
-
         case RG_MILK:
             return GI_MILK; //todo logic around needing a bottle?
 
@@ -2365,9 +2088,172 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_HINT:
             return GI_RUPEE_BLUE; //todo
 
-        default:
+        default: {
+            if (!IsItemVanilla(randoGet)) {
+                return (GetItemID)randoGet;
+            }
             return ogItemId;
+        }
     }
+}
+
+bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
+    switch (randoGet) {
+        case RG_NONE:
+        case RG_KOKIRI_SWORD: 
+        case RG_GIANTS_KNIFE: 
+        case RG_BIGGORON_SWORD:
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_IRON_BOOTS:
+        case RG_HOVER_BOOTS:
+        case RG_BOOMERANG:
+        case RG_LENS_OF_TRUTH:
+        case RG_MEGATON_HAMMER:
+        case RG_STONE_OF_AGONY:
+        case RG_DINS_FIRE:
+        case RG_FARORES_WIND:
+        case RG_NAYRUS_LOVE:
+        case RG_FIRE_ARROWS:
+        case RG_ICE_ARROWS:
+        case RG_LIGHT_ARROWS:
+        case RG_GERUDO_MEMBERSHIP_CARD:
+        case RG_MAGIC_BEAN:
+        case RG_WEIRD_EGG: 
+        case RG_ZELDAS_LETTER:
+        case RG_RUTOS_LETTER:
+        case RG_POCKET_EGG:
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+        case RG_GOLD_SKULLTULA_TOKEN:
+        case RG_PROGRESSIVE_HOOKSHOT:
+        case RG_PROGRESSIVE_STRENGTH:
+        case RG_PROGRESSIVE_BOMB_BAG:
+        case RG_PROGRESSIVE_BOW:
+        case RG_PROGRESSIVE_SLINGSHOT:
+        case RG_PROGRESSIVE_WALLET:
+        case RG_PROGRESSIVE_SCALE:
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_OCARINA:
+        case RG_PROGRESSIVE_GORONSWORD:
+        case RG_EMPTY_BOTTLE:
+        case RG_BOTTLE_WITH_MILK:
+        case RG_RECOVERY_HEART:
+        case RG_GREEN_RUPEE:
+        case RG_BLUE_RUPEE:
+        case RG_RED_RUPEE:
+        case RG_PURPLE_RUPEE:
+        case RG_HUGE_RUPEE:
+        case RG_PIECE_OF_HEART:
+        case RG_HEART_CONTAINER:
+        case RG_MILK:
+        case RG_BOMBS_5:
+        case RG_BOMBS_10:
+        case RG_BOMBS_20:
+        case RG_BOMBCHU_5:
+        case RG_BOMBCHU_10:
+        case RG_BOMBCHU_20:
+        case RG_BOMBCHU_DROP:
+        case RG_ARROWS_5:
+        case RG_ARROWS_10:
+        case RG_ARROWS_30:
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_DEKU_SEEDS_30:
+        case RG_DEKU_STICK_1:
+        case RG_RED_POTION_REFILL:
+        case RG_GREEN_POTION_REFILL:
+        case RG_BLUE_POTION_REFILL:
+        case RG_TREASURE_GAME_HEART:
+        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_ARROWS_30:
+        case RG_BUY_ARROWS_50:
+        case RG_BUY_BOMBS_525:
+        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_STICK_1:
+        case RG_BUY_BOMBS_10:
+        case RG_BUY_FISH:
+        case RG_BUY_RED_POTION_30:
+        case RG_BUY_GREEN_POTION:
+        case RG_BUY_BLUE_POTION:
+        case RG_BUY_HYLIAN_SHIELD:
+        case RG_BUY_DEKU_SHIELD:
+        case RG_BUY_GORON_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+        case RG_BUY_HEART:
+        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHU_5:
+        case RG_BUY_DEKU_SEEDS_30:
+        case RG_SOLD_OUT:
+        case RG_BUY_BLUE_FIRE:
+        case RG_BUY_BOTTLE_BUG:
+        case RG_BUY_POE:
+        case RG_BUY_FAIRYS_SPIRIT:
+        case RG_BUY_ARROWS_10:
+        case RG_BUY_BOMBS_20:
+        case RG_BUY_BOMBS_30:
+        case RG_BUY_BOMBS_535:
+        case RG_BUY_RED_POTION_40:
+        case RG_BUY_RED_POTION_50:
+        //RANDO TODO: Fix this to return false if keysanity is on.
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+        case RG_GANONS_CASTLE_BOSS_KEY:
+        case RG_DEKU_TREE_COMPASS:
+        case RG_DODONGOS_CAVERN_COMPASS:
+        case RG_JABU_JABUS_BELLY_COMPASS:
+        case RG_FOREST_TEMPLE_COMPASS:
+        case RG_FIRE_TEMPLE_COMPASS:
+        case RG_WATER_TEMPLE_COMPASS:
+        case RG_SPIRIT_TEMPLE_COMPASS:
+        case RG_SHADOW_TEMPLE_COMPASS:
+        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_ICE_CAVERN_COMPASS:
+        case RG_DEKU_TREE_MAP:
+        case RG_DODONGOS_CAVERN_MAP:
+        case RG_JABU_JABUS_BELLY_MAP:
+        case RG_FOREST_TEMPLE_MAP:
+        case RG_FIRE_TEMPLE_MAP:
+        case RG_WATER_TEMPLE_MAP:
+        case RG_SPIRIT_TEMPLE_MAP:
+        case RG_SHADOW_TEMPLE_MAP:
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_ICE_CAVERN_MAP:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
+    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    return IsItemVanilla(randoGet);
 }
 
 std::string Randomizer::GetAdultAltarText() const {
@@ -3478,7 +3364,7 @@ void DrawRandoEditor(bool& open) {
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                             ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
 
-        SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+        UIWidgets::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
             if (ImGui::Button("Generate Seed")) {
@@ -3518,17 +3404,17 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Forest");
                         switch (CVar_GetS32("gRandomizeForest", 1)) {
                             case 1:
-                                InsertHelpHoverText("Mido no longer blocks the path to the Deku Tree\n"
+                                UIWidgets::InsertHelpHoverText("Mido no longer blocks the path to the Deku Tree\n"
                                                     "The Kokiri boy no longer blocks the path out of the forest.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Kokiri boy no longer blocks the path out of the forest\nMido "
                                     "still blocks the path to the Deku Tree, requiring the Kokiri Sword "
                                     "and a Deku Shield to access the Deku Tree.");
                                 break;
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Beating Deku Tree is logically required to leave the forest area "
                                     "(Kokiri Forest / Lost Woods / Sacred Forest Meadow / Deku Tree) "
                                     "while the Kokiri Sword and a Deku Shield are required to access the "
@@ -3536,125 +3422,125 @@ void DrawRandoEditor(bool& open) {
                                     "forest area.\nThis setting is incompatible with starting as adult.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
                         ImGui::Separator();
                         // Kakariko Gate
                         ImGui::Text("Kakariko Gate");
                         switch (CVar_GetS32("gRandomizeKakarikoGate", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The gate and the Happy Mask Shop both remain closed until showing "
                                     "Zelda's Letter to the guard in Kakariko.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The gate is always open instead of needing Zelda's Letter.\nThe Happy Mask Shop "
                                     "opens upon obtaining Zelda's Letter without needing to show it to the guard.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
                         ImGui::Separator();
 
                         // Door of Time
                         ImGui::Text("Door of Time");
                         switch (CVar_GetS32("gRandomizeDoorOfTime", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Door of Time starts opened instead of needing to play the Song of Time.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Only an Ocarina and the Song of Time need to be found to open the Door of Time.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Ocarina of Time, the Song of Time and all Spiritual Stones need to "
                                     "be found to open the Door of Time.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
                         ImGui::Separator();
 
                         // Zora's Fountain
                         ImGui::Text("Zora's Fountain");
                         switch (CVar_GetS32("gRandomizeZorasFountain", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora obstructs the way to Zora's Fountain.\nRuto's Letter must be "
                                     "shown as child in order to move him from both eras.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora is always moved in the adult era.\nThis means Ruto's Letter is "
                                     "only required to access Zora's fountain as child.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora starts as moved in both the child and adult eras.\nThis also "
                                     "removes Ruto's Letter from the pool since it can't be used.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
                         ImGui::Separator();
 
                         // Gerudo Fortress
                         ImGui::Text("Gerudo Fortress");
                         switch (CVar_GetS32("gRandomizeGerudoFortress", 0)) {
                             case 0:
-                                InsertHelpHoverText("All 4 carpenters can be rescued.");
+                                UIWidgets::InsertHelpHoverText("All 4 carpenters can be rescued.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Only the bottom left carpenter must be rescued.");
+                                UIWidgets::InsertHelpHoverText("Only the bottom left carpenter must be rescued.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The carpenters are rescued from the start of the game and if \"Shuffle "
                                     "Gerudo Card\" is disabled, the player starts with the Gerudo Card in "
                                     "the inventory allowing access to Gerudo Training Grounds.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
                         ImGui::Separator();
 
                         // Rainbow Bridge
                         ImGui::Text("Rainbow Bridge");
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
+                        UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
                         switch (CVar_GetS32("gRandomizeRainbowBridge", 3)) {
                             case 1:
-                                InsertHelpHoverText("The Rainbow Bridge requires Shadow and Spirit Medallions as well "
+                                UIWidgets::InsertHelpHoverText("The Rainbow Bridge requires Shadow and Spirit Medallions as well "
                                                     "as Light Arrows.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::InsertHelpHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                     "Spiritual Stones.");
-                                SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                "gRandomizeStoneCount", 0, 3, "");
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "Sets the number of Spiritual Stones required to spawn the Rainbow Bridge.");
                                 break;
                             case 3:
-                                SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                "gRandomizeMedallionCount", 0, 6, "", 6);
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "The Rainbow Bridge requires collecting a configurable number of Medallions.");
                                 break;
                             case 4:
-                                SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                "gRandomizeRewardCount", 0, 9, "");
-                                SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                      "Dungeon Rewards.");
                                 break;
                             case 5:
-                                SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                "gRandomizeDungeonCount", 0, 8, "");
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "The Rainbow Bridge requires completing a configurable number of Dungeons.\nDungeons "
                                     "are considered complete when Link steps into the blue warp at the end of them.");
                                 break;
                             case 6:
-                                SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
+                                UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                "gRandomizeTokenCount", 0, 100, "");
-                                SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                      "Gold Skulltula Tokens.");
                                 break;
                         }
@@ -3671,8 +3557,8 @@ void DrawRandoEditor(bool& open) {
                             //                               "gRandomizeGanonTrialCount", 0, 6, "");
                             //InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                         // RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
-                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
-                        InsertHelpHoverText(
+                        UIWidgets::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
+                        UIWidgets::InsertHelpHoverText(
                             "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
 
                         // }
@@ -3812,23 +3698,23 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Shuffle Dungeon Rewards");
                         switch (CVar_GetS32("gRandomizeShuffleDungeonReward", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones will be given as rewards for beating dungeons.\n"
                                     "This setting will force Link's Pocket to be a Medallion or a Spiritual Stone.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones can only appear inside of dungeons.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones can only appear outside dungeons.");
                                 break;
                             case 3:
-                                InsertHelpHoverText("Medallions and Spiritual Stones can appear anywhere.");
+                                UIWidgets::InsertHelpHoverText("Medallions and Spiritual Stones can appear anywhere.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4,
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4,
                                                       0);
 
                         // todo: support non dungeon rewards for link's pocket
@@ -3862,10 +3748,10 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Shuffle Songs");
                         switch (CVar_GetS32("gRandomizeShuffleSongs", 0)) {
                             case 0:
-                                InsertHelpHoverText("Songs will only appear at locations that normally teach songs.");
+                                UIWidgets::InsertHelpHoverText("Songs will only appear at locations that normally teach songs.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Songs appear at the end of dungeons.\nFor major dungeons, they "
+                                UIWidgets::InsertHelpHoverText("Songs appear at the end of dungeons.\nFor major dungeons, they "
                                                     "will be at the boss heart container location.\nThe remaining 4 "
                                                     "songs are placed at:\n- Zelda's Lullaby location\n"
                                                     "- Ice Cavern's Serenade of Water Location\n"
@@ -3873,10 +3759,10 @@ void DrawRandoEditor(bool& open) {
                                                     "- Gerudo Training Ground's Ice Arrow Location.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("Songs can appear in any location");
+                                UIWidgets::InsertHelpHoverText("Songs can appear in any location");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                         ImGui::Separator();
 
                         // todo implement shops
@@ -3977,19 +3863,19 @@ void DrawRandoEditor(bool& open) {
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
                             // Shuffle Kokiri Sword
                             ImGui::Text("Shuffle Kokiri Sword");
-                            InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\nThis will "
+                            UIWidgets::InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\nThis will "
                                                 "require extensive use of sticks until the sword is found.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
                             ImGui::Separator();
                         }
 
                         if(CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
                             // Shuffle Ocarinas
                             ImGui::Text("Shuffle Ocarinas");
-                            InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the Ocarina of time into "
+                            UIWidgets::InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the Ocarina of time into "
                                                 "the item pool.\n"
                                                 "This will require finding an Ocarina before being able to play songs.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
                             ImGui::Separator();
                         }
 
@@ -3997,22 +3883,22 @@ void DrawRandoEditor(bool& open) {
                         if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
                             // Shuffle Weird Egg
                             ImGui::Text("Shuffle Weird Egg");
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "Enabling this shuffles the Weird Egg from Malon into the item pool.\nThis "
                                 "will require finding the Weird Egg to talk to Zelda in Hyrule Castle which "
                                 "in turn unlocks rewards from Impa, Saria, Malon and Talon as well as the "
                                 "Happy Mask Sidequest.\nThe Weird egg is also required for Zelda's Letter to "
                                 "unlock the Kakariko Gate as child which can lock some progression.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
                             ImGui::Separator();                            
                         }
 
                         // Shuffle Gerudo Membership Card
                         ImGui::Text("Shuffle Gerudo Membership Card");
-                        InsertHelpHoverText(
+                        UIWidgets::InsertHelpHoverText(
                             "Enabling this shuffles the Gerudo Membership Card into the item pool.\nThe Gerudo "
                             "Token is required to enter the Gerudo Training Ground.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleGerudoToken", randoShuffleGerudoToken, 2, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleGerudoToken", randoShuffleGerudoToken, 2, 0);
                         ImGui::Separator();
 
                         // todo implement magic bean 10 pack
@@ -4053,14 +3939,14 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PopItemWidth();
 
                     ImGui::TableNextColumn();
-                    SohImGui::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
-                    SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
-                    SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
-                    SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
-                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
-                    SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
-                    SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                    InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+                    UIWidgets::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
+                    UIWidgets::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
+                    UIWidgets::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
+                    UIWidgets::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
+                    UIWidgets::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+                    UIWidgets::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
+                    UIWidgets::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                    UIWidgets::InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
 
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
@@ -4202,19 +4088,19 @@ void DrawRandoEditor(bool& open) {
                         // Ganon's Boss Key
                     ImGui::PushItemWidth(-FLT_MIN);
                         ImGui::Text("Ganon's Boss Key");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
                                                       0);
                         switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
                             case 0:
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "Ganon's Boss Key is given to you from the start and you don't "
                                     "have to worry about finding it.");
                                 break;
                             case 1:
-                                SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla location.");
+                                UIWidgets::SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla location.");
                                 break;
                             case 2:
-                                SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside Ganon's Castle.");
+                                UIWidgets::SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside Ganon's Castle.");
                                 break;
                             // case 0:
                             //     SetLastItemHoverText(
@@ -4333,30 +4219,30 @@ void DrawRandoEditor(bool& open) {
                     // ImGui::Separator();
 
                     // Cuccos to return
-                    SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
+                    UIWidgets::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
                                                     "gRandomizeCuccosToReturn", 0, 7, "", 7);
-                    InsertHelpHoverText("The cucco Lady will give a reward for returning this many of her cuccos to the pen.");
+                    UIWidgets::InsertHelpHoverText("The cucco Lady will give a reward for returning this many of her cuccos to the pen.");
                     ImGui::Separator();
 
                     // // Big Poe Target Count
-                    SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                    UIWidgets::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                     "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
-                    InsertHelpHoverText("The Poe buyer will give a reward for turning in the chosen number of Big Poes.");
+                    UIWidgets::InsertHelpHoverText("The Poe buyer will give a reward for turning in the chosen number of Big Poes.");
                     ImGui::Separator();
 
                     // // Skip child stealth
-                    SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
-                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+                    UIWidgets::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
+                    UIWidgets::InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
                     ImGui::Separator();
 
                     // Skip Epona race
-                    SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
-                    InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
+                    UIWidgets::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
+                    UIWidgets::InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
                     ImGui::Separator();
 
                     // Skip tower escape
-                    SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
-                    InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
+                    UIWidgets::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
+                    UIWidgets::InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
                     ImGui::Separator();
 
                     // todo implement complete mask quest
@@ -4389,53 +4275,53 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PushItemWidth(-FLT_MIN);
                     // Gossip Stone Hints
                     ImGui::Text("Gossip Stone Hints");
-                    InsertHelpHoverText(
+                    UIWidgets::InsertHelpHoverText(
                         "Gossip Stones can be made to give hints about where items can be found.\nDifferent settings can "
                         "be chosen to decide which item is needed to speak to Gossip Stones. \nChoosing to stick with the "
                         "Mask of Truth will make the hints very difficult to obtain.\nHints for \"on the way of the "
                         "hero\" are locations that contain items that are required to beat the game.");
 
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
                     if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                         // Hint Clarity
                         ImGui::Indent();
                         ImGui::Text("Hint Clarity");
                         switch (CVar_GetS32("gRandomizeHintClarity", 2)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but the "
                                     "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
                                     "but may refer to more than one thing.\nEx: Kokiri Sword > a sword");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nClear: Hints are clearly written and "
                                     "are unique for each thing.\nEx: Kokiri Sword > the Kokiri Sword");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
+                        UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                         // Hint Distribution
                         ImGui::Text("Hint Distribution");
                         switch (CVar_GetS32("gRandomizeHintDistribution", 1)) {
                             case 0:
-                                InsertHelpHoverText("Only junk hints.");
+                                UIWidgets::InsertHelpHoverText("Only junk hints.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Recommended hint spread.");
+                                UIWidgets::InsertHelpHoverText("Recommended hint spread.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("More useful hints.");
+                                UIWidgets::InsertHelpHoverText("More useful hints.");
                                 break;
                             case 3:
-                                InsertHelpHoverText("Many powerful hints.");
+                                UIWidgets::InsertHelpHoverText("Many powerful hints.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                         ImGui::Unindent();
                     }
                     ImGui::Separator();
@@ -4489,43 +4375,43 @@ void DrawRandoEditor(bool& open) {
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 1)) {
                         case 0:
-                            InsertHelpHoverText("Extra major items are added to the pool.");
+                            UIWidgets::InsertHelpHoverText("Extra major items are added to the pool.");
                             break;
                         case 1:
-                            InsertHelpHoverText("Original item pool.");
+                            UIWidgets::InsertHelpHoverText("Original item pool.");
                             break;
                         case 2:
-                            InsertHelpHoverText("Some excess items are removed, including health upgrades.");
+                            UIWidgets::InsertHelpHoverText("Some excess items are removed, including health upgrades.");
                             break;
                         case 3:
-                            InsertHelpHoverText("Most excess items are removed.");
+                            UIWidgets::InsertHelpHoverText("Most excess items are removed.");
                             break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
                     ImGui::Separator();
 
                     // // Ice Traps
                     ImGui::Text("Ice Traps");
                     switch (CVar_GetS32("gRandomizeIceTraps", 1)) {
                         case 0:
-                            InsertHelpHoverText("All Ice Traps are removed.");
+                            UIWidgets::InsertHelpHoverText("All Ice Traps are removed.");
                             break;
                         case 1:
-                            InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
+                            UIWidgets::InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
                             break;
                         case 2:
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "Chance to add extra Ice Traps when junk items are added to the item pool.");
                             break;
                         case 3:
-                            InsertHelpHoverText("All added junk items will be Ice Traps.");
+                            UIWidgets::InsertHelpHoverText("All added junk items will be Ice Traps.");
                             break;
                         case 4:
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "All junk items will be replaced by Ice Traps, even those in the base pool.");
                             break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                     ImGui::Separator();
 
                     // todo implement double defense getitem
@@ -4564,17 +4450,17 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
                     // COLUMN 2 - OPEN EXCLUDE LOCATIONS
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
+                    UIWidgets::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
+                    UIWidgets::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
+                    UIWidgets::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
+                    UIWidgets::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
+                    UIWidgets::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
+                    UIWidgets::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
                     // ImGui::TableNextColumn();
                     // // COLUMN 3 - LOGICAL TRICKS
                     // ImGui::NewLine();
@@ -4738,31 +4624,116 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
                     "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
                     "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
                     "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_FISH, ITEM_FISH,
                     "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
                     "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
                     "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
                     "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
-        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
+        GIMESSAGE_UNTRANSLATED(RG_BOTTLE_WITH_POE, ITEM_POE,
                     "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
     };
     CreateGetItemMessages(getItemMessages);
     CreateScrubMessages();
 }
 
+class ExtendedVanillaTableInvalidItemIdException: public std::exception {
+    private:
+    s16 itemID;
+
+    public:
+      ExtendedVanillaTableInvalidItemIdException(s16 itemID): itemID(itemID) {}
+      std::string what() {
+        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
+        "item, try adding it to randoGetItemTable instead.";
+      }
+};
+
+void InitRandoItemTable() {
+    // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
+    GetItemEntry extendedVanillaGetItemTable[] = {
+        GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_LIGHT_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_FOREST_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_FIRE_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_WATER_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_SHADOW_MEDALLION),
+        GET_ITEM(ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG,
+                 MOD_NONE, RG_SPIRIT_MEDALLION),
+
+        GET_ITEM(ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_KOKIRI_EMERALD),
+        GET_ITEM(ITEM_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_GORON_RUBY),
+        GET_ITEM(ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZORA_SAPPHIRE),
+
+        GET_ITEM(ITEM_SONG_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_ZELDAS_LULLABY),
+        GET_ITEM(ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SUNS_SONG),
+        GET_ITEM(ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_EPONAS_SONG),
+        GET_ITEM(ITEM_SONG_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_STORMS),
+        GET_ITEM(ITEM_SONG_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SONG_OF_TIME),
+        GET_ITEM(ITEM_SONG_SARIA, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SARIAS_SONG),
+
+        GET_ITEM(ITEM_SONG_MINUET, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_MINUET_OF_FOREST),
+        GET_ITEM(ITEM_SONG_BOLERO, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_BOLERO_OF_FIRE),
+        GET_ITEM(ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_SERENADE_OF_WATER),
+        GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_NOCTURNE_OF_SHADOW),
+        GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_REQUIEM_OF_SPIRIT),
+        GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG, MOD_NONE, RG_PRELUDE_OF_LIGHT),
+    };
+
+    // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
+    // RandomizerGet enum values for both.
+    GetItemEntry randoGetItemTable[] = {
+        GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
+        GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_MAGIC_SINGLE),
+        GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_MAGIC_DOUBLE),
+        GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER,
+                 RG_DOUBLE_DEFENSE),
+
+        GET_ITEM(RG_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_FAIRY),
+        GET_ITEM(RG_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_FISH),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_FIRE),
+        GET_ITEM(RG_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
+        GET_ITEM(RG_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                 MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
+        GET_ITEM(RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                 CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
+    };
+    ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
+    for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, extendedVanillaGetItemTable[i].getItemId, extendedVanillaGetItemTable[i]);
+    }
+    for (int i = 0; i < ARRAY_COUNT(randoGetItemTable); i++) {
+        ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
+    }
+}
+
+
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
+    InitRandoItemTable();
 }
 
 extern "C" {
