@@ -30,5 +30,5 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
 std::array<Item, KEY_ENUM_MAX>* RandoMain::GetFullItemTable() {
     ItemTable_Init();
 
-    return &itemTable;
+    return GetFullItemTable_();
 }

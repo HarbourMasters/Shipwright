@@ -7,6 +7,8 @@
 
 using namespace Logic;
 
+static std::array<Item, KEY_ENUM_MAX> itemTable;
+
 void ItemTable_Init() {                              // RandomizerGet                              English name                       French                              Spanish                                     Item Type       getItemID       advancement    logic           hint key
     itemTable[NONE]                              = Item(RG_NONE,                              Text{"No Item",                         "Rien",                             "Sin Objeto"},                              ITEMTYPE_EVENT, GI_RUPEE_GREEN,    false,      &noVariable,    NONE);
     itemTable[KOKIRI_SWORD]                      = Item(RG_KOKIRI_SWORD,                      Text{"Kokiri Sword",                    "Épée Kokiri",                      "Espada Kokiri"},                           ITEMTYPE_ITEM,  GI_SWORD_KOKIRI,   true,       &KokiriSword,   KOKIRI_SWORD);
@@ -286,4 +288,8 @@ void NewItem(const uint32_t itemKey, const Item item) {
     }
 
     itemTable[itemKey] = item;
+}
+
+std::array<Item, KEY_ENUM_MAX>* GetFullItemTable_() {
+    return &itemTable;
 }
