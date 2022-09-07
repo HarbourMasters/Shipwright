@@ -1220,6 +1220,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
                     this->basePrice = shopItemIdentity.itemPrice;
                     this->itemCount = 1;
                     this->giDrawId = getItemEntry.gid;
+                    this->hiliteFunc = NULL;
                 }
             }
         }
