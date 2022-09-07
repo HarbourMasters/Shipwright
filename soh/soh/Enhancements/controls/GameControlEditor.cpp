@@ -217,86 +217,13 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
-    // Copied from InputEditor::DrawButton
     // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditor
     // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
-    // Work is needed in InputEditor to be able to use its function directly (see #1242)
-    void DrawButton(const char* label, int n64Btn) {
-        auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-        auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
-        float size = 40;
-        bool readingMode = BtnReading == n64Btn;
-        bool disabled = (BtnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
-        ImVec2 len = ImGui::CalcTextSize(label);
-        ImVec2 pos = ImGui::GetCursorPos();
-        ImGui::SetCursorPosY(pos.y + len.y / 4);
-        ImGui::SetCursorPosX(pos.x + abs(len.x - size));
-        ImGui::Text("%s", label);
-        ImGui::SameLine();
-        ImGui::SetCursorPosY(pos.y);
-
-        if (disabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-        }
-
-        if (readingMode) {
-            const int32_t btn = backend->ReadRawPress();
-
-            if (btn != -1) {
-                backend->SetButtonMapping(CurrentPort - 1, n64Btn, btn);
-                BtnReading = -1;
-
-                // avoid immediately triggering another button during gamepad nav
-                ImGui::SetKeyboardFocusHere(0);
-            }
-        }
-
-        const std::string BtnName = backend->GetButtonName(CurrentPort - 1, n64Btn);
-
-        if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName.c_str(), n64Btn).c_str())) {
-            BtnReading = n64Btn;
-            backend->ClearRawPress();
-        }
-
-        if (disabled) {
-            ImGui::PopItemFlag();
-            ImGui::PopStyleVar();
-        }
-    }
-
-    // Controller dropdown (everything here except the DrawButton lines) copied from InputEditor::DrawControllerSchema
-    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditor
-    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
-    // Work is needed in InputEditor to be able to use its dropdown directly (see #1242)
     void DrawCustomButtons() {
-        auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-        auto backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort - 1);
-        auto profile = backend->getProfile(CurrentPort - 1);
-        bool IsKeyboard = backend->GetGuid() == "Keyboard" || backend->GetGuid() == "Auto" || !backend->Connected();
-        std::string ControllerName = backend->GetControllerName();
-
-        if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
-            for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
-                std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
-                if (DeviceName != "Keyboard" && DeviceName != "Auto") {
-                    DeviceName += "##" + std::to_string(i);
-                }
-                if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort - 1))) {
-                    controlDeck->SetPhysicalDevice(CurrentPort - 1, i);
-                }
-            }
-            ImGui::EndCombo();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Refresh")) {
-            controlDeck->ScanPhysicalDevices();
-        }
-
-        DrawButton("Modifier 1", BTN_MODIFIER1);
-        DrawButton("Modifier 2", BTN_MODIFIER2);
+        SohImGui::GetInputEditor()->DrawControllerSelect(CurrentPort - 1);
+        
+        SohImGui::GetInputEditor()->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
+        SohImGui::GetInputEditor()->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
     }
 
     void DrawCameraControlPanel() {
@@ -307,19 +234,19 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-		UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        UIWidgets::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
-        UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-	}
-	
-	void DrawUI(bool& open) {
+        DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+    }
+
+    void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;
