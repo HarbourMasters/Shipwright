@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <sstream>
 #include <ctime>
 
 #include "cosmetics.hpp"

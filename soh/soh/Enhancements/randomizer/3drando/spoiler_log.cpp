@@ -19,6 +19,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sstream>
 #include <unordered_map>
 #include <vector>
 #include <iostream>
