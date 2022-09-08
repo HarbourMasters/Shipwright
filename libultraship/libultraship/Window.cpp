@@ -540,13 +540,12 @@ namespace Ship {
 
         if (!ResMan->DidLoadSuccessfully())
         {
-#ifdef _WIN32
-            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
-#elif defined(__SWITCH__)
+#if defined(__SWITCH__)
             printf("Main OTR file not found!\n");
 #elif defined(__WIIU__)
             Ship::WiiU::ThrowMissingOTR(MainPath.c_str());
 #else
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OTR file not found", "Main OTR file not found. Please generate one", nullptr);
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
             exit(1);
