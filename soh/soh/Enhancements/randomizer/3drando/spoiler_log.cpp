@@ -39,11 +39,13 @@ std::string placementtxt;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    while (Settings::hash.length() < 10) {
-        Settings::hash = "0" + Settings::hash;
+    std::string hash = Settings::hash;
+    // adds leading 0s to the hash string if it has less than 10 digits.
+    while (hash.length() < 10) {
+        hash = "0" + hash;
     }
     for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
-        int number = std::stoi(Settings::hash.substr(j, 2));
+        int number = std::stoi(hash.substr(j, 2));
         Settings::hashIconIndexes[i] = number;
     }
 
