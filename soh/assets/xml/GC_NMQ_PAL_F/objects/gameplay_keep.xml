@@ -8,22 +8,22 @@
         <Texture Name="gBottleGlassTex" OutName="bottle_glass" Format="rgba16" Width="16" Height="16" Offset="0x1800"/>
         <Texture Name="gDekuStickTex" OutName="deku_stick" Format="i8" Width="16" Height="16" Offset="0x1A00"/>
         <Texture Name="gLinkHairTex" OutName="link_hair" Format="rgba16" Width="16" Height="16" Offset="0x1A40"/>
-        <Texture Name="gLinkTunic1Tex" OutName="link_tunic_2" Format="i8" Width="16" Height="16" Offset="0x1C40"/>
-        <Texture Name="gLinkTunic2Tex" OutName="link_tunic_3" Format="i8" Width="16" Height="32" Offset="0x1D40"/>
-        <Texture Name="gLinkTunic3Tex" OutName="link_tunic_4" Format="i8" Width="16" Height="16" Offset="0x1F40"/>
-        <Array Name="D_04002040" Count="24" Offset="0x2040">
+        <Texture Name="gLinkTunic1Tex" OutName="link_tunic_1" Format="i8" Width="16" Height="16" Offset="0x1C40"/>
+        <Texture Name="gLinkTunic2Tex" OutName="link_tunic_2" Format="i8" Width="16" Height="32" Offset="0x1D40"/>
+        <Texture Name="gLinkTunic3Tex" OutName="link_tunic_3" Format="i8" Width="16" Height="16" Offset="0x1F40"/>
+        <Array Name="gLinkPauseChildJointTable" Count="24" Offset="0x2040">
             <Vector Type="s16" Dimensions="3"/>
         </Array>
-        <Array Name="D_040020D0" Count="24" Offset="0x20D0">
+        <Array Name="gLinkPauseChildDekuShieldJointTable" Count="24" Offset="0x20D0">
             <Vector Type="s16" Dimensions="3"/>
         </Array>
-        <Array Name="D_04002160" Count="24" Offset="0x2160">
+        <Array Name="gLinkPauseAdultBgsJointTable" Count="24" Offset="0x2160">
             <Vector Type="s16" Dimensions="3"/>
         </Array>
-        <Array Name="D_040021F0" Count="24" Offset="0x21F0">
+        <Array Name="gLinkPauseAdultJointTable" Count="24" Offset="0x21F0">
             <Vector Type="s16" Dimensions="3"/>
         </Array>
-        <Array Name="D_04002280" Count="24" Offset="0x2280">
+        <Array Name="gLinkPauseAdultShieldJointTable" Count="24" Offset="0x2280">
             <Vector Type="s16" Dimensions="3"/>
         </Array>
 
@@ -654,15 +654,15 @@
         <DList Name="gBoulderFragmentsDL" Offset="0xD340"/>
         <Texture Name="gRockFragment1Tex" OutName="rock_fragment_1" Format="rgba16" Width="32" Height="32" Offset="0xD4E0"/>
         <Texture Name="gRockFragment2Tex" OutName="rock_fragment_2" Format="rgba16" Width="32" Height="32" Offset="0xDCE0"/>
-        <Animation Name="gDoor1Anim" Offset="0xE5B4"/>
-        <Animation Name="gDoor2Anim" Offset="0xE6A0"/>
-        <Animation Name="gDoor3Anim" Offset="0xE758"/>
+        <Animation Name="gDoorChildOpeningLeftAnim" Offset="0xE5B4"/>
+        <Animation Name="gDoorChildOpeningRightAnim" Offset="0xE6A0"/>
+        <Animation Name="gDoorAdultOpeningLeftAnim" Offset="0xE758"/>
         <DList Name="gDoorFrameDL" Offset="0xEC30"/>
         <DList Name="gDoorLeftDL" Offset="0xECB8"/>
         <DList Name="gDoorRightDL" Offset="0xEE00"/>
         <Texture Name="gWoodenDoorTex" OutName="wooden_door" Format="rgba16" Width="32" Height="64" Offset="0xEF38"/>
         <Skeleton Name="gDoorSkel" Type="Normal" LimbType="Standard" Offset="0xFF78"/>
-        <Animation Name="gDoor4Anim" Offset="0x10038"/>
+        <Animation Name="gDoorAdultOpeningRightAnim" Offset="0x10038"/>
         <DList Name="gEffDustDL" Offset="0x10050"/>
         <DList Name="gEffFlash1DL" Offset="0x10130"/>
         <DList Name="gEffFlash2DL" Offset="0x101A8"/>
