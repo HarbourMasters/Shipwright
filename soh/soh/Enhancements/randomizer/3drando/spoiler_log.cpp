@@ -728,12 +728,23 @@ const char* SpoilerLog_Write(int language) {
     }
 
     std::string jsonString = jsonData.dump(4);
+    std::ostringstream fileNameStream;
+    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+        if (i) {
+            fileNameStream << '-';
+        }
+        if (Settings::hashIconIndexes[i] < 10) {
+            fileNameStream << '0';
+        }
+        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+    }
+    std::string fileName = fileNameStream.str();
     std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + std::string(Settings::hash) + std::string(".json")).c_str()));
+        (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
-    return Settings::hash.c_str();
+    return fileName.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {
