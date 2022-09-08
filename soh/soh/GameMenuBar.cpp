@@ -1176,6 +1176,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
             UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
             UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Easy Pause Buffering", "gCheatPauseBufferEnabled", true, false);
+            UIWidgets::Tooltip("Hold L while unpausing to advance a single frame and re-pause the game");
             UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
             UIWidgets::Tooltip("Allows you to use any item at any location");
             UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
