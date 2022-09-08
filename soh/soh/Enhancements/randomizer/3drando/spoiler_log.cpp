@@ -40,8 +40,11 @@ static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
-        int number = Settings::seed[i] - '0';
+    while (Settings::hash.length() < 10) {
+        Settings::hash = "0" + Settings::hash;
+    }
+    for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
+        int number = std::stoi(Settings::hash.substr(j, 2));
         Settings::hashIconIndexes[i] = number;
     }
 
@@ -740,11 +743,11 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
+        (std::string("Randomizer/") + std::string(Settings::hash) + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
-    return Settings::seed.c_str();
+    return Settings::hash.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {

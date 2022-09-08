@@ -542,7 +542,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         Settings::Keysanity.RestoreDelayedOption();
     }
 
-    return "./Randomizer/" + Settings::seed + ".json";
+    return "./Randomizer/" + Settings::hash + ".json";
 }
 
 std::string GetInput(const char* hintText) {
