@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include <memory>
 #include <algorithm>
+#include "Cvar.h"
 #if __APPLE__
 #include <SDL_events.h>
 #else
@@ -21,58 +22,83 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
 		ReadFromSource(virtualSlot);
 
+		OSContPad padToBuffer;
+		padToBuffer.button = 0;
+		padToBuffer.stick_x = 0;
+		padToBuffer.stick_y = 0;
+		padToBuffer.right_stick_x = 0;
+		padToBuffer.right_stick_y = 0;
+		padToBuffer.err_no = 0;
+		padToBuffer.gyro_x = 0;
+		padToBuffer.gyro_y = 0;
+
 #ifndef __WIIU__
 		SDL_PumpEvents();
 #endif
 
 		// Button Inputs
-		pad->button |= getPressedButtons(virtualSlot) & 0xFFFF;
+		padToBuffer.button |= getPressedButtons(virtualSlot) & 0xFFFF;
 
 		// Stick Inputs
 		if (getLeftStickX(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_STICKLEFT) {
-				pad->stick_x = -128;
+				padToBuffer.stick_x = -128;
 			} else if (getPressedButtons(virtualSlot) & BTN_STICKRIGHT) {
-				pad->stick_x = 127;
+				padToBuffer.stick_x = 127;
 			}
 		} else {
-			pad->stick_x = getLeftStickX(virtualSlot);
+			padToBuffer.stick_x = getLeftStickX(virtualSlot);
 		}
 
 		if (getLeftStickY(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_STICKDOWN) {
-				pad->stick_y = -128;
+				padToBuffer.stick_y = -128;
 			} else if (getPressedButtons(virtualSlot) & BTN_STICKUP) {
-				pad->stick_y = 127;
+				padToBuffer.stick_y = 127;
 			}
 		} else {
-			pad->stick_y = getLeftStickY(virtualSlot);
+			padToBuffer.stick_y = getLeftStickY(virtualSlot);
 		}
 
 		// Stick Inputs
 		if (getRightStickX(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_VSTICKLEFT) {
-				pad->right_stick_x = -128;
+				padToBuffer.right_stick_x = -128;
 			} else if (getPressedButtons(virtualSlot) & BTN_VSTICKRIGHT) {
-				pad->right_stick_x = 127;
+				padToBuffer.right_stick_x = 127;
 			}
 		} else {
-			pad->right_stick_x = getRightStickX(virtualSlot);
+			padToBuffer.right_stick_x = getRightStickX(virtualSlot);
 		}
 
 		if (getRightStickY(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_VSTICKDOWN) {
-				pad->right_stick_y = -128;
+				padToBuffer.right_stick_y = -128;
 			} else if (getPressedButtons(virtualSlot) & BTN_VSTICKUP) {
-				pad->right_stick_y = 127;
+				padToBuffer.right_stick_y = 127;
 			}
 		} else {
-			pad->right_stick_y = getRightStickY(virtualSlot);
+			padToBuffer.right_stick_y = getRightStickY(virtualSlot);
 		}
 
 		// Gyro
-		pad->gyro_x = getGyroX(virtualSlot);
-		pad->gyro_y = getGyroY(virtualSlot);
+		padToBuffer.gyro_x = getGyroX(virtualSlot);
+		padToBuffer.gyro_y = getGyroY(virtualSlot);
+
+		padBuffer.push(padToBuffer);
+
+		while(padBuffer.size() > CVar_GetS32("gSimulatedInputLag", 0) / 30) {
+			auto bufferedPad = padBuffer.front();
+			pad->button = bufferedPad.button;		
+			pad->stick_x = bufferedPad.stick_x;
+			pad->stick_y = bufferedPad.stick_y;
+			pad->right_stick_x = bufferedPad.right_stick_x;
+			pad->right_stick_y = bufferedPad.right_stick_y;
+			pad->err_no = bufferedPad.err_no;
+			pad->gyro_x = bufferedPad.gyro_x;
+			pad->gyro_y = bufferedPad.gyro_y;
+			padBuffer.pop();
+		}
 	}
 
 	void Controller::SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode) {
