@@ -186,6 +186,7 @@ set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/adult_trade_shuffle.h"
     "soh/Enhancements/randomizer/randomizer_check_objects.h"
     "soh/Enhancements/randomizer/draw.h"
+    "soh/Enhancements/randomizer/rando_hash.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
