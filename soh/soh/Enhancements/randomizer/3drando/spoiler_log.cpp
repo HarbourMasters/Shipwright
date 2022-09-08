@@ -36,7 +36,6 @@ namespace {
 std::string placementtxt;
 } // namespace
 
-static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
@@ -50,20 +49,6 @@ void GenerateHash() {
 
     // Clear out spoiler log data here, in case we aren't going to re-generate it
     // spoilerData = { 0 };
-}
-
-const RandomizerHash& GetRandomizerHash() {
-  return randomizerHash;
-}
-
-// Returns the randomizer hash as concatenated string, separated by comma.
-const std::string GetRandomizerHashAsString() {
-  std::string hash = "";
-  for (const std::string& str : randomizerHash) {
-    hash += str + ", ";
-  }
-  hash.erase(hash.length() - 2); // Erase last comma
-  return hash;
 }
 
 const SpoilerData& GetSpoilerData() {
@@ -706,7 +691,6 @@ const char* SpoilerLog_Write(int language) {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     jsonData.clear();
 
@@ -767,7 +751,6 @@ bool PlacementLog_Write() {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);
