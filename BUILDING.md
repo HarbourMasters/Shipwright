@@ -186,9 +186,9 @@ cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Wii U
 cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
-cmake --build build-wiiu --target soh
+cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb) 
 
-# Now you can run the executable in ./build-wiiu/soh/soh.rpx
+# Now you can run the executable in ./build-wiiu/soh/soh.rpx or the Wii U Homebrew Bundle in ./build-wiiu/soh/soh.wuhb
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 

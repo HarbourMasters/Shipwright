@@ -139,7 +139,7 @@ namespace Ship {
 						ToLoad->resource = Res;
 						ResourceCache[Res->file->path] = Res;
 
-						SPDLOG_DEBUG("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
+						SPDLOG_TRACE("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
 
 						Res->file = nullptr;
 					} else {
