@@ -77,8 +77,8 @@ static EnViewerInitData sInitData[] = {
     { OBJECT_GNDD, OBJECT_GNDD, 1, -6, ENVIEWER_SHADOW_NONE, 10, ENVIEWER_DRAW_GANONDORF, &object_gndd_Skel_0119E8,
       &object_gndd_Anim_0050A8 },
     /* ENVIEWER_TYPE_9_GANONDORF */
-    { OBJECT_GANON, OBJECT_GANON, 1, -6, ENVIEWER_SHADOW_NONE, 10, ENVIEWER_DRAW_GANONDORF, &gDorfSkel,
-      &object_ganon_Anim_011348 },
+    { OBJECT_GANON, OBJECT_GANON, 1, -6, ENVIEWER_SHADOW_NONE, 10, ENVIEWER_DRAW_GANONDORF, &gGanondorfSkel,
+      &gGanondorfEndingFloatAnim },
 };
 
 static EnGanonMant* sGanondorfCape;
@@ -509,7 +509,7 @@ void EnViewer_Ganondorf9PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gf
         func_80093D84(globalCtx->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfEyesDL));
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
@@ -552,7 +552,7 @@ void EnViewer_DrawGanondorf(EnViewer* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(&object_gndd_Tex_00F778));
         }
     } else if (type == ENVIEWER_TYPE_9_GANONDORF) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(&object_ganon_Tex_00A4E0));
+        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(&gGanondorfCrazedEyeTex));
     }
 
     if (type == ENVIEWER_TYPE_9_GANONDORF) {

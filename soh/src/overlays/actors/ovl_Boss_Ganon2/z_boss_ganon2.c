@@ -169,7 +169,7 @@ void BossGanon2_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_InitJntSph(globalCtx, &this->unk_444);
     Collider_SetJntSph(globalCtx, &this->unk_444, &this->actor, &sJntSphInit2, this->unk_864);
     BossGanon2_SetObjectSegment(this, globalCtx, OBJECT_GANON, false);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gDorfSkel, NULL, NULL, NULL, 0);
+    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGanondorfSkel, NULL, NULL, NULL, 0);
     func_808FD5C4(this, globalCtx);
     this->actor.naviEnemyId = 0x3E;
     this->actor.gravity = 0.0f;
@@ -2747,7 +2747,7 @@ void BossGanon2_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfEyesDL));
 
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     } else if (limbIndex == 10) {
@@ -2795,8 +2795,8 @@ void BossGanon2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     switch (this->unk_337) {
         case 0:
             BossGanon2_SetObjectSegment(this, globalCtx, OBJECT_GANON, true);
-            gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(object_ganon_Tex_00A8E0));
-            gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(object_ganon_Tex_00A8E0));
+            gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
+            gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
             SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                   this->skelAnime.dListCount, NULL, BossGanon2_PostLimbDraw2, this);
             break;

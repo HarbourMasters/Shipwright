@@ -352,7 +352,7 @@ void BossGanon_Init(Actor* thisx, GlobalContext* globalCtx2) {
         Actor_ProcessInitChain(thisx, sInitChain);
         ActorShape_Init(&thisx->shape, 0, NULL, 0);
         Actor_SetScale(thisx, 0.01f);
-        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gDorfSkel, NULL, NULL, NULL, 0);
+        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGanondorfSkel, NULL, NULL, NULL, 0);
         Collider_InitCylinder(globalCtx, &this->collider);
         Collider_SetCylinder(globalCtx, &this->collider, thisx, &sDorfCylinderInit);
 
@@ -1082,7 +1082,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x100)) {
                     TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gDorfTitleCardTex), 160, 180, 128, 40, false);
+                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, false);
                 }
 
                 gSaveContext.eventChkInf[7] |= 0x100;
@@ -3210,7 +3210,7 @@ s32 BossGanon_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
     switch (limbIndex) {
         case 10:
             if (this->useOpenHand) {
-                *dList = gDorfOpenHandDL;
+                *dList = gGanondorfRightHandOpenDL;
             }
             break;
 
@@ -3282,7 +3282,7 @@ void BossGanon_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         Matrix_MultVec3f(&D_808E4DB8, &this->unk_208);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfEyesDL));
 
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     } else if (limbIndex == 6) {
@@ -3822,7 +3822,7 @@ void BossGanon_Draw(Actor* thisx, GlobalContext* globalCtx) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 50, 0, 0, 900, 1099);
     }
 
-    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDorfEyeTex));
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfNormalEyeTex));
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           BossGanon_OverrideLimbDraw, BossGanon_PostLimbDraw, &this->actor);
