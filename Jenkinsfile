@@ -57,14 +57,17 @@ pipeline {
                             "${env.CMAKE}" --build . --config Release
                             
                             cd "..\\..\\"
+							
+							mkdir debug
                             
                             move "soh\\x64\\Release\\soh.exe" ".\\"
+                            move "soh\\x64\\Release\\soh.pdb" ".\\debug\\"
                             move "OTRGui\\build\\assets" ".\\"
                             move ".\\OTRExporter\\x64\\Release\\ZAPD.exe" ".\\assets\\extractor\\"
                             move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
                             rename README.md readme.txt
                             
-                            "${env.ZIP}" a soh.7z soh.exe OTRGui.exe assets readme.txt
+                            "${env.ZIP}" a soh.7z soh.exe OTRGui.exe assets debug readme.txt
                             
                             """
                             archiveArtifacts artifacts: 'soh.7z', followSymlinks: false, onlyIfSuccessful: true
