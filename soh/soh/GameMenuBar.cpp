@@ -237,6 +237,10 @@ namespace GameMenuBar {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Blue Fire Arrows
+        CVar_SetS32("gBlueFireArrows", 0);
+        // Sunlight Arrows
+        CVar_SetS32("gSunlightArrows", 0);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);
@@ -880,6 +884,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
+                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
+                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
                 ImGui::EndMenu();
             }
 
