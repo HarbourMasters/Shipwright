@@ -498,7 +498,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->SetTargetFps(fps * CVar_GetFloat("gFastForwardMult", 1.0));
+    OTRGlobals::Instance->context->SetTargetFps(fps);
 
     int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
     OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);

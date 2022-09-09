@@ -694,9 +694,9 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
-                    UIWidgets::EnhancementSliderFloat("Fast Forward", "##FASTFORWARD", "gFastForwardMult", 1.0, 12.0,
-                                                      "", 1.0, false, false);
-                    UIWidgets::Tooltip("Speeds up gameplay. Note that there may be some audio crackling.");
+                    UIWidgets::EnhancementSliderInt("Fast Forward: %dx", "##FASTFORWARD", "gFrameMult", 1, 8, "", 1);
+                    UIWidgets::Tooltip("Speeds up gameplay. Note that some things, like text,\n"
+                                       "are unaffected by this: use the other enhancements to speed them up.");
                     ImGui::EndMenu();
                 }
 

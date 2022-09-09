@@ -1507,7 +1507,9 @@ void Gameplay_Main(GameState* thisx) {
     }
 
     if ((HREG(80) != 10) || (HREG(81) != 0)) {
-        Gameplay_Update(globalCtx);
+        for (int i = 0; i < CVar_GetS32("gFrameMult", 1); i++) {
+            Gameplay_Update(globalCtx);
+        }
     }
 
     if (1 && HREG(63)) {
