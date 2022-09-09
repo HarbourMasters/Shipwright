@@ -209,6 +209,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantFishing", 0);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 0);
+        // Fish Never Escape
+        CVar_SetS32("gFishNeverEscape", 0);
         // Child Minimum Weight (6 to 10)
         CVar_SetS32("gChildMinimumWeightFish", 10);
         // Adult Minimum Weight (8 to 13)
@@ -401,6 +403,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantFishing", 1);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 1);
+        // Fish Never Escape
+        CVar_SetS32("gFishNeverEscape", 1);
         // Child Minimum Weight (6 to 10)
         CVar_SetS32("gChildMinimumWeightFish", 6);
         // Adult Minimum Weight (8 to 13)
@@ -850,6 +854,8 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
+                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false);
+                        UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
                         UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
                         UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13, false, true, false);
