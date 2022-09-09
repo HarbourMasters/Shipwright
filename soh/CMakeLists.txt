@@ -1993,7 +1993,7 @@ INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.pdb DESTINATION ./debug COMPONENT ship)
+INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
 endif()
 
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
