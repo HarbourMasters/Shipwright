@@ -39,6 +39,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     }
     unsigned int finalHash = std::hash<std::string>{}(Settings::seed + settingsStr);
     Random_Init(finalHash);
+    Settings::hash = std::to_string(finalHash);
 
     Logic::UpdateHelpers();
 
