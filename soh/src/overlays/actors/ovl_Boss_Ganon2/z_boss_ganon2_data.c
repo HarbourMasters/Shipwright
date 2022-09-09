@@ -289,7 +289,7 @@ static s8 D_80907144[] = {
 
 static Vec3f D_80907164 = { 800.0f, 420.0f, 100.0f };
 
-static void* sEyeTextures[] = {
+static const void* sEyeTextures[] = {
     gGanonEyeOpenTex,
     gGanonEyeHalfTex,
     gGanonEyeClosedTex,

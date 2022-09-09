@@ -1,5 +1,6 @@
 <Root>
-    <File Name="ovl_Boss_Ganon" BaseAddress="0x808D68F0" RangeStart="0xE6B8" RangeEnd="0x211D8">
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+    <File Name="ovl_Boss_Ganon" BaseAddress="0x808D6870" RangeStart="0xE6B8" RangeEnd="0x211D8">
         <Texture Name="gDorfLightning1Tex" OutName="lightning_1" Format="i8" Width="32" Height="96" Offset="0x11600" Static="Off"/>
         <Texture Name="gDorfLightning2Tex" OutName="lightning_2" Format="i8" Width="32" Height="96" Offset="0x12200" Static="Off"/>
         <Texture Name="gDorfLightning3Tex" OutName="lightning_3" Format="i8" Width="32" Height="96" Offset="0x12E00" Static="Off"/>
@@ -12,8 +13,8 @@
         <Texture Name="gDorfLightning10Tex" OutName="lightning_10" Format="i8" Width="32" Height="96" Offset="0x18200" Static="Off"/>
         <Texture Name="gDorfLightning11Tex" OutName="lightning_11" Format="i8" Width="32" Height="96" Offset="0x18E00" Static="Off"/>
         <Texture Name="gDorfLightning12Tex" OutName="lightning_12" Format="i8" Width="32" Height="96" Offset="0x19A00" Static="Off"/>
-        
-        <Texture Name="gDorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="ci8" Width="32" Height="64" Offset="0xFD38" Static="Off"/>
+
+        <Texture Name="gDorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="i8" Width="32" Height="64" Offset="0xFD38" Static="Off"/>
 
         <DList Name="gDorfLightStreak1DL" Offset="0x1FCF0" Static="Off"/>
         <DList Name="gDorfLightStreak2DL" Offset="0x1FD28" Static="Off"/>
