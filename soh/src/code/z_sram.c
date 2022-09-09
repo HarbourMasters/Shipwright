@@ -406,7 +406,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                     gSaveContext.bgsFlag = true;
                 }
                 Item_Give(NULL, getItem.itemId);
-            } else if (getItem.modIndex == MOD_RANDOMIZER) {
+            } else if (getItem.modIndex == MOD_RANDOMIZER && getItem.getItemId != RG_ICE_TRAP) {
                 Randomizer_Item_Give(NULL, getItem);
             }
 
