@@ -242,7 +242,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 player->actor.world.pos.y = 1086.0f;
                 player->actor.world.pos.z = -186.0f;
                 player->actor.shape.rot.y = -0x5000;
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime3_Anim_002168, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfBurstOutAnim, 0.0f);
                 globalCtx->envCtx.unk_D8 = 0.0f;
                 // fake, tricks the compiler into allocating more stack
                 if (zero) {
@@ -427,8 +427,8 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
             if (this->unk_398 == 50) {
                 this->unk_398 = 0;
                 this->unk_39C = 12;
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_002168, 0.0f);
-                this->unk_194 = Animation_GetLastFrame(&object_ganon_anime3_Anim_002168);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBurstOutAnim, 0.0f);
+                this->unk_194 = Animation_GetLastFrame(&gGanondorfBurstOutAnim);
                 this->actor.world.pos.x = this->actor.world.pos.z = -200.0f;
                 this->actor.world.pos.y = 1009.0f;
                 this->actor.shape.yOffset = 7000.0f;
@@ -460,7 +460,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 this->unk_3B0.y = this->actor.world.pos.y + 70.0f;
             }
             if (Animation_OnFrame(&this->skelAnime, this->unk_194)) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime3_Anim_002E6C, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfFloatingHeavyBreathingAnim, 0.0f);
                 this->unk_39C = 14;
                 this->unk_398 = 0;
                 this->actor.world.pos.x = -200.0f;
@@ -512,12 +512,12 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
             Math_ApproachF(&this->unk_3B0.y, this->actor.world.pos.y + 77.0f, 0.05f, 5.0f);
             if (this->unk_398 >= 50) {
                 if (this->unk_398 == 50) {
-                    Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_000BFC, 0.0f);
-                    this->unk_194 = Animation_GetLastFrame(&object_ganon_anime3_Anim_000BFC);
+                    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfShowTriforceStartAnim, 0.0f);
+                    this->unk_194 = Animation_GetLastFrame(&gGanondorfShowTriforceStartAnim);
                     this->unk_314 = 3;
                 }
                 if (Animation_OnFrame(&this->skelAnime, this->unk_194)) {
-                    Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime3_Anim_003F38, 0.0f);
+                    Animation_MorphToLoop(&this->skelAnime, &gGanondorfShowTriforceLoopAnim, 0.0f);
                     this->unk_194 = 1000.0f;
                 }
             }
@@ -527,8 +527,8 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
             if (this->unk_398 == 140) {
                 this->unk_39C = 16;
                 this->unk_398 = 0;
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_003754, 0.0f);
-                this->unk_194 = Animation_GetLastFrame(&object_ganon_anime3_Anim_003754);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfTransformStartAnim, 0.0f);
+                this->unk_194 = Animation_GetLastFrame(&gGanondorfTransformStartAnim);
                 this->unk_339 = 55;
                 globalCtx->envCtx.unk_D8 = 1.0f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_CASBREAK);
@@ -549,7 +549,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
             this->unk_1B4 = 0.0f;
             SkelAnime_Update(&this->skelAnime);
             if (Animation_OnFrame(&this->skelAnime, this->unk_194)) {
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_0028A8, 0.0f);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfTransformEndAnim, 0.0f);
                 this->unk_194 = 1000.0f;
             }
             Math_ApproachF(&this->unk_3A4.x, (this->actor.world.pos.x + 200.0f) - 90.0f, 0.1f, 6.3999996f);
@@ -595,7 +595,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
             if (this->unk_398 == 25) {
                 this->unk_39C = 18;
                 this->unk_398 = 0;
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_010380, 0.0f);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanonUncurlAndFlailAnim, 0.0f);
                 this->skelAnime.playSpeed = 0.0f;
                 this->unk_3A4.x = ((this->actor.world.pos.x + 500.0f) - 350.0f) - 50.0f;
                 this->unk_3A4.y = this->actor.world.pos.y;
@@ -658,7 +658,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 this->unk_398 = 0;
                 this->unk_420 = 10.0f;
                 this->actor.velocity.y = 0.0f;
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_010380, 0.0f);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanonUncurlAndFlailAnim, 0.0f);
                 func_808FD4D4(this, globalCtx, 0, 3);
                 func_800A9F6C(0.0f, 0xC8, 0x14, 0x14);
             }
@@ -860,8 +860,8 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 if ((this->unk_398 > 40) && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) {
                     this->unk_39C = 29;
                     this->unk_398 = 0;
-                    Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime3_Anim_0147E0, 0.0f);
-                    this->unk_194 = Animation_GetLastFrame(&object_ganon_anime3_Anim_0147E0);
+                    Animation_MorphToPlayOnce(&this->skelAnime, &gGanonRoarAnim, 0.0f);
+                    this->unk_194 = Animation_GetLastFrame(&gGanonRoarAnim);
                     this->actor.shape.yOffset = 0.0f;
                     this->actor.world.pos.y = 1086.0f;
                     this->actor.gravity = -1.0f;
