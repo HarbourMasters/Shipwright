@@ -24,6 +24,7 @@ typedef struct {
 } FlagTable;
 
 // Reference https://tcrf.net/Proto:The_Legend_of_Zelda:_Ocarina_of_Time_Master_Quest/Event_Editor
+// This information predates gigaleak and is considered safe to use
 const std::vector<FlagTable> flagTables = {
     { "Event Check Inf Flags", EVENT_CHECK_INF, 0x0D, {
         { 0x02, "First Spoke to Mido" },
