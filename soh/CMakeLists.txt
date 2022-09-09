@@ -1992,6 +1992,10 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 endif()
 
+if (CMAKE_SYSTEM_NAME MATCHES "Windows")
+INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION . COMPONENT ship)
+endif()
+
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
