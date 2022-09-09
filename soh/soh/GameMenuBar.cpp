@@ -142,6 +142,8 @@ namespace GameMenuBar {
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
         CVar_SetS32("gRememberSaveLocation", 0);
+        // Fast Forward
+        CVar_SetS32("gFrameMult", 1);
 
         // Damage Multiplier (0 to 8)
         CVar_SetS32("gDamageMul", 0);
@@ -695,8 +697,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
                     UIWidgets::EnhancementSliderInt("Fast Forward: %dx", "##FASTFORWARD", "gFrameMult", 1, 8, "", 1);
-                    UIWidgets::Tooltip("Speeds up gameplay. Note that some things, like text,\n"
-                                       "are unaffected by this: use the other enhancements to speed them up.");
+                    UIWidgets::Tooltip("Speeds up gameplay. Note that some things, like text, are unaffected by this.");
                     ImGui::EndMenu();
                 }
 
