@@ -7,7 +7,7 @@
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
-#include "Window.h"
+#include <libultraship/Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 

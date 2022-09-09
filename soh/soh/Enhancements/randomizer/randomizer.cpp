@@ -1,21 +1,21 @@
 #include "randomizer.h"
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <variables.h>
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
-#include <soh/Enhancements/debugger/ImGuiHelpers.h>
-#include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom-message/CustomMessageManager.h>
-#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
-#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "../../UIWidgets.hpp"
+#include <ImGui/imgui_internal.h>
+#include "../custom-message/CustomMessageManager.h"
+#include "../custom-message/CustomMessageTypes.h"
+#include "../item-tables/ItemTableManager.h"
 #include <stdexcept>
 
 using json = nlohmann::json;
@@ -3364,7 +3364,7 @@ void DrawRandoEditor(bool& open) {
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                             ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
 
-        SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+        UIWidgets::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
             if (ImGui::Button("Generate Seed")) {
@@ -3404,17 +3404,17 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Forest");
                         switch (CVar_GetS32("gRandomizeForest", 1)) {
                             case 1:
-                                InsertHelpHoverText("Mido no longer blocks the path to the Deku Tree\n"
+                                UIWidgets::InsertHelpHoverText("Mido no longer blocks the path to the Deku Tree\n"
                                                     "The Kokiri boy no longer blocks the path out of the forest.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Kokiri boy no longer blocks the path out of the forest\nMido "
                                     "still blocks the path to the Deku Tree, requiring the Kokiri Sword "
                                     "and a Deku Shield to access the Deku Tree.");
                                 break;
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Beating Deku Tree is logically required to leave the forest area "
                                     "(Kokiri Forest / Lost Woods / Sacred Forest Meadow / Deku Tree) "
                                     "while the Kokiri Sword and a Deku Shield are required to access the "
@@ -3422,125 +3422,125 @@ void DrawRandoEditor(bool& open) {
                                     "forest area.\nThis setting is incompatible with starting as adult.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
                         ImGui::Separator();
                         // Kakariko Gate
                         ImGui::Text("Kakariko Gate");
                         switch (CVar_GetS32("gRandomizeKakarikoGate", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The gate and the Happy Mask Shop both remain closed until showing "
                                     "Zelda's Letter to the guard in Kakariko.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The gate is always open instead of needing Zelda's Letter.\nThe Happy Mask Shop "
                                     "opens upon obtaining Zelda's Letter without needing to show it to the guard.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
                         ImGui::Separator();
 
                         // Door of Time
                         ImGui::Text("Door of Time");
                         switch (CVar_GetS32("gRandomizeDoorOfTime", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Door of Time starts opened instead of needing to play the Song of Time.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Only an Ocarina and the Song of Time need to be found to open the Door of Time.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The Ocarina of Time, the Song of Time and all Spiritual Stones need to "
                                     "be found to open the Door of Time.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
                         ImGui::Separator();
 
                         // Zora's Fountain
                         ImGui::Text("Zora's Fountain");
                         switch (CVar_GetS32("gRandomizeZorasFountain", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora obstructs the way to Zora's Fountain.\nRuto's Letter must be "
                                     "shown as child in order to move him from both eras.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora is always moved in the adult era.\nThis means Ruto's Letter is "
                                     "only required to access Zora's fountain as child.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "King Zora starts as moved in both the child and adult eras.\nThis also "
                                     "removes Ruto's Letter from the pool since it can't be used.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
                         ImGui::Separator();
 
                         // Gerudo Fortress
                         ImGui::Text("Gerudo Fortress");
                         switch (CVar_GetS32("gRandomizeGerudoFortress", 0)) {
                             case 0:
-                                InsertHelpHoverText("All 4 carpenters can be rescued.");
+                                UIWidgets::InsertHelpHoverText("All 4 carpenters can be rescued.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Only the bottom left carpenter must be rescued.");
+                                UIWidgets::InsertHelpHoverText("Only the bottom left carpenter must be rescued.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "The carpenters are rescued from the start of the game and if \"Shuffle "
                                     "Gerudo Card\" is disabled, the player starts with the Gerudo Card in "
                                     "the inventory allowing access to Gerudo Training Grounds.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
                         ImGui::Separator();
 
                         // Rainbow Bridge
                         ImGui::Text("Rainbow Bridge");
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
+                        UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
                         switch (CVar_GetS32("gRandomizeRainbowBridge", 3)) {
                             case 1:
-                                InsertHelpHoverText("The Rainbow Bridge requires Shadow and Spirit Medallions as well "
+                                UIWidgets::InsertHelpHoverText("The Rainbow Bridge requires Shadow and Spirit Medallions as well "
                                                     "as Light Arrows.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::InsertHelpHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                     "Spiritual Stones.");
-                                SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                "gRandomizeStoneCount", 0, 3, "");
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "Sets the number of Spiritual Stones required to spawn the Rainbow Bridge.");
                                 break;
                             case 3:
-                                SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                "gRandomizeMedallionCount", 0, 6, "", 6);
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "The Rainbow Bridge requires collecting a configurable number of Medallions.");
                                 break;
                             case 4:
-                                SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                "gRandomizeRewardCount", 0, 9, "");
-                                SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                      "Dungeon Rewards.");
                                 break;
                             case 5:
-                                SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                "gRandomizeDungeonCount", 0, 8, "");
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "The Rainbow Bridge requires completing a configurable number of Dungeons.\nDungeons "
                                     "are considered complete when Link steps into the blue warp at the end of them.");
                                 break;
                             case 6:
-                                SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
+                                UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                "gRandomizeTokenCount", 0, 100, "");
-                                SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
+                                UIWidgets::SetLastItemHoverText("The Rainbow Bridge requires collecting a configurable number of "
                                                      "Gold Skulltula Tokens.");
                                 break;
                         }
@@ -3557,8 +3557,8 @@ void DrawRandoEditor(bool& open) {
                             //                               "gRandomizeGanonTrialCount", 0, 6, "");
                             //InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                         // RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
-                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
-                        InsertHelpHoverText(
+                        UIWidgets::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
+                        UIWidgets::InsertHelpHoverText(
                             "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
 
                         // }
@@ -3698,23 +3698,23 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Shuffle Dungeon Rewards");
                         switch (CVar_GetS32("gRandomizeShuffleDungeonReward", 0)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones will be given as rewards for beating dungeons.\n"
                                     "This setting will force Link's Pocket to be a Medallion or a Spiritual Stone.");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones can only appear inside of dungeons.");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Medallions and Spiritual Stones can only appear outside dungeons.");
                                 break;
                             case 3:
-                                InsertHelpHoverText("Medallions and Spiritual Stones can appear anywhere.");
+                                UIWidgets::InsertHelpHoverText("Medallions and Spiritual Stones can appear anywhere.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4,
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4,
                                                       0);
 
                         // todo: support non dungeon rewards for link's pocket
@@ -3748,10 +3748,10 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Text("Shuffle Songs");
                         switch (CVar_GetS32("gRandomizeShuffleSongs", 0)) {
                             case 0:
-                                InsertHelpHoverText("Songs will only appear at locations that normally teach songs.");
+                                UIWidgets::InsertHelpHoverText("Songs will only appear at locations that normally teach songs.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Songs appear at the end of dungeons.\nFor major dungeons, they "
+                                UIWidgets::InsertHelpHoverText("Songs appear at the end of dungeons.\nFor major dungeons, they "
                                                     "will be at the boss heart container location.\nThe remaining 4 "
                                                     "songs are placed at:\n- Zelda's Lullaby location\n"
                                                     "- Ice Cavern's Serenade of Water Location\n"
@@ -3759,10 +3759,10 @@ void DrawRandoEditor(bool& open) {
                                                     "- Gerudo Training Ground's Ice Arrow Location.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("Songs can appear in any location");
+                                UIWidgets::InsertHelpHoverText("Songs can appear in any location");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
                         ImGui::Separator();
 
                         // todo implement shops
@@ -3863,19 +3863,19 @@ void DrawRandoEditor(bool& open) {
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
                             // Shuffle Kokiri Sword
                             ImGui::Text("Shuffle Kokiri Sword");
-                            InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\nThis will "
+                            UIWidgets::InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\nThis will "
                                                 "require extensive use of sticks until the sword is found.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
                             ImGui::Separator();
                         }
 
                         if(CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
                             // Shuffle Ocarinas
                             ImGui::Text("Shuffle Ocarinas");
-                            InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the Ocarina of time into "
+                            UIWidgets::InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the Ocarina of time into "
                                                 "the item pool.\n"
                                                 "This will require finding an Ocarina before being able to play songs.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
                             ImGui::Separator();
                         }
 
@@ -3883,22 +3883,22 @@ void DrawRandoEditor(bool& open) {
                         if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
                             // Shuffle Weird Egg
                             ImGui::Text("Shuffle Weird Egg");
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "Enabling this shuffles the Weird Egg from Malon into the item pool.\nThis "
                                 "will require finding the Weird Egg to talk to Zelda in Hyrule Castle which "
                                 "in turn unlocks rewards from Impa, Saria, Malon and Talon as well as the "
                                 "Happy Mask Sidequest.\nThe Weird egg is also required for Zelda's Letter to "
                                 "unlock the Kakariko Gate as child which can lock some progression.");
-                            SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
                             ImGui::Separator();                            
                         }
 
                         // Shuffle Gerudo Membership Card
                         ImGui::Text("Shuffle Gerudo Membership Card");
-                        InsertHelpHoverText(
+                        UIWidgets::InsertHelpHoverText(
                             "Enabling this shuffles the Gerudo Membership Card into the item pool.\nThe Gerudo "
                             "Token is required to enter the Gerudo Training Ground.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleGerudoToken", randoShuffleGerudoToken, 2, 0);
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleGerudoToken", randoShuffleGerudoToken, 2, 0);
                         ImGui::Separator();
 
                         // todo implement magic bean 10 pack
@@ -3939,14 +3939,14 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PopItemWidth();
 
                     ImGui::TableNextColumn();
-                    SohImGui::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
-                    SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
-                    SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
-                    SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
-                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
-                    SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
-                    SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                    InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
+                    UIWidgets::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
+                    UIWidgets::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
+                    UIWidgets::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
+                    UIWidgets::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
+                    UIWidgets::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+                    UIWidgets::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
+                    UIWidgets::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                    UIWidgets::InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
 
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
@@ -4088,19 +4088,19 @@ void DrawRandoEditor(bool& open) {
                         // Ganon's Boss Key
                     ImGui::PushItemWidth(-FLT_MIN);
                         ImGui::Text("Ganon's Boss Key");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
+                        UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
                                                       0);
                         switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
                             case 0:
-                                SetLastItemHoverText(
+                                UIWidgets::SetLastItemHoverText(
                                     "Ganon's Boss Key is given to you from the start and you don't "
                                     "have to worry about finding it.");
                                 break;
                             case 1:
-                                SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla location.");
+                                UIWidgets::SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla location.");
                                 break;
                             case 2:
-                                SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside Ganon's Castle.");
+                                UIWidgets::SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside Ganon's Castle.");
                                 break;
                             // case 0:
                             //     SetLastItemHoverText(
@@ -4219,30 +4219,30 @@ void DrawRandoEditor(bool& open) {
                     // ImGui::Separator();
 
                     // Cuccos to return
-                    SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
+                    UIWidgets::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
                                                     "gRandomizeCuccosToReturn", 0, 7, "", 7);
-                    InsertHelpHoverText("The cucco Lady will give a reward for returning this many of her cuccos to the pen.");
+                    UIWidgets::InsertHelpHoverText("The cucco Lady will give a reward for returning this many of her cuccos to the pen.");
                     ImGui::Separator();
 
                     // // Big Poe Target Count
-                    SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                    UIWidgets::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                     "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
-                    InsertHelpHoverText("The Poe buyer will give a reward for turning in the chosen number of Big Poes.");
+                    UIWidgets::InsertHelpHoverText("The Poe buyer will give a reward for turning in the chosen number of Big Poes.");
                     ImGui::Separator();
 
                     // // Skip child stealth
-                    SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
-                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+                    UIWidgets::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
+                    UIWidgets::InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
                     ImGui::Separator();
 
                     // Skip Epona race
-                    SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
-                    InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
+                    UIWidgets::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
+                    UIWidgets::InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
                     ImGui::Separator();
 
                     // Skip tower escape
-                    SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
-                    InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
+                    UIWidgets::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
+                    UIWidgets::InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
                     ImGui::Separator();
 
                     // todo implement complete mask quest
@@ -4275,53 +4275,53 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PushItemWidth(-FLT_MIN);
                     // Gossip Stone Hints
                     ImGui::Text("Gossip Stone Hints");
-                    InsertHelpHoverText(
+                    UIWidgets::InsertHelpHoverText(
                         "Gossip Stones can be made to give hints about where items can be found.\nDifferent settings can "
                         "be chosen to decide which item is needed to speak to Gossip Stones. \nChoosing to stick with the "
                         "Mask of Truth will make the hints very difficult to obtain.\nHints for \"on the way of the "
                         "hero\" are locations that contain items that are required to beat the game.");
 
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
                     if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                         // Hint Clarity
                         ImGui::Indent();
                         ImGui::Text("Hint Clarity");
                         switch (CVar_GetS32("gRandomizeHintClarity", 2)) {
                             case 0:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but the "
                                     "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
                                 break;
                             case 1:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
                                     "but may refer to more than one thing.\nEx: Kokiri Sword > a sword");
                                 break;
                             case 2:
-                                InsertHelpHoverText(
+                                UIWidgets::InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nClear: Hints are clearly written and "
                                     "are unique for each thing.\nEx: Kokiri Sword > the Kokiri Sword");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
+                        UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                         // Hint Distribution
                         ImGui::Text("Hint Distribution");
                         switch (CVar_GetS32("gRandomizeHintDistribution", 1)) {
                             case 0:
-                                InsertHelpHoverText("Only junk hints.");
+                                UIWidgets::InsertHelpHoverText("Only junk hints.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("Recommended hint spread.");
+                                UIWidgets::InsertHelpHoverText("Recommended hint spread.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("More useful hints.");
+                                UIWidgets::InsertHelpHoverText("More useful hints.");
                                 break;
                             case 3:
-                                InsertHelpHoverText("Many powerful hints.");
+                                UIWidgets::InsertHelpHoverText("Many powerful hints.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
+                        UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                         ImGui::Unindent();
                     }
                     ImGui::Separator();
@@ -4375,43 +4375,43 @@ void DrawRandoEditor(bool& open) {
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 1)) {
                         case 0:
-                            InsertHelpHoverText("Extra major items are added to the pool.");
+                            UIWidgets::InsertHelpHoverText("Extra major items are added to the pool.");
                             break;
                         case 1:
-                            InsertHelpHoverText("Original item pool.");
+                            UIWidgets::InsertHelpHoverText("Original item pool.");
                             break;
                         case 2:
-                            InsertHelpHoverText("Some excess items are removed, including health upgrades.");
+                            UIWidgets::InsertHelpHoverText("Some excess items are removed, including health upgrades.");
                             break;
                         case 3:
-                            InsertHelpHoverText("Most excess items are removed.");
+                            UIWidgets::InsertHelpHoverText("Most excess items are removed.");
                             break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
                     ImGui::Separator();
 
                     // // Ice Traps
                     ImGui::Text("Ice Traps");
                     switch (CVar_GetS32("gRandomizeIceTraps", 1)) {
                         case 0:
-                            InsertHelpHoverText("All Ice Traps are removed.");
+                            UIWidgets::InsertHelpHoverText("All Ice Traps are removed.");
                             break;
                         case 1:
-                            InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
+                            UIWidgets::InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
                             break;
                         case 2:
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "Chance to add extra Ice Traps when junk items are added to the item pool.");
                             break;
                         case 3:
-                            InsertHelpHoverText("All added junk items will be Ice Traps.");
+                            UIWidgets::InsertHelpHoverText("All added junk items will be Ice Traps.");
                             break;
                         case 4:
-                            InsertHelpHoverText(
+                            UIWidgets::InsertHelpHoverText(
                                 "All junk items will be replaced by Ice Traps, even those in the base pool.");
                             break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                     ImGui::Separator();
 
                     // todo implement double defense getitem
@@ -4450,17 +4450,17 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
                     // COLUMN 2 - OPEN EXCLUDE LOCATIONS
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
+                    UIWidgets::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
+                    UIWidgets::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
+                    UIWidgets::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
+                    UIWidgets::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
+                    UIWidgets::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
                     ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
+                    UIWidgets::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
                     // ImGui::TableNextColumn();
                     // // COLUMN 3 - LOGICAL TRICKS
                     // ImGui::NewLine();
