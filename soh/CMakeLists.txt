@@ -2029,6 +2029,13 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "CafeOS")
 
 wut_create_rpx(${PROJECT_NAME})
 
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx DESTINATION . COMPONENT ship)
+wut_create_wuhb(${PROJECT_NAME}
+	NAME       "Ship of Harkinian"
+	SHORTNAME  "SoH"
+	AUTHOR     "Harbour Masters"
+	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
+)
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx ${CMAKE_CURRENT_BINARY_DIR}/soh.wuhb DESTINATION . COMPONENT ship)
 
 endif()

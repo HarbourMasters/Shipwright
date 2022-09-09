@@ -12,6 +12,7 @@ extern "C" void DeinitOTR(void);
 #include <dlfcn.h>   // for dladdr
 #include <execinfo.h>
 #include <unistd.h>
+#include <SDL.h>
 
 
 
@@ -135,9 +136,11 @@ static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data) {
 
         SPDLOG_CRITICAL("{} {}", i, functionName.c_str());
     }
-
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SoH has crashed", "SoH Has crashed. Please upload the logs to the support channel in discord.", nullptr);
     free(symbols);
     DeinitOTR();
+    Ship::Window::GetInstance()->GetLogger()->flush();
+    spdlog::shutdown();
     exit(1);
 }
 
