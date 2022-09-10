@@ -81,6 +81,8 @@ Color_RGB8 sOcarinaNoteA4Prim;
 Color_RGB8 sOcarinaNoteF4Prim;
 Color_RGB8 sOcarinaNoteD4Prim;
 
+extern bool isExtraFrame;
+
 // If the "separate" bool is set, use the "gCCC<cDirection>BtnPrim<R/G/B> CVars
 // to set the button color. Otherwise, use sOcarinaNoteCBtnPrim.
 void Message_SetCustomOrGeneralCColor(Color_RGB8* color, bool separate, char cDirection) {
@@ -2707,7 +2709,9 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED_TEXT_BEGIN:
                 Message_ContinueTextbox(globalCtx, msgCtx->lastPlayedSong + 0x893); // You played [song name]
-                Message_Decode(globalCtx);
+                if (!isExtraFrame) {
+                    Message_Decode(globalCtx);
+                }
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
 
                 if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
@@ -3464,7 +3468,9 @@ void Message_Update(GlobalContext* globalCtx) {
             }
             break;
         case MSGMODE_TEXT_NEXT_MSG:
-            Message_Decode(globalCtx);
+            if (!isExtraFrame) {
+                Message_Decode(globalCtx);
+            }
             if (sTextFade) {
                 Interface_ChangeAlpha(1);
             }

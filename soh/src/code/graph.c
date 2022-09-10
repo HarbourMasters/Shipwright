@@ -16,6 +16,9 @@ FaultClient sGraphFaultClient;
 CfbInfo sGraphCfbInfos[3];
 FaultClient sGraphUcodeFaultClient;
 
+// Used for frame fast-forwarding
+bool isExtraFrame = false;
+
 // clang-format off
 UCodeInfo D_8012D230[3] = {
     //{ UCODE_F3DZEX, D_80155F50 },
@@ -487,6 +490,12 @@ static void RunFrame()
             for (int i = 0; i < 3; i++) {
                 PadMgr_ThreadEntry(&gPadMgr);
             }
+
+            isExtraFrame = true;
+            for (int i = 1; i < CVar_GetS32("gFrameMult", 1); i++) {
+                Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
+            }
+            isExtraFrame = false;
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();

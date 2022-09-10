@@ -697,7 +697,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
                     UIWidgets::EnhancementSliderInt("Fast Forward: %dx", "##FASTFORWARD", "gFrameMult", 1, 8, "", 1);
-                    UIWidgets::Tooltip("Speeds up gameplay. Note that some things, like text, are unaffected by this.");
+                    UIWidgets::Tooltip(
+                        "Speeds up gameplay. Note that some things, like the ocarina, are unaffected by this.");
                     ImGui::EndMenu();
                 }
 

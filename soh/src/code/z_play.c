@@ -1508,12 +1508,6 @@ void Gameplay_Main(GameState* thisx) {
 
     if ((HREG(80) != 10) || (HREG(81) != 0)) {
         Gameplay_Update(globalCtx);
-        uint16_t press = globalCtx->state.input[0].press.button;
-        for (int i = 1; i < CVar_GetS32("gFrameMult", 1); i++) {
-            globalCtx->state.input[0].press.button = 0;
-            Gameplay_Update(globalCtx);
-        }
-        globalCtx->state.input[0].press.button = press;
     }
 
     if (1 && HREG(63)) {
