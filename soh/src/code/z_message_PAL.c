@@ -3480,9 +3480,11 @@ void Message_Update(GlobalContext* globalCtx) {
             }
             break;
         case MSGMODE_TEXT_CONTINUING:
-            msgCtx->stateTimer--;
-            if (msgCtx->stateTimer == 0) {
-                Message_Decode(globalCtx);
+            if (!isExtraFrame) {
+                msgCtx->stateTimer--;
+                if (msgCtx->stateTimer == 0) {
+                    Message_Decode(globalCtx);
+                }
             }
             break;
         case MSGMODE_TEXT_DISPLAYING:
