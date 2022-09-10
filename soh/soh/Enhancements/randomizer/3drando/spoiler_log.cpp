@@ -19,6 +19,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sstream>
 #include <unordered_map>
 #include <vector>
 #include <iostream>
@@ -36,31 +37,21 @@ namespace {
 std::string placementtxt;
 } // namespace
 
-static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
-        int number = Settings::seed[i] - '0';
+    std::string hash = Settings::hash;
+    // adds leading 0s to the hash string if it has less than 10 digits.
+    while (hash.length() < 10) {
+        hash = "0" + hash;
+    }
+    for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
+        int number = std::stoi(hash.substr(j, 2));
         Settings::hashIconIndexes[i] = number;
     }
 
     // Clear out spoiler log data here, in case we aren't going to re-generate it
     // spoilerData = { 0 };
-}
-
-const RandomizerHash& GetRandomizerHash() {
-  return randomizerHash;
-}
-
-// Returns the randomizer hash as concatenated string, separated by comma.
-const std::string GetRandomizerHashAsString() {
-  std::string hash = "";
-  for (const std::string& str : randomizerHash) {
-    hash += str + ", ";
-  }
-  hash.erase(hash.length() - 2); // Erase last comma
-  return hash;
 }
 
 const SpoilerData& GetSpoilerData() {
@@ -703,7 +694,6 @@ const char* SpoilerLog_Write(int language) {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     jsonData.clear();
 
@@ -739,12 +729,23 @@ const char* SpoilerLog_Write(int language) {
     }
 
     std::string jsonString = jsonData.dump(4);
+    std::ostringstream fileNameStream;
+    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+        if (i) {
+            fileNameStream << '-';
+        }
+        if (Settings::hashIconIndexes[i] < 10) {
+            fileNameStream << '0';
+        }
+        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+    }
+    std::string fileName = fileNameStream.str();
     std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
+        (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
-    return Settings::seed.c_str();
+    return fileName.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {
@@ -764,7 +765,6 @@ bool PlacementLog_Write() {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);

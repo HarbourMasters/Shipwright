@@ -4,6 +4,7 @@
 #include <libultraship/ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
+#include <spdlog/fmt/fmt.h>
 #include <array>
 #include <bit>
 #include <map>
@@ -699,12 +700,14 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags) {
     ImGui::PopID();
 }
 
-void DrawFlagArray16(const std::string& name, uint16_t& flags) {
-    ImGui::PushID(name.c_str());
+void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
+    ImGui::PushID((std::to_string(row) + flagTable.name).c_str());
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
+        bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
         uint32_t bitMask = 1 << flagIndex;
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, hasDescription ? ImVec4(0.16f, 0.29f, 0.48f, 0.54f) : ImVec4(0.16f, 0.29f, 0.48f, 0.24f));
         bool flag = (flags & bitMask) != 0;
         if (ImGui::Checkbox("##check", &flag)) {
             if (flag) {
@@ -712,6 +715,12 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags) {
             } else {
                 flags &= ~bitMask;
             }
+        }
+        ImGui::PopStyleColor();
+        if (ImGui::IsItemHovered() && hasDescription) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60));
+            ImGui::EndTooltip();
         }
         ImGui::PopID();
     }
@@ -927,122 +936,37 @@ void DrawFlagsTab() {
         }
     });
 
-    if (ImGui::TreeNode("Event Check Inf Flags")) {
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("0");
-            UIWidgets::InsertHelpHoverText("Mostly Kokiri Forest related");
-            DrawFlagArray16("eci0", gSaveContext.eventChkInf[0]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("1");
-            UIWidgets::InsertHelpHoverText("Mostly Lon Lon Ranch related");
-            DrawFlagArray16("eci1", gSaveContext.eventChkInf[1]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("2");
-            UIWidgets::InsertHelpHoverText("Dodongo Related?");
-            DrawFlagArray16("eci2", gSaveContext.eventChkInf[2]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("3");
-            UIWidgets::InsertHelpHoverText("Mostly Zora related");
-            DrawFlagArray16("eci3", gSaveContext.eventChkInf[3]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("4");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci4", gSaveContext.eventChkInf[4]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("5");
-            UIWidgets::InsertHelpHoverText("Mostly song learning related");
-            DrawFlagArray16("eci5", gSaveContext.eventChkInf[5]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("6");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci6", gSaveContext.eventChkInf[6]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("7");
-            UIWidgets::InsertHelpHoverText("Boss Battle related");
-            DrawFlagArray16("eci7", gSaveContext.eventChkInf[7]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("8");
-            UIWidgets::InsertHelpHoverText("Mask related?");
-            DrawFlagArray16("eci8", gSaveContext.eventChkInf[8]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("9");
-            UIWidgets::InsertHelpHoverText("Mostly carpenter related");
-            DrawFlagArray16("eci9", gSaveContext.eventChkInf[9]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("A");
-            UIWidgets::InsertHelpHoverText("First-time overworld entrance cs related");
-            DrawFlagArray16("eci10", gSaveContext.eventChkInf[10]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("B");
-            UIWidgets::InsertHelpHoverText("First-time dungeon entrance cs/trial cs related");
-            DrawFlagArray16("eci11", gSaveContext.eventChkInf[11]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("C");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci12", gSaveContext.eventChkInf[12]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("D");
-            UIWidgets::InsertHelpHoverText("Frog songs/GS rewards");
-            DrawFlagArray16("eci13", gSaveContext.eventChkInf[13]);
-        });
-
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Inf Table Flags")) {
-        for (int i = 0; i < 30; i++) {
-            std::string it_id = "it" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%2d", i);
-                DrawFlagArray16(it_id, gSaveContext.infTable[i]);
-            });
+    for (int i = 0; i < flagTables.size(); i++) {
+        const FlagTable& flagTable = flagTables[i];
+        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag) {
+            continue;
         }
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Item Get Inf Flags")) {
-        for (int i = 0; i < 4; i++) {
-            std::string igi_id = "igi" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%d", i);
-                DrawFlagArray16(igi_id, gSaveContext.itemGetInf[i]);
-            });
+
+        if (ImGui::TreeNode(flagTable.name)) {
+            for (int j = 0; j < flagTable.size + 1; j++) {
+                DrawGroupWithBorder([&]() {
+                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    switch (flagTable.flagTableType) {
+                        case EVENT_CHECK_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.eventChkInf[j]);
+                            break;
+                        case ITEM_GET_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.itemGetInf[j]);
+                            break;
+                        case INF_TABLE:
+                            DrawFlagArray16(flagTable, j, gSaveContext.infTable[j]);
+                            break;
+                        case EVENT_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.eventInf[j]);
+                            break;
+                        case RANDOMIZER_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.randomizerInf[j]);
+                            break;
+                    }
+                });
+            }
+            ImGui::TreePop();
         }
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Event Inf Flags")) {
-        for (int i = 0; i < 4; i++) {
-            std::string ei_id = "ei" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%d", i);
-                DrawFlagArray16(ei_id, gSaveContext.eventInf[i]);
-            });
-        }
-        ImGui::TreePop();
     }
 }
 

@@ -20,11 +20,11 @@
 #include "randomizer_check_objects.h"
 #include <sstream>
 #include "draw.h"
+#include "rando_hash.h"
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
-std::unordered_map<uint8_t, Sprite> gSeedTextures;
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
@@ -66,36 +66,6 @@ static const char* frenchRupeeNames[36] = {
 };
 
 Randomizer::Randomizer() {
-    Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
-    gSeedTextures[0] = bowSprite;
-
-    Sprite bombchuSprite = { dgBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 1 };
-    gSeedTextures[1] = bombchuSprite;
-
-    Sprite beansSprite = { dgMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 2 };
-    gSeedTextures[2] = beansSprite;
-
-    Sprite milkSprite = { dgMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 3 };
-    gSeedTextures[3] = milkSprite;
-
-    Sprite frogSprite = { dgEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 4 };
-    gSeedTextures[4] = frogSprite;
-
-    Sprite mirrorShieldSprite = { dgMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 5 };
-    gSeedTextures[5] = mirrorShieldSprite;
-
-    Sprite hoverBootsSprite = { dgHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 6 };
-    gSeedTextures[6] = hoverBootsSprite;
-
-    Sprite megatonHammerSprite = { dgMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 7 };
-    gSeedTextures[7] = megatonHammerSprite;
-
-    Sprite silverGauntletsSprite = { dgSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 8 };
-    gSeedTextures[8] = silverGauntletsSprite;
-
-    Sprite ootOcarinaSprite = { dgOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
-    gSeedTextures[9] = ootOcarinaSprite;
-
     for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
         for (auto locationIt : areaIt.second) {
             SpoilerfileCheckNameToEnum[locationIt.rcSpoilerName] = locationIt.rc;
