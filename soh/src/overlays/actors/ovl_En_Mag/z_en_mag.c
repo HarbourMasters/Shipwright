@@ -678,8 +678,20 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static u8 noControllerFontIndexes[] = {
         0x17, 0x18, 0x0C, 0x18, 0x17, 0x1D, 0x1B, 0x18, 0x15, 0x15, 0x0E, 0x1B,
     };
-    static u8 pressStartFontIndexes[] = {
+    static u8 pressStartFontIndexes_ENG[] = {
         0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8 pressStartFontIndexes_GER[] = {
+        0x0D, 0x1B, 0x1E, 0x0C, 0x14, 0x0E, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8 pressStartFontIndexes_FRA[] = {
+        0x0A, 0x19, 0x19, 0x1E, 0x22, 0x0E, 0x23, 0x1C, 0x1E, 0x1B, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8* pressStartFontIndexes[][5] = {
+        /* FontIndex, Count, LeftAlign, FirstSpaceIndex, StartIndex */
+        { pressStartFontIndexes_ENG, ARRAY_COUNT(pressStartFontIndexes_ENG), 0, 4, 4 },
+        { pressStartFontIndexes_GER, ARRAY_COUNT(pressStartFontIndexes_GER), -3, 5, 5 },
+        { pressStartFontIndexes_FRA, ARRAY_COUNT(pressStartFontIndexes_FRA), -15, 9, 6 }
     };
     static void* effectMaskTextures[] = {
         gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
@@ -817,18 +829,23 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
             textAlpha = 255;
         }
 
+        int lang = LANGUAGE_ENG;
+        if (CVar_GetS32("gPressStartTranslation", 0)) {
+            lang = gSaveContext.language;
+        }
+
         // Text Shadow
         gDPPipeSync(gfx++);
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = YREG(7) + 1;
-        for (i = 0; i < ARRAY_COUNT(pressStartFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 172);
+        rectLeft = YREG(7) + 1 + pressStartFontIndexes[lang][2];
+        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 172);
             rectLeft += YREG(8);
-            if (i == 4) {
+            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
                 rectLeft += YREG(9);
             }
         }
@@ -837,12 +854,12 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, YREG(4), YREG(5), YREG(6), textAlpha);
 
-        rectLeft = YREG(7);
-        for (i = 0; i < ARRAY_COUNT(pressStartFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 171);
+        rectLeft = YREG(7) + pressStartFontIndexes[lang][2];
+        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 171);
             rectLeft += YREG(8);
-            if (i == 4) {
+            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
                 rectLeft += YREG(9);
             }
         }
@@ -868,8 +885,20 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static u8 noControllerFontIndexes[] = {
         0x17, 0x18, 0x0C, 0x18, 0x17, 0x1D, 0x1B, 0x18, 0x15, 0x15, 0x0E, 0x1B,
     };
-    static u8 pressStartFontIndexes[] = {
+    static u8 pressStartFontIndexes_ENG[] = {
         0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8 pressStartFontIndexes_GER[] = {
+        0x0D, 0x1B, 0x1E, 0x0C, 0x14, 0x0E, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8 pressStartFontIndexes_FRA[] = {
+        0x0A, 0x19, 0x19, 0x1E, 0x22, 0x0E, 0x23, 0x1C, 0x1E, 0x1B, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
+    };
+    static u8* pressStartFontIndexes[][5] = {
+        /* FontIndex, Count, LeftAlign, FirstSpaceIndex, StartIndex */
+        { pressStartFontIndexes_ENG, ARRAY_COUNT(pressStartFontIndexes_ENG), 0, 4, 4 },
+        { pressStartFontIndexes_GER, ARRAY_COUNT(pressStartFontIndexes_GER), -3, 5, 5 },
+        { pressStartFontIndexes_FRA, ARRAY_COUNT(pressStartFontIndexes_FRA), -15, 9, 6 }
     };
     static const void* effectMaskTextures[] = {
         gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
@@ -1003,6 +1032,11 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         if (textAlpha >= 255) {
             textAlpha = 255;
         }
+        
+        int lang = LANGUAGE_ENG;
+        if (CVar_GetS32("gPressStartTranslation", 0)) {
+            lang = gSaveContext.language;
+        }
 
         // Text Shadow
         gDPPipeSync(gfx++);
@@ -1010,12 +1044,12 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = YREG(7) + 1;
-        for (i = 0; i < ARRAY_COUNT(pressStartFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+        rectLeft = YREG(7) + 1 + pressStartFontIndexes[lang][2];
+        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE, rectLeft,
                                   YREG(10) + 172);
             rectLeft += YREG(8);
-            if (i == 4) {
+            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
                 rectLeft += YREG(9);
             }
         }
@@ -1024,12 +1058,12 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, YREG(4), YREG(5), YREG(6), textAlpha);
 
-        rectLeft = YREG(7);
-        for (i = 0; i < ARRAY_COUNT(pressStartFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+        rectLeft = YREG(7) + pressStartFontIndexes[lang][2];
+        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE, rectLeft,
                                   YREG(10) + 171);
             rectLeft += YREG(8);
-            if (i == 4) {
+            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
                 rectLeft += YREG(9);
             }
         }
