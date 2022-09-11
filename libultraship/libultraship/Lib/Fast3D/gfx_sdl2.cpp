@@ -209,6 +209,7 @@ static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool s
             printf("Failed to initialize glad\n");
         }
 #endif
+        SDL_GL_MakeCurrent(wnd, ctx);
         SDL_GL_SetSwapInterval(1);
     }
     else {
@@ -337,6 +338,8 @@ static void gfx_sdl_handle_events(void) {
                     #else
                         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                     #endif
+                } else if (event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(wnd)) {
+                    is_running = false;
                 }
                 break;
             case SDL_DROPFILE:

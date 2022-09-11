@@ -1,15 +1,15 @@
-﻿#include "OTRGlobals.h"
-#include "ResourceMgr.h"
-#include "Scene.h"
-#include "Utils/StringHelper.h"
+#include "OTRGlobals.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/Scene.h>
+#include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <CollisionHeader.h>
-#include <DisplayList.h>
-#include <Cutscene.h>
-#include <Path.h>
-#include <Text.h>
-#include <Blob.h>
+#include <libultraship/CollisionHeader.h>
+#include <libultraship/DisplayList.h>
+#include <libultraship/Cutscene.h>
+#include <libultraship/Path.h>
+#include <libultraship/Text.h>
+#include <libultraship/Blob.h>
 
 extern Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);

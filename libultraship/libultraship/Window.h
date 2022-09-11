@@ -36,20 +36,20 @@ namespace Ship {
 			void ToggleFullscreen();
 			void SetFullscreen(bool bIsFullscreen);
 			void ShowCursor(bool hide);
-			bool IsFullscreen() { return bIsFullscreen; }
 			uint32_t GetCurrentWidth();
 			uint32_t GetCurrentHeight();
-			uint32_t GetMenuBar() { return dwMenubar; }
-			void SetMenuBar(uint32_t dwMenuBar) { this->dwMenubar = dwMenuBar; }
-			std::string GetName() { return Name; }
-			std::shared_ptr<ControlDeck> GetControlDeck() { return ControllerApi; };
-			std::shared_ptr<AudioPlayer> GetAudioPlayer() { return APlayer; }
-			std::shared_ptr<ResourceMgr> GetResourceManager() { return ResMan; }
-			std::shared_ptr<Mercury> GetConfig() { return Config; }
-			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
-			const char* GetKeyName(int32_t scancode) { return WmApi->get_key_name(scancode); }
-			int32_t GetLastScancode() { return lastScancode; }
-			void SetLastScancode(int32_t scanCode) { lastScancode = scanCode; }
+			bool IsFullscreen();
+			uint32_t GetMenuBar();
+			void SetMenuBar(uint32_t dwMenuBar);
+			std::string GetName();
+			std::shared_ptr<ControlDeck> GetControlDeck();
+			std::shared_ptr<AudioPlayer> GetAudioPlayer();
+			std::shared_ptr<ResourceMgr> GetResourceManager();
+			std::shared_ptr<Mercury> GetConfig();
+			std::shared_ptr<spdlog::logger> GetLogger();
+			const char* GetKeyName(int32_t scancode);
+			int32_t GetLastScancode();
+			void SetLastScancode(int32_t scanCode);
 
 		protected:
 			Window() = default;

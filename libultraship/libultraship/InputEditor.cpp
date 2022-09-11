@@ -20,7 +20,7 @@ namespace Ship {
 		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
 	}
 
-	void InputEditor::DrawButton(const char* label, int n64Btn) {
+	void InputEditor::DrawButton(const char* label, int32_t n64Btn) {
 		const std::shared_ptr<Controller> backend = GetControllerPerSlot(CurrentPort);
 
 		float size = 40;
@@ -356,5 +356,17 @@ namespace Ship {
 		DrawControllerSchema();
 
 		ImGui::End();
+	}
+
+	bool InputEditor::IsOpened() {
+		return Opened;
+	}
+
+	void InputEditor::Open() {
+		Opened = true;
+	}
+
+	void InputEditor::Close() {
+		Opened = false;
 	}
 }

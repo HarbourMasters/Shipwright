@@ -87,7 +87,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-	    if (SohImGui::controller->Opened) return;
+	    if (SohImGui::GetInputEditor()->IsOpened()) return;
 
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
@@ -319,6 +319,12 @@ namespace Ship {
         return fpath;
 #endif
 
+#ifdef __linux__
+        char* fpath = std::getenv("SHIP_HOME");
+        if (fpath != NULL)
+            return std::string(fpath);
+#endif
+
         return ".";
     }
 
@@ -546,13 +552,12 @@ namespace Ship {
 
         if (!ResMan->DidLoadSuccessfully())
         {
-#ifdef _WIN32
-            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
-#elif defined(__SWITCH__)
+#if defined(__SWITCH__)
             printf("Main OTR file not found!\n");
 #elif defined(__WIIU__)
             Ship::WiiU::ThrowMissingOTR(MainPath.c_str());
 #else
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OTR file not found", "Main OTR file not found. Please generate one", nullptr);
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
             exit(1);
@@ -586,5 +591,53 @@ namespace Ship {
         }
 
         saveFile.close();
+    }
+
+    bool Window::IsFullscreen() {
+	    return bIsFullscreen;
+    }
+
+    uint32_t Window::GetMenuBar() {
+	    return dwMenubar;
+    }
+
+    void Window::SetMenuBar(uint32_t dwMenuBar) {
+	    this->dwMenubar = dwMenuBar;
+    }
+
+    std::string Window::GetName() {
+	    return Name;
+    }
+
+    std::shared_ptr<ControlDeck> Window::GetControlDeck() {
+	    return ControllerApi;
+    }
+
+    std::shared_ptr<AudioPlayer> Window::GetAudioPlayer() {
+	    return APlayer;
+    }
+
+    std::shared_ptr<ResourceMgr> Window::GetResourceManager() {
+	    return ResMan;
+    }
+
+    std::shared_ptr<Mercury> Window::GetConfig() {
+	    return Config;
+    }
+
+    std::shared_ptr<spdlog::logger> Window::GetLogger() {
+	    return Logger;
+    }
+
+    const char* Window::GetKeyName(int32_t scancode) {
+	    return WmApi->get_key_name(scancode);
+    }
+
+    int32_t Window::GetLastScancode() {
+	    return lastScancode;
+    }
+
+    void Window::SetLastScancode(int32_t scanCode) {
+	    lastScancode = scanCode;
     }
 }

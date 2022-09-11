@@ -100,4 +100,28 @@ namespace Ship {
 	const std::string KeyboardController::GetControllerName() {
 		return "Keyboard";
 	}
+
+	bool KeyboardController::Connected() const {
+		return true;
+	}
+
+	bool KeyboardController::CanRumble() const {
+		return false;
+	}
+
+	bool KeyboardController::CanGyro() const {
+		return false;
+	}
+
+	void KeyboardController::ClearRawPress() {
+		lastKey = -1;
+	}
+
+	void KeyboardController::SetLastScancode(int32_t key) {
+		lastScancode = key;
+	}
+
+	int32_t KeyboardController::GetLastScancode() {
+		return lastScancode;
+	}
 }

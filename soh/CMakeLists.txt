@@ -162,6 +162,7 @@ set(Header_Files__soh__Enhancements__controls
 )
 source_group("Header Files\\soh\\Enhancements\\controls" FILES ${Header_Files__soh__Enhancements__controls})
 
+
 set(Header_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 )
@@ -172,7 +173,6 @@ set(Header_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
     "soh/Enhancements/debugger/debugSaveEditor.h"
-    "soh/Enhancements/debugger/ImGuiHelpers.h"
 )
 source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__soh__Enhancements__debugger})
 
@@ -218,6 +218,7 @@ set(Header_Files__soh__Enhancements__randomizer__3drando
     "soh/Enhancements/randomizer/3drando/trial.hpp"
     "soh/Enhancements/randomizer/3drando/utils.hpp"
 )
+
 source_group("Header Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Header_Files__soh__Enhancements__randomizer__3drando})
 
 set(Header_Files__soh__Enhancements__custom_message
@@ -226,6 +227,13 @@ set(Header_Files__soh__Enhancements__custom_message
 )
 
 source_group("Header Files\\soh\\Enhancements\\custom-message" FILES ${Header_Files__soh__Enhancements__custom_message})
+
+set(Header_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.h"
+    "soh/Enhancements/item-tables/ItemTableTypes.h"
+)
+
+source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
@@ -243,6 +251,10 @@ set(Source_Files__soh
     "soh/z_message_OTR.cpp"
     "soh/z_play_otr.cpp"
     "soh/z_scene_otr.cpp"
+    "soh/GameMenuBar.hpp"
+    "soh/GameMenuBar.cpp"
+    "soh/UIWidgets.hpp"
+    "soh/UIWidgets.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
 
@@ -269,7 +281,6 @@ set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
     "soh/Enhancements/debugger/debugSaveEditor.cpp"
-    "soh/Enhancements/debugger/ImGuiHelpers.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__soh__Enhancements__debugger})
 
@@ -348,6 +359,12 @@ set(Source_Files__soh__Enhancements__custom_message
 )
 
 source_group("Source Files\\soh\\Enhancements\\custom-message" FILES ${Source_Files__soh__Enhancements__custom_message})
+
+set(Source_Files__soh__Enhancements__item_tables
+    "soh/Enhancements/item-tables/ItemTableManager.cpp"
+)
+
+source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1558,6 +1575,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
+    ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
@@ -1568,6 +1586,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
+    ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
@@ -1653,14 +1672,13 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${SDL2-INCLUDE}
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
@@ -1738,15 +1756,15 @@ if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /sdl-;
-                /w
+                /w;
+                /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl-;
                 /Gy;
                 /W3
             >
+            /sdl-;
             /permissive-;
             /MP;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -2011,6 +2029,13 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "CafeOS")
 
 wut_create_rpx(${PROJECT_NAME})
 
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx DESTINATION . COMPONENT ship)
+wut_create_wuhb(${PROJECT_NAME}
+	NAME       "Ship of Harkinian"
+	SHORTNAME  "SoH"
+	AUTHOR     "Harbour Masters"
+	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
+)
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx ${CMAKE_CURRENT_BINARY_DIR}/soh.wuhb DESTINATION . COMPONENT ship)
 
 endif()
