@@ -25,6 +25,8 @@ const char* RainbowColorCvarList[] = {
     "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
     "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gKSwordTrailTopCol", "gKSwordTrailBottomCol","gMSwordTrailTopCol", "gMSwordTrailBottomCol","gBSwordTrailTopCol", "gBSwordTrailBottomCol",
+    "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
     "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
     "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
@@ -440,18 +442,31 @@ void Draw_ItemsSkills(){
     }
     UIWidgets::EnhancementCheckbox("Custom trails", "gUseTrailsCol");
     if (CVar_GetS32("gUseTrailsCol", 0)) {
-        DrawRandomizeResetButton("trails", Trail_section, SECTION_SIZE(Trail_section));
+        DrawRandomizeResetButton("trails", AllTrail_section, SECTION_SIZE(AllTrail_section));
     }
     if (CVar_GetS32("gUseTrailsCol", 0) && ImGui::BeginTable("tabletrails", 3, FlagsTable)) {
-        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth / 3);
-        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth / 3);
-        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
         DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
         UIWidgets::EnhancementSliderInt("Sword Trail Length: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
         UIWidgets::Tooltip("Determines length of Link's sword trails.");
         ResetTrailLength("gTrailDuration", 4);
+        UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
+        if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
+            if (ImGui::BeginTable("tabletrailswords", 2, FlagsTable)) {
+                ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Deku Stick", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Megaton Hammer", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(SwordTrail_section, SECTION_SIZE(SwordTrail_section));
+                ImGui::EndTable();
+            }
+        }
         ImGui::NewLine();
     }
 }

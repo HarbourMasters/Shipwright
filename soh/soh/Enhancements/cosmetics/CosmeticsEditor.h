@@ -122,6 +122,18 @@ static CosmeticsColorIndividual Boom_Trails_Start_col = { "Boomerang Trail Start
 static CosmeticsColorIndividual Boom_Trails_End_col = { "Boomerang Trail End Color", "Affects end of boomerang trail", "gBoomTrailEndCol", boomtrailend_col, ImVec4(255,255,100,255), true, false, false };
 static CosmeticsColorIndividual Bomb_Trails_col = { "Bombchu Trail Color", "Affects Bomchus", "gBombTrailCol", bombtrail_col, ImVec4(250,0,0,255), true, false, false };
 
+
+static CosmeticsColorIndividual KSword_Trails_Top_col = { "Kokiri Sword Top Color", "Affects top of sword slash", "gKSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual KSword_Trails_Bottom_col = { "Kokiri Sword End Color", "Affects bottom of sword slash", "gKSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual MSword_Trails_Top_col = { "Master Sword Top Color", "Affects top of sword slash", "gMSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual MSword_Trails_Bottom_col = { "Master Sword End Color", "Affects bottom of sword slash", "gMSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual BSword_Trails_Top_col = { "BG Sword Top Color", "Affects top of sword slash", "gBSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual BSword_Trails_Bottom_col = { "BG Sword End Color", "Affects bottom of sword slash", "gBSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Stick_Trails_Top_col = { "Stick Top Color", "Affects top of stick swing", "gStickTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Stick_Trails_Bottom_col = { "Stick End Color", "Affects bottom of stick swing", "gStickTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Hammer_Trails_Top_col = { "Hammer Top Color", "Affects top of hammer swing", "gHammerTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Hammer_Trails_Bottom_col = { "Hammer End Color", "Affects bottom of hammer swing", "gHammerTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+
 //Menus - File Choose
 static CosmeticsColorIndividual FileChoose_Background = { "Main menu color", "Affects the File Select menu background.", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, false };
 static CosmeticsColorIndividual FileChoose_BottomText = { "Bottom texts color", "Affects the File Select texts.", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, false };
@@ -219,12 +231,42 @@ static CosmeticsColorSection SpinAtk_section[] = {
     { &Spin_Lv1_Env, true, false },
     { &Spin_Lv2_Prim, false, true },
     { &Spin_Lv2_Env, true, false } };
+
 static CosmeticsColorSection Trail_section[] = {
     { &Sword_Trails_Top_col, false, false },
     { &Sword_Trails_Bottom_col, false, false },
     { &Boom_Trails_Start_col, true, false },
     { &Boom_Trails_End_col, false, false },
     { &Bomb_Trails_col, true, false }
+};
+static CosmeticsColorSection SwordTrail_section[] = {
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
+};
+static CosmeticsColorSection AllTrail_section[] = {
+    { &Sword_Trails_Top_col, false, false },
+    { &Sword_Trails_Bottom_col, false, false },
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_End_col, false, false },
+    { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
 };
 static CosmeticsColorSection FileChoose_section[] = {
     { &FileChoose_Background, false, false },
@@ -324,6 +366,16 @@ static CosmeticsColorSection Everything_Section[] = {
     { &Boom_Trails_Start_col, true, false },
     { &Boom_Trails_End_col, false, false },
     { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
     { &FileChoose_Background, false, false },
     { &FileChoose_BottomText, true, false },
     { &A_Btn, false, false },
@@ -426,7 +478,17 @@ static CosmeticsColorSection AllItemsSkills_section[]{
     { &Boom_Trails_Start_col, true, false },
     { &Boom_Trails_Start_col, true, false },
     { &Boom_Trails_End_col, false, false },
-    { &Bomb_Trails_col, true, false }
+    { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false }
 };
 
 void InitCosmeticsEditor();//Init the menu itself

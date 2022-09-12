@@ -6,6 +6,7 @@
 
 #include "z_en_arrow.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "objects/object_gi_nuts/object_gi_nuts.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -505,18 +506,30 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
             scale = 150.0f;
         }
 
-        Matrix_Push();
-        Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-        // redundant check because this is contained in an if block for non-zero speed
-        Matrix_RotateZ((this->actor.speedXZ == 0.0f) ? 0.0f
-                                                     : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
-                       MTXMODE_APPLY);
-        Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
-        Matrix_Pop();
-        Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
+        if (CVar_GetS32("gNewDrops", 0) != 0) {
+            gSPSegment(POLY_OPA_DISP++, 0x08,
+                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),
+                                        1 * (globalCtx->state.frames * 6), 32, 32, 1, 1 * (globalCtx->state.frames * 6),
+                                        1 * (globalCtx->state.frames * 6), 32, 32));
+            scale = scale / 10;
+            Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+            Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x4000), MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPDisplayList(POLY_OPA_DISP++, gGiNutDL);
+        } else {
+            Matrix_Push();
+            Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
+            // redundant check because this is contained in an if block for non-zero speed
+            Matrix_RotateZ(
+                (this->actor.speedXZ == 0.0f) ? 0.0f : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
+                MTXMODE_APPLY);
+            Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
+            Matrix_Pop();
+            Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
+        }
 
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }

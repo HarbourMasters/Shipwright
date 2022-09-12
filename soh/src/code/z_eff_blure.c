@@ -75,6 +75,11 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
+//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+void EffectBlure_ChangeType(EffectBlure* this, int type) {
+    this->trailType = type;
+}
+
 void EffectBlure_AddSpace(EffectBlure* this) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -206,9 +211,19 @@ s32 EffectBlure_Update(void* thisx) {
     Color_RGB8 BoomStartCol = CVar_GetRGB("gBoomTrailStartCol", BoomColorOriginal);
     Color_RGB8 BoomEndCol = CVar_GetRGB("gBoomTrailEndCol", BoomColorOriginal);
     Color_RGB8 BombchuCol = CVar_GetRGB("gBombTrailCol", BombColorOriginal);
+    Color_RGB8 KSwordTopCol = CVar_GetRGB("gKSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 KSwordBottomCol = CVar_GetRGB("gKSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 MSwordTopCol = CVar_GetRGB("gMSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 MSwordBottomCol = CVar_GetRGB("gMSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 BSwordTopCol = CVar_GetRGB("gBSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 BSwordBottomCol = CVar_GetRGB("gBSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 StickTopCol = CVar_GetRGB("gStickTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 StickBottomCol = CVar_GetRGB("gStickTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 HammerTopCol = CVar_GetRGB("gHammerTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 HammerBottomCol = CVar_GetRGB("gHammerTrailBottomCol", TrailsColorOriginal);
 
     if ((CVar_GetS32("gUseTrailsCol", 0) != 0) && (this->trailType != 0)) {
-        switch (this->trailType) {
+        switch (this->trailType) { //there HAS to be a better way to do this.
             case 1: //sword
                 this->p1StartColor.r = SwordTopCol.r;
                 this->p2StartColor.r = SwordBottomCol.r;
@@ -238,7 +253,7 @@ s32 EffectBlure_Update(void* thisx) {
                 this->p1EndColor.b = BoomEndCol.b;
                 this->p2EndColor.b = BoomEndCol.b;
                 break;
-            case 3: //bombchu
+            case 3: // bombchu
                 this->p1StartColor.r = BombchuCol.r;
                 this->p2StartColor.r = BombchuCol.r * 0.8f;
                 this->p1EndColor.r = BombchuCol.r * 0.6f;
@@ -252,6 +267,81 @@ s32 EffectBlure_Update(void* thisx) {
                 this->p1EndColor.b = BombchuCol.b * 0.6f;
                 this->p2EndColor.b = BombchuCol.b * 0.4f;
                 break;
+            case 4: // kokiri sword
+                this->p1StartColor.r = KSwordTopCol.r;
+                this->p2StartColor.r = KSwordBottomCol.r;
+                this->p1EndColor.r = KSwordTopCol.r;
+                this->p2EndColor.r = KSwordBottomCol.r;
+                this->p1StartColor.g = KSwordTopCol.g;
+                this->p2StartColor.g = KSwordBottomCol.g;
+                this->p1EndColor.g = KSwordTopCol.g;
+                this->p2EndColor.g = KSwordBottomCol.g;
+                this->p1StartColor.b = KSwordTopCol.b;
+                this->p2StartColor.b = KSwordBottomCol.b;
+                this->p1EndColor.b = KSwordTopCol.b;
+                this->p2EndColor.b = KSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 5: // master sword
+                this->p1StartColor.r = MSwordTopCol.r;
+                this->p2StartColor.r = MSwordBottomCol.r;
+                this->p1EndColor.r = MSwordTopCol.r;
+                this->p2EndColor.r = MSwordBottomCol.r;
+                this->p1StartColor.g = MSwordTopCol.g;
+                this->p2StartColor.g = MSwordBottomCol.g;
+                this->p1EndColor.g = MSwordTopCol.g;
+                this->p2EndColor.g = MSwordBottomCol.g;
+                this->p1StartColor.b = MSwordTopCol.b;
+                this->p2StartColor.b = MSwordBottomCol.b;
+                this->p1EndColor.b = MSwordTopCol.b;
+                this->p2EndColor.b = MSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 6: // biggoron sword
+                this->p1StartColor.r = BSwordTopCol.r;
+                this->p2StartColor.r = BSwordBottomCol.r;
+                this->p1EndColor.r = BSwordTopCol.r;
+                this->p2EndColor.r = BSwordBottomCol.r;
+                this->p1StartColor.g = BSwordTopCol.g;
+                this->p2StartColor.g = BSwordBottomCol.g;
+                this->p1EndColor.g = BSwordTopCol.g;
+                this->p2EndColor.g = BSwordBottomCol.g;
+                this->p1StartColor.b = BSwordTopCol.b;
+                this->p2StartColor.b = BSwordBottomCol.b;
+                this->p1EndColor.b = BSwordTopCol.b;
+                this->p2EndColor.b = BSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 7: // stick
+                this->p1StartColor.r = StickTopCol.r;
+                this->p2StartColor.r = StickBottomCol.r;
+                this->p1EndColor.r = StickTopCol.r;
+                this->p2EndColor.r = StickBottomCol.r;
+                this->p1StartColor.g = StickTopCol.g;
+                this->p2StartColor.g = StickBottomCol.g;
+                this->p1EndColor.g = StickTopCol.g;
+                this->p2EndColor.g = StickBottomCol.g;
+                this->p1StartColor.b = StickTopCol.b;
+                this->p2StartColor.b = StickBottomCol.b;
+                this->p1EndColor.b = StickTopCol.b;
+                this->p2EndColor.b = StickBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 8: // hammer
+                this->p1StartColor.r = HammerTopCol.r;
+                this->p2StartColor.r = HammerBottomCol.r;
+                this->p1EndColor.r = HammerTopCol.r;
+                this->p2EndColor.r = HammerBottomCol.r;
+                this->p1StartColor.g = HammerTopCol.g;
+                this->p2StartColor.g = HammerBottomCol.g;
+                this->p1EndColor.g = HammerTopCol.g;
+                this->p2EndColor.g = HammerBottomCol.g;
+                this->p1StartColor.b = HammerTopCol.b;
+                this->p2StartColor.b = HammerBottomCol.b;
+                this->p1EndColor.b = HammerTopCol.b;
+                this->p2EndColor.b = HammerBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
             case 0:
             default: // don't do anything
                 break;
@@ -259,6 +349,11 @@ s32 EffectBlure_Update(void* thisx) {
     } else
         switch (this->trailType) { 
             case 1: //swords
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
                 this->p1StartColor.r = 255;
                 this->p2StartColor.r = 255;
                 this->p1EndColor.r = 255;
