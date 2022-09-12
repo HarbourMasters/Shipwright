@@ -371,6 +371,19 @@ s32 EnGirlA_TryChangeShopItem(EnGirlA* this, GlobalContext* globalCtx) {
             }
             break;
     }
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+        if (
+            shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK &&
+            shopItemIdentity.enGirlAShopItem == -1 &&
+            Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)
+        ) {
+            this->actor.params = SI_SOLD_OUT;
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -904,12 +917,13 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
+    Player* player = GET_PLAYER(globalCtx);
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
         Item_Give(globalCtx, getItemEntry.itemId);
-    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
         Randomizer_Item_Give(globalCtx, getItemEntry);
     }
 
@@ -977,18 +991,6 @@ void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
-    if (shopItemIdentity.enGirlAShopItem == -1) {
-        ShopItemEntry* itemEntry = &shopItemEntries[SI_SOLD_OUT];
-        this->actor.textId = itemEntry->itemDescTextId;
-        this->itemBuyPromptTextId = 0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
-        this->getItemId = itemEntry->getItemId;
-        this->canBuyFunc = itemEntry->canBuyFunc;
-        this->itemGiveFunc = itemEntry->itemGiveFunc;
-        this->buyEventFunc = itemEntry->buyEventFunc;
-        this->basePrice = itemEntry->price;
-        this->itemCount = itemEntry->count;
-        this->giDrawId = itemEntry->giDrawId;
-    }
 }
 
 void EnGirlA_Noop(EnGirlA* this, GlobalContext* globalCtx) {
