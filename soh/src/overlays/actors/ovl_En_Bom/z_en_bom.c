@@ -7,6 +7,7 @@
 #include "z_en_bom.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -363,21 +364,34 @@ void EnBom_Draw(Actor* thisx, GlobalContext* globalCtx) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params == BOMB_BODY) {
-        func_80093D18(globalCtx->state.gfxCtx);
-        Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-        func_8002EBCC(thisx, globalCtx, 0);
+        if (CVar_GetS32("gNewDrops", 0) != 0) {
+            func_80093D18(globalCtx->state.gfxCtx);
+            func_8002EBCC(thisx, globalCtx, 0);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gBombCapDL);
-        Matrix_RotateZYX(0x4000, 0, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPPipeSync(POLY_OPA_DISP++);
-        gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 0, 40, 255);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, (s16)this->flashIntensity, 0, 40, 255);
-        gSPDisplayList(POLY_OPA_DISP++, gBombBodyDL);
-        Collider_UpdateSpheres(0, &this->explosionCollider);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gBombCapDL);
+            Matrix_RotateZYX(0x4000, 0, 0, MTXMODE_APPLY);
+            Matrix_Scale(7.0f, 7.0f, 7.0f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, (s16)this->flashIntensity, 32, 200, 255);
+            gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
+            Collider_UpdateSpheres(0, &this->explosionCollider);
+        } else {
+            func_80093D18(globalCtx->state.gfxCtx);
+            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            func_8002EBCC(thisx, globalCtx, 0);
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gBombCapDL);
+            Matrix_RotateZYX(0x4000, 0, 0, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 0, 40, 255);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, (s16)this->flashIntensity, 0, 40, 255);
+            gSPDisplayList(POLY_OPA_DISP++, gBombBodyDL);
+            Collider_UpdateSpheres(0, &this->explosionCollider);
+        }
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

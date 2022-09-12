@@ -482,12 +482,16 @@ void EnBomChu_Update(Actor* thisx, GlobalContext* globalCtx2) {
     }
 }
 
+
+const Color_RGB8 BombchuColorOriginal = { 209, 34, -35 };
+
 void EnBomChu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnBomChu* this = (EnBomChu*)thisx;
     f32 colorIntensity;
     s32 blinkHalfPeriod;
     s32 blinkTime;
+    Color_RGB8 BombchuCol = CVar_GetRGB("gBombTrailCol", BombchuColorOriginal);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -511,8 +515,11 @@ void EnBomChu_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
-    gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
-                   35.0f + (colorIntensity * -35.0f), 255);
+    if (CVar_GetS32("gUseTrailsCol", 0) != 0)
+        gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * BombchuCol.r), (colorIntensity * BombchuCol.g),
+                       (colorIntensity * BombchuCol.b), 255);
+    else gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
+                        35.0f + (colorIntensity * -35.0f), 255);
     Matrix_Translate(this->visualJitter * (1.0f / BOMBCHU_SCALE), 0.0f, 0.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
