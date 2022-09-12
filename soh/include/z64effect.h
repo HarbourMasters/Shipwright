@@ -73,6 +73,7 @@ typedef struct {
     /* 0x194 */ s32 elemDuration;
     /* 0x198 */ s32 unkFlag;
     /* 0x19C */ s32 calcMode;
+    /* 0x1A0 */ u8 trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 0 is rest
 } EffectBlureInit1; // size = 0x1A0
 
 typedef struct {
@@ -89,6 +90,7 @@ typedef struct {
     /* 0x1B */ u8 mode4Param;
     /* 0x1C */ Color_RGBA8 altPrimColor; // used with drawMode 1
     /* 0x20 */ Color_RGBA8 altEnvColor; // used with drawMode 1
+    /* 0x1A0 */ u8 trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is arrows, 0 is rest
 } EffectBlureInit2; // size = 0x24
 
 typedef struct {
@@ -108,6 +110,7 @@ typedef struct {
     /* 0x1A1 */ u8 drawMode; // 0: simple; 1: simple with alt colors; 2+: smooth
     /* 0x1A2 */ Color_RGBA8 altPrimColor; // used with drawMode 1
     /* 0x1A6 */ Color_RGBA8 altEnvColor; // used with drawMode 1
+    /* 0x1A0 */ u8 trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is arrows, 0 is rest
 } EffectBlure; // size = 0x1AC
 
 typedef struct {

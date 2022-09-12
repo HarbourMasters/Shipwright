@@ -9422,9 +9422,9 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 500, ICHAIN_STOP),
 };
 
-static EffectBlureInit2 D_8085470C = {
+static EffectBlureInit2 blureSword = {
     0, 8, 0, { 255, 255, 255, 255 }, { 255, 255, 255, 64 }, { 255, 255, 255, 0 }, { 255, 255, 255, 0 }, 4,
-    0, 2, 0, { 0, 0, 0, 0 },         { 0, 0, 0, 0 },
+    0, 2, 0, { 255, 255, 255, 255 }, { 255, 255, 255, 64 }, 1,
 };
 
 static Vec3s D_80854730 = { -57, 3377, 0 };
@@ -9443,7 +9443,7 @@ void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeade
         this->morphTable2, PLAYER_LIMB_MAX);
     this->skelAnime2.baseTransl = D_80854730;
 
-    Effect_Add(globalCtx, &this->swordEffectIndex, EFFECT_BLURE2, 0, 0, &D_8085470C);
+    Effect_Add(globalCtx, &this->swordEffectIndex, EFFECT_BLURE2, 0, 0, &blureSword);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, this->ageProperties->unk_04);
     this->unk_46C = SUBCAM_NONE;
     Collider_InitCylinder(globalCtx, &this->cylinder);

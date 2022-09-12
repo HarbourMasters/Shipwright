@@ -85,6 +85,7 @@ void EnBomChu_Init(Actor* thisx, GlobalContext* globalCtx) {
     blureInit.elemDuration = 16;
     blureInit.unkFlag = 0;
     blureInit.calcMode = 0;
+    blureInit.trailType = 3;
 
     Effect_Add(globalCtx, &this->blure1Index, EFFECT_BLURE1, 0, 0, &blureInit);
     Effect_Add(globalCtx, &this->blure2Index, EFFECT_BLURE1, 0, 0, &blureInit);

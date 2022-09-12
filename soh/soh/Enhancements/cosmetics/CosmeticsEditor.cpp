@@ -13,6 +13,7 @@ const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
     "gFireArrowCol", "gIceArrowCol",
+    "gNormalArrowCol", "gNormalArrowColEnv",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
     "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
     "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
@@ -23,7 +24,8 @@ const char* RainbowColorCvarList[] = {
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
     "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
-    "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+    "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
     "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
@@ -121,6 +123,13 @@ void ResetPositionAll() {
         }
     }
 }
+
+void ResetTrailLength(const char* variable, int value) {
+    if (ImGui::Button("Reset")) {
+        CVar_SetS32(variable, value);
+        }
+    }
+
 void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
@@ -429,15 +438,21 @@ void Draw_ItemsSkills(){
         DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
         ImGui::EndTable();
     }
-    UIWidgets::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
-    if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, FlagsTable)) {
-        ImGui::TableSetupColumn("Custom Trails", FlagsCell, TablesCellsWidth);
+    UIWidgets::EnhancementCheckbox("Custom trails", "gUseTrailsCol");
+    if (CVar_GetS32("gUseTrailsCol", 0)) {
+        DrawRandomizeResetButton("trails", Trail_section, SECTION_SIZE(Trail_section));
+    }
+    if (CVar_GetS32("gUseTrailsCol", 0) && ImGui::BeginTable("tabletrails", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth / 3);
         Table_InitHeader();
-        DrawColorSection(Trails_section, SECTION_SIZE(Trails_section));
-        UIWidgets::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        UIWidgets::Tooltip("The longer the trails the weirder it become");
-        ImGui::NewLine();
+        DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
+        UIWidgets::EnhancementSliderInt("Sword Trail Length: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines length of Link's sword trails.");
+        ResetTrailLength("gTrailDuration", 4);
+        ImGui::NewLine();
     }
 }
 void Draw_Menus(){

@@ -427,7 +427,7 @@ namespace UIWidgets {
     }
 
     void RandomizeColor(const char* cvarName, ImVec4* colors) {
-        Color_RGBA8 NewColors = {0,0,0,255};
+        Color_RGBA8 NewColors = {128,0,0,255};
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "##";
@@ -436,12 +436,9 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            s16 RND_R = rand() % (255 - 0);
-            s16 RND_G = rand() % (255 - 0);
-            s16 RND_B = rand() % (255 - 0);
-            colors->x = (float)RND_R / 255;
-            colors->y = (float)RND_G / 255;
-            colors->z = (float)RND_B / 255;
+            colors->x = rand() % (255 - 0);
+            colors->y = rand() % (255 - 0);
+            colors->z = rand() % (255 - 0);
             NewColors.r = fmin(fmax(colors->x, 0), 255);
             NewColors.g = fmin(fmax(colors->y, 0), 255);
             NewColors.b = fmin(fmax(colors->z, 0), 255);
