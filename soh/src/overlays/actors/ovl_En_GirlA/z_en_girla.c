@@ -587,7 +587,7 @@ s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[9] & gSaveContext.inventory.equipment) {
@@ -603,7 +603,7 @@ s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[10] & gSaveContext.inventory.equipment) {
@@ -760,8 +760,6 @@ s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
         return CANBUY_RESULT_CANT_GET_NOW_5;
     }
 
-    // TOOD: We should put a sold out sign instead of preventing them from buying again
-    // TODO: Need to allow repeated buys for some items
     if (
         Flags_GetRandomizerInf(shopItemIdentity.randomizerInf) || 
         itemObtainability == CANT_OBTAIN_ALREADY_HAVE || 
