@@ -1705,8 +1705,9 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, GlobalContext* globalCtx, 
 void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
 
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && Randomizer_ItemIsIceTrap(shopItemIdentity.randomizerCheck, GI_NONE))) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
             itemTemp = this->shelfSlots[this->cursorIndex];
             EnOssan_ResetItemPosition(this);

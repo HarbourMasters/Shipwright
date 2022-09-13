@@ -431,7 +431,12 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
 
     for (int index = 0; index < shopItemRandomizerChecks.size(); ++index) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
-        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[this->itemLocations[shopItemCheck]];
+        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck];
+        // TODO: This should eventually be replaced with a full fledged trick model & trick name system
+        if (shopItemGet == RG_ICE_TRAP) {
+            shopItemGet = RG_HUGE_RUPEE;
+        }
+        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         u16 shopItemPrice = merchantPrices[shopItemCheck];
         // TODO: Magic number 100, we don't to overwrite deku scrub messages
         CustomMessageManager::Instance->CreateMessage(
