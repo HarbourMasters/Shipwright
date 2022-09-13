@@ -3131,7 +3131,7 @@ void DrawRandoEditor(bool& open) {
 
     // Randomizer settings
     // Logic Settings
-    const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    const char* randoLogicRules[3] = { "Glitchless", "No logic", "Vanilla" };
 
     // Open Settings
     const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -4103,9 +4103,11 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Glitchless - No glitches are required, but may require some minor tricks.\n"
                     "\n"
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+                    "\n"
+                    "Vanilla - Places all items and dungeon rewards in their vanilla locations"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 3, 0);
 
                 UIWidgets::PaddedSeparator();
 

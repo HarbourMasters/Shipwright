@@ -2501,6 +2501,9 @@ namespace Settings {
         case 1:
             Logic.SetSelectedIndex(2);
             break;
+        case 2:
+            Logic.SetSelectedIndex(3);
+            break;
     }
 
     AddExcludedOptions();
