@@ -276,10 +276,6 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.currentAmmo = AMMO(ITEM_SLINGSHOT);
             break;
         case ITEM_WALLET_ADULT:
-            result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity = 200;
-            result.currentAmmo = gSaveContext.rupees;
-            break;
         case ITEM_WALLET_GIANT:
             result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity = 500;
