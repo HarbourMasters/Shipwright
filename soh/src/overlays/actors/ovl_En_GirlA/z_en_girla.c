@@ -1198,6 +1198,11 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
             this->getItemId = getItemEntry.getItemId;
             this->basePrice = shopItemIdentity.itemPrice;
             this->giDrawId = getItemEntry.gid;
+
+            // Dungeon reward stones are spawned with incorrect rotation
+            if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
+                this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
+            }
         }
     }
 }
@@ -1211,7 +1216,7 @@ void EnGirlA_Update2(EnGirlA* this, GlobalContext* globalCtx) {
     Actor_SetFocus(&this->actor, 5.0f);
     this->actor.shape.rot.x = 0.0f;
     if (this->actor.params != SI_SOLD_OUT) {
-        if (this->isSelected && this->giDrawId != GID_SOLDOUT) {
+        if (this->isSelected) {
             this->yRotation += 0x1F4;
         } else {
             Math_SmoothStepToS(&this->yRotation, 0, 10, 0x7D0, 0);
@@ -1242,15 +1247,9 @@ void EnGirlA_Draw(Actor* thisx, GlobalContext* globalCtx) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
-        if (
-            shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK &&
-            getItemEntry.drawFunc != NULL &&
-            // This isn't super safe, as newly introduced drawFuncs will be ignore but it's consistent with everywhere else
-            (CVar_GetS32("gRandoMatchKeyColors", 0) || getItemEntry.getItemId == RG_DOUBLE_DEFENSE)
-        ) {
-            getItemEntry.drawFunc(globalCtx, &getItemEntry);
-            return;
-        }
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemEntry);
+        GetItemEntry_Draw(globalCtx, getItemEntry);
+        return;
     }
 
     GetItem_Draw(globalCtx, this->giDrawId);

@@ -1341,6 +1341,11 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetI
     pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
     pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
     pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+
+    if (Parent->id == ACTOR_EN_GIRLA) {
+        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 5;
+    }
+
     EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
 }
 
