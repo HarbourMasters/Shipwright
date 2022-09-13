@@ -189,6 +189,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
+    { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
+    { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
@@ -612,6 +614,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_COMPLETE_MASK_QUEST:
                     case RSK_SKIP_SCARECROWS_SONG:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
+                    case RSK_BLUE_FIRE_ARROWS:
+                    case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
@@ -3640,6 +3644,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVar_GetS32("gRandomizeBlueFireArrows", 0);
+    cvarSettings[RSK_SUNLIGHT_ARROWS] = CVar_GetS32("gRandomizeSunlightArrows", 0);
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
@@ -4533,7 +4539,7 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("WIP - Blue Fire Arrows", "gRandomizeBlueIceArrows", true, "In development");
+                UIWidgets::EnhancementCheckbox("Blue Fire Arrows", "gRandomizeBlueFireArrows");
                 UIWidgets::InsertHelpHoverText(
                     "Ice Arrows act like Blue Fire, making them able to melt red ice. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."
@@ -4541,7 +4547,7 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("WIP - Sunlight Arrows", "gRandomizeSunlightArrows", true, "In development");
+                UIWidgets::EnhancementCheckbox("Sunlight Arrows", "gRandomizeSunlightArrows");
                 UIWidgets::InsertHelpHoverText(
                     "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
                     "Item placement logic will respect this option, so it might be required to use this to progress."

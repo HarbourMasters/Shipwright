@@ -86,8 +86,8 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_SPIRIT_TRIAL] = Area("Ganon's Castle Spirit Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&NutPot,           {[]{return NutPot || ((LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && Bow && MirrorShield && IsAdult);}}),
-                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS)  && MirrorShield && HasBombchus && (LogicSpiritTrialHookshot || CanUse(HOOKSHOT));}}),
+                  EventAccess(&NutPot,           {[]{return NutPot || ((LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && Bow && (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && IsAdult);}}),
+                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS)  && (MirrorShield || SunlightArrows) && HasBombchus && (LogicSpiritTrialHookshot || CanUse(HOOKSHOT));}}),
                 }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return LogicSpiritTrialHookshot || CanUse(HOOKSHOT);}}),
@@ -189,16 +189,16 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_MQ_SPIRIT_TRIAL] = Area("Ganon's Castle MQ Spirit Castle", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&SpiritTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && Hammer && HasBombchus && FireArrows && MirrorShield;}}),
-                  EventAccess(&NutPot,           {[]{return NutPot || (Hammer && HasBombchus && IsAdult && CanUse(FIRE_ARROWS) && MirrorShield);}}),
+                  EventAccess(&SpiritTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && Hammer && HasBombchus && ((FireArrows && MirrorShield) || SunlightArrows);}}),
+                  EventAccess(&NutPot,           {[]{return NutPot || (Hammer && HasBombchus && IsAdult && ((CanUse(FIRE_ARROWS) && MirrorShield) || (SunlightArrows && CanUse(LIGHT_ARROWS))));}}),
   }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,             {[]{return IsAdult && Bow && Hammer;}}),
                   LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,         {[]{return IsAdult && Bow && Hammer && HasBombchus && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH));}}),
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,    {[]{return IsAdult && Hammer && HasBombchus && CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD);}}),
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,     {[]{return IsAdult && Hammer && HasBombchus && CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD);}}),
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,  {[]{return IsAdult && Hammer && HasBombchus && CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD);}}),
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,    {[]{return IsAdult && Hammer && HasBombchus && CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD);}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,    {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,     {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,  {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,    {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
   }, {});
 
   areaTable[GANONS_CASTLE_MQ_LIGHT_TRIAL] = Area("Ganon's Castle MQ Light Trial", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
