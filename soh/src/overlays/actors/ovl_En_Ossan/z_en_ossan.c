@@ -429,12 +429,12 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
             if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, i);
-                if (shopItemIdentity.enGirlAShopItem == -1) {
+                if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                    itemParams = shopItemIdentity.enGirlAShopItem;
+
                     if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
                         itemParams = SI_SOLD_OUT;
                     }
-                } else {
-                    itemParams = shopItemIdentity.enGirlAShopItem;
                 }
             }
 

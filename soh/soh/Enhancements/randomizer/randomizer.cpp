@@ -2222,7 +2222,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     shopItemIdentity.ogItemId = GI_NONE;
     shopItemIdentity.itemPrice = -1;
-    shopItemIdentity.enGirlAShopItem = -1;
+    shopItemIdentity.enGirlAShopItem = 0x32;
 
     switch (sceneNum) {
         case SCENE_SHOP1:
