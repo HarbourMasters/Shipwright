@@ -71,7 +71,8 @@ static void ExporterProgramEnd()
     uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
 
     // Write crc to version file
-    std::ofstream versionFile("Extract/version", std::ios::out | std::ios::binary);
+    fs::path versionPath("Extract/version");
+    std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
     versionFile.write((char*)&crc, sizeof(crc));
     versionFile.flush();
     versionFile.close();
