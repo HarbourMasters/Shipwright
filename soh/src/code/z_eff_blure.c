@@ -904,7 +904,14 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         if ((elem->state == 0) || ((elem + 1)->state == 0)) {
             continue;
         }
-        EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
+        if ((((elem->flags & 3) == 0) && (((elem + 1)->flags & 3) == 0)) ||
+            (((elem->flags & 3) == 2) && (((elem + 1)->flags & 3) == 0)) ||
+            (((elem->flags & 3) == 0) && (((elem + 1)->flags & 3) == 2)) ||
+            (((elem->flags & 3) == 2) && (((elem + 1)->flags & 3) == 2))) {
+            EffectBlure_DrawElemNoInterpolation(this, elem, i, gfxCtx);
+        } else {
+            EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
+        }
         
     }
 
