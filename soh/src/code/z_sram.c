@@ -439,7 +439,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = 6; // Water
             gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 5; // Spirit
             gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = 5; // Shadow
-            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = 2; // BotW
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = 3; // BotW
             gSaveContext.inventory.dungeonKeys[SCENE_MEN] = 9; // GTG
             gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = 2; // Ganon
         }

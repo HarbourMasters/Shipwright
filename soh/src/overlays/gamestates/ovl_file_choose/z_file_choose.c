@@ -365,7 +365,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
 
-        if (CVar_GetS32("gRandomizer", 0) != 0 && CVar_GetString("gSpoilerLog", "") != "") {
+        if (CVar_GetS32("gRandomizer", 0) && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0) {
             u16 xStart = 64;
             for (u8 i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));

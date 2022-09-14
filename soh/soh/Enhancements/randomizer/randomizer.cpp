@@ -3489,7 +3489,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 act
             break;
         case 93:
             switch (actorParams) {
-                case 262:
                 case 1984:
                     return RC_GF_CHEST;
                 case 21506:

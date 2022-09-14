@@ -9434,6 +9434,7 @@ static EffectBlureInit2 D_8085470C = {
 static Vec3s D_80854730 = { -57, 3377, 0 };
 
 void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeader* skelHeader) {
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     this->ageProperties = &sAgeProperties[gSaveContext.linkAge];
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->swordEffectIndex = TOTAL_EFFECT_COUNT;
