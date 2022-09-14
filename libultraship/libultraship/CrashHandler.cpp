@@ -293,7 +293,9 @@ static void printStack(CONTEXT* ctx) {
 
     process = GetCurrentProcess();
     thread = GetCurrentThread();
-    SymInitialize(process, nullptr, true);
+
+    SymSetOptions(SYMOPT_NO_IMAGE_SEARCH | SYMOPT_IGNORE_IMAGEDIR);
+    SymInitialize(process, "debug", true);
 
 
     constexpr DWORD machineType =

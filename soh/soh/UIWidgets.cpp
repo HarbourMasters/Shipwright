@@ -322,11 +322,11 @@ namespace UIWidgets {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
         if (PlusMinusButton) {
-    #ifdef __WIIU__
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
-    #else
+        #if defined(__SWITCH__) || defined(__WIIU__)
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+        #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-    #endif
+        #endif
         }
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
