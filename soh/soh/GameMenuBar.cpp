@@ -547,7 +547,7 @@ namespace GameMenuBar {
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
                 #ifdef __SWITCH__
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-                #elseif __WIIU__
+                #elif __WIIU__
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
                 #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -1077,7 +1077,7 @@ namespace GameMenuBar {
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             #ifdef __SWITCH__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-            #elseif __WIIU__
+            #elif __WIIU__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
             #else
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
