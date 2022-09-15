@@ -4499,6 +4499,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
     s16 svar6;
     bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || globalCtx->pauseCtx.state != 0;
 
+    if (noUI) {
+        return;
+    }
+
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // Invalidate Do Action textures as they may have changed

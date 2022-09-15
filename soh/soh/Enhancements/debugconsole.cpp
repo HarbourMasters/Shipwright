@@ -31,6 +31,7 @@ extern GlobalContext* gGlobalCtx;
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
 
+uint32_t noUI;
 uint32_t giantLink;
 uint32_t minishLink;
 uint32_t paperLink;
@@ -542,7 +543,13 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        noUI = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] No UI value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
