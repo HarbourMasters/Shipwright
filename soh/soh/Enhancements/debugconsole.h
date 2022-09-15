@@ -12,6 +12,7 @@ extern uint32_t gravityLevel;
 extern uint32_t resetLinkScale;
 extern uint32_t invisibleLink;
 extern uint32_t oneHitKO;
+extern uint32_t pacifistMode;
 #ifdef __cplusplus
 }
 #endif

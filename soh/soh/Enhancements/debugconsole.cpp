@@ -38,6 +38,7 @@ uint32_t gravityLevel = 1;
 uint32_t resetLinkScale;
 uint32_t invisibleLink;
 uint32_t oneHitKO;
+uint32_t pacifistMode;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
@@ -650,7 +651,13 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        pacifistMode = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Pacifist value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -1002,7 +1009,7 @@ void DebugConsole_Init(void) {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("pacifist", { PacifistHandler, "Activates pacifist mode.", {
+    CMD_REGISTER("pacifist", { PacifistHandler, "Activates pacifist mode. Prevents Link from using his weapon.", {
         { "value", Ship::ArgumentType::NUMBER }
     }});
 

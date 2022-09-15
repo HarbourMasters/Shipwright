@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
+#include "soh/Enhancements/debugconsole.h"
+
 //#include <string.h>
 
 #ifdef _MSC_VER
@@ -226,6 +228,10 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         switch (padnow1->err_no) {
             case 0:
                 input->cur = *padnow1;
+
+                if (pacifistMode)
+                    input->cur.button &= ~(BTN_CLEFT | BTN_CRIGHT | BTN_CUP | BTN_CDOWN | BTN_B);
+
                 if (!padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = true;
                     osSyncPrintf(VT_FGCOL(YELLOW));
