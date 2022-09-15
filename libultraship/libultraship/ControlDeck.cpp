@@ -74,42 +74,42 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-        // We block controller input if F1 menu is open and control navigation is on.
-        // This is because we don't want controller inputs to affect the game
+		// We block controller input if F1 menu is open and control navigation is on.
+		// This is because we don't want controller inputs to affect the game
 		bool shouldBlockControllerInputs = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
 
-        // We block keyboard input if you're currently typing into a textfield.
-        // This is because we don't want your keyboard typing to affect the game.
-        ImGuiIO io = ImGui::GetIO();
-        bool shouldBlockKeyboardInputs = io.WantCaptureKeyboard;
+		// We block keyboard input if you're currently typing into a textfield.
+		// This is because we don't want your keyboard typing to affect the game.
+		ImGuiIO io = ImGui::GetIO();
+		bool shouldBlockKeyboardInputs = io.WantCaptureKeyboard;
 
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 
-            // If the controller backend is "Auto" we need to get the real device
-            // we search for the real device to read input from it
+			// If the controller backend is "Auto" we need to get the real device
+			// we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-                    if(shouldBlockControllerInputs && device->GetGuid() != "Keyboard") {
-                        continue;
-                    }
+					if(shouldBlockControllerInputs && device->GetGuid() != "Keyboard") {
+						continue;
+					}
 
-                    if (shouldBlockKeyboardInputs && device->GetGuid() == "Keyboard") {
-                        continue;
-                    }
+					if (shouldBlockKeyboardInputs && device->GetGuid() == "Keyboard") {
+						continue;
+					}
 
 					device->Read(&pad[i], i);
 				}
 				continue;
 			}
 
-            if (shouldBlockControllerInputs && backend->GetGuid() != "Keyboard") {
-                continue;
-            }
+			if (shouldBlockControllerInputs && backend->GetGuid() != "Keyboard") {
+				continue;
+			}
 
-            if (shouldBlockKeyboardInputs && backend->GetGuid() == "Keyboard") {
-                continue;
-            }
+			if (shouldBlockKeyboardInputs && backend->GetGuid() == "Keyboard") {
+				continue;
+			}
 
 			backend->Read(&pad[i], i);
 		}
