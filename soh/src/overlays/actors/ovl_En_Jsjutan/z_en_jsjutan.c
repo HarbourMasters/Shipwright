@@ -402,7 +402,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         this->unk_164 = false;
         u8* carpTex = ResourceMgr_LoadTexByName(sCarpetTex);
         u8* shadTex = sShadowTex;
-        for (i = 0; i < ARRAY_COUNT(shadTex); i++) {
+        for (i = 0; i < ARRAY_COUNT(sShadowTex); i++) {
             if (((u16*)carpTex)[i] != 0) { // Hack to bypass ZAPD exporting textures as u64.
                 shadTex[i] = 0xFF;
             } else {
@@ -421,6 +421,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
+    gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowTex);
     gSPDisplayList(POLY_OPA_DISP++, sShadowMaterialDL);
     gDPPipeSync(POLY_OPA_DISP++);
 
