@@ -367,8 +367,6 @@ void EnJsjutan_Update(Actor* thisx, GlobalContext* globalCtx2) {
     thisx->shape.rot.z = Math_CosS(globalCtx->gameplayFrames * 3500) * 300.0f;
 }
 
-extern uintptr_t jsjutanShadowTex;
-
 void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     EnJsjutan* this = (EnJsjutan*)thisx;
     GlobalContext* globalCtx = globalCtx2;
@@ -396,7 +394,6 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     }
 
     func_80A89A6C(this, globalCtx);
-    jsjutanShadowTex = sShadowTex;
 
     if (this->unk_164) {
         this->unk_164 = false;
