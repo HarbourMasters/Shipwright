@@ -138,7 +138,7 @@ void func_8088B268(BgHidanRock* this, GlobalContext* globalCtx) {
             }
 
             this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
-            this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 3.0f);
+            this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
 
             if (D_8088BFC0 > 0.0f) {
                 temp_v1 = Math_StepToF(&D_8088BFC0, 20.0f, this->dyna.actor.speedXZ);
