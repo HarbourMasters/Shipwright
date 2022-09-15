@@ -1164,6 +1164,17 @@ typedef struct {
     /* 0x08 */ s32 entranceIndex;
 } SceneSelectEntry; // size = 0xC
 
+typedef struct {
+  char* name;
+  s32 entranceIndex;
+} BetterSceneSelectEntrancePair;
+
+typedef struct {
+    /*      */ char* name;
+    /*      */ void (*loadFunc)(struct SelectContext*, s32);
+    /*      */ BetterSceneSelectEntrancePair entrancePairs[19];
+} BetterSceneSelectEntry;
+
 typedef struct SelectContext {
     /* 0x0000 */ GameState state;
     /* 0x00A8 */ View view;
@@ -1184,6 +1195,8 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    /*        */ s32 currentEntrance;
+    /*        */ BetterSceneSelectEntry* betterScenes;
 } SelectContext; // size = 0x240
 
 typedef struct {

@@ -171,6 +171,402 @@ static SceneSelectEntry sScenes[] = {
     { "title", Select_LoadTitle, 0x0000 },
 };
 
+static BetterSceneSelectEntry sBetterScenes[] = {
+    { " 1:Hyrule Field", Select_LoadGame, { 
+        { "After Zelda Escapes w/ Impa", 0x00CD },
+        { "From Market Entrance", 0x01FD },
+        { "From Kakariko Village", 0x017D },
+        { "From Zora River (Land)", 0x0181 },
+        { "From Zora River (Water)", 0x0311 },
+        { "From Lost Woods", 0x0185 },
+        { "From Lake Hylia", 0x0189 },
+        { "From Gerudo Valley", 0x018D },
+        { "From Lon Lon Ranch", 0x01F9 },
+        { "Owl Drop From Lake Hylia", 0x027E },
+        { "Lon Lon Ranch Horse Jump (SOUTH)", 0x028A },
+        { "Lon Lon Ranch Horse Jump (WEST)", 0x028E },
+        { "Lon Lon Ranch Horse Jump (EAST)", 0x0292 },
+        { "Lon Lon Ranch Horse Jump (FRONT)", 0x0292 },
+        { "Ocarina of Time Scene", 0x050F },
+        { "After Learning Zeldas Lullaby", 0x0594 },
+    }},
+    { " 2:Kokiri Buildings", Select_LoadGame, {
+        { "Kokiri Shop", 0x00C1 },
+        { "Twins House", 0x009C },
+        { "Know-It-All Brothers House", 0x00C9 },
+        { "Links House", 0x0272 },
+        { "Links Bed", 0x00BB },
+        { "Midos House", 0x0433 },
+        { "Sarias House", 0x0437 }
+    }},
+    { " 3:Lost Woods", Select_LoadGame, { 
+        { "From Kokiri Forest", 0x011E },
+        {  "From Sacred Meadow", 0x01A9 },
+        {  "From Goron City", 0x04D6 },
+        {  "From Zora River", 0x04DA },
+        { "Entrance Opposite Main Entrance", 0x01B1 },
+        {  "Near Skull Kid", 0x01AD },
+        {  "Owl Cutscene", 0x04D2 }
+    }},
+    { " 4:Lost Woods - Bridge", Select_LoadGame, {
+        { "From Hyrule Field", 0x04DE }, 
+        { "From Kokiri Forest", 0x05E0 },
+    }},
+    { " 5:Sacred Forest Meadow", Select_LoadGame, { 
+        { "From Lost Woods", 0x00FC },
+        { "From Forest Temple", 0x0215 },
+        { "Minuet of Forest Warp", 0x0600 },
+        { "SBlue Warp from Phantom Ganon", 0x0608 },
+    }},
+    { " 6:Kokiri Forest", Select_LoadGame, {
+        { "From Deku Tree", 0x0209 },
+        { "From Bridge", 0x020D },
+        { "From Links House", 0x0211 },
+        { "From Kokiri Shop", 0x0266 },
+        { "From Know-It-All Brothers House", 0x026A },
+        { "From Lost Woods", 0x0286 },
+        { "From Twins House", 0x033C },
+        { "From Midos House", 0x0443 },
+        { "From Sarias House", 0x0447 },
+        { "On Links House", 0x0338 },
+        { "Cutscene Entrance", 0x00EE },
+        { "After Deku Tree Death Scene", 0x0457 },
+    }},
+    { " 7:Lon Lon Ranch", Select_LoadGame, { 
+        { "From Hyrule Field", 0x0157 },
+        { "From Ranch House", 0x0378 },
+        { "From Stables", 0x042F },
+        { "Epona Song Cutscene", 0x02AE },
+        { "South Gate", 0x02E2 },
+        { "West Gate", 0x02E6 },
+        { "Inside Horse Track", 0x04CA },
+        { "Horse Race Minigame", 0x04CE },
+    }},
+     { " 8:Lon Lon Ranch Buildings", Select_LoadGame, {
+        { "Ranch House", 0x004F },
+        { "Stables", 0x02F9 },
+        { "Back Tower", 0x05D0 },
+        { "Chicken Minigame", 0x05E4 },
+     }},
+    { " 9:Castle Town", Select_LoadGame, {
+        { "From Entrance", 0x00B1 },
+        { "From Shooting Gallery", 0x01CD },
+        { "From Happy Mask Shop", 0x01D1 },
+        { "From Treasure Box", 0x01D5 },
+        { "From Castle", 0x025A },
+        { "From Temple of Time", 0x025E },
+        { "From Back Alley (Right)", 0x0262 },
+        { "From Back Alley (Left)", 0x029E },
+        { "From Potion Shop (Castle Town)", 0x02A2 },
+        { "From Bazaar Shop (Castle Town)", 0x03B8 },
+        { "From bomchu Bowling", 0x03BC },
+    }},
+    { "10:Market Entrance", Select_LoadGame, {
+        { "From Market", 0x0033 },
+        { "From Pot House", 0x026E },
+        { "From Hyrule Field", 0x0276 },
+    }},
+    { "11:Back Alley (Right)", Select_LoadGame, { 
+        { "From Market", 0x00AD },
+        { "From Alley House", 0x0067 },
+    }},
+    { "12:Back Alley (Left)", Select_LoadGame, { 
+        { "From Market", 0x029A }, 
+        { "From Dog House", 0x038C }, 
+        { "From Bombchu Shop", 0x03C0 },
+    }},
+    { "13:Castle Town Buildings", Select_LoadGame, { 
+        { "Pot House", 0x007E },
+        { "Shooting Gallery Minigame (Castle Town)", 0x016D },
+        { "Treasure Box Minigame", 0x0063 },
+        { "Potion Shop (Castle Town)", 0x0388 },
+        { "Bombchu Bowling Minigame", 0x0507 },
+        { "Bazaar Shop (Castle Town)", 0x052C },
+        { "Happy Mask Shop", 0x0530 },
+        { "Bombchu Shop", 0x0528 },
+        { "Dog House", 0x0398 },
+        { "Alley House", 0x043B },
+    }},
+    { "14:Temple of Time", Select_LoadGame, { 
+        { "From Outside", 0053 },
+        { "From Master Sword Pedestal", 0x02CA },
+        { "From First Master Sword Pull", 0x0324 },
+        { "Prelude of Light Warp", 0x05F4 },
+        { "In Front of Spiritual Stones", 0x0320 },
+        { "After Light Arrow Cutscene", 0x058C },
+        { "Outside Temple of Time - From Market", 0x0171 },
+        { "Outside Temple of Time - From Temple of Time", 0x0472 },
+    }},
+    { "15:Hyrule Castle", Select_LoadGame, {
+        { "From Market", 0x0138 },
+        { "From Castle Courtyard", 0x023D },
+        { "From Great Fairy", 0x0340 },
+        { "From Courtyard Guard Capture", 0x04FA },
+        { "Great Fairy", 0x04C2 },
+    }},
+    { "16:Courtyard", Select_LoadGame, {
+        { "From Crawlspace", 0x007A },
+        { "From Zelda", 0x0296 },
+        { "Zeldas Courtyard", 0x0400 },
+        { "Zeldas Courtyard after Cutscene", 0x05F0 },
+    }},
+    { "17:Kakariko Village", Select_LoadGame, {
+        { "From Hyrule Field", 0x00DB },
+        { "From Death Mountain", 0x0191 },
+        { "From Graveyard", 0x0195 },
+        { "From Bazaar (Kakariko)", 0x0201 },
+        { "From Bottom of Well", 0x02A6 },
+        { "From Bosss House", 0x0349 },
+        { "From Potion Shop (Kakariko)", 0x044B },
+        { "From Potion Shop (Kakariko - Back Entrance)", 0x04FF },
+        { "From Grannys Potion Shop", 0x034D },
+        { "From Impas House", 0x0345 },
+        { "From Impas House (Cow)", 0x05DC },
+        { "From Windmill", 0x0351 },
+        { "From Shooting Gallery", 0x0463 },
+        { "From Skulltula House", 0x04EE },
+        { "Owl Drop Spot from Death Mountain", 0x0554 },
+        { "After Sheik Cutscene", 0x0513 },
+    }},
+    { "18:Kakariko Buildings", Select_LoadGame, {
+        { "Shooting Gallery Minigame (Kakariko)", 0x003B },
+        { "Grannys Potion Shop", 0x0072 },
+        { "Bazaar Shop (Kakariko)", 0x00B7 },
+        { "Potion Shop (Kakariko)", 0x0384 },
+        { "Potion Shop (Kakariko- Back Entrance)", 0x03EC },
+        { "Impas House", 0x039C },
+        { "Impas House (Cow)", 0x05C8 },
+        { "Bosss House", 0x02FD },
+        { "Windmill", 0x0453 },
+        { "Skulltula House", 0x0550 },
+    }},
+    { "19:Graveyard", Select_LoadGame, {
+        { "From Kakariko", 0x00E4 },
+        { "From Shadow Temple", 0x0205 },
+        { "From Gravekeepers Hut", 0x0355 },
+        { "From Dampes Grave", 0x0359 },
+        { "From Shield Grave", 0x035D },
+        { "From Redead Grave", 0x0361 },
+        { "From Royal Familys Tomb", 0x050B },
+        { "Inside Dampe's Hut", 0x030D },
+        { "Nocturne of Shadow Warp", 0x0568 },
+    }},
+    { "20:Graves", Select_LoadGame, {
+        { "Dampes Grave Minigame", 0x044F },
+        { "Royal Familys Tomb", 0x002D },
+        { "Royal Familys Tomb, Suns Song Cutscene", 0x0574 },
+        { "Treasure Chest Grave", 0x004B },
+        { "ReDead Grave", 0x031C },
+    }},
+    { "21:Death Mountain", Select_LoadGame, {
+        { "From Kakariko Village", 0x013D },
+        { "From Goron City", 0x01B9 },
+        { "From Death Mountain Crater", 0x01BD },
+        { "From Dodongos Cavern", 0x0242 },
+        { "From Great Fairy", 0x045B },
+        { "Great Fairy", 0x0315 },
+        { "Goron Ruby Cutscene", 0x047A },
+    }},
+    { "22:Goron City", Select_LoadGame, {
+        { "From Death Mountain Trail", 0x014D },
+        { "From Death Mountain Crater", 0x01C1 },
+        { "From Goron City Shop", 0x03FC },
+        { "From Lost Woods", 0x04E2 },
+        { "Goron City Shop", 0x037C },
+    }},
+    { "23:Death Mountain Crater", Select_LoadGame, {
+        { "From Death Mountain Trail", 0x0147 },
+        { "From Goron City", 0x0246 },
+        { "From Fire Temple", 0x024A },
+        { "From Fairy Fountain", 0x0482 },
+        { "Great Fairy", 0x04BE },
+        { "Bolero of Fire Warp", 0x04F6 },
+        { "Blue Warp from Volvagia", 0x0564 },
+    }},
+    { "24:Zora River", Select_LoadGame, {
+        { "From Hyrule Field (Land)", 0x00EA },
+        { "From Hyrule Field (Water)", 0x01D9 },
+        { "From Zoras Fountain", 0x0199 },
+        { "From Zoras Domain", 0x019D },
+        { "From Lost Woods", 0x01DD },
+    }},
+    { "25:Zoras Domain", Select_LoadGame, {
+        { "From Zora River", 0x0108 },
+        { "From Zoras Fountain", 0x01A1 },
+        { "From Lake Hylia", 0x0328 },
+        { "From Zora Shop", 0x03C4 },
+        { "Zora Shop", 0x0380 },
+    }},
+    { "26:Zoras Fountain", Select_LoadGame, {
+        { "From Zoras Domain", 0x0225 },
+        { "From Jabu Jabu", 0x0221 },
+        { "From Ice Cavern", 0x03D4 },
+        { "From Fairy Fountain", 0x0394 },
+        { "Great Fairy", 0x0371 },
+        { "Facing Fallen Tree", 0x03D8 },
+        { "Saphire Cutscene", 0x010E },
+    }},
+    { "27:Lake Hylia", Select_LoadGame, {
+        { "From Hyrule Field", 0x0102 },
+        { "From Gerudo Valley", 0x0219 },
+        { "From Water Temple", 0x021D },
+        { "From Fishing Pond", 0x0309 },
+        { "From Laboratory", 0x03CC },
+        { "From Zoras Domain", 0x0560 },
+        { "Sheik After Water Temple Cutscene", 0x04E6 },
+        { "Serenade Of Water Warp", 0x0604 },
+        { "Blue Warp from Morpha", 0x060C },
+    }},
+    { "28:Lake Hylia Buildings", Select_LoadGame, { 
+        { "Laboratory", 0x0043 }, 
+        { "Fishing Pond Minigame", 0x045F },
+    }},
+    { "29:Gerudo Valley", Select_LoadGame, {
+        { "From Hyrule Field", 0x0117 },
+        { "From Gerudo Fortress", 0x022D },
+        { "From Carpenter's Tent", 0x03D0 },
+        { "Carpenter's Tent/ Running Man Minigame", 0x03A0 },
+        { "Thrown out of Fortress", 0x01A5 },
+        { "Fortress loading zone", 0x0229 },
+    }},
+    { "30:Gerudo Fortress", Select_LoadGame, {
+        { "From Gerudo Valley", 0x0129 },
+        { "From Traning Grounds", 0x03A8 },
+        { "From Haunted Wasteland", 0x03AC },
+        { "From Thieves Hideout (1)", 0x0231 },
+        { "From Thieves Hideout (2)", 0x0235 },
+        { "From Thieves Hideout (3)", 0x0239 },
+        { "From Thieves Hideout (4)", 0x02AA },
+        { "From Thieves Hideout (5)", 0x02BA },
+        { "From Thieves Hideout (6)", 0x02BE },
+        { "From Thieves Hideout (7)", 0x02C2 },
+        { "From Thieves Hideout (8)", 0x02C6 },
+        { "From Thieves Hideout (9)", 0x02D2 },
+        { "From Thieves Hideout (10)", 0x02D6 },
+        { "From Thieves Hideout (11)", 0x02DA },
+        { "From Thieves Hideout (12)", 0x02DE },
+        { "From Thieves Hideout (13)", 0x03A4 },
+        { "Horseback Riding Minigame", 0x03B0 },
+        { "Captured First Time", 0x03B4 },
+        { "Captured Second Time", 0x05F8 },
+    }},
+    { "31:Thieves Hideout", Select_LoadGame, {
+        { "From Gerudo Fortress (1)", 0x0486 },
+        { "From Gerudo Fortress (2)", 0x048A },
+        { "From Gerudo Fortress (3)", 0x048E },
+        { "From Gerudo Fortress (4)", 0x0492 },
+        { "From Gerudo Fortress (5)", 0x0496 },
+        { "From Gerudo Fortress (6)", 0x049A },
+        { "From Gerudo Fortress (7)", 0x049E },
+        { "From Gerudo Fortress (8)", 0x04A2 },
+        { "From Gerudo Fortress (9)", 0x04A6 },
+        { "From Gerudo Fortress (10)", 0x04AA },
+        { "From Gerudo Fortress (11)", 0x04AE },
+        { "From Gerudo Fortress (12)", 0x04B2 },
+        { "From Gerudo Fortress (13)", 0x0570 },
+    }},
+    { "32:Haunted Wasteland", Select_LoadGame, {
+        { "From Gerudo Fortress", 0x0130 },
+        { "From Desert Colossus", 0x0365 },
+    }},
+    { "33:Desert Colossus", Select_LoadGame, {
+        { "From Haunted Wasteland", 0x0123 },
+        { "From Spirit Temple", 0x01E1 },
+        { "From Spirit Temple (Left Hand)", 0x01E5 },
+        { "From Spirit Temple (Right Hand)", 0x01E9 },
+        { "From Fairy Fountain", 0x057C },
+        { "Great Fairy", 0x0588 },
+        { "After Sheik Cutscene", 0x01ED },
+        { "Naboora Capture Cutscene", 0x01F5 },
+        { "Requiem of Spirit Warp", 0x01F1 },
+        { "Blue Warp from Twinrova", 0x0610 },
+    }},
+    { "34:Deku Tree", Select_LoadGame, {
+        { "Deku Tree - Entrance", 0x0001 },
+        { "Deku Tree - Before Gohma", 0x0252 },
+        { "Deku Tree - Gohma Fight", 0x040F },
+    }},
+    { "35:Dodongos Cavern", Select_LoadGame, {
+        { "Dodongos Cavern - Entrance", 0x0004 },
+        { "Dodongos Cavern - Before King Dodongo", 0x00C5 },
+        { "Dodongos Cavern - King Dodongo", 0x040B },
+    }},
+    { "36:Jabu Jabu", Select_LoadGame, {
+        { "Jabu Jabu - Entrance", 0x0028 },
+        { "Jabu Jabu - Skulltula Water Room", 0x0407 },
+        { "Jabu Jabu - Barinade Fight", 0x0301 },
+    }},
+    { "37:Child Link Misc", Select_LoadGame, {
+        { "Bottom of Well - Entrance", 0x0098 },
+        { "Spirit Temple - Entrance", 0x0082 },
+        { "Spirit Temple - From Left Hand", 0x03F0 },
+    }},
+    { "38:Forest Temple", Select_LoadGame, {
+        { "Forest Temple - Entrance", 0x0169 },
+        { "Forest Temple - Crushing Room", 0x0584 },
+        { "Forest Temple - Before Phantom Ganon", 0x024E },
+    }},
+    { "39:Fire Temple", Select_LoadGame, {
+        { "Fire Temple - Entrance", 0x0165 },
+        { "Fire Temple - Before Volvagia", 0x0175 },
+        { "Fire Temple - Volvagia", 0x0305 },
+    }},
+    { "40:Water Temple", Select_LoadGame, { 
+        { "Water Temple - Entrance", 0x0010 },
+        { "Water Temple - Barinade", 0x0417 },
+    }},
+    { "41:Shadow Temple", Select_LoadGame, {
+      { "Shadow Temple - Entrance", 0x0037 },
+      { "Shadow Temple - Outside Bongo Bongo", 0x02B2 },
+      { "Shadow Temple - Bongo Bongo", 0x0413 },
+    }},
+    { "42:Spirit Temple", Select_LoadGame, {
+      { "Spirit Temple - Entrance", 0x0082 },
+      { "Spirit Temple - From Left Hand", 0x03F0 },
+      { "Spirit Temple - From Right Hand", 0x03F4 },
+      { "Spirit Temple - Before Twinrova", 0x02F5 },
+      { "Spirit Temple - Naboora Fight", 0x008D },
+      { "Spirit Temple - Twinrova", 0x05EC },
+    }},
+    { "43:Ganons Castle", Select_LoadGame, {
+        { "Ganons Castle - Entrance", 0x0467 },
+        { "Ganons Castle - Forest Clear", 0x0538 },
+        { "Ganons Castle - Fire Clear", 0x0544 },
+        { "Ganons Castle - Water Clear", 0x053C },
+        { "Ganons Castle - Shadow Clear", 0x0540 },
+        { "Ganons Castle - Light Clear", 0x0548 },
+        { "Ganons Castle - Spirit Clear", 0x054C },
+        { "Ganons Castle - From Climbing Tower", 0x0534 },
+        { "Ganons Tower - From Castle Entrance", 0x041B },
+        { "Ganons Tower - Outside Boss (1)", 0x0427 },
+        { "Ganons Tower - Outside Boss (2)", 0x042B },
+    }},
+    { "44:Collapsing Castle", Select_LoadGame, {
+        { "Interior (1)", 0x0134 },
+        { "Interior (2)", 0x0179 },
+        { "Interior (3)", 0x01B5 },
+        { "Interior (4)", 0x0256 },
+        { "Interior (5)", 0x03DC },
+        { "Interior (6)", 0x03E0 },
+        { "Interior (7)", 0x03E4 },
+        { "Interior (8)", 0x04B6 },
+        { "Interior (9)", 0x04BA },
+        { "Interior - Exit", 0x056C },
+        { "Exterior (1)", 0x01C9 },
+        { "Exterior (2)", 0x032C },
+        { "Exterior (3)", 0x0330 },
+        { "Exterior (4)", 0x0334 },
+        { "Exterior (5)", 0x051C },
+        { "Exterior (6)", 0x0524 },
+        { "Ganon Battle", 0x0517 },
+        { "Ganon Death Cutscene", 0x043F },
+    }},
+    { "45:Adult Link Misc", Select_LoadGame, {
+        { "Ice Cavern", 0x0088 },
+        { "Gerudo Training Grounds", 0x0008 },
+    }},
+};
+
 void Select_UpdateMenu(SelectContext* this) {
     Input* input = &this->state.input[0];
     s32 pad;
@@ -372,6 +768,153 @@ void Select_UpdateMenu(SelectContext* this) {
     }
 }
 
+void Better_Select_UpdateMenu(SelectContext* this) {
+    Input* input = &this->state.input[0];
+    s32 pad;
+    BetterSceneSelectEntry* selectedScene;
+
+    if (this->verticalInputAccumulator == 0) {
+        if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
+            selectedScene = &this->betterScenes[this->currentScene];
+            if (selectedScene->loadFunc != NULL) {
+                selectedScene->loadFunc(this, selectedScene->entrancePairs[this->pageDownIndex].entranceIndex);
+            }
+        }
+
+        if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+            if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                gSaveContext.linkAge = 1;
+                Audio_PlaySoundGeneral(NA_SE_VO_LI_SWORD_N_KID, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else {
+                gSaveContext.linkAge = 0;
+                Audio_PlaySoundGeneral(NA_SE_VO_LI_SWORD_N, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
+
+        if (CHECK_BTN_ALL(input->press.button, BTN_Z) || CHECK_BTN_ALL(input->press.button, BTN_R)) {
+            if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
+                gSaveContext.nightFlag = 0;
+                gSaveContext.dayTime = 0x8000;
+                Audio_PlaySoundGeneral(NA_SE_EV_CHICKEN_CRY_M, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else {
+                gSaveContext.nightFlag = 1;
+                gSaveContext.dayTime = 0x0000;
+                Audio_PlaySoundGeneral(NA_SE_EV_DOG_CRY_EVENING, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
+
+        if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            this->pageDownIndex--;
+            this->pageDownIndex = MIN(14, MAX(0, this->pageDownIndex));
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name == NULL) {
+                // Need an easy way to get the last valid item in this array
+                this->pageDownIndex = 0;
+            }
+        }
+        if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            this->pageDownIndex++;
+            this->pageDownIndex = MIN(14, MAX(0, this->pageDownIndex));
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name == NULL) {
+                this->pageDownIndex = 0;
+            }
+        }
+
+        if (CHECK_BTN_ALL(input->press.button, BTN_DUP) || CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
+            if (this->lockUp == true) {
+                this->timerUp = 0;
+            }
+            if (this->timerUp == 0) {
+                this->timerUp = 20;
+                this->lockUp = true;
+                Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                this->verticalInput = R_UPDATE_RATE;
+            }
+        }
+
+        if ((CHECK_BTN_ALL(input->cur.button, BTN_DUP) || CHECK_BTN_ALL(input->cur.button, BTN_CUP)) && this->timerUp == 0) {
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            this->verticalInput = R_UPDATE_RATE * 3;
+        }
+
+        if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN) || CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
+            if (this->lockDown == true) {
+                this->timerDown = 0;
+            }
+            if (this->timerDown == 0) {
+                this->timerDown = 20;
+                this->lockDown = true;
+                Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                this->verticalInput = -R_UPDATE_RATE;
+            }
+        }
+
+        if ((CHECK_BTN_ALL(input->cur.button, BTN_DDOWN) || CHECK_BTN_ALL(input->cur.button, BTN_CDOWN)) && (this->timerDown == 0)) {
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            this->verticalInput = -R_UPDATE_RATE * 3;
+        }
+    }
+
+    this->verticalInputAccumulator += this->verticalInput;
+
+    if (this->verticalInputAccumulator < -7) {
+        this->verticalInput = 0;
+        this->verticalInputAccumulator = 0;
+
+        this->currentScene++;
+        this->currentScene = (this->currentScene + this->count) % this->count;
+        this->pageDownIndex = 0;
+
+        if (this->currentScene == ((this->topDisplayedScene + this->count + 19) % this->count)) {
+            this->topDisplayedScene++;
+            this->topDisplayedScene = (this->topDisplayedScene + this->count) % this->count;
+        }
+    }
+
+    if (this->verticalInputAccumulator > 7) {
+        this->verticalInput = 0;
+        this->verticalInputAccumulator = 0;
+
+        if (this->currentScene == this->topDisplayedScene) {
+            this->topDisplayedScene -= 2;
+            this->topDisplayedScene = (this->topDisplayedScene + this->count) % this->count;
+        }
+
+        this->currentScene--;
+        this->currentScene = (this->currentScene + this->count) % this->count;
+        this->pageDownIndex = 0;
+
+        if (this->currentScene == ((this->topDisplayedScene + this->count) % this->count)) {
+            this->topDisplayedScene--;
+            this->topDisplayedScene = (this->topDisplayedScene + this->count) % this->count;
+        }
+    }
+
+    this->currentScene = (this->currentScene + this->count) % this->count;
+    this->topDisplayedScene = (this->topDisplayedScene + this->count) % this->count;
+
+    dREG(80) = this->currentScene;
+    dREG(81) = this->topDisplayedScene;
+    dREG(82) = this->pageDownIndex;
+
+    if (this->timerUp != 0) {
+        this->timerUp--;
+    }
+
+    if (this->timerUp == 0) {
+        this->lockUp = false;
+    }
+
+    if (this->timerDown != 0) {
+        this->timerDown--;
+    }
+
+    if (this->timerDown == 0) {
+        this->lockDown = false;
+    }
+}
+
 void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     s32 scene;
     s32 i;
@@ -403,6 +946,39 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 155, 55, 150, 255);
     GfxPrint_SetPos(printer, 20, 26);
     GfxPrint_Printf(printer, "OPT=%d", this->opt);
+}
+
+void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
+    s32 scene;
+    s32 i;
+    char* name;
+
+    GfxPrint_SetColor(printer, 255, 255, 255, 255);
+    GfxPrint_SetPos(printer, 12, 2);
+    GfxPrint_Printf(printer, "Scene Selection");
+    GfxPrint_SetColor(printer, 255, 255, 255, 255);
+
+    for (i = 0; i < 20; i++) {
+        GfxPrint_SetPos(printer, 3, i + 4);
+
+        scene = (this->topDisplayedScene + i + this->count) % this->count;
+        if (scene == this->currentScene) {
+            GfxPrint_SetColor(printer, 255, 100, 100, 255);
+        } else {
+            GfxPrint_SetColor(printer, 100, 100, 100, 255);
+        }
+
+        name = this->betterScenes[scene].name;
+        if (name == NULL) {
+            name = "**Null**";
+        }
+
+        GfxPrint_Printf(printer, "%s", name);
+    };
+
+    GfxPrint_SetColor(printer, 205, 100, 200, 255);
+    GfxPrint_SetPos(printer, 3, 26);
+    GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name);
 }
 
 static const char* sLoadingMessages[] = {
@@ -445,11 +1021,23 @@ static const char* sAgeLabels[] = {
     GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young)"
     GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young)"
 };
+static const char* sBetterAgeLabels[] = {
+    "Adult",
+    "Child",
+};
 
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 4, 26);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
     GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+}
+
+void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
+    GfxPrint_SetPos(printer, 25, 25);
+    GfxPrint_SetColor(printer, 100, 100, 100, 255);
+    GfxPrint_Printf(printer, "(B)Age:");
+    GfxPrint_SetColor(printer, 55, 200, 50, 255);
+    GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
 }
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
@@ -509,6 +1097,22 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
     GfxPrint_Printf(printer, "Stage:" GFXP_KATAKANA "%s", label);
 }
 
+void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
+    char* label;
+
+    GfxPrint_SetPos(printer, 22, 24);
+    GfxPrint_SetColor(printer, 100, 100, 100, 255);
+
+    if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
+        label = "Night";
+    } else {
+        label = "Day";
+    }
+    GfxPrint_Printf(printer, "(Z/R)Time:");
+    GfxPrint_SetColor(printer, 200, 200, 55, 255);
+    GfxPrint_Printf(printer, "%s", label);
+}
+
 void Select_DrawMenu(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     GfxPrint* printer;
@@ -524,9 +1128,15 @@ void Select_DrawMenu(SelectContext* this) {
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
     GfxPrint_Open(printer, POLY_OPA_DISP);
-    Select_PrintMenu(this, printer);
-    Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
-    Select_PrintCutsceneSetting(this, printer, ((void)0, gSaveContext.cutsceneIndex));
+    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+        Better_Select_PrintMenu(this, printer);
+        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
+        Better_Select_PrintTimeSetting(this, printer);
+    } else {
+        Select_PrintMenu(this, printer);
+        Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
+        Select_PrintCutsceneSetting(this, printer, ((void)0, gSaveContext.cutsceneIndex));
+    }
     POLY_OPA_DISP = GfxPrint_Close(printer);
     GfxPrint_Destroy(printer);
 
@@ -577,7 +1187,11 @@ void Select_Draw(SelectContext* this) {
 void Select_Main(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
 
-    Select_UpdateMenu(this);
+    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+        Better_Select_UpdateMenu(this);
+    } else {
+        Select_UpdateMenu(this);
+    }
     Select_Draw(this);
 }
 
@@ -595,6 +1209,7 @@ void Select_Init(GameState* thisx) {
     this->state.main = Select_Main;
     this->state.destroy = Select_Destroy;
     this->scenes = sScenes;
+    this->betterScenes = sBetterScenes;
     this->topDisplayedScene = 0;
     this->currentScene = 0;
     this->pageDownStops[0] = 0;  // Hyrule Field
@@ -606,7 +1221,7 @@ void Select_Init(GameState* thisx) {
     this->pageDownStops[6] = 91; // Escaping Ganon's Tower 3
     this->pageDownIndex = 0;
     this->opt = 0;
-    this->count = ARRAY_COUNT(sScenes);
+    this->count = CVar_GetS32("gBetterDebugWarpScreen", 0) ? ARRAY_COUNT(sBetterScenes) : ARRAY_COUNT(sScenes);
     View_Init(&this->view, this->state.gfxCtx);
     this->view.flags = (0x08 | 0x02);
     this->verticalInputAccumulator = 0;
