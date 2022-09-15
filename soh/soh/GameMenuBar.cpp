@@ -545,8 +545,10 @@ namespace GameMenuBar {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                #if defined(__SWITCH__) || defined(__WIIU__)
+                #ifdef __SWITCH__
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+                #elif __WIIU__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
                 #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
                 #endif
@@ -1073,8 +1075,10 @@ namespace GameMenuBar {
                 }
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            #if defined(__SWITCH__) || defined(__WIIU__)
+            #ifdef __SWITCH__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+            #elif __WIIU__
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
             #else
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
             #endif
