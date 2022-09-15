@@ -77,4 +77,16 @@ typedef struct EnNiw {
     /* 0x0358 */ EnNiwFeather feathers[20];
 } EnNiw; // size = 0x07B8
 
+#ifdef __cplusplus
+#define this thisx
+extern "C"
+{
+#endif
+    void func_80AB70A0(EnNiw* this, GlobalContext* globalCtx);
+#ifdef __cplusplus
+#undef this
+};
+#undef this
+#endif
+
 #endif

@@ -795,8 +795,7 @@ static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std:
     Player* player = GET_PLAYER(gGlobalCtx);
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
-    // TODO: Start the storm with the function below
-    // cucco->actionFunc = func_80AB70A0;
+    cucco->actionFunc = func_80AB70A0;
     return CMD_SUCCESS;
 }
 
@@ -1042,6 +1041,8 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("electrocute", { ElectrocuteHandler, "Electrocutes Link." });
 
     CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
+
+    CMD_REGISTER("cucco", { CuccoStormHandler, "Cucco Storm" });
 
     CVar_Load();
 }
