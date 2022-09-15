@@ -1685,6 +1685,11 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(SDL2-net)
+    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
@@ -1695,6 +1700,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
 	${SDL2-INCLUDE}
+    ${SDL2-NET-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
@@ -1706,7 +1712,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
 				"ENABLE_DX11;"
-                #"ENABLE_CROWD_CONTROL"
+                "ENABLE_CROWD_CONTROL"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
@@ -1949,6 +1955,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
+            "SDL2::SDL2_net;"
 			"glfw;"
 			"winmm;"
 			"imm32;"

@@ -6,6 +6,7 @@
 
 #include "stdint.h"
 
+#ifdef __cplusplus
 #include <SDL2/SDL_net.h>
 #include <cstdint>
 #include <thread>
@@ -16,8 +17,8 @@
 #include <chrono>
 #include <future>
 
-namespace Ship {
-    namespace CrowdControl {
+class CrowdControl {
+    private:
         typedef struct CCPacket {
             uint32_t packetId;
             std::string effectType;
@@ -63,27 +64,27 @@ namespace Ship {
             long timeRemaining;
             ResponseType type = ResponseType::EffectRequest;
         };
+        
+        std::thread ccThreadReceive;
 
-        class CrowdControl {
-        private:
-            std::thread ccThreadReceive;
+        TCPsocket tcpsock;
+        IPaddress ip;
 
-            TCPsocket tcpsock;
-            IPaddress ip;
+        bool connected;
 
-            bool connected;
+        char received[512];
 
-            char received[512];
+        std::vector<CCPacket*> currentCommands;
+        std::vector<CCPacket*> receivedCommands;
 
-            std::vector<CCPacket*> currentCommands;
-            std::vector<CCPacket*> receivedCommands;
+        void RunCrowdControl(CCPacket* packet);
+        void ReceiveFromCrowdControl();
+        uint8_t ExecuteEffect(const char* effectId, uint32_t value);
+        void RemoveEffect(const char* effectId);
 
-            void RunCrowdControl(CCPacket* packet);
-            void ReceiveFromCrowdControl();
-
-        public:
-            void InitCrowdControl();
-        };
-    }
-} // namespace Ship
+    public:
+        static CrowdControl* Instance;
+        void InitCrowdControl();
+};
+#endif
 #endif

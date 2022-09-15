@@ -729,7 +729,8 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
 
 const static std::map<std::string, uint16_t> boots {
     { "kokiri", PLAYER_BOOTS_KOKIRI },
-    { "iron", PLAYER_BOOTS_IRON }, { "hover", PLAYER_BOOTS_HOVER },
+    { "iron", PLAYER_BOOTS_IRON },
+    { "hover", PLAYER_BOOTS_HOVER },
 };
 
 static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -1049,7 +1050,7 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
 
-    CMD_REGISTER("cucco", { CuccoStormHandler, "Cucco Storm" });
+    CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
 
     CVar_Load();
 }
