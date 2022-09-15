@@ -90,22 +90,26 @@ namespace Ship {
             // we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(shouldBlockControllerInputs && device->GetGuid() != "Keyboard")
+                    if(shouldBlockControllerInputs && device->GetGuid() != "Keyboard") {
                         continue;
+                    }
 
-                    if (shouldBlockKeyboardInputs && device->GetGuid() == "Keyboard")
+                    if (shouldBlockKeyboardInputs && device->GetGuid() == "Keyboard") {
                         continue;
+                    }
 
 					device->Read(&pad[i], i);
 				}
 				continue;
 			}
 
-            if (shouldBlockControllerInputs && backend->GetGuid() != "Keyboard")
+            if (shouldBlockControllerInputs && backend->GetGuid() != "Keyboard") {
                 continue;
+            }
 
-            if (shouldBlockKeyboardInputs && backend->GetGuid() == "Keyboard")
+            if (shouldBlockKeyboardInputs && backend->GetGuid() == "Keyboard") {
                 continue;
+            }
 
 			backend->Read(&pad[i], i);
 		}
