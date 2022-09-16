@@ -596,7 +596,7 @@ s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[9] & gSaveContext.inventory.equipment) {
@@ -612,7 +612,7 @@ s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[10] & gSaveContext.inventory.equipment) {
@@ -924,6 +924,11 @@ void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
         Randomizer_Item_Give(globalCtx, getItemEntry);
     }
 
+    // RANDOTOD: Move this into Item_Give() or some other more central location
+    if (getItemEntry.getItemId == GI_SWORD_BGS) {
+        gSaveContext.bgsFlag = true;
+    }
+
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
@@ -1199,7 +1204,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
             this->basePrice = shopItemIdentity.itemPrice;
             this->giDrawId = getItemEntry.gid;
 
-            // Dungeon reward stones are spawned with incorrect rotation
+            // Correct the rotation for spiritual stones
             if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
                 this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
             }

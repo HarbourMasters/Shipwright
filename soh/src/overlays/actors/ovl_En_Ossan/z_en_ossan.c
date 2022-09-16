@@ -1347,6 +1347,7 @@ void EnOssan_GiveItemWithFanfare(GlobalContext* globalCtx, EnOssan* this) {
         func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are used for happy mask shop as well, so if we don't find a valid RC check, fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
@@ -1692,6 +1693,7 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, GlobalContext* globalCtx, 
         func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are used for happy mask shop as well, so if we don't find a valid RC check, fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             GetItemEntry getItemEntry =
                 Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);

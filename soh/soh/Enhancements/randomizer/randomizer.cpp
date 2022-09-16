@@ -2228,7 +2228,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
 }
 
 ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
-    struct ShopItemIdentity shopItemIdentity;
+    ShopItemIdentity shopItemIdentity;
 
     shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     shopItemIdentity.ogItemId = GI_NONE;
@@ -4143,7 +4143,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "1-4 Items - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
                     "\n"
-                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number of non-vanilla shop items.\n"
+                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
 
