@@ -42,6 +42,7 @@ uint32_t oneHitKO;
 uint32_t pacifistMode;
 uint32_t defenseModifier;
 uint32_t noZ;
+uint32_t reverseControls;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
@@ -713,7 +714,13 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        reverseControls = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Reverse controls value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {

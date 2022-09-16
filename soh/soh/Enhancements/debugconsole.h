@@ -16,6 +16,7 @@ extern uint32_t oneHitKO;
 extern uint32_t pacifistMode;
 extern uint32_t defenseModifier;
 extern uint32_t noZ;
+extern uint32_t reverseControls;
 #ifdef __cplusplus
 }
 #endif
