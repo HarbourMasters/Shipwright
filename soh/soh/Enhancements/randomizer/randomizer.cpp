@@ -16,6 +16,7 @@
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
+#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
@@ -358,36 +359,36 @@ std::vector<RandomizerCheck> shopItemRandomizerChecks = {
 };
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
-std::unordered_map<RandomizerGet, int32_t> randomizerGetToEnGirlShopItem = {
-    { RG_BUY_DEKU_NUT_5,    0x00 },
-    { RG_BUY_ARROWS_30,     0x01 },
-    { RG_BUY_ARROWS_50,     0x02 },
-    { RG_BUY_BOMBS_525,     0x03 },
-    { RG_BUY_DEKU_NUT_10,   0x04 },
-    { RG_BUY_DEKU_STICK_1,  0x05 },
-    { RG_BUY_BOMBS_10,      0x06 },
-    { RG_BUY_FISH,          0x07 },
-    { RG_BUY_RED_POTION_30, 0x08 },
-    { RG_BUY_GREEN_POTION,  0x09 },
-    { RG_BUY_BLUE_POTION,   0x0A },
-    { RG_BUY_HYLIAN_SHIELD, 0x0C },
-    { RG_BUY_DEKU_SHIELD,   0x0D },
-    { RG_BUY_GORON_TUNIC,   0x0E },
-    { RG_BUY_ZORA_TUNIC,    0x0F },
-    { RG_BUY_HEART,         0x10 },
-    { RG_BUY_BOMBCHU_10,    0x15 },
-    { RG_BUY_BOMBCHU_20,    0x16 },
-    { RG_BUY_DEKU_SEEDS_30, 0x1D },
-    { RG_BUY_BLUE_FIRE,     0x27 },
-    { RG_BUY_BOTTLE_BUG,    0x28 },
-    { RG_BUY_POE,           0x2A },
-    { RG_BUY_FAIRYS_SPIRIT, 0x2B },
-    { RG_BUY_ARROWS_10,     0x2C },
-    { RG_BUY_BOMBS_20,      0x2D },
-    { RG_BUY_BOMBS_30,      0x2E },
-    { RG_BUY_BOMBS_535,     0x2F },
-    { RG_BUY_RED_POTION_40, 0x30 },
-    { RG_BUY_RED_POTION_50, 0x31 },
+std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
+    { RG_BUY_DEKU_NUT_5,    SI_DEKU_NUTS_5 },
+    { RG_BUY_ARROWS_30,     SI_ARROWS_30 },
+    { RG_BUY_ARROWS_50,     SI_ARROWS_50 },
+    { RG_BUY_BOMBS_525,     SI_BOMBS_5_R25 },
+    { RG_BUY_DEKU_NUT_10,   SI_DEKU_NUTS_10 },
+    { RG_BUY_DEKU_STICK_1,  SI_DEKU_STICK },
+    { RG_BUY_BOMBS_10,      SI_BOMBS_10 },
+    { RG_BUY_FISH,          SI_FISH },
+    { RG_BUY_RED_POTION_30, SI_RED_POTION_R30 },
+    { RG_BUY_GREEN_POTION,  SI_GREEN_POTION },
+    { RG_BUY_BLUE_POTION,   SI_BLUE_POTION },
+    { RG_BUY_HYLIAN_SHIELD, SI_HYLIAN_SHIELD },
+    { RG_BUY_DEKU_SHIELD,   SI_DEKU_SHIELD },
+    { RG_BUY_GORON_TUNIC,   SI_GORON_TUNIC },
+    { RG_BUY_ZORA_TUNIC,    SI_ZORA_TUNIC },
+    { RG_BUY_HEART,         SI_HEART },
+    { RG_BUY_BOMBCHU_10,    SI_BOMBCHU_10_1 },
+    { RG_BUY_BOMBCHU_20,    SI_BOMBCHU_20_1 },
+    { RG_BUY_DEKU_SEEDS_30, SI_DEKU_SEEDS_30 },
+    { RG_BUY_BLUE_FIRE,     SI_BLUE_FIRE },
+    { RG_BUY_BOTTLE_BUG,    SI_BUGS },
+    { RG_BUY_POE,           SI_POE },
+    { RG_BUY_FAIRYS_SPIRIT, SI_FAIRY },
+    { RG_BUY_ARROWS_10,     SI_ARROWS_10 },
+    { RG_BUY_BOMBS_20,      SI_BOMBS_20 },
+    { RG_BUY_BOMBS_30,      SI_BOMBS_30 },
+    { RG_BUY_BOMBS_535,     SI_BOMBS_5_R35 },
+    { RG_BUY_RED_POTION_40, SI_RED_POTION_R40 },
+    { RG_BUY_RED_POTION_50, SI_RED_POTION_R50 },
 };
 
 void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
