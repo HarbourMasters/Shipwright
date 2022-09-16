@@ -41,6 +41,7 @@ uint32_t invisibleLink;
 uint32_t oneHitKO;
 uint32_t pacifistMode;
 uint32_t defenseModifier;
+uint32_t noZ;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
@@ -641,7 +642,13 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
         return CMD_FAILED;
     }
 
-    // TODO: Implement
+    try {
+        noZ = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] NoZ value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {

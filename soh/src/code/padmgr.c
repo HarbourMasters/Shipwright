@@ -229,8 +229,13 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
             case 0:
                 input->cur = *padnow1;
 
-                if (pacifistMode)
+                if (noZ) {
+                    input->cur.button &= ~(BTN_Z);
+                }
+
+                if (pacifistMode) {
                     input->cur.button &= ~(BTN_CLEFT | BTN_CRIGHT | BTN_CUP | BTN_CDOWN | BTN_B);
+                }
 
                 if (!padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = true;

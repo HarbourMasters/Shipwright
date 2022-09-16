@@ -15,6 +15,7 @@ extern uint32_t invisibleLink;
 extern uint32_t oneHitKO;
 extern uint32_t pacifistMode;
 extern uint32_t defenseModifier;
+extern uint32_t noZ;
 #ifdef __cplusplus
 }
 #endif
