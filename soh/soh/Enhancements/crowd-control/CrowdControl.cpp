@@ -272,14 +272,10 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("cucco_storm");
             return 1;
         } else if (strcmp(effectId, "damage") == 0) {
-            char buff[100];
-            snprintf(buff, sizeof(buff), "damage %i", value);
-            CMD_EXECUTE(std::string(buff));
+            CMD_EXECUTE(std::format("damage {}", value));
             return 1;
         } else if (strcmp(effectId, "heal") == 0) {
-            char buff[100];
-            snprintf(buff, sizeof(buff), "heal %i", value);
-            CMD_EXECUTE(std::string(buff));
+            CMD_EXECUTE(std::format("heal {}", value));
             return 1;
         } else if (strcmp(effectId, "freeze") == 0) {
             if (PlayerGrounded(player)) {
@@ -288,9 +284,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             }
             return 0;
         } else if (strcmp(effectId, "knockback") == 0) {
-            char buff[100];
-            snprintf(buff, sizeof(buff), "knockback %i", value);
-            CMD_EXECUTE(std::string(buff));
+            CMD_EXECUTE(std::format("knockback {}", value));
             return 1;
         } else if (strcmp(effectId, "burn") == 0) {
             if (PlayerGrounded(player)) {
@@ -311,10 +305,9 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("boots hover");
             return 1;
         } else if (strcmp(effectId, "wallmaster") == 0) {
-            // TODO: 
-            // Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_WALLMAS, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
+            CMD_EXECUTE(std::format("spawn 11 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
             return 1;
-        } else if (strcmp(effectId, " ") == 0) {
+        } else if (strcmp(effectId, "no_ui") == 0) {
             CMD_EXECUTE("no_ui 1");
             return 1;
         } else if (strcmp(effectId, "invisible") == 0) {
