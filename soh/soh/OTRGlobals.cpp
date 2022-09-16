@@ -1603,17 +1603,9 @@ extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotInd
     return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, itemPrice);
-}
-
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
-}
-
-extern "C" CustomMessageEntry Randomizer_GetShopMessage(s16 shopItemId) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, shopItemId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
@@ -1771,11 +1763,10 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_GetGanonHintText();
             }
-        } else if (textId >= 0x9000 && textId <= 0x905F) {
-            messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
-        } else if (textId >= 0x9100 && textId <= 0x9180) {
-            // TODO: Magic number 100, we don't to overwrite deku scrub messages
-            messageEntry = Randomizer_GetShopMessage((textId & ((1 << 8) - 1)) + 100);
+        } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + 0xFF) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+        } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId <= TEXT_SHOP_ITEM_RANDOM + 0xFF) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
         } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
