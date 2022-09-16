@@ -259,8 +259,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("minish_link 1");
             return 1;
         } else if (strcmp(effectId, "defense_modifier") == 0) {
-            // TODO:
-            // defenseModifier = value;
+            CMD_EXECUTE(std::format("defense_modifier {}", value));
             return 1;
         } else if (strcmp(effectId, "kill") == 0) {
             if (PlayerGrounded(player)) {
@@ -333,8 +332,7 @@ void CrowdControl::RemoveEffect(const char* effectId) {
         } else if (strcmp(effectId, "minish_link") == 0) {
             CMD_EXECUTE("minish_link 0");
         } else if (strcmp(effectId, "defense_modifier") == 0) {
-            // TODO: 
-            // defenseModifier = 0;
+             CMD_EXECUTE("defense_modifier 0");
             return;
         } else if (strcmp(effectId, "iron_boots") == 0 || strcmp(effectId, "hover_boots") == 0) {
             CMD_EXECUTE("boots kokiri");
