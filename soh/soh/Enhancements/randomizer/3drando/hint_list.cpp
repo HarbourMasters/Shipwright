@@ -2072,7 +2072,7 @@ void HintTable_Init() {
 
     hintTable[JUNK79] = HintText::Junk({
         //obscure text
-        Text{"They say this peace is what all true warriors strive for.", /*french*/"Selon moi, cette paix est ce pour quoi luttent tous les vrais guerrier.", /*spanish*/"blarg"},
+        Text{"They say this peace is what all true warriors strive for.", /*french*/"Selon moi, cette paix est ce pour quoi luttent tous les vrais guerriers.", /*spanish*/"blarg"},
     });
 
     hintTable[JUNK80] = HintText::Junk({
