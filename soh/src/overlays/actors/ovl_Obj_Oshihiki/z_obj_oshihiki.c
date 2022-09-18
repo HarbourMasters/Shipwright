@@ -558,9 +558,9 @@ void ObjOshihiki_Push(ObjOshihiki* this, GlobalContext* globalCtx) {
     f32 pushDistSigned;
     s32 stopFlag;
 
-    this->pushSpeed = this->pushSpeed + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
+    this->pushSpeed = this->pushSpeed + ((CVar_GetS32("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
     this->stateFlags |= PUSHBLOCK_PUSH;
-    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 3.0f);
+    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 2.0f);
     stopFlag = Math_StepToF(&this->pushDist, 20.0f, this->pushSpeed);
     pushDistSigned = ((this->direction >= 0.0f) ? 1.0f : -1.0f) * this->pushDist;
     thisx->world.pos.x = thisx->home.pos.x + (pushDistSigned * this->yawSin);
