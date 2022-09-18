@@ -484,7 +484,7 @@ void SaveManager::SaveFile(int fileNum) {
     FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
     fwrite(json_string, sizeof(char), strlen(json_string), w);
     fclose(w);
-#elif
+#else
 
     std::ofstream output(GetFileName(fileNum));
 
