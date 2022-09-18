@@ -400,7 +400,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
     // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so manually adding a "free" variation here
-    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, 0,
+    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
             "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
             "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
