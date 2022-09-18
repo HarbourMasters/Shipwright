@@ -1740,6 +1740,16 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, GlobalContext* globalCt
     EnGirlA* selectedItem;
     u8 talkState = Message_GetState(&globalCtx->msgCtx);
 
+    // BGS displays two text boxes when given, which breaks this actor as it expected the second
+    // text box to be a yes/no prompt, so ensure the yes/no prompt is displaying now.
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+    if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+        if (getItemEntry.getItemId == GI_SWORD_BGS && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+            Message_ContinueTextbox(globalCtx, 0x6B);
+        }
+    }
+
     if (talkState == TEXT_STATE_CHOICE) {
         if (Message_ShouldAdvance(globalCtx)) {
             EnOssan_ResetItemPosition(this);
