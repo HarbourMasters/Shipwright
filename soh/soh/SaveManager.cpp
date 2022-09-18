@@ -1149,7 +1149,7 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     }
 }
 
-#ifdef __WIIU__
+#if defined(__WIIU__) || defined(__SWITCH__)
 // std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
 int copy_file(const char* src, const char* dst)
 {
@@ -1179,8 +1179,8 @@ int copy_file(const char* src, const char* dst)
 void SaveManager::CopyZeldaFile(int from, int to) {
     assert(std::filesystem::exists(GetFileName(from)));
     DeleteZeldaFile(to);
-#ifdef __WIIU__
-    assert(copy_file(GetFileName(from).c_str(), GetFileName(to).c_str()) == 0);
+#if defined(__WIIU__) || defined(__SWITCH__)
+    copy_file(GetFileName(from).c_str(), GetFileName(to).c_str());
 #else
     std::filesystem::copy_file(GetFileName(from), GetFileName(to));
 #endif

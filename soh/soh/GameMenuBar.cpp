@@ -237,6 +237,10 @@ namespace GameMenuBar {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Blue Fire Arrows
+        CVar_SetS32("gBlueFireArrows", 0);
+        // Sunlight Arrows
+        CVar_SetS32("gSunlightArrows", 0);
 
         // Rotate link (0 to 2)
         CVar_SetS32("gPauseLiveLinkRotation", 0);
@@ -546,7 +550,13 @@ namespace GameMenuBar {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                #ifdef __SWITCH__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+                #elif __WIIU__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+                #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                #endif
                     if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(cvar, val);
@@ -659,8 +669,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Allows the D-pad to be used as extra C buttons");
                 UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
                 UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
-                UIWidgets::PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
-                UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                 UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
                 UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
                 ImGui::EndMenu();
@@ -684,8 +692,6 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Prevent forced Navi conversations");
                     UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
                     UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
-                    UIWidgets::PaddedEnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood", true, false);
-                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
                     UIWidgets::Tooltip("Kick open every chest");
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
@@ -696,15 +702,26 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                     UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
                     UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
+                    UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
+                    UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
+                            "This doesn't work if the save was made in a grotto.");
+                    ImGui::EndMenu();
+                }
+
+                UIWidgets::Spacer(0);
+
+                if (ImGui::BeginMenu("Items"))
+                {
                     UIWidgets::PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);
                     UIWidgets::Tooltip("Allow Link to put items away without having to wait around");
                     UIWidgets::PaddedEnhancementCheckbox("Instant Boomerang Recall", "gFastBoomerang", true, false);
                     UIWidgets::Tooltip("Instantly return the boomerang to Link by pressing its item button while it's in the air");
+                    UIWidgets::PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
+                    UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
+                    UIWidgets::PaddedEnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood", true, false);
+                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
-                    UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
-                    UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
-                            "This doesn't work if the save was made in a grotto.");
                     ImGui::EndMenu();
                 }
 
@@ -878,6 +895,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
+                UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
+                UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
                 ImGui::EndMenu();
             }
 
@@ -1059,7 +1080,9 @@ namespace GameMenuBar {
                 }
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            #ifdef __WIIU__
+            #ifdef __SWITCH__
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+            #elif __WIIU__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
             #else
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
