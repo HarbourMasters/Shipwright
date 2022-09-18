@@ -79,14 +79,14 @@ namespace Ship {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(shouldBlockGameInput && device->GetGuid() != "Keyboard") {
+					if((shouldBlockGameInput && device->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
 						continue;
 					}
 					device->Read(&pad[i], i);
 				}
 				continue;
 			}
-			if(shouldBlockGameInput && backend->GetGuid() != "Keyboard") {
+			if((shouldBlockGameInput && backend->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
 				continue;
 			}
 			backend->Read(&pad[i], i);

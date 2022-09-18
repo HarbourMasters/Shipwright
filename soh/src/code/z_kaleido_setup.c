@@ -22,7 +22,7 @@ void KaleidoSetup_Update(GlobalContext* globalCtx) {
             if (BREG(0)) {
                 pauseCtx->debugState = 3;
             }
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_START) || CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
             gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))
@@ -52,6 +52,13 @@ void KaleidoSetup_Update(GlobalContext* globalCtx) {
 
             osSyncPrintf("Ｍｏｄｅ=%d  eye.x=%f,  eye.z=%f  kscp_pos=%d\n", pauseCtx->mode, pauseCtx->eye.x,
                          pauseCtx->eye.z, pauseCtx->pageIndex);
+        }
+
+        if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
+            CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+        }
+        if (CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
+            CVar_SetS32("gCheatEasyPauseBufferBlockInputFrame", CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0) - 1);
         }
 
         if (pauseCtx->state == 1) {
