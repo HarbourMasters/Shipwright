@@ -10969,8 +10969,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    // Crowd Control
-
     if (giantLink == 1) {
         this->actor.scale.x = 0.025f;
         this->actor.scale.y = 0.025f;
