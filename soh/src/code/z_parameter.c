@@ -2400,6 +2400,22 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
         return RG_NONE;
     }
 
+    if (item == RG_SMALL_RUPOOR) {
+        Rupees_ChangeBy(-30);
+        return RG_NONE;
+    }
+
+    if (item == RG_HUGE_RUPOOR) {
+        Rupees_ChangeBy(-100);
+        return RG_NONE;
+    }
+
+    if (item == RG_CURSED_HEART_CONTAINER) {
+        gSaveContext.healthCapacity -= 0x10;
+        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.health - 0x10);
+        return RG_NONE;
+    }
+
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;

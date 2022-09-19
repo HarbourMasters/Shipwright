@@ -962,6 +962,9 @@ typedef enum {
     RG_TRIFORCE,
     RG_HINT,
     RG_TYCOON_WALLET,
+    RG_SMALL_RUPOOR,
+    RG_HUGE_RUPOOR,
+    RG_CURSED_HEART_CONTAINER,
     RG_MAX
 } RandomizerGet;
 

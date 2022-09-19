@@ -7,6 +7,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_rupy/object_gi_rupy.h"
 
 extern "C" void Randomizer_DrawSmallKey(GlobalContext* globalCtx, GetItemEntry* getItemEntry) {
     s32 pad;
@@ -107,3 +108,47 @@ extern "C" void Randomizer_DrawDoubleDefense(GlobalContext* globalCtx, GetItemEn
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
+
+extern "C" void Randomizer_DrawRupoor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    s32 pad;
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    func_80093D84(globalCtx->state.gfxCtx);
+   
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 0, 0, 0, 255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRupeeInnerDL);
+
+    gsSPGrayscale(POLY_XLU_DISP++, false);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRupeeOuterDL);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawCursedHeartContainer(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    s32 pad;
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    func_80093D84(globalCtx->state.gfxCtx);
+   
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 0, 0, 0, 255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartBorderDL);
+
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 0, 0, 0, 255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    gsSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
+}
+

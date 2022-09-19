@@ -5100,7 +5100,10 @@ void Randomizer::CreateCustomMessages() {
                   "Du hast eine %rPackung&Magic Beans%w! Finde&einen geeigneten Platz fur einen&Garten und pflanze sie. Dann^warte auf etwas Lustiges passiert!",
                   "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !"),
         GIMESSAGE_UNTRANSLATED(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
-            "You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!")
+            "You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_SMALL_RUPOOR, ITEM_WALLET_GIANT, "Darn, it's a small rupoor!&I hate these things!"),
+        GIMESSAGE_UNTRANSLATED(RG_HUGE_RUPOOR, ITEM_WALLET_GIANT, "Oh no, it's a huge rupoor!&There goes all my money!"),
+        GIMESSAGE_UNTRANSLATED(RG_CURSED_HEART_CONTAINER, ITEM_HEART_CONTAINER, "A heart container! Wait it's&cursed? Wait.. wait.. Ow!"),
     };
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
@@ -5201,6 +5204,9 @@ void InitRandoItemTable() {
         GET_ITEM(RG_ICE_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
         GET_ITEM(RG_MAGIC_BEAN_PACK, OBJECT_GI_BEAN, GID_BEAN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET, OBJECT_GI_PURSE, GID_WALLET_GIANT, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_TYCOON_WALLET),
+        GET_ITEM(RG_SMALL_RUPOOR, OBJECT_GI_RUPY, GID_RUPEE_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_SMALL_RUPOOR),
+        GET_ITEM(RG_HUGE_RUPOOR, OBJECT_GI_RUPY, GID_RUPEE_GOLD, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_HUGE_RUPOOR),
+        GET_ITEM(RG_CURSED_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_CURSED_HEART_CONTAINER),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
@@ -5214,6 +5220,10 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        } else if (randoGetItemTable[i].itemId >= RG_SMALL_RUPOOR && randoGetItemTable[i].itemId <= RG_HUGE_RUPOOR) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawRupoor;
+        } else if (randoGetItemTable[i].itemId == RG_CURSED_HEART_CONTAINER) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawCursedHeartContainer;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
