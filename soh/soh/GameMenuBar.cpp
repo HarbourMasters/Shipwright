@@ -397,14 +397,12 @@ namespace GameMenuBar {
         // Allow the cursor to be on any slot
         CVar_SetS32("gPauseAnyCursor", 1);
 
-        // Instant Fishing
-        CVar_SetS32("gInstantFishing", 1);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 1);
         // Child Minimum Weight (6 to 10)
-        CVar_SetS32("gChildMinimumWeightFish", 6);
+        CVar_SetS32("gChildMinimumWeightFish", 3);
         // Adult Minimum Weight (8 to 13)
-        CVar_SetS32("gAdultMinimumWeightFish", 8);
+        CVar_SetS32("gAdultMinimumWeightFish", 6);
 
         // Visual Stone of Agony
         CVar_SetS32("gVisualAgony", 1);
@@ -850,9 +848,9 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
