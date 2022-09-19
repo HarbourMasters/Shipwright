@@ -2677,7 +2677,7 @@ s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange) {
         if (defenseModifier > 0) {
             healthChange /= defenseModifier;
         } else {
-            healthChange *= defenseModifier;
+            healthChange *= abs(defenseModifier);
         }
     }
 

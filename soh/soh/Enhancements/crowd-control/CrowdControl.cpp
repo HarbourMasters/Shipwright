@@ -201,7 +201,7 @@ void CrowdControl::ReceiveFromCrowdControl()
         else if (strcmp(packet->effectType.c_str(), "rupees") == 0) {
             packet->effectCategory = "rupees";
         }
-        else if (strcmp(packet->effectType.c_str(), "speed") == 0) {
+        else if (strcmp(packet->effectType.c_str(), "speed_modifier") == 0) {
             packet->effectCategory = "speed";
             packet->timeRemaining = 30000;
         }
@@ -210,7 +210,7 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->timeRemaining = 30000;
         }
         else if (strcmp(packet->effectType.c_str(), "wallmaster") == 0 ||
-            strcmp(packet->effectType.c_str(), "cucco") == 0) {
+            strcmp(packet->effectType.c_str(), "cucco_storm") == 0) {
             packet->effectCategory = "spawn";
         }
         else {
@@ -283,6 +283,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                     || strcmp(effectId, "freeze") == 0
                     || strcmp(effectId, "burn") == 0
                     || strcmp(effectId, "electrocute") == 0
+                    || strcmp(effectId, "cucco_storm") == 0
         ) {
             if (PlayerGrounded(player)) {
                 CMD_EXECUTE(std::format("{}", effectId));
@@ -293,6 +294,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                     || strcmp(effectId, "damage") == 0
                     || strcmp(effectId, "heal") == 0
                     || strcmp(effectId, "knockback") == 0
+                    || strcmp(effectId, "speed_modifier") == 0
         ) {
             CMD_EXECUTE(std::format("{} {}", effectId, value));
             return 1;
@@ -310,9 +312,6 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             return 1;
         } else if (strcmp(effectId, "reverse") == 0) {
             CMD_EXECUTE("reverse_controls 1"); 
-        } else if (strcmp(effectId, "cucco") == 0) {
-            CMD_EXECUTE(std::format("cucco_storm", effectId));
-            return 1;
         } else if (strcmp(effectId, "iron_boots") == 0) {
             CMD_EXECUTE("boots iron");
             return 1;
@@ -322,8 +321,6 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
         } else if (strcmp(effectId, "wallmaster") == 0) {
             CMD_EXECUTE(std::format("spawn 11 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
             return 1;
-        } else if (strcmp(effectId, "speed") == 0) {
-            // TODO: 
         }
     }
 
@@ -348,6 +345,7 @@ void CrowdControl::RemoveEffect(const char* effectId) {
                 || strcmp(effectId, "ohko") == 0
                 || strcmp(effectId, "pacifist") == 0
                 || strcmp(effectId, "rainstorm") == 0
+                || strcmp(effectId, "speed_modifier") == 0
         ) {
             CMD_EXECUTE(std::format("{} 0", effectId));
             return;
@@ -359,8 +357,6 @@ void CrowdControl::RemoveEffect(const char* effectId) {
             return;
         } else if (strcmp(effectId, "reverse") == 0) {
             CMD_EXECUTE("reverse_controls 0"); 
-        } else if (strcmp(effectId, "speed") == 0) {
-            // TODO: 
         }
     }
 }

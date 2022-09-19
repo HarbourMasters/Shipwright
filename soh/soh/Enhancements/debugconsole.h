@@ -14,9 +14,10 @@ extern uint32_t resetLinkScale;
 extern uint32_t invisibleLink;
 extern uint32_t oneHitKO;
 extern uint32_t pacifistMode;
-extern uint32_t defenseModifier;
+extern int32_t defenseModifier;
 extern uint32_t noZ;
 extern uint32_t reverseControls;
+extern int32_t speedModifier;
 #ifdef __cplusplus
 }
 #endif
