@@ -219,11 +219,12 @@ void Randomizer_GiveSkullReward(EnSi* this, GlobalContext* globalCtx) {
 
     if (getItem.modIndex == MOD_NONE) {
         Item_Give(globalCtx, giveItemId);
+
+        // RANDOTOD: Move this into Item_Give() or some other more central location
+        if (getItem.getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = true;
+        }
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
         Randomizer_Item_Give(globalCtx, getItem);
-    }
-    // RANDOTOD: Move this into Item_Give() or some other more central location
-    if (getItem.getItemId == GI_SWORD_BGS) {
-        gSaveContext.bgsFlag = true;
     }
 }
