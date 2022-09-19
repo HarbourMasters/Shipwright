@@ -9,6 +9,9 @@
 /**
  * Flag to indicate which type of Actor has given the player an item. ITEM_FROM_NPC by default,
  * should be set by the actor giving the item before they send the GetItemEntry signal to the player.
+ * ITEM_FROM_NPC is the default for the GET_ITEM macro so that the random NPC actors giving items
+ * don't need to manually update the GetItemEntry before sending it to the player. Instead just the
+ * specific actors (item00, en_box, en_si, etc.) can set their corresponding ITEM_FROM value.
  */
 typedef enum GetItemFrom {
     ITEM_FROM_NPC,
