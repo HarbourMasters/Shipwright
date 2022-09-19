@@ -79,8 +79,8 @@
         <Collision Name="gFireTemplePillarInsertedInGroundCol" Offset="0xD188"/>
 
         <DList Name="gFireTempleBombableDoorFrameDL" Offset="0xF890"/>
-        <DList Name="gFireTempleDoorWithHandleBackDL" Offset="0xF938"/>
-        <DList Name="gFireTempleDoorWithHandleFrontDL" Offset="0xF998"/>
+        <DList Name="gFireTempleDoorWithHandleRightDL" Offset="0xF938"/>
+        <DList Name="gFireTempleDoorWithHandleLeftDL" Offset="0xF998"/>
         <DList Name="gFireTempleDoorFrontDL" Offset="0x10CB0"/>
         <DList Name="gFireTempleDoorBackDL" Offset="0x11F20"/>
 

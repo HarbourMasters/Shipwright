@@ -240,7 +240,7 @@
         <Texture Name="gLinkAdultNoseTex" OutName="nose" Format="ci8" Width="16" Height="16" Offset="0x5100" TlutOffset="0x5C00"/>
         
         <!-- Tluts -->
-        <Texture Name="gLinkAdultHeadTlut" OutName="head_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5C00"/>
+        <Texture Name="gLinkAdultHeadTLUT" OutName="head_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5C00"/>
         <Texture Name="gLinkAdultTlut_005E00" OutName="tlut_5E00" Format="rgba16" Width="16" Height="16" Offset="0x5E00"/>
 
         <!-- Unused -->
