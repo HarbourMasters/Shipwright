@@ -16,6 +16,7 @@
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
+#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include <sstream>
@@ -81,8 +82,8 @@ Randomizer::Randomizer() {
         SpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
         EnumToSpoilerfileGetName[item.GetRandomizerGet()] = {
             item.GetName().english,
-            item.GetName().french,
             item.GetName().english,
+            item.GetName().french,
         };
     }
 }
@@ -170,6 +171,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
+    { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
     { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
@@ -286,6 +288,173 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
+    }
+}
+
+std::vector<RandomizerCheck> shopItemRandomizerChecks = {
+    RC_KF_SHOP_ITEM_1,
+    RC_KF_SHOP_ITEM_2,
+    RC_KF_SHOP_ITEM_3,
+    RC_KF_SHOP_ITEM_4,
+    RC_KF_SHOP_ITEM_5,
+    RC_KF_SHOP_ITEM_6,
+    RC_KF_SHOP_ITEM_7,
+    RC_KF_SHOP_ITEM_8,
+    RC_GC_SHOP_ITEM_1,
+    RC_GC_SHOP_ITEM_2,
+    RC_GC_SHOP_ITEM_3,
+    RC_GC_SHOP_ITEM_4,
+    RC_GC_SHOP_ITEM_5,
+    RC_GC_SHOP_ITEM_6,
+    RC_GC_SHOP_ITEM_7,
+    RC_GC_SHOP_ITEM_8,
+    RC_ZD_SHOP_ITEM_1,
+    RC_ZD_SHOP_ITEM_2,
+    RC_ZD_SHOP_ITEM_3,
+    RC_ZD_SHOP_ITEM_4,
+    RC_ZD_SHOP_ITEM_5,
+    RC_ZD_SHOP_ITEM_6,
+    RC_ZD_SHOP_ITEM_7,
+    RC_ZD_SHOP_ITEM_8,
+    RC_KAK_BAZAAR_ITEM_1,
+    RC_KAK_BAZAAR_ITEM_2,
+    RC_KAK_BAZAAR_ITEM_3,
+    RC_KAK_BAZAAR_ITEM_4,
+    RC_KAK_BAZAAR_ITEM_5,
+    RC_KAK_BAZAAR_ITEM_6,
+    RC_KAK_BAZAAR_ITEM_7,
+    RC_KAK_BAZAAR_ITEM_8,
+    RC_KAK_POTION_SHOP_ITEM_1,
+    RC_KAK_POTION_SHOP_ITEM_2,
+    RC_KAK_POTION_SHOP_ITEM_3,
+    RC_KAK_POTION_SHOP_ITEM_4,
+    RC_KAK_POTION_SHOP_ITEM_5,
+    RC_KAK_POTION_SHOP_ITEM_6,
+    RC_KAK_POTION_SHOP_ITEM_7,
+    RC_KAK_POTION_SHOP_ITEM_8,
+    RC_MARKET_BAZAAR_ITEM_1,
+    RC_MARKET_BAZAAR_ITEM_2,
+    RC_MARKET_BAZAAR_ITEM_3,
+    RC_MARKET_BAZAAR_ITEM_4,
+    RC_MARKET_BAZAAR_ITEM_5,
+    RC_MARKET_BAZAAR_ITEM_6,
+    RC_MARKET_BAZAAR_ITEM_7,
+    RC_MARKET_BAZAAR_ITEM_8,
+    RC_MARKET_POTION_SHOP_ITEM_1,
+    RC_MARKET_POTION_SHOP_ITEM_2,
+    RC_MARKET_POTION_SHOP_ITEM_3,
+    RC_MARKET_POTION_SHOP_ITEM_4,
+    RC_MARKET_POTION_SHOP_ITEM_5,
+    RC_MARKET_POTION_SHOP_ITEM_6,
+    RC_MARKET_POTION_SHOP_ITEM_7,
+    RC_MARKET_POTION_SHOP_ITEM_8,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_1,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_2,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_3,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_4,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_5,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_6,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_7,
+    RC_MARKET_BOMBCHU_SHOP_ITEM_8,
+};
+
+// Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
+std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
+    { RG_BUY_DEKU_NUT_5,    SI_DEKU_NUTS_5 },
+    { RG_BUY_ARROWS_30,     SI_ARROWS_30 },
+    { RG_BUY_ARROWS_50,     SI_ARROWS_50 },
+    { RG_BUY_BOMBS_525,     SI_BOMBS_5_R25 },
+    { RG_BUY_DEKU_NUT_10,   SI_DEKU_NUTS_10 },
+    { RG_BUY_DEKU_STICK_1,  SI_DEKU_STICK },
+    { RG_BUY_BOMBS_10,      SI_BOMBS_10 },
+    { RG_BUY_FISH,          SI_FISH },
+    { RG_BUY_RED_POTION_30, SI_RED_POTION_R30 },
+    { RG_BUY_GREEN_POTION,  SI_GREEN_POTION },
+    { RG_BUY_BLUE_POTION,   SI_BLUE_POTION },
+    { RG_BUY_HYLIAN_SHIELD, SI_HYLIAN_SHIELD },
+    { RG_BUY_DEKU_SHIELD,   SI_DEKU_SHIELD },
+    { RG_BUY_GORON_TUNIC,   SI_GORON_TUNIC },
+    { RG_BUY_ZORA_TUNIC,    SI_ZORA_TUNIC },
+    { RG_BUY_HEART,         SI_HEART },
+    { RG_BUY_BOMBCHU_10,    SI_BOMBCHU_10_1 },
+    { RG_BUY_BOMBCHU_20,    SI_BOMBCHU_20_1 },
+    { RG_BUY_DEKU_SEEDS_30, SI_DEKU_SEEDS_30 },
+    { RG_BUY_BLUE_FIRE,     SI_BLUE_FIRE },
+    { RG_BUY_BOTTLE_BUG,    SI_BUGS },
+    { RG_BUY_POE,           SI_POE },
+    { RG_BUY_FAIRYS_SPIRIT, SI_FAIRY },
+    { RG_BUY_ARROWS_10,     SI_ARROWS_10 },
+    { RG_BUY_BOMBS_20,      SI_BOMBS_20 },
+    { RG_BUY_BOMBS_30,      SI_BOMBS_30 },
+    { RG_BUY_BOMBS_535,     SI_BOMBS_5_R35 },
+    { RG_BUY_RED_POTION_40, SI_RED_POTION_R40 },
+    { RG_BUY_RED_POTION_50, SI_RED_POTION_R50 },
+};
+
+void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseHintLocationsFile(spoilerFileName);
+    }
+
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
+
+    // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so manually adding a "free" variation here
+    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
+            "\x12\x38\x82\J'me rends! Laisse-moi partir et en&échange, je te donne un %gobjet &mystérieux%w! Vas-y prends le!\x07\x10\xA3",
+        });
+    // Currently a scrub message is created for each price between 5-95, identified by the price itself. Soon we'll migrate this
+    // to be more consistent with shop items, where they are identified by randomizer_inf and only generated where necessary
+    for (u32 price = 5; price <= 95; price += 5) {
+        CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM + price,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82\Aufgeben! Ich verkaufe dir einen&%ggeheimnisvollen Gegenstand%w&für %r" +
+                  std::to_string(price) + " Rubine%w!\x07\x10\xA3",
+              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
+                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
+            });
+    }
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
+            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
+            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
+            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
+            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
+            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
+        });
+
+    for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
+        RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
+        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck];
+        // TODO: This should eventually be replaced with a full fledged trick model & trick name system
+        if (shopItemGet == RG_ICE_TRAP) {
+            shopItemGet = RG_HUGE_RUPEE;
+        }
+        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
+        u16 shopItemPrice = merchantPrices[shopItemCheck];
+        // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
+        // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+                "\x08%r" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+                "\x08%r" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
+                "\x08%r" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
+        });
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index + NUM_SHOP_ITEMS, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+                "\x08" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+                "\x08" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+                "\x08" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
+        });
     }
 }
 
@@ -408,6 +577,23 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_CUCCO_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_SHOPSANITY:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "0 Items") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "1 Item") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "2 Items") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "3 Items") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "4 Items") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        } else if(it.value() == "Random") {
+                            gSaveContext.randoSettings[index].value = 6;
+                        }
                         break;
                     case RSK_SHUFFLE_SCRUBS:
                         if(it.value() == "Off") {
@@ -853,6 +1039,11 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+
+    // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
+    // This is needed since Plentiful item pool also adds a third progressive wallet
+    // but we should *not* get Tycoon's Wallet in that mode.
+    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > 1 ? 3 : 2;
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -1043,7 +1234,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_STRENGTH:
             return CUR_UPG_VALUE(UPG_STRENGTH) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_WALLET:
-            return CUR_UPG_VALUE(UPG_WALLET) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_WALLET) < numWallets ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_SCALE:
             return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_MAGIC_METER:
@@ -1435,6 +1626,8 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_WALLET_ADULT;
                 case 1:
                     return GI_WALLET_GIANT;
+                case 2:
+                    return (GetItemID)RG_TYCOON_WALLET;
             }
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
@@ -1605,7 +1798,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_PROGRESSIVE_BOW:
         case RG_PROGRESSIVE_SLINGSHOT:
-        case RG_PROGRESSIVE_WALLET:
         case RG_PROGRESSIVE_SCALE:
         case RG_PROGRESSIVE_NUT_UPGRADE:
         case RG_PROGRESSIVE_STICK_UPGRADE:
@@ -1674,6 +1866,12 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
             return true;
+        case RG_PROGRESSIVE_WALLET:
+            if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_FOREST_TEMPLE_SMALL_KEY:
         case RG_FIRE_TEMPLE_SMALL_KEY:
         case RG_WATER_TEMPLE_SMALL_KEY:
@@ -2027,6 +2225,383 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     }
 
     return scrubIdentity;
+}
+
+ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
+    ShopItemIdentity shopItemIdentity;
+
+    shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    shopItemIdentity.ogItemId = GI_NONE;
+    shopItemIdentity.itemPrice = -1;
+    shopItemIdentity.enGirlAShopItem = 0x32;
+
+    switch (sceneNum) {
+        case SCENE_SHOP1:
+            // Bazaar (SHOP1) scene is reused, so use entranceIndex to determine if we're entering from KaK or market
+            if (gSaveContext.entranceIndex == 0xB7) {
+                switch (slotIndex) {
+                    case 0:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_1;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_1;
+                        shopItemIdentity.ogItemId = GI_SHIELD_HYLIAN;
+                        break;
+                    case 1:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_2;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_2;
+                        shopItemIdentity.ogItemId = GI_BOMBS_5;
+                        break;
+                    case 2:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_3;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_3;
+                        shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                        break;
+                    case 3:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_4;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_4;
+                        shopItemIdentity.ogItemId = GI_HEART;
+                        break;
+                    case 4:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_5;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_5;
+                        shopItemIdentity.ogItemId = GI_ARROWS_SMALL;
+                        break;
+                    case 5:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_6;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_6;
+                        shopItemIdentity.ogItemId = GI_ARROWS_LARGE;
+                        break;
+                    case 6:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_7;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_7;
+                        shopItemIdentity.ogItemId = GI_STICKS_1;
+                        break;
+                    case 7:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_BAZAAR_ITEM_8;
+                        shopItemIdentity.randomizerCheck = RC_KAK_BAZAAR_ITEM_8;
+                        shopItemIdentity.ogItemId = GI_ARROWS_MEDIUM;
+                        break;
+                }
+            } else {
+                switch (slotIndex) {
+                    case 0:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_1;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_1;
+                        shopItemIdentity.ogItemId = GI_SHIELD_HYLIAN;
+                        break;
+                    case 1:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_2;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_2;
+                        shopItemIdentity.ogItemId = GI_BOMBS_5;
+                        break;
+                    case 2:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_3;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_3;
+                        shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                        break;
+                    case 3:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_4;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_4;
+                        shopItemIdentity.ogItemId = GI_HEART;
+                        break;
+                    case 4:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_5;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_5;
+                        shopItemIdentity.ogItemId = GI_ARROWS_SMALL;
+                        break;
+                    case 5:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_6;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_6;
+                        shopItemIdentity.ogItemId = GI_ARROWS_LARGE;
+                        break;
+                    case 6:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_7;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_7;
+                        shopItemIdentity.ogItemId = GI_STICKS_1;
+                        break;
+                    case 7:
+                        shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BAZAAR_ITEM_8;
+                        shopItemIdentity.randomizerCheck = RC_MARKET_BAZAAR_ITEM_8;
+                        shopItemIdentity.ogItemId = GI_ARROWS_MEDIUM;
+                        break;
+                }
+            }
+            break;
+        case SCENE_KOKIRI_SHOP:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_SHIELD_DEKU;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_NUTS_10;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_STICKS_1;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_SEEDS_30;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_ARROWS_SMALL;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_ARROWS_MEDIUM;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_KF_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_HEART;
+                    break;
+            }
+            break;
+        case SCENE_GOLON:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_BOMBS_5;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_BOMBS_10;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_BOMBS_20;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_BOMBS_30;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_TUNIC_GORON;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_HEART;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_POTION_RED;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_GC_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_GC_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_HEART;
+                    break;
+            }
+            break;
+        case SCENE_ZOORA:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_TUNIC_ZORA;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_ARROWS_SMALL;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_HEART;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_ARROWS_MEDIUM;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_ARROWS_LARGE;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_FISH;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_ZD_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_ZD_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_POTION_RED;
+                    break;
+            }
+            break;
+        case SCENE_DRAG:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_POTION_GREEN;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_BLUE_FIRE;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_POTION_RED;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_FAIRY;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_BUGS;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_POE;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_KAK_POTION_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_KAK_POTION_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_FISH;
+                    break;
+            }
+            break;
+        case SCENE_ALLEY_SHOP:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_POTION_GREEN;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_BLUE_FIRE;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_POTION_RED;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_FAIRY;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_NUTS_5_2;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_BUGS;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_POE;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_POTION_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_POTION_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_FISH;
+                    break;
+            }
+            break;
+        case SCENE_NIGHT_SHOP:
+            switch (slotIndex) {
+                case 0:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_1;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_1;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_10;
+                    break;
+                case 1:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_2;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_2;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_10;
+                    break;
+                case 2:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_3;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_3;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_10;
+                    break;
+                case 3:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_4;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_4;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_10;
+                    break;
+                case 4:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_5;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_5;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_20;
+                    break;
+                case 5:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_6;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_20;
+                    break;
+                case 6:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_7;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_20;
+                    break;
+                case 7:
+                    shopItemIdentity.randomizerInf = RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8;
+                    shopItemIdentity.randomizerCheck = RC_MARKET_BOMBCHU_SHOP_ITEM_8;
+                    shopItemIdentity.ogItemId = GI_BOMBCHUS_20;
+                    break;
+            }
+            break;
+    }
+
+    RandomizerGet randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
+    if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
+        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
+    }
+
+    if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
+        shopItemIdentity.itemPrice = merchantPrices[shopItemIdentity.randomizerCheck];
+    }
+
+    return shopItemIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -3049,6 +3624,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
+    cvarSettings[RSK_SHOPSANITY] = CVar_GetS32("gRandomizeShopsanity", 0);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
@@ -3158,7 +3734,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
     const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
+    const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
@@ -3557,6 +4133,21 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
+
+                // Shopsanity
+                ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Off - All shop items will be the same as vanilla.\n"
+                    "\n"
+                    "0 Items - Vanilla shop items will be shuffled among different shops.\n"
+                    "\n"
+                    "1-4 Items - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
+                    "\n"
+                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
+
+                UIWidgets::PaddedSeparator();
 
                 // Shuffle Scrubs
                 ImGui::Text(Settings::Scrubsanity.GetName().c_str());
@@ -4237,44 +4828,6 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
-// Currently these are generated at runtime, one for each price between 0-95. We're soon going to migrate this
-// to being generated at save load, with only messages specific to each scrub.
-void CreateMerchantMessages() {
-    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::merchantMessageTableID);
-    customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, 0,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
-            "\x12\x38\x82\D'accord! Vous avez gagné! En échange&de m'épargner, je vous donnerai un &%gobjet mystérieux%w! S'il vous plaît,&prenez-le!\x07\x10\xA3",
-        });
-
-    for (u32 price = 5; price <= 95; price += 5) {
-        customMessageManager->CreateMessage(Randomizer::merchantMessageTableID, price,
-            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
-                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
-            // RANDTODO: Translate the below string to German.
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
-                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
-              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
-                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
-            });
-    }
-    customMessageManager->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
-            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
-            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
-        });
-}
-
 void CreateRupeeMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);
@@ -4545,10 +5098,11 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
                   "You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
                   "Du hast eine %rPackung&Magic Beans%w! Finde&einen geeigneten Platz fur einen&Garten und pflanze sie. Dann^warte auf etwas Lustiges passiert!",
-                  "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !")
+                  "Vous avez un %rPack de&haricots magiques%w ! Trouvez&un endroit convenable pour un&jardin et plantez-les.^Ensuite, attendez quelque&chose d'amusant doit arriver !"),
+        GIMESSAGE_UNTRANSLATED(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
+            "You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!")
     };
     CreateGetItemMessages(getItemMessages);
-    CreateMerchantMessages();
     CreateRupeeMessages();
     CreateNaviRandoMessages();
 }
@@ -4645,7 +5199,8 @@ void InitRandoItemTable() {
         GET_ITEM(RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
         GET_ITEM(RG_ICE_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
-        GET_ITEM(RG_MAGIC_BEAN_PACK, OBJECT_GI_BEAN, GID_BEAN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK)
+        GET_ITEM(RG_MAGIC_BEAN_PACK, OBJECT_GI_BEAN, GID_BEAN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
+        GET_ITEM(RG_TYCOON_WALLET, OBJECT_GI_PURSE, GID_WALLET_GIANT, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_TYCOON_WALLET),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {

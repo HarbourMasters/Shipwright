@@ -46,8 +46,9 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
+    void LoadMerchantMessages(const char* spoilerFileName);
+    void LoadItemLocations(const char* spoilerFileName, bool silent);
     void LoadRequiredTrials(const char* spoilerFileName);
-    void LoadItemLocations(const char* spoilerFileName,bool silent);
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
@@ -58,6 +59,7 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+    ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     GetItemID GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId);
     GetItemID GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
