@@ -12471,7 +12471,6 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         this->unk_84F = 1;
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
-        //RANDOTODO: Macro this boolean check.
         if (giEntry.modIndex == MOD_NONE) {
             // RANDOTOD: Move this into Item_Give() or some other more central location
             if (giEntry.getItemId == GI_SWORD_BGS) {
@@ -12482,7 +12481,11 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         } else if (giEntry.itemId != RG_ICE_TRAP) {
             Randomizer_Item_Give(globalCtx, giEntry);
         }
-        Player_SetPendingFlag(this, globalCtx);
+
+        // RANDOTODO: Macro this boolean check.
+        if (giEntry.modIndex != MOD_RANDOMIZER && giEntry.itemId != RG_ICE_TRAP) {
+            Player_SetPendingFlag(this, globalCtx);
+        }
 
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
