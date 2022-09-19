@@ -12471,19 +12471,17 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         this->unk_84F = 1;
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
-        if (giEntry.modIndex == MOD_NONE) {
-            // RANDOTOD: Move this into Item_Give() or some other more central location
-            if (giEntry.getItemId == GI_SWORD_BGS) {
-                gSaveContext.bgsFlag = true;
-                gSaveContext.swordHealth = 8;
+        if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
+            if (giEntry.modIndex == MOD_NONE) {
+                // RANDOTOD: Move this into Item_Give() or some other more central location
+                if (giEntry.getItemId == GI_SWORD_BGS) {
+                    gSaveContext.bgsFlag = true;
+                    gSaveContext.swordHealth = 8;
+                }
+                Item_Give(globalCtx, giEntry.itemId);
+            } else {
+                Randomizer_Item_Give(globalCtx, giEntry);
             }
-            Item_Give(globalCtx, giEntry.itemId);
-        } else {
-            Randomizer_Item_Give(globalCtx, giEntry);
-        }
-
-        // RANDOTODO: Macro this boolean check.
-        if (giEntry.modIndex != MOD_RANDOMIZER && giEntry.itemId != RG_ICE_TRAP) {
             Player_SetPendingFlag(this, globalCtx);
         }
 
