@@ -2,7 +2,7 @@
     <File Name="object_ani" Segment="6">
         <!-- Kakariko Roof Man Skeleton -->
         <Skeleton Name="gRoofManSkel" Type="Flex" LimbType="Standard" Offset="0xF0"/>
-        
+
         <!-- Kakariko Roof Man Limbs -->
         <Limb Name="gRoofManRootLimb" LimbType="Standard" Offset="0x0"/>
         <Limb Name="gRoofManLeftThighLimb" LimbType="Standard" Offset="0xC"/>
@@ -35,11 +35,11 @@
         <DList Name="gRoofManRightUpperArmDL" Offset="0x4D70"/>
         <DList Name="gRoofManRightForearmDL" Offset="0x4C00"/>
         <DList Name="gRoofManRightHandDL" Offset="0x4A68"/>
-        <DList Name="gRoofManHeadDL" Offset="0x2CD8"/>  
-  
-        <!-- Kakariko Roof Man Palettes --> <!-- There's something weird going on with the TLUTs here... -->
+        <DList Name="gRoofManHeadDL" Offset="0x2CD8"/>
+
+        <!-- Kakariko Roof Man Palettes -->
         <Texture Name="gRoofMan1TLUT" OutName="roof_man_1_tlut" Format="rgba16" Width="16" Height="16" Offset="0x00108"/>
-        <Texture Name="gRoofMan2TLUT" OutName="roof_man_2_tlut" Format="ci8" Width="16" Height="16" Offset="0x1088"/>
+        <Texture Name="gRoofMan2TLUT" OutName="roof_man_2_tlut" Format="rgba16" Width="21" Height="8" Offset="0x1088"/>
 
         <!-- Roof Man DisplayList Textures -->
         <Texture Name="gRoofManHandBackTex" OutName="roof_man_hand_back" Format="ci8" Width="16" Height="16" Offset="0x00C08" TlutOffset="0x00108"/>
@@ -47,9 +47,9 @@
         <Texture Name="gRoofManThighGradientTex" OutName="roof_man_thigh_gradient" Format="ci8" Width="8" Height="8" Offset="0x00D48" TlutOffset="0x00108"/>
         <Texture Name="gRoofManSandalBuckleTex" OutName="roof_man_sandal_buckle" Format="ci8" Width="16" Height="16" Offset="0x00D88" TlutOffset="0x00108"/>
         <Texture Name="gRoofManTrouserPatternTex" OutName="roof_man_trouser_pattern" Format="rgba16" Width="16" Height="16" Offset="0x00E88"/>
-        <Texture Name="gRoofManSkinGradientTex" OutName="roof_man_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x012D8"/>
-        <Texture Name="gRoofManEarTex" OutName="roof_man_ear" Format="ci8" Width="16" Height="16" Offset="0x01318"/>
-        <Texture Name="gRoofManHairTex" OutName="roof_man_hair" Format="ci8" Width="16" Height="16" Offset="0x01418"/>
+        <Texture Name="gRoofManSkinGradientTex" OutName="roof_man_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x012D8" TlutOffset="0x1088"/>
+        <Texture Name="gRoofManEarTex" OutName="roof_man_ear" Format="ci8" Width="16" Height="16" Offset="0x01318" TlutOffset="0x1088"/>
+        <Texture Name="gRoofManHairTex" OutName="roof_man_hair" Format="ci8" Width="16" Height="16" Offset="0x01418" TlutOffset="0x1088"/>
 
 
         <!-- Kakariko Roof Man Eye Textures -->
