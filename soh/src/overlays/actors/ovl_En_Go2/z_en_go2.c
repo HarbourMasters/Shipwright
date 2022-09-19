@@ -1854,7 +1854,9 @@ void EnGo2_SetGetItem(EnGo2* this, GlobalContext* globalCtx) {
         }
 
         if (gSaveContext.n64ddFlag) {
-            // Resolves #1301, In vanilla this is handled at z_message_PAL:3549, but by specifically watching for trade sequence items
+            // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron 
+            // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for 
+            // trade sequence items, this non-trade sequence items (in rando) to leave the HUD transparent, so we fix that here
             gSaveContext.unk_13EE = 0x32;
         }
         this->actionFunc = func_80A46B40;
