@@ -89,14 +89,16 @@ namespace Ship {
 
 		while(padBuffer.size() > CVar_GetS32("gSimulatedInputLag", 0) / 30) {
 			auto bufferedPad = padBuffer.front();
-			pad->button = bufferedPad.button;		
-			pad->stick_x = bufferedPad.stick_x;
-			pad->stick_y = bufferedPad.stick_y;
-			pad->right_stick_x = bufferedPad.right_stick_x;
-			pad->right_stick_y = bufferedPad.right_stick_y;
-			pad->err_no = bufferedPad.err_no;
-			pad->gyro_x = bufferedPad.gyro_x;
-			pad->gyro_y = bufferedPad.gyro_y;
+			if (pad != nullptr) {
+				pad->button = bufferedPad.button;
+				pad->stick_x = bufferedPad.stick_x;
+				pad->stick_y = bufferedPad.stick_y;
+				pad->right_stick_x = bufferedPad.right_stick_x;
+				pad->right_stick_y = bufferedPad.right_stick_y;
+				pad->err_no = bufferedPad.err_no;
+				pad->gyro_x = bufferedPad.gyro_x;
+				pad->gyro_y = bufferedPad.gyro_y;
+			}
 			padBuffer.pop();
 		}
 	}
