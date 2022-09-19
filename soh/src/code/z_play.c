@@ -200,7 +200,7 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     Player* player = GET_PLAYER(globalCtx);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTraps) {
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;

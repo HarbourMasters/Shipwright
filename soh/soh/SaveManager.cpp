@@ -92,7 +92,7 @@ void SaveManager::LoadRandomizerVersion1() {
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
-    SaveManager::Instance->LoadData("pendingIceTraps", gSaveContext.pendingIceTraps);
+    SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
@@ -158,7 +158,7 @@ void SaveManager::SaveRandomizer() {
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
 
-    SaveManager::Instance->SaveData("pendingIceTraps", gSaveContext.pendingIceTraps);
+    SaveManager::Instance->SaveData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 

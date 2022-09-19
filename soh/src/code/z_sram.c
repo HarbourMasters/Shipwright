@@ -106,7 +106,7 @@ void GiveLinksPocketItem() {
             Item_Give(NULL, getItemEntry.itemId);
         } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
             if (getItemEntry.getItemId == RG_ICE_TRAP) {
-                gSaveContext.pendingIceTraps++;
+                gSaveContext.pendingIceTrapCount++;
             } else {
                 Randomizer_Item_Give(NULL, getItemEntry);
             }
@@ -350,7 +350,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         // Starts pending ice traps out at 0 before potentially incrementing them down the line.
-        gSaveContext.pendingIceTraps = 0;
+        gSaveContext.pendingIceTrapCount = 0;
 
         // Give Link's pocket item
         GiveLinksPocketItem();
@@ -415,7 +415,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 Item_Give(NULL, getItem.itemId);
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
                 if (getItem.getItemId == RG_ICE_TRAP) {
-                    gSaveContext.pendingIceTraps++;
+                    gSaveContext.pendingIceTrapCount++;
                 } else {
                     Randomizer_Item_Give(NULL, getItem);
                 }

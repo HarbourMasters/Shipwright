@@ -186,7 +186,7 @@ typedef struct {
     u16 randomizerInf[8];
     u8 temporaryWeapon;
     u16 adultTradeItems;
-    u8 pendingIceTraps;
+    u8 pendingIceTrapCount;
 } SaveContext; // size = 0x1428
 
 typedef enum {

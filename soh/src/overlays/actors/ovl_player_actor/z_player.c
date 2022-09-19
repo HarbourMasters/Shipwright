@@ -6100,8 +6100,8 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
 
-    if(gSaveContext.pendingIceTraps) {
-        gSaveContext.pendingIceTraps--;
+    if(gSaveContext.pendingIceTrapCount) {
+        gSaveContext.pendingIceTrapCount--;
         this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
         this->actor.colChkInfo.damage = 0;
         func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
@@ -12689,7 +12689,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
             if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
                 this->unk_862 = 0;
-                gSaveContext.pendingIceTraps++;
+                gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, globalCtx);
             }
 
