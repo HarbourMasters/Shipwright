@@ -12614,7 +12614,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         this->unk_84F = 1;
 
         // make sure we get the BGS instead of giant's knife
-        if(this->getItemId == GI_SWORD_BGS) {
+        if(giEntry.modIndex == MOD_NONE && this->getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = 1;
             gSaveContext.swordHealth = 8;       
         }
