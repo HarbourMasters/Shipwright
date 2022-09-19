@@ -12471,6 +12471,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         this->unk_84F = 1;
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
+        // RANDOTODO: Macro this boolean check.
         if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
             if (giEntry.modIndex == MOD_NONE) {
                 // RANDOTOD: Move this into Item_Give() or some other more central location
