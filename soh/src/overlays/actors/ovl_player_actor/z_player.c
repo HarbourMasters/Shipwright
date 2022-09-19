@@ -12613,14 +12613,13 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
         this->unk_84F = 1;
 
-        // make sure we get the BGS instead of giant's knife
-        if(this->getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = 1;
-            gSaveContext.swordHealth = 8;       
-        }
-
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
         if (giEntry.modIndex == MOD_NONE) {
+            // RANDOTOD: Move this into Item_Give() or some other more central location
+            if (giEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+                gSaveContext.swordHealth = 8;
+            }
             Item_Give(globalCtx, giEntry.itemId);
         } else {
             Randomizer_Item_Give(globalCtx, giEntry);
