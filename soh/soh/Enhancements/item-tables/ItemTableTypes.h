@@ -6,14 +6,22 @@
 #define CHEST_ANIM_SHORT 0
 #define CHEST_ANIM_LONG 1
 
+/**
+ * Flag to indicate which type of Actor has given the player an item. ITEM_FROM_NPC by default,
+ * should be set by the actor giving the item before they send the GetItemEntry signal to the player.
+ */
+typedef enum GetItemFrom {
+    ITEM_FROM_NPC,
+    ITEM_FROM_SKULLTULA,
+    ITEM_FROM_FREESTANDING,
+    ITEM_FROM_CHEST,
+} GetItemFrom;
+
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, modIndex, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, NULL }
+    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, NULL }
 
 #define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, NULL }
-
-#define GET_ITEM_CUSTOM_DRAW(itemId, objectId, drawId, textId, field, chestAnim, modIndex, getItemId, drawFunc) \
-    { itemId, field (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, drawFunc }
+    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, NULL }
 
 typedef struct GlobalContext GlobalContext;
 typedef struct GetItemEntry GetItemEntry;
@@ -30,5 +38,6 @@ typedef struct GetItemEntry {
     /* 0x08 */ int16_t getItemId;
     /* 0x0A */ uint16_t gid; // Stores the GID value unmodified for future reference.
     /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
+    /* 0x0E */ GetItemFrom getItemFrom;
     CustomDrawFunc drawFunc;
 };                   // size = 0x0F

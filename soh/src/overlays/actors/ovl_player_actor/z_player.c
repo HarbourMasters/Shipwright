@@ -6100,6 +6100,16 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
 
+    if(gSaveContext.pendingIceTraps) {
+        gSaveContext.pendingIceTraps--;
+        this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+        this->actor.colChkInfo.damage = 0;
+        func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+        this->getItemId = GI_NONE;
+        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+        return 1;
+    }
+
     if (iREG(67) || (((interactedActor = this->interactRangeActor) != NULL) &&
         func_8002D53C(globalCtx, &globalCtx->actorCtx.titleCtx))) {
         if (iREG(67) || (this->getItemId > GI_NONE)) {
@@ -6121,13 +6131,15 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 iREG(67) = false;
 
                 if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP) {
-                    this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
-                    this->actor.colChkInfo.damage = 0;
-                    func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
-                    Player_SetPendingFlag(this, globalCtx);
-                    this->getItemId == GI_NONE;
-                    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                    return 1;
+                    if (giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                        this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                        this->actor.colChkInfo.damage = 0;
+                        func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                        Player_SetPendingFlag(this, globalCtx);
+                        this->getItemId = GI_NONE;
+                        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+                        return 1;
+                    }
                 }
 
                 s32 drop = giEntry.objectId;
@@ -10896,11 +10908,6 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     Collider_ResetQuadAC(globalCtx, &this->shieldQuad.base);
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
-
-    if (this->pendingIceTrap) {
-        this->getItemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP);
-        GiveItemEntryWithoutActor(globalCtx, this->getItemEntry);
-    }
 }
 
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
@@ -12620,12 +12627,14 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
-        if (giEntry.modIndex == MOD_NONE) {
-            Item_Give(globalCtx, giEntry.itemId);
-        } else {
-            Randomizer_Item_Give(globalCtx, giEntry);
+        if (giEntry.modIndex != MOD_RANDOMIZER && giEntry.itemId != RG_ICE_TRAP) {
+            if (giEntry.modIndex == MOD_NONE) {
+                Item_Give(globalCtx, giEntry.itemId);
+            } else {
+                Randomizer_Item_Give(globalCtx, giEntry);
+            }
+            Player_SetPendingFlag(this, globalCtx);
         }
-        Player_SetPendingFlag(this, globalCtx);
 
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
@@ -12676,6 +12685,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             // Only do this when the item actually has a custom draw function.
             if (this->getItemEntry.drawFunc != NULL) {
                 this->unk_862 = 0;
+            }
+
+            if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
+                this->unk_862 = 0;
+                gSaveContext.pendingIceTraps++;
+                Player_SetPendingFlag(this, globalCtx);
             }
 
             this->getItemId = GI_NONE;
@@ -12856,7 +12871,7 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
-                    this->getItemId == GI_NONE;
+                    this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                 }
                 return;

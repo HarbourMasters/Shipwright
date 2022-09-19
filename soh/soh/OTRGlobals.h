@@ -104,8 +104,6 @@ void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
-bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
-bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
