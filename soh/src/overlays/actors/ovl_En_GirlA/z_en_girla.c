@@ -919,14 +919,13 @@ void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
+        // RANDOTOD: Move this into Item_Give() or some other more central location
+        if (getItemEntry.getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = true;
+        }
         Item_Give(globalCtx, getItemEntry.itemId);
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
         Randomizer_Item_Give(globalCtx, getItemEntry);
-    }
-
-    // RANDOTOD: Move this into Item_Give() or some other more central location
-    if (getItemEntry.getItemId == GI_SWORD_BGS) {
-        gSaveContext.bgsFlag = true;
     }
 
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
