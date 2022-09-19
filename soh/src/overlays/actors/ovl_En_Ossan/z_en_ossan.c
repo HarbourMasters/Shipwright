@@ -427,6 +427,16 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
             this->shelfSlots[i] = NULL;
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, i);
+                if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                    itemParams = shopItemIdentity.enGirlAShopItem;
+
+                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                        itemParams = SI_SOLD_OUT;
+                    }
+                }
+            }
 
             if (itemParams < 0) {
                 this->shelfSlots[i] = NULL;
@@ -437,6 +447,9 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams);
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                    this->shelfSlots[i]->randoSlotIndex = i;
+                }
             }
         }
     }
@@ -1330,7 +1343,19 @@ void EnOssan_GiveItemWithFanfare(GlobalContext* globalCtx, EnOssan* this) {
     Player* player = GET_PLAYER(globalCtx);
 
     osSyncPrintf("\n" VT_FGCOL(YELLOW) "初めて手にいれた！！" VT_RST "\n\n");
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
+        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
+        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
     globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     globalCtx->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~0x20000000;
@@ -1665,14 +1690,28 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, GlobalContext* globalCtx, 
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
+        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
+        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            GetItemEntry getItemEntry =
+                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
 }
 
 void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
 
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && Randomizer_ItemIsIceTrap(shopItemIdentity.randomizerCheck, GI_NONE))) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
             itemTemp = this->shelfSlots[this->cursorIndex];
             EnOssan_ResetItemPosition(this);

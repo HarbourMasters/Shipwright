@@ -1567,6 +1567,10 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
 }
@@ -1595,8 +1599,8 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
     return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(s16 itemPrice) {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, itemPrice);
+extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
@@ -1676,6 +1680,22 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return ItemTable_RetrieveEntry(getItemModIndex, itemID);
 }
 
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    s16 getItemModIndex;
+    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
+        getItemModIndex = MOD_NONE;
+    } else {
+        getItemModIndex = MOD_RANDOMIZER;
+    }
+    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromKnownCheck(randomizerCheck, ogId);
+
+    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+}
+
+extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+    return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
+}
+
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
 }
@@ -1743,8 +1763,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_GetGanonHintText();
             }
-        } else if (textId >= 0x9000 && textId <= 0x905F) {
-            messageEntry = Randomizer_GetScrubMessage((textId & ((1 << 8) - 1)));
+        // Business Scrub textID is TEXT_SCRUB_RANDOM + their price, anywhere from 0-95
+        } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + 95) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+        // Shop items each have two message entries
+        } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId <= TEXT_SHOP_ITEM_RANDOM + (NUM_SHOP_ITEMS * 2)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
         } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {

@@ -1339,8 +1339,15 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetI
     velocity.y = -0.05f;
     accel.y = -0.025f;
     pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
-    pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+    // Shop items are rendered at a different height than the rest, so a different y offset is required
+    if (Parent->id == ACTOR_EN_GIRLA) {
+        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 5;
+    } else {
+        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+    }
     pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+
+
     EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
 }
 
