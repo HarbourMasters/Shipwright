@@ -761,7 +761,7 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
     }
 
     const auto& it = boots.find(args[1]);
-    if (it == ammoItems.end()) {
+    if (it == boots.end()) {
         SohImGui::GetConsole()->SendErrorMessage("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
         return CMD_FAILED;
     }

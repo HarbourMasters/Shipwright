@@ -176,6 +176,7 @@ void CrowdControl::ReceiveFromCrowdControl()
         }
         else if (strcmp(packet->effectType.c_str(), "no_ui") == 0) {
             packet->effectCategory = "ui";
+            packet->timeRemaining = 60000;
         }
         else if (strcmp(packet->effectType.c_str(), "fill_magic") == 0 ||
             strcmp(packet->effectType.c_str(), "empty_magic") == 0) {
@@ -183,24 +184,30 @@ void CrowdControl::ReceiveFromCrowdControl()
         }
         else if (strcmp(packet->effectType.c_str(), "ohko") == 0) {
             packet->effectCategory = "ohko";
+            packet->timeRemaining = 30000;
         }
         else if (strcmp(packet->effectType.c_str(), "pacifist") == 0) {
             packet->effectCategory = "pacifist";
+            packet->timeRemaining = 15000;
         }
         else if (strcmp(packet->effectType.c_str(), "rainstorm") == 0) {
             packet->effectCategory = "weather";
+            packet->timeRemaining = 30000;
         }
         else if (strcmp(packet->effectType.c_str(), "reverse") == 0) {
             packet->effectCategory = "controls";
+            packet->timeRemaining = 60000;
         }
         else if (strcmp(packet->effectType.c_str(), "rupees") == 0) {
             packet->effectCategory = "rupees";
         }
         else if (strcmp(packet->effectType.c_str(), "speed") == 0) {
             packet->effectCategory = "speed";
+            packet->timeRemaining = 30000;
         }
         else if (strcmp(packet->effectType.c_str(), "no_z") == 0) {
             packet->effectCategory = "no_z";
+            packet->timeRemaining = 30000;
         }
         else if (strcmp(packet->effectType.c_str(), "wallmaster") == 0 ||
             strcmp(packet->effectType.c_str(), "cucco") == 0) {
