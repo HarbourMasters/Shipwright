@@ -74,7 +74,6 @@ class CrowdControl {
 
         char received[512];
 
-        std::vector<CCPacket*> currentCommands;
         std::vector<CCPacket*> receivedCommands;
 
         void RunCrowdControl(CCPacket* packet);
