@@ -12478,7 +12478,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 gSaveContext.swordHealth = 8;
             }
             Item_Give(globalCtx, giEntry.itemId);
-        } else if (giEntry.itemId != RG_ICE_TRAP) {
+        } else {
             Randomizer_Item_Give(globalCtx, giEntry);
         }
 
