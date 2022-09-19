@@ -253,6 +253,10 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("remove_heart_container");
             return 1;
         } else if (strcmp(effectId, "fill_magic") == 0) {
+            if (!gSaveContext.magicAcquired) {
+                return 2;
+            }
+
             if (gSaveContext.magic >= (gSaveContext.doubleMagic + 1) + 0x30) {
                 return 2;
             }
@@ -260,7 +264,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("fill_magic");
             return 1;
         } else if (strcmp(effectId, "empty_magic") == 0) {
-            if (gSaveContext.magic <= 0) {
+            if (!gSaveContext.magicAcquired || gSaveContext.magic <= 0) {
                 return 2;
             }
 
