@@ -143,11 +143,11 @@ void EnRd_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (thisx->params >= -1) {
-        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &object_rd_Skel_00E778, &object_rd_Anim_0087D0,
+        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gRedeadSkel, &gGibdoRedeadIdleAnim,
                            this->jointTable, this->morphTable, 26);
         thisx->naviEnemyId = 0x2A;
     } else {
-        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &object_rd_Skel_003DD8, &object_rd_Anim_0087D0,
+        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGibdoSkel, &gGibdoRedeadIdleAnim,
                            this->jointTable, this->morphTable, 26);
         thisx->naviEnemyId = 0x2D;
     }
@@ -197,9 +197,9 @@ void func_80AE2630(GlobalContext* globalCtx, Actor* thisx, s32 arg2) {
 
 void func_80AE269C(EnRd* this) {
     if (this->actor.params != 2) {
-        Animation_MorphToLoop(&this->skelAnime, &object_rd_Anim_0087D0, -6.0f);
+        Animation_MorphToLoop(&this->skelAnime, &gGibdoRedeadIdleAnim, -6.0f);
     } else {
-        Animation_PlayLoop(&this->skelAnime, &object_rd_Anim_005D98);
+        Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadSobbingAnim);
     }
 
     this->unk_31B = 0;
@@ -216,9 +216,9 @@ void func_80AE2744(EnRd* this, GlobalContext* globalCtx) {
 
     if ((this->actor.params == 2) && (0.0f == this->skelAnime.curFrame)) {
         if (Rand_ZeroOne() >= 0.5f) {
-            Animation_PlayLoop(&this->skelAnime, &object_rd_Anim_005D98);
+            Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadSobbingAnim);
         } else {
-            Animation_PlayLoop(&this->skelAnime, &object_rd_Anim_0057AC);
+            Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadWipingTearsAnim);
         }
     } else {
         this->unk_30C--;
@@ -261,7 +261,7 @@ void func_80AE2744(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE2970(EnRd* this) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_0087D0, 0, 0, Animation_GetLastFrame(&object_rd_Anim_0087D0),
+    Animation_Change(&this->skelAnime, &gGibdoRedeadIdleAnim, 0, 0, Animation_GetLastFrame(&gGibdoRedeadIdleAnim),
                      ANIMMODE_LOOP, -6.0f);
     this->unk_31B = 11;
     this->unk_30C = 6;
@@ -296,8 +296,8 @@ void func_80AE2A10(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE2B90(EnRd* this, GlobalContext* globalCtx) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_00EFDC, 1.0f, 4.0f,
-                     Animation_GetLastFrame(&object_rd_Anim_00EFDC), ANIMMODE_LOOP_INTERP, -4.0f);
+    Animation_Change(&this->skelAnime, &gGibdoRedeadWalkAnim, 1.0f, 4.0f,
+                     Animation_GetLastFrame(&gGibdoRedeadWalkAnim), ANIMMODE_LOOP_INTERP, -4.0f);
     this->actor.speedXZ = 0.4f;
     this->unk_31B = 4;
     EnRd_SetupAction(this, func_80AE2C1C);
@@ -366,7 +366,7 @@ void func_80AE2C1C(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE2F50(EnRd* this, GlobalContext* globalCtx) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_00EFDC, 0.5f, 0, Animation_GetLastFrame(&object_rd_Anim_00EFDC),
+    Animation_Change(&this->skelAnime, &gGibdoRedeadWalkAnim, 0.5f, 0, Animation_GetLastFrame(&gGibdoRedeadWalkAnim),
                      ANIMMODE_LOOP_INTERP, -4.0f);
     this->unk_31B = 2;
     EnRd_SetupAction(this, func_80AE2FD0);
@@ -415,7 +415,7 @@ void func_80AE2FD0(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE31DC(EnRd* this) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_00EFDC, 0.5f, 0, Animation_GetLastFrame(&object_rd_Anim_00EFDC),
+    Animation_Change(&this->skelAnime, &gGibdoRedeadWalkAnim, 0.5f, 0, Animation_GetLastFrame(&gGibdoRedeadWalkAnim),
                      ANIMMODE_LOOP_INTERP, -4.0f);
     this->unk_31B = 3;
     this->unk_305 = 1;
@@ -461,7 +461,7 @@ void func_80AE3260(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE33F0(EnRd* this) {
-    Animation_PlayOnce(&this->skelAnime, &object_rd_Anim_004ADC);
+    Animation_PlayOnce(&this->skelAnime, &gGibdoRedeadGrabStartAnim);
     this->unk_30C = this->unk_304 = 0;
     this->unk_319 = 200;
     this->unk_31B = 8;
@@ -479,7 +479,7 @@ void func_80AE3454(EnRd* this, GlobalContext* globalCtx) {
 
     switch (this->unk_304) {
         case 1:
-            Animation_PlayLoop(&this->skelAnime, &object_rd_Anim_004268);
+            Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadGrabAttackAnim);
             this->unk_304++;
             globalCtx->damagePlayer(globalCtx, -8);
             func_800AA000(this->actor.xzDistToPlayer, 0xFF, 1, 0xC);
@@ -489,8 +489,8 @@ void func_80AE3454(EnRd* this, GlobalContext* globalCtx) {
             Math_SmoothStepToS(&this->unk_310, 0, 1, 0x5DC, 0);
         case 2:
             if (!(player->stateFlags2 & 0x80)) {
-                Animation_Change(&this->skelAnime, &object_rd_Anim_0046F8, 0.5f, 0.0f,
-                                 Animation_GetLastFrame(&object_rd_Anim_0046F8), ANIMMODE_ONCE_INTERP, 0.0f);
+                Animation_Change(&this->skelAnime, &gGibdoRedeadGrabEndAnim, 0.5f, 0.0f,
+                                 Animation_GetLastFrame(&gGibdoRedeadGrabEndAnim), ANIMMODE_ONCE_INTERP, 0.0f);
                 this->unk_304++;
                 this->unk_31B = 4;
                 return;
@@ -540,8 +540,8 @@ void func_80AE3454(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE37BC(EnRd* this) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_004F94, 0.0f, 0.0f,
-                     Animation_GetLastFrame(&object_rd_Anim_004F94), ANIMMODE_ONCE, 0.0f);
+    Animation_Change(&this->skelAnime, &gGibdoRedeadLookBackAnim, 0.0f, 0.0f,
+                     Animation_GetLastFrame(&gGibdoRedeadLookBackAnim), ANIMMODE_ONCE, 0.0f);
     this->unk_31B = 7;
     EnRd_SetupAction(this, func_80AE3834);
 }
@@ -565,7 +565,7 @@ void func_80AE3834(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE392C(EnRd* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_rd_Anim_008040, -4.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadStandUpAnim, -4.0f);
     this->unk_31B = 5;
     EnRd_SetupAction(this, func_80AE3978);
 }
@@ -581,7 +581,7 @@ void func_80AE3978(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE39D4(EnRd* this) {
-    Animation_Change(&this->skelAnime, &object_rd_Anim_008040, -1.0f, Animation_GetLastFrame(&object_rd_Anim_008040),
+    Animation_Change(&this->skelAnime, &gGibdoRedeadStandUpAnim, -1.0f, Animation_GetLastFrame(&gGibdoRedeadStandUpAnim),
                      0.0f, ANIMMODE_ONCE, -4.0f);
     this->unk_31B = 6;
     EnRd_SetupAction(this, func_80AE3A54);
@@ -594,7 +594,7 @@ void func_80AE3A54(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE3A8C(EnRd* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_rd_Anim_0074F0, -6.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDamageAnim, -6.0f);
 
     if (this->actor.bgCheckFlags & 1) {
         this->actor.speedXZ = -2.0f;
@@ -632,7 +632,7 @@ void func_80AE3B18(EnRd* this, GlobalContext* globalCtx) {
 }
 
 void func_80AE3C20(EnRd* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_rd_Anim_006E88, -1.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDeathAnim, -1.0f);
     this->unk_31B = 10;
     this->unk_30C = 300;
     this->actor.flags &= ~ACTOR_FLAG_0;

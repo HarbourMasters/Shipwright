@@ -885,7 +885,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
             texture = gFairysFountainTitleCardENGTex;
             break;
         case SCENE_HAKAANA_OUKE:
-            texture = gRoyalFamilysTumbTitleCardENGTex;
+            texture = gRoyalFamilysTombTitleCardENGTex;
             break;
         case SCENE_SYATEKIJYOU:
             texture = gShootingGalleryTitleCardENGTex;
