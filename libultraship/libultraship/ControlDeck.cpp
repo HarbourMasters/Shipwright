@@ -80,6 +80,7 @@ namespace Ship {
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
 					if((shouldBlockGameInput && device->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
+						device->Read(nullptr, i);
 						continue;
 					}
 					device->Read(&pad[i], i);
@@ -87,6 +88,7 @@ namespace Ship {
 				continue;
 			}
 			if((shouldBlockGameInput && backend->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
+				backend->Read(nullptr, i);
 				continue;
 			}
 			backend->Read(&pad[i], i);
