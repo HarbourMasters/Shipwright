@@ -760,6 +760,14 @@ void func_80AEC2C0(EnRu1* this, GlobalContext* globalCtx) {
     func_80AEC070(this, globalCtx, something);
 }
 
+// Convenience function used so that Ruto always spawns in Jabu in rando, even after she's been kidnapped
+// Equivalent to !(gSaveContext.infTable[20] & 0x20) in vanilla
+bool shouldSpawnRuto() {
+    // gSaveContext.infTable[20] & 0x40 check is to prevent Ruto from spawning during the short period of time when
+    // she's on the Zora's Sapphire pedestal but hasn't been kidnapped yet (would result in multiple Rutos otherwise)
+    return !(gSaveContext.infTable[20] & 0x20) || (gSaveContext.n64ddFlag && (gSaveContext.infTable[20] & 0x40));
+}
+
 void func_80AEC320(EnRu1* this, GlobalContext* globalCtx) {
     s8 actorRoom;
 
@@ -767,8 +775,7 @@ void func_80AEC320(EnRu1* this, GlobalContext* globalCtx) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
         this->action = 7;
         EnRu1_SetMouthIndex(this, 1);
-    } else if ((gSaveContext.infTable[20] & 0x80) && !(gSaveContext.infTable[20] & 1) &&
-               !(gSaveContext.infTable[20] & 0x20)) {
+    } else if ((gSaveContext.infTable[20] & 0x80) && !(gSaveContext.infTable[20] & 1) && shouldSpawnRuto()) {
         if (!func_80AEB020(this, globalCtx)) {
             func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
             actorRoom = this->actor.room;
@@ -1172,7 +1179,7 @@ void func_80AED414(EnRu1* this, GlobalContext* globalCtx) {
 void func_80AED44C(EnRu1* this, GlobalContext* globalCtx) {
     s8 actorRoom;
 
-    if ((gSaveContext.infTable[20] & 2) && !(gSaveContext.infTable[20] & 0x20) && !(gSaveContext.infTable[20] & 1) &&
+    if ((gSaveContext.infTable[20] & 2) && shouldSpawnRuto() && !(gSaveContext.infTable[20] & 1) &&
         !(gSaveContext.infTable[20] & 0x80)) {
         if (!func_80AEB020(this, globalCtx)) {
             func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
@@ -2179,7 +2186,7 @@ void func_80AEFF40(EnRu1* this, GlobalContext* globalCtx) {
 void func_80AEFF94(EnRu1* this, GlobalContext* globalCtx) {
     s8 actorRoom;
 
-    if ((gSaveContext.infTable[20] & 2) && (gSaveContext.infTable[20] & 1) && !(gSaveContext.infTable[20] & 0x20) &&
+    if ((gSaveContext.infTable[20] & 2) && (gSaveContext.infTable[20] & 1) && shouldSpawnRuto() &&
         (!(func_80AEB020(this, globalCtx)))) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
         actorRoom = this->actor.room;

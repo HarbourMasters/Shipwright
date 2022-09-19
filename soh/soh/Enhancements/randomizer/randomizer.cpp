@@ -3251,7 +3251,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] = CVar_GetS32("gRandomizeSkipChildStealth", 0);
+    // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
+        !CVar_GetS32("gRandomizeSkipChildZelda", 0) && CVar_GetS32("gRandomizeSkipChildStealth", 0);
+
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
