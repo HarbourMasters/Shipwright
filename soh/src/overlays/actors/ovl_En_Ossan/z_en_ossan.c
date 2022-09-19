@@ -1710,8 +1710,9 @@ void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player
     EnGirlA* item;
     EnGirlA* itemTemp;
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && Randomizer_ItemIsIceTrap(shopItemIdentity.randomizerCheck, GI_NONE))) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
             itemTemp = this->shelfSlots[this->cursorIndex];
             EnOssan_ResetItemPosition(this);
@@ -1731,6 +1732,12 @@ void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player
         }
         item = this->shelfSlots[this->cursorIndex];
         item->buyEventFunc(globalCtx, item);
+        if (getItemEntry.getItemId == RG_ICE_TRAP && getItemEntry.modIndex == MOD_RANDOMIZER) {
+            EnOssan_ResetItemPosition(this);
+            item->updateStockedItemFunc(globalCtx, item);
+            EnOssan_EndInteraction(globalCtx, this);
+            return;
+        }
         this->stateFlag = OSSAN_STATE_CONTINUE_SHOPPING_PROMPT;
         Message_ContinueTextbox(globalCtx, 0x6B);
     }

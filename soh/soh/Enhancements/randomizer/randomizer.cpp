@@ -4984,8 +4984,8 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!\x0E\x20",
-                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!\x0E\x20", "\x08\x06\x50%bIDIOT%w\x0E\x20"),
+        GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!",
+                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!", "\x08\x06\x50%bIDIOT%w"),
         GIMESSAGE_NO_GERMAN(
             RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
@@ -5151,7 +5151,7 @@ void InitRandoItemTable() {
     // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
     // RandomizerGet enum values for both.
     GetItemEntry randoGetItemTable[] = {
-        GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
+        GET_ITEM(RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, MOD_RANDOMIZER, RG_ICE_TRAP),
         GET_ITEM(RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_SINGLE),
         GET_ITEM(RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
         GET_ITEM(RG_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG, MOD_RANDOMIZER, RG_DOUBLE_DEFENSE),

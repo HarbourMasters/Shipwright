@@ -520,6 +520,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
                 func_8002F554(&this->actor, globalCtx, getItemId);
             } else {
                 getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
+                getItem.getItemFrom = ITEM_FROM_FREESTANDING;
                 GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
             }
         }
@@ -687,6 +688,7 @@ void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
             } else {
                 GetItemEntry getItemEntry =
                     Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, this->getItemId);
+                getItemEntry.getItemFrom = ITEM_FROM_FREESTANDING;
                 GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 50.0f, 80.0f);
             }
             this->unk_15A++;
@@ -913,6 +915,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
         } else {
             getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
             getItemId = getItem.getItemId;
+            getItem.getItemFrom = ITEM_FROM_FREESTANDING;
             GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
         }
     }

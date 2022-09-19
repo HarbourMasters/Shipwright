@@ -108,8 +108,6 @@ GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorPar
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
-bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
-bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);

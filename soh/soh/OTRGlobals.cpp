@@ -1696,14 +1696,6 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
-extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
-}
-
-extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
-    return Randomizer_ItemIsIceTrap(randomizerCheck, ogId) && actor->parent != NULL;
-}
-
 extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
