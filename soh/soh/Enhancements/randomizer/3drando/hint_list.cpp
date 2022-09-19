@@ -2066,27 +2066,23 @@ void HintTable_Init() {
     "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!"
 
     hintTable[JUNK78] = HintText::Junk({
-        // obscure text
-        Text{ "They say blarg...^...or at least briaguya does.", /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR,
-              /*spanish*/ "blarg" },
+        //obscure text
+        Text{"They say blarg...^...or at least briaguya does.", /*french*/"Tout ce que j'ai à dire, c'est blarg...^... 'fin c'est plutôt ce que briaguya dirait.", /*spanish*/"blarg"},
     });
 
     hintTable[JUNK79] = HintText::Junk({
-        // obscure text
-        Text{ "They say this peace is what all true warriors strive for.", /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR,
-              /*spanish*/ "blarg" },
+        //obscure text
+        Text{"They say this peace is what all true warriors strive for.", /*french*/"Selon moi, cette paix est ce pour quoi luttent tous les vrais guerriers.", /*spanish*/"blarg"},
     });
 
     hintTable[JUNK80] = HintText::Junk({
-        // obscure text
-        Text{ "They say this ship is what all true gamers strive for.", /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR,
-              /*spanish*/ "blarg" },
+        //obscure text
+        Text{"They say this ship is what all true gamers strive for.", /*french*/"Selon moi, cette version du port est ce pour quoi luttent tous les vrais gamers.", /*spanish*/"blarg"},
     });
 
     hintTable[JUNK81] = HintText::Junk({
-        // obscure text
-        Text{ "They say that Glowsticks can be found in the Raveyard.",
-              /*french*/ "On peut trouver des Bâton Lumineux sur le dancefloor du cimetière.", /*spanish*/ "blarg" },
+        //obscure text
+        Text{"They say that Glowsticks can be found in the Raveyard.", /*french*/"On peut trouver des Bâtons Lumineux sur le dancefloor du cimetière.", /*spanish*/"blarg"},
     });
 
     /*--------------------------
