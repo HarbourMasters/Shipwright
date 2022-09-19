@@ -320,7 +320,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE("boots hover");
             return 1;
         } else if (strcmp(effectId, "wallmaster") == 0) {
-            CMD_EXECUTE(std::format("spawn 11 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
+            CMD_EXECUTE(std::format("spawn 17 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
             return 1;
         }
     }

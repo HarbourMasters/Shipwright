@@ -705,8 +705,46 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    // TODO: Implement
-    return CMD_FAILED;
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    try {
+        uint32_t rainstorm = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (rainstorm) {
+            gGlobalCtx->envCtx.unk_F2[0] = 20;    // rain intensity target
+            gGlobalCtx->envCtx.gloomySkyMode = 1; // start gloomy sky
+            if ((gWeatherMode != 0) || gGlobalCtx->envCtx.unk_17 != 0) {
+                gGlobalCtx->envCtx.unk_DE = 1;
+            }
+            gGlobalCtx->envCtx.lightningMode = LIGHTNING_MODE_ON;
+            Environment_PlayStormNatureAmbience(gGlobalCtx);
+        } else {
+            gGlobalCtx->envCtx.unk_F2[0] = 0;
+            if (gGlobalCtx->csCtx.state == CS_STATE_IDLE) {
+                Environment_StopStormNatureAmbience(gGlobalCtx);
+            } else if (func_800FA0B4(SEQ_PLAYER_BGM_MAIN) == NA_BGM_NATURE_AMBIENCE) {
+                Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_LIGHTNING, CHANNEL_IO_PORT_1, 0);
+                Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_RAIN, CHANNEL_IO_PORT_1, 0);
+            }
+            osSyncPrintf("\n\n\nE_wether_flg=[%d]", gWeatherMode);
+            osSyncPrintf("\nrain_evt_trg=[%d]\n\n", gGlobalCtx->envCtx.gloomySkyMode);
+            if (gWeatherMode == 0 && (gGlobalCtx->envCtx.gloomySkyMode == 1)) {
+                gGlobalCtx->envCtx.gloomySkyMode = 2; // end gloomy sky
+            } else {
+                gGlobalCtx->envCtx.gloomySkyMode = 0;
+                gGlobalCtx->envCtx.unk_DE = 0;
+            }
+            gGlobalCtx->envCtx.lightningMode = LIGHTNING_MODE_LAST;
+        }
+
+
+        return CMD_SUCCESS;
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] rainstorm value must be a number.");
+        return CMD_FAILED;
+    }
 }
 
 static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
