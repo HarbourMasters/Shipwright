@@ -885,7 +885,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
             texture = gFairysFountainTitleCardENGTex;
             break;
         case SCENE_HAKAANA_OUKE:
-            texture = gRoyalFamilysTumbTitleCardENGTex;
+            texture = gRoyalFamilysTombTitleCardENGTex;
             break;
         case SCENE_SYATEKIJYOU:
             texture = gShootingGalleryTitleCardENGTex;
@@ -1972,10 +1972,6 @@ s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntr
                 player->getItemId = getItemEntry.getItemId;
                 player->interactRangeActor = &player->actor;
                 player->getItemDirection = player->actor.shape.rot.y;
-                // Player state 26 = Player is frozen
-                if (player->stateFlags1 & (PLAYER_STATE1_26)) {
-                    player->pendingIceTrap = false;
-                }
                 return true;
             }
         }

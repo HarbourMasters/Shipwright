@@ -92,13 +92,17 @@ void SaveManager::LoadRandomizerVersion1() {
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
+    SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
+
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     size_t merchantPricesSize = 0;
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
         merchantPricesSize += NUM_SCRUBS;
     }
-    // TODO: Add shop item count when shopsanity is enabled
+    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 0) {
+        merchantPricesSize += NUM_SHOP_ITEMS;
+    }
 
     SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -153,6 +157,8 @@ void SaveManager::SaveRandomizer() {
     }
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    SaveManager::Instance->SaveData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
@@ -1177,7 +1183,7 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     }
 }
 
-#ifdef __WIIU__
+#if defined(__WIIU__) || defined(__SWITCH__)
 // std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
 int copy_file(const char* src, const char* dst)
 {
@@ -1207,8 +1213,8 @@ int copy_file(const char* src, const char* dst)
 void SaveManager::CopyZeldaFile(int from, int to) {
     assert(std::filesystem::exists(GetFileName(from)));
     DeleteZeldaFile(to);
-#ifdef __WIIU__
-    assert(copy_file(GetFileName(from).c_str(), GetFileName(to).c_str()) == 0);
+#if defined(__WIIU__) || defined(__SWITCH__)
+    copy_file(GetFileName(from).c_str(), GetFileName(to).c_str());
 #else
     std::filesystem::copy_file(GetFileName(from), GetFileName(to));
 #endif

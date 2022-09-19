@@ -467,7 +467,7 @@ static const char* sSBVRFine0Tex[] =
 
 static const char* sSBVRFine0Pal[] =
 {
-    gSunriseSkyboxTlut
+    gSunriseSkyboxTLUT
 };
 
 static const char* sSBVRFine1Tex[] =
@@ -477,7 +477,7 @@ static const char* sSBVRFine1Tex[] =
 
 static const char* sSBVRFine1Pal[] =
 {
-    gDaySkyboxTlut
+    gDaySkyboxTLUT
 };
 
 static const char* sSBVRFine2Tex[] =
@@ -487,7 +487,7 @@ static const char* sSBVRFine2Tex[] =
 
 static const char* sSBVRFine2Pal[] =
 {
-    gSunsetSkyboxTlut
+    gSunsetSkyboxTLUT
 };
 
 static const char* sSBVRFine3Tex[] =
@@ -497,7 +497,7 @@ static const char* sSBVRFine3Tex[] =
 
 static const char* sSBVRFine3Pal[] =
 {
-    gNightSkyboxTlut
+    gNightSkyboxTLUT
 };
 
 static const char* sSBVRCloud0Tex[] =
@@ -507,7 +507,7 @@ static const char* sSBVRCloud0Tex[] =
 
 static const char* sSBVRCloud0Pal[] =
 {
-    gSunriseOvercastSkyboxTlut
+    gSunriseOvercastSkyboxTLUT
 };
 
 static const char* sSBVRCloud1Tex[] =
@@ -517,7 +517,7 @@ static const char* sSBVRCloud1Tex[] =
 
 static const char* sSBVRCloud1Pal[] =
 {
-    gDayOvercastSkyboxTlut
+    gDayOvercastSkyboxTLUT
 };
 
 static const char* sSBVRCloud2Tex[] =
@@ -527,7 +527,7 @@ static const char* sSBVRCloud2Tex[] =
 
 static const char* sSBVRCloud2Pal[] =
 {
-    gSunsetOvercastSkyboxTlut
+    gSunsetOvercastSkyboxTLUT
 };
 
 static const char* sSBVRCloud3Tex[] =
@@ -537,7 +537,7 @@ static const char* sSBVRCloud3Tex[] =
 
 static const char* sSBVRCloud3Pal[] =
 {
-    gNightOvercastSkyboxTlut
+    gNightOvercastSkyboxTLUT
 };
 
 static const char* sSBVRHoly0Tex[] =
@@ -547,7 +547,7 @@ static const char* sSBVRHoly0Tex[] =
 
 static const char* sSBVRHoly0Pal[] =
 {
-    gHoly0SkyboxTlut
+    gHoly0SkyboxTLUT
 };
 
 
@@ -656,8 +656,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gBazaarBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gBazaar2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gBazaarBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gBazaarBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gBazaarBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gBazaarBg2TLUT, 16, 16);
         skyboxCtx->rot.y = 0.8f;
         break;
     case SKYBOX_HOUSE_LINK:
@@ -668,10 +668,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gLinksHouse3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gLinksHouse4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gLinksHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gLinksHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gLinksHouseBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gLinksHouseBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gLinksHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gLinksHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gLinksHouseBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gLinksHouseBg4TLUT, 16, 16);
         break;
     case SKYBOX_OVERCAST_SUNSET:
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 0, gSunsetOvercastSkybox1Tex, 128, 64, 0x0);
@@ -680,7 +680,7 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 3, gSunsetOvercastSkybox4Tex, 128, 64, 0x6000);
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 4, gSunsetOvercastSkybox5Tex, 128, 128, 0x8000);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gSunsetOvercastSkyboxTlut, 16, 8);
+        LoadSkyboxPalette(skyboxCtx, 0, gSunsetOvercastSkyboxTLUT, 16, 8);
         break;
     case SKYBOX_MARKET_ADULT:
         skyboxCtx->unk_140 = 1;
@@ -690,10 +690,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gMarketRuins3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gMarketRuins4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMarketRuinsBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMarketRuinsBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gMarketRuinsBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gMarketRuinsBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMarketRuinsBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMarketRuinsBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gMarketRuinsBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gMarketRuinsBg4TLUT, 16, 16);
         break;
     case SKYBOX_CUTSCENE_MAP:
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 0, gHoly0Skybox1Tex, 128, 64, 0x0);
@@ -703,7 +703,7 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 4, gHoly0Skybox5Tex, 128, 128, 0x8000);
         LoadSkyboxTexAtOffset(skyboxCtx, 0, 5, gHoly0Skybox6Tex, 128, 128, 0xC000);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gHoly0SkyboxTlut, 16, 8);
+        LoadSkyboxPalette(skyboxCtx, 0, gHoly0SkyboxTLUT, 16, 8);
 
         LoadSkyboxTexAtOffset(skyboxCtx, 1, 0, gHoly1Skybox1Tex, 128, 64, 0x0);
         LoadSkyboxTexAtOffset(skyboxCtx, 1, 1, gHoly1Skybox2Tex, 128, 64, 0x2000);
@@ -713,7 +713,7 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTexAtOffset(skyboxCtx, 1, 5, gHoly1Skybox6Tex, 128, 128, 0xC000);
 
 
-        LoadSkyboxPalette(skyboxCtx, 1, gHoly1SkyboxTlut, 16, 8);
+        LoadSkyboxPalette(skyboxCtx, 1, gHoly1SkyboxTLUT, 16, 8);
         break;
     case SKYBOX_MARKET_CHILD_DAY:
         skyboxCtx->unk_140 = 1;
@@ -723,10 +723,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gMarketDay3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gMarketDay4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMarketDayBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMarketDayBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gMarketDayBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gMarketDayBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMarketDayBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMarketDayBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gMarketDayBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gMarketDayBg4TLUT, 16, 16);
         break;
     case SKYBOX_MARKET_CHILD_NIGHT:
         skyboxCtx->unk_140 = 1;
@@ -736,10 +736,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gMarketNight3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gMarketNight4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMarketNightBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMarketNightBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gMarketNightBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gMarketNightBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMarketNightBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMarketNightBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gMarketNightBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gMarketNightBg4TLUT, 16, 16);
         break;
     case SKYBOX_HAPPY_MASK_SHOP:
         skyboxCtx->unk_140 = 1;
@@ -747,8 +747,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gMaskShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gMaskShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMaskShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMaskShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMaskShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMaskShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -760,10 +760,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gKnowItAllBrosHouse3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gKnowItAllBrosHouse4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gKnowItAllBrosHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gKnowItAllBrosHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gKnowItAllBrosHouseBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gKnowItAllBrosHouseBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gKnowItAllBrosHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gKnowItAllBrosHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gKnowItAllBrosHouseBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gKnowItAllBrosHouseBg4TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_OF_TWINS:
         skyboxCtx->unk_140 = 2;
@@ -772,9 +772,9 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 1, gHouseOfTwins2BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 2, gHouseOfTwins3BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gHouseOfTwinsBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gHouseOfTwinsBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gHouseOfTwinsBg3Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gHouseOfTwinsBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gHouseOfTwinsBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gHouseOfTwinsBg3TLUT, 16, 16);
         break;
     case SKYBOX_STABLES:
         skyboxCtx->unk_140 = 1;
@@ -784,10 +784,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gStable3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gStable4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gStableBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gStableBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gStableBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gStableBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gStableBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gStableBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gStableBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gStableBg4TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_KAKARIKO:
         skyboxCtx->unk_140 = 1;
@@ -797,10 +797,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gCarpentersHouse3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gCarpentersHouse4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gCarpentersHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gCarpentersHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gCarpentersHouseBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gCarpentersHouseBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gCarpentersHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gCarpentersHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gCarpentersHouseBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gCarpentersHouseBg4TLUT, 16, 16);
         break;
     case SKYBOX_KOKIRI_SHOP:
         skyboxCtx->unk_140 = 1;
@@ -808,8 +808,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gKokiriShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gKokiriShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gKokiriShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gKokiriShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gKokiriShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gKokiriShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -819,8 +819,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gGoronShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gGoronShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gGoronShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gGoronShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gGoronShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gGoronShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -830,8 +830,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gZoraShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gZoraShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gZoraShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gZoraShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gZoraShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gZoraShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -841,8 +841,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gKakPotionShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gKakPotionShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gKakPotionShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gKakPotionShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gKakPotionShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gKakPotionShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -852,8 +852,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gMarketPotionShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gMarketPotionShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMarketPotionShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMarketPotionShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMarketPotionShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMarketPotionShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -863,8 +863,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 0, gBombchuShopBgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 1, gBombchuShop2BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gBombchuShopBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gBombchuShopBg2Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gBombchuShopBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gBombchuShopBg2TLUT, 16, 16);
 
         skyboxCtx->rot.y = 0.8f;
         break;
@@ -876,10 +876,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gRichardsHouse3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gRichardsHouse4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gRichardsHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gRichardsHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gRichardsHouseBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gRichardsHouseBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gRichardsHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gRichardsHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gRichardsHouseBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gRichardsHouseBg4TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_IMPA:
         skyboxCtx->unk_140 = 1;
@@ -889,10 +889,10 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 2, gCowHouse3BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 3, gCowHouse4BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gCowHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gCowHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gCowHouseBg3Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 3, gCowHouseBg4Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gCowHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gCowHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gCowHouseBg3TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 3, gCowHouseBg4TLUT, 16, 16);
         break;
     case SKYBOX_TENT:
         skyboxCtx->unk_140 = 2;
@@ -901,9 +901,9 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 1, gCarpentersTent2BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 2, gCarpentersTent3BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gCarpentersTentBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gCarpentersTentBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gCarpentersTentBg3Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gCarpentersTentBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gCarpentersTentBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gCarpentersTentBg3TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_MIDO:
         skyboxCtx->unk_140 = 2;
@@ -912,9 +912,9 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 1, gMidosHouse2BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 2, gMidosHouse3BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gMidosHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gMidosHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gMidosHouseBg3Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gMidosHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gMidosHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gMidosHouseBg3TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_SARIA:
         skyboxCtx->unk_140 = 2;
@@ -923,9 +923,9 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 1, gSariasHouse2BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 2, gSariasHouse3BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gSariasHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gSariasHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gSariasHouseBg3Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gSariasHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gSariasHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gSariasHouseBg3TLUT, 16, 16);
         break;
     case SKYBOX_HOUSE_ALLEY:
         skyboxCtx->unk_140 = 2;
@@ -934,9 +934,9 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxTex(skyboxCtx, 0, 1, gBackAlleyHouse2BgTex, 256, 256, 256, 256);
         LoadSkyboxTex(skyboxCtx, 0, 2, gBackAlleyHouse3BgTex, 256, 256, 256, 256);
 
-        LoadSkyboxPalette(skyboxCtx, 0, gBackAlleyHouseBgTlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 1, gBackAlleyHouseBg2Tlut, 16, 16);
-        LoadSkyboxPalette(skyboxCtx, 2, gBackAlleyHouseBg3Tlut, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 0, gBackAlleyHouseBgTLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 1, gBackAlleyHouseBg2TLUT, 16, 16);
+        LoadSkyboxPalette(skyboxCtx, 2, gBackAlleyHouseBg3TLUT, 16, 16);
         break;
     default:
         break;

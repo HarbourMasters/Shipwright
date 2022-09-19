@@ -630,7 +630,6 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-    /* 0x0A89 */ bool       pendingIceTrap;
     /* 0x0A95 */ PendingFlag pendingFlag;
     /* 0x0AA1 */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
     /* 0x0AA2 */ GetItemEntry getItemEntry;

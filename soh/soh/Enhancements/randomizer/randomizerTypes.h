@@ -961,6 +961,7 @@ typedef enum {
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
     RG_HINT,
+    RG_TYCOON_WALLET,
     RG_MAX
 } RandomizerGet;
 
@@ -989,6 +990,7 @@ typedef enum {
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
+    RSK_SHOPSANITY,
     RSK_SHUFFLE_SCRUBS,
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
@@ -1041,3 +1043,11 @@ typedef struct ScrubIdentity {
     int32_t itemPrice;
     bool isShuffled;
 } ScrubIdentity;
+
+typedef struct ShopItemIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+    GetItemID ogItemId;
+    int32_t enGirlAShopItem;
+    int32_t itemPrice;
+} ShopItemIdentity;

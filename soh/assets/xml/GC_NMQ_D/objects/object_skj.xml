@@ -1,7 +1,7 @@
 <Root>
     <File Name="object_skj" Segment="6">
-        <DList Name="gSKJNeedleDL" Offset="0x0EB0"/>
-        <DList Name="gSKJskullMaskDL" Offset="0x14C8"/>
+        <DList Name="gSkullKidNeedleDL" Offset="0x0EB0"/>
+        <DList Name="gSkullKidSkullMaskDL" Offset="0x14C8"/>
 
         <Limb Name="gSkullKidUnkLimb_5E20" LimbType="Standard" Offset="0x5E20"/>
         <Limb Name="gSkullKidUnkLimb_5E2C" LimbType="Standard" Offset="0x5E2C"/>
@@ -16,14 +16,13 @@
         <Limb Name="gSkullKidNeckLimb" LimbType="Standard" Offset="0x5E98"/>
         <Limb Name="gSkullKidHeadAndFaceLimb" LimbType="Standard" Offset="0x5EA4"/>
         <Limb Name="gSkullKidUpperHatLimb" LimbType="Standard" Offset="0x5EB0"/>
-        <Limb Name="gSkullKidLeftSholderLimb" LimbType="Standard" Offset="0x5EBC"/>
+        <Limb Name="gSkullKidLeftShoulderLimb" LimbType="Standard" Offset="0x5EBC"/>
         <Limb Name="gSkullKidLeftArmLimb" LimbType="Standard" Offset="0x5EC8"/>
         <Limb Name="gSkullKidLeftHandAndFluteLimb" LimbType="Standard" Offset="0x5ED4"/>
-        <Limb Name="gSkullKidRightSholderLimb" LimbType="Standard" Offset="0x5EE0"/>
+        <Limb Name="gSkullKidRightShoulderLimb" LimbType="Standard" Offset="0x5EE0"/>
         <Limb Name="gSkullKidRightArmLimb" LimbType="Standard" Offset="0x5EEC"/>
-        <!--<Limb Name="gSkullKidRightHandLimb" LimbType="Standard" Offset="0x5EF8"/> ZAPD doesnt extract this limb correctly for some reason-->
         <Skeleton Name="gSkullKidSkel" Type="Flex" LimbType="Standard" Offset="0x5F40"/>
-        
+
         <!--Limb DLists-->
         <DList Name="gSkullKidLeftUpperLegDL" Offset="0x3B90"/>
         <DList Name="gSkullKidLeftLowerLegDL" Offset="0x3C88"/>
@@ -31,16 +30,15 @@
         <DList Name="gSkullKidRightUpperLegDL" Offset="0x3770"/>
         <DList Name="gSkullKidRightLowerLegDL" Offset="0x3868"/>
         <DList Name="gSkullKidRightFootDL" Offset="0x4630"/>
-        <DList Name="gSkullKidChestandClothesDL" Offset="0x4008"/>
+        <DList Name="gSkullKidChestAndClothesDL" Offset="0x4008"/>
         <DList Name="gSkullKidNeckDL" Offset="0x40E8"/>
         <DList Name="gSKullKidHeadAndFaceDL" Offset="0x44C8"/>
         <DList Name="gSkullKidUpperHatDL" Offset="0x5130"/>
-        <DList Name="gSkullKidLeftSholderDL" Offset="0x4FB8"/>
+        <DList Name="gSkullKidLeftShoulderDL" Offset="0x4FB8"/>
         <DList Name="gSkullKidLeftArmDL" Offset="0x4CF8"/>
         <DList Name="gSkullKidLeftHandAndFluteDL" Offset="0x4B28"/>
-        <DList Name="gSkullKidRightSholderDL" Offset="0x49B0"/>
+        <DList Name="gSkullKidRightShoulderDL" Offset="0x49B0"/>
         <DList Name="gSkullKidRightArmDL" Offset="0x4810"/>
-        <!--<DList Name="gSkullKidRightHand" Offset="0x5E38"/>-->
 
         <Animation Name="gSkullKidBackflipAnim" Offset="0x051C"/>
         <Animation Name="gSkullKidShootNeedleAnim" Offset="0x07A4"/>
@@ -48,11 +46,11 @@
         <Animation Name="gSkullKidDieAnim" Offset="0x6A98"/>
         <Animation Name="gSkullKidHitAnim" Offset="0x6D84"/>
         <Animation Name="gSkullKidLandAnim" Offset="0x7128"/>
-        <Animation Name="gSkullKidLookLeftAndRightAnim" Offset="0x8174"/> <!--Unused-->
+        <Animation Name="gSkullKidLookLeftAndRightAnim" Offset="0x8174"/>
         <Animation Name="gSkullKidFightingStanceAnim" Offset="0x8374"/>
         <Animation Name="gSkullKidWaitAnim" Offset="0x8B9C"/>
         <Animation Name="gSkullKidWalkToPlayerAnim" Offset="0x8E14"/>
-        
+
         <Texture Name="gSkullKidSkullMaskTex" OutName="skull_mask" Format="rgba16" Width="16" Height="16" Offset="0xF08"/>
         <Texture Name="gSkullKidSkullMaskTeethTex" OutName="skull_mask_teeth" Format="rgba16" Width="8" Height="8" Offset="0x1108"/>
         <Texture Name="gSkullKidSkullMaskNoseTex" OutName="skull_mask_nose" Format="rgba16" Width="8" Height="8" Offset="0x1188"/>

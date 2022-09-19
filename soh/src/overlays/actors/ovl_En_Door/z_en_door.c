@@ -64,7 +64,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneForward, 4000, ICHAIN_STOP),
 };
 
-static AnimationHeader* D_809FCECC[] = { &gDoor3Anim, &gDoor1Anim, &gDoor4Anim, &gDoor2Anim };
+static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim, &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
 
 static u8 sDoorAnimOpenFrames[] = { 25, 25, 25, 25 };
 
@@ -72,10 +72,10 @@ static u8 sDoorAnimCloseFrames[] = { 60, 70, 60, 70 };
 
 static Gfx* D_809FCEE4[5][2] = {
     { gDoorLeftDL, gDoorRightDL },
-    { gFireTempleDoorWithHandleFrontDL, gFireTempleDoorWithHandleBackDL },
+    { gFireTempleDoorWithHandleLeftDL, gFireTempleDoorWithHandleRightDL },
     { gWaterTempleDoorLeftDL, gWaterTempleDoorRightDL },
-    { object_haka_door_DL_0013B8, object_haka_door_DL_001420 },
-    { gFieldDoor1DL, gFieldDoor2DL },
+    { gShadowDoorLeftDL, gShadowDoorRightDL },
+    { gFieldDoorLeftDL, gFieldDoorRightDL },
 };
 
 void EnDoor_Init(Actor* thisx, GlobalContext* globalCtx2) {
@@ -89,7 +89,7 @@ void EnDoor_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     objectInfo = &sDoorInfo[0];
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gDoorSkel, &gDoor3Anim, this->jointTable, this->morphTable, 5);
+    SkelAnime_Init(globalCtx, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable, 5);
     for (i = 0; i < ARRAY_COUNT(sDoorInfo) - 2; i++, objectInfo++) {
         if (globalCtx->sceneNum == objectInfo->sceneNum) {
             break;

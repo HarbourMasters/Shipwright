@@ -483,6 +483,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
             // when approaching.
             if (gSaveContext.n64ddFlag) {
                 sItem.getItemId = 0 - sItem.getItemId;
+                sItem.getItemFrom = ITEM_FROM_CHEST;
                 GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
             } else {
                 func_8002F554(&this->dyna.actor, globalCtx, -(this->dyna.actor.params >> 5 & 0x7F));

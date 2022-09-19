@@ -30,8 +30,8 @@
         <DList Name="gCuccoHeadDL" Offset="0x0A98"/>
 
         <!-- Other Cucco DisplayLists -->
-        <DList Name="gCuccoParticleAppearDL" Offset="0x23B0"/>
-        <DList Name="gCuccoParticleAliveDL" Offset="0x2428"/>
+        <DList Name="gCuccoEffectFeatherMaterialDL" Offset="0x23B0"/>
+        <DList Name="gCuccoEffectFeatherModelDL" Offset="0x2428"/>
 
         <!-- Cucco DisplayList Textures -->
         <Texture Name="gCuccoEyeTex" OutName="eye" Format="rgba16" Width="16" Height="16" Offset="0x1280"/>
