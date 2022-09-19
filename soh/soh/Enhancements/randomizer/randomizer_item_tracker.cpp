@@ -746,7 +746,7 @@ void UpdateVectors() {
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
 
     dungeonItems.clear();
-    if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
+    if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
         if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
@@ -792,7 +792,7 @@ void UpdateVectors() {
         }
         mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
     }
-    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 1) {
+    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 1) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
 
@@ -819,13 +819,13 @@ void DrawItemTracker(bool& open) {
             (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) ||
             (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 1) ||
             (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) ||
-            (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 1) == 1) ||
-            (CVar_GetS32("gItemTrackerNotesDisplayType", 2) == 1)
+            (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 1) ||
+            (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 1)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
             DrawItemsInRows(mainWindowItems, 6);
 
-            if (CVar_GetS32("gItemTrackerNotesDisplayType", 2) == 1 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+            if (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 1 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -870,7 +870,7 @@ void DrawItemTracker(bool& open) {
             EndFloatingWindows();
         }
 
-        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
+        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
             BeginFloatingWindows("Dungeon Items Tracker");
             if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1)) {
                 if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
@@ -884,7 +884,7 @@ void DrawItemTracker(bool& open) {
             EndFloatingWindows();
         }
 
-        if (CVar_GetS32("gItemTrackerNotesDisplayType", 2) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+        if (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
             ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
@@ -960,16 +960,16 @@ void DrawItemTrackerOptions(bool& open) {
         PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", 1);
     }
     LabeledComboBoxRightAligned("Songs", "gItemTrackerSongsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    LabeledComboBoxRightAligned("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 2);
-    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) != 0) {
-        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 2) == 2) {
+    LabeledComboBoxRightAligned("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) != 0) {
+        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
             PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", 1);
         }
         PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
     }
 
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
-        LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 2);
+        LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
     }
 
     ImGui::PopStyleVar(1);
