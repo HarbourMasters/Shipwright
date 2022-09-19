@@ -6132,6 +6132,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP) {
                     if (giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                        // RANDOTODO: Abstract this to a function.
                         this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                         this->actor.colChkInfo.damage = 0;
                         func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
@@ -12621,6 +12622,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         this->unk_84F = 1;
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
+        //RANDOTODO: Macro this boolean check.
         if (giEntry.modIndex != MOD_RANDOMIZER && giEntry.itemId != RG_ICE_TRAP) {
             if (giEntry.modIndex == MOD_NONE) {
             // RANDOTOD: Move this into Item_Give() or some other more central location
