@@ -1852,6 +1852,11 @@ void EnGo2_SetGetItem(EnGo2* this, GlobalContext* globalCtx) {
                 this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
                 return;
         }
+
+        if (gSaveContext.n64ddFlag) {
+            // Resolves #1301, In vanilla this is handled at z_message_PAL:3549, but by specifically watching for trade sequence items
+            gSaveContext.unk_13EE = 0x32;
+        }
         this->actionFunc = func_80A46B40;
     }
 }
