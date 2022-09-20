@@ -133,7 +133,8 @@ static char* sShopItemDescriptions[] = {
     "爆弾×30      ",  // "Bomb x30"
     "爆弾×5       ",  // "Bomb x5"
     "赤クスリ      ", // "Red medicine"
-    "赤クスリ      "  // "Red medicine"
+    "赤クスリ      ", // "Red medicine"
+    "Random Item  "  // "Random Item"
 };
 
 static s16 sMaskShopItems[8] = {
