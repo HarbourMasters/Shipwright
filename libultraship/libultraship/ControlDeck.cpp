@@ -73,13 +73,11 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if((shouldBlockGameInput && device->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
+					if((ShouldBlockGameInput() && device->GetGuid() != "Keyboard")) {
 						device->Read(nullptr, i);
 						continue;
 					}
@@ -87,7 +85,7 @@ namespace Ship {
 				}
 				continue;
 			}
-			if((shouldBlockGameInput && backend->GetGuid() != "Keyboard") || CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
+			if((ShouldBlockGameInput() && backend->GetGuid() != "Keyboard")) {
 				backend->Read(nullptr, i);
 				continue;
 			}
@@ -258,4 +256,11 @@ namespace Ship {
         return controllerBits;
     }
 
+    void ControlDeck::SetShouldBlockGameInput(bool value) {
+        shouldBlockGameInput = value;
+    }
+
+    bool ControlDeck::ShouldBlockGameInput() const {
+        return shouldBlockGameInput || (CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0));
+    }
 }
