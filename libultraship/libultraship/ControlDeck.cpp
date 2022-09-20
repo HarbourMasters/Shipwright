@@ -78,6 +78,7 @@ namespace Ship {
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
 					if((ShouldBlockGameInput() && device->GetGuid() != "Keyboard")) {
+						device->Read(nullptr, i);
 						continue;
 					}
 					device->Read(&pad[i], i);
@@ -85,6 +86,7 @@ namespace Ship {
 				continue;
 			}
 			if((ShouldBlockGameInput() && backend->GetGuid() != "Keyboard")) {
+				backend->Read(nullptr, i);
 				continue;
 			}
 			backend->Read(&pad[i], i);
