@@ -24,6 +24,7 @@
 
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
+#include "soh/SaveManager.h"
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
@@ -167,6 +168,8 @@ namespace GameMenuBar {
         CVar_SetS32("gBombchuDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
+        // Always Win Dampe Digging First Try
+        CVar_SetS32("gDampeWin", 0);
 
         // Change Red Potion Effect
         CVar_SetS32("gRedPotionEffect", 0);
@@ -219,6 +222,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantFishing", 0);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 0);
+        // Fish Never Escape
+        CVar_SetS32("gFishNeverEscape", 0);
         // Child Minimum Weight (6 to 10)
         CVar_SetS32("gChildMinimumWeightFish", 10);
         // Adult Minimum Weight (8 to 13)
@@ -400,6 +405,8 @@ namespace GameMenuBar {
         CVar_SetS32("gMaskSelect", 1);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 1);
+        // Always Win Dampe Digging
+        CVar_SetS32("gDampeWin", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
@@ -420,14 +427,14 @@ namespace GameMenuBar {
         // Allow the cursor to be on any slot
         CVar_SetS32("gPauseAnyCursor", 1);
 
-        // Instant Fishing
-        CVar_SetS32("gInstantFishing", 1);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 1);
+        // Fish Never Escape
+        CVar_SetS32("gFishNeverEscape", 1);
         // Child Minimum Weight (6 to 10)
-        CVar_SetS32("gChildMinimumWeightFish", 6);
+        CVar_SetS32("gChildMinimumWeightFish", 3);
         // Adult Minimum Weight (8 to 13)
-        CVar_SetS32("gAdultMinimumWeightFish", 8);
+        CVar_SetS32("gAdultMinimumWeightFish", 6);
 
         // Visual Stone of Agony
         CVar_SetS32("gVisualAgony", 1);
@@ -523,6 +530,11 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 ImGui::PopItemWidth();
+                UIWidgets::Spacer(0);
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
+                UIWidgets::EnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, false);
+                UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
+                ImGui::PopItemWidth();
 
                 ImGui::EndMenu();
             }
@@ -568,7 +580,13 @@ namespace GameMenuBar {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                #ifdef __SWITCH__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+                #elif __WIIU__
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+                #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+                #endif
                     if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(cvar, val);
@@ -786,6 +804,9 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
+                    UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
+                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
+                    UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
                     UIWidgets::Spacer(0);
 
                     if (ImGui::BeginMenu("Potion Values"))
@@ -868,9 +889,11 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10, false, true, false);
+                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false);
+                        UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
+                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
@@ -1093,7 +1116,9 @@ namespace GameMenuBar {
                 }
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            #ifdef __WIIU__
+            #ifdef __SWITCH__
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+            #elif __WIIU__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
             #else
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
