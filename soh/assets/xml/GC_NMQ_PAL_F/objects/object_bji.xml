@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_bji" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
         <Limb Name="object_bji_Limb_000000" LimbType="Standard" Offset="0x0"/>
         <Limb Name="object_bji_Limb_00000C" LimbType="Standard" Offset="0xC"/>
         <Limb Name="object_bji_Limb_000018" LimbType="Standard" Offset="0x18"/>
@@ -18,18 +19,17 @@
 
         <Skeleton Name="object_bji_Skel_0000F0" Type="Flex" LimbType="Standard" Offset="0xF0"/>
 
+        <!-- 32-bit aligned textures. -->
         <Texture Name="object_bji_TLUT_0000FC" OutName="tlut_000000FC" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
-        <Texture Name="object_bji_Tex_0002FC" OutName="tex_000002FC" Format="ci8" Width="8" Height="8" Offset="0x2FC"/>
-        <Texture Name="object_bji_Tex_00033C" OutName="tex_0000033C" Format="ci8" Width="8" Height="8" Offset="0x33C"/>
-        <Texture Name="object_bji_Tex_00037C" OutName="tex_0000037C" Format="ci8" Width="16" Height="16" Offset="0x37C"/>
-        <Texture Name="object_bji_Tex_00047C" OutName="tex_0000047C" Format="ci8" Width="8" Height="8" Offset="0x47C"/>
-        <Texture Name="object_bji_Tex_0004BC" OutName="tex_000004BC" Format="ci8" Width="8" Height="8" Offset="0x4BC"/>
+        <Texture Name="object_bji_Tex_0002FC" OutName="tex_000002FC" Format="ci8" Width="8" Height="8" Offset="0x2FC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00033C" OutName="tex_0000033C" Format="ci8" Width="8" Height="8" Offset="0x33C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00037C" OutName="tex_0000037C" Format="ci8" Width="16" Height="16" Offset="0x37C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00047C" OutName="tex_0000047C" Format="ci8" Width="8" Height="8" Offset="0x47C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_0004BC" OutName="tex_000004BC" Format="ci8" Width="8" Height="8" Offset="0x4BC" TlutOffset="0xFC"/>
         <Texture Name="object_bji_Tex_0004FC" OutName="tex_000004FC" Format="i8" Width="16" Height="16" Offset="0x4FC"/>
-
         <Texture Name="object_bji_Tex_0005FC" OutName="tex_000005FC" Format="ci8" Width="32" Height="32" Offset="0x5FC" TlutOffset="0xFC"/>
         <Texture Name="object_bji_Tex_0009FC" OutName="tex_000009FC" Format="ci8" Width="32" Height="32" Offset="0x9FC" TlutOffset="0xFC"/>
         <Texture Name="object_bji_Tex_000DFC" OutName="tex_00000DFC" Format="ci8" Width="32" Height="32" Offset="0xDFC" TlutOffset="0xFC"/>
-
         <Texture Name="object_bji_Tex_0011FC" OutName="tex_000011FC" Format="i8" Width="8" Height="8" Offset="0x11FC"/>
 
         <DList Name="object_bji_DL_002560" Offset="0x2560"/>
