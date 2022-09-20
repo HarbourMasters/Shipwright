@@ -114,7 +114,10 @@ void CrowdControl::ReceiveFromCrowdControl()
 
         CCPacket* packet = new CCPacket();
         packet->packetId = dataReceived["id"];
-        packet->effectValue = dataReceived["type"];
+        auto parameters = dataReceived["parameters"];
+        if (parameters.size() > 0) {
+            packet->effectValue = dataReceived["parameters"][0];
+        }
         packet->effectType = dataReceived["code"].get<std::string>();
 
         if (strcmp(packet->effectType.c_str(), "high_gravity") == 0 ||
@@ -122,7 +125,9 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->effectCategory = "gravity";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "defense_modifier") == 0) {
+        else if (strcmp(packet->effectType.c_str(), "damage_multiplier") == 0
+                    || strcmp(packet->effectType.c_str(), "defense_multiplier") == 0
+        ) {
             packet->effectCategory = "defense";
             packet->timeRemaining = 30000;
         }
@@ -138,7 +143,8 @@ void CrowdControl::ReceiveFromCrowdControl()
             strcmp(packet->effectType.c_str(), "heal") == 0 ||
             strcmp(packet->effectType.c_str(), "knockback") == 0 ||
             strcmp(packet->effectType.c_str(), "electrocute") == 0 ||
-            strcmp(packet->effectType.c_str(), "burn") == 0) {
+            strcmp(packet->effectType.c_str(), "burn") == 0 ||
+            strcmp(packet->effectType.c_str(), "kill") == 0) {
             packet->effectCategory = "link_damage";
         }
         else if (strcmp(packet->effectType.c_str(), "hover_boots") == 0 ||
@@ -174,10 +180,14 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->effectCategory = "controls";
             packet->timeRemaining = 60000;
         }
-        else if (strcmp(packet->effectType.c_str(), "rupees") == 0) {
+        else if (strcmp(packet->effectType.c_str(), "add_rupees") == 0
+                    || strcmp(packet->effectType.c_str(), "remove_rupees") == 0
+        ) {
             packet->effectCategory = "rupees";
         }
-        else if (strcmp(packet->effectType.c_str(), "speed_modifier") == 0) {
+        else if (strcmp(packet->effectType.c_str(), "increase_speed") == 0
+                    || strcmp(packet->effectType.c_str(), "increase_speed") == 0
+        ) {
             packet->effectCategory = "speed";
             packet->timeRemaining = 30000;
         }
@@ -267,8 +277,11 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
 
             CMD_EXECUTE("empty_magic");
             return 1;
-        } else if (strcmp(effectId, "rupees") == 0) {
+        } else if (strcmp(effectId, "add_rupees") == 0) {
             CMD_EXECUTE(std::format("update_rupees {}", value));
+            return 1;
+        } else if (strcmp(effectId, "remove_rupees") == 0) {
+            CMD_EXECUTE(std::format("update_rupees -{}", value));
             return 1;
         }
     }
@@ -291,11 +304,9 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                 return 1;
             }
             return 0;
-        } else if (strcmp(effectId, "defense_modifier") == 0
-                    || strcmp(effectId, "damage") == 0
+        } else if (strcmp(effectId, "damage") == 0
                     || strcmp(effectId, "heal") == 0
                     || strcmp(effectId, "knockback") == 0
-                    || strcmp(effectId, "speed_modifier") == 0
         ) {
             CMD_EXECUTE(std::format("{} {}", effectId, value));
             return 1;
@@ -322,6 +333,18 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
         } else if (strcmp(effectId, "wallmaster") == 0) {
             CMD_EXECUTE(std::format("spawn 17 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
             return 1;
+        } else if (strcmp(effectId, "increase_speed") == 0) {
+           CMD_EXECUTE("speed_modifier 2");
+            return 1;
+        } else if (strcmp(effectId, "decrease_speed") == 0) {
+           CMD_EXECUTE("speed_modifier -2");
+            return 1;
+        } else if (strcmp(effectId, "damage_multiplier") == 0) {
+            CMD_EXECUTE(std::format("defense_modifier -{}", value));
+            return 1;
+        } else if (strcmp(effectId, "defense_multiplier") == 0) {
+            CMD_EXECUTE(std::format("defense_modifier {}", value));
+            return 1;
         }
     }
 
@@ -338,7 +361,6 @@ void CrowdControl::RemoveEffect(const char* effectId) {
     if (player != NULL) {
         if (strcmp(effectId, "giant_link") == 0
                 || strcmp(effectId, "minish_link") == 0
-                || strcmp(effectId, "defense_modifier") == 0
                 || strcmp(effectId, "no_ui") == 0
                 || strcmp(effectId, "invisible") == 0
                 || strcmp(effectId, "paper_link") == 0
@@ -346,7 +368,6 @@ void CrowdControl::RemoveEffect(const char* effectId) {
                 || strcmp(effectId, "ohko") == 0
                 || strcmp(effectId, "pacifist") == 0
                 || strcmp(effectId, "rainstorm") == 0
-                || strcmp(effectId, "speed_modifier") == 0
         ) {
             CMD_EXECUTE(std::format("{} 0", effectId));
             return;
@@ -358,6 +379,16 @@ void CrowdControl::RemoveEffect(const char* effectId) {
             return;
         } else if (strcmp(effectId, "reverse") == 0) {
             CMD_EXECUTE("reverse_controls 0"); 
+        } else if (strcmp(effectId, "increase_speed") == 0
+                    || strcmp(effectId, "decrease_speed") == 0
+        ) {
+            CMD_EXECUTE("speed_modifier 0");
+            return;
+        } else if (strcmp(effectId, "damage_multiplier") == 0
+                    || strcmp(effectId, "defense_multiplier") == 0
+        ) {
+            CMD_EXECUTE("defense_modifier 0");
+            return;
         }
     }
 }

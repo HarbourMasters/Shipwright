@@ -2673,7 +2673,7 @@ s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange) {
     }
     // clang-format on
 
-    if (defenseModifier != 0) {
+    if (defenseModifier != 0 && healthChange < 0) {
         if (defenseModifier > 0) {
             healthChange /= defenseModifier;
         } else {
