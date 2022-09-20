@@ -504,6 +504,11 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 ImGui::PopItemWidth();
+                UIWidgets::Spacer(0);
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
+                UIWidgets::EnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, false);
+                UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
+                ImGui::PopItemWidth();
 
                 ImGui::EndMenu();
             }
