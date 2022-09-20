@@ -81,6 +81,7 @@ namespace Ship {
         if (pad != nullptr) {
             *pad = padBuffer[std::min(padBuffer.size(), (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
         }
+        
         while (padBuffer.size() > 6) {
 			padBuffer.pop_back();
 		}
