@@ -24,6 +24,7 @@
 
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
+#include "soh/SaveManager.h"
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
@@ -157,6 +158,8 @@ namespace GameMenuBar {
         CVar_SetS32("gBombchuDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
+        // Always Win Dampe Digging First Try
+        CVar_SetS32("gDampeWin", 0);
 
         // Change Red Potion Effect
         CVar_SetS32("gRedPotionEffect", 0);
@@ -379,6 +382,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
+        // Always Win Dampe Digging
+        CVar_SetS32("gDampeWin", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
@@ -775,6 +780,9 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
+                    UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
+                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
+                    UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
                     UIWidgets::Spacer(0);
 
                     if (ImGui::BeginMenu("Potion Values"))

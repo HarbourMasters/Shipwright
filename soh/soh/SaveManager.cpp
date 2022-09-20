@@ -1214,6 +1214,10 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     fileMetaInfo[fileNum].randoSave = false;
 }
 
+bool SaveManager::IsRandoFile() {
+    return gSaveContext.n64ddFlag != 0 ? true : false;
+}
+
 // Functionality required to convert old saves into versioned saves
 
 // DO NOT EDIT ANY OF THE FOLLOWING STRUCTS
