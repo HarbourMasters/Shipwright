@@ -100,6 +100,8 @@ void EnSda_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnSda* this = (EnSda*)thisx;
     Player* player;
 
+    osSyncPrintf("SDA MOVE\n");
+
     if (this->actor.params == 1) {
         player = (Player*)this->actor.parent;
     } else {
@@ -107,12 +109,16 @@ void EnSda_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     this->actor.world.pos = player->actor.world.pos;
+
+    osSyncPrintf("SDA MOVE END\n");
 }
 
 void EnSda_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnSda* this = (EnSda*)thisx;
     Player* player;
     u8* shadowTexture = Graph_Alloc(globalCtx->state.gfxCtx, 0x1000);
+
+    osSyncPrintf("SDA DRAW \n");
 
     if (this->actor.params == 1) {
         player = (Player*)this->actor.parent;
@@ -126,6 +132,8 @@ void EnSda_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (KREG(0) < 5) {
         func_80AF9C70(shadowTexture, player, globalCtx);
     }
+
+    osSyncPrintf("SDA DRAW END\n");
 }
 
 void func_80AF8F60(Player* player, u8* shadowTexture, f32 arg2) {
@@ -244,6 +252,7 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
     Vec3f sp16C;
     Vec3f sp64[22];
 
+    osSyncPrintf("SDA CONT \n");
     if (BREG(57) != 0) {
         for (shadowTextureTemp = shadowTexture, i = 0; i < 0x1000; i++, shadowTextureTemp++) {
             if ((i >= 0 && i < 0x40) || (i >= 0xFC0 && i < 0x1000) || ((i & 0x3F) == 0) || ((i & 0x3F) == 0x3F)) {
@@ -263,6 +272,7 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
             D_80AFA660[D_80AFA16C[i]] = player->bodyPartsPos[i];
         }
     }
+    osSyncPrintf("SDA CONT 2\n");
     D_80AFA660[0].y += 3.0f;
     D_80AFA660[15].x = D_80AFA660[0].x + ((D_80AFA660[15].x - D_80AFA660[0].x) * 1.2f);
     D_80AFA660[15].y = D_80AFA660[0].y + ((D_80AFA660[15].y - D_80AFA660[0].y) * -1.2f);
@@ -270,6 +280,7 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
     for (i = 0; i < 6; i++) {
         func_80AF8F60(player, shadowTexture, i / 5.0f);
     }
+    osSyncPrintf("SDA CONT 3\n");
     if (this->actor.params != 1) {
         Matrix_MtxFToYXZRotS(&player->shieldMf, &sp178, false);
         sp178.y += (KREG(87) << 0xF) + 0x8000;
@@ -318,6 +329,7 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
             }
         }
     }
+    osSyncPrintf("SDA CONT 4\n");
 }
 
 void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) {
@@ -329,6 +341,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
 
     OPEN_DISPS(gfxCtx);
 
+    osSyncPrintf("SDA D 1\n");
     func_80094044(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 0, 0, 0, (BREG(52) + 50));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 0);
@@ -354,5 +367,6 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
     }
+    osSyncPrintf("SDA D 2\n");
     CLOSE_DISPS(gfxCtx);
 }
