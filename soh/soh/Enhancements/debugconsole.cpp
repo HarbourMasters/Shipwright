@@ -634,7 +634,7 @@ static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Magic_Empty();
+    gSaveContext.magic = 0;
     return CMD_SUCCESS;
 }
 

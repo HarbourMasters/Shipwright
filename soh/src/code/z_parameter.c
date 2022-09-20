@@ -2785,15 +2785,9 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
 void Magic_Fill(GlobalContext* globalCtx) {
     if (gSaveContext.magicAcquired) {
         gSaveContext.unk_13F2 = gSaveContext.unk_13F0;
-        gSaveContext.unk_13F6 = (gSaveContext.doubleMagic * 0x30) + 0x30;
+        gSaveContext.unk_13F6 = (gSaveContext.doubleMagic + 1) * 0x30;
         gSaveContext.unk_13F0 = 9;
     }
-}
-
-// TODO: Make it stop blinking
-void Magic_Empty() {
-    gSaveContext.unk_13F8 = 0;
-    gSaveContext.unk_13F0 = 1;
 }
 
 void func_800876C8(GlobalContext* globalCtx) {
