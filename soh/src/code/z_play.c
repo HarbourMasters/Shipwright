@@ -2006,5 +2006,7 @@ void Gameplay_PerformSave(GlobalContext* globalCtx) {
     } else {
         Save_SaveFile();
     }
-    Overlay_DisplayText(3.0f, "Game Saved");
+    if (CVar_GetS32("gAutosave", 0)) {
+        Overlay_DisplayText(3.0f, "Game Saved");
+    }
 }
