@@ -502,7 +502,7 @@ namespace GameMenuBar {
                 ImGui::PopItemWidth();
                 UIWidgets::Spacer(0);
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
-                UIWidgets::EnhancementSliderInt("Simulated Input Lag: %d milliseconds", "##SimulatedInputLag", "gSimulatedInputLag", 0, 1500, "", 0, false);
+                UIWidgets::EnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
                 ImGui::PopItemWidth();
 

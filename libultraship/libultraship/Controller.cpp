@@ -22,15 +22,7 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
 		ReadFromSource(virtualSlot);
 
-		OSContPad padToBuffer;
-		padToBuffer.button = 0;
-		padToBuffer.stick_x = 0;
-		padToBuffer.stick_y = 0;
-		padToBuffer.right_stick_x = 0;
-		padToBuffer.right_stick_y = 0;
-		padToBuffer.err_no = 0;
-		padToBuffer.gyro_x = 0;
-		padToBuffer.gyro_y = 0;
+		OSContPad padToBuffer = { 0 };
 
 #ifndef __WIIU__
 		SDL_PumpEvents();
@@ -85,21 +77,11 @@ namespace Ship {
 		padToBuffer.gyro_x = getGyroX(virtualSlot);
 		padToBuffer.gyro_y = getGyroY(virtualSlot);
 
-		padBuffer.push(padToBuffer);
+		padBuffer.push_front(padToBuffer);
+		*pad = padBuffer[std::min(padBuffer.size(), (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
 
-		while(padBuffer.size() > CVar_GetS32("gSimulatedInputLag", 0) / 30) {
-			auto bufferedPad = padBuffer.front();
-			if (pad != nullptr) {
-				pad->button = bufferedPad.button;
-				pad->stick_x = bufferedPad.stick_x;
-				pad->stick_y = bufferedPad.stick_y;
-				pad->right_stick_x = bufferedPad.right_stick_x;
-				pad->right_stick_y = bufferedPad.right_stick_y;
-				pad->err_no = bufferedPad.err_no;
-				pad->gyro_x = bufferedPad.gyro_x;
-				pad->gyro_y = bufferedPad.gyro_y;
-			}
-			padBuffer.pop();
+		while (padBuffer.size() > 6) {
+			padBuffer.pop_back();
 		}
 	}
 
