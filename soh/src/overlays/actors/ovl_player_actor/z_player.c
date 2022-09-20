@@ -4617,8 +4617,8 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
-                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && (interactActorId == ACTOR_EN_ISHI || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 5.0f);
             } else {
                 LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
             }
@@ -9152,6 +9152,10 @@ void func_80846120(Player* this, GlobalContext* globalCtx) {
     if (LinkAnimation_OnFrame(&this->skelAnime, 229.0f)) {
         Actor* heldActor = this->heldActor;
 
+        if (CVar_GetS32("gFasterHeavyBlockLift", 0)) {
+            // This is the difference in rotation when the animation is sped up 5x
+            heldActor->shape.rot.x -= 3510;
+        }
         heldActor->speedXZ = Math_SinS(heldActor->shape.rot.x) * 40.0f;
         heldActor->velocity.y = Math_CosS(heldActor->shape.rot.x) * 40.0f;
         heldActor->gravity = -2.0f;
