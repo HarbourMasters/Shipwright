@@ -63,13 +63,29 @@ static void ExporterProgramEnd()
 {
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
+		printf("Creating version file...\n");
+
+		// Get crc from rom
+		std::string romPath = Globals::Instance->baseRomPath.string();
+		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
+		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
+
+		// Write crc to version file
+		fs::path versionPath("Extract/version");
+		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
+		versionFile.write((char*)&crc, sizeof(crc));
+		versionFile.flush();
+		versionFile.close();
+
+		printf("Created version file.\n");
+
 		printf("Generating OTR Archive...\n");
 		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
 
-		for (auto item : files)
-		{
+		for (auto item : files) {
 			auto fileData = item.second;
-			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(), fileData.size());
+			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(),
+		                      fileData.size());
 		}
 
 		// Add any additional files that need to be manually copied...

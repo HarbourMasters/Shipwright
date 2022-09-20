@@ -479,14 +479,21 @@ void SaveManager::SaveFile(int fileNum) {
         section.second.second();
     }
 
+#ifdef __SWITCH__
+    const char* json_string = baseBlock.dump(4).c_str();
+    FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
+    fwrite(json_string, sizeof(char), strlen(json_string), w);
+    fclose(w);
+#else
+
     std::ofstream output(GetFileName(fileNum));
 
 #ifdef __WIIU__
     alignas(0x40) char buffer[8192];
     output.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
 #endif
-
     output << std::setw(4) << baseBlock << std::endl;
+#endif
 
     InitMeta(fileNum);
 }
@@ -1205,6 +1212,10 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+}
+
+bool SaveManager::IsRandoFile() {
+    return gSaveContext.n64ddFlag != 0 ? true : false;
 }
 
 // Functionality required to convert old saves into versioned saves

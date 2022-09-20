@@ -131,7 +131,7 @@ static CosmeticsColorIndividual DPad_Items = { "DPad background", "DPad backgrou
 
 //Hearts colors
 static CosmeticsColorIndividual Hearts_NInner = { "Inner (Normal)", "Affects the inner color", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, false };
-static CosmeticsColorIndividual Hearts_DDInner = { "Inner (Double defense)", "Affects the inner color", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, false };
+static CosmeticsColorIndividual Hearts_DDInner = { "Inner (Double defense)", "Affects the inner color", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(200,00,00,255), true, false, false };
 static CosmeticsColorIndividual Hearts_DDOutline = { "Outline (Double defense)", "Affects the outline color of hearts when you have Double Defense\nWhite is the default value", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, false };
 
 //Magic Meter colors

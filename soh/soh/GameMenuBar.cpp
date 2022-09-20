@@ -24,6 +24,7 @@
 
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
+#include "soh/SaveManager.h"
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
@@ -157,6 +158,8 @@ namespace GameMenuBar {
         CVar_SetS32("gBombchuDrops", 0);
         // Always Win Goron Pot
         CVar_SetS32("gGoronPot", 0);
+        // Always Win Dampe Digging First Try
+        CVar_SetS32("gDampeWin", 0);
 
         // Change Red Potion Effect
         CVar_SetS32("gRedPotionEffect", 0);
@@ -379,6 +382,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
+        // Always Win Dampe Digging
+        CVar_SetS32("gDampeWin", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
@@ -399,16 +404,14 @@ namespace GameMenuBar {
         // Allow the cursor to be on any slot
         CVar_SetS32("gPauseAnyCursor", 1);
 
-        // Instant Fishing
-        CVar_SetS32("gInstantFishing", 1);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 1);
         // Fish Never Escape
         CVar_SetS32("gFishNeverEscape", 1);
         // Child Minimum Weight (6 to 10)
-        CVar_SetS32("gChildMinimumWeightFish", 6);
+        CVar_SetS32("gChildMinimumWeightFish", 3);
         // Adult Minimum Weight (8 to 13)
-        CVar_SetS32("gAdultMinimumWeightFish", 8);
+        CVar_SetS32("gAdultMinimumWeightFish", 6);
 
         // Visual Stone of Agony
         CVar_SetS32("gVisualAgony", 1);
@@ -777,6 +780,9 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
+                    UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
+                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
+                    UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
                     UIWidgets::Spacer(0);
 
                     if (ImGui::BeginMenu("Potion Values"))
@@ -861,9 +867,9 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
                         UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false);
                         UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
