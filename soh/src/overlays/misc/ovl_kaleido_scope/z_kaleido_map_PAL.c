@@ -52,7 +52,7 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
 
     OPEN_DISPS(gfxCtx);
 
@@ -419,7 +419,7 @@ void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
 
     OPEN_DISPS(gfxCtx);
 
