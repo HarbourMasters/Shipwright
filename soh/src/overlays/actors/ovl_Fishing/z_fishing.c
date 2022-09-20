@@ -2916,6 +2916,10 @@ bool getGuaranteeBite() {
     return CVar_GetS32("gGuaranteeFishingBite", 0);
 }
 
+bool getFishNeverEscape() {
+    return CVar_GetS32("gFishNeverEscape", 0);
+}
+
 void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
     s16 i;
     s16 sp134 = 10;
@@ -3827,7 +3831,7 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
 
             if ((D_80B7A694 < 3) || ((D_80B7E074 != 0) && (D_80B7E080 > 50)) || (D_80B7E080 >= 6000) ||
                 ((D_80B7E122 == 0) && (D_80B7E124 == 0)) || (D_80B7E116 == 0) ||
-                (((D_80B7E0AE & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (D_80B7E0B6 != 2) && (KREG(69) == 0))) {
+                (((D_80B7E0AE & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (D_80B7E0B6 != 2) && (KREG(69) == 0) && (getFishNeverEscape() == 0))) {
                 D_80B7A67C = 20;
 
                 if ((D_80B7E122 == 0) && (D_80B7E124 == 0)) {
