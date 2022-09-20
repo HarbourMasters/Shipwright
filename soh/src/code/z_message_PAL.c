@@ -1281,7 +1281,10 @@ void Message_Decode(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &globalCtx->msgCtx.font;
 
-    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    //gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, font->fontBuf);
+    for (u32 i = 0; i < FONT_CHAR_TEX_SIZE * 120; i += FONT_CHAR_TEX_SIZE) {
+        gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, &font->charTexBuf[i]);
+    }
 
     globalCtx->msgCtx.textDelayTimer = 0;
     globalCtx->msgCtx.textUnskippable = globalCtx->msgCtx.textDelay = globalCtx->msgCtx.textDelayTimer = 0;
@@ -1678,7 +1681,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     }
 
     sMessageHasSetSfx = D_8014B2F4 = sTextboxSkipped = sTextIsCredits = 0;
-    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    //gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, font->fontBuf);
 
     if (textId >= 0x0500 && textId < 0x0600) { // text ids 0500 to 0600 are reserved for credits
         sTextIsCredits = true;
