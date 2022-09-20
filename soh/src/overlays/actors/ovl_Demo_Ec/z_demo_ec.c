@@ -547,9 +547,9 @@ void DemoEc_UpdateBeardedMan(DemoEc* this, GlobalContext* globalCtx) {
 
 void DemoEc_DrawBeardedMan(DemoEc* this, GlobalContext* globalCtx) {
     static void* eyeTextures[] = {
-        object_ahg_Tex_0005FC,
-        object_ahg_Tex_0006FC,
-        object_ahg_Tex_0007FC,
+        object_ahg_Tex_00057C,
+        object_ahg_Tex_00067C,
+        object_ahg_Tex_00077C,
     };
     static u8 color1[] = { 255, 255, 255, 255 };
     static u8 color2[] = { 255, 255, 255, 255 };

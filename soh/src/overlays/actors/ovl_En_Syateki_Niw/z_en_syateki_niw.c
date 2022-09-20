@@ -771,7 +771,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 1) {
             if (flag == 0) {
-                gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
+                gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherMaterialDL);
                 flag++;
             }
 
@@ -784,7 +784,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }
     }

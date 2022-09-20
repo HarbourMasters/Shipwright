@@ -371,7 +371,7 @@ DrawItemTableEntry sDrawItemTable[] = {
     // kokiri sword, OBJECT_GI_SWORD_1
     { GetItem_DrawOpa0, { gGiKokiriSwordDL } },
     // gold skulltula token, OBJECT_ST
-    { GetItem_DrawSkullToken, { object_st_DL_004DB0, object_st_DL_004EB8 } },
+    { GetItem_DrawSkullToken, { gSkulltulaTokenDL, gSkulltulaTokenFlameDL } },
 
     { GetItem_DrawJewelKokiri, { gGiKokiriEmeraldGemDL, gGiKokiriEmeraldSettingDL } },
     { GetItem_DrawJewelGoron, { gGiGoronRubyGemDL, gGiGoronRubySettingDL } },
