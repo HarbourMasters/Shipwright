@@ -85,6 +85,6 @@ namespace Ship {
 
 			std::unordered_map<int32_t, std::shared_ptr<DeviceProfile>> profiles;
 			std::unordered_map<int32_t, std::shared_ptr<Buttons>> ButtonData = {};
-			std::queue<OSContPad> padBuffer;
+			std::deque<OSContPad> padBuffer;
 	};
 }
