@@ -81,7 +81,7 @@ namespace Ship {
 			// we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(ShouldBlockGameInput(device->GetGuid() == "Keyboard")) {
+					if(ShouldBlockGameInput(device->GetGuid())) {
 						device->Read(nullptr, i);
 						continue;
 					}
@@ -91,7 +91,7 @@ namespace Ship {
 				continue;
 			}
 
-			if(ShouldBlockGameInput(backend->GetGuid() == "Keyboard")) {
+			if(ShouldBlockGameInput(backend->GetGuid())) {
 				backend->Read(nullptr, i);
 				continue;
 			}
@@ -271,16 +271,17 @@ namespace Ship {
         shouldBlockGameInput = false;
     }
 
-    bool ControlDeck::ShouldBlockGameInput(bool isKeyboard) const {
+    bool ControlDeck::ShouldBlockGameInput(std::string inputDeviceGuid) const {
         // We block controller input if F1 menu is open and control navigation is on.
         // This is because we don't want controller inputs to affect the game
-        bool shouldBlockControllerInputs = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+        bool shouldBlockControllerInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
 
         // We block keyboard input if you're currently typing into a textfield.
         // This is because we don't want your keyboard typing to affect the game.
         ImGuiIO io = ImGui::GetIO();
-        bool shouldBlockKeyboardInputs = io.WantCaptureKeyboard;
+        bool shouldBlockKeyboardInput = io.WantCaptureKeyboard;
 
-        return shouldBlockGameInput || (isKeyboard ? shouldBlockKeyboardInputs : shouldBlockControllerInputs);
+        bool inputDeviceIsKeyboard = inputDeviceGuid == "Keyboard";
+        return shouldBlockGameInput || (inputDeviceIsKeyboard ? shouldBlockKeyboardInput : shouldBlockControllerInput);
     }
 }
