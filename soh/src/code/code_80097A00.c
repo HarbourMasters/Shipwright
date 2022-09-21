@@ -27,7 +27,7 @@ u16 gUpgradeCapacities[][4] = {
     { 0, 20, 30, 40 },     // Bomb Bags
     { 0, 0, 0, 0 },        // Unused (Scale)
     { 0, 0, 0, 0 },        // Unused (Strength)
-    { 99, 200, 500, 500 }, // Wallets
+    { 99, 200, 500, 999 }, // Wallets
     { 0, 30, 40, 50 },     // Deku Seed Bullet Bags
     { 0, 10, 20, 30 },     // Deku Stick Upgrades
     { 0, 20, 30, 40 },     // Deku Nut Upgrades

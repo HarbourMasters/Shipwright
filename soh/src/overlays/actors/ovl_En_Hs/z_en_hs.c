@@ -7,6 +7,7 @@
 #include "z_en_hs.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -78,7 +79,25 @@ void EnHs_Init(Actor* thisx, GlobalContext* globalCtx) {
         // "chicken shop (adult era)"
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
-        if (gSaveContext.itemGetInf[3] & 1) {
+        bool shouldSpawn;
+        bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            // To explain the logic because Fado and Grog are linked:
+            // - If you have Cojiro, then spawn Grog and not Fado.
+            // - If you don't have Cojiro but do have Odd Potion, spawn Fado and not Grog.
+            // - If you don't have either, spawn Grog if you haven't traded the Odd Mushroom.
+            // - If you don't have either but have traded the mushroom, don't spawn either.
+            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+                shouldSpawn = true;
+            } else if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION)) {
+                shouldSpawn = false;
+            } else {
+                shouldSpawn = !tradedMushroom;
+            }
+        } else {
+            shouldSpawn = !tradedMushroom;
+        }
+        if (!shouldSpawn) {
             // "chicken shop closed"
             osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコ屋閉店 \n" VT_RST);
             Actor_Kill(&this->actor);
@@ -127,7 +146,9 @@ void func_80A6E5EC(EnHs* this, GlobalContext* globalCtx) {
 
 void func_80A6E630(EnHs* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        func_80088AA0(180);
+        if (!gSaveContext.n64ddFlag) {
+            func_80088AA0(180);
+        }
         func_80A6E3A0(this, func_80A6E6B0);
         gSaveContext.eventInf[1] &= ~1;
     }
@@ -156,7 +177,14 @@ void func_80A6E740(EnHs* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         func_80A6E3A0(this, func_80A6E630);
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_ODD_MUSHROOM, 10000.0f, 50.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
+            GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 50.0f);
+        } else {
+            s32 itemId = GI_ODD_MUSHROOM;
+            func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
+        }
     }
 
     this->unk_2A8 |= 1;
@@ -167,7 +195,14 @@ void func_80A6E7BC(EnHs* this, GlobalContext* globalCtx) {
         switch (globalCtx->msgCtx.choiceIndex) {
             case 0:
                 func_80A6E3A0(this, func_80A6E740);
-                func_8002F434(&this->actor, globalCtx, GI_ODD_MUSHROOM, 10000.0f, 50.0f);
+                if (gSaveContext.n64ddFlag) {
+                    GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_COJIRO);
+                    GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 50.0f);
+                } else {
+                    s32 itemId = GI_ODD_MUSHROOM;
+                    func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
+                }
                 break;
             case 1:
                 Message_ContinueTextbox(globalCtx, 0x10B4);

@@ -154,7 +154,8 @@ Nightly builds of Ship of Harkinian are available [here](https://builds.shipofha
 	
 ## Video Credits
     Kenix | Producer / Writer
-	rainbow_fash | Executive Producer
+    briaguya | Writer
+    rainbow_fash | Executive Producer
     ReveriePass | Editor
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link

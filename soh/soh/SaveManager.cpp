@@ -4,6 +4,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
+#include <libultraship/Hooks.h>
 #include <libultraship/Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
@@ -88,6 +89,30 @@ void SaveManager::LoadRandomizerVersion1() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
+
+    SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    size_t merchantPricesSize = 0;
+    if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
+        merchantPricesSize += NUM_SCRUBS;
+    }
+    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 0) {
+        merchantPricesSize += NUM_SHOP_ITEMS;
+    }
+
+    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            RandomizerCheck rc;
+            SaveManager::Instance->LoadData("check", rc);
+            uint32_t price;
+            SaveManager::Instance->LoadData("price", price);
+            randomizer->merchantPrices[rc] = price;
+        });
+    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -130,6 +155,24 @@ void SaveManager::SaveRandomizer() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
         SaveManager::Instance->SaveData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
+
+    SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
+
+    SaveManager::Instance->SaveData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
+
+    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
+
+    std::vector<std::pair<RandomizerCheck, u16>> merchantPrices;
+    for (const auto & [ check, price ] : randomizer->merchantPrices) {
+        merchantPrices.push_back(std::make_pair(check, price));
+    }
+
+    SaveManager::Instance->SaveArray("merchantPrices", merchantPrices.size(), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("check", merchantPrices[i].first);
+            SaveManager::Instance->SaveData("price", merchantPrices[i].second);
+        });
+    });
 }
 
 void SaveManager::Init() {
@@ -479,14 +522,21 @@ void SaveManager::SaveFile(int fileNum) {
         section.second.second();
     }
 
+#ifdef __SWITCH__
+    const char* json_string = baseBlock.dump(4).c_str();
+    FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
+    fwrite(json_string, sizeof(char), strlen(json_string), w);
+    fclose(w);
+#else
+
     std::ofstream output(GetFileName(fileNum));
 
 #ifdef __WIIU__
     alignas(0x40) char buffer[8192];
     output.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
 #endif
-
     output << std::setw(4) << baseBlock << std::endl;
+#endif
 
     InitMeta(fileNum);
 }
@@ -754,12 +804,9 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -914,12 +961,9 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-
-    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
 }
 
 void SaveManager::SaveBase() {
@@ -1070,12 +1114,9 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.dungeonsDone[i]);
+    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
-
-    SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
-                                     [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1149,7 +1190,7 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     }
 }
 
-#ifdef __WIIU__
+#if defined(__WIIU__) || defined(__SWITCH__)
 // std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
 int copy_file(const char* src, const char* dst)
 {
@@ -1179,8 +1220,8 @@ int copy_file(const char* src, const char* dst)
 void SaveManager::CopyZeldaFile(int from, int to) {
     assert(std::filesystem::exists(GetFileName(from)));
     DeleteZeldaFile(to);
-#ifdef __WIIU__
-    assert(copy_file(GetFileName(from).c_str(), GetFileName(to).c_str()) == 0);
+#if defined(__WIIU__) || defined(__SWITCH__)
+    copy_file(GetFileName(from).c_str(), GetFileName(to).c_str());
 #else
     std::filesystem::copy_file(GetFileName(from), GetFileName(to));
 #endif
@@ -1205,6 +1246,10 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+}
+
+bool SaveManager::IsRandoFile() {
+    return gSaveContext.n64ddFlag != 0 ? true : false;
 }
 
 // Functionality required to convert old saves into versioned saves
@@ -1575,6 +1620,7 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
+    Ship::ExecuteHooks<Ship::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {
@@ -1595,6 +1641,7 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+    Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
 }
 
 extern "C" bool Save_Exist(int fileNum) {

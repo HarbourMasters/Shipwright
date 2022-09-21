@@ -215,9 +215,9 @@
         <Texture Name="gGanonsCastleTitleCardFRATex" OutName="ganons_castle_fra" Format="ia8" Width="144" Height="24" Offset="0x1B00"/>
     </File>
     <File Name="g_pn_44">
-        <Texture Name="gRoyalFamilysTumbTitleCardENGTex" OutName="royal_familys_tumb_eng" Format="ia8" Width="144" Height="24" Offset="0x0"/>
-        <Texture Name="gRoyalFamilysTumbTitleCardGERTex" OutName="royal_familys_tumb_ger" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
-        <Texture Name="gRoyalFamilysTumbTitleCardFRATex" OutName="royal_familys_tumb_fra" Format="ia8" Width="144" Height="24" Offset="0x1B00"/>
+        <Texture Name="gRoyalFamilysTombTitleCardENGTex" OutName="royal_familys_tomb_eng" Format="ia8" Width="144" Height="24" Offset="0x0"/>
+        <Texture Name="gRoyalFamilysTombTitleCardGERTex" OutName="royal_familys_tomb_ger" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
+        <Texture Name="gRoyalFamilysTombTitleCardFRATex" OutName="royal_familys_tomb_fra" Format="ia8" Width="144" Height="24" Offset="0x1B00"/>
     </File>
     <File Name="g_pn_45">
         <Texture Name="gFairysFountainTitleCardENGTex" OutName="fairys_fountain_eng" Format="ia8" Width="144" Height="24" Offset="0x0"/>

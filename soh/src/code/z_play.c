@@ -200,7 +200,7 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     Player* player = GET_PLAYER(globalCtx);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -218,7 +218,8 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-        Flags_SetEventChkInf(0xAA);
+        player->pendingFlag.flagID = 0xAA;
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
     }
 }
 
@@ -230,7 +231,8 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
             !Player_InBlockingCsMode(globalCtx, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xAC);
+            player->pendingFlag.flagID = 0xAC;
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
     }
 }
@@ -243,7 +245,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (player->pendingFlag.flagType == FLAG_NONE && GiveItemEntryWithoutActor(globalCtx, getItem)) {
+        if (GiveItemEntryWithoutActor(globalCtx, getItem)) {
             player->pendingFlag.flagID = 0x1E;
             player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
         }
@@ -399,7 +401,7 @@ void Gameplay_Init(GameState* thisx) {
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
             if (Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) {
+                Inventory_HatchPocketCucco(globalCtx)) {
                 Message_StartTextbox(globalCtx, 0x3066, NULL);
             }
             gSaveContext.nextDayTime = 0xFFFE;
@@ -1479,6 +1481,13 @@ time_t Gameplay_GetRealTime() {
 void Gameplay_Main(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
 
+    if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
+        CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    }
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    }
+
     D_8012D1F8 = &globalCtx->state.input[0];
 
     DebugDisplay_Init();
@@ -2003,5 +2012,8 @@ void Gameplay_PerformSave(GlobalContext* globalCtx) {
         Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
     } else {
         Save_SaveFile();
+    }
+    if (CVar_GetS32("gAutosave", 0)) {
+        Overlay_DisplayText(3.0f, "Game Saved");
     }
 }

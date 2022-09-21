@@ -653,8 +653,13 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			uint32_t seg = data & 0xFFFFFFFF;
 			int32_t texAddress = Seg2Filespace(data, dList->parent->baseAddress);
 
-			if (!Globals::Instance->HasSegment(GETSEGNUM(seg), res->parent->workerID))
+			if (!Globals::Instance->HasSegment(GETSEGNUM(seg), res->parent->workerID) || (res->GetName() == "sShadowMaterialDL"))
 			{
+				if (res->GetName() == "sShadowMaterialDL") {
+					// sShadowMaterialDL (In ovl_En_Jsjutan) has a texture in bss. This is a hack to override the reference to one
+					// to segment C. The actor has been modified to load the texture into segment C.
+					seg = 0x0C000000;
+				}
 				int32_t __ = (data & 0x00FF000000000000) >> 48;
 				int32_t www = (data & 0x00000FFF00000000) >> 32;
 

@@ -74,15 +74,6 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-		// We block controller input if F1 menu is open and control navigation is on.
-		// This is because we don't want controller inputs to affect the game
-		bool shouldBlockControllerInputs = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-
-		// We block keyboard input if you're currently typing into a textfield.
-		// This is because we don't want your keyboard typing to affect the game.
-		ImGuiIO io = ImGui::GetIO();
-		bool shouldBlockKeyboardInputs = io.WantCaptureKeyboard;
-
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 
@@ -90,11 +81,8 @@ namespace Ship {
 			// we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(shouldBlockControllerInputs && device->GetGuid() != "Keyboard") {
-						continue;
-					}
-
-					if (shouldBlockKeyboardInputs && device->GetGuid() == "Keyboard") {
+					if(ShouldBlockGameInput(device->GetGuid() == "Keyboard")) {
+						device->Read(nullptr, i);
 						continue;
 					}
 
@@ -103,11 +91,8 @@ namespace Ship {
 				continue;
 			}
 
-			if (shouldBlockControllerInputs && backend->GetGuid() != "Keyboard") {
-				continue;
-			}
-
-			if (shouldBlockKeyboardInputs && backend->GetGuid() == "Keyboard") {
+			if(ShouldBlockGameInput(backend->GetGuid() == "Keyboard")) {
+				backend->Read(nullptr, i);
 				continue;
 			}
 
@@ -278,4 +263,24 @@ namespace Ship {
         return controllerBits;
     }
 
+    void ControlDeck::BlockGameInput() {
+        shouldBlockGameInput = true;
+    }
+
+    void ControlDeck::UnblockGameInput() {
+        shouldBlockGameInput = false;
+    }
+
+    bool ControlDeck::ShouldBlockGameInput(bool isKeyboard) const {
+        // We block controller input if F1 menu is open and control navigation is on.
+        // This is because we don't want controller inputs to affect the game
+        bool shouldBlockControllerInputs = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+
+        // We block keyboard input if you're currently typing into a textfield.
+        // This is because we don't want your keyboard typing to affect the game.
+        ImGuiIO io = ImGui::GetIO();
+        bool shouldBlockKeyboardInputs = io.WantCaptureKeyboard;
+
+        return shouldBlockGameInput || isKeyboard ? shouldBlockKeyboardInputs : shouldBlockControllerInputs;
+    }
 }
