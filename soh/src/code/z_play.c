@@ -2000,20 +2000,22 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
 }
 
 void Gameplay_PerformSave(GlobalContext* globalCtx) {
-    Gameplay_SaveSceneFlags(globalCtx);
-    gSaveContext.savedSceneNum = globalCtx->sceneNum;
-    if (gSaveContext.temporaryWeapon) {
-        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-        Save_SaveFile();
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-    } else {
-        Save_SaveFile();
-    }
-    if (CVar_GetS32("gAutosave", 0)) {
-        Overlay_DisplayText(3.0f, "Game Saved");
+    if (globalCtx != NULL) {
+        Gameplay_SaveSceneFlags(globalCtx);
+        gSaveContext.savedSceneNum = globalCtx->sceneNum;
+        if (gSaveContext.temporaryWeapon) {
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+            Save_SaveFile();
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        } else {
+            Save_SaveFile();
+        }
+        if (CVar_GetS32("gAutosave", 0)) {
+            Overlay_DisplayText(3.0f, "Game Saved");
+        }
     }
 }
