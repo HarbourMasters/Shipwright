@@ -860,13 +860,19 @@ static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         }
         player->isBurning = true;
         func_80837C0C(gGlobalCtx, player, 0, 0, 0, 0, 0);
-        return 1;
+        return CMD_FAILED;
     }
-    return 0;
+    return CMD_SUCCESS;
 }
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gGlobalCtx);
+    Camera* camera = GET_ACTIVE_CAM(gGlobalCtx);
+
+    if (camera->camDataIdx == 1) {
+        return CMD_FAILED;
+    }
+
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0;

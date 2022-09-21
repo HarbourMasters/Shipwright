@@ -265,6 +265,6 @@ namespace Ship {
     }
 
     bool ControlDeck::ShouldBlockGameInput() const {
-        return shouldBlockGameInput || (CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0));
+        return false;
     }
 }
