@@ -439,6 +439,9 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
+            #ifdef __SWITCH__
+            srand(time(NULL));
+            #endif
             ImVec4 color = GetRandomValue(255);
             colors->x = color.x;
             colors->y = color.y;
