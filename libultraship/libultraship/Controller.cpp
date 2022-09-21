@@ -79,7 +79,7 @@ namespace Ship {
 
 		padBuffer.push_front(padToBuffer);
 		if (pad != nullptr) {
-			*pad = padBuffer[std::min(padBuffer.size(), (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
+			*pad = padBuffer[std::min(padBuffer.size() - 1, (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
 		}
 
 		while (padBuffer.size() > 6) {
