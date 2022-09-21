@@ -331,11 +331,11 @@ s32 func_80B0C9F0(EnSw* this, GlobalContext* globalCtx) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALTU_DAMAGE);
                 return true;
             }
-            if(CVar_GetS32("gGsCutscene", 0)) {
-                OnePointCutscene_Init(globalCtx, 2200, 90, &this->actor, MAIN_CAM);
-            }
             Enemy_StartFinishingBlow(globalCtx, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
+                if (CVar_GetS32("gGsCutscene", 0)) {
+                    OnePointCutscene_Init(globalCtx, 2200, 90, &this->actor, MAIN_CAM);
+                }
                 this->skelAnime.playSpeed = 8.0f;
                 if ((globalCtx->state.frames & 1) == 0) {
                     this->unk_420 = 0.1f;
