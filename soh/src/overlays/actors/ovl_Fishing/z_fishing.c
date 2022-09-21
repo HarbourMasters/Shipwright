@@ -2901,18 +2901,8 @@ f32 Fishing_GetMinimumRequiredScore() {
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
         weight = CVar_GetS32("gChildMinimumWeightFish", 10);
-        if (gSaveContext.n64ddFlag) {
-            if (weight > 8) {
-                weight = 8;
-            }
-        }
     } else {
-        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);
-        if (gSaveContext.n64ddFlag) {
-            if (weight > 10) {
-                weight = 10;
-            }
-        }        
+        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
@@ -2924,6 +2914,10 @@ bool getInstantFish() {
 
 bool getGuaranteeBite() {
     return CVar_GetS32("gGuaranteeFishingBite", 0);
+}
+
+bool getFishNeverEscape() {
+    return CVar_GetS32("gFishNeverEscape", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
@@ -3837,7 +3831,7 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
 
             if ((D_80B7A694 < 3) || ((D_80B7E074 != 0) && (D_80B7E080 > 50)) || (D_80B7E080 >= 6000) ||
                 ((D_80B7E122 == 0) && (D_80B7E124 == 0)) || (D_80B7E116 == 0) ||
-                (((D_80B7E0AE & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (D_80B7E0B6 != 2) && (KREG(69) == 0))) {
+                (((D_80B7E0AE & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (D_80B7E0B6 != 2) && (KREG(69) == 0) && (getFishNeverEscape() == 0))) {
                 D_80B7A67C = 20;
 
                 if ((D_80B7E122 == 0) && (D_80B7E124 == 0)) {

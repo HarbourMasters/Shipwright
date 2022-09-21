@@ -43,16 +43,16 @@ void TransitionCircle_Start(void* thisx) {
 
     switch (this->effect) {
         case 1:
-            this->texture = sCircleWipeWaveTex;
+            this->texture = sTransCircleWaveTex;
             break;
         case 2:
-            this->texture = sCircleWipeRippleTex;
+            this->texture = sTransCircleRippleTex;
             break;
         case 3:
-            this->texture = sCircleWipeStarburstTex;
+            this->texture = sTransCircleStarburstTex;
             break;
         default:
-            this->texture = sCircleWipeDefaultTex;
+            this->texture = sTransCircleNormalTex;
             break;
     }
 

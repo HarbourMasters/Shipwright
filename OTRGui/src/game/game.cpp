@@ -91,7 +91,6 @@ void ExtractRom()
 		//MoonUtils::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
 		//MoonUtils::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
 		//MoonUtils::copy("tmp/baserom/version", "Extract/version");
-		MoonUtils::write("Extract/version", (char*)&version.crc, sizeof(version.crc));
 
 		MoonUtils::copy("assets/game/", "Extract/assets/");
 

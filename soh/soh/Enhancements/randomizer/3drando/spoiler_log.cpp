@@ -19,6 +19,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sstream>
 #include <unordered_map>
 #include <vector>
 #include <iostream>
@@ -36,31 +37,21 @@ namespace {
 std::string placementtxt;
 } // namespace
 
-static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
-        int number = Settings::seed[i] - '0';
+    std::string hash = Settings::hash;
+    // adds leading 0s to the hash string if it has less than 10 digits.
+    while (hash.length() < 10) {
+        hash = "0" + hash;
+    }
+    for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
+        int number = std::stoi(hash.substr(j, 2));
         Settings::hashIconIndexes[i] = number;
     }
 
     // Clear out spoiler log data here, in case we aren't going to re-generate it
     // spoilerData = { 0 };
-}
-
-const RandomizerHash& GetRandomizerHash() {
-  return randomizerHash;
-}
-
-// Returns the randomizer hash as concatenated string, separated by comma.
-const std::string GetRandomizerHashAsString() {
-  std::string hash = "";
-  for (const std::string& str : randomizerHash) {
-    hash += str + ", ";
-  }
-  hash.erase(hash.length() - 2); // Erase last comma
-  return hash;
 }
 
 const SpoilerData& GetSpoilerData() {
@@ -345,7 +336,10 @@ static void WriteSettings(const bool printAll = false) {
             setting->GetName() == "Cuccos to return" ||
             setting->GetName() == "Skip Epona Race" ||
             setting->GetName() == "Skip Tower Escape" ||
-            setting->GetName() == "Skip Child Stealth") {
+            setting->GetName() == "Skip Child Stealth" ||
+            setting->GetName() == "Complete Mask Quest" ||
+            setting->GetName() == "Skip Scarecrow's Song" ||
+            setting->GetName() == "Enable Glitch-Useful Cutscenes") {
             std::string settingName = menu->name + ":" + setting->GetName();
             jsonData["settings"][settingName] = setting->GetSelectedOptionText();
         }
@@ -424,11 +418,11 @@ static void WriteStartingInventory() {
       // doesn't work, and because it'd be bad to set every single possible starting
       // inventory item as "false" in the json, we're just going to check
       // to see if the name is one of the 3 we're using rn
-      if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
-        jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
-      }
-
-      if (setting->GetName() == "Start with Consumables" || setting->GetName() == "Start with Max Rupees") {
+      if (setting->GetName() == "Start with Consumables" ||
+          setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Start with Fairy Ocarina" ||
+          setting->GetName() == "Start with Kokiri Sword" ||
+          setting->GetName() == "Start with Deku Shield") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
@@ -499,25 +493,23 @@ static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
   }
 }
 
-// Writes the required trails to the spoiler log, if there are any.
-static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("required-trials");
-
-  for (const auto* trial : Trial::trialList) {
-    if (trial->IsSkipped()) {
-      continue;
+// Writes the required trials to the spoiler log, if there are any.
+static void WriteRequiredTrials() {
+    for (const auto& trial : Trial::trialList) {
+        if (trial->IsRequired()) {
+            std::string trialName;
+            switch (gSaveContext.language) {
+                case LANGUAGE_FRA:
+                    trialName = trial->GetName().GetFrench();
+                    break;
+                case LANGUAGE_ENG:
+                default:
+                    trialName = trial->GetName().GetEnglish();
+                    break;
+            }
+            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
+        }
     }
-
-    auto node = parentNode->InsertNewChildElement("trial");
-    // PURPLE TODO: LOCALIZATION
-    std::string name = trial->GetName().GetEnglish();
-    name[0] = toupper(name[0]); // Capitalize T in "The"
-    node->SetAttribute("name", name.c_str());
-  }
-
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
@@ -671,15 +663,24 @@ static void WriteHints(int language) {
 static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
+        std::string placedItemName;
 
         switch (language) {
-            case 0:
-            default:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-                break;
-            case 2:
-                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().french;
-                break;
+          case 0:
+          default:
+            placedItemName = location->GetPlacedItemName().english;
+            break;
+          case 2:
+            placedItemName = location->GetPlacedItemName().french;
+            break;
+        }
+
+        // Eventually check for other things here like fake name
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+          jsonData["locations"][location->GetName()]["item"] = placedItemName;
+          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else {
+          jsonData["locations"][location->GetName()] = placedItemName;
         }
     }
 }
@@ -693,7 +694,6 @@ const char* SpoilerLog_Write(int language) {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     jsonData.clear();
 
@@ -712,7 +712,7 @@ const char* SpoilerLog_Write(int language) {
     //    WriteEnabledGlitches(spoilerLog);
     //}
     //WriteMasterQuestDungeons(spoilerLog);
-    //WriteRequiredTrials(spoilerLog);
+    WriteRequiredTrials();
     WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
 
@@ -729,12 +729,23 @@ const char* SpoilerLog_Write(int language) {
     }
 
     std::string jsonString = jsonData.dump(4);
+    std::ostringstream fileNameStream;
+    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+        if (i) {
+            fileNameStream << '-';
+        }
+        if (Settings::hashIconIndexes[i] < 10) {
+            fileNameStream << '0';
+        }
+        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+    }
+    std::string fileName = fileNameStream.str();
     std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
+        (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
-    return Settings::seed.c_str();
+    return fileName.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {
@@ -754,7 +765,6 @@ bool PlacementLog_Write() {
 
     rootNode->SetAttribute("version", Settings::version.c_str());
     rootNode->SetAttribute("seed", Settings::seed.c_str());
-    rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);
@@ -762,7 +772,7 @@ bool PlacementLog_Write() {
     WriteEnabledTricks(placementLog);
     WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
-    WriteRequiredTrials(placementLog);
+    //WriteRequiredTrials(placementLog);
 
     placementtxt = "\n" + placementtxt;
 
