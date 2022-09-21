@@ -81,12 +81,12 @@ namespace Ship {
 		if (pad != nullptr) {
 			auto &padFromBuffer = padBuffer[std::min(padBuffer.size() - 1, (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
 			pad->button |= padFromBuffer.button;
-			if (padFromBuffer.stick_x != 0) pad->stick_x = padFromBuffer.stick_x;
-			if (padFromBuffer.stick_y != 0) pad->stick_y = padFromBuffer.stick_y;
-			if (padFromBuffer.gyro_x != 0) pad->gyro_x = padFromBuffer.gyro_x;
-			if (padFromBuffer.gyro_y != 0) pad->gyro_y = padFromBuffer.gyro_y;
-			if (padFromBuffer.right_stick_x != 0) pad->right_stick_x = padFromBuffer.right_stick_x;
-			if (padFromBuffer.right_stick_y != 0) pad->right_stick_y = padFromBuffer.right_stick_y;
+			if (pad->stick_x == 0) pad->stick_x = padFromBuffer.stick_x;
+			if (pad->stick_y == 0) pad->stick_y = padFromBuffer.stick_y;
+			if (pad->gyro_x == 0) pad->gyro_x = padFromBuffer.gyro_x;
+			if (pad->gyro_y == 0) pad->gyro_y = padFromBuffer.gyro_y;
+			if (pad->right_stick_x == 0) pad->right_stick_x = padFromBuffer.right_stick_x;
+			if (pad->right_stick_y == 0) pad->right_stick_y = padFromBuffer.right_stick_y;
 		}
 
 		while (padBuffer.size() > 6) {
