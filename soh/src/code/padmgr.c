@@ -288,7 +288,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     OTRControllerCallback(&controllerCallback);
-    Controller_SetShouldBlockGameInput(!!CVar_GetS32("gPauseBufferBlockInputFrame", 0));
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        Controller_BlockGameInput();
+    } else {
+        Controller_UnblockGameInput();
+    }
 
     PadMgr_UnlockPadData(padMgr);
 }

@@ -256,8 +256,12 @@ namespace Ship {
         return controllerBits;
     }
 
-    void ControlDeck::SetShouldBlockGameInput(bool value) {
-        shouldBlockGameInput = value;
+    void ControlDeck::BlockGameInput() {
+        shouldBlockGameInput = true;
+    }
+
+    void ControlDeck::UnblockGameInput() {
+        shouldBlockGameInput = false;
     }
 
     bool ControlDeck::ShouldBlockGameInput() const {
