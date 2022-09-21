@@ -38,9 +38,11 @@ namespace Ship {
 	};
 
 	class Controller {
-	public:
+		public:
 		virtual ~Controller() = default;
 		Controller();
+		void Read(OSContPad* pad, int32_t virtualSlot);
+                void PollMouseMov(OSContPad* pad, int32_t slot);
 		virtual void ReadFromSource(int32_t virtualSlot) = 0;
 		virtual void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) = 0;
 		virtual bool Connected() const = 0;
@@ -51,7 +53,6 @@ namespace Ship {
 		virtual int32_t ReadRawPress() = 0;
 		virtual const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) = 0;
 		virtual const std::string GetControllerName() = 0;
-		void Read(OSContPad* pad, int32_t virtualSlot);
 		void SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode);
 		std::shared_ptr<ControllerAttachment> GetAttachment();
 		std::shared_ptr<DeviceProfile> getProfile(int32_t virtualSlot);
@@ -65,6 +66,17 @@ namespace Ship {
 		bool IsRumbling();
 		std::string GetGuid();
 
+                bool wLeftClick;
+                bool wRightClick;
+                bool wMiddleClick;
+                float wTouchX;
+                float wTouchY;
+
+                float wMouseMoveX;
+                float wMouseMoveY;
+
+                float wCamX;
+                float wCamY;
 		protected:
 			std::shared_ptr<ControllerAttachment> Attachment;
 			std::string GUID;

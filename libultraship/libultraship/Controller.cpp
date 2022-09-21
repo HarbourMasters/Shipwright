@@ -4,13 +4,16 @@
 #include "Cvar.h"
 #if __APPLE__
 #include <SDL_events.h>
+#include <SDL_hints.h>
 #else
 #include <SDL2/SDL_events.h>
+#include <SDL2/SDL_hints.h>
 #endif
 
 namespace Ship {
 
 	Controller::Controller() : isRumbling(false) {
+                SDL_SetRelativeMouseMode(SDL_TRUE);
 		Attachment = nullptr;
 
 		for(int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
@@ -19,14 +22,41 @@ namespace Ship {
 		}
 	}
 
+	void Controller::PollMouseMov(OSContPad* pad, int32_t virtualSlot) {
+        }
+
 	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
 		ReadFromSource(virtualSlot);
-
+		// Touch Inputs
+		int x, y;
+		Uint32 buttons;
 		OSContPad padToBuffer = { 0 };
-
 #ifndef __WIIU__
 		SDL_PumpEvents();
+		buttons = SDL_GetGlobalMouseState(&x, &y);
+		wTouchX = x;
+		wTouchY = y;
 #endif
+
+                // Click Inputs
+		if ((buttons & SDL_BUTTON_LMASK) != 0) {
+			wLeftClick = 1;
+		}
+		else {
+			wLeftClick = 0;
+		}
+		if ((buttons & SDL_BUTTON_RMASK) != 0) {
+			wRightClick = 1;
+		}
+		else {
+			wRightClick = 0;
+		}
+		if ((buttons & SDL_BUTTON_MMASK) != 0) {
+			wMiddleClick = 1;
+		}
+		else {
+			wMiddleClick = 0;
+		}
 
 		// Button Inputs
 		padToBuffer.button |= getPressedButtons(virtualSlot) & 0xFFFF;
@@ -34,9 +64,9 @@ namespace Ship {
 		// Stick Inputs
 		if (getLeftStickX(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_STICKLEFT) {
-				padToBuffer.stick_x = -128;
+				padToBuffer.stick_x = -128 + wMiddleClick * 120; //Middle click is the ESS adaptor
 			} else if (getPressedButtons(virtualSlot) & BTN_STICKRIGHT) {
-				padToBuffer.stick_x = 127;
+				padToBuffer.stick_x = 127 - wMiddleClick * 119;
 			}
 		} else {
 			padToBuffer.stick_x = getLeftStickX(virtualSlot);
@@ -44,9 +74,9 @@ namespace Ship {
 
 		if (getLeftStickY(virtualSlot) == 0) {
 			if (getPressedButtons(virtualSlot) & BTN_STICKDOWN) {
-				padToBuffer.stick_y = -128;
+				padToBuffer.stick_y = -128 + wMiddleClick * 120;
 			} else if (getPressedButtons(virtualSlot) & BTN_STICKUP) {
-				padToBuffer.stick_y = 127;
+				padToBuffer.stick_y = 127 - wMiddleClick * 119;
 			}
 		} else {
 			padToBuffer.stick_y = getLeftStickY(virtualSlot);
@@ -72,6 +102,26 @@ namespace Ship {
 		} else {
 			padToBuffer.right_stick_y = getRightStickY(virtualSlot);
 		}
+
+
+		// Click/Touch
+		padToBuffer.touch_x = wTouchX;
+		padToBuffer.touch_y = wTouchY;
+		padToBuffer.left_click = wLeftClick;
+		padToBuffer.right_click = wRightClick;
+		padToBuffer.middle_click = wMiddleClick;
+
+		// Mouse Inputs
+		//int x2, y2;
+		//SDL_GetRelativeMouseState(&x2, &y2);
+		//wMouseMoveX = x2;
+		//wMouseMoveY = y2;
+                //printf("%f, %f\n", wMouseMoveX, wMouseMoveY);
+
+		// Mouse
+		padToBuffer.mouse_move_x = wMouseMoveX;
+		padToBuffer.mouse_move_y = wMouseMoveY;
+
 
 		// Gyro
 		padToBuffer.gyro_x = getGyroX(virtualSlot);

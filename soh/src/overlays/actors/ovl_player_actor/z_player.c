@@ -11119,6 +11119,22 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
     s16 temp2;
     s16 temp3;
 
+    /* TODO: Move all this mouse stuff somewhere more appropriate */
+    int mouseX, mouseY;
+    SDL_GetRelativeMouseState(&mouseX, &mouseY);
+
+    sControlInput->cur.mouse_move_x = mouseX;
+    sControlInput->cur.mouse_move_y = mouseY;
+    if (fabsf(sControlInput->cur.mouse_move_x) > 0) {
+        //printf("x:%d\n", sControlInput->cur.mouse_move_x);
+        this->actor.focus.rot.y -= (sControlInput->cur.mouse_move_x) * 12.0f;
+    }
+    if (fabsf(sControlInput->cur.mouse_move_y) > 0) {
+        //printf("y:%d\n", sControlInput->cur.mouse_move_y);
+        this->actor.focus.rot.x += (sControlInput->cur.mouse_move_y) * 12.0f;
+    }
+    /* ********************************************************** */
+
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
         if (CVar_GetS32("gAutoCenterView", 0) != 0) {
             temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);

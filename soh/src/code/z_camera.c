@@ -1419,6 +1419,20 @@ s32 SetCameraManual(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
     f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
 
+
+    int mouseX, mouseY;
+    SDL_GetRelativeMouseState(&mouseX, &mouseY);
+    D_8015BD7C->state.input[0].cur.mouse_move_x = mouseX;
+    D_8015BD7C->state.input[0].cur.mouse_move_y = mouseY;
+
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        mouseX = 0.0f;
+        mouseY = 0.0f;
+    }
+
+    newCamX -= mouseX * 40.0f;
+    newCamY += mouseY * 40.0f;
+
     if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
         camera->globalCtx->manualCamera = true;
 
@@ -1485,8 +1499,17 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 1;
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
+    int mouseX, mouseY;
+    mouseX = D_8015BD7C->state.input[0].cur.mouse_move_x;
+    mouseY = D_8015BD7C->state.input[0].cur.mouse_move_y;
+
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        mouseX = 0.0f;
+        mouseY = 0.0f;
+    }
+
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f - (mouseX * 40.0f);
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f + (mouseY * 40.0f);
 
     camera->globalCtx->camX += newCamX * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
     camera->globalCtx->camY += newCamY * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);

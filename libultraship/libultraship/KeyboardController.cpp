@@ -2,8 +2,10 @@
 
 #if __APPLE__
 #include <SDL_keyboard.h>
+#include <SDL_events.h>
 #else
 #include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_events.h>
 #endif
 
 #include "Hooks.h"
@@ -18,6 +20,10 @@ namespace Ship {
 
 	bool KeyboardController::PressButton(int32_t dwScancode) {
 		lastKey = dwScancode;
+
+                if (dwScancode == 56){
+                    SDL_SetRelativeMouseMode(SDL_FALSE);
+                }
 		
 		for (int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
 
@@ -31,6 +37,9 @@ namespace Ship {
 	}
 
 	bool KeyboardController::ReleaseButton(int32_t dwScancode) {
+                if (dwScancode == 56){
+                    SDL_SetRelativeMouseMode(SDL_TRUE);
+                }
 		for (int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
 			if (getProfile(virtualSlot)->Mappings.contains(dwScancode)) {
 				getPressedButtons(virtualSlot) &= ~getProfile(virtualSlot)->Mappings[dwScancode];

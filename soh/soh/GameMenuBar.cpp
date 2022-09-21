@@ -706,6 +706,7 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                 UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
                 UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
+                UIWidgets::EnhancementCheckbox("Mouse/Touch Enabled", "gMouseTouchEnabled");
                 ImGui::EndMenu();
             }
 
