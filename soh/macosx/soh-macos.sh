@@ -66,20 +66,11 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 done
 
 arch_name="$(uname -m)"
-launch_arch="x86_64"
+launch_arch="arm64"
 if [ "${arch_name}" = "x86_64" ]; then
     if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
 		launch_arch="arm64"
-    else
-		launch_arch="x86_64"
-		# native intel
-    fi
-elif [ "${arch_name}" = "arm64" ]; then
-	launch_arch="arm64"
-else
-    echo "Unknown architecture: ${arch_name}"
-	# let's just try arm64?
-	launch_arch="arm64"
+	fi
 fi
 
 arch -${launch_arch} "$RESPATH"/soh-macos
