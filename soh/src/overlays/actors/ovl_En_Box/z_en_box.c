@@ -446,7 +446,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            sItem = Randomizer_GetRandomizedItem(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
@@ -483,6 +483,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
             // when approaching.
             if (gSaveContext.n64ddFlag) {
                 sItem.getItemId = 0 - sItem.getItemId;
+                sItem.getItemFrom = ITEM_FROM_CHEST;
                 GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
             } else {
                 func_8002F554(&this->dyna.actor, globalCtx, -(this->dyna.actor.params >> 5 & 0x7F));

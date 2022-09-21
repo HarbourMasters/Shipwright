@@ -1,21 +1,22 @@
 <Root>
+    <!-- Animations used during the intro and ending cutscenes for the Ganondorf fight. -->
     <File Name="object_ganon_anime2" Segment="6">
-        <Animation Name="object_ganon_anime2_Anim_001F58" Offset="0x1F58"/>
-        <Animation Name="object_ganon_anime2_Anim_003018" Offset="0x3018"/>
-        <Animation Name="object_ganon_anime2_Anim_004304" Offset="0x4304"/>
-        <Animation Name="object_ganon_anime2_Anim_004F64" Offset="0x4F64"/>
-        <Animation Name="object_ganon_anime2_Anim_005FFC" Offset="0x5FFC"/>
-        <Animation Name="object_ganon_anime2_Anim_006AF4" Offset="0x6AF4"/>
-        <Animation Name="object_ganon_anime2_Anim_007268" Offset="0x7268"/>
-        <Animation Name="object_ganon_anime2_Anim_007A64" Offset="0x7A64"/>
-        <Animation Name="object_ganon_anime2_Anim_0089F8" Offset="0x89F8"/>
-        <Animation Name="object_ganon_anime2_Anim_009AE0" Offset="0x9AE0"/>
-        <Animation Name="object_ganon_anime2_Anim_00ADDC" Offset="0xADDC"/>
-        <Animation Name="object_ganon_anime2_Anim_00B668" Offset="0xB668"/>
-        <Animation Name="object_ganon_anime2_Anim_00BE38" Offset="0xBE38"/>
-        <Animation Name="object_ganon_anime2_Anim_00EA00" Offset="0xEA00"/>
-        <Animation Name="object_ganon_anime2_Anim_00F19C" Offset="0xF19C"/>
-        <Animation Name="object_ganon_anime2_Anim_010298" Offset="0x10298"/>
-        <Animation Name="object_ganon_anime2_Anim_010514" Offset="0x10514"/>
+        <Animation Name="gGanondorfTurnAroundAnim" Offset="0x1F58"/> <!-- Original name is "G_furimuku" ("to turn around") -->
+        <Animation Name="gGanondorfStandIdleAnim" Offset="0x3018"/> <!-- Original name is "G_n_wait" -->
+        <Animation Name="gGanondorfStandUpFromOrganAnim" Offset="0x4304"/> <!-- Original name is "G_okosu" ("to stand up") -->
+        <Animation Name="gGanondorfStopPlayingOrganAnim" Offset="0x4F64"/> <!-- Original name is "G_or_end" -->
+        <Animation Name="gGanondorfPlayOrganAnim" Offset="0x5FFC"/> <!-- Original name is "G_or_hikuL" ("to play (a keyboard instrument)") -->
+        <Animation Name="gGanondorfLeanOnOrganAnim" Offset="0x6AF4"/> <!-- Original name is "G_tame" ("to hesitate") -->
+        <Animation Name="gGanondorfRaiseHandStartAnim" Offset="0x7268"/> <!-- Original name is "G_te_ageru" ("to raise") -->
+        <Animation Name="gGanondorfRaiseHandLoopAnim" Offset="0x7A64"/> <!-- Original name is "G_te_hikaru" ("to shine") -->
+        <Animation Name="gGanondorfStandBackwardsAnim" Offset="0x89F8"/> <!-- Original name is "G_usiro_wait" ("back-facing") -->
+        <Animation Name="gGanondorfLaughWhileLeaningAnim" Offset="0x9AE0"/> <!-- Unused. Original name is "G_warau" ("to laugh") -->
+        <Animation Name="gGanondorfCollapseAnim" Offset="0xADDC"/> <!-- Original name is "g_demo_down" -->
+        <Animation Name="gGanondorfVomitStartAnim" Offset="0xB668"/> <!-- Original name is "g_demo_hedohaki" ("to vomit") -->
+        <Animation Name="gGanondorfVomitLoopAnim" Offset="0xBE38"/> <!-- Original name is "g_demo_hedohaki_wait" -->
+        <Animation Name="gGanondorfDefeatedStartAnim" Offset="0xEA00"/> <!-- Original name is "g_demo_hizaoti" ("fall on your knees") -->
+        <Animation Name="gGanondorfDefeatedLoopAnim" Offset="0xF19C"/> <!-- Original name is "g_demo_hizaoti_wait" -->
+        <Animation Name="gGanondorfYellStartAnim" Offset="0x10298"/> <!-- Original name is "g_demo_sakebi" ("shout, yell") -->
+        <Animation Name="gGanondorfYellLoopAnim" Offset="0x10514"/> <!-- Original name is "g_demo_sakebi_wait" -->
     </File>
 </Root>

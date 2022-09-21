@@ -327,6 +327,9 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
         statsWindowOpen = CVar_GetS32("gStatsEnabled", 0);
+        CVar_RegisterS32("gRandomizeRupeeNames", 1);
+        CVar_RegisterS32("gRandoRelevantNavi", 1);
+        CVar_RegisterS32("gRandoMatchKeyColors", 1);
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
     #endif

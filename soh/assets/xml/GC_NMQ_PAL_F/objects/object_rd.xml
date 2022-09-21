@@ -1,106 +1,124 @@
 <Root>
+    <!-- Assets for Gibdos and Redeads -->
     <File Name="object_rd" Segment="6">
-        <Texture Name="object_rd_Tex_000000" OutName="tex_00000000" Format="rgba16" Width="64" Height="32" Offset="0x0"/>
-        <Texture Name="object_rd_Tex_001000" OutName="tex_00001000" Format="rgba16" Width="32" Height="16" Offset="0x1000"/>
-        <DList Name="object_rd_DL_002C60" Offset="0x2C60"/>
-        <DList Name="object_rd_DL_002D40" Offset="0x2D40"/>
-        <DList Name="object_rd_DL_002EB0" Offset="0x2EB0"/>
-        <DList Name="object_rd_DL_003018" Offset="0x3018"/>
-        <DList Name="object_rd_DL_003120" Offset="0x3120"/>
-        <DList Name="object_rd_DL_003220" Offset="0x3220"/>
-        <DList Name="object_rd_DL_003320" Offset="0x3320"/>
-        <DList Name="object_rd_DL_003428" Offset="0x3428"/>
-        <DList Name="object_rd_DL_003528" Offset="0x3528"/>
-        <DList Name="object_rd_DL_003628" Offset="0x3628"/>
-        <DList Name="object_rd_DL_003738" Offset="0x3738"/>
-        <DList Name="object_rd_DL_003830" Offset="0x3830"/>
-        <DList Name="object_rd_DL_003948" Offset="0x3948"/>
-        <DList Name="object_rd_DL_003A58" Offset="0x3A58"/>
-        <DList Name="object_rd_DL_003B50" Offset="0x3B50"/>
-        <Limb Name="object_rd_Limb_003C48" LimbType="Standard" Offset="0x3C48"/>
-        <Limb Name="object_rd_Limb_003C54" LimbType="Standard" Offset="0x3C54"/>
-        <Limb Name="object_rd_Limb_003C60" LimbType="Standard" Offset="0x3C60"/>
-        <Limb Name="object_rd_Limb_003C6C" LimbType="Standard" Offset="0x3C6C"/>
-        <Limb Name="object_rd_Limb_003C78" LimbType="Standard" Offset="0x3C78"/>
-        <Limb Name="object_rd_Limb_003C84" LimbType="Standard" Offset="0x3C84"/>
-        <Limb Name="object_rd_Limb_003C90" LimbType="Standard" Offset="0x3C90"/>
-        <Limb Name="object_rd_Limb_003C9C" LimbType="Standard" Offset="0x3C9C"/>
-        <Limb Name="object_rd_Limb_003CA8" LimbType="Standard" Offset="0x3CA8"/>
-        <Limb Name="object_rd_Limb_003CB4" LimbType="Standard" Offset="0x3CB4"/>
-        <Limb Name="object_rd_Limb_003CC0" LimbType="Standard" Offset="0x3CC0"/>
-        <Limb Name="object_rd_Limb_003CCC" LimbType="Standard" Offset="0x3CCC"/>
-        <Limb Name="object_rd_Limb_003CD8" LimbType="Standard" Offset="0x3CD8"/>
-        <Limb Name="object_rd_Limb_003CE4" LimbType="Standard" Offset="0x3CE4"/>
-        <Limb Name="object_rd_Limb_003CF0" LimbType="Standard" Offset="0x3CF0"/>
-        <Limb Name="object_rd_Limb_003CFC" LimbType="Standard" Offset="0x3CFC"/>
-        <Limb Name="object_rd_Limb_003D08" LimbType="Standard" Offset="0x3D08"/>
-        <Limb Name="object_rd_Limb_003D14" LimbType="Standard" Offset="0x3D14"/>
-        <Limb Name="object_rd_Limb_003D20" LimbType="Standard" Offset="0x3D20"/>
-        <Limb Name="object_rd_Limb_003D2C" LimbType="Standard" Offset="0x3D2C"/>
-        <Limb Name="object_rd_Limb_003D38" LimbType="Standard" Offset="0x3D38"/>
-        <Limb Name="object_rd_Limb_003D44" LimbType="Standard" Offset="0x3D44"/>
-        <Limb Name="object_rd_Limb_003D50" LimbType="Standard" Offset="0x3D50"/>
-        <Limb Name="object_rd_Limb_003D5C" LimbType="Standard" Offset="0x3D5C"/>
-        <Limb Name="object_rd_Limb_003D68" LimbType="Standard" Offset="0x3D68"/>
-        <Skeleton Name="object_rd_Skel_003DD8" Type="Flex" LimbType="Standard" Offset="0x3DD8"/>
-        <Animation Name="object_rd_Anim_004268" Offset="0x4268"/>
-        <Animation Name="object_rd_Anim_0046F8" Offset="0x46F8"/>
-        <Animation Name="object_rd_Anim_004ADC" Offset="0x4ADC"/>
-        <Animation Name="object_rd_Anim_004F94" Offset="0x4F94"/>
-        <Animation Name="object_rd_Anim_0057AC" Offset="0x57AC"/>
-        <Animation Name="object_rd_Anim_005D98" Offset="0x5D98"/>
-        <Animation Name="object_rd_Anim_006E88" Offset="0x6E88"/>
-        <Animation Name="object_rd_Anim_0074F0" Offset="0x74F0"/>
-        <Animation Name="object_rd_Anim_008040" Offset="0x8040"/>
-        <Animation Name="object_rd_Anim_0087D0" Offset="0x87D0"/>
-        <Texture Name="object_rd_Tex_0087E0" OutName="tex_000087E0" Format="rgba16" Width="32" Height="64" Offset="0x87E0"/>
-        <Texture Name="object_rd_Tex_0097E0" OutName="tex_000097E0" Format="rgba16" Width="32" Height="64" Offset="0x97E0"/>
-        <Texture Name="object_rd_Tex_00A7E0" OutName="tex_0000A7E0" Format="rgba16" Width="16" Height="32" Offset="0xA7E0"/>
-        <Texture Name="object_rd_Tex_00ABE0" OutName="tex_0000ABE0" Format="rgba16" Width="16" Height="32" Offset="0xABE0"/>
-        <Texture Name="object_rd_Tex_00AFE0" OutName="tex_0000AFE0" Format="i8" Width="32" Height="32" Offset="0xAFE0"/>
-        <Texture Name="object_rd_Tex_00B3E0" OutName="tex_0000B3E0" Format="rgba16" Width="32" Height="64" Offset="0xB3E0"/>
-        <Texture Name="object_rd_Tex_00C3E0" OutName="tex_0000C3E0" Format="rgba16" Width="32" Height="16" Offset="0xC3E0"/>
-        <DList Name="object_rd_DL_00D6A0" Offset="0xD6A0"/>
-        <DList Name="object_rd_DL_00D7C8" Offset="0xD7C8"/>
-        <DList Name="object_rd_DL_00DAC0" Offset="0xDAC0"/>
-        <DList Name="object_rd_DL_00DBA0" Offset="0xDBA0"/>
-        <DList Name="object_rd_DL_00DC60" Offset="0xDC60"/>
-        <DList Name="object_rd_DL_00DD30" Offset="0xDD30"/>
-        <DList Name="object_rd_DL_00DE08" Offset="0xDE08"/>
-        <DList Name="object_rd_DL_00DED8" Offset="0xDED8"/>
-        <DList Name="object_rd_DL_00DFA8" Offset="0xDFA8"/>
-        <DList Name="object_rd_DL_00E0E8" Offset="0xE0E8"/>
-        <DList Name="object_rd_DL_00E1C8" Offset="0xE1C8"/>
-        <DList Name="object_rd_DL_00E290" Offset="0xE290"/>
-        <DList Name="object_rd_DL_00E358" Offset="0xE358"/>
-        <DList Name="object_rd_DL_00E438" Offset="0xE438"/>
-        <DList Name="object_rd_DL_00E500" Offset="0xE500"/>
-        <Limb Name="object_rd_Limb_00E5E8" LimbType="Standard" Offset="0xE5E8"/>
-        <Limb Name="object_rd_Limb_00E5F4" LimbType="Standard" Offset="0xE5F4"/>
-        <Limb Name="object_rd_Limb_00E600" LimbType="Standard" Offset="0xE600"/>
-        <Limb Name="object_rd_Limb_00E60C" LimbType="Standard" Offset="0xE60C"/>
-        <Limb Name="object_rd_Limb_00E618" LimbType="Standard" Offset="0xE618"/>
-        <Limb Name="object_rd_Limb_00E624" LimbType="Standard" Offset="0xE624"/>
-        <Limb Name="object_rd_Limb_00E630" LimbType="Standard" Offset="0xE630"/>
-        <Limb Name="object_rd_Limb_00E63C" LimbType="Standard" Offset="0xE63C"/>
-        <Limb Name="object_rd_Limb_00E648" LimbType="Standard" Offset="0xE648"/>
-        <Limb Name="object_rd_Limb_00E654" LimbType="Standard" Offset="0xE654"/>
-        <Limb Name="object_rd_Limb_00E660" LimbType="Standard" Offset="0xE660"/>
-        <Limb Name="object_rd_Limb_00E66C" LimbType="Standard" Offset="0xE66C"/>
-        <Limb Name="object_rd_Limb_00E678" LimbType="Standard" Offset="0xE678"/>
-        <Limb Name="object_rd_Limb_00E684" LimbType="Standard" Offset="0xE684"/>
-        <Limb Name="object_rd_Limb_00E690" LimbType="Standard" Offset="0xE690"/>
-        <Limb Name="object_rd_Limb_00E69C" LimbType="Standard" Offset="0xE69C"/>
-        <Limb Name="object_rd_Limb_00E6A8" LimbType="Standard" Offset="0xE6A8"/>
-        <Limb Name="object_rd_Limb_00E6B4" LimbType="Standard" Offset="0xE6B4"/>
-        <Limb Name="object_rd_Limb_00E6C0" LimbType="Standard" Offset="0xE6C0"/>
-        <Limb Name="object_rd_Limb_00E6CC" LimbType="Standard" Offset="0xE6CC"/>
-        <Limb Name="object_rd_Limb_00E6D8" LimbType="Standard" Offset="0xE6D8"/>
-        <Limb Name="object_rd_Limb_00E6E4" LimbType="Standard" Offset="0xE6E4"/>
-        <Limb Name="object_rd_Limb_00E6F0" LimbType="Standard" Offset="0xE6F0"/>
-        <Limb Name="object_rd_Limb_00E6FC" LimbType="Standard" Offset="0xE6FC"/>
-        <Limb Name="object_rd_Limb_00E708" LimbType="Standard" Offset="0xE708"/>
-        <Skeleton Name="object_rd_Skel_00E778" Type="Flex" LimbType="Standard" Offset="0xE778"/>
-        <Animation Name="object_rd_Anim_00EFDC" Offset="0xEFDC"/>
+        <!-- Gibdo Textures -->
+        <Texture Name="gGibdoWrappingTex" OutName="gibdo_wrapping" Format="rgba16" Width="64" Height="32" Offset="0x0"/>
+        <Texture Name="gGibdoEyeTex" OutName="gibdo_eye" Format="rgba16" Width="32" Height="16" Offset="0x1000"/>
+
+        <!-- Gibdo Limb DisplayLists -->
+        <DList Name="gGibdoPelvisDL" Offset="0x2C60"/>
+        <DList Name="gGibdoHeadDL" Offset="0x2D40"/>
+        <DList Name="gGibdoTorsoDL" Offset="0x2EB0"/>
+        <DList Name="gGibdoRightUpperArmDL" Offset="0x3018"/>
+        <DList Name="gGibdoRightForearmDL" Offset="0x3120"/>
+        <DList Name="gGibdoRightHandDL" Offset="0x3220"/>
+        <DList Name="gGibdoLeftUpperArmDL" Offset="0x3320"/>
+        <DList Name="gGibdoLeftForearmDL" Offset="0x3428"/>
+        <DList Name="gGibdoLeftHandDL" Offset="0x3528"/>
+        <DList Name="gGibdoRightThighDL" Offset="0x3628"/>
+        <DList Name="gGibdoRightShinDL" Offset="0x3738"/>
+        <DList Name="gGibdoRightFootDL" Offset="0x3830"/>
+        <DList Name="gGibdoLeftThighDL" Offset="0x3948"/>
+        <DList Name="gGibdoLeftShinDL" Offset="0x3A58"/>
+        <DList Name="gGibdoLeftFootDL" Offset="0x3B50"/>
+
+        <!-- Gidbo Limbs -->
+        <Limb Name="gGibdoRootLimb" LimbType="Standard" Offset="0x3C48"/>
+        <Limb Name="gGibdoLeftLegRootLimb" LimbType="Standard" Offset="0x3C54"/>
+        <Limb Name="gGibdoLeftThighLimb" LimbType="Standard" Offset="0x3C60"/>
+        <Limb Name="gGibdoLeftShinLimb" LimbType="Standard" Offset="0x3C6C"/>
+        <Limb Name="gGibdoLeftFootRootLimb" LimbType="Standard" Offset="0x3C78"/>
+        <Limb Name="gGibdoLeftFootLimb" LimbType="Standard" Offset="0x3C84"/>
+        <Limb Name="gGibdoRightLegRootLimb" LimbType="Standard" Offset="0x3C90"/>
+        <Limb Name="gGibdoRightThighLimb" LimbType="Standard" Offset="0x3C9C"/>
+        <Limb Name="gGibdoRightShinLimb" LimbType="Standard" Offset="0x3CA8"/>
+        <Limb Name="gGibdoRightFootRootLimb" LimbType="Standard" Offset="0x3CB4"/>
+        <Limb Name="gGibdoRightFootLimb" LimbType="Standard" Offset="0x3CC0"/>
+        <Limb Name="gGibdoUpperBodyRootLimb" LimbType="Standard" Offset="0x3CCC"/>
+        <Limb Name="gGibdoTorsoRootLimb" LimbType="Standard" Offset="0x3CD8"/>
+        <Limb Name="gGibdoTorsoLimb" LimbType="Standard" Offset="0x3CE4"/>
+        <Limb Name="gGibdoLeftArmRootLimb" LimbType="Standard" Offset="0x3CF0"/>
+        <Limb Name="gGibdoLeftUpperArmLimb" LimbType="Standard" Offset="0x3CFC"/>
+        <Limb Name="gGibdoLeftForearmLimb" LimbType="Standard" Offset="0x3D08"/>
+        <Limb Name="gGibdoLeftHandLimb" LimbType="Standard" Offset="0x3D14"/>
+        <Limb Name="gGibdoRightArmRootLimb" LimbType="Standard" Offset="0x3D20"/>
+        <Limb Name="gGibdoRightUpperArmLimb" LimbType="Standard" Offset="0x3D2C"/>
+        <Limb Name="gGibdoRightForearmLimb" LimbType="Standard" Offset="0x3D38"/>
+        <Limb Name="gGibdoRightHandLimb" LimbType="Standard" Offset="0x3D44"/>
+        <Limb Name="gGibdoHeadRootLimb" LimbType="Standard" Offset="0x3D50"/>
+        <Limb Name="gGibdoHeadLimb" LimbType="Standard" Offset="0x3D5C"/>
+        <Limb Name="gGibdoPelvisLimb" LimbType="Standard" Offset="0x3D68"/>
+
+        <!-- Gibdo Skeleton -->
+        <Skeleton Name="gGibdoSkel" Type="Flex" LimbType="Standard" Offset="0x3DD8"/>
+
+        <Animation Name="gGibdoRedeadGrabAttackAnim" Offset="0x4268"/> <!-- Original name is "re_dead_attack" -->
+        <Animation Name="gGibdoRedeadGrabEndAnim" Offset="0x46F8"/> <!-- Original name is "re_dead_attack_end" -->
+        <Animation Name="gGibdoRedeadGrabStartAnim" Offset="0x4ADC"/> <!-- Original name is "re_dead_attack_start" -->
+        <Animation Name="gGibdoRedeadLookBackAnim" Offset="0x4F94"/> <!-- Original name is "re_dead_back_turn" -->
+        <Animation Name="gGibdoRedeadWipingTearsAnim" Offset="0x57AC"/> <!-- Original name is "re_dead_cry" -->
+        <Animation Name="gGibdoRedeadSobbingAnim" Offset="0x5D98"/> <!-- Original name is "re_dead_cryB" -->
+        <Animation Name="gGibdoRedeadDeathAnim" Offset="0x6E88"/> <!-- Original name is "re_dead_down" -->
+        <Animation Name="gGibdoRedeadDamageAnim" Offset="0x74F0"/> <!-- Original name is "re_dead_hit" -->
+        <Animation Name="gGibdoRedeadStandUpAnim" Offset="0x8040"/> <!-- Original name is "re_dead_standing" -->
+        <Animation Name="gGibdoRedeadIdleAnim" Offset="0x87D0"/> <!-- Original name is "re_dead_wait" -->
+
+        <!-- Redead Textures -->
+        <Texture Name="gRedeadBackTex" OutName="redead_back" Format="rgba16" Width="32" Height="64" Offset="0x87E0"/>
+        <Texture Name="gRedeadTorsoTex" OutName="redead_torso" Format="rgba16" Width="32" Height="64" Offset="0x97E0"/>
+        <Texture Name="gRedeadFingersAndToesTex" OutName="redead_fingers_and_toes" Format="rgba16" Width="16" Height="32" Offset="0xA7E0"/>
+        <Texture Name="gRedeadMuscleTex" OutName="redead_muscle" Format="rgba16" Width="16" Height="32" Offset="0xABE0"/>
+        <Texture Name="gRedeadMaskTex" OutName="redead_mask" Format="i8" Width="32" Height="32" Offset="0xAFE0"/>
+        <Texture Name="gRedeadFaceTex" OutName="redead_face" Format="rgba16" Width="32" Height="64" Offset="0xB3E0"/>
+        <Texture Name="gRedeadHipsTex" OutName="redead_hips" Format="rgba16" Width="32" Height="16" Offset="0xC3E0"/>
+
+        <!-- Redead Limb DisplayLists -->
+        <DList Name="gRedeadPelvisDL" Offset="0xD6A0"/>
+        <DList Name="gRedeadTorsoDL" Offset="0xD7C8"/>
+        <DList Name="gRedeadLeftUpperArmDL" Offset="0xDAC0"/>
+        <DList Name="gRedeadLeftForearmDL" Offset="0xDBA0"/>
+        <DList Name="gRedeadLeftHandDL" Offset="0xDC60"/>
+        <DList Name="gRedeadRightUpperArmDL" Offset="0xDD30"/>
+        <DList Name="gRedeadRightForearmDL" Offset="0xDE08"/>
+        <DList Name="gRedeadRightHandDL" Offset="0xDED8"/>
+        <DList Name="gRedeadHeadDL" Offset="0xDFA8"/>
+        <DList Name="gRedeadLeftThighDL" Offset="0xE0E8"/>
+        <DList Name="gRedeadLeftShinDL" Offset="0xE1C8"/>
+        <DList Name="gRedeadLeftFootDL" Offset="0xE290"/>
+        <DList Name="gRedeadRightThighDL" Offset="0xE358"/>
+        <DList Name="gRedeadRightShinDL" Offset="0xE438"/>
+        <DList Name="gRedeadRightFootDL" Offset="0xE500"/>
+
+        <!-- Redead Limbs -->
+        <Limb Name="gRedeadRootLimb" LimbType="Standard" Offset="0xE5E8"/>
+        <Limb Name="gRedeadLeftLegRootLimb" LimbType="Standard" Offset="0xE5F4"/>
+        <Limb Name="gRedeadLeftThighLimb" LimbType="Standard" Offset="0xE600"/>
+        <Limb Name="gRedeadLeftShinLimb" LimbType="Standard" Offset="0xE60C"/>
+        <Limb Name="gRedeadLeftFootRootLimb" LimbType="Standard" Offset="0xE618"/>
+        <Limb Name="gRedeadLeftFootLimb" LimbType="Standard" Offset="0xE624"/>
+        <Limb Name="gRedeadRightLegRootLimb" LimbType="Standard" Offset="0xE630"/>
+        <Limb Name="gRedeadRightThighLimb" LimbType="Standard" Offset="0xE63C"/>
+        <Limb Name="gRedeadRightShinLimb" LimbType="Standard" Offset="0xE648"/>
+        <Limb Name="gRedeadRightFootRootLimb" LimbType="Standard" Offset="0xE654"/>
+        <Limb Name="gRedeadRightFootLimb" LimbType="Standard" Offset="0xE660"/>
+        <Limb Name="gRedeadUpperBodyRootLimb" LimbType="Standard" Offset="0xE66C"/>
+        <Limb Name="gRedeadTorsoRootLimb" LimbType="Standard" Offset="0xE678"/>
+        <Limb Name="gRedeadTorsoLimb" LimbType="Standard" Offset="0xE684"/>
+        <Limb Name="gRedeadLeftArmRootLimb" LimbType="Standard" Offset="0xE690"/>
+        <Limb Name="gRedeadLeftUpperArmLimb" LimbType="Standard" Offset="0xE69C"/>
+        <Limb Name="gRedeadLeftForearmLimb" LimbType="Standard" Offset="0xE6A8"/>
+        <Limb Name="gRedeadLeftHandLimb" LimbType="Standard" Offset="0xE6B4"/>
+        <Limb Name="gRedeadRightArmRootLimb" LimbType="Standard" Offset="0xE6C0"/>
+        <Limb Name="gRedeadRightUpperArmLimb" LimbType="Standard" Offset="0xE6CC"/>
+        <Limb Name="gRedeadRightForearmLimb" LimbType="Standard" Offset="0xE6D8"/>
+        <Limb Name="gRedeadRightHandLimb" LimbType="Standard" Offset="0xE6E4"/>
+        <Limb Name="gRedeadHeadRootLimb" LimbType="Standard" Offset="0xE6F0"/>
+        <Limb Name="gRedeadHeadLimb" LimbType="Standard" Offset="0xE6FC"/>
+        <Limb Name="gRedeadPelvisLimb" LimbType="Standard" Offset="0xE708"/>
+
+        <!-- Redead Skeleton -->
+        <Skeleton Name="gRedeadSkel" Type="Flex" LimbType="Standard" Offset="0xE778"/>
+
+        <Animation Name="gGibdoRedeadWalkAnim" Offset="0xEFDC"/> <!-- Original name is "re_dead_walk" -->
     </File>
 </Root>

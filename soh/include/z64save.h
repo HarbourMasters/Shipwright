@@ -5,6 +5,7 @@
 #include "z64math.h"
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizer_inf.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -175,16 +176,17 @@ typedef struct {
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
     RandoSetting randoSettings[300];
-    ItemLocationRando itemLocations[500];
+    ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
     char childAltarText[250];
     char adultAltarText[750];
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u8 dungeonsDone[8];
-    u8 trialsDone[6];
+    u16 randomizerInf[8];
     u8 temporaryWeapon;
+    u16 adultTradeItems;
+    u8 pendingIceTrapCount;
 } SaveContext; // size = 0x1428
 
 typedef enum {
