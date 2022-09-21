@@ -1549,6 +1549,18 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     return 0;
 }
 
+extern "C" void Controller_BlockGameInput() {
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+
+    controlDeck->BlockGameInput();
+}
+
+extern "C" void Controller_UnblockGameInput() {
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+
+    controlDeck->UnblockGameInput();
+}
+
 extern "C" void Hooks_ExecuteAudioInit() {
     Ship::ExecuteHooks<Ship::AudioInit>();
 }
