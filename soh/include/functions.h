@@ -1056,6 +1056,7 @@ void func_80084BF4(GlobalContext* globalCtx, u16 flag);
 u8 Item_Give(GlobalContext* globalCtx, u8 item);
 u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
+void PerformAutosave(GlobalContext* globalCtx, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);

@@ -104,6 +104,7 @@ GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, G
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
 bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
+void Overlay_DisplayText(float duration, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 #endif

@@ -1743,3 +1743,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     }
     return false;
 }
+
+extern "C" void Overlay_DisplayText(float duration, const char* text) {
+    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+}
