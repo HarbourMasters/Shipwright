@@ -76,13 +76,17 @@ namespace Ship {
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 			if (backend->GetGuid() == "Auto") {
-				for (const auto& device : physicalDevices) {
-					if(ShouldBlockGameInput() && device->GetGuid() != "Keyboard") {
-						device->Read(nullptr, i);
-						continue;
+				std::shared_ptr<Controller> device;
+				for (const auto& physicalDevice : physicalDevices) {
+					if (!device && physicalDevice->GetGuid() != "Auto") {
+						device = physicalDevice;
 					}
-					device->Read(&pad[i], i);
 				}
+				if(ShouldBlockGameInput() && device->GetGuid() != "Keyboard") {
+					device->Read(nullptr, i);
+					continue;
+				}
+				device->Read(&pad[i], i);
 				continue;
 			}
 			if(ShouldBlockGameInput() && backend->GetGuid() != "Keyboard") {
