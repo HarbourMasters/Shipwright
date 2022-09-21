@@ -3704,8 +3704,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             switch (pauseCtx->unk_1E4) {
                 case 0:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        if (CVar_GetS32("gCheatEasyPauseBuffer", 0)) {
-                            CVar_SetS32("gCheatEasyPauseBufferBlockInputFrame", 9);
+                        CVar_SetS32("gPauseBufferBlockInputFrame", 9);
+                        if (CVar_GetS32("gCheatEasyPauseBufferEnabled", 0)) {
                             CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", 13);
                         }
                         Interface_SetDoAction(globalCtx, DO_ACTION_NONE);

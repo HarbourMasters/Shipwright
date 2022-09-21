@@ -1484,8 +1484,8 @@ void Gameplay_Main(GameState* thisx) {
     if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
         CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
     }
-    if (CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0)) {
-        CVar_SetS32("gCheatEasyPauseBufferBlockInputFrame", CVar_GetS32("gCheatEasyPauseBufferBlockInputFrame", 0) - 1);
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
     }
 
     D_8012D1F8 = &globalCtx->state.input[0];
