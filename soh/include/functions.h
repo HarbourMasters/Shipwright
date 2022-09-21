@@ -12,7 +12,7 @@ extern "C"
 #include "../../libultraship/libultraship/luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
+#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
@@ -185,6 +185,7 @@ void __osSetWatchLo(u32);
 EnItem00* Item_DropCollectible(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3f* spawnPos, s16 params);
+void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
 void EffectBlure_AddSpace(EffectBlure* this);
 void EffectBlure_Init1(void* thisx, void* initParamsx);

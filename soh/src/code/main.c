@@ -38,7 +38,11 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
+#ifdef _WIN32
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) 
+#else
 int main(int argc, char** argv)
+#endif
 {
 #ifdef __linux__
     SetupHandlerLinux();
@@ -49,6 +53,7 @@ int main(int argc, char** argv)
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
+
     Main(0);
     DeinitOTR();
     return 0;
