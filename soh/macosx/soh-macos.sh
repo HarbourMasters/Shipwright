@@ -71,7 +71,7 @@ if [ "${arch_name}" = "x86_64" ]; then
     if [ "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
 		launch_arch="arm64"
     else
-		launch_arch="intel"
+		launch_arch="x86_64"
 		# native intel
     fi
 elif [ "${arch_name}" = "arm64" ]; then
