@@ -3,7 +3,9 @@
 
 #include "soh/frame_interpolation.h"
 
-const Color_RGB8 Trails_Color_ori = {255,255,255};
+const Color_RGB8 TrailsColorOriginal = { 255, 255, 255 };
+const Color_RGB8 BoomColorOriginal = { 255, 255, 100 };
+const Color_RGB8 BombColorOriginal = { 200, 0, 0 };
 
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
@@ -73,6 +75,11 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
+//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+void EffectBlure_ChangeType(EffectBlure* this, int type) {
+    this->trailType = type;
+}
+
 void EffectBlure_AddSpace(EffectBlure* this) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -139,6 +146,7 @@ void EffectBlure_Init1(void* thisx, void* initParamsx) {
         this->elemDuration = initParams->elemDuration;
         this->unkFlag = initParams->unkFlag;
         this->calcMode = initParams->calcMode;
+        this->trailType = initParams->trailType;
         this->flags = 0;
         this->addAngleChange = 0;
         this->addAngle = 0;
@@ -187,6 +195,7 @@ void EffectBlure_Init2(void* thisx, void* initParamsx) {
         this->mode4Param = initParams->mode4Param;
         this->altPrimColor = initParams->altPrimColor;
         this->altEnvColor = initParams->altEnvColor;
+        this->trailType = initParams->trailType;
     }
 }
 
@@ -196,11 +205,203 @@ void EffectBlure_Destroy(void* thisx) {
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
-    s16 RedColor;
-    s16 GreenColor;
-    s16 BlueColor;
-    s16 TrailDuration;
-    Color_RGB8 Trails_col = CVar_GetRGB("gTrailCol", Trails_Color_ori);
+
+    Color_RGB8 SwordTopCol = CVar_GetRGB("gSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 SwordBottomCol = CVar_GetRGB("gSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 BoomStartCol = CVar_GetRGB("gBoomTrailStartCol", BoomColorOriginal);
+    Color_RGB8 BoomEndCol = CVar_GetRGB("gBoomTrailEndCol", BoomColorOriginal);
+    Color_RGB8 BombchuCol = CVar_GetRGB("gBombTrailCol", BombColorOriginal);
+    Color_RGB8 KSwordTopCol = CVar_GetRGB("gKSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 KSwordBottomCol = CVar_GetRGB("gKSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 MSwordTopCol = CVar_GetRGB("gMSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 MSwordBottomCol = CVar_GetRGB("gMSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 BSwordTopCol = CVar_GetRGB("gBSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 BSwordBottomCol = CVar_GetRGB("gBSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 StickTopCol = CVar_GetRGB("gStickTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 StickBottomCol = CVar_GetRGB("gStickTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 HammerTopCol = CVar_GetRGB("gHammerTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 HammerBottomCol = CVar_GetRGB("gHammerTrailBottomCol", TrailsColorOriginal);
+
+    if ((CVar_GetS32("gUseTrailsCol", 0) != 0) && (this->trailType != 0)) {
+        switch (this->trailType) { //there HAS to be a better way to do this.
+            case 1: //sword
+                this->p1StartColor.r = SwordTopCol.r;
+                this->p2StartColor.r = SwordBottomCol.r;
+                this->p1EndColor.r = SwordTopCol.r;
+                this->p2EndColor.r = SwordBottomCol.r;
+                this->p1StartColor.g = SwordTopCol.g;
+                this->p2StartColor.g = SwordBottomCol.g;
+                this->p1EndColor.g = SwordTopCol.g;
+                this->p2EndColor.g = SwordBottomCol.g;
+                this->p1StartColor.b = SwordTopCol.b;
+                this->p2StartColor.b = SwordBottomCol.b;
+                this->p1EndColor.b = SwordTopCol.b;
+                this->p2EndColor.b = SwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 2: //boomerang
+                this->p1StartColor.r = BoomStartCol.r;
+                this->p2StartColor.r = BoomStartCol.r;
+                this->p1EndColor.r = BoomEndCol.r;
+                this->p2EndColor.r = BoomEndCol.r;
+                this->p1StartColor.g = BoomStartCol.g;
+                this->p2StartColor.g = BoomStartCol.g;
+                this->p1EndColor.g = BoomEndCol.g;
+                this->p2EndColor.g = BoomEndCol.g;
+                this->p1StartColor.b = BoomStartCol.b;
+                this->p2StartColor.b = BoomStartCol.b;
+                this->p1EndColor.b = BoomEndCol.b;
+                this->p2EndColor.b = BoomEndCol.b;
+                break;
+            case 3: // bombchu
+                this->p1StartColor.r = BombchuCol.r;
+                this->p2StartColor.r = BombchuCol.r * 0.8f;
+                this->p1EndColor.r = BombchuCol.r * 0.6f;
+                this->p2EndColor.r = BombchuCol.r * 0.4f;
+                this->p1StartColor.g = BombchuCol.g;
+                this->p2StartColor.g = BombchuCol.g * 0.8f;
+                this->p1EndColor.g = BombchuCol.g * 0.6f;
+                this->p2EndColor.g = BombchuCol.g * 0.4f;
+                this->p1StartColor.b = BombchuCol.b;
+                this->p2StartColor.b = BombchuCol.b * 0.8f;
+                this->p1EndColor.b = BombchuCol.b * 0.6f;
+                this->p2EndColor.b = BombchuCol.b * 0.4f;
+                break;
+            case 4: // kokiri sword
+                this->p1StartColor.r = KSwordTopCol.r;
+                this->p2StartColor.r = KSwordBottomCol.r;
+                this->p1EndColor.r = KSwordTopCol.r;
+                this->p2EndColor.r = KSwordBottomCol.r;
+                this->p1StartColor.g = KSwordTopCol.g;
+                this->p2StartColor.g = KSwordBottomCol.g;
+                this->p1EndColor.g = KSwordTopCol.g;
+                this->p2EndColor.g = KSwordBottomCol.g;
+                this->p1StartColor.b = KSwordTopCol.b;
+                this->p2StartColor.b = KSwordBottomCol.b;
+                this->p1EndColor.b = KSwordTopCol.b;
+                this->p2EndColor.b = KSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 5: // master sword
+                this->p1StartColor.r = MSwordTopCol.r;
+                this->p2StartColor.r = MSwordBottomCol.r;
+                this->p1EndColor.r = MSwordTopCol.r;
+                this->p2EndColor.r = MSwordBottomCol.r;
+                this->p1StartColor.g = MSwordTopCol.g;
+                this->p2StartColor.g = MSwordBottomCol.g;
+                this->p1EndColor.g = MSwordTopCol.g;
+                this->p2EndColor.g = MSwordBottomCol.g;
+                this->p1StartColor.b = MSwordTopCol.b;
+                this->p2StartColor.b = MSwordBottomCol.b;
+                this->p1EndColor.b = MSwordTopCol.b;
+                this->p2EndColor.b = MSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 6: // biggoron sword
+                this->p1StartColor.r = BSwordTopCol.r;
+                this->p2StartColor.r = BSwordBottomCol.r;
+                this->p1EndColor.r = BSwordTopCol.r;
+                this->p2EndColor.r = BSwordBottomCol.r;
+                this->p1StartColor.g = BSwordTopCol.g;
+                this->p2StartColor.g = BSwordBottomCol.g;
+                this->p1EndColor.g = BSwordTopCol.g;
+                this->p2EndColor.g = BSwordBottomCol.g;
+                this->p1StartColor.b = BSwordTopCol.b;
+                this->p2StartColor.b = BSwordBottomCol.b;
+                this->p1EndColor.b = BSwordTopCol.b;
+                this->p2EndColor.b = BSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 7: // stick
+                this->p1StartColor.r = StickTopCol.r;
+                this->p2StartColor.r = StickBottomCol.r;
+                this->p1EndColor.r = StickTopCol.r;
+                this->p2EndColor.r = StickBottomCol.r;
+                this->p1StartColor.g = StickTopCol.g;
+                this->p2StartColor.g = StickBottomCol.g;
+                this->p1EndColor.g = StickTopCol.g;
+                this->p2EndColor.g = StickBottomCol.g;
+                this->p1StartColor.b = StickTopCol.b;
+                this->p2StartColor.b = StickBottomCol.b;
+                this->p1EndColor.b = StickTopCol.b;
+                this->p2EndColor.b = StickBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 8: // hammer
+                this->p1StartColor.r = HammerTopCol.r;
+                this->p2StartColor.r = HammerBottomCol.r;
+                this->p1EndColor.r = HammerTopCol.r;
+                this->p2EndColor.r = HammerBottomCol.r;
+                this->p1StartColor.g = HammerTopCol.g;
+                this->p2StartColor.g = HammerBottomCol.g;
+                this->p1EndColor.g = HammerTopCol.g;
+                this->p2EndColor.g = HammerBottomCol.g;
+                this->p1StartColor.b = HammerTopCol.b;
+                this->p2StartColor.b = HammerBottomCol.b;
+                this->p1EndColor.b = HammerTopCol.b;
+                this->p2EndColor.b = HammerBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 0:
+            default: // don't do anything
+                break;
+        }
+    } else
+        switch (this->trailType) { 
+            case 1: //swords
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                this->p1StartColor.r = 255;
+                this->p2StartColor.r = 255;
+                this->p1EndColor.r = 255;
+                this->p2EndColor.r = 255;
+                this->p1StartColor.g = 255;
+                this->p2StartColor.g = 255;
+                this->p1EndColor.g = 255;
+                this->p2EndColor.g = 255;
+                this->p1StartColor.b = 255;
+                this->p2StartColor.b = 255;
+                this->p1EndColor.b = 255;
+                this->p2EndColor.b = 255;
+                this->elemDuration = 4;
+                break;
+            case 2: //boomerang
+                this->p1StartColor.r = 255;
+                this->p2StartColor.r = 255;
+                this->p1EndColor.r = 255;
+                this->p2EndColor.r = 255;
+                this->p1StartColor.g = 255;
+                this->p2StartColor.g = 255;
+                this->p1EndColor.g = 255;
+                this->p2EndColor.g = 255;
+                this->p1StartColor.b = 100;
+                this->p2StartColor.b = 100;
+                this->p1EndColor.b = 100;
+                this->p2EndColor.b = 100;
+                this->elemDuration = 8;
+                break;
+            case 3: //bombchu
+                this->p1StartColor.r = 250;
+                this->p2StartColor.r = 200;
+                this->p1EndColor.r = 150;
+                this->p2EndColor.r = 100;
+                this->p1StartColor.g = 0;
+                this->p2StartColor.g = 0;
+                this->p1EndColor.g = 0;
+                this->p2EndColor.g = 0;
+                this->p1StartColor.b = 0;
+                this->p2StartColor.b = 0;
+                this->p1EndColor.b = 0;
+                this->p2EndColor.b = 0;
+                this->elemDuration = 16;
+                break;
+            case 0:
+            default: //don't do anything
+                break;
+        }
 
     if (this == NULL) {
         return 0;
@@ -209,32 +410,6 @@ s32 EffectBlure_Update(void* thisx) {
     if (this->numElements == 0) {
         return 0;
     }
-
-    if (CVar_GetS32("gUseTrailsCol", 0) !=0) {
-        RedColor = Trails_col.r;
-        GreenColor = Trails_col.g;
-        BlueColor = Trails_col.b;
-        TrailDuration = 4.0f * CVar_GetS32("gTrailDurantion",1);
-    } else {
-        RedColor = Trails_Color_ori.r;
-        GreenColor = Trails_Color_ori.g;
-        BlueColor = Trails_Color_ori.b;
-        TrailDuration=4.0f;
-    }
-
-    this->p1StartColor.r = RedColor;
-    this->p2StartColor.r = RedColor;
-    this->p1EndColor.r = RedColor;
-    this->p2EndColor.r = RedColor;
-    this->p1StartColor.g = GreenColor;
-    this->p2StartColor.g = GreenColor;
-    this->p1EndColor.g = GreenColor;
-    this->p2EndColor.g = GreenColor;
-    this->p1StartColor.b = BlueColor;
-    this->p2StartColor.b = BlueColor;
-    this->p1EndColor.b = BlueColor;
-    this->p2EndColor.b = BlueColor;
-    this->elemDuration = TrailDuration;
 
     while (true) {
         if (this->elements[0].state == 0) {
@@ -394,7 +569,7 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
             break;
     }
 
-    //sp30 = sp30; // Optimized out but seems necessary to match stack usage
+    sp30 = sp30; // Optimized out but seems necessary to match stack usage
 
     if (this->flags & 0x10) {
         color1->r = color1->g = color1->b = color1->a = 255;
@@ -693,6 +868,8 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp9C;
     MtxF sp5C;
     Mtx* mtx;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -710,6 +887,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     this->elements[this->numElements - 1].flags &= ~3;
     this->elements[this->numElements - 1].flags |= 2;
 
+    FrameInterpolation_RecordOpenChild(this, epoch);
     EffectBlure_SetupSmooth(this, gfxCtx);
     SkinMatrix_SetTranslate(&spDC, this->elements[0].p2.x, this->elements[0].p2.y, this->elements[0].p2.z);
     SkinMatrix_SetScale(&sp9C, 0.1f, 0.1f, 0.1f);
@@ -734,7 +912,10 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
+        
     }
+
+    FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -971,6 +1152,8 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 i;
     s32 j;
     s32 phi_t2;
+    static s32 epoch = 0;
+    epoch++;
 
     FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx);

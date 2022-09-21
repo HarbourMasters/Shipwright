@@ -6,6 +6,7 @@
 
 #include "z_en_ds.h"
 #include "objects/object_ds/object_ds.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -91,7 +92,14 @@ void EnDs_GiveOddPotion(EnDs* this, GlobalContext* globalCtx) {
         this->actionFunc = EnDs_DisplayOddPotionText;
         gSaveContext.timer2State = 0;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_ODD_POTION, 10000.0f, 50.0f);
+        u32 itemId = GI_ODD_POTION;
+        if (gSaveContext.n64ddFlag) {
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 50.0f);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_ODD_MUSHROOM);
+            return;
+        }
+        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
     }
 }
 
@@ -99,7 +107,14 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
         Message_CloseTextbox(globalCtx);
         this->actionFunc = EnDs_GiveOddPotion;
-        func_8002F434(&this->actor, globalCtx, GI_ODD_POTION, 10000.0f, 50.0f);
+        u32 itemId = GI_ODD_POTION;
+        if (gSaveContext.n64ddFlag) {
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 50.0f);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_ODD_MUSHROOM);
+            return;
+        }
+        func_8002F434(&this->actor, globalCtx, itemId, 10000.0f, 50.0f);
     }
 }
 
@@ -120,7 +135,7 @@ void EnDs_BrewOddPotion2(EnDs* this, GlobalContext* globalCtx) {
         this->brewTimer -= 1;
     } else {
         this->actionFunc = EnDs_BrewOddPotion3;
-        this->brewTimer = 60;
+        this->brewTimer = gSaveContext.n64ddFlag ? 0 : 60;
         Flags_UnsetSwitch(globalCtx, 0x3F);
     }
 }
@@ -130,7 +145,7 @@ void EnDs_BrewOddPotion1(EnDs* this, GlobalContext* globalCtx) {
         this->brewTimer -= 1;
     } else {
         this->actionFunc = EnDs_BrewOddPotion2;
-        this->brewTimer = 20;
+        this->brewTimer = gSaveContext.n64ddFlag ? 0 : 20;
     }
 
     Math_StepToF(&this->unk_1E4, 1.0f, 0.01f);
@@ -144,7 +159,7 @@ void EnDs_OfferOddPotion(EnDs* this, GlobalContext* globalCtx) {
         switch (globalCtx->msgCtx.choiceIndex) {
             case 0: // yes
                 this->actionFunc = EnDs_BrewOddPotion1;
-                this->brewTimer = 60;
+                this->brewTimer = gSaveContext.n64ddFlag ? 0 : 60;
                 Flags_SetSwitch(globalCtx, 0x3F);
                 globalCtx->msgCtx.msgMode = MSGMODE_PAUSED;
                 player->exchangeItemId = EXCH_ITEM_NONE;

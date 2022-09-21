@@ -1,13 +1,14 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
+#include "../../OTRGlobals.h"
 #include <libultraship/ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
-#include <array>
-#include <bit>
 #include <map>
 #include <string>
+#include <vector>
 #include <libultraship/Cvar.h>
+#include <libultraship/Hooks.h>
 
 extern "C" {
 #include <z64.h>
@@ -20,1001 +21,989 @@ extern GlobalContext* gGlobalCtx;
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
+void DrawEquip(ItemTrackerItem item);
+void DrawItem(ItemTrackerItem item);
+void DrawDungeonItem(ItemTrackerItem item);
+void DrawBottle(ItemTrackerItem item);
+void DrawQuest(ItemTrackerItem item);
+void DrawSong(ItemTrackerItem item);
 
-typedef struct {
-    uint32_t id;
-    std::string name;
-    std::string nameFaded;
-    std::string texturePath;
-} ItemMapEntry;
+OSContPad* buttonsPressed;
 
-#define ITEM_MAP_ENTRY(id)                                            \
-    {                                                                 \
-        id, {                                                         \
-            id, #id, #id "_Faded", static_cast<char*>(gItemIcons[id]) \
-        }                                                             \
-    }
+bool shouldUpdateVectors = true;
 
-// Maps items ids to info for use in ImGui
-std::map<uint32_t, ItemMapEntry> itemMappingSSS = {
-    ITEM_MAP_ENTRY(ITEM_STICK),
-    ITEM_MAP_ENTRY(ITEM_NUT),
-    ITEM_MAP_ENTRY(ITEM_BOMB),
-    ITEM_MAP_ENTRY(ITEM_BOW),
-    ITEM_MAP_ENTRY(ITEM_ARROW_FIRE),
-    ITEM_MAP_ENTRY(ITEM_DINS_FIRE),
-    ITEM_MAP_ENTRY(ITEM_SLINGSHOT),
-    ITEM_MAP_ENTRY(ITEM_OCARINA_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_OCARINA_TIME),
-    ITEM_MAP_ENTRY(ITEM_BOMBCHU),
-    ITEM_MAP_ENTRY(ITEM_HOOKSHOT),
-    ITEM_MAP_ENTRY(ITEM_LONGSHOT),
-    ITEM_MAP_ENTRY(ITEM_ARROW_ICE),
-    ITEM_MAP_ENTRY(ITEM_FARORES_WIND),
-    ITEM_MAP_ENTRY(ITEM_BOOMERANG),
-    ITEM_MAP_ENTRY(ITEM_LENS),
-    ITEM_MAP_ENTRY(ITEM_BEAN),
-    ITEM_MAP_ENTRY(ITEM_HAMMER),
-    ITEM_MAP_ENTRY(ITEM_ARROW_LIGHT),
-    ITEM_MAP_ENTRY(ITEM_NAYRUS_LOVE),
-    ITEM_MAP_ENTRY(ITEM_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_POTION_RED),
-    ITEM_MAP_ENTRY(ITEM_POTION_GREEN),
-    ITEM_MAP_ENTRY(ITEM_POTION_BLUE),
-    ITEM_MAP_ENTRY(ITEM_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_FISH),
-    ITEM_MAP_ENTRY(ITEM_MILK_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_LETTER_RUTO),
-    ITEM_MAP_ENTRY(ITEM_BLUE_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BUG),
-    ITEM_MAP_ENTRY(ITEM_BIG_POE),
-    ITEM_MAP_ENTRY(ITEM_MILK_HALF),
-    ITEM_MAP_ENTRY(ITEM_POE),
-    ITEM_MAP_ENTRY(ITEM_WEIRD_EGG),
-    ITEM_MAP_ENTRY(ITEM_CHICKEN),
-    ITEM_MAP_ENTRY(ITEM_LETTER_ZELDA),
-    ITEM_MAP_ENTRY(ITEM_MASK_KEATON),
-    ITEM_MAP_ENTRY(ITEM_MASK_SKULL),
-    ITEM_MAP_ENTRY(ITEM_MASK_SPOOKY),
-    ITEM_MAP_ENTRY(ITEM_MASK_BUNNY),
-    ITEM_MAP_ENTRY(ITEM_MASK_GORON),
-    ITEM_MAP_ENTRY(ITEM_MASK_ZORA),
-    ITEM_MAP_ENTRY(ITEM_MASK_GERUDO),
-    ITEM_MAP_ENTRY(ITEM_MASK_TRUTH),
-    ITEM_MAP_ENTRY(ITEM_SOLD_OUT),
-    ITEM_MAP_ENTRY(ITEM_POCKET_EGG),
-    ITEM_MAP_ENTRY(ITEM_POCKET_CUCCO),
-    ITEM_MAP_ENTRY(ITEM_COJIRO),
-    ITEM_MAP_ENTRY(ITEM_ODD_MUSHROOM),
-    ITEM_MAP_ENTRY(ITEM_ODD_POTION),
-    ITEM_MAP_ENTRY(ITEM_SAW),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BROKEN),
-    ITEM_MAP_ENTRY(ITEM_PRESCRIPTION),
-    ITEM_MAP_ENTRY(ITEM_FROG),
-    ITEM_MAP_ENTRY(ITEM_EYEDROPS),
-    ITEM_MAP_ENTRY(ITEM_CLAIM_CHECK),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_ICE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT),
-    ITEM_MAP_ENTRY(ITEM_SWORD_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_SWORD_MASTER),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BGS),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_DEKU),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_HYLIAN),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_MIRROR),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_GORON),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_ZORA),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_IRON),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_HOVER),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_30),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_40),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_50),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_30),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_40),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_50),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_20),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_30),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_40),
-    ITEM_MAP_ENTRY(ITEM_BRACELET),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_SILVER),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_GOLD),
-    ITEM_MAP_ENTRY(ITEM_SCALE_SILVER),
-    ITEM_MAP_ENTRY(ITEM_SCALE_GOLDEN),
-    ITEM_MAP_ENTRY(ITEM_SWORD_KNIFE),
-    ITEM_MAP_ENTRY(ITEM_WALLET_ADULT),
-    ITEM_MAP_ENTRY(ITEM_WALLET_GIANT),
-    ITEM_MAP_ENTRY(ITEM_SEEDS),
-    ITEM_MAP_ENTRY(ITEM_FISHING_POLE),
-    ITEM_MAP_ENTRY(ITEM_KEY_BOSS),
-    ITEM_MAP_ENTRY(ITEM_COMPASS),
-    ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
-    ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
+std::vector<ItemTrackerItem> mainWindowItems = {};
 
+std::vector<ItemTrackerItem> inventoryItems = {
+    ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),           ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_LENS, 0, DrawItem),          ITEM_TRACKER_ITEM(ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_BOTTLE, 1, DrawBottle),      ITEM_TRACKER_ITEM(ITEM_BOTTLE, 2, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 3, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
 };
 
-// Maps entries in the GS flag array to the area name it represents
-
-std::vector<std::string> gsMappingSSS = {
-    "Deku Tree",
-    "Dodongo's Cavern",
-    "Inside Jabu-Jabu's Belly",
-    "Forest Temple",
-    "Fire Temple",
-    "Water Temple",
-    "Spirit Temple",
-    "Shadow Temple",
-    "Bottom of the Well",
-    "Ice Cavern",
-    "Hyrule Field",
-    "Lon Lon Ranch",
-    "Kokiri Forest",
-    "Lost Woods, Sacred Forest Meadow",
-    "Castle Town and Ganon's Castle",
-    "Death Mountain Trail, Goron City",
-    "Kakariko Village",
-    "Zora Fountain, River",
-    "Lake Hylia",
-    "Gerudo Valley",
-    "Gerudo Fortress",
-    "Desert Colossus, Haunted Wasteland",
+std::vector<ItemTrackerItem> equipmentItems = {
+    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, 1 << 2, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, 1 << 8, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, 1 << 9, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, 1 << 10, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, 1 << 4, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, 1 << 5, DrawEquip), ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, 1 << 6, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, 1 << 12, DrawEquip), ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, 1 << 13, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, 1 << 14, DrawEquip),
 };
 
-extern "C" u8 gAreaGsFlags[];
-
-extern "C" u8 gAmmoItems[];
-
-// Modification of gAmmoItems that replaces ITEM_NONE with the item in inventory slot it represents
-u8 gAllAmmoItemsSSS[] = {
-    ITEM_STICK,     ITEM_NUT,          ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE, ITEM_DINS_FIRE,
-    ITEM_SLINGSHOT, ITEM_OCARINA_TIME, ITEM_BOMBCHU, ITEM_LONGSHOT, ITEM_ARROW_ICE,  ITEM_FARORES_WIND,
-    ITEM_BOOMERANG, ITEM_LENS,         ITEM_BEAN,    ITEM_HAMMER,
+std::vector<ItemTrackerItem> miscItems = {
+    ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),            ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),         ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest), ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest),
 };
 
-// Encapsulates what is drawn by the passed-in function within a border
-template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
-    // First group encapsulates the inner portion and border
-    ImGui::BeginGroup();
+std::vector<ItemTrackerItem> dungeonRewardStones = {
+    ITEM_TRACKER_ITEM(QUEST_KOKIRI_EMERALD, 1 << 18, DrawQuest), ITEM_TRACKER_ITEM(QUEST_GORON_RUBY, 1 << 19, DrawQuest), ITEM_TRACKER_ITEM(QUEST_ZORA_SAPPHIRE, 1 << 20, DrawQuest),
+};
 
-    ImVec2 padding = ImGui::GetStyle().FramePadding;
-    ImVec2 p0 = ImGui::GetCursorScreenPos();
-    ImGui::SetCursorScreenPos(ImVec2(p0.x + padding.x, p0.y + padding.y));
+std::vector<ItemTrackerItem> dungeonRewardMedallions = {
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FOREST, 1 << 0, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_FIRE, 1 << 1, DrawQuest),   ITEM_TRACKER_ITEM(QUEST_MEDALLION_WATER, 1 << 2, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SPIRIT, 1 << 3, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_SHADOW, 1 << 4, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_LIGHT, 1 << 5, DrawQuest),
+};
 
-    // Second group encapsulates just the inner portion
-    ImGui::BeginGroup();
+std::vector<ItemTrackerItem> dungeonRewards = {};
 
-    drawFunc();
+std::vector<ItemTrackerItem> songItems = {
+    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
+};
 
-    ImGui::Dummy(padding);
-    ImGui::EndGroup();
+std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
+    { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_MEN, { ITEM_KEY_SMALL } },
+};
 
-    ImVec2 p1 = ImGui::GetItemRectMax();
-    p1.x += padding.x;
-    ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
-    ImGui::GetWindowDrawList()->AddRect(
-        p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
+std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
+    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
+    { SCENE_MEN, { ITEM_KEY_SMALL } },
+};
 
-    ImGui::EndGroup();
+
+std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
+    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_MEN, { ITEM_KEY_SMALL } },
+};
+
+std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
+    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
+    { SCENE_MEN, { ITEM_KEY_SMALL } },
+    { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } },
+};
+
+std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
+    { SCENE_BMORI1, "FRST" },
+    { SCENE_HIDAN, "FIRE" },
+    { SCENE_MIZUSIN, "WATR" },
+    { SCENE_JYASINZOU, "SPRT" },
+    { SCENE_HAKADAN, "SHDW" },
+    { SCENE_HAKADANCH, "BOTW" },
+    { SCENE_YDAN, "DEKU" },
+    { SCENE_DDAN, "DCVN" },
+    { SCENE_BDAN, "JABU" },
+    { SCENE_ICE_DOUKUTO, "ICE" },
+    { SCENE_GANONTIKA, "GANON" },
+    { SCENE_MEN, "GTG" },
+    { SCENE_GERUDOWAY, "HIDE" },
+};
+
+std::vector<ItemTrackerItem> dungeonItems = {};
+
+std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
+    { ITEM_BOTTLE, ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
+    { ITEM_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
+    { ITEM_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
+    { ITEM_BUG, ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
+    { ITEM_FAIRY, ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
+    { ITEM_FISH, ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
+    { ITEM_POTION_GREEN, ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
+    { ITEM_POE, ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
+    { ITEM_POTION_RED, ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
+    { ITEM_POTION_BLUE, ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
+    { ITEM_MILK_BOTTLE, ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
+    { ITEM_MILK_HALF, ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
+    { ITEM_LETTER_RUTO, ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
+
+    { ITEM_HOOKSHOT, ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
+    { ITEM_LONGSHOT, ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
+
+    { ITEM_OCARINA_FAIRY, ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
+    { ITEM_OCARINA_TIME, ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, 0, DrawItem) },
+
+    { ITEM_MAGIC_SMALL, ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem) },
+    { ITEM_MAGIC_LARGE, ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, 0, DrawItem) },
+
+    { ITEM_WALLET_ADULT, ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem) },
+    { ITEM_WALLET_GIANT, ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, 0, DrawItem) },
+
+    { ITEM_BRACELET, ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem) },
+    { ITEM_GAUNTLETS_SILVER, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_SILVER, 0, DrawItem) },
+    { ITEM_GAUNTLETS_GOLD, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, 0, DrawItem) },
+
+    { ITEM_SCALE_SILVER, ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
+    { ITEM_SCALE_GOLDEN, ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
+
+    { ITEM_WEIRD_EGG, ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
+    { ITEM_CHICKEN, ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
+    { ITEM_LETTER_ZELDA, ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, 0, DrawItem) },
+    { ITEM_MASK_KEATON, ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
+    { ITEM_MASK_SKULL, ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
+    { ITEM_MASK_SPOOKY, ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
+    { ITEM_MASK_BUNNY, ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, 0, DrawItem) },
+    { ITEM_MASK_GORON, ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
+    { ITEM_MASK_ZORA, ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
+    { ITEM_MASK_GERUDO, ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
+    { ITEM_MASK_TRUTH, ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
+    { ITEM_SOLD_OUT, ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
+
+    { ITEM_POCKET_EGG, ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
+    { ITEM_POCKET_CUCCO, ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
+    { ITEM_COJIRO, ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
+    { ITEM_ODD_MUSHROOM, ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
+    { ITEM_ODD_POTION, ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
+    { ITEM_SAW, ITEM_TRACKER_ITEM(ITEM_SAW, 0, DrawItem) },
+    { ITEM_SWORD_BROKEN, ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, 0, DrawItem) },
+    { ITEM_PRESCRIPTION, ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
+    { ITEM_FROG, ITEM_TRACKER_ITEM(ITEM_FROG, 0, DrawItem) },
+    { ITEM_EYEDROPS, ITEM_TRACKER_ITEM(ITEM_EYEDROPS, 0, DrawItem) },
+    { ITEM_CLAIM_CHECK, ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
+};
+
+std::vector<uint32_t> buttonMap = {
+    BTN_A,
+    BTN_B,
+    BTN_CUP,
+    BTN_CDOWN,
+    BTN_CLEFT,
+    BTN_CRIGHT,
+    BTN_L,
+    BTN_Z,
+    BTN_R,
+    BTN_START,
+    BTN_DUP,
+    BTN_DDOWN,
+    BTN_DLEFT,
+    BTN_DRIGHT
+};
+
+typedef enum {
+  ITEM_TRACKER_NUMBER_NONE,
+  ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY,
+  ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY,
+  ITEM_TRACKER_NUMBER_CAPACITY,
+  ITEM_TRACKER_NUMBER_AMMO,
+} ItemTrackerNumberOption;
+
+struct ItemTrackerNumbers {
+  int currentCapacity;
+  int maxCapacity;
+  int currentAmmo;
+};
+
+bool IsValidSaveFile() {
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    return validSave;
 }
 
-char z2ASCIISSS(int code) {
-    int ret;
-    if (code < 10) { // Digits
-        ret = code + 0x30;
-    } else if (code >= 10 && code < 36) { // Uppercase letters
-        ret = code + 0x37;
-    } else if (code >= 36 && code < 62) { // Lowercase letters
-        ret = code + 0x3D;
-    } else if (code == 62) { // Space
-        ret = code - 0x1E;
-    } else if (code == 63 || code == 64) { // _ and .
-        ret = code - 0x12;
-    } else {
-        ret = code;
-    }
-    return char(ret);
-}
+ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
+    ItemTrackerNumbers result;
+    result.currentCapacity = 0;
+    result.maxCapacity = 0;
+    result.currentAmmo = 0;
 
-typedef struct {
-    uint32_t id;
-    std::string name;
-    std::string nameFaded;
-    uint32_t bitMask;
-} ItemTrackerMapEntry;
-
-#define ITEM_TRACKER_MAP_ENTRY(id, maskShift)     \
-    {                                             \
-        id, {                                     \
-            id, #id, #id "_Faded", 1 << maskShift \
-        }                                         \
-    }
-
-std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = {
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 3),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_DEKU, 4),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_HYLIAN, 5),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_MIRROR, 6),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_KOKIRI, 8),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_GORON, 9),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_ZORA, 10),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_KOKIRI, 12),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_IRON, 13),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_HOVER, 14),
-};
-
-void DrawEquip(uint32_t itemId) {
-    const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
-    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
-
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-}
-
-std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_WATER, 2),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, 3),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SHADOW, 4),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_LIGHT, 5),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_KOKIRI_EMERALD, 18),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_GORON_RUBY, 19),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, 20),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_STONE_OF_AGONY, 21),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_GERUDO_CARD, 22),
-    ITEM_TRACKER_MAP_ENTRY(QUEST_SKULL_TOKEN, 23),
-
-};
-
-void DrawQuest(uint32_t itemId) {
-    const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
-    bool hasQuestItem = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
-
-    ImVec2 p = ImGui::GetCursorScreenPos();
-    int estimatedTextWidth = 10;
-    int estimatedTextHeight = 10;
-    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
-
-    if (entry.name == "QUEST_SKULL_TOKEN") {
-        if (gSaveContext.inventory.gsTokens == 0) {
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
-            ImGui::PopStyleColor();
-        } else if (gSaveContext.inventory.gsTokens >= 1 && gSaveContext.inventory.gsTokens <= 99) {
-            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
-        } else if (gSaveContext.inventory.gsTokens >= 100) {
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
-            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
-            ImGui::PopStyleColor();
-        }
-    }
-
-    ImGui::EndGroup();
-
-    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
-};
-
-std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
-    ITEM_TRACKER_MAP_ENTRY(ITEM_STICK, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_NUT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOMB, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_FIRE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_DINS_FIRE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SLINGSHOT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_OCARINA_FAIRY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_OCARINA_TIME, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOMBCHU, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_HOOKSHOT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LONGSHOT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_ICE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FARORES_WIND, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOMERANG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LENS, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BEAN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_HAMMER, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_LIGHT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_NAYRUS_LOVE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOTTLE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_RED, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_GREEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_BLUE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FAIRY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FISH, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_BOTTLE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_RUTO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BLUE_FIRE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BUG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BIG_POE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_HALF, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_WEIRD_EGG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_CHICKEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_ZELDA, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_KEATON, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SKULL, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SPOOKY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_BUNNY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GORON, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_ZORA, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GERUDO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_TRUTH, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SOLD_OUT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_EGG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_CUCCO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_COJIRO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_MUSHROOM, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_POTION, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SAW, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_PRESCRIPTION, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FROG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_EYEDROPS, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_CLAIM_CHECK, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_FIRE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_ICE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BOTTLE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_RED, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_GREEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_BLUE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FAIRY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FISH, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_BOTTLE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_RUTO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BLUE_FIRE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BUG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BIG_POE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_HALF, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_WEIRD_EGG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_CHICKEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_ZELDA, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_KEATON, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SKULL, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SPOOKY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_BUNNY, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GORON, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_ZORA, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GERUDO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_TRUTH, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SOLD_OUT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_EGG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_CUCCO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_COJIRO, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_MUSHROOM, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_POTION, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SAW, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_PRESCRIPTION, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_FROG, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_EYEDROPS, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_CLAIM_CHECK, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_HEART_CONTAINER, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_SMALL, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_LARGE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_ADULT, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_GIANT, 0),
-};
-
-void DrawItem(uint32_t itemId) {
-    uint32_t actualItemId = INV_CONTENT(itemId);
-
-    if (itemId == ITEM_HEART_CONTAINER) {
-        actualItemId = itemId;
-    }
-
-    if (itemId == ITEM_WALLET_ADULT || itemId == ITEM_WALLET_GIANT) {
-        if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
-            actualItemId = ITEM_WALLET_GIANT;
-        } else if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
-            actualItemId = ITEM_WALLET_ADULT;
-        }
-    }
-
-    if (itemId == ITEM_MAGIC_SMALL || itemId == ITEM_MAGIC_LARGE) {
-        if (gSaveContext.magicLevel == 2) {
-            actualItemId = ITEM_MAGIC_LARGE;
-        } else {
-            actualItemId = ITEM_MAGIC_SMALL;
-        }
-    }
-
-    bool hasItem = actualItemId != ITEM_NONE;
-
-    if (itemId == ITEM_HEART_CONTAINER) {
-        if (gSaveContext.doubleDefense) {
-            hasItem = true;
-        } else {
-            hasItem = false;
-        }
-    }
-
-    if (itemId == ITEM_WALLET_ADULT || itemId == ITEM_WALLET_GIANT) {
-        if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
-            hasItem = false;
-        } else {
-            hasItem = true;
-        }
-    }
-
-    if (itemId == ITEM_MAGIC_SMALL || itemId == ITEM_MAGIC_LARGE) {
-        if (gSaveContext.magicLevel == 0) {
-            hasItem = false;
-        } else {
-            hasItem = true;
-        }
-    }
-
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-
-    ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
-    ImVec2 p = ImGui::GetCursorScreenPos();
-    int estimatedTextWidth = 10;
-    int estimatedTextHeight = 10;
-    ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
-
-    switch (actualItemId) {
+    switch (item.id) {
         case ITEM_STICK:
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%i", AMMO(ITEM_STICK));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                    ImGui::PopStyleColor();
-                } else if (AMMO(ITEM_STICK) != 0 || AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS) - 1) {
-                    ImGui::Text("%i", AMMO(ITEM_STICK));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                } else if (AMMO(ITEM_STICK) == 0) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                    ImGui::Text("%i", AMMO(ITEM_STICK));
-                    ImGui::PopStyleColor();
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::SameLine(0, 0.0f);
-            }
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%i", CUR_CAPACITY(UPG_STICKS));
-            ImGui::PopStyleColor();
+            result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
+            result.maxCapacity = 30;
+            result.currentAmmo = AMMO(ITEM_STICK);
             break;
         case ITEM_NUT:
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                if (AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS)) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%i", AMMO(ITEM_NUT));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                    ImGui::PopStyleColor();
-                } else if (AMMO(ITEM_NUT) != 0 || AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS) - 1) {
-                    ImGui::Text("%i", AMMO(ITEM_NUT));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                } else if (AMMO(ITEM_NUT) == 0) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                    ImGui::Text("%i", AMMO(ITEM_NUT));
-                    ImGui::PopStyleColor();
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::SameLine(0, 0.0f);
-            }
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%i", CUR_CAPACITY(UPG_NUTS));
-            ImGui::PopStyleColor();
+            result.currentCapacity = CUR_CAPACITY(UPG_NUTS);
+            result.maxCapacity = 40;
+            result.currentAmmo = AMMO(ITEM_NUT);
             break;
         case ITEM_BOMB:
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                if (AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG)) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%i", AMMO(ITEM_BOMB));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                    ImGui::PopStyleColor();
-                } else if (AMMO(ITEM_BOMB) != 0 || AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG) - 1) {
-                    ImGui::Text("%i", AMMO(ITEM_BOMB));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                } else if (AMMO(ITEM_BOMB) == 0) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                    ImGui::Text("%i", AMMO(ITEM_BOMB));
-                    ImGui::PopStyleColor();
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::SameLine(0, 0.0f);
-            }
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%i", CUR_CAPACITY(UPG_BOMB_BAG));
-            ImGui::PopStyleColor();
+            result.currentCapacity = CUR_CAPACITY(UPG_BOMB_BAG);
+            result.maxCapacity = 40;
+            result.currentAmmo = AMMO(ITEM_BOMB);
             break;
-
         case ITEM_BOW:
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                if (AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER)) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%i", AMMO(ITEM_BOW));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                    ImGui::PopStyleColor();
-                } else if (AMMO(ITEM_BOW) != 0 || AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER) - 1) {
-                    ImGui::Text("%i", AMMO(ITEM_BOW));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                } else if (AMMO(ITEM_BOW) == 0) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                    ImGui::Text("%i", AMMO(ITEM_BOW));
-                    ImGui::PopStyleColor();
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::SameLine(0, 0.0f);
-            }
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%i", CUR_CAPACITY(UPG_QUIVER));
-            ImGui::PopStyleColor();
+            result.currentCapacity = CUR_CAPACITY(UPG_QUIVER);
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_BOW);
             break;
         case ITEM_SLINGSHOT:
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                if (AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG)) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                    ImGui::PopStyleColor();
-                } else if (AMMO(ITEM_SLINGSHOT) != 0 || AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG) - 1) {
-                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                } else if (AMMO(ITEM_SLINGSHOT) == 0) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
-                    ImGui::PopStyleColor();
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::SameLine(0, 0.0f);
-            }
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("%i", CUR_CAPACITY(UPG_BULLET_BAG));
-            ImGui::PopStyleColor();
-            break;
-        case ITEM_BOMBCHU:
-            if (AMMO(ITEM_BOMBCHU) == 50) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_BOMBCHU) != 0 || AMMO(ITEM_BOMBCHU) < 50) {
-                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-            } else if (AMMO(ITEM_BOMBCHU) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
-                ImGui::PopStyleColor();
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-            }
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                ImGui::SameLine(0, 0.0f);
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("50");
-                ImGui::PopStyleColor();
-            }
-            break;
-        case ITEM_BEAN:
-            if (AMMO(ITEM_BEAN) == 10) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_BEAN));
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_BEAN) != 0 || AMMO(ITEM_BEAN) < 10) {
-                ImGui::Text("%i", AMMO(ITEM_BEAN));
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-            } else if (AMMO(ITEM_BEAN) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_BEAN));
-                ImGui::PopStyleColor();
-                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                    ImGui::SameLine(0, 0.0f);
-                    ImGui::Text("/");
-                }
-            }
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                ImGui::SameLine(0, 0.0f);
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("10");
-                ImGui::PopStyleColor();
-            }
+            result.currentCapacity = CUR_CAPACITY(UPG_BULLET_BAG);
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_SLINGSHOT);
             break;
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
-            if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("99");
-                ImGui::PopStyleColor();
-            } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("200");
-                ImGui::PopStyleColor();
-            } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("500");
-                ImGui::PopStyleColor();
+            result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
+            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 1 ? 999 : 500;
+            result.currentAmmo = gSaveContext.rupees;
+            break;
+        case ITEM_BOMBCHU:
+            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
+            result.maxCapacity = 50;
+            result.currentAmmo = AMMO(ITEM_BOMBCHU);
+            break;
+        case ITEM_BEAN:
+            result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
+            result.maxCapacity = 10;
+            result.currentAmmo = AMMO(ITEM_BEAN);
+            break;
+        case QUEST_SKULL_TOKEN:
+            result.maxCapacity = result.currentCapacity = 100;
+            result.currentAmmo = gSaveContext.inventory.gsTokens;
+            break;
+        case ITEM_KEY_SMALL:
+            result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
+            switch (item.data) {
+                case SCENE_BMORI1:
+                    result.maxCapacity = result.currentCapacity = 5;
+                    break;
+                case SCENE_HIDAN:
+                    result.maxCapacity = result.currentCapacity = 8;
+                    break;
+                case SCENE_MIZUSIN:
+                    result.maxCapacity = result.currentCapacity = 6;
+                    break;
+                case SCENE_JYASINZOU:
+                    result.maxCapacity = result.currentCapacity = 5;
+                    break;
+                case SCENE_HAKADAN:
+                    result.maxCapacity = result.currentCapacity = 5;
+                    break;
+                case SCENE_HAKADANCH:
+                    result.maxCapacity = result.currentCapacity = 3;
+                    break;
+                case SCENE_GANONTIKA:
+                    result.maxCapacity = result.currentCapacity = 2;
+                    break;
+                case SCENE_MEN:
+                    result.maxCapacity = result.currentCapacity = 9;
+                    break;
+                case SCENE_GERUDOWAY:
+                    result.maxCapacity = result.currentCapacity = 4;
+                    break;
             }
             break;
-        default:
-            ImGui::Text(" ");
+    }
+
+    return result;
+}
+
+#define IM_COL_WHITE IM_COL32(255, 255, 255, 255)
+#define IM_COL_RED IM_COL32(255, 0, 0, 255)
+#define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
+#define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
+
+void DrawItemCount(ItemTrackerItem item) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    int32_t trackerNumberDisplayMode = CVar_GetS32("gItemTrackerCapacityTrack", 1);
+
+    if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
+        std::string currentString = "";
+        std::string maxString = "";
+        ImU32 currentColor = IM_COL_WHITE;
+        ImU32 maxColor = item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
+
+        bool shouldAlignToLeft = CVar_GetS32("gItemTrackerCurrentOnLeft", 0) &&
+            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_CAPACITY &&
+            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_AMMO;
+
+        bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
+            trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
+            // These items have a static capacity, so display ammo instead
+            item.id == ITEM_BOMBCHU ||
+            item.id == ITEM_BEAN ||
+            item.id == QUEST_SKULL_TOKEN ||
+            item.id == ITEM_KEY_SMALL;
+
+        bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
+
+        if (shouldDisplayAmmo) {
+            currentString = std::to_string(currentAndMax.currentAmmo);
+            if (currentAndMax.currentAmmo >= currentAndMax.currentCapacity) {
+                if (item.id == QUEST_SKULL_TOKEN) {
+                    currentColor = IM_COL_RED;
+                } else {
+                    currentColor = IM_COL_GREEN;
+                }
+            }
+            if (shouldDisplayMax) {
+                currentString += "/";
+                maxString = std::to_string(currentAndMax.currentCapacity);
+            }
+            if (currentAndMax.currentAmmo <= 0) {
+                currentColor = IM_COL_GRAY;
+            }
+        } else {
+            currentString = std::to_string(currentAndMax.currentCapacity);
+            if (currentAndMax.currentCapacity >= currentAndMax.maxCapacity) {
+                currentColor = IM_COL_GREEN;
+            } else if (shouldDisplayMax) {
+                currentString += "/";
+                maxString = std::to_string(currentAndMax.maxCapacity);
+            }
+        }
+
+        float x = shouldAlignToLeft ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2);
+
+        ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+        ImGui::Text(currentString.c_str());
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+        ImGui::Text(maxString.c_str());
+        ImGui::PopStyleColor();
+    } else {
+        ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
+        ImGui::Text("");
+    }
+}
+
+void DrawEquip(ItemTrackerItem item) {
+    bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+}
+
+void DrawQuest(ItemTrackerItem item) {
+    bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    ImGui::BeginGroup();
+    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    if (item.id == QUEST_SKULL_TOKEN) {
+        DrawItemCount(item);
+    }
+
+    ImGui::EndGroup();
+
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+};
+
+void DrawItem(ItemTrackerItem item) {
+    uint32_t actualItemId = INV_CONTENT(item.id);
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    bool hasItem = actualItemId != ITEM_NONE;
+
+    if (item.id == ITEM_NONE) {
+        return;
+    }
+
+    switch (item.id) {
+        case ITEM_HEART_CONTAINER:
+            actualItemId = item.id;
+            hasItem = !!gSaveContext.doubleDefense;
             break;
+        case ITEM_MAGIC_SMALL:
+        case ITEM_MAGIC_LARGE:
+            actualItemId = gSaveContext.magicLevel == 2 ? ITEM_MAGIC_LARGE : ITEM_MAGIC_SMALL;
+            hasItem = gSaveContext.magicLevel > 0;
+            break;
+        case ITEM_WALLET_ADULT:
+        case ITEM_WALLET_GIANT:
+            actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
+            hasItem = true;
+            break;
+        case ITEM_BRACELET:
+        case ITEM_GAUNTLETS_SILVER:
+        case ITEM_GAUNTLETS_GOLD:
+            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3 ? ITEM_GAUNTLETS_GOLD : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER : ITEM_BRACELET;
+            hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
+            break;
+        case ITEM_SCALE_SILVER:
+        case ITEM_SCALE_GOLDEN:
+            actualItemId = CUR_UPG_VALUE(UPG_SCALE) == 2 ? ITEM_SCALE_GOLDEN : ITEM_SCALE_SILVER;
+            hasItem = CUR_UPG_VALUE(UPG_SCALE) > 0;
+            break;
+    }
+
+    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+        item = actualItemTrackerItemMap[actualItemId];
+    }
+    
+    ImGui::BeginGroup();
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    DrawItemCount(item);
+    ImGui::EndGroup();
+
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+}
+
+void DrawBottle(ItemTrackerItem item) {
+    uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
+    bool hasItem = actualItemId != ITEM_NONE;
+
+    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+        item = actualItemTrackerItemMap[actualItemId];
+    }
+
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+};
+
+void DrawDungeonItem(ItemTrackerItem item) {
+    uint32_t itemId = item.id;
+    uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
+    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
+    ImGui::BeginGroup();
+    if (itemId == ITEM_KEY_SMALL) {
+        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    }
+    else {
+        ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    }
+
+    if (itemId == ITEM_KEY_SMALL) {
+        DrawItemCount(item);
+
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
+        ImGui::Text(dungeonName.c_str());
+    }
+
+    if (itemId == ITEM_DUNGEON_MAP && 
+        (item.data == SCENE_YDAN || item.data == SCENE_DDAN || item.data == SCENE_BDAN || item.data == SCENE_ICE_DOUKUTO)
+    ) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string dungeonName = itemTrackerDungeonShortNames[item.data];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::Text(dungeonName.c_str());
     }
     ImGui::EndGroup();
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
 }
 
-void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
-    uint32_t actualItemId = gSaveContext.inventory.items[SLOT(itemId) + bottleSlot];
-    bool hasItem = actualItemId != ITEM_NONE;
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
-                 ImVec2(0, 0), ImVec2(1, 1));
-
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-};
-
-typedef struct {
-    uint8_t id;
-    std::string name;
-    std::string nameFaded;
-} ItemTrackerUpgradeEntry;
-
-#define ITEM_TRACKER_UPGRADE_ENTRY(id)  { id, #id, #id "_Faded" }
-
-std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTrackerMap = {
-    {UPG_STRENGTH, {
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BRACELET),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_SILVER),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_GOLD),
-    }},
-    {UPG_SCALE, {
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_SILVER),
-        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_GOLDEN),
-    }},
-    {UPG_QUIVER, {
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_30),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_40),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_50),
-      }},
-    {UPG_BULLET_BAG, {
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_30),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_40),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_50),
-      }},
-    {UPG_BOMB_BAG, {
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_20),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_30),
-          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_40),
-      }},
-
-};
-
-void DrawUpgrade(int32_t categoryId) {
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    if (CUR_UPG_VALUE(categoryId) == 0) {
-        const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
-        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
-        UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-    } else {
-        const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
-        ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
-        UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-    }
-}
-
-typedef struct {
-    uint32_t id;
-    std::string name;
-    std::string nameFaded;
-    ImVec4 color;
-} ItemTrackerSongEntry;
-
-#define ITEM_TRACKER_SONG_ENTRY(id)               \
-    {                                             \
-        id, {                                     \
-            id, #id, #id "_Faded"                 \
-        }                                         \
-    }
-
-// Maps song ids to info for use in ImGui
-std::unordered_map<int32_t, ItemTrackerSongEntry> songTrackerMap = {
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
-};
-
-#define VANILLA_ITEM_TRACKER_SONG_ENTRY(id)           \
-    {                                                 \
-        id, {                                         \
-            id, #id "_Vanilla", #id "_Vanilla_Faded"  \
-        }                                             \
-    }
-
-// Maps song ids to info for use in ImGui
-std::unordered_map<int32_t, ItemTrackerSongEntry> vanillaSongTrackerMap = {
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
-    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
-};
-
-void DrawSong(int32_t songId) {
-    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    const ItemTrackerSongEntry& entry = CVar_GetS32("gItemTrackeSongColor", 0) ?
-                                        songTrackerMap[songId] :
-                                        vanillaSongTrackerMap[songId];
-    uint32_t bitMask = 1 << entry.id;
+void DrawSong(ItemTrackerItem item) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    uint32_t bitMask = 1 << item.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
-    ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
-            ImVec2(0, 0), ImVec2(1, 1));
-    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
+    ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+                 ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
 
-void DrawItemTracker(bool& open) {
-    if (!open) {
-        CVar_SetS32("gItemTrackerEnabled", 0);
-        return;
-    }
+static ImVector<char> itemTrackerNotes;
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    static uint32_t ccc = 0xFF000000;
-    ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
+void DrawNotes(bool resizeable = false) {
+    ImGui::BeginGroup();
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
 
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-    if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::PopStyleColor();
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
-        int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
-
-        if (ImGui::BeginTabItem("Item Tracker")) {
-
-            ImGui::BeginGroup();
-            DrawItem(ITEM_STICK);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_NUT);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BOMB);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_BOW);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_FIRE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_DINS_FIRE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawItem(ITEM_SLINGSHOT);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_OCARINA_FAIRY);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BOMBCHU);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_HOOKSHOT);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_ICE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_FARORES_WIND);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawItem(ITEM_BOOMERANG);
-            ImGui::SameLine(spacingX);
-            DrawItem(ITEM_LENS);
-            ImGui::SameLine(spacingX * 2);
-            DrawItem(ITEM_BEAN);
-            ImGui::SameLine(spacingX * 3);
-            DrawItem(ITEM_HAMMER);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_ARROW_LIGHT);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_NAYRUS_LOVE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawBottle(ITEM_BOTTLE, 0);
-            ImGui::SameLine(spacingX);
-            DrawBottle(ITEM_BOTTLE, 1);
-            ImGui::SameLine(spacingX * 2);
-            DrawBottle(ITEM_BOTTLE, 2);
-            ImGui::SameLine(spacingX * 3);
-            DrawBottle(ITEM_BOTTLE, 3);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_SWORD_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_SWORD_MASTER);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_STONE_OF_AGONY);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_GERUDO_CARD);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_SKULL_TOKEN);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_SHIELD_DEKU);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_SHIELD_HYLIAN);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_SHIELD_MIRROR);
-            ImGui::SameLine(spacingX * 3);
-            DrawUpgrade(UPG_STRENGTH);
-            ImGui::SameLine(spacingX * 4);
-            DrawUpgrade(UPG_SCALE);
-            ImGui::SameLine(spacingX * 5);
-            DrawItem(ITEM_WALLET_ADULT);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_TUNIC_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_TUNIC_GORON);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_TUNIC_ZORA);
-            ImGui::SameLine(spacingX * 3);
-            //ImGui::Dummy(ImVec2(spacingX + 48.0f, spacingY));
-            DrawItem(ITEM_HEART_CONTAINER);
-            ImGui::SameLine(spacingX * 4);
-            DrawItem(ITEM_MAGIC_SMALL);
-            ImGui::SameLine(spacingX * 5);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawEquip(ITEM_BOOTS_KOKIRI);
-            ImGui::SameLine(spacingX);
-            DrawEquip(ITEM_BOOTS_IRON);
-            ImGui::SameLine(spacingX * 2);
-            DrawEquip(ITEM_BOOTS_HOVER);
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_KOKIRI_EMERALD);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_GORON_RUBY);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_ZORA_SAPPHIRE);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawQuest(QUEST_MEDALLION_FOREST);
-            ImGui::SameLine(spacingX);
-            DrawQuest(QUEST_MEDALLION_FIRE);
-            ImGui::SameLine(spacingX * 2);
-            DrawQuest(QUEST_MEDALLION_WATER);
-            ImGui::SameLine(spacingX * 3);
-            DrawQuest(QUEST_MEDALLION_SPIRIT);
-            ImGui::SameLine(spacingX * 4);
-            DrawQuest(QUEST_MEDALLION_SHADOW);
-            ImGui::SameLine(spacingX * 5);
-            DrawQuest(QUEST_MEDALLION_LIGHT);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawSong(QUEST_SONG_LULLABY);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_EPONA);
-            ImGui::SameLine(spacingX * 2);
-            DrawSong(QUEST_SONG_SARIA);
-            ImGui::SameLine(spacingX * 3);
-            DrawSong(QUEST_SONG_SUN);
-            ImGui::SameLine(spacingX * 4);
-            DrawSong(QUEST_SONG_TIME);
-            ImGui::SameLine(spacingX * 5);
-            DrawSong(QUEST_SONG_STORMS);
-            ImGui::EndGroup();
-            ImGui::BeginGroup();
-            DrawSong(QUEST_SONG_MINUET);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_BOLERO);
-            ImGui::SameLine(spacingX * 2);
-            DrawSong(QUEST_SONG_SERENADE);
-            ImGui::SameLine(spacingX * 3);
-            DrawSong(QUEST_SONG_REQUIEM);
-            ImGui::SameLine(spacingX * 4);
-            DrawSong(QUEST_SONG_NOCTURNE);
-            ImGui::SameLine(spacingX * 5);
-            DrawSong(QUEST_SONG_PRELUDE);
-            ImGui::EndGroup();
-            ImGui::EndTabItem();
-        }
-        
-        if (ImGui::BeginTabItem("Options")) {
-            int minimalSpacingX;
-            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
-                minimalSpacingX = 48;
-            } else {
-                minimalSpacingX = 32;
+    struct ItemTrackerNotes {
+        static int TrackerNotesResizeCallback(ImGuiInputTextCallbackData* data) {
+            if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+                ImVector<char>* itemTrackerNotes = (ImVector<char>*)data->UserData;
+                IM_ASSERT(itemTrackerNotes->begin() == data->Buf);
+                itemTrackerNotes->resize(
+                    data->BufSize); // NB: On resizing calls, generally data->BufSize == data->BufTextLen + 1
+                data->Buf = itemTrackerNotes->begin();
             }
-            UIWidgets::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
-            UIWidgets::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
-            UIWidgets::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
-            UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
-
-            UIWidgets::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
-                                           "");
-            // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
-            //                                16, "");
-            ImGui::Text("Chroma Key");
-
-            auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
-
-            if (ImGui::ColorEdit4("ColorTest", (float*)&color, flags)) {
-                ccc = ImGui::ColorConvertFloat4ToU32(color);
-            }
-
-
-            // ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
-            // //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
-            // ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-            // ImGui::PopStyleColor();
-            // */
-            ImGui::EndTabItem();
+            return 0;
         }
-        ImGui::EndTabBar();
+        static bool TrackerNotesInputTextMultiline(const char* label, ImVector<char>* itemTrackerNotes, const ImVec2& size = ImVec2(0, 0),
+                                                    ImGuiInputTextFlags flags = 0) {
+            IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
+            return ImGui::InputTextMultiline(label, itemTrackerNotes->begin(), (size_t)itemTrackerNotes->size(),
+                                                size, flags | ImGuiInputTextFlags_CallbackResize,
+                                                ItemTrackerNotes::TrackerNotesResizeCallback,
+                                                (void*)itemTrackerNotes);
+        }
+    };
+    ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
+    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
+    if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+        SohImGui::RequestCvarSaveOnNextTick();
     }
+    ImGui::EndGroup();
+}
+
+// Windowing stuff
+ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
+void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
+    ImGuiWindowFlags windowFlags = flags;
+
+    if (windowFlags == 0) {
+        windowFlags |= ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
+    }
+
+    if (!CVar_GetS32("gItemTrackerWindowType", 0)) {
+        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+
+        if (!CVar_GetS32("gItemTrackerHudEditMode", 0)) {
+            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+        }
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ChromaKeyBackground);
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
+}
+void EndFloatingWindows() {
+    ImGui::PopStyleVar();
+    ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::End();
 }
 
+/**
+ * DrawItemsInRows
+ * Takes in a vector of ItemTrackerItem and draws them in rows of N items
+ */
+void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+    int topPadding = CVar_GetS32("gItemTrackerWindowType", 0) ? 20 : 0;
+
+    for (int i = 0; i < items.size(); i++) {
+        int row = i / columns;
+        int column = i % columns;
+        ImGui::SetCursorPos(ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8 + topPadding));
+        items[i].drawFunc(items[i]);
+    }
+}
+
+/**
+ * DrawItemsInACircle
+ * Takes in a vector of ItemTrackerItem and draws them evenly spread across a circle
+ */
+void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+
+    ImVec2 max = ImGui::GetWindowContentRegionMax();
+    float radius = (iconSize + iconSpacing) * 2;
+
+    for (int i = 0; i < items.size(); i++) {
+        float angle = (float)i / items.size() * 2.0f * M_PI;
+        float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
+        float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
+        ImGui::SetCursorPos(ImVec2(x - 14, y + 4));
+        items[i].drawFunc(items[i]);
+    }
+}
+
+/**
+ * GetDungeonItemsVector
+ * Loops over dungeons and creates vectors of items in the correct order 
+ * to then call DrawItemsInRows
+ */
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+    std::vector<ItemTrackerItem> dungeonItems = {};
+
+    int rowCount = 0;
+    for (int i = 0; i < dungeons.size(); i++) {
+        if (dungeons[i].items.size() > rowCount) rowCount = dungeons[i].items.size();
+    }
+
+    for (int i = 0; i < rowCount; i++) {
+        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+            if (dungeons[j].items.size() > i) {
+                switch (dungeons[j].items[i]) {
+                    case ITEM_KEY_SMALL:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                        break;
+                    case ITEM_KEY_BOSS:
+                        // Swap Ganon's Castle boss key to the right scene ID manually
+                        if (dungeons[j].id == SCENE_GANONTIKA) {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANON, DrawDungeonItem));
+                        } else {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                        }
+                        break;
+                    case ITEM_DUNGEON_MAP:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[j].id, DrawDungeonItem));
+                        break;
+                    case ITEM_COMPASS:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, dungeons[j].id, DrawDungeonItem));
+                        break;
+                }
+            } else {
+                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            }
+        }
+    }
+
+    if (dungeons.size() > columns) {
+        std::vector<ItemTrackerItem> nextDungeonItems = GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
+        dungeonItems.insert(dungeonItems.end(), nextDungeonItems.begin(), nextDungeonItems.end());
+    }
+
+    return dungeonItems;
+}
+
+/* TODO: These need to be moved to a common imgui file */
+void LabeledComboBoxRightAligned(const char* label, const char* cvar, std::vector<std::string> options, s32 defaultValue) {
+    s32 currentValue = CVar_GetS32(cvar, defaultValue);
+    std::string hiddenLabel = "##" + std::string(cvar);
+    ImGui::Text(label);
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f + 20.0f));
+    ImGui::PushItemWidth((ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f) + 30.0f);
+    if (ImGui::BeginCombo(hiddenLabel.c_str(), options[currentValue].c_str())) {
+        for (int i = 0; i < options.size(); i++) {
+            if (ImGui::Selectable(options[i].c_str())) {
+                CVar_SetS32(cvar, i);
+                SohImGui::RequestCvarSaveOnNextTick();
+                shouldUpdateVectors = true;
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+    ImGui::PopItemWidth();
+}
+
+void PaddedEnhancementCheckbox(const char* text, const char* cvarName, s32 defaultValue = 0, bool padTop = true, bool padBottom = true) {
+    if (padTop) {
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    }
+    bool val = (bool)CVar_GetS32(cvarName, defaultValue);
+        if (ImGui::Checkbox(text, &val)) {
+            CVar_SetS32(cvarName, val);
+            SohImGui::RequestCvarSaveOnNextTick();
+            shouldUpdateVectors = true;
+        }
+    if (padBottom) {
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    }
+}
+/* ****************************************************** */
+
+void UpdateVectors() {
+    if  (!shouldUpdateVectors) {
+        return;
+    }
+
+    dungeonRewards.clear();
+    dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
+    dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
+
+    dungeonItems.clear();
+    if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+        if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
+            dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
+            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+        } else {
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
+            dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
+            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+        }
+    } else {
+        if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
+            dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
+            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
+            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+        } else {
+            dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
+        }
+    }
+
+    mainWindowItems.clear();
+    if (CVar_GetS32("gItemTrackerInventoryItemsDisplayType", 1) == 1) {
+        mainWindowItems.insert(mainWindowItems.end(), inventoryItems.begin(), inventoryItems.end());
+    }
+    if (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 1) {
+        mainWindowItems.insert(mainWindowItems.end(), equipmentItems.begin(), equipmentItems.end());
+    }
+    if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) {
+        mainWindowItems.insert(mainWindowItems.end(), miscItems.begin(), miscItems.end());
+    }
+    if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 1) {
+        if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+        mainWindowItems.insert(mainWindowItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
+        mainWindowItems.insert(mainWindowItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
+    }
+    if (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) {
+        if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1 && CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) != 1) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+        mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
+    }
+    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 1) {
+        mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
+    }
+
+    shouldUpdateVectors = false;
+}
+
+void DrawItemTracker(bool& open) {
+    UpdateVectors();
+    if (!open) {
+        CVar_SetS32("gItemTrackerEnabled", 0);
+        return;
+    }
+    int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
+    int iconSpacing = CVar_GetS32("gItemTrackerIconSpacing", 12);
+    int comboButton1Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton1", 6)];
+    int comboButton2Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton2", 8)];
+    bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
+    bool isPaused = CVar_GetS32("gItemTrackerShowOnlyPaused", 0) == 0 || gGlobalCtx != nullptr && gGlobalCtx->pauseCtx.state > 0;
+
+    if (CVar_GetS32("gItemTrackerWindowType", 0) == 1 || isPaused && (CVar_GetS32("gItemTrackerDisplayType", 0) == 0 ? CVar_GetS32("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
+        if (
+            (CVar_GetS32("gItemTrackerInventoryItemsDisplayType", 1) == 1) ||
+            (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 1) ||
+            (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) ||
+            (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 1) ||
+            (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) ||
+            (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 1) ||
+            (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 1)
+        ) {
+            BeginFloatingWindows("Item Tracker##main window");
+            DrawItemsInRows(mainWindowItems, 6);
+
+            if (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 1 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+                DrawNotes();
+            }
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerInventoryItemsDisplayType", 1) == 2) {
+            BeginFloatingWindows("Inventory Items Tracker");
+            DrawItemsInRows(inventoryItems);
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerEquipmentItemsDisplayType", 1) == 2) {
+            BeginFloatingWindows("Equipment Items Tracker");
+            DrawItemsInRows(equipmentItems, 3);
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 2) {
+            BeginFloatingWindows("Misc Items Tracker");
+            DrawItemsInRows(miscItems, 4);
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+            BeginFloatingWindows("Dungeon Rewards Tracker");
+            if (CVar_GetS32("gItemTrackerDungeonRewardsCircle", 0) == 1) {
+                ImGui::BeginGroup();
+                DrawItemsInACircle(dungeonRewardMedallions);
+                ImGui::EndGroup();
+                ImGui::BeginGroup();
+                DrawItemsInRows(dungeonRewardStones);
+                ImGui::EndGroup();
+            } else {
+                DrawItemsInRows(dungeonRewards, 3);
+            }
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 2) {
+            BeginFloatingWindows("Songs Tracker");
+            DrawItemsInRows(songItems);
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+            BeginFloatingWindows("Dungeon Items Tracker");
+            if (CVar_GetS32("gItemTrackerDisplayDungeonItemsHorizontal", 1)) {
+                if (CVar_GetS32("gItemTrackerDisplayDungeonItemsMaps", 1)) {
+                    DrawItemsInRows(dungeonItems, 12);
+                } else {
+                    DrawItemsInRows(dungeonItems, 8);
+                }
+            } else {
+                DrawItemsInRows(dungeonItems);
+            }
+            EndFloatingWindows();
+        }
+
+        if (CVar_GetS32("gItemTrackerNotesDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+            ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
+            BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
+            DrawNotes(true);
+            EndFloatingWindows();
+        }
+    }
+}
+
+const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
+
+void DrawItemTrackerOptions(bool& open) {
+    if (!open) {
+        CVar_SetS32("gItemTrackerSettingsEnabled", 0);
+        return;
+    }
+
+    ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
+
+    if (!ImGui::Begin("Item Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
+    ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableSetupColumn("Section settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableHeadersRow();
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::Text("BG Color");
+    ImGui::SameLine();
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    if (ImGui::ColorEdit4("BG Color##gItemTrackerBgColor", (float*)&ChromaKeyBackground, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel)) {
+        CVar_SetFloat("gItemTrackerBgColorR", ChromaKeyBackground.x);
+        CVar_SetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
+        CVar_SetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
+        CVar_SetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
+    ImGui::PopItemWidth();
+
+    LabeledComboBoxRightAligned("Window Type", "gItemTrackerWindowType", { "Floating", "Window" }, 0);
+
+    if (CVar_GetS32("gItemTrackerWindowType", 0) == 0) {
+        PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode", 0);
+        PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused", 0);
+        LabeledComboBoxRightAligned("Display Mode", "gItemTrackerDisplayType", { "Always", "Combo Button Hold" }, 0);
+        if (CVar_GetS32("gItemTrackerDisplayType", 0) > 0) {
+            LabeledComboBoxRightAligned("Combo Button 1", "gItemTrackerComboButton1", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 6);
+            LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 8);
+        }
+    }
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
+    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
+    
+    ImGui::Text("Ammo/Capacity Tracking");
+    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 5, 1);
+    UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
+                                    "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
+    if (CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
+        PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
+    }
+
+    ImGui::TableNextColumn();
+
+    LabeledComboBoxRightAligned("Inventory", "gItemTrackerInventoryItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Equipment", "gItemTrackerEquipmentItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Misc", "gItemTrackerMiscItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+        PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", 1);
+    }
+    LabeledComboBoxRightAligned("Songs", "gItemTrackerSongsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+    if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) != 0) {
+        if (CVar_GetS32("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+            PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", 1);
+        }
+        PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
+    }
+
+    if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
+        LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+    }
+
+    ImGui::PopStyleVar(1);
+    ImGui::EndTable();
+
+    ImGui::End();
+}
+
 void InitItemTracker() {
-    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
+    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVar_GetS32("gItemTrackerEnabled", 0) == 1);
+    SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    float trackerBgR = CVar_GetFloat("gItemTrackerBgColorR", 0);
+    float trackerBgG = CVar_GetFloat("gItemTrackerBgColorG", 0);
+    float trackerBgB = CVar_GetFloat("gItemTrackerBgColorB", 0);
+    float trackerBgA = CVar_GetFloat("gItemTrackerBgColorA", 1);
+    ChromaKeyBackground = {
+        trackerBgR,
+        trackerBgG,
+        trackerBgB,
+        trackerBgA
+    }; // Float value, 1 = 255 in rgb value.
+    // Crashes when the itemTrackerNotes is empty, so add an empty character to it
+    if (itemTrackerNotes.empty()) {
+        itemTrackerNotes.push_back(0);
+    }
+    Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
+        buttonsPressed = cont_pad;
+    });
+    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+        const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        strcpy(itemTrackerNotes.Data, initialTrackerNotes);
+    });
+    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+        CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        SohImGui::RequestCvarSaveOnNextTick();
+    });
 }

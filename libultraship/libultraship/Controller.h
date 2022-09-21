@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <cstdint>
+#include <queue>
 #include "UltraController.h"
 #include "ControllerAttachment.h"
 #include <unordered_map>
@@ -84,5 +85,6 @@ namespace Ship {
 
 			std::unordered_map<int32_t, std::shared_ptr<DeviceProfile>> profiles;
 			std::unordered_map<int32_t, std::shared_ptr<Buttons>> ButtonData = {};
+			std::deque<OSContPad> padBuffer;
 	};
 }

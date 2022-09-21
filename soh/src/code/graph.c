@@ -486,10 +486,7 @@ static void RunFrame()
 
             Graph_StartFrame();
 
-            // TODO: Workaround for rumble being too long. Implement os thread functions.
-            for (int i = 0; i < 3; i++) {
-                PadMgr_ThreadEntry(&gPadMgr);
-            }
+            PadMgr_ThreadEntry(&gPadMgr);
 
             isExtraFrame = true;
             for (int i = 1; i < CVar_GetS32("gFrameMult", 1); i++) {

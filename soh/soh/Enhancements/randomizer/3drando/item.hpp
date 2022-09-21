@@ -6,6 +6,7 @@
 #include "keys.hpp"
 #include "hint_list.hpp"
 #include "settings.hpp"
+#include "../randomizerTypes.h"
 
 union ItemOverride_Value;
 
@@ -28,9 +29,9 @@ enum ItemType {
 class Item {
 public:
     Item() = default;
-  Item(Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
+  Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
        uint16_t price_ = 0);
-    Item(Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
          uint16_t price_ = 0);
     ~Item();
 
@@ -53,6 +54,10 @@ public:
 
     ItemType GetItemType() const {
         return type;
+    }
+
+    RandomizerGet GetRandomizerGet() {
+        return randomizerGet;
     }
 
     uint16_t GetPrice() const {
@@ -103,11 +108,11 @@ public:
             return false;
         }
 
-        if ((type == ITEMTYPE_BOSSKEY && getItemId != 0x9A) && (BossKeysanity.Is(BOSSKEYSANITY_VANILLA) || BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON))) {
+        if ((type == ITEMTYPE_BOSSKEY && getItemId != 0xAD) && (BossKeysanity.Is(BOSSKEYSANITY_VANILLA) || BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON))) {
             return false;
         }
             //Ganons Castle Boss Key
-        if (getItemId == 0x9A && (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA) || GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON))) {
+        if (getItemId == 0xAD && (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA) || GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON))) {
             return false;
         }
 
@@ -131,6 +136,7 @@ public:
     }
 
 private:
+    RandomizerGet randomizerGet;
     Text name;
     ItemType type;
     int  getItemId;

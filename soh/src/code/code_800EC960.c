@@ -1246,6 +1246,7 @@ void Audio_StepFreqLerp(FreqLerp* lerp);
 void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 
 // Right stick as virtual C buttons
 #define RSTICK_UP    0x100000
@@ -3952,6 +3953,58 @@ void Audio_ResetSfxChannelState(void) {
     sSfxChannelState[SFX_PLAYER_CHANNEL_OCARINA].unk_0C = 0;
     sPrevSeqMode = 0;
     sAudioCodeReverb = 0;
+}
+
+// Function to play "get-item" fanfares according to the type of item obtained (used in rando)
+// Longer fanfares for medallions/stones/songs are behind the Cvar
+void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
+    s32 temp1;
+    s16 getItemId = getItem.getItemId;
+    s16 itemId = getItem.itemId;
+
+    if (getItem.modIndex == MOD_NONE) {
+        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
+            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else {
+            if (itemId == ITEM_HEART_CONTAINER ||
+                ((itemId == ITEM_HEART_PIECE_2) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                temp1 = NA_BGM_HEART_GET | 0x900;
+            } else {
+                temp1 = (itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+            }
+            // If we get a skulltula token or the "WINNER" heart, play "get small item"
+            // Also make sure "WINNER" heart is not the 4th heart piece.
+            if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
+                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
+                temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+            }
+            // If the setting is toggled on and we get special quest items (longer fanfares):
+            if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+                // If we get a medallion, play the "get a medallion" fanfare
+                if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
+                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                }
+                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                if ((itemId >= ITEM_KOKIRI_EMERALD) && (itemId <= ITEM_ZORA_SAPPHIRE)) {
+                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                }
+                // If the item we're getting is a song, play the "learned a song" fanfare
+                if ((itemId >= ITEM_SONG_MINUET) && (itemId <= ITEM_SONG_STORMS)) {
+                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                }
+            }
+            Audio_PlayFanfare(temp1);
+        } 
+    } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+            (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        } else {
+            // Just in case nothing else matches.
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        }
+        Audio_PlayFanfare(temp1);
+    }
 }
 
 void func_800F3F3C(u8 arg0) {

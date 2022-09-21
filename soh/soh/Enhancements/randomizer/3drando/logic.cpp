@@ -685,7 +685,7 @@ namespace Logic {
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-    ScarecrowSong    = ScarecrowSong || (ChildScarecrow && AdultScarecrow);
+    ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
     Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
     DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
 
@@ -702,7 +702,7 @@ namespace Logic {
     Nuts         = DekuNutDrop || Nuts;
     Sticks       = DekuStickDrop || Sticks;
     Bugs         = HasBottle && BugsAccess;
-    BlueFire     = HasBottle && BlueFireAccess;
+    BlueFire     = (HasBottle && BlueFireAccess) || (BlueFireArrows && CanUse(ICE_ARROWS));
     Fish         = HasBottle && FishAccess;
     Fairy        = HasBottle && FairyAccess;
 

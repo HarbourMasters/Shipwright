@@ -53,8 +53,8 @@
         <Texture Name="gAmmoDigit8Tex" OutName="ammo_digit_8" Format="ia8" Width="8" Height="8" Offset="0x37C0"/>
         <Texture Name="gAmmoDigit9Tex" OutName="ammo_digit_9" Format="ia8" Width="8" Height="8" Offset="0x3800"/>
         <Texture Name="gUnusedAmmoDigitHalfTex" OutName="unused_ammo_digit_half" Format="ia8" Width="16" Height="8" Offset="0x3840"/>
-        <Texture Name="gMagicBarEndTex" OutName="magic_bar_end" Format="ia8" Width="8" Height="16" Offset="0x38C0"/>
-        <Texture Name="gMagicBarMidTex" OutName="magic_bar_mid" Format="ia8" Width="24" Height="16" Offset="0x3940"/>
-        <Texture Name="gMagicBarFillTex" OutName="magic_bar_fill" Format="ia8" Width="8" Height="8" Offset="0x3AC0"/>
+        <Texture Name="gMagicMeterEndTex" OutName="magic_meter_end" Format="ia8" Width="8" Height="16" Offset="0x38C0"/>
+        <Texture Name="gMagicMeterMidTex" OutName="magic_meter_mid" Format="ia8" Width="24" Height="16" Offset="0x3940"/>
+        <Texture Name="gMagicMeterFillTex" OutName="magic_meter_fill" Format="ia8" Width="8" Height="8" Offset="0x3AC0"/>
     </File>
 </Root>
