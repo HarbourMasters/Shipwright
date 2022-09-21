@@ -1,13 +1,17 @@
 <Root>
+    <!-- Animations used in the intro to the Ganon fight. -->
     <File Name="object_ganon_anime3" Segment="6">
-        <Animation Name="object_ganon_anime3_Anim_000BFC" Offset="0xBFC"/>
-        <Animation Name="object_ganon_anime3_Anim_002168" Offset="0x2168"/>
-        <Animation Name="object_ganon_anime3_Anim_0028A8" Offset="0x28A8"/>
-        <Animation Name="object_ganon_anime3_Anim_002E6C" Offset="0x2E6C"/>
-        <Animation Name="object_ganon_anime3_Anim_003754" Offset="0x3754"/>
-        <Animation Name="object_ganon_anime3_Anim_003884" Offset="0x3884"/>
-        <Animation Name="object_ganon_anime3_Anim_003F38" Offset="0x3F38"/>
-        <Animation Name="object_ganon_anime3_Anim_010380" Offset="0x10380"/>
-        <Animation Name="object_ganon_anime3_Anim_0147E0" Offset="0x147E0"/>
+        <!-- Ganondorf Animations -->
+        <Animation Name="gGanondorfShowTriforceStartAnim" Offset="0xBFC"/> <!-- Original name is "GF_aw" -->
+        <Animation Name="gGanondorfBurstOutAnim" Offset="0x2168"/> <!-- Original name is "GF_f" -->
+        <Animation Name="gGanondorfTransformEndAnim" Offset="0x28A8"/> <!-- Original name is "GF_hen_shin" ("transformation") -->
+        <Animation Name="gGanondorfFloatingHeavyBreathingAnim" Offset="0x2E6C"/> <!-- Original name is "GF_sw" -->
+        <Animation Name="gGanondorfTransformStartAnim" Offset="0x3754"/> <!-- Original name is "GF_tijimu" ("to shrink, to contract") -->
+        <Animation Name="gGanondorfTransformLoopAnim" Offset="0x3884"/> <!-- Original name is "GF_tijimu_wait" -->
+        <Animation Name="gGanondorfShowTriforceLoopAnim" Offset="0x3F38"/> <!-- Original name is "GF_tw" -->
+
+        <!-- Ganon Animations -->
+        <Animation Name="gGanonUncurlAndFlailAnim" Offset="0x10380"/> <!-- Original name is "LG_DANGO" ("ball-shaped") -->
+        <Animation Name="gGanonRoarAnim" Offset="0x147E0"/> <!-- Original name is "LG_Hoeru" ("howl") -->
     </File>
 </Root>

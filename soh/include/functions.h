@@ -11,8 +11,9 @@ extern "C"
 
 #include "../../libultraship/libultraship/luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
+#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
@@ -185,6 +186,7 @@ void __osSetWatchLo(u32);
 EnItem00* Item_DropCollectible(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3f* spawnPos, s16 params);
+void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
 void EffectBlure_AddSpace(EffectBlure* this);
 void EffectBlure_Init1(void* thisx, void* initParamsx);
@@ -558,6 +560,8 @@ s32 Flags_GetEventChkInf(s32 flag);
 void Flags_SetEventChkInf(s32 flag);
 s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
+s32 Flags_GetRandomizerInf(RandomizerInf flag);
+void Flags_SetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(GlobalContext* globalCtx, s16 arg1);
 s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
@@ -859,6 +863,7 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx);
 void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx);
 void Cutscene_SetSegment(GlobalContext* globalCtx, void* segment);
 void GetItem_Draw(GlobalContext* globalCtx, s16 drawId);
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 void SoundSource_InitAll(GlobalContext* globalCtx);
 void SoundSource_UpdateAll(GlobalContext* globalCtx);
 void SoundSource_PlaySfxAtFixedWorldPos(GlobalContext* globalCtx, Vec3f* pos, s32 duration, u16 sfxId);
@@ -1056,12 +1061,15 @@ void func_80084BF4(GlobalContext* globalCtx, u16 flag);
 u8 Item_Give(GlobalContext* globalCtx, u8 item);
 u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
+void PerformAutosave(GlobalContext* globalCtx, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);
+bool Inventory_HasEmptyBottleSlot(void);
 s32 Inventory_HasSpecificBottle(u8 bottleItem);
 void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 cButton);
 s32 Inventory_ConsumeFairy(GlobalContext* globalCtx);
+bool Inventory_HatchPocketCucco(GlobalContext* globalCtx);
 void Interface_SetDoAction(GlobalContext* globalCtx, u16 action);
 void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState);
 void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action);

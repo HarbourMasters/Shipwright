@@ -483,10 +483,7 @@ static void RunFrame()
 
             Graph_StartFrame();
 
-            // TODO: Workaround for rumble being too long. Implement os thread functions.
-            for (int i = 0; i < 3; i++) {
-                PadMgr_ThreadEntry(&gPadMgr);
-            }
+            PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();

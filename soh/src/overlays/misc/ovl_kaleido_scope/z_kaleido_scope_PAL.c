@@ -963,7 +963,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
         if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
@@ -1176,7 +1176,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 }
             }
 
-            if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPauseName", 0)) {
+            if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPause", 0)) {
                 if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
                     if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                         D_8082AD44 = XREG(8);
@@ -3704,6 +3704,10 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             switch (pauseCtx->unk_1E4) {
                 case 0:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
+                        CVar_SetS32("gPauseBufferBlockInputFrame", 9);
+                        if (CVar_GetS32("gCheatEasyPauseBufferEnabled", 0)) {
+                            CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", 13);
+                        }
                         Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
