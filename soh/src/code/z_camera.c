@@ -1503,7 +1503,9 @@ s32 Camera_Free(Camera* camera) {
     mouseX = D_8015BD7C->state.input[0].cur.mouse_move_x;
     mouseY = D_8015BD7C->state.input[0].cur.mouse_move_y;
 
-    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1 || 
+            /*Disable mouse movement when holding down the shield*/
+            camera->player->stateFlags1 & 0x400000 ) {
         mouseX = 0.0f;
         mouseY = 0.0f;
     }

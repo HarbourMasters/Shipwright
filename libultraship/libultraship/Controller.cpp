@@ -33,7 +33,7 @@ namespace Ship {
 		OSContPad padToBuffer = { 0 };
 #ifndef __WIIU__
 		SDL_PumpEvents();
-		buttons = SDL_GetGlobalMouseState(&x, &y);
+		buttons = SDL_GetMouseState(&x, &y);
 		wTouchX = x;
 		wTouchY = y;
 #endif

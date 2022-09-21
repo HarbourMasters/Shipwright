@@ -8018,9 +8018,22 @@ void func_80843188(Player* this, GlobalContext* globalCtx) {
     func_8083721C(this);
 
     if (this->unk_850 != 0) {
-        sp54 = sControlInput->rel.stick_y * 100;
+        sp54 = sControlInput->rel.stick_y * 100; //CAMERA TEST TODO (RR)
         sp50 = sControlInput->rel.stick_x * -120;
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(globalCtx));
+
+        if (CVar_GetS32("gMouseTouchEnabled", 0)) {
+            u32 width = OTRGetCurrentWidth();
+            u32 height = OTRGetCurrentHeight();
+            /*
+             * Y: -12800 ~ +12700
+             * X: -15360 ~ +15240
+             */
+            f32 xBound = 15360 / ((f32)width / 2);
+            f32 yBound = 12800 / ((f32)height / 2);
+            sp54 += +(sControlInput->cur.touch_y - (height) / 2) * yBound;
+            sp50 += -(sControlInput->cur.touch_x - (width) / 2) * xBound;
+        }
 
         sp40 = Math_CosS(sp4E);
         sp4C = (Math_SinS(sp4E) * sp50) + (sp54 * sp40);
