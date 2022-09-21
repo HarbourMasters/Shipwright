@@ -433,7 +433,9 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         Randomizer_LoadSettings(fileLoc);
         Randomizer_LoadHintLocations(fileLoc);
+        Randomizer_LoadRequiredTrials(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
+        Randomizer_LoadMerchantMessages(fileLoc);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1728,6 +1730,7 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
+    Randomizer_LoadMerchantMessages("");
     Randomizer_LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;

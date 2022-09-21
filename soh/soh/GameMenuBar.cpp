@@ -23,6 +23,7 @@
 #endif
 
 #include "UIWidgets.hpp"
+#include "include/global.h"
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 
@@ -733,8 +734,13 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                     UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
+                    bool forceSkipScarecrow = gSaveContext.n64ddFlag &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
+                    const char* forceSkipScarecrowText =
+                        "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
                     UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
-                    UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false,
+                                                         forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
                     UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
@@ -801,7 +807,12 @@ namespace GameMenuBar {
                     );
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                     UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                    UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false);
+                    bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
+                    const char* forceEnableBombchuDropsText =
+                        "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
+                    UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false,
+                                                         forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
                     UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
                     UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
@@ -934,10 +945,25 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
-                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false);
+
+                // Blue Fire Arrows
+                bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
+                const char* forceEnableBlueFireArrowsText =
+                    "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
+                    forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
-                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false);
+
+                // Sunlight Arrows
+                bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
+                const char* forceEnableSunLightArrowsText =
+                    "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
+                    forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
+
                 ImGui::EndMenu();
             }
 
@@ -1420,7 +1446,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0));
             }
-            UIWidgets::Spacer(0);
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gItemTrackerEnabled", 0);
@@ -1428,8 +1454,58 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0));
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
+                CVar_SetS32("gItemTrackerSettingsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
+
+            UIWidgets::PaddedSeparator();
+
+            if (ImGui::BeginMenu("Rando Enhancements"))
+            {
+                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                UIWidgets::Tooltip(
+                    "Replace Navi's overworld quest hints with rando-related gameplay hints."
+                );
+                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
+                UIWidgets::Tooltip(
+                    "When obtaining rupees, randomize what the rupee is called in the textbox."
+                );
+
+                // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
+                bool disableKeyColors = true;
+
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) > 0 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2 || 
+                    !gSaveContext.n64ddFlag) {
+                    disableKeyColors = false;
+                }
+
+                const char* disableKeyColorsText = 
+                    "This setting is disabled because a savefile is loaded without any key\n"
+                    "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
+
+                UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
+                                                     disableKeyColors, disableKeyColorsText);
+                UIWidgets::Tooltip(
+                    "Matches the color of small keys and boss keys to the dungeon they belong to. "
+                    "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
+                    "applies to seeds with keys and boss keys shuffled to Any Dungeon, Overworld, or Anywhere.");
+                UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares", true, false);
+                UIWidgets::Tooltip(
+                    "Play unique fanfares when obtaining quest items "
+                    "(medallions/stones/songs). Note that these fanfares are longer than usual."
+                );
+                ImGui::EndMenu();
+            }
 
             ImGui::EndMenu();
         }

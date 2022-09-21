@@ -1696,7 +1696,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2)) {
+    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
     } else if (msgCtx->textId == 0xB4 && (gSaveContext.eventChkInf[9] & 0x40)) {
         textId = 0xB5; // Destroyed Gold Skulltula
@@ -1718,6 +1718,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
+    // RANDOTODO: Use this for ice trap messages
     if (CustomMessage_RetrieveIfExists(globalCtx)) {
         osSyncPrintf("Found custom message");
     } else if (sTextIsCredits) {

@@ -110,6 +110,9 @@ set(Header_Files__include
     "include/ichain.h"
     "include/macro.inc"
     "include/macros.h"
+    "include/message_data_fmt.h"
+    "include/message_data_static.h"
+    "include/message_data_textbox_types.h"
     #"include/math_n64.h"
     "include/regs.h"
     "include/segment_symbols.h"
@@ -178,7 +181,12 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+    "soh/Enhancements/randomizer/randomizer_check_objects.h"
+    "soh/Enhancements/randomizer/draw.h"
+    "soh/Enhancements/randomizer/rando_hash.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
@@ -287,6 +295,9 @@ source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__s
 set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.cpp"
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.c"
+    "soh/Enhancements/randomizer/randomizer_check_objects.cpp"
+    "soh/Enhancements/randomizer/draw.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
 

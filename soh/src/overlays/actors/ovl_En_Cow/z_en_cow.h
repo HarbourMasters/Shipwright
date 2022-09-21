@@ -21,4 +21,9 @@ typedef struct EnCow {
     /* 0x027C */ EnCowActionFunc actionFunc;
 } EnCow; // size = 0x0280
 
+typedef struct CowInfo {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowInfo;
+
 #endif

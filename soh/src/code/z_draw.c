@@ -395,6 +395,20 @@ void GetItem_Draw(GlobalContext* globalCtx, s16 drawId) {
     sDrawItemTable[drawId].drawFunc(globalCtx, drawId);
 }
 
+/**
+ * Draw "Get Item" Model from a `GetItemEntry`
+ * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
+ */
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
+    if (getItemEntry.drawFunc != NULL && 
+        (CVar_GetS32("gRandoMatchKeyColors", 0) || getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+        getItemEntry.drawFunc(globalCtx, &getItemEntry);
+    } else {
+        GetItem_Draw(globalCtx, getItemEntry.gid);
+    }
+}
+
 // All remaining functions in this file are draw functions referenced in the table and called by the function above
 
 /* 0x0178 */ u8 primXluColor[3];
@@ -813,12 +827,12 @@ void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_OPA_DISP++, true);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gsSPGrayscale(POLY_XLU_DISP++, true);
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
-    gsSPGrayscale(POLY_OPA_DISP++, false);
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+    gsSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

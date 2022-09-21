@@ -4670,10 +4670,11 @@ void func_8083A434(GlobalContext* globalCtx, Player* this) {
 
     if (this->getItemId == GI_HEART_CONTAINER_2) {
         this->unk_850 = 20;
-    } else if (this->getItemId >= 0) {
+    } else if (this->getItemId >= 0 || (this->getItemEntry.objectId != OBJECT_INVALID && this->getItemEntry.getItemId >= 0)) {
         this->unk_850 = 1;
     } else {
         this->getItemId = -this->getItemId;
+        this->getItemEntry.getItemId = -this->getItemEntry.getItemId;
     }
 }
 
@@ -6153,8 +6154,7 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
     } else {
         Item_Give(globalCtx, giEntry->itemId);
     }
-
-    func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
+    func_80078884((this->getItemId < 0 || this->getItemEntry.getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
 // Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
@@ -6173,6 +6173,9 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
+            break;
         case FLAG_EVENT_CHECK_INF:
             Flags_SetEventChkInf(this->pendingFlag.flagID);
             break;
@@ -6186,6 +6189,16 @@ void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
 
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
+
+    if(gSaveContext.pendingIceTrapCount) {
+        gSaveContext.pendingIceTrapCount--;
+        this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+        this->actor.colChkInfo.damage = 0;
+        func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+        this->getItemId = GI_NONE;
+        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+        return 1;
+    }
 
     if (iREG(67) || (((interactedActor = this->interactRangeActor) != NULL) &&
                      func_8002D53C(globalCtx, &globalCtx->actorCtx.titleCtx))) {
@@ -6207,14 +6220,17 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 iREG(67) = false;
 
-                if (gSaveContext.n64ddFlag && this->getItemId == RG_ICE_TRAP) {
-                    this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
-                    this->actor.colChkInfo.damage = 0;
-                    func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
-                    Player_SetPendingFlag(this, globalCtx);
-                    this->getItemId == GI_NONE;
-                    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                    return 1;
+                if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP) {
+                    if (giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                        // RANDOTODO: Abstract this to a function.
+                        this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                        this->actor.colChkInfo.damage = 0;
+                        func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                        Player_SetPendingFlag(this, globalCtx);
+                        this->getItemId = GI_NONE;
+                        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+                        return 1;
+                    }
                 }
 
                 s32 drop = giEntry.objectId;
@@ -9674,7 +9690,7 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 } else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                            (interactRangeActor != NULL) &&
                            ((!sp1C && (this->getItemId == GI_NONE)) ||
-                            ((this->getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
+                            (this->getItemId < 0 && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
                     if (this->getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
                     } else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
@@ -12458,81 +12474,55 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         }
         this->unk_84F = 1;
 
-        // make sure we get the BGS instead of giant's knife
-        if (this->getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = 1;
-            gSaveContext.swordHealth = 8;
-        }
-
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
-        if (giEntry.modIndex == MOD_NONE) {
-            Item_Give(globalCtx, giEntry.itemId);
-        } else {
-            Randomizer_Item_Give(globalCtx, giEntry);
-        }
-        Player_SetPendingFlag(this, globalCtx);
-
-        if (this->getItemEntry.objectId == OBJECT_INVALID) {
-            // Use this if player does not have a getItemEntry
+        // RANDOTODO: Macro this boolean check.
+        if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
             if (giEntry.modIndex == MOD_NONE) {
-                if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
-                    ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
-                    ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
-                    (this->getItemId == GI_HEART)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else {
-                    if ((this->getItemId == GI_HEART_CONTAINER_2) || (this->getItemId == GI_HEART_CONTAINER) ||
-                        ((this->getItemId == GI_HEART_PIECE) &&
-                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-                        temp1 = NA_BGM_HEART_GET | 0x900;
-                    } else {
-                        temp1 = temp2 =
-                            (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
-                    }
-                    Audio_PlayFanfare(temp1);
+                // RANDOTOD: Move this into Item_Give() or some other more central location
+                if (giEntry.getItemId == GI_SWORD_BGS) {
+                    gSaveContext.bgsFlag = true;
+                    gSaveContext.swordHealth = 8;
                 }
-            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-                if (this->getItemId == RG_DOUBLE_DEFENSE || this->getItemId == RG_MAGIC_SINGLE ||
-                    this->getItemId == RG_MAGIC_DOUBLE) {
-                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
+                Item_Give(globalCtx, giEntry.itemId);
+            } else {
+                Randomizer_Item_Give(globalCtx, giEntry);
+            }
+            Player_SetPendingFlag(this, globalCtx);
+        }
+
+        // Use this if we do have a getItemEntry
+        if (giEntry.modIndex == MOD_NONE) {
+            if (gSaveContext.n64ddFlag) {
+                Audio_PlayFanfare_Rando(giEntry);
+            } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
+                        ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
+                        (giEntry.itemId == ITEM_HEART)) {
+                Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else {
+                if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
+                    ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                        ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                    temp1 = NA_BGM_HEART_GET | 0x900;
                 } else {
-                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
+                    temp1 = temp2 =
+                        (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
                 }
+                Audio_PlayFanfare(temp1);
+            }
+        } else if (giEntry.modIndex == MOD_RANDOMIZER) {
+            if (gSaveContext.n64ddFlag) {
+                Audio_PlayFanfare_Rando(giEntry);
+            } else if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
+                        giEntry.itemId == RG_MAGIC_DOUBLE) {
+                Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
             } else {
                 // Just in case something weird happens with MOD_INDEX
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
             }
         } else {
-            // Use this if we do have a getItemEntry
-            if (giEntry.modIndex == MOD_NONE) {
-                if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
-                    ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
-                    (giEntry.itemId == ITEM_HEART)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else {
-                    if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
-                        ((giEntry.itemId == ITEM_HEART_PIECE) &&
-                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
-                        temp1 = NA_BGM_HEART_GET | 0x900;
-                    } else {
-                        temp1 = temp2 =
-                            (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
-                    }
-                    Audio_PlayFanfare(temp1);
-                }
-            } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-                if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
-                    giEntry.itemId == RG_MAGIC_DOUBLE) {
-                    Audio_PlayFanfare(NA_BGM_HEART_GET | 0x900);
-                } else {
-                    Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-                }
-            } else {
-                // Just in case something weird happens with modIndex.
-                Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-            }
+            // Just in case something weird happens with modIndex.
+            Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
         }
-        // this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
@@ -12543,6 +12533,20 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 this->stateFlags1 &= ~PLAYER_STATE1_29;
                 func_80852FFC(globalCtx, NULL, 8);
             }
+
+            // Set unk_862 to 0 early to not have the game draw non-custom colored models for a split second.
+            // This unk is what the game normally uses to decide what item to draw when holding up an item above Link's head.
+            // Only do this when the item actually has a custom draw function.
+            if (this->getItemEntry.drawFunc != NULL) {
+                this->unk_862 = 0;
+            }
+
+            if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
+                this->unk_862 = 0;
+                gSaveContext.pendingIceTrapCount++;
+                Player_SetPendingFlag(this, globalCtx);
+            }
+
             this->getItemId = GI_NONE;
             this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         }
@@ -12701,18 +12705,18 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
             func_80832DBC(this);
 
             if ((this->getItemId == GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
-                (gSaveContext.n64ddFlag && this->getItemId == RG_ICE_TRAP)) {
+                (gSaveContext.n64ddFlag && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
 
                 if ((this->getItemId != GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
-                    (gSaveContext.n64ddFlag && this->getItemId != RG_ICE_TRAP)) {
+                    (gSaveContext.n64ddFlag && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
                     func_8083C0E8(this, globalCtx);
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
-                    this->getItemId == GI_NONE;
+                    this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                 }
                 return;
