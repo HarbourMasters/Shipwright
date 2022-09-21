@@ -13,6 +13,7 @@
 #include <libultraship/Cvar.h>
 
 #include <ultra64/types.h>
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 namespace UIWidgets {
 
@@ -438,15 +439,16 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            s16 RND_R = rand() % (255 - 0);
-            s16 RND_G = rand() % (255 - 0);
-            s16 RND_B = rand() % (255 - 0);
-            colors->x = (float)RND_R / 255;
-            colors->y = (float)RND_G / 255;
-            colors->z = (float)RND_B / 255;
-            NewColors.r = fmin(fmax(colors->x, 0), 255);
-            NewColors.g = fmin(fmax(colors->y, 0), 255);
-            NewColors.b = fmin(fmax(colors->z, 0), 255);
+            #ifdef __SWITCH__
+            srand(time(NULL));
+            #endif
+            ImVec4 color = GetRandomValue(255);
+            colors->x = color.x;
+            colors->y = color.y;
+            colors->z = color.z;
+            NewColors.r = fmin(fmax(colors->x * 255, 0), 255);
+            NewColors.g = fmin(fmax(colors->y * 255, 0), 255);
+            NewColors.b = fmin(fmax(colors->z * 255, 0), 255);
             CVar_SetRGBA(cvarName, NewColors);
             CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
             SohImGui::RequestCvarSaveOnNextTick();

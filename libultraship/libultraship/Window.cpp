@@ -13,6 +13,7 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "Hooks.h"
+#include <string>
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_dxgi.h"
@@ -500,12 +501,38 @@ namespace Ship {
             std::vector<spdlog::sink_ptr> Sinks;
 
             auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
-            SohConsoleSink->set_level(spdlog::level::trace);
+            //SohConsoleSink->set_level(spdlog::level::trace);
             Sinks.push_back(SohConsoleSink);
 
 #if (!defined(_WIN32) && !defined(__WIIU__)) || defined(_DEBUG)
+#if defined(_DEBUG) && defined(_WIN32)
+            if (AllocConsole() == 0) {
+                throw std::system_error(GetLastError(), std::generic_category(), "Failed to create debug console");
+            }
+
+            SetConsoleOutputCP(CP_UTF8);
+
+            FILE* fDummy;
+            freopen_s(&fDummy, "CONOUT$", "w", stdout);
+            freopen_s(&fDummy, "CONOUT$", "w", stderr);
+            freopen_s(&fDummy, "CONIN$", "r", stdin);
+            std::cout.clear();
+            std::clog.clear();
+            std::cerr.clear();
+            std::cin.clear();
+
+            HANDLE hConOut = CreateFile(_T("CONOUT$"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            HANDLE hConIn = CreateFile(_T("CONIN$"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            SetStdHandle(STD_OUTPUT_HANDLE, hConOut);
+            SetStdHandle(STD_ERROR_HANDLE, hConOut);
+            SetStdHandle(STD_INPUT_HANDLE, hConIn);
+            std::wcout.clear();
+            std::wclog.clear();
+            std::wcerr.clear();
+            std::wcin.clear();
+#endif
             auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            ConsoleSink->set_level(spdlog::level::trace);
+            //ConsoleSink->set_level(spdlog::level::trace);
             Sinks.push_back(ConsoleSink);
 #endif
 

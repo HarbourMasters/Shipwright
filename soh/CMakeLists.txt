@@ -1706,7 +1706,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"NDEBUG"
 			">"
 			"INCLUDE_GAME_PRINTF;"
-			"_CONSOLE;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1721,11 +1720,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"ENABLE_OPENGL"
 			">"
 			"$<$<CONFIG:Release>:"
-				"INCLUDE_GAME_PRINTF;"
 				"NDEBUG;"
 			">"
+			"INCLUDE_GAME_PRINTF;"
 			"WIN32;"
-			"_CONSOLE;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1734,7 +1732,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-				"_DEBUG"
+			"_DEBUG"
 		">"
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
@@ -1747,7 +1745,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-				"_DEBUG"
+			"_DEBUG"
 		">"
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
@@ -1810,7 +1808,7 @@ if(MSVC)
                 /INCREMENTAL:NO
             >
             /DEBUG;
-            /SUBSYSTEM:CONSOLE;
+            /SUBSYSTEM:WINDOWS;
             /FORCE:MULTIPLE
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
@@ -1825,7 +1823,7 @@ if(MSVC)
                 /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:CONSOLE
+            /SUBSYSTEM:WINDOWS
         )
     endif()
 endif()

@@ -6,6 +6,7 @@
 
 #include "z_en_arrow.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "objects/object_gi_nuts/object_gi_nuts.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -63,25 +64,55 @@ void EnArrow_SetupAction(EnArrow* this, EnArrowActionFunc actionFunc) {
 void EnArrow_Init(Actor* thisx, GlobalContext* globalCtx) {
     static EffectBlureInit2 blureNormal = {
         0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 255, 170, 255 }, { 0, 150, 0, 0 },
+        0, 1, 0, { 255, 255, 170, 255 }, { 0, 150, 0, 0 }, 0,
     };
     static EffectBlureInit2 blureFire = {
         0, 4, 0, { 0, 255, 200, 255 }, { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 200, 0, 255 }, { 255, 0, 0, 0 },
+        0, 1, 0, { 255, 200, 0, 255 }, { 255, 0, 0, 0 }, 0,
     };
     static EffectBlureInit2 blureIce = {
         0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 170, 255, 255, 255 }, { 0, 100, 255, 0 },
+        0, 1, 0, { 170, 255, 255, 255 }, { 0, 100, 255, 0 }, 0,
     };
     static EffectBlureInit2 blureLight = {
         0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 255, 170, 255 }, { 255, 255, 0, 0 },
+        0, 1, 0, { 255, 255, 170, 255 }, { 255, 255, 0, 0 }, 0,
     };
     static u32 dmgFlags[] = {
         0x00000800, 0x00000020, 0x00000020, 0x00000800, 0x00001000,
         0x00002000, 0x00010000, 0x00004000, 0x00008000, 0x00000004,
     };
     EnArrow* this = (EnArrow*)thisx;
+
+    Color_RGBA8 Arrow_env_ori = { 0, 150, 0, 0 };
+    Color_RGBA8 Arrow_col_ori = { 255, 255, 170, 255 };
+    Color_RGBA8 Light_env_ori = { 255, 255, 0, 255 };
+    Color_RGBA8 Light_col_ori = { 255, 255, 170, 0 };
+    Color_RGBA8 Fire_env_ori = { 255, 0, 0, 255 };
+    Color_RGBA8 Fire_col_ori = { 255, 200, 0, 0 };
+    Color_RGBA8 Ice_env_ori = { 0, 0, 255, 255 };
+    Color_RGBA8 Ice_col_ori = { 170, 255, 255, 0 };
+
+    if (CVar_GetS32("gUseArrowsCol", 0) != 0) {
+        blureNormal.altPrimColor = CVar_GetRGBA("gNormalArrowCol", Arrow_col_ori);
+        blureNormal.altEnvColor = CVar_GetRGBA("gNormalArrowColEnv", Arrow_env_ori);
+        blureFire.altPrimColor = CVar_GetRGBA("gFireArrowCol", Fire_col_ori);
+        blureFire.altEnvColor = CVar_GetRGBA("gFireArrowColEnv", Fire_env_ori);
+        blureIce.altPrimColor = CVar_GetRGBA("gIceArrowCol", Ice_col_ori);
+        blureIce.altEnvColor = CVar_GetRGBA("gIceArrowColEnv", Ice_env_ori);
+        blureLight.altPrimColor = CVar_GetRGBA("gLightArrowCol", Light_col_ori);
+        blureLight.altEnvColor = CVar_GetRGBA("gLightArrowColEnv", Light_env_ori);
+
+        //make sure the alpha values are correct.
+        blureNormal.altPrimColor.a = 255;
+        blureNormal.altEnvColor.a = 0;
+        blureFire.altPrimColor.a = 255;
+        blureFire.altEnvColor.a = 0;
+        blureIce.altPrimColor.a = 255;
+        blureIce.altEnvColor.a = 0;
+        blureLight.altPrimColor.a = 255;
+        blureLight.altEnvColor.a = 0;
+    }
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
 
@@ -478,16 +509,15 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Push();
         Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
         // redundant check because this is contained in an if block for non-zero speed
-        Matrix_RotateZ((this->actor.speedXZ == 0.0f) ? 0.0f
-                                                     : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
-                       MTXMODE_APPLY);
+        Matrix_RotateZ(
+            (this->actor.speedXZ == 0.0f) ? 0.0f : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
+            MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
         Matrix_Pop();
         Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
-
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 

@@ -78,7 +78,9 @@ namespace Ship {
 		padToBuffer.gyro_y = getGyroY(virtualSlot);
 
 		padBuffer.push_front(padToBuffer);
-		*pad = padBuffer[std::min(padBuffer.size(), (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
+		if (pad != nullptr) {
+			*pad = padBuffer[std::min(padBuffer.size() - 1, (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
+		}
 
 		while (padBuffer.size() > 6) {
 			padBuffer.pop_back();

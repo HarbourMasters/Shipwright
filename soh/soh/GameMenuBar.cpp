@@ -95,12 +95,14 @@ namespace GameMenuBar {
     }
 
     void applyEnhancementPresetDefault(void) {
-        // D-pad Support on Pause and File Select
-        CVar_SetS32("gDpadPauseName", 0);
-        // D-pad Support in Ocarina and Text Choice
-        CVar_SetS32("gDpadOcarinaText", 0);
-        // D-pad Support for Browsing Shop Items
-        CVar_SetS32("gDpadShop", 0);
+        // D-pad Support on Pause
+        CVar_SetS32("gDpadPause", 0);
+        // D-pad Support in text and file select
+        CVar_SetS32("gDpadText", 0);
+        // Play Ocarina with D-pad
+        CVar_SetS32("gDpadOcarina", 0);
+        // Play Ocarina with Right Stick
+        CVar_SetS32("gRStickOcarina", 0);
         // D-pad as Equip Items
         CVar_SetS32("gDpadEquips", 0);
         // Allow the cursor to be on any slot
@@ -109,6 +111,14 @@ namespace GameMenuBar {
         CVar_SetS32("gDpadNoDropOcarinaInput", 0);
         // Answer Navi Prompt with L Button
         CVar_SetS32("gNaviOnL", 0);
+        // Invert Camera X Axis
+        CVar_SetS32("gInvertXAxis", 0);
+        // Invert Camera Y Axis
+        CVar_SetS32("gInvertYAxis", 0);
+        // Right Stick Aiming
+        CVar_SetS32("gRightStickAiming", 0);
+        // Auto-Center First Person View
+        CVar_SetS32("gAutoCenterView", 0);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);
@@ -243,6 +253,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInjectSkulltulaCount", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
+        // Pull out Ocarina to Summon Scarecrow
+        CVar_SetS32("gSkipScarecrow", 0);
         // Blue Fire Arrows
         CVar_SetS32("gBlueFireArrows", 0);
         // Sunlight Arrows
@@ -296,20 +308,27 @@ namespace GameMenuBar {
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 0);
 
+        // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
-        // D-pad Support in Ocarina and Text Choice
-        CVar_SetS32("gDpadOcarinaText", 1);
-        // D-pad Support for Browsing Shop Items
-        CVar_SetS32("gDpadShop", 1);
+        // D-pad Support on Pause
+        CVar_SetS32("gDpadPause", 1);
+        // D-pad Support in text and file select
+        CVar_SetS32("gDpadText", 1);
+        // Play Ocarina with D-pad
+        CVar_SetS32("gDpadOcarina", 1);
+        // Play Ocarina with Right Stick
+        CVar_SetS32("gRStickOcarina", 1);
         // D-pad as Equip Items
         CVar_SetS32("gDpadEquips", 1);
         // Prevent Dropped Ocarina Inputs
         CVar_SetS32("gDpadNoDropOcarinaInput", 1);
+        // Right Stick Aiming
+        CVar_SetS32("gRightStickAiming", 1);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 5);
@@ -345,6 +364,8 @@ namespace GameMenuBar {
         CVar_SetS32("gGravediggingTourFix", 1);
         // Fix Deku Nut upgrade
         CVar_SetS32("gDekuNutUpgradeFix", 1);
+        // Fix Navi text HUD position
+        CVar_SetS32("gNaviTextFix", 1);
 
         // Red Ganon blood
         CVar_SetS32("gRedGanonBlood", 1);
@@ -362,7 +383,7 @@ namespace GameMenuBar {
         // Biggoron Forge Time (0 to 3)
         CVar_SetS32("gForgeTime", 0);
         // Vine/Ladder Climb speed (+0 to +12)
-        CVar_SetS32("gClimbSpeed", 1);
+        CVar_SetS32("gClimbSpeed", 3);
         // Faster Heavy Block Lift
         CVar_SetS32("gFasterHeavyBlockLift", 1);
         // No Forced Navi
@@ -383,6 +404,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastBoomerang", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
+        // Always Win Goron Pot
+        CVar_SetS32("gGoronPot", 1);
         // Always Win Dampe Digging
         CVar_SetS32("gDampeWin", 1);
 
@@ -391,14 +414,17 @@ namespace GameMenuBar {
 
         // Equipment Toggle
         CVar_SetS32("gEquipmentCanBeRemoved", 1);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 1);
+        // Link's Cow in Both Time Periods
+        CVar_SetS32("gCowOfTime", 1);
 
         // Enable 3D Dropped items/projectiles
         CVar_SetS32("gNewDrops", 1);
 
         // Fix Anubis fireballs
         CVar_SetS32("gAnubisFix", 1);
+
+        // Autosave
+        CVar_SetS32("gAutosave", 1);
     }
 
     void applyEnhancementPresetRandomizer(void) {
@@ -419,7 +445,7 @@ namespace GameMenuBar {
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 1);
         // Pull out Ocarina to Summon Scarecrow
-        CVar_SetS32("gSkipScarecrow", 0);
+        CVar_SetS32("gSkipScarecrow", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
@@ -668,13 +694,14 @@ namespace GameMenuBar {
                 ImGui::PopStyleVar(3);
                 ImGui::PopStyleColor(1);
 
-                // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                UIWidgets::Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Choice", "gDpadText", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause", true, false);
+                UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
+                    "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
+                UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText", true, false);
+                UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
+                    "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
                 UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                UIWidgets::Tooltip("Allows the D-pad to be used as extra C buttons");
+                UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
                 UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
                 UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                 UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
@@ -1052,7 +1079,8 @@ namespace GameMenuBar {
 
             UIWidgets::PaddedEnhancementCheckbox("Autosave", "gAutosave", true, false);
             UIWidgets::Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
-                "To disable saving when obtaining an item, manually set gAutosaveAllItems and gAutosaveMajorItems to 0\n"
+                "To disable saving when obtaining a major item, manually set gAutosaveMajorItems to 0\n"
+                "To enable saving when obtaining any item, manually set gAutosaveAllItems to 1\n"
                 "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
                 "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
 
@@ -1242,6 +1270,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
             UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
             UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
+            UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
             UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
             UIWidgets::Tooltip("Allows you to use any item at any location");
             UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);

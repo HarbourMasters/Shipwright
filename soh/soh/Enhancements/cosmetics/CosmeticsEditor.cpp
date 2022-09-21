@@ -13,6 +13,7 @@ const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
     "gFireArrowCol", "gIceArrowCol",
+    "gNormalArrowCol", "gNormalArrowColEnv",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
     "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
     "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
@@ -23,7 +24,10 @@ const char* RainbowColorCvarList[] = {
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
     "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
-    "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+    "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gKSwordTrailTopCol", "gKSwordTrailBottomCol","gMSwordTrailTopCol", "gMSwordTrailBottomCol","gBSwordTrailTopCol", "gBSwordTrailBottomCol",
+    "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
+    "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
     "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
@@ -36,8 +40,13 @@ const char* MarginCvarList[] {
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
     unsigned long range = 255 - 0;
+    #ifndef __SWITCH__
     std::random_device rd;
     std::mt19937 rng(rd());
+    #else
+    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
+    std::mt19937_64 rng(seed);
+    #endif
     std::uniform_int_distribution<int> dist(0, 255 - 1);
     
     NewColor.x = (float)(dist(rng)) / 255;
@@ -46,6 +55,9 @@ ImVec4 GetRandomValue(int MaximumPossible){
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+    #ifdef __SWITCH__
+    srand(time(NULL));
+    #endif
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
@@ -121,6 +133,13 @@ void ResetPositionAll() {
         }
     }
 }
+
+void ResetTrailLength(const char* variable, int value) {
+    if (ImGui::Button("Reset")) {
+        CVar_SetS32(variable, value);
+        }
+    }
+
 void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
@@ -429,15 +448,34 @@ void Draw_ItemsSkills(){
         DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
         ImGui::EndTable();
     }
-    UIWidgets::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
-    if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, FlagsTable)) {
-        ImGui::TableSetupColumn("Custom Trails", FlagsCell, TablesCellsWidth);
+    UIWidgets::EnhancementCheckbox("Custom trails", "gUseTrailsCol");
+    if (CVar_GetS32("gUseTrailsCol", 0)) {
+        DrawRandomizeResetButton("trails", AllTrail_section, SECTION_SIZE(AllTrail_section));
+    }
+    if (CVar_GetS32("gUseTrailsCol", 0) && ImGui::BeginTable("tabletrails", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        DrawColorSection(Trails_section, SECTION_SIZE(Trails_section));
-        UIWidgets::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        UIWidgets::Tooltip("The longer the trails the weirder it become");
-        ImGui::NewLine();
+        DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
+        UIWidgets::EnhancementSliderInt("Sword Trail Length: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines length of Link's sword trails.");
+        ResetTrailLength("gTrailDuration", 4);
+        UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
+        if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
+            if (ImGui::BeginTable("tabletrailswords", 2, FlagsTable)) {
+                ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Deku Stick", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Megaton Hammer", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(SwordTrail_section, SECTION_SIZE(SwordTrail_section));
+                ImGui::EndTable();
+            }
+        }
+        ImGui::NewLine();
     }
 }
 void Draw_Menus(){
