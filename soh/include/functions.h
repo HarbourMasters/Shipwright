@@ -12,7 +12,7 @@ extern "C"
 #include "../../libultraship/libultraship/luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
+#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
