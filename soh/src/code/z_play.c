@@ -1481,6 +1481,13 @@ time_t Gameplay_GetRealTime() {
 void Gameplay_Main(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
 
+    if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
+        CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    }
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    }
+
     D_8012D1F8 = &globalCtx->state.input[0];
 
     DebugDisplay_Init();
@@ -2005,5 +2012,8 @@ void Gameplay_PerformSave(GlobalContext* globalCtx) {
         Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
     } else {
         Save_SaveFile();
+    }
+    if (CVar_GetS32("gAutosave", 0)) {
+        Overlay_DisplayText(3.0f, "Game Saved");
     }
 }

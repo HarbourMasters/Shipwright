@@ -1250,6 +1250,10 @@ f32 sSwordLengths[] = {
     0.0f, 4000.0f, 3000.0f, 5500.0f, 0.0f, 2500.0f,
 };
 
+f32 sSwordTypes[] = {
+    0, 5, 4, 6, 0, 8,
+};
+
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
 
 Color_RGB8 sBottleColors[] = {
@@ -1312,6 +1316,7 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex), 7); // default sword type
                     func_800906D4(globalCtx, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->swordInfo[0].tip, &sp124[0]);
@@ -1334,6 +1339,10 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                if (CVar_GetS32("gSeperateSwords", 0) != 0)
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex), sSwordTypes[Player_GetSwordHeld(this)]);
+                else
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex),1); //default sword type
             }
 
             func_80090A28(this, spE4);
