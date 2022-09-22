@@ -1733,10 +1733,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     Player* player = GET_PLAYER(globalCtx);
     if (gSaveContext.n64ddFlag) {
-        if (textId = TEXT_RANDOMIZER_CUSTOM_ITEM && player->getItemEntry.getItemId == RG_ICE_TRAP) {
-            messageEntry = Randomizer_GetIceTrapMessage();
-        } else if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            messageEntry = Randomizer_GetCustomGetItemMessage(player);
+        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
+            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+                messageEntry = Randomizer_GetIceTrapMessage();
+            } else {
+                messageEntry = Randomizer_GetCustomGetItemMessage(player);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&

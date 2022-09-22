@@ -5008,11 +5008,11 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
     
-    { "%ICE%w to see you, @.",
+    { "%bICE%w to see you, @.",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "Feeling a little hot under the collar?&Let's fix that.",
+    { "Feeling a little %rhot under the collar?&%bLet's fix that%w.",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 

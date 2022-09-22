@@ -6227,6 +6227,8 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                         this->actor.colChkInfo.damage = 0;
                         func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                         Player_SetPendingFlag(this, globalCtx);
+                        Message_StartTextbox(globalCtx, 0xF8, NULL);
+                        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                         this->getItemId = GI_NONE;
                         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
                         return 1;
