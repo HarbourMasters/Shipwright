@@ -533,7 +533,7 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s16 prevKbdX;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     this->kbdButton = 99;
 
@@ -678,7 +678,7 @@ static u8 sSelectedSetting;
 void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

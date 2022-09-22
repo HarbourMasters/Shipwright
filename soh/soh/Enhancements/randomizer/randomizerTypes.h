@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+#include "z64item.h"
+#include "randomizer_inf.h"
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -15,6 +19,7 @@ typedef struct {
 } Sprite;
 
 typedef enum {
+    RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,
     RC_QUEEN_GOHMA,
     RC_KING_DODONGO,
@@ -757,7 +762,8 @@ typedef enum {
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
-    RC_UNKNOWN_CHECK
+    RC_GANONDORF_HINT,
+    RC_MAX
 } RandomizerCheck;
 
 // based on https://github.com/TestRunnerSRL/OoT-Randomizer/blob/e337d7f603b91a6bacb618fb32cc7fd70ed9ffca/ItemList.py
@@ -955,11 +961,13 @@ typedef enum {
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
     RG_HINT,
+    RG_TYCOON_WALLET,
     RG_MAX
 } RandomizerGet;
 
 typedef enum {
     RSK_NONE,
+    RSK_LOGIC_RULES,
     RSK_FOREST,
     RSK_KAK_GATE,
     RSK_DOOR_OF_TIME,
@@ -978,31 +986,68 @@ typedef enum {
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_SHUFFLE_KOKIRI_SWORD,
-    RSK_STARTING_MAPS_COMPASSES, //RANDOTODO more options for this, rn it's just start with or own dungeon
+    RSK_STARTING_MAPS_COMPASSES,
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
+    RSK_SHUFFLE_TOKENS,
+    RSK_SHOPSANITY,
+    RSK_SHUFFLE_SCRUBS,
+    RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
+    RSK_SHUFFLE_FROG_SONG_RUPEES,
     RSK_ITEM_POOL,
     RSK_ICE_TRAPS,
     RSK_GOSSIP_STONE_HINTS,
     RSK_HINT_CLARITY,
     RSK_HINT_DISTRIBUTION,
+    RSK_KEYSANITY,
+    RSK_GERUDO_KEYS,
+    RSK_BOSS_KEYSANITY,
     RSK_GANONS_BOSS_KEY,
     RSK_SKIP_CHILD_STEALTH,
     RSK_SKIP_CHILD_ZELDA,
     RSK_STARTING_CONSUMABLES,
     RSK_FULL_WALLETS,
-    RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH,
     RSK_LANGUAGE,
-    RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_20_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_30_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_40_GOLD_SKULLTULA_REWARD,
-    RSK_EXCLUDE_KAK_50_GOLD_SKULLTULA_REWARD,
     RSK_SHUFFLE_CHEST_MINIGAME,
     RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
-    RSK_SKIP_TOWER_ESCAPE
+    RSK_SKIP_TOWER_ESCAPE,
+    RSK_COMPLETE_MASK_QUEST,
+    RSK_SKIP_SCARECROWS_SONG,
+    RSK_ENABLE_GLITCH_CUTSCENES,
+    RSK_SKULLS_SUNS_SONG,
+    RSK_SHUFFLE_ADULT_TRADE,
+    RSK_SHUFFLE_MAGIC_BEANS,
+    RSK_BLUE_FIRE_ARROWS,
+    RSK_SUNLIGHT_ARROWS,
+    RSK_ENABLE_BOMBCHU_DROPS,
+    RSK_BOMBCHUS_IN_LOGIC,
+    RSK_LINKS_POCKET
 } RandomizerSettingKey;
+
+typedef enum {
+    CAN_OBTAIN,
+    CANT_OBTAIN_MISC,
+    CANT_OBTAIN_ALREADY_HAVE,
+    CANT_OBTAIN_NEED_UPGRADE,
+    CANT_OBTAIN_NEED_EMPTY_BOTTLE,
+} ItemObtainability;
+
+typedef struct ScrubIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+    GetItemID getItemId;
+    int32_t itemPrice;
+    bool isShuffled;
+} ScrubIdentity;
+
+typedef struct ShopItemIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+    GetItemID ogItemId;
+    int32_t enGirlAShopItem;
+    int32_t itemPrice;
+} ShopItemIdentity;

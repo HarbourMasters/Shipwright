@@ -1068,7 +1068,7 @@ void EnSkj_SetupPostSariasSong(EnSkj* this) {
 }
 
 void EnSkj_ChangeModeAfterSong(EnSkj* this, GlobalContext* globalCtx) {
-    if (((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) || Randomizer_ItemIsIceTrap(RC_LW_SKULL_KID, GI_HEART_PIECE)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
         gSaveContext.itemGetInf[1] |= 0x40;
         EnSkj_SetNaviId(this);
         EnSkj_SetupWaitInRange(this);
@@ -1633,7 +1633,7 @@ void EnSkj_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gSKJskullMaskDL);
+        gSPDisplayList(POLY_OPA_DISP++, gSkullKidSkullMaskDL);
         Matrix_Pop();
     }
 
@@ -1645,7 +1645,7 @@ Gfx* EnSkj_TranslucentDL(GraphicsContext* gfxCtx, u32 alpha) {
     Gfx* dListHead;
 
     //! @bug This only allocates space for 1 command but uses 3
-    dList = dListHead = Graph_Alloc(gfxCtx, sizeof(Gfx));
+    dList = dListHead = Graph_Alloc(gfxCtx, sizeof(Gfx) * 3);
     gDPSetRenderMode(dListHead++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_SURF2);
     gDPSetEnvColor(dListHead++, 0, 0, 0, alpha);
     gSPEndDisplayList(dListHead++);

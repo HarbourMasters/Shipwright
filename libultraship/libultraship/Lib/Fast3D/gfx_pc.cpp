@@ -2110,11 +2110,6 @@ unsigned int dListBP;
 int matrixBP;
 uintptr_t clearMtx;
 
-extern "C"
-{
-    uintptr_t jsjutanShadowTex = 0;
-};
-
 static void gfx_run_dl(Gfx* cmd) {
     //puts("dl");
     int dummy = 0;

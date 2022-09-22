@@ -290,9 +290,9 @@ static s8 D_80907144[] = {
 static Vec3f D_80907164 = { 800.0f, 420.0f, 100.0f };
 
 static void* sEyeTextures[] = {
-    object_ganon2_Tex_01E188,
-    object_ganon2_Tex_01E988,
-    object_ganon2_Tex_01EA08,
+    gGanonEyeOpenTex,
+    gGanonEyeHalfTex,
+    gGanonEyeClosedTex,
 };
 
 static Vec3f D_8090717C = { 0.0f, -2000.0f, 0.0f };

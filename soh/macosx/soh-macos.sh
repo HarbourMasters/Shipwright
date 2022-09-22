@@ -29,12 +29,12 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 			osascript -e 'display dialog "Select ROM to generate OTR" giving up after 5'
 			rm -r "$ASSETDIR"
 			exit
-		fi 
+		fi
 	done
 	cp "$ASSETDIR"/*.*64 "$ASSETDIR"/tmp/rom.z64
 	cp -r "$ASSETDIR"/assets/game/ship_of_harkinian "$ASSETDIR"/Extract/assets/
 	cd "$ASSETDIR" || return
-	ROMHASH="$(shasum "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')" 
+	ROMHASH="$(shasum "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')"
 	case "$ROMHASH" in
 	cee6bc3c2a634b41728f2af8da54d9bf8cc14099)
 		export ROM=GC_NMQ_D;;
@@ -65,5 +65,11 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 		break
 done
 
-"$RESPATH"/soh-macos
+arch_name="$(uname -m)"
+launch_arch="arm64"
+if [ "${arch_name}" = "x86_64" ] && [ "$(sysctl -in sysctl.proc_translated)" = "0" ]; then
+	launch_arch="x86_64"
+fi
+
+arch -${launch_arch} "$RESPATH"/soh-macos
 exit

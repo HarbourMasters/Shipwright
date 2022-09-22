@@ -152,7 +152,7 @@ void BgSpot06Objects_Init(Actor* thisx, GlobalContext* globalCtx) {
 
             if (LINK_IS_ADULT &&
                 ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[6] & 0x200)) ||
-                 (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[5])))  {
+                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE))))  {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     globalCtx->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =

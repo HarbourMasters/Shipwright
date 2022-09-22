@@ -20,9 +20,13 @@ namespace Ship {
 		int32_t GetVirtualDevice(int32_t slot);
 		size_t GetNumVirtualDevices();
 		uint8_t* GetControllerBits();
+		void BlockGameInput();
+		void UnblockGameInput();
+		bool ShouldBlockGameInput(std::string inputDeviceGuid) const;
 	private:
 		std::vector<int32_t> virtualDevices = {};
 		std::vector<std::shared_ptr<Controller>> physicalDevices = {};
 		uint8_t* controllerBits = nullptr;
+		bool shouldBlockGameInput = false;
 	};
 }

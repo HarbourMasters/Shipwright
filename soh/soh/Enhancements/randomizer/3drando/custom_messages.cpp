@@ -257,7 +257,7 @@ constexpr std::array DungeonColors = {
         //Tycoon's Wallet
         CreateMessage(0x09F7, 0, 2, 3,
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"You got a "+COLOR(QM_RED)+"Tycoon's Wallet"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"It's gigantic! Now you can carry"+NEWLINE()+"up to "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"Rupees"+COLOR(QM_WHITE)+"!"+MESSAGE_END(),
-                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"Vous obtenez la "+COLOR(QM_RED)+"Bourse de star"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"Elle peut contenir jusqu'à "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"rubis"+COLOR(QM_WHITE)+"!"+NEWLINE()+"C'est gigantesque!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"Vous obtenez la "+COLOR(QM_RED)+"Bourse de Magnat"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"Elle peut contenir jusqu'à "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"rubis"+COLOR(QM_WHITE)+"!"+NEWLINE()+"C'est gigantesque!"+MESSAGE_END(),
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"¡Has conseguido una "+COLOR(QM_RED)+"bolsa para ricachones"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"¡Qué descomunal! Ya puedes llevar"+NEWLINE()+"hasta "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"rupias"+COLOR(QM_WHITE)+"!"+MESSAGE_END());
         //Saria's Song Default Hint
         CreateMessage(0x0A00, 0, 2, 3,

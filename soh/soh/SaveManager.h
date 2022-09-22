@@ -57,6 +57,7 @@ public:
 
     void CopyZeldaFile(int from, int to);
     void DeleteZeldaFile(int fileNum);
+    bool IsRandoFile();
 
     // Use a name of "" to save to an array. You must be in a SaveArray callback.
     template<typename T>
