@@ -4980,15 +4980,15 @@ void CreateNaviRandoMessages() {
 }
 
 CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
-    { "You are a %bFOOL!",
+    { "You are a %bFOOL%w!",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "You are a %bFOWL!",
+    { "You are a %bFOWL%w!",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "%bFOOL!",
+    { "%bFOOL%w!",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
@@ -4996,7 +4996,7 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "Stay %bfrosty, %w@.",
+    { "Stay %bfrosty%w, @.",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
@@ -5012,7 +5012,7 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "Feeling a little %rhot under the collar?&%bLet's fix that%w.",
+    { "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
@@ -5040,7 +5040,7 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
-    { "Cold pun.",
+    { "%bCold pun%w.",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 
@@ -5049,6 +5049,22 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
       "%bIDIOT" },
 
     { "Oh no!",
+      "Du bist ein %bDUMMKOPF!",
+      "%bIDIOT" },
+      
+    { "What killed the dinosaurs?&The %bICE%w age!",
+      "Du bist ein %bDUMMKOPF!",
+      "%bIDIOT" },
+
+    { "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
+      "Du bist ein %bDUMMKOPF!",
+      "%bIDIOT" },
+
+    { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Du bist ein %bDUMMKOPF!",
+      "%bIDIOT" },
+
+    { "Thank you %b@%w!&But your item is in another castle!",
       "Du bist ein %bDUMMKOPF!",
       "%bIDIOT" },
 

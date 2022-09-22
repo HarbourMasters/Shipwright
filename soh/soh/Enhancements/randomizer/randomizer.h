@@ -9,7 +9,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 
 #define NUM_NAVI_MESSAGES 19
-#define NUM_ICE_TRAP_MESSAGES 18
+#define NUM_ICE_TRAP_MESSAGES 22
 
 class Randomizer {
   private:
