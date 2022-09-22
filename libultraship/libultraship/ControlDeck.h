@@ -22,7 +22,7 @@ namespace Ship {
 		uint8_t* GetControllerBits();
 		void BlockGameInput();
 		void UnblockGameInput();
-		bool ShouldBlockGameInput() const;
+		bool ShouldBlockGameInput(std::string inputDeviceGuid) const;
 	private:
 		std::vector<int32_t> virtualDevices = {};
 		std::vector<std::shared_ptr<Controller>> physicalDevices = {};
