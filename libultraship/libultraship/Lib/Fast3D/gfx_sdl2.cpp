@@ -304,6 +304,8 @@ static void gfx_sdl_handle_events(void) {
                     #else
                         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                     #endif
+                } else if (event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(wnd)) {
+                    is_running = false;
                 }
                 break;
             case SDL_DROPFILE:
