@@ -770,7 +770,7 @@ static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const st
 
     try {
         int value = std::stoi(args[1], nullptr, 10);
-        gSaveContext.rupees += value;
+        Rupees_ChangeBy(value);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Rupee value must be a number.");

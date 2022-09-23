@@ -281,6 +281,10 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             CMD_EXECUTE(std::format("update_rupees {}", value));
             return 1;
         } else if (strcmp(effectId, "remove_rupees") == 0) {
+            if (gSaveContext.rupees - value < 0) {
+                return 2;
+            }
+
             CMD_EXECUTE(std::format("update_rupees -{}", value));
             return 1;
         }
