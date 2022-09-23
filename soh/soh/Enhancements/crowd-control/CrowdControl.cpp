@@ -41,12 +41,13 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
 
         uint8_t returnSuccess = 0;
         returnSuccess = ExecuteEffect(packet->effectType.c_str(), packet->effectValue);
-        dataSend["status"] = returnSuccess == 1 ? EffectResult::Success : returnSuccess == 2 ? EffectResult::Failure : EffectResult::Retry;
-
-        std::string jsonResponse = dataSend.dump();
-        SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
 
         if (returnSuccess == 2) {
+            dataSend["status"] = EffectResult::Failure;
+
+            std::string jsonResponse = dataSend.dump();
+            SPDLOG_ERROR(jsonResponse);
+            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
             return;
         }
 
@@ -73,12 +74,19 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
         }
         else if (returnSuccess == 0 && paused == 0 && packet->timeRemaining > 0) {
             paused = 1;
+        }
 
+        if (paused) {
             nlohmann::json dataSend;
             dataSend["id"] = packet->packetId;
             dataSend["type"] = 0;
             dataSend["timeRemaining"] = packet->timeRemaining;
             dataSend["status"] = EffectResult::Paused;
+
+            std::string jsonResponse = dataSend.dump();
+            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+        } else {
+            dataSend["status"] = returnSuccess == 1 ? EffectResult::Success : EffectResult::Retry;
 
             std::string jsonResponse = dataSend.dump();
             SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
@@ -114,6 +122,7 @@ void CrowdControl::ReceiveFromCrowdControl()
 
         CCPacket* packet = new CCPacket();
         packet->packetId = dataReceived["id"];
+        SPDLOG_ERROR("PACKED ID: {}", packet->packetId);
         auto parameters = dataReceived["parameters"];
         if (parameters.size() > 0) {
             packet->effectValue = dataReceived["parameters"][0];
