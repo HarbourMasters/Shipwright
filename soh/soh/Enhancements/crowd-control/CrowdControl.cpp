@@ -309,7 +309,6 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             }
             return 0;
         } else if (strcmp(effectId, "damage") == 0
-                    || strcmp(effectId, "heal") == 0
                     || strcmp(effectId, "knockback") == 0
         ) {
             CMD_EXECUTE(std::format("{} {}", effectId, value));
@@ -328,6 +327,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             return 1;
         } else if (strcmp(effectId, "reverse") == 0) {
             CMD_EXECUTE("reverse_controls 1"); 
+            return 1;
         } else if (strcmp(effectId, "iron_boots") == 0) {
             CMD_EXECUTE("boots iron");
             return 1;
@@ -348,6 +348,13 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
             return 1;
         } else if (strcmp(effectId, "defense_multiplier") == 0) {
             CMD_EXECUTE(std::format("defense_modifier {}", value));
+            return 1;
+        } else if (strcmp(effectId, "heal") == 0) {
+            if ((gSaveContext.healthCapacity - 0x10) <= 0) {
+                return 2;
+            }
+            
+            CMD_EXECUTE(std::format("heal {}", effectId, value));
             return 1;
         }
     }
@@ -382,7 +389,8 @@ void CrowdControl::RemoveEffect(const char* effectId) {
             CMD_EXECUTE("gravity 1");
             return;
         } else if (strcmp(effectId, "reverse") == 0) {
-            CMD_EXECUTE("reverse_controls 0"); 
+            CMD_EXECUTE("reverse_controls 0");
+            return;
         } else if (strcmp(effectId, "increase_speed") == 0
                     || strcmp(effectId, "decrease_speed") == 0
         ) {
