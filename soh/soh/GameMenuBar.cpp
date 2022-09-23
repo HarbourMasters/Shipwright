@@ -1225,6 +1225,60 @@ namespace GameMenuBar {
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
 
+            const char* cam_cvar = "gCustomCameraDistMax";
+            {
+                int minDist = 100;
+                int maxDist = 900;
+
+                int val = CVar_GetS32(cam_cvar, 200);
+                val = fmax(fmin(val, maxDist), minDist);
+
+                int dist = val;
+
+                ImGui::Text("Custom camera distance: %d", val);
+
+                std::string MinusBTNDistI = " - ##CamDist";
+                std::string PlusBTNDistI = " + ##CamDist";
+                if (ImGui::Button(MinusBTNDistI.c_str())) {
+                    val--;
+                    CVar_SetS32(cam_cvar, val);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            #ifdef __SWITCH__
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+            #elif __WIIU__
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+            #else
+                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+            #endif
+                if (ImGui::SliderInt("##CamDist", &val, minDist, maxDist, "", ImGuiSliderFlags_AlwaysClamp))
+                {
+                    if (val > maxDist)
+                    {
+                        val = maxDist;
+                    }
+                    else if (val < minDist)
+                    {
+                        val = minDist;
+                    }
+
+                    CVar_SetS32(cam_cvar, val);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+                ImGui::PopItemWidth();
+                //UIWidgets::Tooltip("Useful Description");
+
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                if (ImGui::Button(PlusBTNDistI.c_str())) {
+                    val++;
+                    CVar_SetS32(cam_cvar, val);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+            }
+
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);

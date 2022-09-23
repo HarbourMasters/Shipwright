@@ -1695,7 +1695,7 @@ s32 Camera_Normal1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, at, eyeNext);
 
     camera->dist = eyeAdjustment.r =
-        Camera_ClampDist(camera, eyeAdjustment.r, norm1->distMin, norm1->distMax, anim->unk_28);
+        Camera_ClampDist(camera, eyeAdjustment.r, norm1->distMin, CVar_GetS32("gCustomCameraDistMax", norm1->distMax), anim->unk_28);
 
     if (anim->startSwingTimer <= 0) {
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
