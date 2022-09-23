@@ -186,7 +186,7 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->effectCategory = "rupees";
         }
         else if (strcmp(packet->effectType.c_str(), "increase_speed") == 0
-                    || strcmp(packet->effectType.c_str(), "increase_speed") == 0
+                    || strcmp(packet->effectType.c_str(), "decrease_speed") == 0
         ) {
             packet->effectCategory = "speed";
             packet->timeRemaining = 30000;
