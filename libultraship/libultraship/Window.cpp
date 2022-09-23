@@ -89,9 +89,6 @@ extern "C" {
         
         if (SohImGui::GetInputEditor()->IsOpened()) return;
 
-        ImGuiIO io = ImGui::GetIO();
-        if (io.WantCaptureKeyboard) return;
-
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
