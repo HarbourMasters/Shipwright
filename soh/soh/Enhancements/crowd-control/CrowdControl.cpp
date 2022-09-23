@@ -5,7 +5,6 @@
 #include <libultraship/Console.h>
 #include <libultraship/ImGuiImpl.h>
 #include <nlohmann/json.hpp>
-#include <spdlog/spdlog.h>
 #include <regex>
 
 extern "C" {
@@ -32,7 +31,7 @@ void CrowdControl::InitCrowdControl() {
 
 void CrowdControl::RunCrowdControl(CCPacket* packet) {
     uint8_t paused = 0;
-    uint8_t lastResult = 0;
+    uint8_t lastResult = -1;
 
     while (connected) {
         nlohmann::json dataSend;
@@ -316,7 +315,7 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                 return 1;
             }
             return 0;
-        } else if (strcmp(effectId, "damage") == 0
+        } else if (strcmp(effectId, "heal") == 0
                     || strcmp(effectId, "knockback") == 0
         ) {
             CMD_EXECUTE(std::format("{} {}", effectId, value));
@@ -357,12 +356,12 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
         } else if (strcmp(effectId, "defense_multiplier") == 0) {
             CMD_EXECUTE(std::format("defense_modifier {}", value));
             return 1;
-        } else if (strcmp(effectId, "heal") == 0) {
+        } else if (strcmp(effectId, "damage") == 0) {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return 2;
             }
             
-            CMD_EXECUTE(std::format("heal {}", effectId, value));
+            CMD_EXECUTE(std::format("damage {}", effectId, value));
             return 1;
         }
     }
