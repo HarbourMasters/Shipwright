@@ -21,7 +21,10 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
-#include <soh/Enhancements/item-tables/ItemTableTypes.h>
+
+//Mod
+#include <libultraship/Lib/Fast3D/gfx_sdl.h>
+
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -5396,6 +5399,15 @@ s32 func_8083C2B0(Player* this, GlobalContext* globalCtx) {
         func_808323B4(globalCtx, this);
 
         if (func_80835C58(globalCtx, this, func_80843188, 0)) {
+            /* MOD: move cursor to the middle on shield pull (RR) */
+            osSyncPrintf("SHIELDS UP!!!!\n");
+            if (CVar_GetS32("gMouseTouchEnabled", 0)) {
+                u32 width = OTRGetCurrentWidth();
+                u32 height = OTRGetCurrentHeight();
+                gfx_sdl.move_cursor(width/2, height/2);
+            }
+            /* */
+
             this->stateFlags1 |= PLAYER_STATE1_22;
 
             if (!Player_IsChildWithHylianShield(this)) {
@@ -8018,7 +8030,7 @@ void func_80843188(Player* this, GlobalContext* globalCtx) {
     func_8083721C(this);
 
     if (this->unk_850 != 0) {
-        sp54 = sControlInput->rel.stick_y * 100; //CAMERA TEST TODO (RR)
+        sp54 = sControlInput->rel.stick_y * 100;
         sp50 = sControlInput->rel.stick_x * -120;
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(globalCtx));
 

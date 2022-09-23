@@ -38,7 +38,7 @@ namespace Ship {
 		wTouchY = y;
 #endif
 
-                // Click Inputs
+        // Click Inputs
 		if ((buttons & SDL_BUTTON_LMASK) != 0) {
 			wLeftClick = 1;
 		}
@@ -137,7 +137,10 @@ namespace Ship {
 			if (pad->gyro_y == 0) pad->gyro_y = padFromBuffer.gyro_y;
 			if (pad->right_stick_x == 0) pad->right_stick_x = padFromBuffer.right_stick_x;
 			if (pad->right_stick_y == 0) pad->right_stick_y = padFromBuffer.right_stick_y;
-		}
+
+			pad->touch_x = padFromBuffer.touch_x;
+			pad->touch_y = padFromBuffer.touch_y;
+        }
 
 		while (padBuffer.size() > 6) {
 			padBuffer.pop_back();

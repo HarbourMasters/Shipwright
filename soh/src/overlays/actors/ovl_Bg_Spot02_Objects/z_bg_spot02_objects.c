@@ -57,6 +57,15 @@ void BgSpot02Objects_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_16B = (u16)(thisx->params >> 8);
     thisx->params = (u16)(thisx->params & 0xFF);
 
+    if (thisx->params == 2){ //Royal Tombstone
+        globalCtx->stairsCount++;
+        if (globalCtx->stairsCount >= 13){
+            Actor_Kill(thisx);
+            return;
+        }
+
+    }
+
     switch (thisx->params) {
         case 0:
         case 1:

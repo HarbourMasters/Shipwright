@@ -361,6 +361,7 @@ const char* minimapTableDangeon[] =
 };
 
 void Map_InitData(GlobalContext* globalCtx, s16 room) {
+    globalCtx->stairsCount = 0;
     s32 mapIndex = gSaveContext.mapIndex;
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 extendedMapIndex;
