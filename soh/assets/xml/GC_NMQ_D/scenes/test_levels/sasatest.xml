@@ -3,6 +3,9 @@
         <Scene Name="sasatest_scene" Offset="0x0"/>
     </File>
     <File Name="sasatest_room_0" Segment="3">
+        <Array Name="gSasatestRoom0Vtx_00370" Count="289" Offset="0x370">
+            <Vtx/>
+        </Array>
         <Room Name="sasatest_room_0" Offset="0x0"/>
     </File>
 </Root>

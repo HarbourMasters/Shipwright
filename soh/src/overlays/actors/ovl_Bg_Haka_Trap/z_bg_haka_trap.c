@@ -228,8 +228,8 @@ void func_8087FFC0(BgHakaTrap* this, GlobalContext* globalCtx) {
     this->colliderCylinder.dim.pos.z = this->dyna.actor.world.pos.z + sp28.x * sine + sp28.z * cosine;
 }
 
+static UNK_TYPE D_80881018 = 0;
 void func_808801B8(BgHakaTrap* this, GlobalContext* globalCtx) {
-    static UNK_TYPE D_80881018 = 0;
     Player* player = GET_PLAYER(globalCtx);
 
     if ((D_80880F30 == 0) && (!Player_InCsMode(globalCtx))) {
@@ -553,4 +553,5 @@ void BgHakaTrap_Draw(Actor* thisx, GlobalContext* globalCtx) {
 void BgHakaTrap_Reset(void) {
     D_80880F30 = 0;
     D_80881014 = 0;
+    D_80881018 = 0;
 }

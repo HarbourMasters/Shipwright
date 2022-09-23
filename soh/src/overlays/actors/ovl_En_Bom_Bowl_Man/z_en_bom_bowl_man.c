@@ -79,7 +79,7 @@ void EnBomBowlMan_Init(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    this->prizeSelect = (s16)Rand_ZeroFloat(4.99f);
+    this->prizeSelect = gSaveContext.n64ddFlag ? 0 : (s16)Rand_ZeroFloat(4.99f);
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
@@ -134,11 +134,25 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        // Check for beaten Dodongo's Cavern
-        if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
-            this->actor.textId = 0xBF;
-        } else {
-            this->actor.textId = 0x7058;
+        // Check for beaten Dodongo's Cavern if Rando is disabled
+        if (!gSaveContext.n64ddFlag) {
+            if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
+                this->actor.textId = 0xBF;
+            } else {
+                this->actor.textId = 0x7058;
+            }
+        }
+
+        // In randomizer, only check for bomb bag when bombchus aren't in logic
+        // and only check for bombchus when bombchus are in logic
+        if (gSaveContext.n64ddFlag) {
+            u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
+            if ((!bombchusInLogic && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
+                (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
+                this->actor.textId = 0x7058;
+            } else {
+                this->actor.textId = 0xBF;
+            }
         }
     }
     Message_ContinueTextbox(globalCtx, this->actor.textId);
@@ -148,6 +162,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeTextureIndex = 2;
         this->blinkCount++;
         if (this->blinkCount >= 3) {
+            // we're still making it in here when rando'd
             this->actionFunc = EnBomBowMan_CheckBeatenDC;
         }
     }
@@ -164,8 +179,17 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeMode = CHU_GIRL_EYES_AWAKE;
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
-        // Check for beaten Dodongo's Cavern
-        if (!((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) {
+        bool bombchuBowlingClosed;
+        if (gSaveContext.n64ddFlag) {
+            // when rando'd, check if we have bombchus if chus are in logic
+            // and check if we have a bomb bag if chus aren't in logic
+            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
+            bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
+        } else {
+            // if not rando'd, check if we have beaten Dodongo's Cavern
+            bombchuBowlingClosed = !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2));
+        }
+        if (bombchuBowlingClosed) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
         } else {
             this->actor.textId = 0x18;
@@ -395,14 +419,25 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, GlobalContext* globalCtx) {
                 }
                 break;
             case 1:
-                prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                } else {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                }
                 break;
             case 2:
                 prizeTemp = EXITEM_BOMBCHUS_BOWLING;
                 break;
             case 3:
-                prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                if (gSaveContext.itemGetInf[1] & 4) {
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                } else {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 }
                 break;
@@ -526,12 +561,12 @@ void EnBomBowlMan_Draw(Actor* thisx, GlobalContext* globalCtx) {
     static void* eyeTextures[] = { gChuGirlEyeOpenTex, gChuGirlEyeHalfTex, gChuGirlEyeClosedTex };
     EnBomBowlMan* this = (EnBomBowlMan*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bom_bowl_man.c", 907);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTextureIndex]));
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnBomBowlMan_OverrideLimbDraw, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bom_bowl_man.c", 923);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -33,19 +33,21 @@ void GameOver_Update(GlobalContext* globalCtx) {
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary
-            for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
-                if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
-                    INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
+            if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+                for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
+                    if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
+                        INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-                    // search c buttons for the found spoiling item and revert if necessary
-                    for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                        if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                            gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
-                            Interface_LoadItemIcon1(globalCtx, j);
+                        // search c buttons for the found spoiling item and revert if necessary
+                        for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
+                            if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                                gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                                Interface_LoadItemIcon1(globalCtx, j);
+                            }
                         }
                     }
                 }
-            }
+			}
 
             // restore "temporary B" to the B Button if not a sword item
             if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
@@ -68,13 +70,13 @@ void GameOver_Update(GlobalContext* globalCtx) {
             gSaveContext.eventInf[1] = 0;
             gSaveContext.eventInf[2] = 0;
             gSaveContext.eventInf[3] = 0;
-            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+            for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+                gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+            }
             gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
 
             Environment_InitGameOverLights(globalCtx);
             gGameOverTimer = 20;
-            if (1) {}
             v90 = VREG(90);
             v91 = VREG(91);
             v92 = VREG(92);
@@ -108,7 +110,6 @@ void GameOver_Update(GlobalContext* globalCtx) {
         case GAMEOVER_REVIVE_RUMBLE:
             gGameOverTimer = 50;
             gameOverCtx->state++;
-            if (1) {}
 
             v90 = VREG(90);
             v91 = VREG(91);

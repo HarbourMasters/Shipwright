@@ -150,7 +150,6 @@ void EnFirefly_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((this->actor.params & 0x8000) != 0) {
         this->actor.flags |= ACTOR_FLAG_7;
-        if (1) {}
         this->actor.draw = EnFirefly_DrawInvisible;
         this->actor.params &= 0x7FFF;
     }
@@ -723,7 +722,7 @@ s32 EnFirefly_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
                                void* thisx, Gfx** gfx) {
     EnFirefly* this = (EnFirefly*)thisx;
 
-    if ((this->actor.draw == EnFirefly_DrawInvisible) && (globalCtx->actorCtx.unk_03 == 0)) {
+    if ((this->actor.draw == EnFirefly_DrawInvisible) && !globalCtx->actorCtx.lensActive) {
         *dList = NULL;
     } else if (limbIndex == 1) {
         pos->y += 2300.0f;
@@ -736,6 +735,11 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
+    static Color_RGB8 fireAuraPrimColor_ori = { 255, 255, 100 };
+    static Color_RGB8 fireAuraEnvColor_ori = { 255, 50, 0 };
+    static Color_RGB8 iceAuraPrimColor_ori = { 100, 200, 255 };
+    static Color_RGB8 iceAuraEnvColor_ori = { 0, 0, 255 };
+
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -747,7 +751,26 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     s16 effScaleStep;
     s16 effLife;
     EnFirefly* this = (EnFirefly*)thisx;
-
+    if (CVar_GetS32("gUseKeeseCol", 0)) {
+        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).r,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).g,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).b, 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).r,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).g,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).b, 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).r,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).g,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).b, 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).r,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).g,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).b, 0 };
+        fireAuraPrimColor = fireAuraPrimColor_custom;
+        fireAuraEnvColor = fireAuraEnvColor_custom;
+        iceAuraPrimColor = iceAuraPrimColor_custom;
+        iceAuraEnvColor = iceAuraEnvColor_custom;
+    } else {
+        //Original colors are back there
+        Color_RGBA8 fireAuraPrimColor_custom = { fireAuraPrimColor_ori.r, fireAuraPrimColor_ori.g, fireAuraPrimColor_ori.b, 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { fireAuraEnvColor_ori.r, fireAuraEnvColor_ori.g, fireAuraEnvColor_ori.b, 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { iceAuraPrimColor_ori.r, iceAuraPrimColor_ori.g, iceAuraPrimColor_ori.b, 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { iceAuraEnvColor_ori.r, iceAuraEnvColor_ori.g, iceAuraEnvColor_ori.b, 0 };
+        fireAuraPrimColor = fireAuraPrimColor_custom;
+        fireAuraEnvColor = fireAuraEnvColor_custom;
+        iceAuraPrimColor = iceAuraPrimColor_custom;
+        iceAuraEnvColor = iceAuraEnvColor_custom;
+    }
     if (!this->onFire && (limbIndex == 27)) {
         gSPDisplayList((*gfx)++, gKeeseEyesDL);
     } else {
@@ -804,7 +827,7 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
 void EnFirefly_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnFirefly* this = (EnFirefly*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_firefly.c", 1733);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     if (this->onFire) {
@@ -815,13 +838,13 @@ void EnFirefly_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_OPA_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, &this->actor, POLY_OPA_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_firefly.c", 1763);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFirefly_DrawInvisible(Actor* thisx, GlobalContext* globalCtx) {
     EnFirefly* this = (EnFirefly*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_firefly.c", 1775);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     if (this->onFire) {
@@ -832,5 +855,5 @@ void EnFirefly_DrawInvisible(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, this, POLY_XLU_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_firefly.c", 1805);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

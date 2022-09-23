@@ -52,9 +52,9 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_map_PAL.c", 123);
+    OPEN_DISPS(gfxCtx);
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_MAP)) {
         pauseCtx->cursorColorSet = 0;
@@ -358,7 +358,7 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_map_PAL.c", 388);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
@@ -419,9 +419,9 @@ void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVar_GetS32("gDpadPause", 0);
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_map_PAL.c", 556);
+    OPEN_DISPS(gfxCtx);
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_MAP)) {
         pauseCtx->cursorColorSet = 0;
@@ -741,5 +741,5 @@ void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx
 
     gDPPipeSync(POLY_KAL_DISP++);
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_map_PAL.c", 874);
+    CLOSE_DISPS(gfxCtx);
 }

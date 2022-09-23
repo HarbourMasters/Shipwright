@@ -157,7 +157,7 @@ static CollisionHeader* sColHeaders[] = {
     &gObjectMizuObjectsBwallCol_001DE8, &gObjectMizuObjectsBwallCol_001DE8,
 };
 
-static InitChainEntry D_8089D854[] = {
+static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneScale, 1500, ICHAIN_CONTINUE),
     ICHAIN_F32(uncullZoneDownward, 1100, ICHAIN_CONTINUE),
     ICHAIN_F32(uncullZoneForward, 1000, ICHAIN_CONTINUE),
@@ -175,7 +175,7 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgMizuBwall* this = (BgMizuBwall*)thisx;
     CollisionHeader* colHeader = NULL;
 
-    Actor_ProcessInitChain(&this->dyna.actor, D_8089D854);
+    Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     this->yRot = this->dyna.actor.world.pos.y;
     this->dList = sDLists[(u16)this->dyna.actor.params & 0xF];
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
@@ -191,8 +191,8 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
             } else {
                 Collider_InitTris(globalCtx, &this->collider);
                 if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitFloor, this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mizu_bwall.c",
-                                 484, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                                 __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -227,8 +227,8 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
                 Collider_InitTris(globalCtx, &this->collider);
                 if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitRutoWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mizu_bwall.c",
-                                 558, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                                 __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -263,8 +263,8 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
                 Collider_InitTris(globalCtx, &this->collider);
                 if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitUnusedWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mizu_bwall.c",
-                                 638, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                                 __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -301,8 +301,8 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
                 Collider_InitTris(globalCtx, &this->collider);
                 if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mizu_bwall.c",
-                                 724, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                                 __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -339,8 +339,8 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
                 Collider_InitTris(globalCtx, &this->collider);
                 if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mizu_bwall.c",
-                                 798, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                                 __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -505,8 +505,7 @@ void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_bwall.c", 1095);
-    if (1) {}
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     frames = globalCtx->gameplayFrames;
 
     func_80093D18(globalCtx->state.gfxCtx);
@@ -522,10 +521,10 @@ void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     gSPSegment(POLY_OPA_DISP++, 0x0B,
                Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, 3 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha4));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mizu_bwall.c", 1129), 2);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), 2);
 
     if (this->dList != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->dList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_bwall.c", 1136);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

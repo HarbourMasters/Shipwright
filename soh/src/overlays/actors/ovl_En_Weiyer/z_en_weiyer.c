@@ -630,7 +630,7 @@ s32 EnWeiyer_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
 void EnWeiyer_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnWeiyer* this = (EnWeiyer*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_weiyer.c", 1193);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc != func_80B33338) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -646,5 +646,5 @@ void EnWeiyer_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                        EnWeiyer_OverrideLimbDraw, NULL, &this->actor, POLY_XLU_DISP);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_weiyer.c", 1240);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

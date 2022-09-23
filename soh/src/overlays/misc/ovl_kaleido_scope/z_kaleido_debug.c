@@ -82,7 +82,7 @@ void KaleidoScope_DrawDebugEditorText(Gfx** gfxp) {
 extern const char* digitTextures[];
 
 void KaleidoScope_DrawDigit(GlobalContext* globalCtx, s32 digit, s32 rectLeft, s32 rectTop) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_debug.c", 208);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPLoadTextureBlock(POLY_KAL_DISP++, digitTextures[digit], G_IM_FMT_I, G_IM_SIZ_8b, 8, 16, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -90,7 +90,7 @@ void KaleidoScope_DrawDigit(GlobalContext* globalCtx, s32 digit, s32 rectLeft, s
     gSPTextureRectangle(POLY_KAL_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + 8) << 2, (rectTop + 16) << 2,
                         G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_debug.c", 220);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_DrawDebugEditor(GlobalContext* globalCtx) {
@@ -110,7 +110,7 @@ void KaleidoScope_DrawDebugEditor(GlobalContext* globalCtx) {
     s16 y;
     s32 dBtnInput = input->cur.button & (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_debug.c", 402);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     pauseCtx->stickRelX = input->rel.stick_x;
     pauseCtx->stickRelY = input->rel.stick_y;
@@ -640,11 +640,15 @@ void KaleidoScope_DrawDebugEditor(GlobalContext* globalCtx) {
 
     // Handles exiting the inventory editor with the L button
     // The editor is opened with `debugState` set to 1, and becomes closable after a frame once `debugState` is set to 2
+    s16 Debug_BTN = BTN_L;
+    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 0) {
+        Debug_BTN = BTN_Z;
+    }
     if (pauseCtx->debugState == 1) {
         pauseCtx->debugState = 2;
-    } else if ((pauseCtx->debugState == 2) && CHECK_BTN_ALL(input->press.button, BTN_L)) {
+    } else if ((pauseCtx->debugState == 2) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
         pauseCtx->debugState = 0;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_debug.c", 861);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

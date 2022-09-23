@@ -74,7 +74,7 @@ void BgJyaBombiwa_SetupDynaPoly(BgJyaBombiwa* this, GlobalContext* globalCtx, Co
     if (this->dyna.bgId == BG_ACTOR_MAX) {
 
         // "Warning: move BG registration failed"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_jya_bombiwa.c", 174,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -93,7 +93,7 @@ void BgJyaBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
 
         // "Warning: Switch Number changed (%s %d)(SW %d)"
-        osSyncPrintf("Ｗａｒｎｉｎｇ : Switch Number が変更された(%s %d)(SW %d)\n", "../z_bg_jya_bombiwa.c", 218,
+        osSyncPrintf("Ｗａｒｎｉｎｇ : Switch Number が変更された(%s %d)(SW %d)\n", __FILE__, __LINE__,
                      this->dyna.actor.params & 0x3F);
         osSyncPrintf(VT_RST);
     }

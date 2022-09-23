@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "StrHash.h"
 
 namespace Ship
 {

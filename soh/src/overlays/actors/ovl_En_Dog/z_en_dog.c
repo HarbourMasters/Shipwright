@@ -472,17 +472,36 @@ void EnDog_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 void EnDog_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDog* this = (EnDog*)thisx;
     Color_RGBA8 colors[] = { { 255, 255, 200, 0 }, { 150, 100, 50, 0 } };
+    Color_RGB8 Dog1_ori = {colors[0].r, colors[0].g, colors[0].b};
+    Color_RGB8 Dog2_ori = {colors[1].r, colors[1].g, colors[1].b};
+    Color_RGB8 Dog1 = CVar_GetRGB("gDog1Col", Dog1_ori);
+    Color_RGB8 Dog2 = CVar_GetRGB("gDog2Col", Dog2_ori);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dog.c", 972);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
+    if (CVar_GetS32("gUseDogsCol",0)) {
+        colors[0].r = Dog1.r;
+        colors[0].g = Dog1.g;
+        colors[0].b = Dog1.b;
+        colors[1].r = Dog2.r;
+        colors[1].g = Dog2.g;
+        colors[1].b = Dog2.b;
+    } else {
+        colors[0].r = Dog1_ori.r;
+        colors[0].g = Dog1_ori.g;
+        colors[0].b = Dog1_ori.b;
+        colors[1].r = Dog2_ori.r;
+        colors[1].g = Dog2_ori.g;
+        colors[1].b = Dog2_ori.b;
+    }
     gDPSetEnvColor(POLY_OPA_DISP++, colors[this->actor.params & 0xF].r, colors[this->actor.params & 0xF].g,
                    colors[this->actor.params & 0xF].b, colors[this->actor.params & 0xF].a);
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDog_OverrideLimbDraw, EnDog_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dog.c", 994);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

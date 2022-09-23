@@ -23,7 +23,7 @@ void View_ViewportToVp(Vp* dest, Viewport* src) {
 }
 
 View* View_New(GraphicsContext* gfxCtx) {
-    View* view = SystemArena_MallocDebug(sizeof(View), "../z_view.c", 285);
+    View* view = SYSTEM_ARENA_MALLOC_DEBUG(sizeof(View));
 
     if (view != NULL) {
         memset(view, 0, sizeof(View));
@@ -34,7 +34,7 @@ View* View_New(GraphicsContext* gfxCtx) {
 }
 
 void View_Free(View* view) {
-    SystemArena_FreeDebug(view, "../z_view.c", 297);
+    SYSTEM_ARENA_FREE_DEBUG(view);
 }
 
 void View_Init(View* view, GraphicsContext* gfxCtx) {
@@ -64,7 +64,7 @@ void View_Init(View* view, GraphicsContext* gfxCtx) {
 
     view->unk_124 = 0;
     view->flags = 1 | 2 | 4;
-    func_800AA7B8(view);
+    View_InitDistortion(view);
 }
 
 void View_GetParams(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
@@ -176,12 +176,12 @@ void func_800AA550(View* view) {
     lrx = view->viewport.rightX - varX;
     lry = view->viewport.bottomY - varY;
 
-    ASSERT(ulx >= 0, "ulx >= 0", "../z_view.c", 454);
-    ASSERT(uly >= 0, "uly >= 0", "../z_view.c", 455);
-    ASSERT(lrx <= SCREEN_WIDTH, "lrx <= SCREEN_WD", "../z_view.c", 456);
-    ASSERT(lry <= SCREEN_HEIGHT, "lry <= SCREEN_HT", "../z_view.c", 457);
+    ASSERT(ulx >= 0);
+    ASSERT(uly >= 0);
+    ASSERT(lrx <= SCREEN_WIDTH);
+    ASSERT(lry <= SCREEN_HEIGHT);
 
-    OPEN_DISPS(gfxCtx, "../z_view.c", 459);
+    OPEN_DISPS(gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
@@ -190,84 +190,90 @@ void func_800AA550(View* view) {
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetScissor(POLY_KAL_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
 
-    CLOSE_DISPS(gfxCtx, "../z_view.c", 472);
+    CLOSE_DISPS(gfxCtx);
 }
 
-void func_800AA76C(View* view, f32 x, f32 y, f32 z) {
-    view->unk_E8.x = x;
-    view->unk_E8.y = y;
-    view->unk_E8.z = z;
+void View_SetDistortionOrientation(View* view, f32 rotX, f32 rotY, f32 rotZ) {
+    view->distortionOrientation.x = rotX;
+    view->distortionOrientation.y = rotY;
+    view->distortionOrientation.z = rotZ;
 }
 
-void func_800AA78C(View* view, f32 x, f32 y, f32 z) {
-    view->unk_F4.x = x;
-    view->unk_F4.y = y;
-    view->unk_F4.z = z;
+void View_SetDistortionScale(View* view, f32 scaleX, f32 scaleY, f32 scaleZ) {
+    view->distortionScale.x = scaleX;
+    view->distortionScale.y = scaleY;
+    view->distortionScale.z = scaleZ;
 }
 
-s32 func_800AA7AC(View* view, f32 arg1) {
-    view->unk_100 = arg1;
+s32 View_SetDistortionSpeed(View* view, f32 speed) {
+    view->distortionSpeed = speed;
 }
 
-void func_800AA7B8(View* view) {
-    view->unk_E8.x = 0.0f;
-    view->unk_E8.y = 0.0f;
-    view->unk_E8.z = 0.0f;
-    view->unk_F4.x = 1.0f;
-    view->unk_F4.y = 1.0f;
-    view->unk_F4.z = 1.0f;
-    view->unk_104 = view->unk_E8;
-    view->unk_110 = view->unk_F4;
-    view->unk_100 = 0.0f;
+void View_InitDistortion(View* view) {
+    view->distortionOrientation.x = 0.0f;
+    view->distortionOrientation.y = 0.0f;
+    view->distortionOrientation.z = 0.0f;
+    view->distortionScale.x = 1.0f;
+    view->distortionScale.y = 1.0f;
+    view->distortionScale.z = 1.0f;
+    view->curDistortionOrientation = view->distortionOrientation;
+    view->curDistortionScale = view->distortionScale;
+    view->distortionSpeed = 0.0f;
 }
 
-void func_800AA814(View* view) {
-    view->unk_E8.x = 0.0f;
-    view->unk_E8.y = 0.0f;
-    view->unk_E8.z = 0.0f;
-    view->unk_F4.x = 1.0f;
-    view->unk_F4.y = 1.0f;
-    view->unk_F4.z = 1.0f;
-    view->unk_100 = 1.0f;
+void View_ClearDistortion(View* view) {
+    view->distortionOrientation.x = 0.0f;
+    view->distortionOrientation.y = 0.0f;
+    view->distortionOrientation.z = 0.0f;
+    view->distortionScale.x = 1.0f;
+    view->distortionScale.y = 1.0f;
+    view->distortionScale.z = 1.0f;
+    view->distortionSpeed = 1.0f;
 }
 
-void func_800AA840(View* view, Vec3f vec1, Vec3f vec2, f32 arg3) {
-    view->unk_E8 = vec1;
-    view->unk_F4 = vec2;
-    view->unk_100 = arg3;
+void View_SetDistortion(View* view, Vec3f orientation, Vec3f scale, f32 speed) {
+    view->distortionOrientation = orientation;
+    view->distortionScale = scale;
+    view->distortionSpeed = speed;
 }
 
-s32 func_800AA890(View* view, Mtx* mtx) {
-    MtxF mf;
+s32 View_StepDistortion(View* view, Mtx* projectionMtx) {
+    MtxF projectionMtxF;
 
-    if (view->unk_100 == 0.0f) {
-        return 0;
-    } else if (view->unk_100 == 1.0f) {
-        view->unk_104 = view->unk_E8;
-        view->unk_110 = view->unk_F4;
-        view->unk_100 = 0.0f;
+    if (view->distortionSpeed == 0.0f) {
+        return false;
+    } else if (view->distortionSpeed == 1.0f) {
+        view->curDistortionOrientation = view->distortionOrientation;
+        view->curDistortionScale = view->distortionScale;
+        view->distortionSpeed = 0.0f;
     } else {
-        view->unk_104.x += ((view->unk_E8.x - view->unk_104.x) * view->unk_100);
-        view->unk_104.y += ((view->unk_E8.y - view->unk_104.y) * view->unk_100);
-        view->unk_104.z += ((view->unk_E8.z - view->unk_104.z) * view->unk_100);
+        view->curDistortionOrientation.x =
+            F32_LERPIMP(view->curDistortionOrientation.x, view->distortionOrientation.x, view->distortionSpeed);
+        view->curDistortionOrientation.y =
+            F32_LERPIMP(view->curDistortionOrientation.y, view->distortionOrientation.y, view->distortionSpeed);
+        view->curDistortionOrientation.z =
+            F32_LERPIMP(view->curDistortionOrientation.z, view->distortionOrientation.z, view->distortionSpeed);
 
-        view->unk_110.x += ((view->unk_F4.x - view->unk_110.x) * view->unk_100);
-        view->unk_110.y += ((view->unk_F4.y - view->unk_110.y) * view->unk_100);
-        view->unk_110.z += ((view->unk_F4.z - view->unk_110.z) * view->unk_100);
+        view->curDistortionScale.x =
+            F32_LERPIMP(view->curDistortionScale.x, view->distortionScale.x, view->distortionSpeed);
+        view->curDistortionScale.y =
+            F32_LERPIMP(view->curDistortionScale.y, view->distortionScale.y, view->distortionSpeed);
+        view->curDistortionScale.z =
+            F32_LERPIMP(view->curDistortionScale.z, view->distortionScale.z, view->distortionSpeed);
     }
 
-    Matrix_MtxToMtxF(mtx, &mf);
-    Matrix_Put(&mf);
-    Matrix_RotateX(view->unk_104.x, MTXMODE_APPLY);
-    Matrix_RotateY(view->unk_104.y, MTXMODE_APPLY);
-    Matrix_RotateZ(view->unk_104.z, MTXMODE_APPLY);
-    Matrix_Scale(view->unk_110.x, view->unk_110.y, view->unk_110.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-view->unk_104.z, MTXMODE_APPLY);
-    Matrix_RotateY(-view->unk_104.y, MTXMODE_APPLY);
-    Matrix_RotateX(-view->unk_104.x, MTXMODE_APPLY);
-    Matrix_ToMtx(mtx, "../z_view.c", 566);
+    Matrix_MtxToMtxF(projectionMtx, &projectionMtxF);
+    Matrix_Put(&projectionMtxF);
+    Matrix_RotateX(view->curDistortionOrientation.x, MTXMODE_APPLY);
+    Matrix_RotateY(view->curDistortionOrientation.y, MTXMODE_APPLY);
+    Matrix_RotateZ(view->curDistortionOrientation.z, MTXMODE_APPLY);
+    Matrix_Scale(view->curDistortionScale.x, view->curDistortionScale.y, view->curDistortionScale.z, MTXMODE_APPLY);
+    Matrix_RotateZ(-view->curDistortionOrientation.z, MTXMODE_APPLY);
+    Matrix_RotateY(-view->curDistortionOrientation.y, MTXMODE_APPLY);
+    Matrix_RotateX(-view->curDistortionOrientation.x, MTXMODE_APPLY);
+    Matrix_ToMtx(projectionMtx, "../z_view.c", 566);
 
-    return 1;
+    return true;
 }
 
 void func_800AAA50(View* view, s32 arg1) {
@@ -293,10 +299,10 @@ s32 func_800AAA9C(View* view) {
     Mtx* viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_view.c", 596);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, "../z_view.c", 601);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -307,7 +313,7 @@ s32 func_800AAA9C(View* view) {
     gSPViewport(POLY_KAL_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 616);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     width = view->viewport.rightX - view->viewport.leftX;
@@ -315,7 +321,7 @@ s32 func_800AAA9C(View* view) {
     aspect = (f32)width / (f32)height;
 
     viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("viewing", viewing, "../z_view.c", 667);
+    LOG_CHECK_NULL_POINTER("viewing", viewing);
     view->viewingPtr = viewing;
 
     if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
@@ -424,7 +430,7 @@ s32 func_800AAA9C(View* view) {
 
     view->projection = *projection;
 
-    func_800AA890(view, projection);
+    View_StepDistortion(view, projection);
 
     gSPPerspNormalize(POLY_OPA_DISP++, view->normal);
     gSPMatrix(POLY_OPA_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -460,7 +466,7 @@ s32 func_800AAA9C(View* view) {
     gSPMatrix(POLY_KAL_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     FrameInterpolation_RecordCloseChild();
 
-    CLOSE_DISPS(gfxCtx, "../z_view.c", 711);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -470,10 +476,10 @@ s32 func_800AB0A8(View* view) {
     Mtx* projection;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_view.c", 726);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, "../z_view.c", 730);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -485,7 +491,7 @@ s32 func_800AB0A8(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 744);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -497,7 +503,7 @@ s32 func_800AB0A8(View* view) {
     gSPMatrix(POLY_XLU_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(POLY_KAL_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, "../z_view.c", 762);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -509,10 +515,10 @@ s32 func_800AB2C4(View* view) {
 
     gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_view.c", 777);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, "../z_view.c", 781);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -522,7 +528,7 @@ s32 func_800AB2C4(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 791);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -532,7 +538,7 @@ s32 func_800AB2C4(View* view) {
 
     gSPMatrix(OVERLAY_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, "../z_view.c", 801);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -547,10 +553,10 @@ s32 func_800AB560(View* view) {
     Mtx* viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_view.c", 816);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, "../z_view.c", 821);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -560,7 +566,7 @@ s32 func_800AB560(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 833);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     width = view->viewport.rightX - view->viewport.leftX;
@@ -575,7 +581,7 @@ s32 func_800AB560(View* view) {
     gSPMatrix(OVERLAY_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("viewing", viewing, "../z_view.c", 848);
+    LOG_CHECK_NULL_POINTER("viewing", viewing);
     view->viewingPtr = viewing;
 
     if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
@@ -592,19 +598,19 @@ s32 func_800AB560(View* view) {
 
     gSPMatrix(OVERLAY_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, "../z_view.c", 871);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
 
 s32 func_800AB944(View* view) {
-    OPEN_DISPS(view->gfxCtx, "../z_view.c", 878);
+    OPEN_DISPS(view->gfxCtx);
 
     func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
     guLookAt(view->viewingPtr, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
              view->up.x, view->up.y, view->up.z);
 
-    CLOSE_DISPS(view->gfxCtx, "../z_view.c", 886);
+    CLOSE_DISPS(view->gfxCtx);
 
     return 1;
 }
@@ -622,7 +628,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 2) {
         vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-        LogUtils_CheckNullPointer("vp", vp, "../z_view.c", 910);
+        LOG_CHECK_NULL_POINTER("vp", vp);
         View_ViewportToVp(vp, &view->viewport);
 
         view->vp = *vp;
@@ -635,7 +641,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 8) {
         projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 921);
+        LOG_CHECK_NULL_POINTER("projection", projection);
         view->projectionPtr = projection;
 
         guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -646,7 +652,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
         gSPMatrix(gfx++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     } else if (arg1 & 6) {
         projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("projection", projection, "../z_view.c", 932);
+        LOG_CHECK_NULL_POINTER("projection", projection);
         view->projectionPtr = projection;
 
         width = view->viewport.rightX - view->viewport.leftX;
@@ -663,7 +669,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 1) {
         viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("viewing", viewing, "../z_view.c", 948);
+        LOG_CHECK_NULL_POINTER("viewing", viewing);
         view->viewingPtr = viewing;
 
         func_800ABE74(view->eye.x, view->eye.y, view->eye.z);

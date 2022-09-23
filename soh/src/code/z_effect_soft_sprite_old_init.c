@@ -51,7 +51,7 @@ void EffectSs_DrawGEffect(GlobalContext* globalCtx, EffectSs* this, void* textur
     Mtx* mtx;
     void* object = globalCtx->objectCtx.status[this->rgObjBankIdx].segment;
 
-    OPEN_DISPS(gfxCtx, "../z_effect_soft_sprite_old_init.c", 196);
+    OPEN_DISPS(gfxCtx);
 
     scale = this->rgScale * 0.0025f;
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
@@ -73,7 +73,7 @@ void EffectSs_DrawGEffect(GlobalContext* globalCtx, EffectSs* this, void* textur
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_effect_soft_sprite_old_init.c", 243);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // EffectSsDust Spawn Functions

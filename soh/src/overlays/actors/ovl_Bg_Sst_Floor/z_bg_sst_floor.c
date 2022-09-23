@@ -61,8 +61,6 @@ void BgSstFloor_Update(BgSstFloor* thisx, GlobalContext* globalCtx) {
 
     colHeader->vtxList = SEGMENTED_TO_VIRTUAL(colHeader->vtxList);
 
-    if (1) {}
-
     if (func_80043590(&this->dyna) && (this->dyna.actor.yDistToPlayer < 1000.0f)) {
         Camera_ChangeSetting(globalCtx->cameraPtrs[MAIN_CAM], CAM_SET_BOSS_BONGO);
     } else {
@@ -119,21 +117,20 @@ void BgSstFloor_Update(BgSstFloor* thisx, GlobalContext* globalCtx) {
     if (this->drumPhase != 0) {
         this->drumPhase--;
     }
-    if (1) {}
     func_8003EE6C(globalCtx, &globalCtx->colCtx.dyna);
 }
 
 void BgSstFloor_Draw(BgSstFloor* thisx, GlobalContext* globalCtx) {
     BgSstFloor* this = (BgSstFloor*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 277);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_Scale(1.0f, this->drumHeight * -0.0025f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 283),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gBongoDrumDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 287);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

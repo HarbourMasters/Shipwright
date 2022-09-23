@@ -24,8 +24,8 @@ extern "C" OnePointCsFull D_8011D88C[];
 extern "C" OnePointCsFull D_8011D8DC[];
 extern "C" OnePointCsFull D_8011D954[];
 extern "C" OnePointCsFull D_8011D9F4[]; 
-extern "C" int16_t D_8011DB08;
-extern "C" int16_t D_8011DB0C;
+extern "C" int16_t depthPhase;
+extern "C" int16_t screenPlanePhase;
 extern "C" int32_t sOOBTimer;
 extern "C" f32 D_8015CE50;
 extern "C" f32 D_8015CE54;
@@ -199,6 +199,9 @@ extern "C" uint16_t gTimeIncrement;
 extern "C" s16 sPlayerInitialPosX;
 extern "C" s16 sPlayerInitialPosZ;
 extern "C" s16 sPlayerInitialDirection;
+
+// z_en_heishi1
+extern "C" s32 sHeishi1PlayerIsCaught;
 
 // code_800EC960
 // Related to ocarina

@@ -1,6 +1,7 @@
 #include "z_bg_jya_megami.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS 0
 
@@ -217,6 +218,7 @@ void BgJyaMegami_SetupExplode(BgJyaMegami* this) {
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         Math_Vec3f_Copy(&this->pieces[i].pos, &this->dyna.actor.world.pos);
         this->pieces[i].vel.x = sPiecesInit[i].velX;
+        this->pieces[i].epoch++;
     }
     this->explosionTimer = 0;
 }
@@ -297,16 +299,16 @@ static void* sLeftSideCrumbles[] = {
 };
 
 void BgJyaMegami_DrawFace(BgJyaMegami* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 706);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRightSideCrumbles[this->crumbleIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sLeftSideCrumbles[this->crumbleIndex]));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 716),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gMegami1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 720);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static Gfx* sDLists[] = {
@@ -320,12 +322,15 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
     BgJyaMegamiPiece* piece;
     u32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 746);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         piece = &this->pieces[i];
+
+        FrameInterpolation_RecordOpenChild(piece, piece->epoch);
+
         Matrix_Translate(piece->pos.x + sPiecesInit[i].unk_00.x, piece->pos.y + sPiecesInit[i].unk_00.y,
                          piece->pos.z + sPiecesInit[i].unk_00.z, MTXMODE_NEW);
         Matrix_RotateY(piece->rotVelY * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -334,12 +339,14 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
         Matrix_Translate(sPiecesInit[i].unk_00.x * -10.0f, sPiecesInit[i].unk_00.y * -10.0f,
                          sPiecesInit[i].unk_00.z * -10.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 778),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[i]);
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_megami.c", 783);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgJyaMegami_Draw(Actor* thisx, GlobalContext* globalCtx) {

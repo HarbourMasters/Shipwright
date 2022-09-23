@@ -64,7 +64,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneForward, 4000, ICHAIN_STOP),
 };
 
-static AnimationHeader* D_809FCECC[] = { &gDoor3Anim, &gDoor1Anim, &gDoor4Anim, &gDoor2Anim };
+static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim, &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
 
 static u8 sDoorAnimOpenFrames[] = { 25, 25, 25, 25 };
 
@@ -72,10 +72,10 @@ static u8 sDoorAnimCloseFrames[] = { 60, 70, 60, 70 };
 
 static Gfx* D_809FCEE4[5][2] = {
     { gDoorLeftDL, gDoorRightDL },
-    { gFireTempleDoorWithHandleFrontDL, gFireTempleDoorWithHandleBackDL },
+    { gFireTempleDoorWithHandleLeftDL, gFireTempleDoorWithHandleRightDL },
     { gWaterTempleDoorLeftDL, gWaterTempleDoorRightDL },
-    { object_haka_door_DL_0013B8, object_haka_door_DL_001420 },
-    { gFieldDoor1DL, gFieldDoor2DL },
+    { gShadowDoorLeftDL, gShadowDoorRightDL },
+    { gFieldDoorLeftDL, gFieldDoorRightDL },
 };
 
 void EnDoor_Init(Actor* thisx, GlobalContext* globalCtx2) {
@@ -89,7 +89,7 @@ void EnDoor_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     objectInfo = &sDoorInfo[0];
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gDoorSkel, &gDoor3Anim, this->jointTable, this->morphTable, 5);
+    SkelAnime_Init(globalCtx, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable, 5);
     for (i = 0; i < ARRAY_COUNT(sDoorInfo) - 2; i++, objectInfo++) {
         if (globalCtx->sceneNum == objectInfo->sceneNum) {
             break;
@@ -159,6 +159,13 @@ void EnDoor_SetupType(EnDoor* this, GlobalContext* globalCtx) {
         }
         this->actor.world.rot.y = 0x0000;
         if (doorType == DOOR_LOCKED) {
+            // unlock the door behind the hammer blocks
+            // in the fire temple entryway when rando'd
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 4) {
+                // RANDOTODO don't do this when keysanity is enabled
+                Flags_SetSwitch(globalCtx, 0x17);
+            }
+
             if (!Flags_GetSwitch(globalCtx, this->actor.params & 0x3F)) {
                 this->lockTimer = 10;
             }
@@ -333,13 +340,12 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDoor* this = (EnDoor*)thisx;
 
     if (this->actor.objBankIndex == this->requiredObjBankIndex) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 910);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D18(globalCtx->state.gfxCtx);
         SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {
-            if (1) {}
             if (this->actor.world.rot.y > 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDoorRightDL);
             } else {
@@ -350,6 +356,6 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Actor_DrawDoorLock(globalCtx, this->lockTimer, DOORLOCK_NORMAL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 941);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

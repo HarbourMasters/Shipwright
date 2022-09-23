@@ -77,8 +77,6 @@ void MagicDark_DiamondUpdate(Actor* thisx, GlobalContext* globalCtx) {
     s16 nayrusLoveTimer = gSaveContext.nayrusLoveTimer;
     s32 msgMode = globalCtx->msgCtx.msgMode;
 
-    if (1) {}
-
     if ((msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) || (msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(thisx);
         return;
@@ -139,7 +137,7 @@ void MagicDark_DimLighting(GlobalContext* globalCtx, f32 intensity) {
     f32 colorScale;
     f32 fogScale;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5) {
         intensity = CLAMP_MIN(intensity, 0.0f);
         intensity = CLAMP_MAX(intensity, 1.0f);
         fogScale = intensity - 0.2f;
@@ -200,8 +198,12 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
     MagicDark* this = (MagicDark*)thisx;
     s32 pad;
     u16 gameplayFrames = globalCtx->gameplayFrames;
+    Color_RGB8 Spell_env_ori = {0, 100, 255};
+    Color_RGB8 Spell_col_ori = {170, 255, 255};
+    Color_RGB8 Spell_env = CVar_GetRGB("gNL_Diamond_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVar_GetRGB("gNL_Diamond_Col", Spell_col_ori);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 525);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -220,10 +222,15 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
         Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
         Matrix_RotateY(this->actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_magic_dark.c", 553),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        if (CVar_GetS32("gUseSpellsCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        }
         gSPDisplayList(POLY_XLU_DISP++, sDiamondMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, gameplayFrames * 2, gameplayFrames * -4, 32, 32, 1,
@@ -231,7 +238,7 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, sDiamondModelDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 570);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void MagicDark_OrbDraw(Actor* thisx, GlobalContext* globalCtx) {
@@ -261,7 +268,7 @@ void MagicDark_OrbDraw(Actor* thisx, GlobalContext* globalCtx) {
     pos.z -= (this->actor.scale.x * 300.0f * Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx))) *
               Math_CosS(Camera_GetCamDirPitch(GET_ACTIVE_CAM(globalCtx))));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 619);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, 255);
@@ -270,15 +277,15 @@ void MagicDark_OrbDraw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
     Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
     Matrix_Push();
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_magic_dark.c", 632),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Matrix_RotateZ(sp6C * (M_PI / 32), MTXMODE_APPLY);
     gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
     Matrix_Pop();
     Matrix_RotateZ(-sp6C * (M_PI / 32), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_magic_dark.c", 639),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 643);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

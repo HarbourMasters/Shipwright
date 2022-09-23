@@ -61,7 +61,7 @@ void BgMoriKaitenkabe_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->dyna.actor);
         // "【Rotating wall】 Bank danger!"
-        osSyncPrintf("【回転壁】 バンク危険！(%s %d)\n", "../z_bg_mori_kaitenkabe.c", 176);
+        osSyncPrintf("【回転壁】 バンク危険！(%s %d)\n", __FILE__, __LINE__);
     } else {
         this->actionFunc = BgMoriKaitenkabe_WaitForMoriTex;
     }
@@ -94,7 +94,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->timer++;
-        if ((this->timer > CVar_GetS32("gFasterBlockPush", 0) != 0 ? 14 : 28) && !Player_InCsMode(globalCtx)) {
+        if ((this->timer > (28 - CVar_GetS32("gFasterBlockPush", 0) * 4)) && !Player_InCsMode(globalCtx)) {
             BgMoriKaitenkabe_SetupRotate(this);
             func_8002DF54(globalCtx, &this->dyna.actor, 8);
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
@@ -118,7 +118,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
 
 void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this) {
     this->actionFunc = BgMoriKaitenkabe_Rotate;
-    this->rotSpeed = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 0.5f : 0.0f;
+    this->rotSpeed = CVar_GetS32("gFasterBlockPush", 0) * 0.1f;
     this->rotYdeg = 0.0f;
 }
 
@@ -161,15 +161,15 @@ void BgMoriKaitenkabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriKaitenkabe* this = (BgMoriKaitenkabe*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_kaitenkabe.c", 347);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_kaitenkabe.c", 352),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriKaitenkabeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_kaitenkabe.c", 356);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

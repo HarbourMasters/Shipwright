@@ -63,7 +63,7 @@ void ArenaImpl_LockInit(Arena* arena) {
 }
 
 void ArenaImpl_Lock(Arena* arena) {
-    osSendMesg(&arena->lock, NULL, OS_MESG_BLOCK);
+    osSendMesgPtr(&arena->lock, NULL, OS_MESG_BLOCK);
 }
 
 void ArenaImpl_Unlock(Arena* arena) {

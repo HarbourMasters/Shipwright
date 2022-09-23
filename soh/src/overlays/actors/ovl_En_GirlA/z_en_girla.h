@@ -33,6 +33,7 @@ typedef struct EnGirlA {
     /* 0x01CA */ s16 itemCount;
     /* 0x01CC */ s16 giDrawId;
     /* 0x01D0 */ EnGirlA3Func hiliteFunc;
+    /* 0x01D4 */ u8 randoSlotIndex; // used by randomizer to determine which slot this item is for id purposes.
 } EnGirlA; // size = 0x01D4
 
 typedef enum {
@@ -86,7 +87,8 @@ typedef enum {
     /* 0x2F */ SI_BOMBS_5_R35,
     /* 0x30 */ SI_RED_POTION_R40,
     /* 0x31 */ SI_RED_POTION_R50,
-    /* 0x32 */ SI_MAX
+    /* 0x32 */ SI_RANDOMIZED_ITEM,
+    /* 0x33 */ SI_MAX
 } EnGirlAShopItem;
 
 typedef enum {

@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>StormLib_dll</ProjectName>
+    <ProjectGuid>{CB385198-50B1-4CF4-883B-11F042DED6AA}</ProjectGuid>
+    <RootNamespace>StormLib_dll</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</OutDir>
+    <IntDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>StormLib</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</OutDir>
+    <IntDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>StormLib</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</OutDir>
+    <IntDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>StormLib</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</OutDir>
+    <IntDir>./bin/$(ProjectName)/$(Platform)/$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>StormLib</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)StormLib.dll</OutputFile>
+      <ModuleDefinitionFile>.\src\DllMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)StormLib.dll</OutputFile>
+      <ModuleDefinitionFile>.\src\DllMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)StormLib.dll</OutputFile>
+      <ModuleDefinitionFile>.\src\DllMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level1</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)StormLib.dll</OutputFile>
+      <ModuleDefinitionFile>.\src\DllMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="doc\History.txt" />
+    <Text Include="doc\The MoPaQ File Format 0.9.txt" />
+    <Text Include="doc\The MoPaQ File Format 1.0.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\adpcm\adpcm.h" />
+    <ClInclude Include="src\huffman\huff.h" />
+    <ClInclude Include="src\jenkins\lookup.h" />
+    <ClInclude Include="src\pklib\pklib.h" />
+    <ClInclude Include="src\sparse\sparse.h" />
+    <ClInclude Include="src\StormCommon.h" />
+    <ClInclude Include="src\StormLib.h" />
+    <ClInclude Include="src\StormPort.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\adpcm\adpcm.cpp" />
+    <ClCompile Include="src\bzip2\blocksort.c" />
+    <ClCompile Include="src\bzip2\bzlib.c" />
+    <ClCompile Include="src\bzip2\compress.c" />
+    <ClCompile Include="src\bzip2\crctable.c" />
+    <ClCompile Include="src\bzip2\decompress.c" />
+    <ClCompile Include="src\bzip2\huffman.c" />
+    <ClCompile Include="src\bzip2\randtable.c" />
+    <ClCompile Include="src\FileStream.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\huffman\huff.cpp" />
+    <ClCompile Include="src\jenkins\lookup3.c" />
+    <ClCompile Include="src\libtomcrypt\src\hashes\hash_memory.c" />
+    <ClCompile Include="src\libtomcrypt\src\hashes\md5.c" />
+    <ClCompile Include="src\libtomcrypt\src\hashes\sha1.c" />
+    <ClCompile Include="src\libtomcrypt\src\math\ltm_desc.c" />
+    <ClCompile Include="src\libtomcrypt\src\math\multi.c" />
+    <ClCompile Include="src\libtomcrypt\src\math\rand_prime.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\base64_decode.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_argchk.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_find_hash.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_find_prng.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_hash_descriptor.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_hash_is_valid.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_libc.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_ltc_mp_descriptor.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_prng_descriptor.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_prng_is_valid.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_register_hash.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\crypt_register_prng.c" />
+    <ClCompile Include="src\libtomcrypt\src\misc\zeromem.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_bit_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_boolean.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_choice.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_ia5_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_object_identifier.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_octet_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_printable_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_sequence_ex.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_sequence_flexi.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_sequence_multi.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_short_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_utctime.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_decode_utf8_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_bit_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_boolean.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_ia5_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_object_identifier.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_octet_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_printable_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_sequence_ex.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_sequence_multi.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_set.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_setof.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_short_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_utctime.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_encode_utf8_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_bit_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_boolean.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_ia5_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_object_identifier.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_octet_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_printable_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_sequence.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_short_integer.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_utctime.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_length_utf8_string.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\asn1\der_sequence_free.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_map.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_mul2add.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_mulmod.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_points.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_projective_add_point.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\ecc\ltc_ecc_projective_dbl_point.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_mgf1.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_oaep_decode.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_pss_decode.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_pss_encode.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_v1_5_decode.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\pkcs1\pkcs_1_v1_5_encode.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_exptmod.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_free.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_import.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_make_key.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_sign_hash.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_verify_hash.c" />
+    <ClCompile Include="src\libtomcrypt\src\pk\rsa\rsa_verify_simple.c" />
+    <ClCompile Include="src\libtommath\bncore.c" />
+    <ClCompile Include="src\libtommath\bn_fast_mp_invmod.c" />
+    <ClCompile Include="src\libtommath\bn_fast_mp_montgomery_reduce.c" />
+    <ClCompile Include="src\libtommath\bn_fast_s_mp_mul_digs.c" />
+    <ClCompile Include="src\libtommath\bn_fast_s_mp_mul_high_digs.c" />
+    <ClCompile Include="src\libtommath\bn_fast_s_mp_sqr.c" />
+    <ClCompile Include="src\libtommath\bn_mp_2expt.c" />
+    <ClCompile Include="src\libtommath\bn_mp_abs.c" />
+    <ClCompile Include="src\libtommath\bn_mp_add.c" />
+    <ClCompile Include="src\libtommath\bn_mp_addmod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_add_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_and.c" />
+    <ClCompile Include="src\libtommath\bn_mp_clamp.c" />
+    <ClCompile Include="src\libtommath\bn_mp_clear.c" />
+    <ClCompile Include="src\libtommath\bn_mp_clear_multi.c" />
+    <ClCompile Include="src\libtommath\bn_mp_cmp.c" />
+    <ClCompile Include="src\libtommath\bn_mp_cmp_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_cmp_mag.c" />
+    <ClCompile Include="src\libtommath\bn_mp_cnt_lsb.c" />
+    <ClCompile Include="src\libtommath\bn_mp_copy.c" />
+    <ClCompile Include="src\libtommath\bn_mp_count_bits.c" />
+    <ClCompile Include="src\libtommath\bn_mp_div.c" />
+    <ClCompile Include="src\libtommath\bn_mp_div_2.c" />
+    <ClCompile Include="src\libtommath\bn_mp_div_2d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_div_3.c" />
+    <ClCompile Include="src\libtommath\bn_mp_div_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_dr_is_modulus.c" />
+    <ClCompile Include="src\libtommath\bn_mp_dr_reduce.c" />
+    <ClCompile Include="src\libtommath\bn_mp_dr_setup.c" />
+    <ClCompile Include="src\libtommath\bn_mp_exch.c" />
+    <ClCompile Include="src\libtommath\bn_mp_exptmod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_exptmod_fast.c" />
+    <ClCompile Include="src\libtommath\bn_mp_expt_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_exteuclid.c" />
+    <ClCompile Include="src\libtommath\bn_mp_fread.c" />
+    <ClCompile Include="src\libtommath\bn_mp_fwrite.c" />
+    <ClCompile Include="src\libtommath\bn_mp_gcd.c" />
+    <ClCompile Include="src\libtommath\bn_mp_get_int.c" />
+    <ClCompile Include="src\libtommath\bn_mp_grow.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init_copy.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init_multi.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init_set.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init_set_int.c" />
+    <ClCompile Include="src\libtommath\bn_mp_init_size.c" />
+    <ClCompile Include="src\libtommath\bn_mp_invmod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_invmod_slow.c" />
+    <ClCompile Include="src\libtommath\bn_mp_is_square.c" />
+    <ClCompile Include="src\libtommath\bn_mp_jacobi.c" />
+    <ClCompile Include="src\libtommath\bn_mp_karatsuba_mul.c" />
+    <ClCompile Include="src\libtommath\bn_mp_karatsuba_sqr.c" />
+    <ClCompile Include="src\libtommath\bn_mp_lcm.c" />
+    <ClCompile Include="src\libtommath\bn_mp_lshd.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mod_2d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mod_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_montgomery_calc_normalization.c" />
+    <ClCompile Include="src\libtommath\bn_mp_montgomery_reduce.c" />
+    <ClCompile Include="src\libtommath\bn_mp_montgomery_setup.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mul.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mulmod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mul_2.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mul_2d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_mul_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_neg.c" />
+    <ClCompile Include="src\libtommath\bn_mp_n_root.c" />
+    <ClCompile Include="src\libtommath\bn_mp_or.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_fermat.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_is_divisible.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_is_prime.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_miller_rabin.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_next_prime.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_rabin_miller_trials.c" />
+    <ClCompile Include="src\libtommath\bn_mp_prime_random_ex.c" />
+    <ClCompile Include="src\libtommath\bn_mp_radix_size.c" />
+    <ClCompile Include="src\libtommath\bn_mp_radix_smap.c" />
+    <ClCompile Include="src\libtommath\bn_mp_rand.c" />
+    <ClCompile Include="src\libtommath\bn_mp_read_radix.c" />
+    <ClCompile Include="src\libtommath\bn_mp_read_signed_bin.c" />
+    <ClCompile Include="src\libtommath\bn_mp_read_unsigned_bin.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_2k.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_2k_l.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_2k_setup.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_2k_setup_l.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_is_2k.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_is_2k_l.c" />
+    <ClCompile Include="src\libtommath\bn_mp_reduce_setup.c" />
+    <ClCompile Include="src\libtommath\bn_mp_rshd.c" />
+    <ClCompile Include="src\libtommath\bn_mp_set.c" />
+    <ClCompile Include="src\libtommath\bn_mp_set_int.c" />
+    <ClCompile Include="src\libtommath\bn_mp_shrink.c" />
+    <ClCompile Include="src\libtommath\bn_mp_signed_bin_size.c" />
+    <ClCompile Include="src\libtommath\bn_mp_sqr.c" />
+    <ClCompile Include="src\libtommath\bn_mp_sqrmod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_sqrt.c" />
+    <ClCompile Include="src\libtommath\bn_mp_sub.c" />
+    <ClCompile Include="src\libtommath\bn_mp_submod.c" />
+    <ClCompile Include="src\libtommath\bn_mp_sub_d.c" />
+    <ClCompile Include="src\libtommath\bn_mp_toom_mul.c" />
+    <ClCompile Include="src\libtommath\bn_mp_toom_sqr.c" />
+    <ClCompile Include="src\libtommath\bn_mp_toradix.c" />
+    <ClCompile Include="src\libtommath\bn_mp_toradix_n.c" />
+    <ClCompile Include="src\libtommath\bn_mp_to_signed_bin.c" />
+    <ClCompile Include="src\libtommath\bn_mp_to_signed_bin_n.c" />
+    <ClCompile Include="src\libtommath\bn_mp_to_unsigned_bin.c" />
+    <ClCompile Include="src\libtommath\bn_mp_to_unsigned_bin_n.c" />
+    <ClCompile Include="src\libtommath\bn_mp_unsigned_bin_size.c" />
+    <ClCompile Include="src\libtommath\bn_mp_xor.c" />
+    <ClCompile Include="src\libtommath\bn_mp_zero.c" />
+    <ClCompile Include="src\libtommath\bn_prime_tab.c" />
+    <ClCompile Include="src\libtommath\bn_reverse.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_add.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_exptmod.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_mul_digs.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_mul_high_digs.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_sqr.c" />
+    <ClCompile Include="src\libtommath\bn_s_mp_sub.c" />
+    <ClCompile Include="src\lzma\C\LzFind.c" />
+    <ClCompile Include="src\lzma\C\LzFindMt.c" />
+    <ClCompile Include="src\lzma\C\LzmaDec.c" />
+    <ClCompile Include="src\lzma\C\LzmaEnc.c" />
+    <ClCompile Include="src\lzma\C\Threads.c" />
+    <ClCompile Include="src\pklib\explode.c" />
+    <ClCompile Include="src\pklib\implode.c" />
+    <ClCompile Include="src\SBaseCommon.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SBaseFileTable.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SBaseSubTypes.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SCompression.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileAddFile.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileAttributes.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileCompactArchive.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileCreateArchive.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileExtractFile.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileFindFile.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileGetFileInfo.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileListFile.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileOpenArchive.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileOpenFileEx.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFilePatchArchives.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileReadFile.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\SFileVerify.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="src\sparse\sparse.cpp" />
+    <ClCompile Include="src\zlib\adler32.c" />
+    <ClCompile Include="src\zlib\compress_zlib.c" />
+    <ClCompile Include="src\zlib\crc32.c" />
+    <ClCompile Include="src\zlib\deflate.c" />
+    <ClCompile Include="src\zlib\inffast.c" />
+    <ClCompile Include="src\zlib\inflate.c" />
+    <ClCompile Include="src\zlib\inftrees.c" />
+    <ClCompile Include="src\zlib\trees.c" />
+    <ClCompile Include="src\zlib\zutil.c" />
+    <ClCompile Include="src\DllMain.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\DllMain.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

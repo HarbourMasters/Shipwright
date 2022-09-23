@@ -14,6 +14,7 @@ void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHeishi1_Reset(void);
 
 void EnHeishi1_SetupWait(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_SetupWalk(EnHeishi1* this, GlobalContext* globalCtx);
@@ -29,7 +30,7 @@ void EnHeishi1_TurnTowardLink(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_Kick(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_WaitNight(EnHeishi1* this, GlobalContext* globalCtx);
 
-static s32 sPlayerIsCaught = false;
+s32 sHeishi1PlayerIsCaught = false;
 
 const ActorInit En_Heishi1_InitVars = {
     0,
@@ -41,7 +42,7 @@ const ActorInit En_Heishi1_InitVars = {
     (ActorFunc)EnHeishi1_Destroy,
     (ActorFunc)EnHeishi1_Update,
     (ActorFunc)EnHeishi1_Draw,
-    NULL,
+    (ActorResetFunc)EnHeishi1_Reset,
 };
 
 static f32 sAnimParamsInit[][8] = {
@@ -63,6 +64,10 @@ static s32 sCamDataIdxs[] = {
 };
 
 static s16 sWaypoints[] = { 0, 4, 1, 5, 2, 6, 3, 7 };
+
+void EnHeishi1_Reset(void) {
+    sHeishi1PlayerIsCaught = false;
+}
 
 void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
@@ -112,14 +117,23 @@ void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
+    // eventChkInf[4] & 1 = Got Zelda's Letter
+    // eventChkInf[5] & 0x200 = Got item from impa
+    // eventChkInf[8] & 1 = Ocarina thrown in moat
+    bool metZelda = (gSaveContext.eventChkInf[4] & 1) && (gSaveContext.eventChkInf[5] & 0x200);
+
     if (this->type != 5) {
-        if (((gSaveContext.dayTime < 0xB888) || IS_DAY) && !(gSaveContext.eventChkInf[8] & 1)) {
+        if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
+            ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[8] & 1)) ||
+             (gSaveContext.n64ddFlag && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
-        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY || (gSaveContext.eventChkInf[8] & 1)) {
+        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
+            (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[8] & 1) || 
+            (gSaveContext.n64ddFlag && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);
@@ -154,7 +168,7 @@ void EnHeishi1_Walk(EnHeishi1* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_KNIGHT_WALK);
     }
 
-    if (!sPlayerIsCaught) {
+    if (!sHeishi1PlayerIsCaught) {
         path = &globalCtx->setupPathList[this->path];
         pointPos = SEGMENTED_TO_VIRTUAL(path->points);
         pointPos += this->waypoint;
@@ -259,7 +273,7 @@ void EnHeishi1_Wait(EnHeishi1* this, GlobalContext* globalCtx) {
     s32 i;
 
     SkelAnime_Update(&this->skelAnime);
-    if (!sPlayerIsCaught) {
+    if (!sHeishi1PlayerIsCaught) {
         switch (this->headBehaviorDecided) {
             case false:
                 this->headDirection++;
@@ -352,7 +366,7 @@ void EnHeishi1_Kick(EnHeishi1* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x4FA;
                 globalCtx->sceneLoadFlag = 0x14;
                 this->loadStarted = true;
-                sPlayerIsCaught = false;
+                sHeishi1PlayerIsCaught = false;
                 globalCtx->fadeTransition = 0x2E;
                 gSaveContext.nextTransition = 0x2E;
             }
@@ -413,7 +427,7 @@ void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx) {
         if (this->type != 5) {
             path = this->path * 2;
             if ((sCamDataIdxs[path] == activeCam->camDataIdx) || (sCamDataIdxs[path + 1] == activeCam->camDataIdx)) {
-                if (!sPlayerIsCaught) {
+                if (!sHeishi1PlayerIsCaught) {
                     if ((this->actionFunc == EnHeishi1_Walk) || (this->actionFunc == EnHeishi1_Wait)) {
                         Vec3f searchBallVel;
                         Vec3f searchBallAccel = { 0.0f, 0.0f, 0.0f };
@@ -459,7 +473,7 @@ void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx) {
                                     // "Discovered!"
                                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST);
                                     func_8002DF54(globalCtx, &this->actor, 1);
-                                    sPlayerIsCaught = true;
+                                    sHeishi1PlayerIsCaught = true;
                                     this->actionFunc = EnHeishi1_SetupMoveToLink;
                                 }
                             }

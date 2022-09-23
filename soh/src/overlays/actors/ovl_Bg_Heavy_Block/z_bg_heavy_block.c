@@ -320,16 +320,18 @@ void BgHeavyBlock_Wait(BgHeavyBlock* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->dyna.actor, globalCtx)) {
         this->timer = 0;
 
-        switch (this->dyna.actor.params & 0xFF) {
-            case HEAVYBLOCK_BREAKABLE:
-                OnePointCutscene_Init(globalCtx, 4020, 270, &this->dyna.actor, MAIN_CAM);
-                break;
-            case HEAVYBLOCK_UNBREAKABLE:
-                OnePointCutscene_Init(globalCtx, 4021, 220, &this->dyna.actor, MAIN_CAM);
-                break;
-            case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
-                OnePointCutscene_Init(globalCtx, 4022, 210, &this->dyna.actor, MAIN_CAM);
-                break;
+        if (!CVar_GetS32("gFasterHeavyBlockLift", 0)) {
+            switch (this->dyna.actor.params & 0xFF) {
+                case HEAVYBLOCK_BREAKABLE:
+                    OnePointCutscene_Init(globalCtx, 4020, 270, &this->dyna.actor, MAIN_CAM);
+                    break;
+                case HEAVYBLOCK_UNBREAKABLE:
+                    OnePointCutscene_Init(globalCtx, 4021, 220, &this->dyna.actor, MAIN_CAM);
+                    break;
+                case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
+                    OnePointCutscene_Init(globalCtx, 4022, 210, &this->dyna.actor, MAIN_CAM);
+                    break;
+            }
         }
 
         quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 3);
@@ -351,7 +353,7 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, GlobalContext* globalCtx) {
     if (this->timer == 11) {
         func_800AA000(0.0f, 0xFF, 0x14, 0x14);
         func_8002F7DC(&player->actor, NA_SE_PL_PULL_UP_BIGROCK);
-        LOG_STRING("NA_SE_PL_PULL_UP_BIGROCK", "../z_bg_heavy_block.c", 691);
+        LOG_STRING("NA_SE_PL_PULL_UP_BIGROCK");
     }
 
     if (this->timer < 40) {
@@ -367,7 +369,9 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, GlobalContext* globalCtx) {
 
     this->timer++;
 
-    func_8002DF54(globalCtx, &player->actor, 8);
+    if (!CVar_GetS32("gFasterHeavyBlockLift", 0)) {
+        func_8002DF54(globalCtx, &player->actor, 8);
+    }
 
     // if parent is NULL, link threw it
     if (Actor_HasNoParent(&this->dyna.actor, globalCtx)) {
@@ -404,10 +408,13 @@ void BgHeavyBlock_Fly(BgHeavyBlock* this, GlobalContext* globalCtx) {
                 Quake_SetQuakeValues(quakeIndex, 14, 2, 100, 0);
                 Quake_SetCountdown(quakeIndex, 30);
 
-                quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 2);
-                Quake_SetSpeed(quakeIndex, 12000);
-                Quake_SetQuakeValues(quakeIndex, 5, 0, 0, 0);
-                Quake_SetCountdown(quakeIndex, 999);
+                // We don't want this arbitrarily long quake with the enhancement enabled
+                if (!CVar_GetS32("gFasterHeavyBlockLift", 0)) {
+                    quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 2);
+                    Quake_SetSpeed(quakeIndex, 12000);
+                    Quake_SetQuakeValues(quakeIndex, 5, 0, 0, 0);
+                    Quake_SetCountdown(quakeIndex, 999);
+                }
 
                 SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 30,
                                                    NA_SE_EV_ELECTRIC_EXPLOSION);
@@ -489,7 +496,7 @@ void BgHeavyBlock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     Player* player = GET_PLAYER(globalCtx);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_heavy_block.c", 904);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (BgHeavyBlock_LiftedUp == this->actionFunc) {
         Matrix_SetTranslateRotateYXZ(player->leftHandPos.x, player->leftHandPos.y, player->leftHandPos.z,
@@ -504,11 +511,11 @@ void BgHeavyBlock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_MultVec3f(&D_80884ED4, &thisx->home.pos);
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_heavy_block.c", 931),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gHeavyBlockEntirePillarDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_heavy_block.c", 935);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgHeavyBlock_DrawPiece(Actor* thisx, GlobalContext* globalCtx) {

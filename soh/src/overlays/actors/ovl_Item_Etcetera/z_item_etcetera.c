@@ -21,6 +21,7 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, GlobalContext* globalCtx);
 void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -68,7 +69,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(0, "0", "../z_item_etcetera.c", 241);
+        ASSERT(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -82,7 +83,8 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
-            if (gSaveContext.eventChkInf[3] & 2) {
+            if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
+                (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1E))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -119,13 +121,24 @@ void func_80B857D0(ItemEtcetera* this, GlobalContext* globalCtx) {
 
 void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
+        if ((this->actor.params & 0xFF) == 7) {
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        }
+
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
+        }
     }
 }
 
@@ -134,11 +147,22 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
+
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1E);
+            }
         }
         Actor_Kill(&this->actor);
     } else {
         if (0) {} // Necessary to match
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
+        }
+
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
         }
@@ -180,8 +204,7 @@ void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx) {
 
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) {
     if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[0] != NULL)) {
-        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action,
-                "../z_item_etcetera.c", 441);
+        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action);
         if (globalCtx->csCtx.npcActions[0]->action == 2) {
             this->actor.draw = ItemEtcetera_Draw;
             this->actor.gravity = -0.1f;
@@ -202,15 +225,44 @@ void ItemEtcetera_Update(Actor* thisx, GlobalContext* globalCtx) {
 
 void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    if (globalCtx->actorCtx.unk_03 != 0) {
+    if (globalCtx->actorCtx.lensActive) {
         func_8002EBCC(&this->actor, globalCtx, 0);
         func_8002ED80(&this->actor, globalCtx, 0);
+
+        if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
+            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+            if (randoGetItem.itemId != ITEM_NONE) {
+                GetItemEntry_Draw(globalCtx, randoGetItem);
+                return;
+            }
+        }
+        
         GetItem_Draw(globalCtx, this->giDrawId);
     }
 }
 
 void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
+    s32 type = this->actor.params & 0xFF;
+
+    if (gSaveContext.n64ddFlag) {
+        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
+        if (type == ITEM_ETC_ARROW_FIRE) {
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+        } else if (type == ITEM_ETC_LETTER) {
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+        }
+
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+
+        if (randoGetItem.itemId != ITEM_NONE) {
+            func_8002EBCC(&this->actor, globalCtx, 0);
+            func_8002ED80(&this->actor, globalCtx, 0);
+            GetItemEntry_Draw(globalCtx, randoGetItem);
+            return;
+        }
+    }
 
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_8002ED80(&this->actor, globalCtx, 0);

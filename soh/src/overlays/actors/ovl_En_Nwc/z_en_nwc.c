@@ -6,6 +6,7 @@
 
 #include "z_en_nwc.h"
 #include "objects/object_nwc/object_nwc.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -154,7 +155,7 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
     MtxF floorMat;
     EnNwcChick* chick;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_nwc.c", 316);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093C80(globalCtx);
 
     dList1 = POLY_XLU_DISP;
@@ -170,9 +171,10 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
         if (chick->type != CHICK_NONE) {
             Mtx* mtx;
 
+            FrameInterpolation_RecordOpenChild(chick, chick->epoch);
             Matrix_SetTranslateRotateYXZ(chick->pos.x, chick->pos.y + chick->height, chick->pos.z, &chick->rot);
             Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-            mtx = Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nwc.c", 346);
+            mtx = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
             gDPSetEnvColor(dList1++, 0, 100, 255, 255);
             gSPMatrix(dList1++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(dList1++, gCuccoChickBodyDL);
@@ -180,6 +182,7 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
             gSPDisplayList(dList2++, gCuccoChickEyesDL);
             gSPMatrix(dList3++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(dList3++, gCuccoChickBeakDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -190,16 +193,18 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < this->count; i++, chick++) {
         if ((chick->type != CHICK_NONE) && (chick->floorPoly != NULL)) {
+            FrameInterpolation_RecordOpenChild(chick, chick->epoch * 25);
             func_80038A28(chick->floorPoly, chick->pos.x, chick->floorY, chick->pos.z, &floorMat);
             Matrix_Put(&floorMat);
             Matrix_RotateY(chick->rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nwc.c", 388),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoChickShadowDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_nwc.c", 395);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnNwc_Init(Actor* thisx, GlobalContext* globalCtx) {
@@ -220,6 +225,7 @@ void EnNwc_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->count = 16;
     chick = this->chicks;
     for (i = 0; i < this->count; i++, chick++) {
+        chick->epoch++;
         chick->type = CHICK_NORMAL;
         chick->pos.x = thisx->world.pos.x + ((Rand_ZeroOne() * 100.0f) - 50.0f);
         chick->pos.y = thisx->world.pos.y + 20.0f;

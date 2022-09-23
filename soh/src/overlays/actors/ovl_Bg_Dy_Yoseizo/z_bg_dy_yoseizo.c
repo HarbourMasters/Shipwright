@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
@@ -66,6 +67,19 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
     NULL,
     NULL,
 };
+
+void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->fountainType + 1, GI_NONE);
+
+    if (this->actor.parent == GET_PLAYER(globalCtx) && !Flags_GetTreasure(globalCtx, this->fountainType + 1) &&
+        !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Flags_SetTreasure(globalCtx, this->fountainType + 1);
+        Actor_Kill(&this->actor);
+    } else if (!Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+        GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
+    }
+}
 
 void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
@@ -182,6 +196,18 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, GlobalContext* globalCtx) {
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx) {
     if (Flags_GetSwitch(globalCtx, 0x38)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+
+        if(gSaveContext.n64ddFlag) {
+            gSaveContext.healthAccumulator = 0x140;
+            Magic_Fill(globalCtx);
+            if(Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+                Actor_Kill(&this->actor);
+            } else {
+                GivePlayerRandoRewardGreatFairy(this, globalCtx);
+            }
+            return;
+        } 
+
         if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
             if (!gSaveContext.magicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
                 Actor_Kill(&this->actor);
@@ -894,7 +920,7 @@ static void* sMouthTextures[] = {
 void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1609);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc != BgDyYoseizo_Vanish) {
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -909,7 +935,7 @@ void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, BgDyYoseizo_OverrideLimbDraw, NULL, this);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1629);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     BgDyYoseizo_ParticleDraw(this, globalCtx);
 }
 
@@ -935,6 +961,7 @@ void BgDyYoseizo_ParticleInit(BgDyYoseizo* this, Vec3f* initPos, Vec3f* initVelo
             particle->pitch = 0.0f;
             particle->yaw = Rand_CenteredFloat(30000.0f);
             particle->roll = 0.0f;
+            particle->epoch++;
             return;
         }
     }
@@ -1010,13 +1037,15 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
     BgDyYoseizoParticle* particle = this->particles;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1767);
+    OPEN_DISPS(gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, particle++) {
+        FrameInterpolation_RecordOpenChild(particle, particle->epoch);
+        
         if (particle->alive == 1) {
             if (phi_s3 == 0) {
-                gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAppearDL));
+                gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleMaterialDL));
                 gDPPipeSync(POLY_XLU_DISP++);
 
                 phi_s3++;
@@ -1031,11 +1060,13 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
             Matrix_Scale(particle->scale, particle->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(particle->roll, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_bg_dy_yoseizo.c", 1810),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAliveDL));
+            gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleModelDL));
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1819);
+    CLOSE_DISPS(gfxCtx);
 }

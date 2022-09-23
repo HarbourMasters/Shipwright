@@ -93,7 +93,7 @@ void ActorShadow_Draw(Actor* actor, Lights* lights, GlobalContext* globalCtx, Gf
         temp1 = actor->world.pos.y - actor->floorHeight;
 
         if (temp1 >= -50.0f && temp1 < 500.0f) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1553);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
 
@@ -120,11 +120,11 @@ void ActorShadow_Draw(Actor* actor, Lights* lights, GlobalContext* globalCtx, Gf
             temp2 = (1.0f - (temp1 * (1.0f / 350))) * actor->shape.shadowScale;
             Matrix_Scale(actor->scale.x * temp2, 1.0f, actor->scale.z * temp2, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 1588),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, dlist);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1594);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }
@@ -148,7 +148,7 @@ void ActorShadow_DrawFoot(GlobalContext* globalCtx, Light* light, MtxF* arg2, s3
     f32 sp58;
     s32 pad2[2];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1661);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0,
                     (u32)(((arg3 * 0.00005f) > 1.0f ? 1.0f : (arg3 * 0.00005f)) * arg4) & 0xFF);
@@ -160,11 +160,11 @@ void ActorShadow_DrawFoot(GlobalContext* globalCtx, Light* light, MtxF* arg2, s3
     Matrix_RotateY(sp58, MTXMODE_APPLY);
     Matrix_Scale(arg5, 1.0f, arg5 * arg6, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 1687),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gFootShadowDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1693);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void ActorShadow_DrawFeet(Actor* actor, Lights* lights, GlobalContext* globalCtx) {
@@ -200,7 +200,7 @@ void ActorShadow_DrawFeet(Actor* actor, Lights* lights, GlobalContext* globalCtx
         Vec3f* feetPosPtr = actor->shape.feetPos;
         f32* floorHeightPtr = floorHeight;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1741);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
 
@@ -267,7 +267,7 @@ void ActorShadow_DrawFeet(Actor* actor, Lights* lights, GlobalContext* globalCtx
             }
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 1831);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -355,36 +355,20 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         }
     } else {
         if (actorCategory == ACTORCAT_PLAYER) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Idle_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Idle_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_NPC_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_NPC_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Enemy_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Enemy_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Prop_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Prop_Outer", naviColor->outer);
         }
     }
     
@@ -416,7 +400,7 @@ void func_8002C0C0(TargetContext* targetCtx, Actor* actor, GlobalContext* global
 void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
     Actor* actor = targetCtx->targetedActor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2029);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (targetCtx->unk_48 != 0) {
         TargetContextEntry* entry;
@@ -496,7 +480,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
                         Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
                         Matrix_Push();
                         Matrix_Translate(entry->unk_0C, entry->unk_0C, 0.0f, MTXMODE_APPLY);
-                        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 2116),
+                        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                                   G_MTX_MODELVIEW | G_MTX_LOAD);
                         gSPDisplayList(OVERLAY_DISP++, gZTargetLockOnTriangleDL);
                         Matrix_Pop();
@@ -525,13 +509,13 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         Matrix_Scale((iREG(27) + 35) / 1000.0f, (iREG(28) + 60) / 1000.0f, (iREG(29) + 50) / 1000.0f, MTXMODE_APPLY);
 
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, naviColor->inner.r, naviColor->inner.g, naviColor->inner.b, 255);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 2153),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, gZTargetArrowDL);
         FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2158);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, GlobalContext* globalCtx) {
@@ -667,7 +651,7 @@ void Flags_UnsetSwitch(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Tests if current scene unknown flag is set.
+ * Tests if unknown flag is set.
  */
 s32 Flags_GetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
@@ -678,7 +662,7 @@ s32 Flags_GetUnknown(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Sets current scene unknown flag.
+ * Sets unknown flag.
  */
 void Flags_SetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
@@ -689,7 +673,7 @@ void Flags_SetUnknown(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Unsets current scene unknown flag.
+ * Unsets unknown flag.
  */
 void Flags_UnsetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
@@ -780,7 +764,9 @@ void Flags_SetCollectible(GlobalContext* globalCtx, s32 flag) {
 }
 
 void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
-    titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensity = titleCtx->alpha = 0;
+    titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensityR = titleCtx->alpha = 0;
+    titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensityG = titleCtx->alpha = 0;
+    titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensityB = titleCtx->alpha = 0;
 }
 
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
@@ -803,7 +789,6 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
 void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
-
   //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
     switch (globalCtx->sceneNum) {
         case SCENE_YDAN:
@@ -842,8 +827,11 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         case SCENE_GERUDOWAY:
             texture = gThievesHideoutTitleCardENGTex;
             break;
-        case SCENE_GANONTIKA:
+        case SCENE_GANON_TOU:
             texture = gGanonsCastleTitleCardENGTex;
+            break;
+        case SCENE_GANONTIKA:
+            texture = gInsideGanonsCastleTitleCardENGTex;
             break;
         case SCENE_TAKARAYA:
             texture = gTreasureBoxShopTitleCardENGTex;
@@ -869,11 +857,12 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         case SCENE_ZOORA:
             texture = gZoraShopTitleCardENGTex;
             break;
-        case SCENE_ALLEY_SHOP:
+        case SCENE_NIGHT_SHOP:
             texture = gBombchuShopTitleCardENGTex;
             break;
         case SCENE_DRAG:
         case SCENE_MAHOUYA:
+        case SCENE_ALLEY_SHOP:
             texture = gPotionShopTitleCardENGTex;
             break;
         case SCENE_FACE_SHOP:
@@ -896,7 +885,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
             texture = gFairysFountainTitleCardENGTex;
             break;
         case SCENE_HAKAANA_OUKE:
-            texture = gRoyalFamilysTumbTitleCardENGTex;
+            texture = gRoyalFamilysTombTitleCardENGTex;
             break;
         case SCENE_SYATEKIJYOU:
             texture = gShootingGalleryTitleCardENGTex;
@@ -1020,13 +1009,27 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
+    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
+    Color_RGB8 TitleCard_Colors = {255,255,255};
+    if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
+        TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
+        TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    } else {
+        TitleCard_Colors = TitleCard_Colors_ori;
+    }
+
     if (DECR(titleCtx->delayTimer) == 0) {
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
-            Math_StepToS(&titleCtx->intensity, 0, 70);
+            Math_StepToS(&titleCtx->intensityR, 0, 70);
+            Math_StepToS(&titleCtx->intensityG, 0, 70);
+            Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensity, 255, 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors.r, 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors.g, 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors.b, 20);
         }
     }
 }
@@ -1046,11 +1049,33 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        titleX = (titleCtx->x * 4) - (width * 2);
-        titleY = (titleCtx->y * 4) - (height * 2);
+        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosX", 0) : CVar_GetS32("gTCMPosX", 0));
+        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosY", 0) : CVar_GetS32("gTCMPosY", 0));
+        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosType", 0) : CVar_GetS32("gTCMPosType", 0));
+        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBUseMargins", 0) : CVar_GetS32("gTCMUseMargins", 0));
+        s16 TitleCard_MarginX = 0;
+        s16 TitleCard_PosX = titleCtx->x;
+        s16 TitleCard_PosY = titleCtx->y;
+        if (TitleCard_PosType_Checker != 0) {
+            TitleCard_PosY = TitleCard_PosY_Modifier;
+            if (TitleCard_PosType_Checker == 1) {//Anchor Left
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_L", 0)*-1;};
+                TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
+            } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_R", 0);};
+                TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
+            } else if (TitleCard_PosType_Checker == 3) {//Anchor None
+                TitleCard_PosX = TitleCard_PosX_Modifier;
+            } else if (TitleCard_PosType_Checker == 4) {//Hidden
+                TitleCard_PosX = -9999;
+            }
+        }
+
+        titleX = (TitleCard_PosX * 4) - (width * 2);
+        titleY = (TitleCard_PosY * 4) - (height * 2);
         doubleWidth = width * 2;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2824);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
@@ -1074,7 +1099,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
         WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
 
-        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
+        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
                         (u8)titleCtx->alpha);
 
         gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftTopY, G_IM_FMT_IA,
@@ -1082,7 +1107,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         //Removing the -1 there remove the gap between top and bottom textures.
-        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
+        gSPWideTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
@@ -1094,11 +1119,11 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             //Removing the -1 there remove the gap between top and bottom textures.
-            gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
+            gSPWideTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
                                 titleSecondY + (height * 4), G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2880);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -1163,7 +1188,10 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -1363,7 +1391,7 @@ void func_8002DE04(GlobalContext* globalCtx, Actor* actorA, Actor* actorB) {
 }
 
 void func_8002DE74(GlobalContext* globalCtx, Player* player) {
-    if ((globalCtx->roomCtx.curRoom.unk_03 != 4) && func_800C0CB8(globalCtx)) {
+    if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_4) && func_800C0CB8(globalCtx)) {
         Camera_ChangeSetting(Gameplay_GetCamera(globalCtx, MAIN_CAM), CAM_SET_HORSE);
     }
 }
@@ -1689,11 +1717,11 @@ Gfx* func_8002E830(Vec3f* object, Vec3f* eye, Vec3f* lightDir, GraphicsContext* 
 Hilite* func_8002EABC(Vec3f* object, Vec3f* eye, Vec3f* lightDir, GraphicsContext* gfxCtx) {
     Hilite* hilite;
 
-    OPEN_DISPS(gfxCtx, "../z_actor.c", 4306);
+    OPEN_DISPS(gfxCtx);
 
     POLY_OPA_DISP = func_8002E830(object, eye, lightDir, gfxCtx, POLY_OPA_DISP, &hilite);
 
-    CLOSE_DISPS(gfxCtx, "../z_actor.c", 4313);
+    CLOSE_DISPS(gfxCtx);
 
     return hilite;
 }
@@ -1701,11 +1729,11 @@ Hilite* func_8002EABC(Vec3f* object, Vec3f* eye, Vec3f* lightDir, GraphicsContex
 Hilite* func_8002EB44(Vec3f* object, Vec3f* eye, Vec3f* lightDir, GraphicsContext* gfxCtx) {
     Hilite* hilite;
 
-    OPEN_DISPS(gfxCtx, "../z_actor.c", 4332);
+    OPEN_DISPS(gfxCtx);
 
     POLY_XLU_DISP = func_8002E830(object, eye, lightDir, gfxCtx, POLY_XLU_DISP, &hilite);
 
-    CLOSE_DISPS(gfxCtx, "../z_actor.c", 4339);
+    CLOSE_DISPS(gfxCtx);
 
     return hilite;
 }
@@ -1731,13 +1759,13 @@ void func_8002EBCC(Actor* actor, GlobalContext* globalCtx, s32 flag) {
         displayList = Graph_Alloc(globalCtx->state.gfxCtx, 2 * sizeof(Gfx));
         displayListHead = displayList;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 4384);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         gDPSetHilite1Tile(displayListHead++, 1, hilite, 0x10, 0x10);
         gSPEndDisplayList(displayListHead);
         gSPSegment(POLY_OPA_DISP++, 0x07, displayList);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 4394);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -1757,13 +1785,13 @@ void func_8002ED80(Actor* actor, GlobalContext* globalCtx, s32 flag) {
         displayList = Graph_Alloc(globalCtx->state.gfxCtx, 2 * sizeof(Gfx));
         displayListHead = displayList;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 4429);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         gDPSetHilite1Tile(displayListHead++, 1, hilite, 0x10, 0x10);
         gSPEndDisplayList(displayListHead);
         gSPSegment(POLY_XLU_DISP++, 0x07, displayList);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 4439);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -1923,12 +1951,98 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This function does not require an actor for giving
+ * the player an item, instead setting the player as their own interactRangeActor and getItemDirection.
+ * 
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \return true if the player can receive an item, false if not.
+ */
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
+            (gSaveContext.n64ddFlag && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
+            (!(player->stateFlags1 & 0x20000800))) {
+            if ((getItemEntry.getItemId != GI_NONE)) {
+                player->getItemEntry = getItemEntry;
+                player->getItemId = getItemEntry.getItemId;
+                player->interactRangeActor = &player->actor;
+                player->getItemDirection = player->actor.shape.rot.y;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This uses data from the actor link is receiving
+ * the item from to set the player's interactRangeActor and getItemDirection. It also checks
+ * a range from which Link must be from said actor in order to receive the item.
+ *
+ * \param actor the actor link is receiving an item from. Will usually be a chest but can also
+ * be an npc.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ * \param xzRange the distance on the x and z axes that the player can be from the target
+ * actor to receive the item.
+ * \param yRange the distance on the y axis that the player can be from the target actor
+ * to receive the item.
+ * \return true if the player can receive an item, false if not.
+ */
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+            ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
+                (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+                    (!(player->stateFlags1 & 0x20000800))) {
+            if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
+                s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
+                s32 absYawDiff = ABS(yawDiff);
+
+                if ((getItemEntry.getItemId != GI_NONE) || (player->getItemDirection < absYawDiff)) {
+                    player->getItemEntry = getItemEntry;
+                    player->getItemId = getItemEntry.getItemId;
+                    player->interactRangeActor = actor;
+                    player->getItemDirection = absYawDiff;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
+ * where Link holds an item over his head. This is a wrapper function around `GiveItemEntryFromActor`
+ * that supplies a fixed xzRange of 50.0f and a fixed yRange of 10.0f.
+ *
+ * \param actor the target actor that link is receiving an item from.
+ * \param globalCtx the Global Context
+ * \param getItemEntry the GetItemEntry for the item you want the player to receive.
+ */
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry) {
+    GiveItemEntryFromActor(actor, globalCtx, getItemEntry, 50.0f, 10.0f);
+}
+
+// TODO: Rename to GiveItemIdFromActor or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && (getItemId > GI_NONE) &&
-             (getItemId < GI_MAX)) ||
+        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+            ((!gSaveContext.n64ddFlag && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (gSaveContext.n64ddFlag && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -1947,6 +2061,8 @@ s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzR
     return false;
 }
 
+// TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
+// If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId) {
     func_8002F434(actor, globalCtx, getItemId, 50.0f, 10.0f);
 }
@@ -2154,7 +2270,7 @@ void Actor_DrawFaroresWindPointer(GlobalContext* globalCtx) {
     s32 lightRadius = -1;
     s32 params;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5308);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     params = gSaveContext.respawn[RESPAWN_MODE_TOP].data;
 
@@ -2274,14 +2390,14 @@ void Actor_DrawFaroresWindPointer(GlobalContext* globalCtx) {
             gDPSetEnvColor(POLY_XLU_DISP++, 100, 200, 0, 255);
 
             Matrix_RotateZ(((globalCtx->gameplayFrames * 1500) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 5458),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
 
             Matrix_Pop();
             Matrix_RotateZ(~((globalCtx->gameplayFrames * 1200) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 5463),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
         }
@@ -2291,16 +2407,16 @@ void Actor_DrawFaroresWindPointer(GlobalContext* globalCtx) {
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.z), 255, 255, 255, lightRadius);
 
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5474);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80030488(GlobalContext* globalCtx) {
     LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, D_8015BC10);
 }
 
-void func_800304B0(GlobalContext* globalCtx) {
-    if (globalCtx->actorCtx.unk_03 != 0) {
-        globalCtx->actorCtx.unk_03 = 0;
+void Actor_DisableLens(GlobalContext* globalCtx) {
+    if (globalCtx->actorCtx.lensActive) {
+        globalCtx->actorCtx.lensActive = false;
         func_800876C8(globalCtx);
     }
 }
@@ -2340,7 +2456,7 @@ void func_800304DC(GlobalContext* globalCtx, ActorContext* actorCtx, ActorEntry*
     func_8002FA60(globalCtx);
 }
 
-u32 D_80116068[] = {
+u32 D_80116068[ACTORCAT_MAX] = {
     0x100000C0, 0x100000C0, 0x00000000, 0x100004C0, 0x00000080, 0x300000C0,
     0x10000080, 0x00000000, 0x300000C0, 0x100004C0, 0x00000000, 0x100000C0,
 };
@@ -2360,7 +2476,7 @@ void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx) {
 
     if (0) {
         // This ASSERT is optimized out but it exists due to its presence in rodata
-        ASSERT(gMaxActorId == ACTOR_ID_MAX, "MaxProfile == ACTOR_DLF_MAX", "../z_actor.c", UNK_LINE);
+        ASSERT(gMaxActorId == ACTOR_ID_MAX);
     }
 
     sp74 = NULL;
@@ -2517,7 +2633,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     Fault_AddClient(&faultClient, Actor_FaultPrint, actor, "Actor_draw");
 
     FrameInterpolation_RecordOpenChild(actor, 0);
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6035);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     lights = LightContext_NewLights(&globalCtx->lightCtx, globalCtx->state.gfxCtx);
 
@@ -2573,7 +2689,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
         actor->shape.shadowDraw(actor, lights, globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6119);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     FrameInterpolation_RecordCloseChild();
 
     Fault_RemoveClient(&faultClient);
@@ -2593,60 +2709,82 @@ void func_80030ED8(Actor* actor) {
     }
 }
 
-void func_80030FA8(GraphicsContext* gfxCtx) {
-    OPEN_DISPS(gfxCtx, "../z_actor.c", 6161);
+#define LENS_MASK_WIDTH 64
+#define LENS_MASK_HEIGHT 64
+// 26 and 6 are for padding between the mask texture and the screen borders
+#define LENS_MASK_OFFSET_S ((SCREEN_WIDTH / 2 - LENS_MASK_WIDTH) - 26)
+#define LENS_MASK_OFFSET_T ((SCREEN_HEIGHT / 2 - LENS_MASK_HEIGHT) - 6)
 
-    gDPLoadTextureBlock(POLY_XLU_DISP++, gLensOfTruthMaskTex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0,
-                        G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
+void Actor_DrawLensOverlay(GraphicsContext* gfxCtx) {
+    OPEN_DISPS(gfxCtx);
+
+    gDPLoadTextureBlock(POLY_XLU_DISP++, gLensOfTruthMaskTex, G_IM_FMT_I, G_IM_SIZ_8b, LENS_MASK_WIDTH,
+                        LENS_MASK_HEIGHT, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD,
+                        G_TX_NOLOD);
 
     s32 x = OTRGetRectDimensionFromLeftEdge(0) << 2;
     s32 w = OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2;
 
-    float ratio = OTRGetAspectRatio();
-
-    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, 384, 224, 892, 732);
-    // TODO: Do correct math to fix it
-    gSPWideTextureRectangle(POLY_XLU_DISP++, x, 0, x + abs(x), 960, G_TX_RENDERTILE, 0, 0, 0, 0);
-    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, 960, G_TX_RENDERTILE, 2240, 1600, 576, 597);
+    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, (SCREEN_WIDTH / 2 - LENS_MASK_WIDTH) << 2,
+                   (SCREEN_HEIGHT / 2 - LENS_MASK_HEIGHT) << 2, (SCREEN_WIDTH / 2 + LENS_MASK_WIDTH - 1) << 2,
+                   (SCREEN_HEIGHT / 2 + LENS_MASK_HEIGHT - 1) << 2);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, x, 0, x + abs(x), SCREEN_HEIGHT << 2, G_TX_RENDERTILE, 0, 0, 0, 0);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, SCREEN_HEIGHT << 2, G_TX_RENDERTILE,
+                        LENS_MASK_OFFSET_S << 5, LENS_MASK_OFFSET_T << 5,
+                        (1 << 10) * (SCREEN_WIDTH - 2 * LENS_MASK_OFFSET_S) / SCREEN_WIDTH,
+                        (1 << 10) * (SCREEN_HEIGHT - 2 * LENS_MASK_OFFSET_T) / SCREEN_HEIGHT);
     gDPPipeSync(POLY_XLU_DISP++);
-    CLOSE_DISPS(gfxCtx, "../z_actor.c", 6183);
+    CLOSE_DISPS(gfxCtx);
 }
 
-void func_8003115C(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** invisibleActors) {
+void Actor_DrawLensActors(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** invisibleActors) {
     Actor** invisibleActor;
     GraphicsContext* gfxCtx;
     s32 i;
 
     gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_actor.c", 6197);
+    OPEN_DISPS(gfxCtx);
 
     gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ START", 0); // "Magic lens START"
 
     gDPPipeSync(POLY_XLU_DISP++);
 
-    if (globalCtx->roomCtx.curRoom.showInvisActors == 0) {
+    if (globalCtx->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) {
+        // Update both the color frame buffer and the z-buffer
         gDPSetOtherMode(POLY_XLU_DISP++,
                         G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                             G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                         G_AC_THRESHOLD | G_ZS_PRIM | Z_UPD | G_RM_CLD_SURF | G_RM_CLD_SURF2);
+
         gDPSetCombineMode(POLY_XLU_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);
+
+        // the z-buffer will later only allow drawing inside the lens circle
     } else {
+        // Update the z-buffer but not the color frame buffer
         gDPSetOtherMode(POLY_XLU_DISP++,
                         G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                             G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                         G_AC_THRESHOLD | G_ZS_PRIM | Z_UPD | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL |
                             GBL_c1(G_BL_CLR_BL, G_BL_0, G_BL_CLR_MEM, G_BL_1MA) |
                             GBL_c2(G_BL_CLR_BL, G_BL_0, G_BL_CLR_MEM, G_BL_1MA));
+
+        // inverts the mask image, which initially is 0 inner and 74 outer,
+        // by setting the combiner to draw 74 - image instead of the image
         gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, TEXEL0, PRIM_LOD_FRAC, 0, PRIMITIVE, TEXEL0, PRIM_LOD_FRAC, 0,
                           PRIMITIVE, TEXEL0, PRIM_LOD_FRAC, 0, PRIMITIVE, TEXEL0, PRIM_LOD_FRAC, 0);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0xFF, 74, 74, 74, 74);
+
+        // the z-buffer will later only allow drawing outside the lens circle
     }
 
+    // Together with the depth source set above, this sets the depth to the closest.
+    // For a pixel with such a depth value, the z-buffer will reject drawing to that pixel.
     gDPSetPrimDepth(POLY_XLU_DISP++, 0, 0);
 
-    func_80030FA8(gfxCtx);
+    // The z-buffer will be updated where the mask is not fully transparent.
+    Actor_DrawLensOverlay(gfxCtx);
 
     // "Magic lens invisible Actor display START"
     gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示 START", numInvisibleActors);
@@ -2661,7 +2799,9 @@ void func_8003115C(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** inv
     // "Magic lens invisible Actor display END"
     gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示 END", numInvisibleActors);
 
-    if (globalCtx->roomCtx.curRoom.showInvisActors != 0) {
+    if (globalCtx->roomCtx.curRoom.lensMode != LENS_MODE_HIDE_ACTORS) {
+        // Draw the lens overlay to the color frame buffer
+
         gDPNoOpString(POLY_OPA_DISP++, "青い眼鏡(外側)", 0); // "Blue spectacles (exterior)"
 
         gDPPipeSync(POLY_XLU_DISP++);
@@ -2673,14 +2813,14 @@ void func_8003115C(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** inv
         gDPSetCombineMode(POLY_XLU_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);
 
-        func_80030FA8(gfxCtx);
+        Actor_DrawLensOverlay(gfxCtx);
 
         gDPNoOpString(POLY_OPA_DISP++, "青い眼鏡(外側)", 1); // "Blue spectacles (exterior)"
     }
 
     gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ END", 0); // "Magic lens END"
 
-    CLOSE_DISPS(gfxCtx, "../z_actor.c", 6284);
+    CLOSE_DISPS(gfxCtx);
 }
 
 s32 func_800314B0(GlobalContext* globalCtx, Actor* actor) {
@@ -2690,7 +2830,10 @@ s32 func_800314B0(GlobalContext* globalCtx, Actor* actor) {
 s32 func_800314D4(GlobalContext* globalCtx, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
+        && (globalCtx->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         return true;
     }
 
@@ -2716,7 +2859,7 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
 
     invisibleActorCounter = 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6336);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     actorListEntry = &actorCtx->actorLists[0];
 
@@ -2756,10 +2899,9 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(71) == 0)) {
                 if ((actor->init == NULL) && (actor->draw != NULL) && (actor->flags & (ACTOR_FLAG_5 | ACTOR_FLAG_6))) {
                     if ((actor->flags & ACTOR_FLAG_7) &&
-                        ((globalCtx->roomCtx.curRoom.showInvisActors == 0) || (globalCtx->actorCtx.unk_03 != 0) ||
-                         (actor->room != globalCtx->roomCtx.curRoom.num))) {
-                        ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX,
-                               "invisible_actor_counter < INVISIBLE_ACTOR_MAX", "../z_actor.c", 6464);
+                        ((globalCtx->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
+                         globalCtx->actorCtx.lensActive || (actor->room != globalCtx->roomCtx.curRoom.num))) {
+                        ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
                         invisibleActors[invisibleActorCounter] = actor;
                         invisibleActorCounter++;
                     } else {
@@ -2784,10 +2926,10 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
     }
 
     if ((HREG(64) != 1) || (HREG(72) != 0)) {
-        if (globalCtx->actorCtx.unk_03 != 0) {
-            func_8003115C(globalCtx, invisibleActorCounter, invisibleActors);
+        if (globalCtx->actorCtx.lensActive) {
+            Actor_DrawLensActors(globalCtx, invisibleActorCounter, invisibleActors);
             if ((globalCtx->csCtx.state != CS_STATE_IDLE) || Player_InCsMode(globalCtx)) {
-                func_800304B0(globalCtx);
+                Actor_DisableLens(globalCtx);
             }
         }
     }
@@ -2806,7 +2948,7 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
         CollisionCheck_DrawCollision(globalCtx, &globalCtx->colChkCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6563);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80031A28(GlobalContext* globalCtx, ActorContext* actorCtx) {
@@ -2885,7 +3027,7 @@ void func_80031C3C(ActorContext* actorCtx, GlobalContext* globalCtx) {
     }
 
     if (actorCtx->absoluteSpace != NULL) {
-        ZeldaArena_FreeDebug(actorCtx->absoluteSpace, "../z_actor.c", 6731);
+        ZELDA_ARENA_FREE_DEBUG(actorCtx->absoluteSpace);
         actorCtx->absoluteSpace = NULL;
     }
 
@@ -2976,7 +3118,7 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
                 if (HREG(20) != 0) {
                     osSyncPrintf("オーバーレイ解放します\n"); // "Overlay deallocated"
                 }
-                ZeldaArena_FreeDebug(actorOverlay->loadedRamAddr, "../z_actor.c", 6834);
+                ZELDA_ARENA_FREE_DEBUG(actorOverlay->loadedRamAddr);
                 actorOverlay->loadedRamAddr = NULL;
             }
         }
@@ -3002,7 +3144,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
     u32 overlaySize;
 
     overlayEntry = &gActorOverlayTable[actorId];
-    ASSERT(actorId < ACTOR_ID_MAX, "profile < ACTOR_DLF_MAX", "../z_actor.c", 6883);
+    ASSERT(actorId < ACTOR_ID_MAX);
 
     name = overlayEntry->name != NULL ? overlayEntry->name : "";
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
@@ -3031,11 +3173,11 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             }
         } else {
             if (overlayEntry->allocType & ALLOCTYPE_ABSOLUTE) {
-                ASSERT(overlaySize <= AM_FIELD_SIZE, "actor_segsize <= AM_FIELD_SIZE", "../z_actor.c", 6934);
+                ASSERT(overlaySize <= AM_FIELD_SIZE);
 
                 if (actorCtx->absoluteSpace == NULL) {
                     // "AMF: absolute magic field"
-                    actorCtx->absoluteSpace = ZeldaArena_MallocRDebug(AM_FIELD_SIZE, "AMF:絶対魔法領域", 0);
+                    actorCtx->absoluteSpace = ZELDA_ARENA_MALLOC_RDEBUG(AM_FIELD_SIZE);
                     if (HREG(20) != 0) {
                         // "Absolute magic field reservation - %d bytes reserved"
                         osSyncPrintf("絶対魔法領域確保 %d バイト確保\n", AM_FIELD_SIZE);
@@ -3044,9 +3186,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
                 overlayEntry->loadedRamAddr = actorCtx->absoluteSpace;
             } else if (overlayEntry->allocType & ALLOCTYPE_PERMANENT) {
-                overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize, name, 0);
+                overlayEntry->loadedRamAddr = ZELDA_ARENA_MALLOC_RDEBUG(overlaySize);
             } else {
-                overlayEntry->loadedRamAddr = ZeldaArena_MallocDebug(overlaySize, name, 0);
+                overlayEntry->loadedRamAddr = ZELDA_ARENA_MALLOC_DEBUG(overlaySize);
             }
 
             if (overlayEntry->loadedRamAddr == NULL) {
@@ -3088,7 +3230,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
-    actor = ZeldaArena_MallocDebug(actorInit->instanceSize, name, 1);
+    actor = ZELDA_ARENA_MALLOC_DEBUG(actorInit->instanceSize);
 
     if (actor == NULL) {
         // "Actor class cannot be reserved! %s <size＝%d bytes>"
@@ -3098,7 +3240,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
-    ASSERT(overlayEntry->numLoaded < 255, "actor_dlftbl->clients < 255", "../z_actor.c", 7031);
+    ASSERT(overlayEntry->numLoaded < 255);
 
     overlayEntry->numLoaded++;
 
@@ -3144,6 +3286,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, GlobalContext* globalCtx, s16 actorId, f32 posX,
                           f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     Actor* spawnedActor = Actor_Spawn(actorCtx, globalCtx, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+
     if (spawnedActor == NULL) {
         return NULL;
     }
@@ -3232,15 +3375,15 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, GlobalContext* globalC
 
     newHead = Actor_RemoveFromCategory(globalCtx, actorCtx, actor);
 
-    ZeldaArena_FreeDebug(actor, "../z_actor.c", 7242);
+    ZELDA_ARENA_FREE_DEBUG(actor);
 
     /* if (overlayEntry->vramStart == 0) {
         if (HREG(20) != 0) {
             osSyncPrintf("オーバーレイではありません\n"); // "Not an overlay"
         }
     } else { */
-        //ASSERT(overlayEntry->loadedRamAddr != NULL, "actor_dlftbl->allocp != NULL", "../z_actor.c", 7251);
-        //ASSERT(overlayEntry->numLoaded > 0, "actor_dlftbl->clients > 0", "../z_actor.c", 7252);
+        //ASSERT(overlayEntry->loadedRamAddr != NULL, "actor_dlftbl->allocp != NULL");
+        //ASSERT(overlayEntry->numLoaded > 0, "actor_dlftbl->clients > 0");
         overlayEntry->numLoaded--;
         Actor_FreeOverlay(overlayEntry);
     //}
@@ -3410,15 +3553,15 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, GlobalContext* globalCtx) 
     u32 objectIdsSize;
 
     matricesSize = (count + 1) * sizeof(*bodyBreak->matrices);
-    bodyBreak->matrices = ZeldaArena_MallocDebug(matricesSize, "../z_actor.c", 7540);
+    bodyBreak->matrices = ZELDA_ARENA_MALLOC_DEBUG(matricesSize);
 
     if (bodyBreak->matrices != NULL) {
         dListsSize = (count + 1) * sizeof(*bodyBreak->dLists);
-        bodyBreak->dLists = ZeldaArena_MallocDebug(dListsSize, "../z_actor.c", 7543);
+        bodyBreak->dLists = ZELDA_ARENA_MALLOC_DEBUG(dListsSize);
 
         if (bodyBreak->dLists != NULL) {
             objectIdsSize = (count + 1) * sizeof(*bodyBreak->objectIds);
-            bodyBreak->objectIds = ZeldaArena_MallocDebug(objectIdsSize, "../z_actor.c", 7546);
+            bodyBreak->objectIds = ZELDA_ARENA_MALLOC_DEBUG(objectIdsSize);
 
             if (bodyBreak->objectIds != NULL) {
                 memset((u8*)bodyBreak->matrices,0, matricesSize);
@@ -3431,15 +3574,15 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, GlobalContext* globalCtx) 
     }
 
     if (bodyBreak->matrices != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->matrices, "../z_actor.c", 7558);
+        ZELDA_ARENA_FREE_DEBUG(bodyBreak->matrices);
     }
 
     if (bodyBreak->dLists != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->dLists, "../z_actor.c", 7561);
+        ZELDA_ARENA_FREE_DEBUG(bodyBreak->dLists);
     }
 
     if (bodyBreak->objectIds != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->objectIds, "../z_actor.c", 7564);
+        ZELDA_ARENA_FREE_DEBUG(bodyBreak->objectIds);
     }
 }
 
@@ -3506,9 +3649,9 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, GlobalContext* glob
 
     bodyBreak->val = BODYBREAK_STATUS_FINISHED;
 
-    ZeldaArena_FreeDebug(bodyBreak->matrices, "../z_actor.c", 7678);
-    ZeldaArena_FreeDebug(bodyBreak->dLists, "../z_actor.c", 7679);
-    ZeldaArena_FreeDebug(bodyBreak->objectIds, "../z_actor.c", 7680);
+    ZELDA_ARENA_FREE_DEBUG(bodyBreak->matrices);
+    ZELDA_ARENA_FREE_DEBUG(bodyBreak->dLists);
+    ZELDA_ARENA_FREE_DEBUG(bodyBreak->objectIds);
 
     return true;
 }
@@ -3816,9 +3959,7 @@ void func_80033C30(Vec3f* arg0, Vec3f* arg1, u8 alpha, GlobalContext* globalCtx)
     Vec3f sp50;
     CollisionPoly* sp4C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8120);
-
-    if (0) {} // Necessary to match
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
 
@@ -3839,11 +3980,11 @@ void func_80033C30(Vec3f* arg0, Vec3f* arg1, u8 alpha, GlobalContext* globalCtx)
 
     Matrix_Scale(arg1->x, 1.0f, arg1->z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 8149),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gCircleShadowDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8155);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80033DB8(GlobalContext* globalCtx, s16 arg1, s16 arg2) {
@@ -3912,7 +4053,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     entry = &sDoorLocksInfo[type];
     chainRotZ = entry->chainsRotZInit;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8265);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(0.0f, entry->yShift, 500.0f, MTXMODE_APPLY);
     Matrix_Get(&baseMtxF);
@@ -3921,6 +4062,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     chainsTranslateY = cosf(entry->chainAngle - chainRotZ) * (10 - frame) * 0.1f * entry->chainLength;
 
     for (i = 0; i < 4; i++) {
+        FrameInterpolation_RecordOpenChild(entry, i);
         Matrix_Put(&baseMtxF);
         Matrix_RotateZ(chainRotZ, MTXMODE_APPLY);
         Matrix_Translate(chainsTranslateX, chainsTranslateY, 0.0f, MTXMODE_APPLY);
@@ -3929,7 +4071,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
             Matrix_Scale(entry->chainsScale, entry->chainsScale, entry->chainsScale, MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 8299),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, entry->chainDL);
 
@@ -3940,16 +4082,17 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
         }
 
         chainRotZ += rotZStep;
+        FrameInterpolation_RecordCloseChild();
     }
 
     Matrix_Put(&baseMtxF);
     Matrix_Scale(frame * 0.1f, frame * 0.1f, frame * 0.1f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 8314),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, entry->lockDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8319);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8003424C(GlobalContext* globalCtx, Vec3f* arg1) {
@@ -4191,7 +4334,7 @@ Gfx* func_80034B54(GraphicsContext* gfxCtx) {
 
 void func_80034BA0(GlobalContext* globalCtx, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw,
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8831);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -4203,12 +4346,12 @@ void func_80034BA0(GlobalContext* globalCtx, SkelAnime* skelAnime, OverrideLimbD
     POLY_OPA_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        overrideLimbDraw, postLimbDraw, actor, POLY_OPA_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8860);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80034CC4(GlobalContext* globalCtx, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw,
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8876);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -4219,7 +4362,7 @@ void func_80034CC4(GlobalContext* globalCtx, SkelAnime* skelAnime, OverrideLimbD
     POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        overrideLimbDraw, postLimbDraw, actor, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 8904);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s16 func_80034DD4(Actor* actor, GlobalContext* globalCtx, s16 arg2, f32 arg3) {
@@ -4556,6 +4699,20 @@ s32 Flags_GetInfTable(s32 flag) {
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "randomizerInf" flag is set.
+ */
+s32 Flags_GetRandomizerInf(RandomizerInf flag) {
+    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "randomizerInf" flag.
+ */
+void Flags_SetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
 u32 func_80035BFC(GlobalContext* globalCtx, s16 arg1) {
@@ -5798,8 +5955,6 @@ s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3) {
 
     Actor_GetScreenPos(globalCtx, actor, &sp2C, &sp2A);
 
-    if (0) {} // Necessary to match
-
     if ((sp2C < 0) || (sp2C > SCREEN_WIDTH) || (sp2A < 0) || (sp2A > SCREEN_HEIGHT)) {
         return false;
     }
@@ -5917,4 +6072,59 @@ s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* ar
     func_80037FC8(actor, &sp24, arg2, arg3);
 
     return true;
+}
+
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+        // RANDOTODO update this logic when we implement keysanity
+        // because 3drando replaces the keys not the rupees
+        if (ogDrawId == GID_RUPEE_GREEN ||
+            ogDrawId == GID_RUPEE_BLUE ||
+            ogDrawId == GID_RUPEE_RED)
+        {
+            switch(room) {
+                case 1:
+                    if(!Flags_GetCollectible(globalCtx, 0x1B)) {
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
+                    }
+                    break;
+                case 2:
+                    if(!Flags_GetCollectible(globalCtx, 0x1C)) {
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
+                    }
+                    break;
+                case 3:
+                    if(!Flags_GetCollectible(globalCtx, 0x1D)) {
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
+                    }
+                    break;
+                case 4:
+                    if(!Flags_GetCollectible(globalCtx, 0x1E)) {
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
+                    }
+                    break;
+                case 5:
+                    if(!Flags_GetCollectible(globalCtx, 0x1F)) {
+                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
+                    }
+                    break;
+            }
+        }
+    }
+
+    if(ogDrawId == GID_HEART_PIECE) {
+        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
+    }
+
+    return (GetItemEntry)GET_ITEM_NONE;
+}
+
+s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, globalCtx);
+
+    if (randoGetItem.itemId != ITEM_NONE) {
+        return randoGetItem.gid;
+    }
+
+    return ogDrawId;
 }

@@ -43,6 +43,7 @@ void EnFr_OcarinaMistake(EnFr* this, GlobalContext* globalCtx);
 void EnFr_SetupReward(EnFr* this, GlobalContext* globalCtx, u8 unkCondition);
 void EnFr_PrintTextBox(EnFr* this, GlobalContext* globalCtx);
 void EnFr_TalkBeforeReward(EnFr* this, GlobalContext* globalCtx);
+RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex);
 void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx);
 
 // Deactivate
@@ -187,7 +188,7 @@ static u8 sJumpOrder[] = {
 };
 
 static u8 sOcarinaNotes[] = {
-    OCARINA_NOTE_A, OCARINA_NOTE_C_DOWN, OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_LEFT, OCARINA_NOTE_C_UP,
+    OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D5,
 };
 
 void EnFr_OrientUnderwater(EnFr* this) {
@@ -224,9 +225,9 @@ void EnFr_Init(Actor* thisx, GlobalContext* globalCtx) {
         if ((this->actor.params >= 6) || (this->actor.params < 0)) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "The argument is wrong!!"
-            osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", "../z_en_fr.c", 370, this->actor.params);
+            osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", "../z_en_fr.c", 372);
+            ASSERT((this->actor.params >= 6) || (this->actor.params < 0));
         }
 
         this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GAMEPLAY_FIELD_KEEP);
@@ -234,9 +235,9 @@ void EnFr_Init(Actor* thisx, GlobalContext* globalCtx) {
             Actor_Kill(&this->actor);
             osSyncPrintf(VT_COL(RED, WHITE));
             // "There is no bank!!"
-            osSyncPrintf("%s[%d] : バンクが無いよ！！\n", "../z_en_fr.c", 380);
+            osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", "../z_en_fr.c", 382);
+            ASSERT(this->objBankIndex < 0);
         }
     }
 }
@@ -601,6 +602,7 @@ void EnFr_Idle(EnFr* this, GlobalContext* globalCtx) {
         player->actor.world.pos.z = this->actor.world.pos.z; // z = -1220.0f
         player->currentYaw = player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y;
         this->reward = GI_NONE;
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         this->actionFunc = EnFr_Activate;
     } else if (EnFr_IsAboveAndWithin30DistXZ(player, this)) {
         player->unk_6A8 = &this->actor;
@@ -680,19 +682,19 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, GlobalContext* globalCtx) {
             break;
         case OCARINA_MODE_01:                           // Ocarina note played, but no song played
             switch (globalCtx->msgCtx.lastOcaNoteIdx) { // Jumping frogs in open ocarina based on ocarina note played
-                case OCARINA_NOTE_A:
+                case OCARINA_NOTE_D4:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_C_DOWN:
+                case OCARINA_NOTE_F4:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_C_RIGHT:
+                case OCARINA_NOTE_A4:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_C_LEFT:
+                case OCARINA_NOTE_B4:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_C_UP:
+                case OCARINA_NOTE_D5:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
                     break;
             }
@@ -819,7 +821,6 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, GlobalContext* globalCtx) {
     if (this->ocarinaNote == (*msgCtx).lastOcaNoteIdx) { // required to match, possibly an array?
         this->ocarinaNoteIndex++;
         ocarinaNoteIndex = this->ocarinaNoteIndex;
-        if (1) {}
         if (ocarinaNoteIndex >= 14) { // Frog Song is completed
             this->ocarinaNoteIndex = 13;
             return true;
@@ -837,6 +838,7 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, GlobalContext* globalCtx) {
 void EnFr_OcarinaMistake(EnFr* this, GlobalContext* globalCtx) {
     Message_CloseTextbox(globalCtx);
     this->reward = GI_NONE;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     func_80078884(NA_SE_SY_OCARINA_ERROR);
     Audio_OcaSetInstrument(0);
     sEnFrPointers.flags = 12;
@@ -872,19 +874,19 @@ void EnFr_ContinueFrogSong(EnFr* this, GlobalContext* globalCtx) {
         if (globalCtx->msgCtx.msgMode == MSGMODE_FROGS_WAITING) {
             globalCtx->msgCtx.msgMode = MSGMODE_FROGS_START;
             switch (globalCtx->msgCtx.lastOcaNoteIdx) {
-                case OCARINA_NOTE_A:
+                case OCARINA_NOTE_D4:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_C_DOWN:
+                case OCARINA_NOTE_F4:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_C_RIGHT:
+                case OCARINA_NOTE_A4:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_C_LEFT:
+                case OCARINA_NOTE_B4:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_C_UP:
+                case OCARINA_NOTE_D5:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
             }
             if (EnFr_IsFrogSongComplete(this, globalCtx)) {
@@ -921,6 +923,23 @@ void EnFr_TalkBeforeReward(EnFr* this, GlobalContext* globalCtx) {
     }
 }
 
+RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
+    switch (songIndex) {
+        case FROG_ZL:
+            return RC_ZR_FROGS_ZELDAS_LULLABY;
+        case FROG_EPONA:
+            return RC_ZR_FROGS_EPONAS_SONG;
+        case FROG_SARIA:
+            return RC_ZR_FROGS_SARIAS_SONG;
+        case FROG_SUNS:
+            return RC_ZR_FROGS_SUNS_SONG;
+        case FROG_SOT:
+            return RC_ZR_FROGS_SONG_OF_TIME;
+        default:
+            return RC_UNKNOWN_CHECK;
+    }
+}
+
 void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     u16 songIndex;
 
@@ -928,24 +947,40 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     songIndex = this->songIndex;
     this->actionFunc = EnFr_Deactivate;
     this->reward = GI_NONE;
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_RUPEE_PURPLE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_RUPEE_PURPLE;
+            } else {
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
+                this->reward = this->getItemEntry.getItemId;
+            }
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_HEART_PIECE;
+            } else {
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
+                this->reward = this->getItemEntry.getItemId;
+            }
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_HEART_PIECE;
+            } else {
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
+                this->reward = this->getItemEntry.getItemId;
+            }
         } else {
             this->reward = GI_RUPEE_PURPLE;
         }
@@ -969,7 +1004,7 @@ void EnFr_Deactivate(EnFr* this, GlobalContext* globalCtx) {
         if (frogLoop1 == NULL) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "There are no frogs!?"
-            osSyncPrintf("%s[%d]カエルがいない！？\n", "../z_en_fr.c", 1604);
+            osSyncPrintf("%s[%d]カエルがいない！？\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
             return;
         } else if (frogLoop1->isDeactivating != true) {
@@ -982,7 +1017,7 @@ void EnFr_Deactivate(EnFr* this, GlobalContext* globalCtx) {
         if (frogLoop2 == NULL) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "There are no frogs!?"
-            osSyncPrintf("%s[%d]カエルがいない！？\n", "../z_en_fr.c", 1618);
+            osSyncPrintf("%s[%d]カエルがいない！？\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
             return;
         }
@@ -995,7 +1030,11 @@ void EnFr_Deactivate(EnFr* this, GlobalContext* globalCtx) {
         this->actionFunc = EnFr_Idle;
     } else {
         this->actionFunc = EnFr_GiveReward;
-        func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 30.0f, 100.0f);
+        }
     }
 }
 
@@ -1004,12 +1043,16 @@ void EnFr_GiveReward(EnFr* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->reward, 30.0f, 100.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 30.0f, 100.0f);
+        }
     }
 }
 
 void EnFr_SetIdle(EnFr* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx) || (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }
@@ -1037,14 +1080,14 @@ void EnFr_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
     EnFr* this = (EnFr*)thisx;
 
     if ((limbIndex == 7) || (limbIndex == 8)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fr.c", 1735);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Push();
         Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fr.c", 1738),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fr.c", 1741);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -1057,7 +1100,7 @@ void EnFr_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnFr* this = (EnFr*)thisx;
     s16 frogIndex = this->actor.params - 1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fr.c", 1754);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     // For the frogs 2 HP, the frog with the next note and the butterfly lights up
     lightRadius = this->isButterflyDrawn ? 95 : -1;
@@ -1077,7 +1120,7 @@ void EnFr_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawOpa(globalCtx, this->skelAnimeButterfly.skeleton, this->skelAnimeButterfly.jointTable, NULL, NULL,
                           NULL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fr.c", 1816);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFr_Reset(void) {

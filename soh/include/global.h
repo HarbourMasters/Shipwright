@@ -6,7 +6,7 @@
 #include "macros.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
 
 
 
@@ -18,11 +18,6 @@
 #define _AudiotableSegmentRomStart "Audiotable"
 
 
-
-
-
-#define _icon_item_gameover_staticSegmentRomStart 0
-#define _icon_item_gameover_staticSegmentRomEnd 0
 #define _icon_item_staticSegmentRomStart 0
 #define _icon_item_staticSegmentRomEnd 0
 #define _map_i_staticSegmentRomStart 0

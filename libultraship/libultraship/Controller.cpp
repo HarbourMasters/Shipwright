@@ -1,96 +1,146 @@
 #include "Controller.h"
-#include "GlobalCtx2.h"
-#include "stox.h"
 #include <memory>
+#include <algorithm>
+#include "Cvar.h"
+#if __APPLE__
+#include <SDL_events.h>
+#else
+#include <SDL2/SDL_events.h>
+#endif
 
 namespace Ship {
-	Controller::Controller(int32_t dwControllerNumber) : dwControllerNumber(dwControllerNumber) {
-		dwPressedButtons = 0;
-		wStickX = 0;
-		wStickY = 0;
-		wGyroX = 0;
-		wGyroY = 0;
+
+	Controller::Controller() : isRumbling(false) {
 		Attachment = nullptr;
+
+		for(int32_t virtualSlot = 0; virtualSlot < MAXCONTROLLERS; virtualSlot++) {
+			profiles[virtualSlot] = std::make_shared<DeviceProfile>();
+			ButtonData[virtualSlot] = std::make_shared<Buttons>();
+		}
 	}
 
-	void Controller::Read(OSContPad* pad) {
-		ReadFromSource();
+	void Controller::Read(OSContPad* pad, int32_t virtualSlot) {
+		ReadFromSource(virtualSlot);
 
-		pad->button |= dwPressedButtons & 0xFFFF;
+		OSContPad padToBuffer = { 0 };
 
-		if (pad->stick_x == 0) {
-			if (dwPressedButtons & BTN_STICKLEFT) {
-				pad->stick_x = -128;
+#ifndef __WIIU__
+		SDL_PumpEvents();
+#endif
+
+		// Button Inputs
+		padToBuffer.button |= getPressedButtons(virtualSlot) & 0xFFFF;
+
+		// Stick Inputs
+		if (getLeftStickX(virtualSlot) == 0) {
+			if (getPressedButtons(virtualSlot) & BTN_STICKLEFT) {
+				padToBuffer.stick_x = -128;
+			} else if (getPressedButtons(virtualSlot) & BTN_STICKRIGHT) {
+				padToBuffer.stick_x = 127;
 			}
-			else if (dwPressedButtons & BTN_STICKRIGHT) {
-				pad->stick_x = 127;
-			}
-			else {
-				pad->stick_x = wStickX;
-			}
+		} else {
+			padToBuffer.stick_x = getLeftStickX(virtualSlot);
 		}
 
-		if (pad->stick_y == 0) {
-			if (dwPressedButtons & BTN_STICKDOWN) {
-				pad->stick_y = -128;
+		if (getLeftStickY(virtualSlot) == 0) {
+			if (getPressedButtons(virtualSlot) & BTN_STICKDOWN) {
+				padToBuffer.stick_y = -128;
+			} else if (getPressedButtons(virtualSlot) & BTN_STICKUP) {
+				padToBuffer.stick_y = 127;
 			}
-			else if (dwPressedButtons & BTN_STICKUP) {
-				pad->stick_y = 127;
-			}
-			else {
-				pad->stick_y = wStickY;
-			}
+		} else {
+			padToBuffer.stick_y = getLeftStickY(virtualSlot);
 		}
 
-		pad->gyro_x = wGyroX;
-		pad->gyro_y = wGyroY;
+		// Stick Inputs
+		if (getRightStickX(virtualSlot) == 0) {
+			if (getPressedButtons(virtualSlot) & BTN_VSTICKLEFT) {
+				padToBuffer.right_stick_x = -128;
+			} else if (getPressedButtons(virtualSlot) & BTN_VSTICKRIGHT) {
+				padToBuffer.right_stick_x = 127;
+			}
+		} else {
+			padToBuffer.right_stick_x = getRightStickX(virtualSlot);
+		}
+
+		if (getRightStickY(virtualSlot) == 0) {
+			if (getPressedButtons(virtualSlot) & BTN_VSTICKDOWN) {
+				padToBuffer.right_stick_y = -128;
+			} else if (getPressedButtons(virtualSlot) & BTN_VSTICKUP) {
+				padToBuffer.right_stick_y = 127;
+			}
+		} else {
+			padToBuffer.right_stick_y = getRightStickY(virtualSlot);
+		}
+
+		// Gyro
+		padToBuffer.gyro_x = getGyroX(virtualSlot);
+		padToBuffer.gyro_y = getGyroY(virtualSlot);
+
+		padBuffer.push_front(padToBuffer);
+		if (pad != nullptr) {
+			auto &padFromBuffer = padBuffer[std::min(padBuffer.size() - 1, (size_t)CVar_GetS32("gSimulatedInputLag", 0))];
+			pad->button |= padFromBuffer.button;
+			if (pad->stick_x == 0) pad->stick_x = padFromBuffer.stick_x;
+			if (pad->stick_y == 0) pad->stick_y = padFromBuffer.stick_y;
+			if (pad->gyro_x == 0) pad->gyro_x = padFromBuffer.gyro_x;
+			if (pad->gyro_y == 0) pad->gyro_y = padFromBuffer.gyro_y;
+			if (pad->right_stick_x == 0) pad->right_stick_x = padFromBuffer.right_stick_x;
+			if (pad->right_stick_y == 0) pad->right_stick_y = padFromBuffer.right_stick_y;
+		}
+
+		while (padBuffer.size() > 6) {
+			padBuffer.pop_back();
+		}
 	}
 
-	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
-		// Update the config value.
-		std::string ConfSection = GetBindingConfSection();
-		std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-		ConfigFile& Conf = *pConf.get();
-		Conf[ConfSection][szButtonName] = dwScancode;
-
-		// Reload the button mapping from Config
-		LoadBinding();
+	void Controller::SetButtonMapping(int32_t virtualSlot, int32_t n64Button, int32_t dwScancode) {
+		std::map<int32_t, int32_t>& Mappings = getProfile(virtualSlot)->Mappings;
+		std::erase_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
+		Mappings[dwScancode] = n64Button;
 	}
 
-	void Controller::LoadBinding() {
-		std::string ConfSection = GetBindingConfSection();
-		std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-		ConfigFile& Conf = *pConf.get();
-
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT)])] = BTN_CRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT)])] = BTN_CLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN)])] = BTN_CDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP)])] = BTN_CUP;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT + "_2")])] = BTN_CRIGHT;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT + "_2")])] = BTN_CLEFT;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN + "_2")])] = BTN_CDOWN;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP + "_2")])] = BTN_CUP;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_R)])] = BTN_R;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_L)])] = BTN_L;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DRIGHT)])] = BTN_DRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DLEFT)])] = BTN_DLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DDOWN)])] = BTN_DDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DUP)])] = BTN_DUP;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_START)])] = BTN_START;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_Z)])] = BTN_Z;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_B)])] = BTN_B;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_A)])] = BTN_A;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKRIGHT)])] = BTN_STICKRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKLEFT)])] = BTN_STICKLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKDOWN)])] = BTN_STICKDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKUP)])] = BTN_STICKUP;
+	int8_t& Controller::getLeftStickX(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->leftStickX;
 	}
 
-	std::string Controller::GetConfSection() {
-		return GetControllerType() + " CONTROLLER " + std::to_string(GetControllerNumber() + 1);
+	int8_t& Controller::getLeftStickY(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->leftStickY;
 	}
 
-	std::string Controller::GetBindingConfSection() {
-		return GetControllerType() + " CONTROLLER BINDING " + std::to_string(GetControllerNumber() + 1);
+	int8_t& Controller::getRightStickX(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->rightStickX;
+	}
+
+	int8_t& Controller::getRightStickY(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->rightStickY;
+	}
+
+	int32_t& Controller::getPressedButtons(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->pressedButtons;
+	}
+
+	float& Controller::getGyroX(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->gyroX;
+	}
+
+	float& Controller::getGyroY(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->gyroY;
+	}
+
+	std::shared_ptr<DeviceProfile> Controller::getProfile(int32_t virtualSlot) {
+		return profiles[virtualSlot];
+	}
+
+	std::shared_ptr<ControllerAttachment> Controller::GetAttachment() {
+		return Attachment;
+	}
+
+	bool Controller::IsRumbling() {
+		return isRumbling;
+	}
+
+	std::string Controller::GetGuid() {
+		return GUID;
 	}
 }

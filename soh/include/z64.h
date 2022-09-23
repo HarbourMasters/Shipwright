@@ -26,11 +26,15 @@
 #include "z64interface.h"
 #include "sequence.h"
 #include "sfx.h"
-#include "color.h"
+#include <libultraship/color.h>
 #include "ichain.h"
 #include "regs.h"
 
-#define AUDIO_HEAP_SIZE 0x38000
+#if defined(__LP64__) 
+#define _SOH64
+#endif
+
+#define AUDIO_HEAP_SIZE  0x3800000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
@@ -198,11 +202,11 @@ typedef struct {
     /* 0x00A0 */ Mtx    viewing;
     /* 0x00E0 */ Mtx*   projectionPtr;
     /* 0x00E4 */ Mtx*   viewingPtr;
-    /* 0x00E8 */ Vec3f  unk_E8;
-    /* 0x00F4 */ Vec3f  unk_F4;
-    /* 0x0100 */ f32    unk_100;
-    /* 0x0104 */ Vec3f  unk_104;
-    /* 0x0110 */ Vec3f  unk_110;
+    /* 0x00E8 */ Vec3f  distortionOrientation;
+    /* 0x00F4 */ Vec3f  distortionScale;
+    /* 0x0100 */ f32    distortionSpeed;
+    /* 0x0104 */ Vec3f  curDistortionOrientation;
+    /* 0x0110 */ Vec3f  curDistortionScale;
     /* 0x011C */ u16    normal; // used to normalize the projection matrix
     /* 0x0120 */ s32    flags;
     /* 0x0124 */ s32    unk_124;
@@ -253,9 +257,11 @@ typedef struct {
     /* 0x0A */ u8       durationTimer; // how long the title card appears for before fading
     /* 0x0B */ u8       delayTimer; // how long the title card waits to appear
     /* 0x0C */ s16      alpha;
-    /* 0x0E */ s16      intensity;
-    /* ---- */ s16     isBossCard; //To detect if that a Boss name title card.
-    /* ---- */ s16     hasTranslation; // to detect if the current title card has translation (used for bosses only)
+    /* ---- */ s16      intensityR; //Splited intensity per channel to support precise recolor
+    /* ---- */ s16      intensityG;
+    /* ---- */ s16      intensityB;
+    /* ---- */ s16      isBossCard; //To detect if that a Boss name title card.
+    /* ---- */ s16      hasTranslation; // to detect if the current title card has translation (used for bosses only)
 } TitleCardContext; // size = 0x10
 
 typedef struct {
@@ -267,11 +273,10 @@ typedef struct {
     /* 0x0000 */ u8     freezeFlashTimer;
     /* 0x0001 */ char   unk_01[0x01];
     /* 0x0002 */ u8     unk_02;
-    /* 0x0003 */ u8     unk_03;
+    /* 0x0003 */ u8     lensActive;
     /* 0x0004 */ char   unk_04[0x04];
     /* 0x0008 */ u8     total; // total number of actors loaded
-    /* 0x0009 */ char   unk_09[0x03];
-    /* 0x000C */ ActorListEntry actorLists[12];
+    /* 0x000C */ ActorListEntry actorLists[ACTORCAT_MAX];
     /* 0x006C */ TargetContext targetCtx;
     struct {
         /* 0x0104 */ u32    swch;
@@ -536,9 +541,9 @@ typedef enum {
     /*  4 */ TEXT_STATE_CHOICE,
     /*  5 */ TEXT_STATE_EVENT,
     /*  6 */ TEXT_STATE_DONE,
-    /*  7 */ TEXT_STATE_SONG_DEMO_DONE, 
-    /*  8 */ TEXT_STATE_8, 
-    /*  9 */ TEXT_STATE_9, 
+    /*  7 */ TEXT_STATE_SONG_DEMO_DONE,
+    /*  8 */ TEXT_STATE_8,
+    /*  9 */ TEXT_STATE_9,
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
@@ -701,6 +706,10 @@ typedef struct {
     /* 0x024C */ u16    cDownAlpha;
     /* 0x024E */ u16    cRightAlpha;
     /* 0x0250 */ u16    healthAlpha; // also max C-Up alpha
+    /* 0x024E */ u16    dpadUpAlpha;
+    /* 0x024E */ u16    dpadDownAlpha;
+    /* 0x024E */ u16    dpadLeftAlpha;
+    /* 0x024E */ u16    dpadRightAlpha;
     /* 0x0252 */ u16    magicAlpha; // also Rupee and Key counters alpha
     /* 0x0254 */ u16    minimapAlpha;
     /* 0x0256 */ s16    startAlpha;
@@ -880,13 +889,10 @@ void* xluDL;
 
 typedef struct {
     /* 0x00 */ u8    type;
-    /* 0x01 */ u8    num; // number of dlist entries
-    /* 0x04 */ void* start;
-    /* 0x08 */ void* end;
-} Polygon; // size = 0xC
+} PolygonBase;
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    num; // number of dlist entries
     /* 0x04 */ void* start;
     /* 0x08 */ void* end;
@@ -907,7 +913,7 @@ typedef struct {
 } BgImage; // size = 0x1C
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    format; // 1 = single, 2 = multi
     /* 0x04 */ Gfx*  dlist;
     union {
@@ -945,27 +951,51 @@ typedef struct {
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    num; // number of dlist entries
     /* 0x04 */ void* start;
     /* 0x08 */ void* end;
 } PolygonType2; // size = 0xC
 
 typedef union {
-    Polygon      polygon;
+    PolygonBase  base;
     PolygonType0 polygon0;
     PolygonType1 polygon1;
     PolygonType2 polygon2;
-} Mesh; // "Ground Shape"
+} MeshHeader; // "Ground Shape"
+
+typedef enum {
+    /* 0 */ LENS_MODE_HIDE_ACTORS, // lens actors are visible by default, and hidden by using lens (for example, fake walls)
+    /* 1 */ LENS_MODE_SHOW_ACTORS // lens actors are invisible by default, and shown by using lens (for example, invisible enemies)
+} LensMode;
+
+typedef enum {
+    /* 0 */ ROOM_BEHAVIOR_TYPE1_0,
+    /* 1 */ ROOM_BEHAVIOR_TYPE1_1,
+    /* 2 */ ROOM_BEHAVIOR_TYPE1_2,
+    /* 3 */ ROOM_BEHAVIOR_TYPE1_3, // unused
+    /* 4 */ ROOM_BEHAVIOR_TYPE1_4, // unused
+    /* 5 */ ROOM_BEHAVIOR_TYPE1_5
+} RoomBehaviorType1;
+
+typedef enum {
+    /* 0 */ ROOM_BEHAVIOR_TYPE2_0,
+    /* 1 */ ROOM_BEHAVIOR_TYPE2_1,
+    /* 2 */ ROOM_BEHAVIOR_TYPE2_2,
+    /* 3 */ ROOM_BEHAVIOR_TYPE2_3,
+    /* 4 */ ROOM_BEHAVIOR_TYPE2_4,
+    /* 5 */ ROOM_BEHAVIOR_TYPE2_5,
+    /* 6 */ ROOM_BEHAVIOR_TYPE2_6
+} RoomBehaviorType2;
 
 typedef struct {
     /* 0x00 */ s8   num;
     /* 0x01 */ u8   unk_01;
-    /* 0x02 */ u8   unk_02;
-    /* 0x03 */ u8   unk_03;
+    /* 0x02 */ u8   behaviorType2;
+    /* 0x03 */ u8   behaviorType1;
     /* 0x04 */ s8   echo;
-    /* 0x05 */ u8   showInvisActors;
-    /* 0x08 */ Mesh* mesh; // original name: "ground_shape"
+    /* 0x05 */ u8   lensMode;
+    /* 0x08 */ MeshHeader* meshHeader; // original name: "ground_shape"
     /* 0x0C */ void* segment;
     /* 0x10 */ char unk_10[0x4];
 } Room; // size = 0x14
@@ -1071,10 +1101,6 @@ typedef struct {
     /* 0x01 */ u8 room;
 } EntranceEntry;
 
-typedef struct {
-    /* 0x00 */ u8* readBuff;
-} SramContext; // size = 0x4
-
 #define SRAM_SIZE 0x8000
 #define SRAM_HEADER_SIZE 0x10
 
@@ -1119,7 +1145,6 @@ typedef struct {
     /* 0x0000 */ GameState state;
     /* 0x00A4 */ u8* staticSegment;
     /* 0x00A8 */ View view;
-    /* 0x01D0 */ SramContext sramCtx;
     /* 0x01D4 */ u16 unk_1D4; // not used in mq dbg (some sort of timer that doesn't seem to affect anything)
     /* 0x01D6 */ s16 coverAlpha;
     /* 0x01D8 */ s16 addAlpha; // not used in mq dbg
@@ -1198,6 +1223,9 @@ typedef struct GlobalContext {
     /* 0x00790 */ Camera* cameraPtrs[NUM_CAMS];
     /* 0x007A0 */ s16 activeCamera;
     /* 0x007A2 */ s16 nextCamera;
+    /* 0x007A2 */ bool manualCamera;
+    /* 0x007A2 */ f32 camX;
+    /* 0x007A2 */ f32 camY;
     /* 0x007A4 */ SequenceContext sequenceCtx;
     /* 0x007A8 */ LightContext lightCtx;
     /* 0x007B8 */ FrameAdvanceContext frameAdvCtx;
@@ -1205,7 +1233,6 @@ typedef struct GlobalContext {
     /* 0x01C24 */ ActorContext actorCtx;
     /* 0x01D64 */ CutsceneContext csCtx; // "demo_play"
     /* 0x01DB4 */ SoundSource soundSources[16];
-    /* 0x01F74 */ SramContext sramCtx;
     /* 0x01F78 */ SkyboxContext skyboxCtx;
     /* 0x020D8 */ MessageContext msgCtx; // "message"
     /* 0x104F0 */ InterfaceContext interfaceCtx; // "parameter"
@@ -1237,7 +1264,7 @@ typedef struct GlobalContext {
     /* 0x11DF0 */ RomFile* roomList;
     /* 0x11DF4 */ ActorEntry* linkActorEntry;
     /* 0x11DF8 */ ActorEntry* setupActorList;
-    /* 0x11DFC */ UNK_PTR unk_11DFC;
+    /* 0x11DFC */ void* unk_11DFC;
     /* 0x11E00 */ EntranceEntry* setupEntranceList;
     /* 0x11E04 */ s16* setupExitList;
     /* 0x11E08 */ Path* setupPathList;
@@ -1279,7 +1306,6 @@ typedef struct {
     /* 0x000AC */ u8* parameterSegment;
     /* 0x000B0 */ char unk_B0[0x8];
     /* 0x000B8 */ View view;
-    /* 0x001E0 */ SramContext sramCtx;
     /* 0x001E4 */ char unk_1E4[0x4];
     /* 0x001E8 */ SkyboxContext skyboxCtx;
     /* 0x00348 */ MessageContext msgCtx;
@@ -1290,13 +1316,7 @@ typedef struct {
     /* 0x1C9EC */ Vtx* keyboardVtx;
     /* 0x1C9F0 */ Vtx* nameEntryVtx;
     /* 0x1C9F4 */ u8 n64ddFlag;
-    /* 0x1C9F6 */ u16 deaths[3];
-    /* 0x1C9FC */ u8 fileNames[3][8];
-    /* 0x1CA14 */ u16 healthCapacities[3];
-    /* 0x1CA1C */ u32 questItems[3];
     /* 0x1CA28 */ s16 n64ddFlags[3];
-    /* 0x1CA2E */ s8 defense[3];
-    /* 0x1CA32 */ u16 health[3];
     /* 0x1CA38 */ s16 buttonIndex;
     /* 0x1CA3A */ s16 confirmButtonIndex; // 0: yes, 1: quit
     /* 0x1CA3C */ s16 menuMode;
@@ -1458,8 +1478,6 @@ typedef struct {
     /* 0x18 */ s16 (*roomCompassOffsetY)[44]; // dungeon compass icon Y offset by room
     /* 0x1C */ u8*   dgnMinimapCount; // number of room minimaps
     /* 0x20 */ u16*  dgnMinimapTexIndexOffset; // dungeon minimap texture index offset
-    /* 0x24 */ u16*  owMinimapTexSize;
-    /* 0x28 */ u16*  owMinimapTexOffset;
     /* 0x2C */ s16*  owMinimapPosX;
     /* 0x30 */ s16*  owMinimapPosY;
     /* 0x34 */ s16 (*owCompassInfo)[4]; // [X scale, Y scale, X offset, Y offset]

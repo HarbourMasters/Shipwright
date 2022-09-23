@@ -3,6 +3,7 @@
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/frame_interpolation.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -35,8 +36,8 @@ typedef struct {
 } LightningBolt; // size = 0x20
 
 typedef struct {
-    /* 0x00 */ s32 unk0;
-    /* 0x04 */ s32 unk1;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
 } Struct_8011FAF0; // size = 0x8
 
 Struct_8011FAF0 D_8011FAF0[] = {
@@ -214,7 +215,7 @@ u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
 s32 func_8006F0A0(s32 a0) {
-    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk0) + D_8011FAF0[a0 >> 15 & 7].unk1;
+    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 
     return ret;
 }
@@ -691,7 +692,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
             //DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->staticSegments[0],
                                 //gSkyboxFiles[newSkybox1Index].file.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                //"../z_kankyo.c", 1264);
+                                //__FILE__, __LINE__);
         }
 
         if ((envCtx->skybox2Index != newSkybox2Index) && (envCtx->skyboxDmaState == SKYBOX_DMA_INACTIVE)) {
@@ -710,7 +711,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
             //DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->staticSegments[1],
                                 //gSkyboxFiles[newSkybox2Index].file.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                //"../z_kankyo.c", 1281);
+                                //__FILE__, __LINE__);
         }
 
         if (envCtx->skyboxDmaState == SKYBOX_DMA_FILE1_DONE) {
@@ -725,7 +726,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
                 //DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->palettes,
                                     //gSkyboxFiles[newSkybox1Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                    //"../z_kankyo.c", 1307);
+                                    //__FILE__, __LINE__);
             } else {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
                 LoadSkyboxPalette(skyboxCtx, 1, entryA.palettes[0], 16, 8);
@@ -734,7 +735,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
                 //DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->palettes + size,
                                     //gSkyboxFiles[newSkybox1Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                    //"../z_kankyo.c", 1320);
+                                    //__FILE__, __LINE__);
             }
 
             Skybox_Update(skyboxCtx);
@@ -752,7 +753,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
                 DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->palettes,
                                     gSkyboxFiles[newSkybox2Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                    "../z_kankyo.c", 1342);*/
+                                    __FILE__, __LINE__);*/
             } else
             {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
@@ -762,7 +763,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
                 DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->palettes + size,
                                     gSkyboxFiles[newSkybox2Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
-                                    "../z_kankyo.c", 1355);*/
+                                    __FILE__, __LINE__);*/
             }
 
             Skybox_Update(skyboxCtx);
@@ -949,8 +950,7 @@ void Environment_Update(GlobalContext* globalCtx, EnvironmentContext* envCtx, Li
             Gfx* displayList;
             Gfx* prevDisplayList;
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 1682);
-
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             prevDisplayList = POLY_OPA_DISP;
             displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
             gSPDisplayList(OVERLAY_DISP++, displayList);
@@ -958,8 +958,7 @@ void Environment_Update(GlobalContext* globalCtx, EnvironmentContext* envCtx, Li
             gSPEndDisplayList(displayList++);
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
-            if (1) {}
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 1690);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if ((envCtx->unk_BF != 0xFF) && (envCtx->unk_DC != 2) && (envCtx->unk_BD != envCtx->unk_BF) &&
@@ -1302,7 +1301,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
     f32 scale;
     f32 temp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 2266);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0) {
         Math_SmoothStepToF(&globalCtx->envCtx.sunPos.x,
@@ -1350,7 +1349,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
 
         scale = (color * 2.0f) + 10.0f;
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_kankyo.c", 2364), G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
         func_80093AD0(globalCtx->state.gfxCtx);
 
         static Vtx vertices[] = {
@@ -1388,7 +1387,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
         alpha = temp * 255.0f;
 
         if (alpha > 0.0f) {
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_kankyo.c", 2406), G_MTX_LOAD);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
             func_8009398C(globalCtx->state.gfxCtx);
             gDPPipeSync(POLY_OPA_DISP++);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 240, 255, 180, alpha);
@@ -1397,7 +1396,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 2429);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_DrawSunLensFlare(GlobalContext* globalCtx, EnvironmentContext* envCtx, View* view,
@@ -1461,7 +1460,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
 
-    OPEN_DISPS(gfxCtx, "../z_kankyo.c", 2516);
+    OPEN_DISPS(gfxCtx);
 
     dist = Math3D_Vec3f_DistXYZ(&pos, &view->eye) / 12.0f;
 
@@ -1503,9 +1502,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         unk88Target = cosAngle;
     }
 
-    if (cosAngle < 0.0f) {
-
-    } else {
+    if (!(cosAngle < 0.0f)) {
         if (arg9) {
             u32 shrink = ShrinkWindow_GetCurrentVal();
             func_800C016C(globalCtx, &pos, &screenPos);
@@ -1518,6 +1515,8 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
+            FrameInterpolation_RecordOpenChild("Lens Flare", i);
+
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
             if (arg9) {
@@ -1547,7 +1546,6 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
 
             alpha *= 1.0f - fogInfluence;
 
-            if (1) {}
 
             if (!(isOffScreen ^ 0)) {
                 Math_SmoothStepToF(&envCtx->unk_88, unk88Target, 0.5f, 0.05f, 0.001f);
@@ -1558,7 +1556,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
             POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
              gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, lensFlareColors[i].r, lensFlareColors[i].g, lensFlareColors[i].b,
                              alpha * envCtx->unk_88);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_kankyo.c", 2662),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetCombineLERP(POLY_XLU_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0,
                               0, PRIMITIVE, 0);
@@ -1575,6 +1573,8 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
                     gSPDisplayList(POLY_XLU_DISP++, gLensFlareRingDL);
                     break;
             }
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         alphaScale = cosAngle - (1.5f - cosAngle);
@@ -1615,7 +1615,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_kankyo.c", 2750);
+    CLOSE_DISPS(gfxCtx);
 }
 
 f32 func_800746DC(void) {
@@ -1642,7 +1642,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
-        OPEN_DISPS(gfxCtx, "../z_kankyo.c", 2799);
+        OPEN_DISPS(gfxCtx);
 
         vec.x = view->lookAt.x - view->eye.x;
         vec.y = view->lookAt.y - view->eye.y;
@@ -1669,6 +1669,8 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
+            FrameInterpolation_RecordOpenChild("Rain Drop", i);
+
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
             temp3 = Rand_ZeroOne();
@@ -1691,9 +1693,11 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             Matrix_RotateY(-rotY, MTXMODE_APPLY);
             Matrix_RotateX(M_PI / 2 - rotX, MTXMODE_APPLY);
             Matrix_Scale(0.4f, 1.2f, 0.4f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_kankyo.c", 2887),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gRaindropDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         // draw droplet rings on the ground
@@ -1701,6 +1705,8 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
+                FrameInterpolation_RecordOpenChild("Droplet Ring", i);
+                
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
                     gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
@@ -1718,13 +1724,15 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
                     Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);
                 }
 
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_kankyo.c", 2940),
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffShockwaveDL);
+
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
-        CLOSE_DISPS(gfxCtx, "../z_kankyo.c", 2946);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -1758,7 +1766,7 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
         (globalCtx->skyboxId == SKYBOX_UNSET_1D)) {
         f32 alpha;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3032);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_800938B4(globalCtx->state.gfxCtx);
 
@@ -1776,11 +1784,11 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
                         globalCtx->lightCtx.fogColor[2], 255.0f * alpha);
         gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3043);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     if (globalCtx->envCtx.customSkyboxFilter) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3048);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_800938B4(globalCtx->state.gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, globalCtx->envCtx.skyboxFilterColor[0],
@@ -1788,18 +1796,18 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
                         globalCtx->envCtx.skyboxFilterColor[3]);
         gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3056);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
 void Environment_DrawLightningFlash(GlobalContext* globalCtx, u8 red, u8 green, u8 blue, u8 alpha) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3069);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800938B4(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, alpha);
     gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3079);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_UpdateLightningStrike(GlobalContext* globalCtx) {
@@ -1914,9 +1922,11 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3253);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
+        FrameInterpolation_RecordOpenChild("Lightning Bolt", i);
+
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:
                 dx = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
@@ -1964,16 +1974,18 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
             Matrix_Scale(22.0f, 100.0f, 22.0f, MTXMODE_APPLY);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 128);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 255, 128);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_kankyo.c", 3333),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(lightningTextures[sLightningBolts[i].textureIndex]));
             func_80094C50(globalCtx->state.gfxCtx);
             gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffLightningDL);
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 3353);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_PlaySceneSequence(GlobalContext* globalCtx) {
@@ -2083,7 +2095,7 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) &&
+                     Inventory_HatchPocketCucco(globalCtx)) &&
                     globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }
@@ -2093,9 +2105,12 @@ void func_80075B44(GlobalContext* globalCtx) {
         case 7:
             Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_CRITTER_1 << 4 | NATURE_CHANNEL_CRITTER_3,
                                              CHANNEL_IO_PORT_1, 0);
-            if (globalCtx->envCtx.unk_EE[0] == 0 && globalCtx->envCtx.unk_F2[0] == 0) {
-                Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_CRITTER_4 << 4 | NATURE_CHANNEL_CRITTER_5,
-                                                 CHANNEL_IO_PORT_1, 1);
+            if (globalCtx->envCtx.unk_EE[0] == 0 && globalCtx->envCtx.unk_F2[0] == 0) 
+            {
+                // OTRTODO: This is where corrupt audio happens. Commenting this out seems to not introduce any side effects?
+                // Further investigation is needed...
+                //Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_CRITTER_4 << 4 | NATURE_CHANNEL_CRITTER_5,
+                                                    //CHANNEL_IO_PORT_1, 1);
             }
             globalCtx->envCtx.unk_E0++;
             break;
@@ -2234,7 +2249,7 @@ void func_800766C4(GlobalContext* globalCtx) {
 
 void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, u8 alpha, u8 drawFlags) {
     if (alpha != 0) {
-        OPEN_DISPS(gfxCtx, "../z_kankyo.c", 3835);
+        OPEN_DISPS(gfxCtx);
 
         if (drawFlags & FILL_SCREEN_OPA) {
             POLY_OPA_DISP = func_800937C0(POLY_OPA_DISP);
@@ -2257,7 +2272,7 @@ void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, 
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
         }
 
-        CLOSE_DISPS(gfxCtx, "../z_kankyo.c", 3863);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -2408,7 +2423,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     sp94 = (s32)(D_8015FDB0 * (9.0f / 6.0f));
     sp92 = (s32)(D_8015FDB0 * (6.0f / 6.0f));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 4044);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_XLU_DISP = func_80093F34(POLY_XLU_DISP);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -2424,7 +2439,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
                             OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
                             -0x008C);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 4068);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     D_8015FDB0 += (s32)sp98;
 }
@@ -2433,7 +2448,7 @@ void Environment_AdjustLights(GlobalContext* globalCtx, f32 arg1, f32 arg2, f32 
     f32 temp;
     s32 i;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5 && func_800C0CB8(globalCtx)) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5 && func_800C0CB8(globalCtx)) {
         arg1 = CLAMP_MIN(arg1, 0.0f);
         arg1 = CLAMP_MAX(arg1, 1.0f);
 

@@ -211,9 +211,9 @@ typedef enum {
     /* 0x78 */ ITEM_MAGIC_SMALL,
     /* 0x79 */ ITEM_MAGIC_LARGE,
     /* 0x7A */ ITEM_HEART_PIECE_2,
-    /* 0x7B */ ITEM_INVALID_1,
-    /* 0x7C */ ITEM_INVALID_2,
-    /* 0x7D */ ITEM_INVALID_3,
+    /* 0x7B */ ITEM_SINGLE_MAGIC,
+    /* 0x7C */ ITEM_DOUBLE_MAGIC,
+    /* 0x7D */ ITEM_DOUBLE_DEFENSE,
     /* 0x7E */ ITEM_INVALID_4,
     /* 0x7F */ ITEM_INVALID_5,
     /* 0x80 */ ITEM_INVALID_6,
@@ -379,8 +379,8 @@ typedef enum {
     /* 0x7A */ GI_NUT_UPGRADE_40,
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
-    /* 0x7D */ GI_TEXT_0, // no model appears over Link, shows text id 0 (pocket egg)
-    /* 0x7E */ GI_MAX
+    /* 0x7D */ GI_TEXT_0,   // no model appears over Link, shows text id 0 (pocket egg)
+    /* 0x84 */ GI_MAX
 } GetItemID;
 
 typedef enum {
@@ -501,7 +501,18 @@ typedef enum {
     /* 0x72 */ GID_BULLET_BAG_50,
     /* 0x73 */ GID_SWORD_KOKIRI,
     /* 0x74 */ GID_SKULL_TOKEN_2,
-    /* 0x75 */ GID_MAX
+    /* 0x74 */ GID_KOKIRI_EMERALD,
+    /* 0x74 */ GID_GORON_RUBY,
+    /* 0x74 */ GID_ZORA_SAPPHIRE,
+    /* 0x75 */ GID_SONG_GENERIC,
+    /* 0x76 */ GID_SONG_ZELDA,
+    /* 0x77 */ GID_SONG_EPONA,
+    /* 0x78 */ GID_SONG_SARIA,
+    /* 0x79 */ GID_SONG_SUN,
+    /* 0x7A */ GID_SONG_TIME,
+    /* 0x7B */ GID_SONG_STORM,
+    /* 0x7C */ GID_MAXIMUM
+
 } GetItemDrawID;
 
 typedef enum {

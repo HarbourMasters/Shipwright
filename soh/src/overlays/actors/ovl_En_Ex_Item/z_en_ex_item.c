@@ -137,7 +137,12 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 onCounter = true;
             case EXITEM_BOMB_BAG_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                this->giDrawId = GID_BOMB_BAG_30;
+                if (gSaveContext.n64ddFlag) {
+                    this->giDrawId =
+                        Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20).gid;
+                } else {
+                    this->giDrawId = GID_BOMB_BAG_30;
+                }
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -145,7 +150,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;
-                    this->actor.shape.yOffset = -18.0f;
+                    this->actor.shape.yOffset = gSaveContext.n64ddFlag ? -10.0f : -18.0f;
                 }
                 break;
             case EXITEM_HEART_PIECE_COUNTER:
@@ -167,7 +172,11 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 onCounter = true;
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                this->giDrawId = GID_BOMBCHU;
+                if (gSaveContext.n64ddFlag) {
+                    this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
+                } else {
+                    this->giDrawId = GID_BOMBCHU;
+                }
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -219,19 +228,25 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                switch (this->type) {
-                    case EXITEM_GREEN_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_GREEN;
-                        break;
-                    case EXITEM_BLUE_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_BLUE;
-                        break;
-                    case EXITEM_RED_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_RED;
-                        break;
-                    case EXITEM_14:
-                        this->giDrawId = GID_RUPEE_PURPLE;
-                        break;
+                if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+                    switch (this->type) {
+                        case EXITEM_GREEN_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_GREEN;
+                            break;
+                        case EXITEM_BLUE_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_BLUE;
+                            break;
+                        case EXITEM_RED_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_RED;
+                            break;
+                        case EXITEM_14:
+                            this->giDrawId = GID_RUPEE_PURPLE;
+                            break;
+                    }
+                } else {
+                    if (globalCtx->sceneNum == 16) {
+                        this->giDrawId = GetChestGameRandoGiDrawId(globalCtx->roomCtx.curRoom.num, GID_RUPEE_GREEN, globalCtx);
+                    }
                 }
                 this->actionFunc = EnExItem_ExitChest;
                 break;
@@ -361,7 +376,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, -0x4000, 5, 0x1000, 0);
     }
 
-    if (this->timer != 0) {
+    if (!gSaveContext.n64ddFlag && this->timer != 0) {
         if (this->prizeRotateTimer != 0) {
             tmpf1 = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
             tmpf2 = globalCtx->view.lookAt.y - 10.0f - globalCtx->view.eye.y;
@@ -381,30 +396,45 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
             this->actor.world.pos.z += (tmpf3 / tmpf4) * 5.0f;
         }
     } else {
+        GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         s32 getItemId;
 
         this->actor.draw = NULL;
         func_8002DF54(globalCtx, NULL, 7);
         this->actor.parent = NULL;
-        if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
-            getItemId = GI_BULLET_BAG_40;
+        if (gSaveContext.n64ddFlag) {
+            GET_PLAYER(globalCtx)->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            getItemId = getItemEntry.getItemId;
         } else {
-            getItemId = GI_BULLET_BAG_50;
+            if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
+                getItemId = GI_BULLET_BAG_40;
+            } else {
+                getItemId = GI_BULLET_BAG_50;
+            }
         }
-        func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+
+        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
+        }
         this->actionFunc = EnExItem_TargetPrizeGive;
     }
 }
 
 void EnExItem_TargetPrizeGive(EnExItem* this, GlobalContext* globalCtx) {
-    s32 getItemId;
-
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
-        getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+        if (!gSaveContext.n64ddFlag) {
+            s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+            func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 2000.0f, 1000.0f);
+        }
 
-        func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
     }
 }
 
@@ -480,33 +510,62 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
     }
     if (this) {}
     func_8002ED80(&this->actor, globalCtx, 0);
+    if (gSaveContext.n64ddFlag) {
+        GetItemEntry randoGetItem;
+        switch (this->type) {
+            case EXITEM_BOMB_BAG_BOWLING:
+            case EXITEM_BOMB_BAG_COUNTER:
+                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                break;
+            case EXITEM_BOMBCHUS_BOWLING:
+            case EXITEM_BOMBCHUS_COUNTER:
+                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+                break;
+            case EXITEM_BULLET_BAG:
+                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+                break;
+        }
+
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        GetItemEntry_Draw(globalCtx, randoGetItem);
+        return;
+    }
+
     GetItem_Draw(globalCtx, this->giDrawId);
 }
 
 void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
     func_8002ED80(&this->actor, globalCtx, 0);
-    GetItem_Draw(globalCtx, GID_HEART_PIECE);
+
+    if (gSaveContext.n64ddFlag) {
+        GetItemEntry randoGetItem =
+            Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        GetItemEntry_Draw(globalCtx, randoGetItem);
+    } else {
+        GetItem_Draw(globalCtx, GID_HEART_PIECE);
+    }
 }
 
 void EnExItem_DrawMagic(EnExItem* this, GlobalContext* globalCtx, s16 magicIndex) {
-    static s16 sgiDrawIds[] = { GID_DINS_FIRE, GID_FARORES_WIND, GID_NAYRUS_LOVE };
+    static s16 giDrawIds[] = { GID_DINS_FIRE, GID_FARORES_WIND, GID_NAYRUS_LOVE };
 
     func_8002ED80(&this->actor, globalCtx, 0);
-    GetItem_Draw(globalCtx, sgiDrawIds[magicIndex]);
+    GetItem_Draw(globalCtx, giDrawIds[magicIndex]);
 }
 
 void EnExItem_DrawKey(EnExItem* this, GlobalContext* globalCtx, s32 index) {
     static void* keySegments[] = { gDropKeySmallTex };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 880);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_8009460C(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 887),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(keySegments[index]));
     gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 893);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnExItem_DrawRupee(EnExItem* this, GlobalContext* globalCtx) {

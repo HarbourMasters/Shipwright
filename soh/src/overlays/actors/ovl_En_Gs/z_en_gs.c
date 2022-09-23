@@ -189,10 +189,15 @@ void func_80A4E648(EnGs* this, GlobalContext* globalCtx) {
         Actor_GetScreenPos(globalCtx, &this->actor, &sp26, &sp24);
         if ((sp26 >= 0) && (sp26 <= SCREEN_WIDTH) && (sp24 >= 0) && (sp24 <= SCREEN_HEIGHT) && (this->unk_19C != 3)) {
             if (func_8002F2CC(&this->actor, globalCtx, 40.0f) == 1) {
-                if (Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) {
-                    this->actor.textId = 0x2054;
-                } else {
+                if (gSaveContext.n64ddFlag) {
+                    // if we're rando'd, always use the non-mask text id
                     this->actor.textId = 0x2053;
+                } else {
+                    if (Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) {
+                        this->actor.textId = 0x2054;
+                    } else {
+                        this->actor.textId = 0x2053;
+                    }
                 }
             }
         }
@@ -566,7 +571,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 frames;
 
     if (!(this->unk_19E & 8)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gs.c", 1046);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         frames = globalCtx->gameplayFrames;
         func_80093D18(globalCtx->state.gfxCtx);
@@ -581,7 +586,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateZ(this->unk_1A0[1].z * (M_PI / 0x8000), MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gs.c", 1064),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gGossipStoneMaterialDL);
 
@@ -601,7 +606,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(0.05f, -0.05f, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gs.c", 1087),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(
                 POLY_XLU_DISP++, 0x08,
@@ -611,6 +616,6 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gs.c", 1101);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

@@ -158,13 +158,13 @@ void BgMizuShutter_Draw(BgMizuShutter* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMizuShutter* this = (BgMizuShutter*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_shutter.c", 410);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mizu_shutter.c", 415),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->displayList != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->displayList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_shutter.c", 422);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -89,7 +89,7 @@ void EffectSsKiraKira_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     scale = this->rScale / 10000.0f;
     gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_kirakira.c", 257);
+    OPEN_DISPS(gfxCtx);
 
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
     SkinMatrix_SetRotateZYX(&mfRotY, 0, 0, this->rYaw);
@@ -110,7 +110,7 @@ void EffectSsKiraKira_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_kirakira.c", 301);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_809AABF0(GlobalContext* globalCtx, u32 index, EffectSs* this) {

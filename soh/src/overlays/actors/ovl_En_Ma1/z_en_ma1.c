@@ -25,6 +25,7 @@ void func_80AA106C(EnMa1* this, GlobalContext* globalCtx);
 void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx);
 void func_80AA1150(EnMa1* this, GlobalContext* globalCtx);
 void EnMa1_DoNothing(EnMa1* this, GlobalContext* globalCtx);
+void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx);
 
 const ActorInit En_Ma1_InitVars = {
     ACTOR_EN_MA1,
@@ -89,14 +90,25 @@ static void* sEyeTextures[] = {
     gMalonChildEyeClosedTex,
 };
 
+bool Randomizer_ObtainedMalonHCReward() {
+    return Flags_GetEventChkInf(0x12);
+}
+
 u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* thisx) {
+    // Special case for Malon Hyrule Castle Text. Placing it here at the beginning
+    // has the added benefit of circumventing mask text if wearing bunny hood.
+    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_SPOT15) {
+        return Randomizer_ObtainedMalonHCReward() ? 0x2044 : 0x2043;
+    }
     u16 faceReaction = Text_GetFaceReaction(globalCtx, 0x17);
 
     if (faceReaction != 0) {
         return faceReaction;
     }
-    if (CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
-        return 0x204A;
+    if (!gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+            return 0x204A;
+        }
     }
     if (gSaveContext.eventChkInf[1] & 0x40) {
         return 0x2049;
@@ -188,25 +200,34 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
     if (!LINK_IS_CHILD) {
         return 0;
     }
+    // Causes Malon to appear in the market if you haven't met her yet.
     if (((globalCtx->sceneNum == SCENE_MARKET_NIGHT) || (globalCtx->sceneNum == SCENE_MARKET_DAY)) &&
         !(gSaveContext.eventChkInf[1] & 0x10) && !(gSaveContext.infTable[8] & 0x800)) {
         return 1;
     }
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && !(gSaveContext.eventChkInf[1] & 0x10)) {
-        if (gSaveContext.infTable[8] & 0x800) {
-            return 1;
-        } else {
-            gSaveContext.infTable[8] |= 0x800;
-            return 0;
+    if ((globalCtx->sceneNum == SCENE_SPOT15) &&  // if we're at hyrule castle
+        (!(gSaveContext.eventChkInf[1] & 0x10) || // and talon hasn't left
+         (gSaveContext.n64ddFlag &&
+          !Randomizer_ObtainedMalonHCReward()))) { // or we're rando'd and haven't gotten malon's HC check
+        if (gSaveContext.infTable[8] & 0x800) {    // if we've met malon
+            return 1;                              // make her appear at the castle
+        } else {                                   // if we haven't met malon
+            gSaveContext.infTable[8] |= 0x800;     // set the flag for meeting malon
+            return 0;                              // don't make her appear at the castle
         }
     }
+    // Malon asleep in her bed if Talon has left Hyrule Castle and it is nighttime.
     if ((globalCtx->sceneNum == SCENE_SOUKO) && IS_NIGHT && (gSaveContext.eventChkInf[1] & 0x10)) {
         return 1;
     }
+    // Don't spawn Malon if none of the above are true and we are not in Lon Lon Ranch.
     if (globalCtx->sceneNum != SCENE_SPOT20) {
         return 0;
     }
-    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10)) {
+    // If we've gotten this far, we're in Lon Lon Ranch. Spawn Malon if it is daytime, Talon has left Hyrule Castle, and
+    // either we are not randomized, or we are and we have received Malon's item at Hyrule Castle.
+    if ((this->actor.shape.rot.z == 3) && IS_DAY && (gSaveContext.eventChkInf[1] & 0x10) && 
+        ((gSaveContext.n64ddFlag && Randomizer_ObtainedMalonHCReward()) || !gSaveContext.n64ddFlag)) {
         return 1;
     }
     return 0;
@@ -271,6 +292,12 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
+    if (gSaveContext.n64ddFlag) { // Skip Malon's multiple textboxes before getting an item
+        gSaveContext.infTable[8] |= 0x800;
+        gSaveContext.infTable[8] |= 0x10;
+        gSaveContext.eventChkInf[1] |= 1;
+    }
+
     if (!func_80AA08C4(this, globalCtx)) {
         Actor_Kill(&this->actor);
         return;
@@ -281,10 +308,21 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+   // To avoid missing a check, we want Malon to have the actionFunc for singing, but not reacting to Ocarina, if any of
+   // the following are true.
+   // 1. Talon has not left Hyrule Castle.
+   // 2. We are Randomized and have not obtained Malon's Weird Egg Check.
+   // 3. We are not Randomized and have obtained Epona's Song
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
+        (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
+    // If none of the above conditions were true, set Malon up to teach Epona's Song.
     } else {
+        if (gSaveContext.n64ddFlag) { // Skip straight to "let's sing it together" textbox in the ranch
+            gSaveContext.eventChkInf[1] |= 0x40;
+        }
+
         this->actionFunc = func_80AA0F44;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     }
@@ -308,9 +346,16 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
 
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10)) {
+    // We want to Kill Malon's Actor outside of randomizer when Talon is freed. In Randomizer we don't kill Malon's
+    // Actor here, otherwise if we wake up Talon first and then get her check she will spontaneously
+    // disappear.
+    if ((globalCtx->sceneNum == SCENE_SPOT15) && (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10)) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+    // We want Malon to give the Weird Egg Check (see function below) in the following situations:
+    // 1. Talon as not left Hyrule Castle (Vanilla) OR
+    // 2. We haven't obtained Malon's Weird Egg Check (Randomizer only) OR
+    // 3. We have Epona's Song? (Vanilla only, not sure why it's here but I didn't write that one)
+    } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
             globalCtx->msgCtx.stateTimer = 4;
@@ -324,7 +369,12 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 10.0f);
+        }
     }
 }
 
@@ -335,6 +385,24 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
         gSaveContext.eventChkInf[1] |= 4;
         globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     }
+}
+
+void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_EPONAS_SONG);
+    // Prevents flag from getting set if we weren't able to get the item (i.e. Player is holding shield
+    // when closing the textbox).
+    if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+        // puts malon in the action that vanilla has her in after learning the song
+        // (confirmed via breakpoints in a vanilla save).
+        malon->actionFunc = func_80AA0D88;
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        GiveItemEntryFromActor(&malon->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
+    }
+    // make malon sing again after giving the item.
+    malon->unk_1E8.unk_00 = 0;
+    malon->unk_1E0 = 1;
 }
 
 void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
@@ -351,6 +419,7 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.eventChkInf[1] & 0x40) {
+        // When the player pulls out the Ocarina while close to Malon
         if (player->stateFlags2 & 0x1000000) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
@@ -358,9 +427,18 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
             Message_StartTextbox(globalCtx, this->actor.textId, NULL);
             this->unk_1E8.unk_00 = 1;
             this->actor.flags |= ACTOR_FLAG_16;
-            this->actionFunc = func_80AA106C;
+            // when rando'ed, skip to the Item Giving. Otherwise go to the song teaching code.
+            this->actionFunc = gSaveContext.n64ddFlag ? func_80AA1150 : func_80AA106C;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
+            // somehow flags that the player is close to malon so that pulling out the Ocarina
+            // triggers the code above this.
             player->stateFlags2 |= 0x800000;
+        }
+        // If rando'ed, a textbox is closing, it's malon's 'my mom wrote this song' text, AND we do have an ocarina
+        // in our inventory. This allows us to grant the check when talking to malon with the ocarina in our inventory.
+        if (gSaveContext.n64ddFlag && (Actor_TextboxIsClosing(&this->actor, globalCtx) && globalCtx->msgCtx.textId == 0x2049) &&
+            (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
+            this->actionFunc = EnMa1_WaitForSongGive;
         }
     }
 }
@@ -383,14 +461,48 @@ void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx) {
     }
 }
 
+void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx) {
+    // Actually give the song check.
+    GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
+}
+
+// Sets an Ocarina State necessary to not softlock in rando.
+// This function should only be called in rando.
+void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
+    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+        this->actionFunc = func_80AA0F44;
+        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+    }
+
+    if (gSaveContext.n64ddFlag) {
+        // Transition to the giving the song check on the next update run.
+        this->actionFunc = EnMa1_WaitForSongGive;
+    }
+}
+
 void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
     GET_PLAYER(globalCtx)->stateFlags2 |= 0x800000;
+
+    // When rando'ed, trigger the "song learned" Ocarina mode.
+    if (gSaveContext.n64ddFlag && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING)) {
+        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+    }
+
     if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        globalCtx->nextEntranceIndex = 0x157;
-        gSaveContext.nextCutsceneIndex = 0xFFF1;
-        globalCtx->fadeTransition = 42;
-        globalCtx->sceneLoadFlag = 0x14;
-        this->actionFunc = EnMa1_DoNothing;
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->nextEntranceIndex = 0x157;
+            gSaveContext.nextCutsceneIndex = 0xFFF1;
+            globalCtx->fadeTransition = 42;
+            globalCtx->sceneLoadFlag = 0x14;
+            this->actionFunc = EnMa1_DoNothing;
+        } else {
+            // When rando'ed, skip the cutscene, play the chime, reset some flags,
+            // and give the song on next update.
+            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            this->actionFunc = EnMa1_EndTeachSong;
+            this->actor.flags &= ~ACTOR_FLAG_16;
+            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
+        }
     }
 }
 
@@ -451,7 +563,7 @@ void EnMa1_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 distFromCamera;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ma1.c", 1226);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     camera = GET_ACTIVE_CAM(globalCtx);
     distFromCamera = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
@@ -464,5 +576,5 @@ void EnMa1_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnMa1_OverrideLimbDraw, EnMa1_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ma1.c", 1261);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

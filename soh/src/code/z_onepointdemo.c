@@ -246,7 +246,7 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
                 D_801211D4[0].atTargetInit.y = actor->focus.pos.y - 5.0f;
                 D_801211D4[0].atTargetInit.z = actor->focus.pos.z;
                 spC0 = ((EnSw*)actor)->unk_364;
-                osSyncPrintf("%s(%d): xyz_t: %s (%f %f %f)\n", "../z_onepointdemo.c", 1671, "&cp", spC0.x, spC0.y,
+                osSyncPrintf("%s(%d): xyz_t: %s (%f %f %f)\n", __FILE__, __LINE__, "&cp", spC0.x, spC0.y,
                              spC0.z);
                 D_801211D4[0].eyeTargetInit.x = (actor->focus.pos.x + (120.0f * spC0.x)) - (Rand_ZeroOne() * 20.0f);
                 D_801211D4[0].eyeTargetInit.y = actor->focus.pos.y + (120.0f * spC0.y) + 20.0f;
@@ -791,7 +791,12 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
             break;
         case 4100:
             csInfo->keyFrames = D_801225D4;
-            csInfo->keyFrameCnt = 5;
+            // RANDO: Waterfall opening cutscene skips to the end of the cutscene data earlier by doing this
+            if (!(gSaveContext.n64ddFlag)) {
+                csInfo->keyFrameCnt = 5;
+            } else {
+                csInfo->keyFrameCnt = 2;
+            }
 
             player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = 0x3FFC;
             func_800C0808(globalCtx, camIdx, player, CAM_SET_CS_C);

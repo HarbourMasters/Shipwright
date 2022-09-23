@@ -69,6 +69,15 @@ void EnShopnuts_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
+    if (gSaveContext.n64ddFlag) {
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(globalCtx->sceneNum, this->actor.params, respawnData);
+
+        if (scrubIdentity.isShuffled && Flags_GetRandomizerInf(scrubIdentity.randomizerInf)) {
+            Actor_Kill(&this->actor);
+        }
+    }
+
     if (((this->actor.params == 0x0002) && (gSaveContext.itemGetInf[0] & 0x800)) ||
         ((this->actor.params == 0x0009) && (gSaveContext.infTable[25] & 4)) ||
         ((this->actor.params == 0x000A) && (gSaveContext.infTable[25] & 8))) {
@@ -275,7 +284,7 @@ void EnShopnuts_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     f32 z;
 
     if ((limbIndex == 9) && (this->actionFunc == EnShopnuts_ThrowNut)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_shopnuts.c", 682);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         curFrame = this->skelAnime.curFrame;
         if (curFrame <= 6.0f) {
             y = 1.0f - (curFrame * 0.0833f);
@@ -292,11 +301,10 @@ void EnShopnuts_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         }
 
         Matrix_Scale(x, y, z, MTXMODE_APPLY);
-        if (1) {}
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_shopnuts.c", 714),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gBusinessScrubNoseDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_shopnuts.c", 717);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

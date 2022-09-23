@@ -712,7 +712,7 @@ void EnBb_Down(EnBb* this, GlobalContext* globalCtx) {
             this->actor.velocity.y = 10.0f;
         }
         this->actor.bgCheckFlags &= ~1;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, false);
         Math_SmoothStepToS(&this->actor.world.rot.y, -this->actor.yawTowardsPlayer, 1, 0xBB8, 0);
     }
     this->actor.shape.rot.y = this->actor.world.rot.y;
@@ -1112,7 +1112,7 @@ void EnBb_Stunned(EnBb* this, GlobalContext* globalCtx) {
         } else {
             this->actor.velocity.y = 0.0f;
         }
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 7.0f, 2, 2.0f, 0, 0, false);
     }
     if (this->actor.colorFilterTimer == 0) {
         this->actor.shape.yOffset = 200.0f;
@@ -1280,7 +1280,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f blureVtx1;
     Vec3f blureVtx2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bb.c", 2044);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     blureBase1.z = this->maxSpeed * 80.0f;
     blureBase2.z = this->maxSpeed * 80.0f;
@@ -1297,7 +1297,6 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 //! the above bugs mean unk_2A8 can be nonzero without damage effects ever having been set.
                 //! This routine will then increment colorFilterTimer, and on the next frame Actor_Draw will try
                 //! to draw the unset colorFilterParams. This causes a divide-by-zero error, crashing the game.
-                if (1) {}
                 this->fireIceTimer--;
                 if ((this->fireIceTimer % 4) == 0) {
                     Vec3f sp70;
@@ -1334,7 +1333,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                (M_PI / 0x8000),
                            MTXMODE_APPLY);
             Matrix_Scale(this->flameScaleX * 0.01f, this->flameScaleY * 0.01f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bb.c", 2106),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
         } else {
@@ -1348,5 +1347,5 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bb.c", 2127);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

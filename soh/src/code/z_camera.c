@@ -11,7 +11,7 @@
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);
-s32 Camera_CheckWater(Camera* camera);
+s32 Camera_UpdateWater(Camera* camera);
 
 #define RELOAD_PARAMS \
     (camera->animState == 0 || camera->animState == 0xA || camera->animState == 0x14 || R_RELOAD_CAM_PARAMS)
@@ -27,6 +27,12 @@ s32 Camera_CheckWater(Camera* camera);
 
 #define FLG_ADJSLOPE (1 << 0)
 #define FLG_OFFGROUND (1 << 7)
+
+#define DISTORTION_HOT_ROOM (1 << 0)
+#define DISTORTION_UNDERWATER_WEAK (1 << 1)
+#define DISTORTION_UNDERWATER_MEDIUM (1 << 2)
+#define DISTORTION_UNDERWATER_STRONG (1 << 3)
+#define DISTORTION_UNDERWATER_FISHING (1 << 4)
 
 #include "z_camera_data.inc"
 
@@ -949,7 +955,6 @@ s32 func_800458D4(Camera* camera, VecSph* eyeAtDir, f32 arg2, f32* arg3, s16 arg
     eyeAtAngle = Math_FAtan2F(deltaY, OLib_Vec3fDistXZ(&camera->at, &camera->eye));
 
     if (eyeAtAngle > DEGF_TO_RADF(OREG(32))) {
-        if (1) {}
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(eyeAtAngle - OREG(32)));
     } else if (eyeAtAngle < DEGF_TO_RADF(OREG(33))) {
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(OREG(33)) - eyeAtAngle);
@@ -973,7 +978,7 @@ s32 func_80045B08(Camera* camera, VecSph* eyeAtDir, f32 yExtra, s16 arg3) {
     f32 phi_f2;
     Vec3f posOffsetTarget;
     Vec3f atTarget;
-    f32 sp38; // unused
+    f32 pad;
     f32 temp_ret;
     PosRot* playerPosRot = &camera->playerPosRot;
 
@@ -1410,7 +1415,115 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
+s32 SetCameraManual(Camera* camera) {
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
+
+    if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
+        camera->globalCtx->manualCamera = true;
+
+        VecSph eyeAdjustment;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
+
+        camera->globalCtx->camX = eyeAdjustment.yaw;
+        camera->globalCtx->camY = eyeAdjustment.pitch;
+    }
+
+    if (camera->globalCtx->manualCamera) {
+        return 1;
+    }
+
+    return 0;
+}
+
+s32 Camera_Free(Camera* camera) {
+    Vec3f* eye = &camera->eye;
+    Vec3f* at = &camera->at;
+    Vec3f* eyeNext = &camera->eyeNext;
+    VecSph spA8;
+    CamColChk sp6C;
+    Parallel1* para1 = (Parallel1*)camera->paramData;
+    f32 playerHeight;
+
+    at->x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, 0.5f, 1.0f);
+    at->y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
+                                                                      ? Player_GetHeight(camera->player) / 2
+                                                                      : Player_GetHeight(camera->player)) /
+                                                                     1.2f,
+                             camera->at.y, 0.5f, 1.0f);
+    at->z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, 0.5f, 1.0f);
+
+    playerHeight = Player_GetHeight(camera->player);
+
+    if (RELOAD_PARAMS) {
+        OLib_Vec3fDiffToVecSphGeo(&spA8, &camera->at, &camera->eye);
+
+        camera->globalCtx->camX = spA8.yaw;
+        camera->globalCtx->camY = spA8.pitch;
+
+        CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
+        f32 yNormal = (1.0f + PCT(OREG(46))) - (PCT(OREG(46)) * (68.0f / playerHeight));
+
+        para1->yOffset = NEXTPCT * playerHeight * yNormal;
+        para1->distTarget = NEXTPCT * playerHeight * yNormal;
+        para1->pitchTarget = DEGF_TO_BINANG(NEXTSETTING);
+        para1->yawTarget = DEGF_TO_BINANG(NEXTSETTING);
+        para1->unk_08 = NEXTSETTING;
+        para1->unk_0C = NEXTSETTING;
+        para1->fovTarget = NEXTSETTING;
+        para1->unk_14 = NEXTPCT;
+        para1->interfaceFlags = NEXTSETTING;
+        para1->unk_18 = NEXTPCT * playerHeight * yNormal;
+        para1->unk_1C = NEXTPCT;
+    }
+
+    if (R_RELOAD_CAM_PARAMS) {
+        Camera_CopyPREGToModeValues(camera);
+    }
+
+    sCameraInterfaceFlags = 1;
+
+    camera->animState = 1;
+
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
+
+    camera->globalCtx->camX += newCamX * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
+    camera->globalCtx->camY += newCamY * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);
+
+    if (camera->globalCtx->camY > 0x32A4) {
+        camera->globalCtx->camY = 0x32A4;
+    }
+    if (camera->globalCtx->camY < -0x228C) {
+        camera->globalCtx->camY = -0x228C;
+    }
+
+    camera->dist = Camera_LERPCeilF(para1->distTarget, camera->dist, 1.0f / camera->rUpdateRateInv, 0.0f);
+    OLib_Vec3fDiffToVecSphGeo(&spA8, at, eyeNext);
+
+    spA8.r = camera->dist;
+    spA8.yaw = camera->globalCtx->camX;
+    spA8.pitch = camera->globalCtx->camY;
+
+    Camera_Vec3fVecSphGeoAdd(eyeNext, at, &spA8);
+    if (camera->status == CAM_STAT_ACTIVE) {
+        sp6C.pos = *eyeNext;
+        Camera_BGCheckInfo(camera, at, &sp6C);
+        *eye = sp6C.pos;
+    }
+
+    camera->fov = Camera_LERPCeilF(65.0f, camera->fov, camera->fovUpdateRate, 1.0f);
+    camera->roll = Camera_LERPCeilS(0, camera->roll, 0.5, 0xA);
+
+    return 1;
+}
+
 s32 Camera_Normal1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1638,6 +1751,11 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1804,6 +1922,11 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1876,7 +1999,6 @@ s32 Camera_Normal3(Camera* camera) {
                                                     camera->yawUpdateRateInv, sp98, 0.1f);
         camera->pitchUpdateRateInv = Camera_LERPCeilF((f32)OREG(7) + (anim->swing.swingUpdateRateTimer * 2),
                                                       camera->pitchUpdateRateInv, sp94, 0.1f);
-        if (1) {}
         anim->swing.swingUpdateRateTimer--;
     } else {
         camera->yawUpdateRateInv = Camera_LERPCeilF(norm3->yawUpdateSpeed, camera->yawUpdateRateInv, sp98, 0.1f);
@@ -1998,6 +2120,8 @@ s32 Camera_Parallel1(Camera* camera) {
 
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
+
+    camera->globalCtx->manualCamera = false;
 
     switch (camera->animState) {
         case 0:
@@ -2164,6 +2288,11 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2309,6 +2438,11 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2491,6 +2625,11 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2948,6 +3087,11 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4478,6 +4622,11 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -5401,7 +5550,6 @@ s32 Camera_Unique9(Camera* camera) {
             }
 
             spB4 = scratchSph.r;
-            if (1) {}
             scratchSph.r =
                 !(spB4 < anim->curKeyFrame->eyeTargetInit.z)
                     ? Camera_LERPCeilF(anim->curKeyFrame->eyeTargetInit.z, spB4, anim->curKeyFrame->lerpStepScale, 1.0f)
@@ -6666,7 +6814,6 @@ s32 Camera_Special9(Camera* camera) {
     sCameraInterfaceFlags = params->interfaceFlags;
 
     switch (camera->animState) {
-        if (1) {}
 
         case 0:
             camera->unk_14C &= ~(0x4 | 0x2);
@@ -6751,7 +6898,6 @@ s32 Camera_Special9(Camera* camera) {
             }
             break;
     }
-    if (1) {}
     spAC = playerPosRot->pos;
     spAC.y += playerYOffset;
     camera->dist = OLib_Vec3fDist(&spAC, eye);
@@ -6762,7 +6908,7 @@ s32 Camera_Special9(Camera* camera) {
 }
 
 Camera* Camera_Create(View* view, CollisionContext* colCtx, GlobalContext* globalCtx) {
-    Camera* newCamera = ZeldaArena_MallocDebug(sizeof(*newCamera), "../z_camera.c", 9370);
+    Camera* newCamera = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*newCamera));
 
     if (newCamera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: create --- allocate %d byte" VT_RST "\n", sizeof(*newCamera) * 4);
@@ -6776,7 +6922,7 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, GlobalContext* globa
 void Camera_Destroy(Camera* camera) {
     if (camera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: destroy ---" VT_RST "\n");
-        ZeldaArena_FreeDebug(camera, "../z_camera.c", 9391);
+        ZELDA_ARENA_FREE_DEBUG(camera);
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK) "camera: destroy: already cleared\n" VT_RST);
     }
@@ -6864,19 +7010,20 @@ void func_80057FC4(Camera* camera) {
     if (camera != &camera->globalCtx->mainCamera) {
         camera->prevSetting = camera->setting = CAM_SET_FREE0;
         camera->unk_14C &= ~0x4;
-    } else if (camera->globalCtx->roomCtx.curRoom.mesh->polygon.type != 1) {
-        switch (camera->globalCtx->roomCtx.curRoom.unk_03) {
-            case 1:
+    } else if (camera->globalCtx->roomCtx.curRoom.meshHeader->base.type != 1) {
+        switch (camera->globalCtx->roomCtx.curRoom.behaviorType1) {
+            case ROOM_BEHAVIOR_TYPE1_1:
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_DUNGEON0;
                 break;
-            case 0:
+            case ROOM_BEHAVIOR_TYPE1_0:
                 osSyncPrintf("camera: room type: default set field\n");
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 break;
             default:
-                osSyncPrintf("camera: room type: default set etc (%d)\n", camera->globalCtx->roomCtx.curRoom.unk_03);
+                osSyncPrintf("camera: room type: default set etc (%d)\n",
+                             camera->globalCtx->roomCtx.curRoom.behaviorType1);
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 camera->unk_14C |= 4;
@@ -6955,7 +7102,7 @@ void Camera_InitPlayerSettings(Camera* camera, Player* player) {
     osSyncPrintf(VT_FGCOL(BLUE) "camera: personalize ---" VT_RST "\n");
 
     if (camera->thisIdx == MAIN_CAM) {
-        Camera_CheckWater(camera);
+        Camera_UpdateWater(camera);
     }
 }
 
@@ -7063,7 +7210,7 @@ void Camera_PrintSettings(Camera* camera) {
     }
 }
 
-s32 Camera_CheckWater(Camera* camera) {
+s32 Camera_UpdateWater(Camera* camera) {
     f32 waterY;
     s16 newQuakeId;
     s32 waterLightsIndex;
@@ -7140,7 +7287,7 @@ s32 Camera_CheckWater(Camera* camera) {
             camera->unk_14C |= 0x100;
             osSyncPrintf("kankyo changed water, sound on\n");
             Environment_EnableUnderwaterLights(camera->globalCtx, waterLightsIndex);
-            camera->unk_150 = 0x50;
+            camera->waterDistortionTimer = 80;
         }
 
         Audio_SetExtraFilter(0x20);
@@ -7159,13 +7306,13 @@ s32 Camera_CheckWater(Camera* camera) {
             }
         }
 
-        if (camera->unk_150 > 0) {
-            camera->unk_150--;
-            camera->unk_152 |= 8;
-        } else if (camera->globalCtx->sceneNum == 0x49) {
-            camera->unk_152 |= 0x10;
+        if (camera->waterDistortionTimer > 0) {
+            camera->waterDistortionTimer--;
+            camera->distortionFlags |= DISTORTION_UNDERWATER_STRONG;
+        } else if (camera->globalCtx->sceneNum == SCENE_TURIBORI) {
+            camera->distortionFlags |= DISTORTION_UNDERWATER_FISHING;
         } else {
-            camera->unk_152 |= 2;
+            camera->distortionFlags |= DISTORTION_UNDERWATER_WEAK;
         }
     } else {
         if (camera->unk_14C & 0x100) {
@@ -7175,21 +7322,18 @@ s32 Camera_CheckWater(Camera* camera) {
             if (*quakeId != 0) {
                 Quake_RemoveFromIdx(*quakeId);
             }
-            camera->unk_150 = 0;
-            camera->unk_152 = 0;
+            camera->waterDistortionTimer = 0;
+            camera->distortionFlags = 0;
         }
         Audio_SetExtraFilter(0);
     }
     //! @bug: doesn't always return a value, but sometimes does.
 }
 
-/**
- * Sets the room to be hot camera quake flag
- */
-s32 Camera_SetRoomHotFlag(Camera* camera) {
-    camera->unk_152 &= ~1;
-    if (camera->globalCtx->roomCtx.curRoom.unk_02 == 3) {
-        camera->unk_152 |= 1;
+s32 Camera_UpdateHotRoom(Camera* camera) {
+    camera->distortionFlags &= ~DISTORTION_HOT_ROOM;
+    if (camera->globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) {
+        camera->distortionFlags |= DISTORTION_HOT_ROOM;
     }
 
     return 1;
@@ -7224,80 +7368,87 @@ s32 Camera_DbgChangeMode(Camera* camera) {
     return true;
 }
 
-s16 D_8011DB08 = 0x3F0;
-s16 D_8011DB0C = 0x156;
-void func_80058E8C(Camera* camera) {
-    s32 pad3;
-    f32 sp60;
-    s32 pad;
-    s32 pad1;
-    s32 pad4;
-    f32 phi_f2;
-    s32 pad2;
-    f32 phi_f0;
-    f32 phi_f20;
-    f32 sp40;
-    f32 sp3C;
-    f32 sp38;
-    f32 sp34;
+s16 depthPhase = 0x3F0;
+s16 screenPlanePhase = 0x156;
+void Camera_UpdateDistortion(Camera* camera) {
+    f32 scaleFactor;
+    f32 speedFactor;
+    f32 depthPhaseStep;
+    f32 screenPlanePhaseStep;
+    s32 pad[5];
+    f32 xScale;
+    f32 yScale;
+    f32 zScale;
+    f32 speed;
 
-    if (camera->unk_152 != 0) {
-        if (camera->unk_152 & 4) {
-            phi_f0 = 0.0f;
-            phi_f2 = 170.0f;
-            sp3C = 0.01f;
-            sp40 = -0.01f;
-            sp38 = 0.0f;
-            sp34 = 0.6f;
-            phi_f20 = camera->unk_150 / 60.0f;
-            sp60 = 1.0f;
-        } else if (camera->unk_152 & 8) {
-            phi_f0 = 248.0f;
-            phi_f2 = -90.0f;
-            sp38 = 0.2f;
-            sp34 = 0.2f;
-            sp40 = -0.3f;
-            sp3C = 0.3f;
-            phi_f20 = camera->unk_150 / 80.0f;
-            sp60 = 1.0f;
-        } else if (camera->unk_152 & 2) {
-            phi_f0 = 359.2f;
-            phi_f2 = -18.5f;
-            sp40 = 0.09f;
-            sp38 = 0.01f;
-            sp3C = 0.09f;
-            sp34 = 0.08f;
-            phi_f20 =
+    if (camera->distortionFlags != 0) {
+        if (camera->distortionFlags & DISTORTION_UNDERWATER_MEDIUM) {
+            depthPhaseStep = 0.0f;
+            screenPlanePhaseStep = 170.0f;
+
+            xScale = -0.01f;
+            yScale = 0.01f;
+            zScale = 0.0f;
+
+            speed = 0.6f;
+            scaleFactor = camera->waterDistortionTimer / 60.0f;
+            speedFactor = 1.0f;
+        } else if (camera->distortionFlags & DISTORTION_UNDERWATER_STRONG) {
+            depthPhaseStep = 248.0f;
+            screenPlanePhaseStep = -90.0f;
+
+            xScale = -0.3f;
+            yScale = 0.3f;
+            zScale = 0.2f;
+
+            speed = 0.2f;
+            scaleFactor = camera->waterDistortionTimer / 80.0f;
+            speedFactor = 1.0f;
+        } else if (camera->distortionFlags & DISTORTION_UNDERWATER_WEAK) {
+            depthPhaseStep = 359.2f;
+            screenPlanePhaseStep = -18.5f;
+
+            xScale = 0.09f;
+            yScale = 0.09f;
+            zScale = 0.01f;
+
+            speed = 0.08f;
+            scaleFactor =
                 (((camera->waterYPos - camera->eye.y) > 150.0f ? 1.0f : (camera->waterYPos - camera->eye.y) / 150.0f) *
                  0.45f) +
                 (camera->speedRatio * 0.45f);
-            sp60 = phi_f20;
-        } else if (camera->unk_152 & 1) {
-            // hot room flag
-            phi_f2 = 150.0f;
-            phi_f0 = 0.0f;
-            sp3C = 0.01f;
-            sp38 = 0.01f;
-            sp40 = -0.01f;
-            sp34 = 0.6f;
-            sp60 = 1.0f;
-            phi_f20 = 1.0f;
+            speedFactor = scaleFactor;
+        } else if (camera->distortionFlags & DISTORTION_HOT_ROOM) {
+            // Gives the hot-room a small mirage-like appearance
+            depthPhaseStep = 0.0f;
+            screenPlanePhaseStep = 150.0f;
 
+            xScale = -0.01f;
+            yScale = 0.01f;
+            zScale = 0.01f;
+
+            speed = 0.6f;
+            speedFactor = 1.0f;
+            scaleFactor = 1.0f;
         } else {
+            // DISTORTION_UNDERWATER_FISHING
             return;
         }
-        D_8011DB08 += DEGF_TO_BINANG(phi_f0);
-        D_8011DB0C += DEGF_TO_BINANG(phi_f2);
-        Math_CosS(D_8011DB08);
-        Math_SinS(D_8011DB08);
-        Math_SinS(D_8011DB0C);
-        func_800AA76C(&camera->globalCtx->view, 0.0f, 0.0f, 0.0f);
-        func_800AA78C(&camera->globalCtx->view, Math_SinS(D_8011DB0C) * (sp40 * phi_f20) + 1.0f,
-                      Math_CosS(D_8011DB0C) * (sp3C * phi_f20) + 1.0f, Math_CosS(D_8011DB08) * (sp38 * phi_f20) + 1.0f);
-        func_800AA7AC(&camera->globalCtx->view, sp34 * sp60);
+
+        depthPhase += DEGF_TO_BINANG(depthPhaseStep);
+        screenPlanePhase += DEGF_TO_BINANG(screenPlanePhaseStep);
+
+        View_SetDistortionOrientation(&camera->globalCtx->view, Math_CosS(depthPhase) * 0.0f, Math_SinS(depthPhase) * 0.0f,
+                                 Math_SinS(screenPlanePhase) * 0.0f);
+        View_SetDistortionScale(&camera->globalCtx->view, Math_SinS(screenPlanePhase) * (xScale * scaleFactor) + 1.0f,
+                                Math_CosS(screenPlanePhase) * (yScale * scaleFactor) + 1.0f,
+                                Math_CosS(depthPhase) * (zScale * scaleFactor) + 1.0f);
+        View_SetDistortionSpeed(&camera->globalCtx->view, speed * speedFactor);
+
         camera->unk_14C |= 0x40;
+
     } else if (camera->unk_14C & 0x40) {
-        func_800AA814(&camera->globalCtx->view);
+        View_ClearDistortion(&camera->globalCtx->view);
         camera->unk_14C &= ~0x40;
     }
 }
@@ -7366,8 +7517,8 @@ Vec3s Camera_Update(Camera* camera) {
 
         if (sOOBTimer < 200) {
             if (camera->status == CAM_STAT_ACTIVE) {
-                Camera_CheckWater(camera);
-                Camera_SetRoomHotFlag(camera);
+                Camera_UpdateWater(camera);
+                Camera_UpdateHotRoom(camera);
             }
 
             if (!(camera->unk_14C & 4)) {
@@ -7507,7 +7658,8 @@ Vec3s Camera_Update(Camera* camera) {
 
     camera->skyboxOffset = quake.eyeOffset;
 
-    func_80058E8C(camera);
+    Camera_UpdateDistortion(camera);
+
     if ((camera->globalCtx->sceneNum == SCENE_SPOT00) && (camera->fov < 59.0f)) {
         View_SetScale(&camera->globalCtx->view, 0.79f);
     } else {
@@ -7532,7 +7684,7 @@ Vec3s Camera_Update(Camera* camera) {
                      BINANG_TO_DEGF(camera->camDir.x), camera->camDir.y, BINANG_TO_DEGF(camera->camDir.y));
     }
 
-    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT)) {
+    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVar_GetS32("gDebugCamera", 0)) {
         camera->timer = 0;
     }
 
@@ -7704,7 +7856,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     func_80078884(0);
                     break;
                 case 2:
-                    if (camera->globalCtx->roomCtx.curRoom.unk_03 == 1) {
+                    if (camera->globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_1) {
                         func_80078884(NA_SE_SY_ATTENTION_URGENCY);
                     } else {
                         func_80078884(NA_SE_SY_ATTENTION_ON);
@@ -7782,7 +7934,6 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
     }
 
     if (flags & 8) {
-        if (1) {}
         camera->camDataIdx = camera->prevCamDataIdx;
         camera->prevCamDataIdx = -1;
     } else if (!(flags & 4)) {

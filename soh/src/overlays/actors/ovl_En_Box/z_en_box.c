@@ -70,6 +70,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
+GetItemEntry sItem;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -419,12 +420,74 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         }
         osSyncPrintf("Actor_Environment_Tbox_On() %d\n", this->dyna.actor.params & 0x1F);
         Flags_SetTreasure(globalCtx, this->dyna.actor.params & 0x1F);
+
+        // treasure chest game rando
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if((this->dyna.actor.params & 0xF) < 2) {
+                    Flags_SetCollectible(globalCtx, 0x1B);
+                }
+                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                    Flags_SetCollectible(globalCtx, 0x1C);
+                }
+                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                    Flags_SetCollectible(globalCtx, 0x1D);
+                }
+                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                    Flags_SetCollectible(globalCtx, 0x1E);
+                }
+                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                    Flags_SetCollectible(globalCtx, 0x1F);
+                }
+            }
+        }
     } else {
         player = GET_PLAYER(globalCtx);
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            func_8002F554(&this->dyna.actor, globalCtx, 0 - (this->dyna.actor.params >> 5 & 0x7F));
+            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
+            
+            // RANDOTODO treasure chest game rando
+            if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+                if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                    if((this->dyna.actor.params & 0xF) < 2) {
+                        if(Flags_GetCollectible(globalCtx, 0x1B)) {
+                            sItem = blueRupee;
+                        }
+                    }
+                    if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                        if(Flags_GetCollectible(globalCtx, 0x1C)) {
+                            sItem = blueRupee;
+                        }
+                    }
+                    if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                        if(Flags_GetCollectible(globalCtx, 0x1D)) {
+                            sItem = blueRupee;
+                        }
+                    }
+                    if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                        if(Flags_GetCollectible(globalCtx, 0x1E)) {
+                            sItem = blueRupee;
+                        }
+                    }
+                    if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                        if(Flags_GetCollectible(globalCtx, 0x1F)) {
+                            sItem = blueRupee;
+                        }
+                    }
+                }
+            }
+            // Chests need to have a negative getItemId in order to not immediately give their item
+            // when approaching.
+            if (gSaveContext.n64ddFlag) {
+                sItem.getItemId = 0 - sItem.getItemId;
+                sItem.getItemFrom = ITEM_FROM_CHEST;
+                GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, globalCtx, sItem);
+            } else {
+                func_8002F554(&this->dyna.actor, globalCtx, -(this->dyna.actor.params >> 5 & 0x7F));
+            }
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
@@ -535,10 +598,10 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
             Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    if ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C && this->actionFunc == EnBox_Open &&
-        this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
-        EnBox_SpawnIceSmoke(this, globalCtx);
-    }
+    if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
+         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
+        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }
 
 void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
@@ -546,7 +609,7 @@ void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     s32 pad;
 
     if (limbIndex == 1) {
-        gSPMatrix((*gfx)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_box.c", 1492),
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->type != ENBOX_TYPE_DECORATED_BIG) {
             gSPDisplayList((*gfx)++, gTreasureChestChestFrontDL);
@@ -554,7 +617,7 @@ void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
             gSPDisplayList((*gfx)++, gTreasureChestBossKeyChestFrontDL);
         }
     } else if (limbIndex == 3) {
-        gSPMatrix((*gfx)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_box.c", 1502),
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->type != ENBOX_TYPE_DECORATED_BIG) {
             gSPDisplayList((*gfx)++, gTreasureChestChestSideAndLidDL);
@@ -569,7 +632,7 @@ Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx) {
     Gfx* dList;
 
     dList = Graph_Alloc(gfxCtx, sizeof(Gfx));
-    ASSERT(dList != NULL, "gfxp != NULL", "../z_en_box.c", 1528);
+    ASSERT(dList != NULL);
 
     dListHead = dList;
     gSPEndDisplayList(dListHead++);
@@ -583,7 +646,7 @@ Gfx* func_809CA4A0(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL, "gfxp != NULL", "../z_en_box.c", 1546);
+    ASSERT(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -601,7 +664,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL, "gfxp != NULL", "../z_en_box.c", 1564);
+    ASSERT(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -616,7 +679,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
 void EnBox_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnBox* this = (EnBox*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_box.c", 1581);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     /*
     this->dyna.actor.flags & ACTOR_FLAG_7 is set by Init (if type is 4 or 6)
@@ -644,5 +707,5 @@ void EnBox_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                        EnBox_PostLimbDraw, this, POLY_XLU_DISP);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_box.c", 1639);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

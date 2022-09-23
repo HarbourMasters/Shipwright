@@ -105,8 +105,8 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case FIRE_ROCK_SPAWNED_FALLING1: // spawned by encount2
             // sets unused vars?
-            this->unk17C.x = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.x);
-            this->unk17C.z = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.z);
+            this->unk_17C.x = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.x);
+            this->unk_17C.z = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.z);
         case FIRE_ROCK_SPAWNED_FALLING2: // spawned by encount2 and by the ceilling spawner
             this->scale = (Rand_ZeroFloat(2.0f) / 100.0f) + 0.02f;
             Actor_SetScale(&this->actor, this->scale);
@@ -200,7 +200,7 @@ void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
                 func_80033E88(&this->actor, globalCtx, 5, 2);
             case FIRE_ROCK_BROKEN_PIECE1:
                 Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
-                                         1, 8.0f, 500, 10, 0);
+                                         1, 8.0f, 500, 10, false);
                 for (i = 0; i < 5; i++) {
                     flamePos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                     flamePos.y = this->actor.floorHeight;
@@ -211,7 +211,7 @@ void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
                 break;
             default:
                 Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
-                                         3, 8.0f, 200, 10, 0);
+                                         3, 8.0f, 200, 10, false);
                 SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 40, NA_SE_EV_EXPLOSION);
                 Actor_Kill(&this->actor);
                 break;
@@ -382,7 +382,7 @@ void EnFireRock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnFireRock* this = (EnFireRock*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fire_rock.c", 747);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Translate(thisx->world.pos.x + this->relativePos.x, thisx->world.pos.y + this->relativePos.y,
                      thisx->world.pos.z + this->relativePos.z, MTXMODE_NEW);
     Matrix_RotateX(DEG_TO_RAD(this->rockRotation.x), MTXMODE_APPLY);
@@ -392,8 +392,8 @@ void EnFireRock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fire_rock.c", 768),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fire_rock.c", 773);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -8,6 +8,7 @@
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
 
@@ -539,10 +540,6 @@ void func_80AB6570(EnNiw* this, GlobalContext* globalCtx) {
                     posY += 20.0f;
                 }
                 if (posZ < 0.0f) {
-                    if (1) {} // Required to match
-                    if (1) {}
-                    if (1) {}
-                    if (1) {}
                     posZ -= 20.0f;
                 } else {
                     posZ += 20.0f;
@@ -890,10 +887,6 @@ void EnNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 camResult;
     s32 pad3[10];
 
-    if (1) {} // Required to match
-    if (1) {}
-    if (1) {}
-
     this->unk_294++;
 
     if (this->actionFunc != func_80AB6570) {
@@ -1153,6 +1146,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 0) {
+            feather->epoch++;
             feather->type = 1;
             feather->pos = *pos;
             feather->vel = *vel;
@@ -1204,14 +1198,15 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     EnNiwFeather* feather = &this->feathers[0];
 
-    OPEN_DISPS(gfxCtx, "../z_en_niw.c", 1897);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 1) {
+            FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             if (!flag) {
-                gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
+                gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherMaterialDL);
                 flag++;
             }
             Matrix_Translate(feather->pos.x, feather->pos.y, feather->pos.z, MTXMODE_NEW);
@@ -1219,13 +1214,14 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(feather->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_niw.c", 1913),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_niw.c", 1919);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnNiw_Reset(void) {

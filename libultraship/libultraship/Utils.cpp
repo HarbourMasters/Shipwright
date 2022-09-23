@@ -1,11 +1,19 @@
 #include "Utils.h"
 #include <cstring>
+#include <algorithm>
 
 #ifdef _MSC_VER
 #define strdup _strdup
 #endif
 
-namespace Utils {
+namespace Ship {
+	namespace Math {
+		float clamp(float d, float min, float max) {
+			const float t = d < min ? min : d;
+			return t > max ? max : t;
+		}
+	}
+
 	std::vector<std::string> SplitText(const std::string text, char separator = ' ', bool keep_quotes = false) {
 		std::vector<std::string> args;
 		char* input = strdup(text.c_str());
@@ -50,5 +58,11 @@ namespace Utils {
 		}
 
 		return args;
+	}
+
+	std::string toLowerCase(std::string in) {
+		std::string cpy(in);
+		std::transform(cpy.begin(), cpy.end(), cpy.begin(), ::tolower);
+		return cpy;
 	}
 }

@@ -88,7 +88,8 @@ typedef struct EnClearTagEffect {
     /* 0x0058 */ f32 rotationX;
     /* 0x005C */ f32 floorHeight;
     /* 0x0060 */ Vec3f floorTangent;
-} EnClearTagEffect; // size = 0x6C
+    /* 0x006C */ u32 epoch;
+} EnClearTagEffect; // size = 0x70
 
 #define CLEAR_TAG_EFFECT_MAX_COUNT 100
 

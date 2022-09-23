@@ -4,7 +4,9 @@
 
 #include "mixer.h"
 
+#ifndef __clang__
 #pragma GCC optimize ("unroll-loops")
+#endif
 
 #define ROUND_UP_64(v) (((v) + 63) & ~63)
 #define ROUND_UP_32(v) (((v) + 31) & ~31)
@@ -364,7 +366,7 @@ void aS8DecImpl(uint8_t flags, ADPCM_STATE state) {
     memcpy(state, out - 16, 16 * sizeof(int16_t));
 }
 
-void aAddMixerImpl(uint16_t in_addr, uint16_t out_addr, uint16_t count) {
+void aAddMixerImpl(uint16_t count, uint16_t in_addr, uint16_t out_addr) {
     int16_t *in = BUF_S16(in_addr);
     int16_t *out = BUF_S16(out_addr);
     int nbytes = ROUND_UP_64(ROUND_DOWN_16(count));
@@ -449,10 +451,14 @@ void aFilterImpl(uint8_t flags, uint16_t count_or_buf, int16_t *state_or_filter)
         int16_t *buf = BUF_S16(count_or_buf);
 
         if (flags == A_INIT) {
+#ifndef __clang__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmemset-elt-size"
+#endif
             memset(tmp, 0, 8 * sizeof(int16_t));
+#ifndef __clang__
 #pragma GCC diagnostic pop
+#endif
             memset(tmp2, 0, 8 * sizeof(int16_t));
         } else {
             memcpy(tmp, state_or_filter, 8 * sizeof(int16_t));

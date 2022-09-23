@@ -387,7 +387,7 @@ void EnFish_Dropped_Fall(EnFish* this, GlobalContext* globalCtx) {
                (this->actor.floorHeight < BGCHECK_Y_MIN + 10.0f)) {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "BG missing? Running Actor_delete"
-        osSyncPrintf("BG 抜け？ Actor_delete します(%s %d)\n", "../z_en_sakana.c", 822);
+        osSyncPrintf("BG 抜け？ Actor_delete します(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         Actor_Kill(&this->actor);
     }
@@ -628,8 +628,8 @@ void EnFish_UpdateCutscene(EnFish* this, GlobalContext* globalCtx) {
 
     if (csAction == NULL) {
         // "Warning : DEMO ended without dousa (action) 3 termination being called"
-        osSyncPrintf("Warning : dousa 3 消滅 が呼ばれずにデモが終了した(%s %d)(arg_data 0x%04x)\n", "../z_en_sakana.c",
-                     1169, this->actor.params);
+        osSyncPrintf("Warning : dousa 3 消滅 が呼ばれずにデモが終了した(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                     __LINE__, this->actor.params);
         EnFish_ClearCutsceneData(this);
         Actor_Kill(&this->actor);
         return;
@@ -653,7 +653,7 @@ void EnFish_UpdateCutscene(EnFish* this, GlobalContext* globalCtx) {
             return;
         default:
             // "Improper DEMO action"
-            osSyncPrintf("不正なデモ動作(%s %d)(arg_data 0x%04x)\n", "../z_en_sakana.c", 1200, this->actor.params);
+            osSyncPrintf("不正なデモ動作(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
             break;
     }
 

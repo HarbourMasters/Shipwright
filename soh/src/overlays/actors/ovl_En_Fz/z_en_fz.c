@@ -1,5 +1,6 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
 
@@ -717,9 +718,7 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     index = (6 - this->actor.colChkInfo.health) >> 1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fz.c", 1167);
-
-    if (1) {}
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actor.colChkInfo.health == 0) {
         index = 2;
@@ -731,7 +730,7 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, globalCtx->state.frames & 0x7F, 32, 32, 1, 0,
                                     (2 * globalCtx->state.frames) & 0x7F, 32, 32));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fz.c", 1183),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(POLY_XLU_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, ENVIRONMENT, 0);
@@ -740,7 +739,7 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, displayLists[index]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fz.c", 1200);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     EnFz_DrawIceSmoke(this, globalCtx);
 }
 
@@ -758,6 +757,7 @@ void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* 
             iceSmoke->xyScale = xyScale / 1000.0f;
             iceSmoke->primAlpha = 0;
             iceSmoke->timer = 0;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -782,6 +782,7 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
             iceSmoke->primAlpha = primAlpha;
             iceSmoke->timer = 0;
             iceSmoke->isTimerMod8 = isTimerMod8;
+            iceSmoke->epoch++;
             break;
         }
 
@@ -861,11 +862,13 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     u8 texLoaded = false;
 
-    OPEN_DISPS(gfxCtx, "../z_en_fz.c", 1384);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
+        FrameInterpolation_RecordOpenChild(iceSmoke, iceSmoke->epoch);
+
         if (iceSmoke->type > 0) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -881,13 +884,15 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
             Matrix_Translate(iceSmoke->pos.x, iceSmoke->pos.y, iceSmoke->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(iceSmoke->xyScale, iceSmoke->xyScale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_fz.c", 1424),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamDL));
         }
 
+        FrameInterpolation_RecordCloseChild();
+
         iceSmoke++;
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_fz.c", 1430);
+    CLOSE_DISPS(gfxCtx);
 }

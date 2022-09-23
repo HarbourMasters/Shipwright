@@ -84,7 +84,7 @@ void OceffWipe4_Draw(Actor* thisx, GlobalContext* globalCtx) {
         vtxPtr[11].v.cn[3] = vtxPtr[13].v.cn[3] = vtxPtr[15].v.cn[3] = vtxPtr[17].v.cn[3] = vtxPtr[19].v.cn[3] =
             vtxPtr[21].v.cn[3] = alpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_oceff_wipe4.c", 314);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -93,7 +93,7 @@ void OceffWipe4_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
     Matrix_Translate(0.0f, 0.0f, -z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_oceff_wipe4.c", 324),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params == OCEFF_WIPE4_UNUSED) {
@@ -107,5 +107,5 @@ void OceffWipe4_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                                      scroll * (-1), scroll, 32, 32));
     gSPDisplayListOffset(POLY_XLU_DISP++, sMaterial2DL, 11);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_oceff_wipe4.c", 344);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

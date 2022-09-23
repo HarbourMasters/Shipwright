@@ -2,6 +2,7 @@
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -150,6 +151,7 @@ void func_808C17C8(GlobalContext* globalCtx, Vec3f* arg1, Vec3f* arg2, Vec3f* ar
 
     for (i = 0; i < arg5; i++, eff++) {
         if (eff->unk_24 == 0) {
+            eff->epoch++;
             eff->unk_24 = 1;
             eff->unk_00 = *arg1;
             eff->unk_0C = *arg2;
@@ -216,9 +218,10 @@ void BossDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sJntSphInit, this->items);
 
     if (Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num)) { // KD is dead
-        temp_s1_3 = SEGMENTED_TO_VIRTUAL(gDodongosCavernBossLavaFloorTex);
-        temp_s2 = SEGMENTED_TO_VIRTUAL(sLavaFloorRockTex);
-
+        u16* LavaFloorTex = ResourceMgr_LoadTexByName(gDodongosCavernBossLavaFloorTex);
+        u16* LavaFloorRockTex = ResourceMgr_LoadTexByName(sLavaFloorRockTex);
+        temp_s1_3 = SEGMENTED_TO_VIRTUAL(LavaFloorTex);
+        temp_s2 = SEGMENTED_TO_VIRTUAL(LavaFloorRockTex);
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
                            -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
@@ -678,9 +681,9 @@ void BossDodongo_Walk(BossDodongo* this, GlobalContext* globalCtx) {
     } else if (this->unk_1BC != 2) {
         if (((s32)this->skelAnime.curFrame == 1) || ((s32)this->skelAnime.curFrame == 31)) {
             if ((s32)this->skelAnime.curFrame == 1) {
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_410, 25.0f, 0xA, 8.0f, 0x1F4, 0xA, 0);
+                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_410, 25.0f, 10, 8.0f, 500, 10, false);
             } else {
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_404, 25.0f, 0xA, 8.0f, 0x1F4, 0xA, 0);
+                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_404, 25.0f, 10, 8.0f, 500, 10, false);
             }
 
             if (this->unk_1BC != 0) {
@@ -775,8 +778,8 @@ void BossDodongo_Roll(BossDodongo* this, GlobalContext* globalCtx) {
             }
 
             if (!(this->unk_19E & 1)) {
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 0x1F4, 0xA,
-                                         0);
+                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 500, 10,
+                                         false);
             }
         }
     }
@@ -1074,7 +1077,7 @@ block_1:
     Matrix_TranslateRotateZYX(pos, rot);
 
     if (*dList != NULL) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_dodongo.c", 3787);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         mtxScaleZ = 1.0f;
         mtxScaleY = 1.0f;
@@ -1096,12 +1099,12 @@ block_1:
             Matrix_RotateX(-(this->unk_25C[limbIndex] * 0.115f), MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_dodongo.c", 3822),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_dodongo.c", 3826);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     { s32 pad; } // Required to match
     return 1;
@@ -1133,7 +1136,7 @@ void BossDodongo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossDodongo* this = (BossDodongo*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_dodongo.c", 3922);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
@@ -1151,7 +1154,7 @@ void BossDodongo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_dodongo.c", 3981);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     BossDodongo_DrawEffects(globalCtx);
 }
@@ -1410,8 +1413,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, GlobalContext* globalCtx) {
                     Camera_AddQuake(&globalCtx->mainCamera, 2, 1, 8);
                 }
                 if (!(this->unk_19E & 1)) {
-                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 0x1F4,
-                                             0xA, 0);
+                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 500, 10,
+                                             false);
                 }
                 tempSin = cornerPos->x - this->actor.world.pos.x;
                 tempCos = cornerPos->z - this->actor.world.pos.z;
@@ -1535,8 +1538,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, GlobalContext* globalCtx) {
             } else {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_ROLL - SFX_FLAG);
                 if (!(this->unk_19E & 1)) {
-                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 0x1F4,
-                                             0xA, 0);
+                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 500, 10,
+                                             false);
                 }
             }
             Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 0.2f, 0.1f, 0.0f);
@@ -1691,14 +1694,18 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
 
     eff = (BossDodongoEffect*)globalCtx->specialEffects;
 
-    OPEN_DISPS(gfxCtx, "../z_boss_dodongo.c", 5228);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     unkMtx = &globalCtx->billboardMtxF;
 
+    // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.
+#ifndef __SWITCH__
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
+#endif
 
     for (i = 0; i < 80; i++, eff++) {
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
         if (eff->unk_24 == 1) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -1711,11 +1718,12 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Translate(eff->unk_00.x, eff->unk_00.y, eff->unk_00.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(unkMtx);
             Matrix_Scale(eff->unk_2C, eff->unk_2C, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_dodongo.c", 5253),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_009DD0);
         }
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_boss_dodongo.c", 5258);
+    CLOSE_DISPS(gfxCtx);
 }

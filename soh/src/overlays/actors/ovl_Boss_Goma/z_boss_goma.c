@@ -326,6 +326,7 @@ void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 
  * Clear pixels from Gohma's textures
  */
 void BossGoma_ClearPixels(u8* clearPixelTable, s16 i) {
+    return;
     BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex), clearPixelTable, i);
     BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex), clearPixelTable, i);
     BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex), clearPixelTable, i);
@@ -373,12 +374,12 @@ void BossGoma_Init(Actor* thisx, GlobalContext* globalCtx) {
 void BossGoma_PlayEffectsAndSfx(BossGoma* this, GlobalContext* globalCtx, s16 arg2, s16 amountMinus1) {
     if (arg2 == 0 || arg2 == 1 || arg2 == 3) {
         Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f,
-                                 500, 10, 1);
+                                 500, 10, true);
     }
 
     if (arg2 == 0 || arg2 == 2 || arg2 == 3) {
         Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f,
-                                 500, 10, 1);
+                                 500, 10, true);
     }
 
     if (arg2 == 0) {
@@ -1383,7 +1384,7 @@ void BossGoma_FloorLandStruckDown(BossGoma* this, GlobalContext* globalCtx) {
         this->framesUntilNextAction = 150;
     }
 
-    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 55.0f, 4, 8.0f, 500, 10, 1);
+    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 55.0f, 4, 8.0f, 500, 10, true);
 }
 
 /**
@@ -1409,7 +1410,7 @@ void BossGoma_FloorStunned(BossGoma* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelanime);
 
     if (this->timer == 1) {
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 55.0f, 4, 8.0f, 500, 10, 1);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 55.0f, 4, 8.0f, 500, 10, true);
     }
 
     Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 1.0f);
@@ -1920,8 +1921,6 @@ void BossGoma_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->sfxFaintTimer--;
     }
 
-    if (1) {}
-
     this->eyeState = EYESTATE_IRIS_FOLLOW_BONUS_IFRAMES;
     this->actionFunc(this, globalCtx);
     this->actor.shape.rot.y = this->actor.world.rot.y;
@@ -1960,7 +1959,7 @@ s32 BossGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     BossGoma* this = (BossGoma*)thisx;
     s32 doNotDrawLimb = false;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_goma.c", 4685);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->mainEnvColor[0], (s16)this->mainEnvColor[1], (s16)this->mainEnvColor[2],
@@ -2011,7 +2010,7 @@ s32 BossGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
                 if (*dList != NULL) {
                     Matrix_Push();
                     Matrix_Scale(this->eyeIrisScaleX, this->eyeIrisScaleY, 1.0f, MTXMODE_APPLY);
-                    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_goma.c", 4815),
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPDisplayList(POLY_OPA_DISP++, *dList);
                     Matrix_Pop();
@@ -2032,7 +2031,7 @@ s32 BossGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
                 Matrix_Scale(this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4],
                              this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4],
                              this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4], MTXMODE_APPLY);
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_goma.c", 4836),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, *dList);
                 Matrix_Pop();
@@ -2042,7 +2041,7 @@ s32 BossGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
             break;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_goma.c", 4858);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return doNotDrawLimb;
 }
@@ -2089,7 +2088,7 @@ void BossGoma_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
                                                 childPos.x, childPos.y, childPos.z, childRot.x, childRot.y, childRot.z,
                                                 sDeadLimbLifetime[limbIndex] + 100);
         if (babyGohma != NULL) {
-            babyGohma->bossLimbDl = *dList;
+            babyGohma->bossLimbDL = *dList;
             babyGohma->actor.objBankIndex = this->actor.objBankIndex;
         }
     }
@@ -2125,7 +2124,7 @@ Gfx* BossGoma_NoBackfaceCullingDlist(GraphicsContext* gfxCtx) {
 void BossGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossGoma* this = (BossGoma*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_goma.c", 4991);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_Translate(0.0f, -4000.0f, 0.0f, MTXMODE_APPLY);
@@ -2147,7 +2146,7 @@ void BossGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, BossGoma_OverrideLimbDraw,
                       BossGoma_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_goma.c", 5012);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossGoma_SpawnChildGohma(BossGoma* this, GlobalContext* globalCtx, s16 i) {

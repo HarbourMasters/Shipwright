@@ -30,6 +30,7 @@ typedef struct EnNy {
     /* 0x01F0 */ f32 unk_1F0;
     /* 0x01F4 */ f32 unk_1F4;
     /* 0x01F8 */ Vec3f unk_1F8[16];
+    u32 epoch;
 } EnNy; // size = 0x02B8
 
 #endif

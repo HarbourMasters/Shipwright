@@ -141,7 +141,10 @@ void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx) {
     if (this->switchFlag < 0 || !Flags_GetSwitch(globalCtx, this->switchFlag)) {
         if ((Actor_ProcessTalkRequest(&this->actor, globalCtx))) {
             if (this->unk_156 != TEXT_STATE_DONE) {
-                this->actionFunc = func_80B395F0;
+                // not if we're rando'd in the temple of time talking to the altar
+                if(!(gSaveContext.n64ddFlag && globalCtx->sceneNum == 67)) {
+                    this->actionFunc = func_80B395F0;
+                }
             } else {
                 if (this->switchFlag >= 0) {
                     this->actor.flags &= ~ACTOR_FLAG_0;

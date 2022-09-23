@@ -76,12 +76,12 @@ void EffectSsDtBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     f32 scale;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_dt_bubble.c", 201);
+    OPEN_DISPS(gfxCtx);
 
     scale = this->rScale * 0.004f;
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_ss_dt_bubble.c", 213),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093C14(gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB,
@@ -91,7 +91,7 @@ void EffectSsDtBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     gSPSegment(POLY_XLU_DISP++, 0x08, this->gfx);
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffBubbleDL));
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_dt_bubble.c", 236);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsDtBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

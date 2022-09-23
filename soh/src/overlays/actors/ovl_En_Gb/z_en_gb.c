@@ -6,6 +6,7 @@
 
 #include "z_en_gb.h"
 #include "objects/object_ps/object_ps.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -184,6 +185,7 @@ void EnGb_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionTimer = (s16)Rand_ZeroFloat(100.0f) + 100;
 
     for (i = 0; i < ARRAY_COUNT(sCagedSoulPositions); i++) {
+        this->cagedSouls[i].epoch++;
         this->cagedSouls[i].infoIdx = (s32)Rand_ZeroFloat(30.0f) % 3;
         this->cagedSouls[i].unk_14.x = this->cagedSouls[i].translation.x =
             sCagedSoulPositions[i].x + this->dyna.actor.world.pos.x;
@@ -351,7 +353,12 @@ void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
 
 void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+        }
         this->actionFunc = func_80A2FBB0;
     }
 }
@@ -361,7 +368,12 @@ void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+        }
     }
 }
 
@@ -423,7 +435,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGb* this = (EnGb*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 763);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -436,7 +448,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, globalCtx);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 796);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx) {
@@ -517,13 +529,14 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 914);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 4; i++) {
         s32 idx = this->cagedSouls[i].infoIdx;
 
+        FrameInterpolation_RecordOpenChild(&this->cagedSouls[i], this->cagedSouls[i].epoch);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128));
@@ -543,12 +556,13 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         }
         Matrix_Scale(0.007f, 0.007f, 1.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gb.c", 955),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 962);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

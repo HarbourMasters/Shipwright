@@ -183,7 +183,6 @@ s32 func_80B0C0CC(EnSw* this, GlobalContext* globalCtx, s32 arg2) {
             if (phi_s1 == 0) {
                 sp78.x = sp84.x - (this->unk_37C.x * 24.0f);
                 sp78.y = sp84.y - (this->unk_37C.y * 24.0f);
-                if (0) {}
                 sp78.z = sp84.z - (this->unk_37C.z * 24.0f);
             } else if (phi_s1 == 1) {
                 sp78.x = sp84.x + (this->unk_370.x * 24.0f);
@@ -334,6 +333,9 @@ s32 func_80B0C9F0(EnSw* this, GlobalContext* globalCtx) {
             }
             Enemy_StartFinishingBlow(globalCtx, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
+                if (CVar_GetS32("gGsCutscene", 0)) {
+                    OnePointCutscene_Init(globalCtx, 2200, 90, &this->actor, MAIN_CAM);
+                }
                 this->skelAnime.playSpeed = 8.0f;
                 if ((globalCtx->state.frames & 1) == 0) {
                     this->unk_420 = 0.1f;
@@ -614,9 +616,9 @@ void func_80B0D878(EnSw* this, GlobalContext* globalCtx) {
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
-        temp_v0 =
-            Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI, this->actor.world.pos.x + x,
-                               this->actor.world.pos.y + y, this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
+        temp_v0 = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI,
+                                        this->actor.world.pos.x + x, this->actor.world.pos.y + y,
+                                        this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
         if (temp_v0 != NULL) {
             temp_v0->parent = NULL;
         }
@@ -656,7 +658,7 @@ void func_80B0DB00(EnSw* this, GlobalContext* globalCtx) {
         }
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 16.0f, 0xC, 2.0f, 0x78, 0xA, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 16.0f, 12, 2.0f, 120, 10, false);
     }
 }
 
@@ -730,7 +732,6 @@ s32 func_80B0DFFC(EnSw* this, GlobalContext* globalCtx) {
     } else if (((globalCtx->state.frames % 4) == 2) &&
                !BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &this->unk_46C, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
-        if (0) {}
         sp4C = false;
     } else if (((globalCtx->state.frames % 4) == 3) &&
                BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true,
@@ -906,7 +907,7 @@ s32 EnSw_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
     EnSw* this = (EnSw*)thisx;
     Vec3f sp3C = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2084);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (((this->actor.params & 0xE000) >> 0xD) != 0) {
         switch (limbIndex) {
@@ -961,7 +962,7 @@ s32 EnSw_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
 
     Collider_UpdateSpheres(limbIndex, &this->collider);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2145);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return false;
 }
@@ -972,7 +973,7 @@ void EnSw_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
 void func_80B0EDB8(GlobalContext* globalCtx, Color_RGBA8* arg1, s16 arg2, s16 arg3) {
     f32 temp_f2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2181);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     temp_f2 = (11500.0f / arg3) * (arg3 - arg2);
 
@@ -982,17 +983,17 @@ void func_80B0EDB8(GlobalContext* globalCtx, Color_RGBA8* arg1, s16 arg2, s16 ar
 
     POLY_OPA_DISP = Gfx_SetFog2(POLY_OPA_DISP, arg1->r, arg1->g, arg1->b, arg1->a, 0, (s16)temp_f2);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2197);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80B0EEA4(GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2205);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sw.c", 2207);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnSw_Draw(Actor* thisx, GlobalContext* globalCtx) {

@@ -111,9 +111,9 @@ static DamageTable sDamageTable = {
 };
 
 static InitChainEntry sInitChain[] = {
-    ICHAIN_S8(naviEnemyId, 0x30, 1),
-    ICHAIN_F32(targetArrowOffset, 5500, 1),
-    ICHAIN_F32_DIV1000(gravity, -1500, 0),
+    ICHAIN_S8(naviEnemyId, 0x30, ICHAIN_CONTINUE),
+    ICHAIN_F32(targetArrowOffset, 5500, ICHAIN_CONTINUE),
+    ICHAIN_F32_DIV1000(gravity, -1500, ICHAIN_STOP),
 };
 
 void EnWallmas_Init(Actor* thisx, GlobalContext* globalCtx) {
@@ -186,7 +186,7 @@ void EnWallmas_SetupLand(EnWallmas* this, GlobalContext* globalCtx) {
     Animation_Change(&this->skelAnime, objSegChangee, 1.0f, 41.0f, Animation_GetLastFrame(objSegFrameCount),
                      ANIMMODE_ONCE, -3.0f);
 
-    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 6, 20.0f, 0x12C, 0x64, 1);
+    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 6, 20.0f, 300, 100, true);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_LAND);
     this->actionFunc = EnWallmas_Land;
 }
@@ -585,7 +585,7 @@ void EnWallmas_DrawXlu(EnWallmas* this, GlobalContext* globalCtx) {
         return;
     }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1386);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80094044(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
@@ -602,10 +602,10 @@ void EnWallmas_DrawXlu(EnWallmas* this, GlobalContext* globalCtx) {
     }
 
     Matrix_Scale(xzScale, 1.0f, xzScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1421), G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1426);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnWallMas_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
@@ -624,7 +624,7 @@ s32 EnWallMas_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
 
 void EnWallMas_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     if (limbIndex == 2) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1478);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         Matrix_Push();
         Matrix_Translate(1600.0f, -700.0f, -1700.0f, MTXMODE_APPLY);
@@ -632,12 +632,12 @@ void EnWallMas_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         Matrix_RotateZ(DEGREE_15_RAD, MTXMODE_APPLY);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1489), G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, gWallmasterFingerDL);
 
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_wallmas.c", 1495);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

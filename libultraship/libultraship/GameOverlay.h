@@ -1,28 +1,29 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 
+#include "Console.h"
 #include "Lib/ImGui/imgui.h"
-#include <map>
 #include <unordered_map>
 
-enum class OverlayType {
-	TEXT, IMAGE, NOTIFICATION
-};
-
-struct Overlay {
-	OverlayType type;
-	const char* value;
-	float fadeTime;
-	float duration;
-};
-
 namespace Ship {
+
+	enum class OverlayType {
+		TEXT, IMAGE, NOTIFICATION
+	};
+
+	struct Overlay {
+		OverlayType type;
+		const char* value;
+		float fadeTime;
+		float duration;
+	};
+
 	class GameOverlay {
 	public:
-		std::unordered_map<std::string, Overlay*> RegisteredOverlays;
-		std::unordered_map<std::string, ImFont*> Fonts;
-		std::string CurrentFont = "Default";
+		static bool OverlayCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args);
+
 		void Init();
 		void Draw();
 		void DrawSettings();
@@ -33,10 +34,12 @@ namespace Ship {
 		void TextDraw(float x, float y, bool shadow, ImVec4 color, const char* text, ...);
 		void TextDrawNotification(float duration, bool shadow, const char* fmt, ...);
 	private:
+		std::unordered_map<std::string, ImFont*> Fonts;
+		std::unordered_map<std::string, Overlay*> RegisteredOverlays;
+		std::string CurrentFont = "Default";
 		bool NeedsCleanup = false;
+
 		void CleanupNotifications();
 		void LoadFont(const std::string& name, const std::string& path, float fontSize);
 	};
-
-	static bool OverlayCommand(const std::vector<std::string>& args);
 }

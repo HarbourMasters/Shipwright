@@ -723,14 +723,14 @@ void EnVali_DrawBody(EnVali* this, GlobalContext* globalCtx) {
     f32 curFrame;
     Vec3f scale = { 1.0f, 1.0f, 1.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_vali.c", 1428);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Get(&mtx);
     curFrame = this->skelAnime.curFrame;
     EnVali_PulseInsides(this, curFrame, &scale);
     Matrix_Scale(scale.x, scale.y, scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_vali.c", 1436),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBariInnerHoodDL);
 
@@ -740,19 +740,19 @@ void EnVali_DrawBody(EnVali* this, GlobalContext* globalCtx) {
     cos = Math_CosS(this->actor.shape.rot.y);
     sin = Math_SinS(this->actor.shape.rot.y);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_vali.c", 1446),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBariNucleusDL);
 
     Matrix_Translate((506.0f * cos) + (372.0f * sin), 1114.0f, (372.0f * cos) - (506.0f * sin), MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_vali.c", 1455),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBariNucleusDL);
 
     Matrix_Translate((-964.0f * cos) - (804.0f * sin), -108.0f, (-804.0f * cos) + (964.0f * sin), MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_vali.c", 1463),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBariNucleusDL);
 
@@ -763,13 +763,13 @@ void EnVali_DrawBody(EnVali* this, GlobalContext* globalCtx) {
     EnVali_PulseOutside(this, curFrame, &scale);
     Matrix_Scale(scale.x, scale.y, scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_vali.c", 1471),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBariOuterHoodDL);
 
     Matrix_Put(&mtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_vali.c", 1477);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static Gfx D_80B28998[] = {
@@ -788,7 +788,7 @@ void EnVali_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnVali* this = (EnVali*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_vali.c", 1505);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -805,5 +805,5 @@ void EnVali_Draw(Actor* thisx, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnVali_OverrideLimbDraw, EnVali_PostLimbDraw, this, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_vali.c", 1538);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

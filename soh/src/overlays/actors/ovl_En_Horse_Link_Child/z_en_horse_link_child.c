@@ -604,7 +604,7 @@ void EnHorseLinkChild_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* ski
 s32 EnHorseLinkChild_OverrideLimbDraw(Actor* thisx, GlobalContext* globalCtx, s32 arg2, Skin* skin) {
     EnHorseLinkChild* this = (EnHorseLinkChild*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_horse_link_child.c", 1467);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (arg2 == 0xD) {
         u8 index = sEyeIndexOrder[this->eyeTexIndex];
@@ -612,7 +612,7 @@ s32 EnHorseLinkChild_OverrideLimbDraw(Actor* thisx, GlobalContext* globalCtx, s3
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[index]));
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_horse_link_child.c", 1479);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return 1;
 }

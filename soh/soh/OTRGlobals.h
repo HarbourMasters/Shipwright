@@ -3,29 +3,39 @@
 
 #pragma once
 
-#include "GlobalCtx2.h"
+#include "SaveManager.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
+#include <libultraship/Window.h>
 #include "Enhancements/savestates.h"
+#include "Enhancements/randomizer/randomizer.h"
+
+const std::string customMessageTableID = "BaseGameOverrides";
+
 class OTRGlobals
 {
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
     ~OTRGlobals();
 
 private:
-
+	void CheckSaveFile(size_t sramSize) const;
 };
 #endif
 
 #ifndef __cplusplus
-void InitOTR();
-void Graph_ProcessFrame(void (*run_one_game_iter)(void));
+void InitOTR(void);
+void DeinitOTR(void);
+void VanillaItemTable_Init();
+void OTRAudio_Init();
+void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
 void OTRLogString(const char* src);
@@ -35,20 +45,35 @@ uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
+char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
+char* ResourceMgr_LoadJPEG(char* data, int dataSize);
 char* ResourceMgr_LoadTexByName(const char* texPath);
+uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
+uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
+uint32_t ResourceMgr_LoadTexSizeByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
+AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
 Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
+char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
+
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
+SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
+SequenceData ResourceMgr_LoadSeqByName(const char* path);
+SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
+void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
+s32* ResourceMgr_LoadCSByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
@@ -59,12 +84,6 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
-void bswapDrum(Drum* swappable);
-void bswapInstrument(Instrument* swappable);
-bool bswapSoundFontSound(SoundFontSound* swappable);
-void bswapSoundFontSample(SoundFontSample* swappable);
-void bswapAdpcmLoop(AdpcmLoop* swappable);
-void bswapAdpcmBook(AdpcmBook* swappable);
 char* ResourceMgr_LoadFileRaw(const char* resName);
 bool AudioPlayer_Init(void);
 int AudioPlayer_Buffered(void);
@@ -72,6 +91,29 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void Controller_BlockGameInput();
+void Controller_UnblockGameInput();
+void Hooks_ExecuteAudioInit();
+void* getN64WeirdFrame(s32 i);
+Sprite* GetSeedTexture(uint8_t index);
+void Randomizer_LoadSettings(const char* spoilerFileName);
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
+void Randomizer_LoadHintLocations(const char* spoilerFileName);
+void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
+void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
+void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+bool Randomizer_IsTrialRequired(RandomizerInf trial);
+GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
+int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
+void Overlay_DisplayText(float duration, const char* text);
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 #endif
 
 #endif

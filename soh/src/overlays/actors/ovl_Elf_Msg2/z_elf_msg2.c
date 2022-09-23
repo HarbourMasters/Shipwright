@@ -47,14 +47,14 @@ void ElfMsg2_SetupAction(ElfMsg2* this, ElfMsg2ActionFunc actionFunc) {
 s32 ElfMsg2_KillCheck(ElfMsg2* this, GlobalContext* globalCtx) {
     if ((this->actor.world.rot.y > 0) && (this->actor.world.rot.y < 0x41) &&
         Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 1)) {
-        LOG_STRING("共倒れ", "../z_elf_msg2.c", 171); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F));
         }
         Actor_Kill(&this->actor);
         return 1;
     } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(globalCtx, this->actor.room)) {
-        LOG_STRING("共倒れ２", "../z_elf_msg2.c", 182); // "Mutual destruction 2"
+        LOG_STRING("共倒れ２"); // "Mutual destruction 2"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F));
         }
@@ -63,7 +63,7 @@ s32 ElfMsg2_KillCheck(ElfMsg2* this, GlobalContext* globalCtx) {
     } else if (((this->actor.params >> 8) & 0x3F) == 0x3F) {
         return 0;
     } else if (Flags_GetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F))) {
-        LOG_STRING("共倒れ", "../z_elf_msg2.c", 192); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         Actor_Kill(&this->actor);
         return 1;
     }
@@ -154,7 +154,7 @@ void ElfMsg2_Update(Actor* thisx, GlobalContext* globalCtx) {
 
 void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
 #if ZELDA_DEBUG
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg2.c", 355);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (R_NAVI_MSG_REGION_ALPHA == 0) {
         return;
@@ -162,11 +162,11 @@ void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 100, 100, 255, R_NAVI_MSG_REGION_ALPHA);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_elf_msg2.c", 362),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_809ADC38);
     gSPDisplayList(POLY_XLU_DISP++, sCubeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg2.c", 367);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     #endif
 }

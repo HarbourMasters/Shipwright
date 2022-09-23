@@ -23,6 +23,7 @@ typedef struct EnNwcChick {
     /* 0x36 */ u16 height;
     /* 0x38 */ CollisionPoly* floorPoly;
     /* 0x44 */ char unk_3C[0x20]; 
+    u32 epoch;
 } EnNwcChick; // size = 0x5C
 
 typedef struct EnNwc {

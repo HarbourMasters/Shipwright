@@ -17,8 +17,8 @@ void EffectSs_InitInfo(GlobalContext* globalCtx, s32 tableSize) {
     }
 
     sEffectSsInfo.table =
-        GameState_Alloc(&globalCtx->state, tableSize * sizeof(EffectSs), "../z_effect_soft_sprite.c", 289);
-    ASSERT(sEffectSsInfo.table != NULL, "EffectSS2Info.data_table != NULL", "../z_effect_soft_sprite.c", 290);
+        GAMESTATE_ALLOC_MC(&globalCtx->state, tableSize * sizeof(EffectSs));
+    ASSERT(sEffectSsInfo.table != NULL);
 
     sEffectSsInfo.searchStartIndex = 0;
     sEffectSsInfo.tableSize = tableSize;
@@ -54,7 +54,7 @@ void EffectSs_ClearAll(GlobalContext* globalCtx) {
         addr = overlay->loadedRamAddr;
 
         if (addr != NULL) {
-            ZeldaArena_FreeDebug(addr, "../z_effect_soft_sprite.c", 337);
+            ZELDA_ARENA_FREE_DEBUG(addr);
         }
 
         overlay->loadedRamAddr = NULL;
@@ -175,7 +175,7 @@ void EffectSs_Spawn(GlobalContext* globalCtx, s32 type, s32 priority, void* init
 
     overlayEntry = &gEffectSsOverlayTable[type];
 
-    ASSERT(type < EFFECT_SS_TYPE_MAX, "type < EFFECT_SS2_TYPE_LAST_LABEL", "../z_effect_soft_sprite.c", 556);
+    ASSERT(type < EFFECT_SS_TYPE_MAX);
 
     if (EffectSs_FindSlot(priority, &index) != 0) {
         // Abort because we couldn't find a suitable slot to add this effect in
@@ -191,7 +191,7 @@ void EffectSs_Spawn(GlobalContext* globalCtx, s32 type, s32 priority, void* init
         initInfo = overlayEntry->initInfo;
     } else {
         if (overlayEntry->loadedRamAddr == NULL) {
-            overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize, "../z_effect_soft_sprite.c", 585);
+            overlayEntry->loadedRamAddr = ZELDA_ARENA_MALLOC_RDEBUG(overlaySize);
 
             if (overlayEntry->loadedRamAddr == NULL) {
                 osSyncPrintf(VT_FGCOL(RED));

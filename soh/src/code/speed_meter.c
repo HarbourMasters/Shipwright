@@ -29,7 +29,7 @@ SpeedMeterTimeEntry sSpeedMeterTimeEntryArray[] = {
     gDPPipeSync(gfx);
 
 void SpeedMeter_InitImpl(SpeedMeter* this, u32 arg1, u32 y) {
-    LogUtils_CheckNullPointer("this", this, "../speed_meter.c", 181);
+    LOG_CHECK_NULL_POINTER("this", this);
     this->unk_18 = arg1;
     this->y = y;
 }
@@ -55,12 +55,12 @@ void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
     uly = this->y;
     lry = this->y + 2;
 
-    OPEN_DISPS(gfxCtx, "../speed_meter.c", 225);
-
     /*! @bug if gIrqMgrRetraceTime is 0, CLOSE_DISPS will never be reached */
     if (gIrqMgrRetraceTime == 0) {
         return;
     }
+
+    OPEN_DISPS(gfxCtx);
 
     sSpeedMeterTimeEntryPtr = &sSpeedMeterTimeEntryArray[0];
     for (i = 0; i < ARRAY_COUNT(sSpeedMeterTimeEntryArray); i++) {
@@ -98,7 +98,7 @@ void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
 
     OVERLAY_DISP = gfx;
 
-    CLOSE_DISPS(gfxCtx, "../speed_meter.c", 276);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void SpeedMeter_InitAllocEntry(SpeedMeterAllocEntry* this, u32 maxval, u32 val, u16 backColor, u16 foreColor, u32 ulx,
@@ -120,10 +120,10 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
 
     if (this->maxval == 0) {
         osSyncPrintf(VT_FGCOL(RED));
-        LOG_NUM("this->maxval", this->maxval, "../speed_meter.c", 313);
+        LOG_NUM("this->maxval", this->maxval);
         osSyncPrintf(VT_RST);
     } else {
-        OPEN_DISPS(gfxCtx, "../speed_meter.c", 318);
+        OPEN_DISPS(gfxCtx);
 
         View_Init(&view, gfxCtx);
         view.flags = 0xA;
@@ -146,7 +146,7 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
         gDPPipeSync(gfx++);
 
         OVERLAY_DISP = gfx;
-        CLOSE_DISPS(gfxCtx, "../speed_meter.c", 339);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 

@@ -7,6 +7,7 @@
 #include "z_en_anubice_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_anubice/object_anubice.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -62,6 +63,7 @@ void EnAnubiceFire_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_15A = 30;
     this->unk_154 = 2.0f;
     this->scale = 0.0f;
+    this->epoch++;
 
     for (i = 0; i < 6; i++) {
         this->unk_160[i] = this->actor.world.pos;
@@ -114,7 +116,7 @@ void func_809B27D8(EnAnubiceFire* this, GlobalContext* globalCtx) {
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_SHIELD_REFLECT_SW);
             this->cylinder.base.atFlags &= 0xFFE9;
             this->cylinder.base.atFlags |= 8;
-            this->cylinder.info.toucher.dmgFlags = 2;
+            this->cylinder.info.toucher.dmgFlags = CVar_GetS32("gAnubisFix", 0) ? 0x800 : 2;
             this->unk_15A = 30;
             this->actor.params = 1;
             this->actor.velocity.x *= -1.0f;
@@ -180,8 +182,6 @@ void EnAnubiceFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     func_8002D7EC(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
 
-    if (1) {}
-
     for (i = 4; i >= 0; i--) {
         this->unk_160[i + 1] = this->unk_160[i];
     }
@@ -222,7 +222,7 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad[2];
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 503);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 0, 255);
@@ -232,6 +232,8 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Matrix_Push();
     for (i = this->unk_15E; i < 6; ++i) {
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
+
         f32 scale = this->actor.scale.x - (i * 0.2f);
 
         if (scale < 0.0f) {
@@ -244,11 +246,13 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_RotateZ(this->actor.world.rot.z + i * 1000.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 546),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
 
         if (this->scale < 0.1f) {
             break;
@@ -256,5 +260,5 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 556);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

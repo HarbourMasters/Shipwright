@@ -557,7 +557,7 @@ void EnWf_RunAtPlayer(EnWf* this, GlobalContext* globalCtx) {
             }
             if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (sp58 <= 0) && ((playSpeed + animPrevFrame) > 0)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
             }
         }
     }
@@ -688,7 +688,7 @@ void EnWf_RunAroundPlayer(EnWf* this, GlobalContext* globalCtx) {
         if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (animFrameSpeedDiff <= 0) &&
             (animSpeed + animPrevFrame > 0)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
         }
 
         if ((globalCtx->gameplayFrames & 95) == 0) {
@@ -751,7 +751,7 @@ void EnWf_Slash(EnWf* this, GlobalContext* globalCtx) {
         SkelAnime_Update(&this->skelAnime)) {
         if ((curFrame != 15) && (this->actionTimer != 0)) {
             this->actor.shape.rot.y += (s16)(3276.0f * (1.5f + (this->actionTimer - 4) * 0.4f));
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 1, 2.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 15.0f, 1, 2.0f, 50, 50, true);
             this->actionTimer--;
         } else if (!Actor_IsFacingPlayer(&this->actor, 0x1554) && (curFrame != 15)) {
             EnWf_SetupWait(this);
@@ -1168,7 +1168,7 @@ void EnWf_Sidestep(EnWf* this, GlobalContext* globalCtx) {
         if ((animPrevFrame != (s32)this->skelAnime.curFrame) && (animFrameSpeedDiff <= 0) &&
             ((animSpeed + animPrevFrame) > 0)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, 1);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 20.0f, 3, 3.0f, 50, 50, true);
         }
 
         if ((globalCtx->gameplayFrames & 95) == 0) {
@@ -1430,7 +1430,7 @@ static void* sWolfosWhiteEyeTextures[] = { gWolfosWhiteEyeOpenTex, gWolfosWhiteE
 void EnWf_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnWf* this = (EnWf*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_wf.c", 2157);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // This conditional will always evaluate to true, since unk_300 is false whenever action is
     // WOLFOS_ACTION_WAIT_TO_APPEAR.
@@ -1448,7 +1448,6 @@ void EnWf_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         if (this->fireTimer != 0) {
             this->actor.colorFilterTimer++;
-            if (1) {}
             this->fireTimer--;
 
             if ((this->fireTimer % 4) == 0) {
@@ -1459,7 +1458,7 @@ void EnWf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_wf.c", 2190);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnWf_DodgeRanged(GlobalContext* globalCtx, EnWf* this) {

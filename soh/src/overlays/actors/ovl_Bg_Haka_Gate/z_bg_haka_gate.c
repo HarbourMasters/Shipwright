@@ -34,6 +34,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Update(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Draw(Actor* this, GlobalContext* globalCtx);
+void BgHakaGate_Reset(void);
 
 void BgHakaGate_DoNothing(BgHakaGate* this, GlobalContext* globalCtx);
 void BgHakaGate_StatueInactive(BgHakaGate* this, GlobalContext* globalCtx);
@@ -62,7 +63,7 @@ const ActorInit Bg_Haka_Gate_InitVars = {
     (ActorFunc)BgHakaGate_Destroy,
     (ActorFunc)BgHakaGate_Update,
     (ActorFunc)BgHakaGate_Draw,
-    NULL,
+    (ActorResetFunc)BgHakaGate_Reset,
 };
 
 static InitChainEntry sInitChain[] = {
@@ -192,12 +193,7 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
     s16 turnAngle;
 
     this->vTurnRateDeg10++;
-    if (CVar_GetS32("gFasterBlockPush", 0) != 0) {
-        this->vTurnRateDeg10 = 10;
-        CLAMP_MAX(this->vTurnRateDeg10, 5);
-    } else {
-        this->vTurnRateDeg10 = CLAMP_MAX(this->vTurnRateDeg10, 5);
-    }
+    this->vTurnRateDeg10 = CLAMP_MAX(this->vTurnRateDeg10, 10);
     turnFinished = Math_StepToS(&this->vTurnAngleDeg10, 600, this->vTurnRateDeg10);
     turnAngle = this->vTurnAngleDeg10 * this->vTurnDirection;
     this->dyna.actor.shape.rot.y = (this->vRotYDeg10 + turnAngle) * 0.1f * (0x10000 / 360.0f);
@@ -215,9 +211,9 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
     if (turnFinished) {
         player->stateFlags2 &= ~0x10;
         this->vRotYDeg10 = (this->vRotYDeg10 + turnAngle) % 3600;
-        this->vTurnRateDeg10 = 0;
+        this->vTurnRateDeg10 = CVar_GetS32("gFasterBlockPush", 0) * 2;
         this->vTurnAngleDeg10 = 0;
-        this->vTimer = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 2 : 5;
+        this->vTimer = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
         this->actionFunc = BgHakaGate_StatueIdle;
         this->dyna.unk_150 = 0.0f;
     }
@@ -297,7 +293,7 @@ void BgHakaGate_FalseSkull(BgHakaGate* this, GlobalContext* globalCtx) {
     if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
         Math_StepToS(&this->vFlameScale, 350, 20);
     }
-    if (globalCtx->actorCtx.unk_03) {
+    if (globalCtx->actorCtx.lensActive) {
         this->dyna.actor.flags |= ACTOR_FLAG_7;
     } else {
         this->dyna.actor.flags &= ~ACTOR_FLAG_7;
@@ -319,9 +315,7 @@ void BgHakaGate_DrawFlame(BgHakaGate* this, GlobalContext* globalCtx) {
     f32 scale;
 
     if (this->vFlameScale > 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 716);
-
-        if (1) {}
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -334,10 +328,10 @@ void BgHakaGate_DrawFlame(BgHakaGate* this, GlobalContext* globalCtx) {
         Matrix_RotateY(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) * (M_PI / 0x8000), MTXMODE_APPLY);
         scale = this->vFlameScale * 0.00001f;
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 744),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 749);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -356,22 +350,22 @@ void BgHakaGate_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         func_80093D18(globalCtx->state.gfxCtx);
         if (thisx->params == BGHAKAGATE_FLOOR) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 781);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             Matrix_Get(&currentMtxF);
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->vOpenAngle * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Translate(0.0f, 0.0f, 2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 788),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_010A10);
             Matrix_Put(&currentMtxF);
             Matrix_Translate(0.0f, 0.0f, 2000.0f, MTXMODE_APPLY);
             Matrix_RotateX(-this->vOpenAngle * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 796),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_010C10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_haka_gate.c", 800);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         } else {
             Gfx_DrawDListOpa(globalCtx, displayLists[thisx->params]);
         }
@@ -379,4 +373,8 @@ void BgHakaGate_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (thisx->params == BGHAKAGATE_SKULL) {
         BgHakaGate_DrawFlame(this, globalCtx);
     }
+}
+
+void BgHakaGate_Reset(void) {
+    sStatueRotY = 0;
 }

@@ -113,7 +113,7 @@ void ObjMure2_SpawnActors(ObjMure2* this, GlobalContext* globalCtx) {
     for (i = 0; i < D_80B9A818[actorNum]; i++) {
         if (this->actorSpawnPtrList[i] != NULL) {
             // "Warning : I already have a child (%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Warning : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", "../z_obj_mure2.c", 269,
+            osSyncPrintf("Warning : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                          this->actor.params);
             continue;
         }

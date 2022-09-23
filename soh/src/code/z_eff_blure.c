@@ -3,6 +3,10 @@
 
 #include "soh/frame_interpolation.h"
 
+const Color_RGB8 TrailsColorOriginal = { 255, 255, 255 };
+const Color_RGB8 BoomColorOriginal = { 255, 255, 100 };
+const Color_RGB8 BombColorOriginal = { 200, 0, 0 };
+
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -71,6 +75,11 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
+//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+void EffectBlure_ChangeType(EffectBlure* this, int type) {
+    this->trailType = type;
+}
+
 void EffectBlure_AddSpace(EffectBlure* this) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -137,6 +146,7 @@ void EffectBlure_Init1(void* thisx, void* initParamsx) {
         this->elemDuration = initParams->elemDuration;
         this->unkFlag = initParams->unkFlag;
         this->calcMode = initParams->calcMode;
+        this->trailType = initParams->trailType;
         this->flags = 0;
         this->addAngleChange = 0;
         this->addAngle = 0;
@@ -185,6 +195,7 @@ void EffectBlure_Init2(void* thisx, void* initParamsx) {
         this->mode4Param = initParams->mode4Param;
         this->altPrimColor = initParams->altPrimColor;
         this->altEnvColor = initParams->altEnvColor;
+        this->trailType = initParams->trailType;
     }
 }
 
@@ -194,6 +205,203 @@ void EffectBlure_Destroy(void* thisx) {
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
+
+    Color_RGB8 SwordTopCol = CVar_GetRGB("gSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 SwordBottomCol = CVar_GetRGB("gSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 BoomStartCol = CVar_GetRGB("gBoomTrailStartCol", BoomColorOriginal);
+    Color_RGB8 BoomEndCol = CVar_GetRGB("gBoomTrailEndCol", BoomColorOriginal);
+    Color_RGB8 BombchuCol = CVar_GetRGB("gBombTrailCol", BombColorOriginal);
+    Color_RGB8 KSwordTopCol = CVar_GetRGB("gKSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 KSwordBottomCol = CVar_GetRGB("gKSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 MSwordTopCol = CVar_GetRGB("gMSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 MSwordBottomCol = CVar_GetRGB("gMSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 BSwordTopCol = CVar_GetRGB("gBSwordTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 BSwordBottomCol = CVar_GetRGB("gBSwordTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 StickTopCol = CVar_GetRGB("gStickTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 StickBottomCol = CVar_GetRGB("gStickTrailBottomCol", TrailsColorOriginal);
+    Color_RGB8 HammerTopCol = CVar_GetRGB("gHammerTrailTopCol", TrailsColorOriginal);
+    Color_RGB8 HammerBottomCol = CVar_GetRGB("gHammerTrailBottomCol", TrailsColorOriginal);
+
+    if ((CVar_GetS32("gUseTrailsCol", 0) != 0) && (this->trailType != 0)) {
+        switch (this->trailType) { //there HAS to be a better way to do this.
+            case 1: //sword
+                this->p1StartColor.r = SwordTopCol.r;
+                this->p2StartColor.r = SwordBottomCol.r;
+                this->p1EndColor.r = SwordTopCol.r;
+                this->p2EndColor.r = SwordBottomCol.r;
+                this->p1StartColor.g = SwordTopCol.g;
+                this->p2StartColor.g = SwordBottomCol.g;
+                this->p1EndColor.g = SwordTopCol.g;
+                this->p2EndColor.g = SwordBottomCol.g;
+                this->p1StartColor.b = SwordTopCol.b;
+                this->p2StartColor.b = SwordBottomCol.b;
+                this->p1EndColor.b = SwordTopCol.b;
+                this->p2EndColor.b = SwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 2: //boomerang
+                this->p1StartColor.r = BoomStartCol.r;
+                this->p2StartColor.r = BoomStartCol.r;
+                this->p1EndColor.r = BoomEndCol.r;
+                this->p2EndColor.r = BoomEndCol.r;
+                this->p1StartColor.g = BoomStartCol.g;
+                this->p2StartColor.g = BoomStartCol.g;
+                this->p1EndColor.g = BoomEndCol.g;
+                this->p2EndColor.g = BoomEndCol.g;
+                this->p1StartColor.b = BoomStartCol.b;
+                this->p2StartColor.b = BoomStartCol.b;
+                this->p1EndColor.b = BoomEndCol.b;
+                this->p2EndColor.b = BoomEndCol.b;
+                break;
+            case 3: // bombchu
+                this->p1StartColor.r = BombchuCol.r;
+                this->p2StartColor.r = BombchuCol.r * 0.8f;
+                this->p1EndColor.r = BombchuCol.r * 0.6f;
+                this->p2EndColor.r = BombchuCol.r * 0.4f;
+                this->p1StartColor.g = BombchuCol.g;
+                this->p2StartColor.g = BombchuCol.g * 0.8f;
+                this->p1EndColor.g = BombchuCol.g * 0.6f;
+                this->p2EndColor.g = BombchuCol.g * 0.4f;
+                this->p1StartColor.b = BombchuCol.b;
+                this->p2StartColor.b = BombchuCol.b * 0.8f;
+                this->p1EndColor.b = BombchuCol.b * 0.6f;
+                this->p2EndColor.b = BombchuCol.b * 0.4f;
+                break;
+            case 4: // kokiri sword
+                this->p1StartColor.r = KSwordTopCol.r;
+                this->p2StartColor.r = KSwordBottomCol.r;
+                this->p1EndColor.r = KSwordTopCol.r;
+                this->p2EndColor.r = KSwordBottomCol.r;
+                this->p1StartColor.g = KSwordTopCol.g;
+                this->p2StartColor.g = KSwordBottomCol.g;
+                this->p1EndColor.g = KSwordTopCol.g;
+                this->p2EndColor.g = KSwordBottomCol.g;
+                this->p1StartColor.b = KSwordTopCol.b;
+                this->p2StartColor.b = KSwordBottomCol.b;
+                this->p1EndColor.b = KSwordTopCol.b;
+                this->p2EndColor.b = KSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 5: // master sword
+                this->p1StartColor.r = MSwordTopCol.r;
+                this->p2StartColor.r = MSwordBottomCol.r;
+                this->p1EndColor.r = MSwordTopCol.r;
+                this->p2EndColor.r = MSwordBottomCol.r;
+                this->p1StartColor.g = MSwordTopCol.g;
+                this->p2StartColor.g = MSwordBottomCol.g;
+                this->p1EndColor.g = MSwordTopCol.g;
+                this->p2EndColor.g = MSwordBottomCol.g;
+                this->p1StartColor.b = MSwordTopCol.b;
+                this->p2StartColor.b = MSwordBottomCol.b;
+                this->p1EndColor.b = MSwordTopCol.b;
+                this->p2EndColor.b = MSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 6: // biggoron sword
+                this->p1StartColor.r = BSwordTopCol.r;
+                this->p2StartColor.r = BSwordBottomCol.r;
+                this->p1EndColor.r = BSwordTopCol.r;
+                this->p2EndColor.r = BSwordBottomCol.r;
+                this->p1StartColor.g = BSwordTopCol.g;
+                this->p2StartColor.g = BSwordBottomCol.g;
+                this->p1EndColor.g = BSwordTopCol.g;
+                this->p2EndColor.g = BSwordBottomCol.g;
+                this->p1StartColor.b = BSwordTopCol.b;
+                this->p2StartColor.b = BSwordBottomCol.b;
+                this->p1EndColor.b = BSwordTopCol.b;
+                this->p2EndColor.b = BSwordBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 7: // stick
+                this->p1StartColor.r = StickTopCol.r;
+                this->p2StartColor.r = StickBottomCol.r;
+                this->p1EndColor.r = StickTopCol.r;
+                this->p2EndColor.r = StickBottomCol.r;
+                this->p1StartColor.g = StickTopCol.g;
+                this->p2StartColor.g = StickBottomCol.g;
+                this->p1EndColor.g = StickTopCol.g;
+                this->p2EndColor.g = StickBottomCol.g;
+                this->p1StartColor.b = StickTopCol.b;
+                this->p2StartColor.b = StickBottomCol.b;
+                this->p1EndColor.b = StickTopCol.b;
+                this->p2EndColor.b = StickBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 8: // hammer
+                this->p1StartColor.r = HammerTopCol.r;
+                this->p2StartColor.r = HammerBottomCol.r;
+                this->p1EndColor.r = HammerTopCol.r;
+                this->p2EndColor.r = HammerBottomCol.r;
+                this->p1StartColor.g = HammerTopCol.g;
+                this->p2StartColor.g = HammerBottomCol.g;
+                this->p1EndColor.g = HammerTopCol.g;
+                this->p2EndColor.g = HammerBottomCol.g;
+                this->p1StartColor.b = HammerTopCol.b;
+                this->p2StartColor.b = HammerBottomCol.b;
+                this->p1EndColor.b = HammerTopCol.b;
+                this->p2EndColor.b = HammerBottomCol.b;
+                this->elemDuration = CVar_GetS32("gTrailDuration", 1);
+                break;
+            case 0:
+            default: // don't do anything
+                break;
+        }
+    } else
+        switch (this->trailType) { 
+            case 1: //swords
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                this->p1StartColor.r = 255;
+                this->p2StartColor.r = 255;
+                this->p1EndColor.r = 255;
+                this->p2EndColor.r = 255;
+                this->p1StartColor.g = 255;
+                this->p2StartColor.g = 255;
+                this->p1EndColor.g = 255;
+                this->p2EndColor.g = 255;
+                this->p1StartColor.b = 255;
+                this->p2StartColor.b = 255;
+                this->p1EndColor.b = 255;
+                this->p2EndColor.b = 255;
+                this->elemDuration = 4;
+                break;
+            case 2: //boomerang
+                this->p1StartColor.r = 255;
+                this->p2StartColor.r = 255;
+                this->p1EndColor.r = 255;
+                this->p2EndColor.r = 255;
+                this->p1StartColor.g = 255;
+                this->p2StartColor.g = 255;
+                this->p1EndColor.g = 255;
+                this->p2EndColor.g = 255;
+                this->p1StartColor.b = 100;
+                this->p2StartColor.b = 100;
+                this->p1EndColor.b = 100;
+                this->p2EndColor.b = 100;
+                this->elemDuration = 8;
+                break;
+            case 3: //bombchu
+                this->p1StartColor.r = 250;
+                this->p2StartColor.r = 200;
+                this->p1EndColor.r = 150;
+                this->p2EndColor.r = 100;
+                this->p1StartColor.g = 0;
+                this->p2StartColor.g = 0;
+                this->p1EndColor.g = 0;
+                this->p2EndColor.g = 0;
+                this->p1StartColor.b = 0;
+                this->p2StartColor.b = 0;
+                this->p1EndColor.b = 0;
+                this->p2EndColor.b = 0;
+                this->elemDuration = 16;
+                break;
+            case 0:
+            default: //don't do anything
+                break;
+        }
 
     if (this == NULL) {
         return 0;
@@ -280,8 +488,6 @@ void EffectBlure_UpdateFlags(EffectBlureElement* elem) {
         f32 sp30;
         f32 sp2C;
 
-        if (1) {} // Necessary to match
-
         Math_Vec3s_DiffToVec3f(&sp64, &elem->p1, &prev->p1);
         Math_Vec3s_DiffToVec3f(&sp58, &elem->p2, &prev->p2);
         Math_Vec3s_DiffToVec3f(&sp4C, &next->p1, &elem->p1);
@@ -345,7 +551,6 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 
             vec1->x = (sp30.x * 0.5f * mode4Param * ratio) + elem->p1.x;
             vec1->y = (sp30.y * 0.5f * mode4Param * ratio) + elem->p1.y;
-            if (1) {} // Necessary to match
             vec1->z = (sp30.z * 0.5f * mode4Param * ratio) + elem->p1.z;
 
             vec2->x = -(sp30.x * 0.5f * mode4Param * ratio) + elem->p2.x;
@@ -364,7 +569,7 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
             break;
     }
 
-    //sp30 = sp30; // Optimized out but seems necessary to match stack usage
+    sp30 = sp30; // Optimized out but seems necessary to match stack usage
 
     if (this->flags & 0x10) {
         color1->r = color1->g = color1->b = color1->a = 255;
@@ -382,11 +587,11 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 }
 
 void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 809);
+    OPEN_DISPS(gfxCtx);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 813);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // original name: "SQ_NoInterpolate_disp"
@@ -403,7 +608,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
     Vec3f sp60;
     Vec3f sp54;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 838);
+    OPEN_DISPS(gfxCtx);
 
     Math_Vec3s_ToVec3f(&sp6C, &this->elements[0].p2);
 
@@ -432,8 +637,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[0].v.cn[1] = sp78.g;
         vtx[0].v.cn[2] = sp78.b;
         vtx[0].v.cn[3] = sp78.a;
-
-        if (1) {} // Necessary to match
 
         sp60.x = sp8C.x;
         sp60.y = sp8C.y;
@@ -464,8 +667,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[2].v.cn[2] = sp7C.b;
         vtx[2].v.cn[3] = sp7C.a;
 
-        if (1) {} // Necessary to match
-
         sp60.x = sp84.x;
         sp60.y = sp84.y;
         sp60.z = sp84.z;
@@ -483,7 +684,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 2, 3, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 932);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
@@ -514,7 +715,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
     Color_RGBA8 sp144;
     Vec3f sp138;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 971);
+    OPEN_DISPS(gfxCtx);
 
     Math_Vec3s_ToVec3f(&sp138, &this->elements[0].p2);
 
@@ -535,7 +736,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp118;
         Vec3f sp10C;
 
-        ASSERT(index - 1 >= 0, "index - 1 >= 0", "../z_eff_blure.c", 1005);
+        ASSERT(index - 1 >= 0);
 
         ratio = (f32)(elem - 1)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index - 1, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -555,7 +756,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp100;
         Vec3f spF4;
 
-        ASSERT(index + 2 < this->numElements, "index + 2 < this2->now_edge_num", "../z_eff_blure.c", 1032);
+        ASSERT(index + 2 < this->numElements);
 
         ratio = (f32)(elem + 2)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index + 2, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -656,7 +857,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         gSP2Triangles(POLY_XLU_DISP++, 12, 13, 15, 0, 12, 15, 14, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1184);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
@@ -667,8 +868,10 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp9C;
     MtxF sp5C;
     Mtx* mtx;
+    static s32 epoch = 0;
+    epoch++;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1201);
+    OPEN_DISPS(gfxCtx);
 
     if (this->numElements < 2) {
         return;
@@ -684,6 +887,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     this->elements[this->numElements - 1].flags &= ~3;
     this->elements[this->numElements - 1].flags |= 2;
 
+    FrameInterpolation_RecordOpenChild(this, epoch);
     EffectBlure_SetupSmooth(this, gfxCtx);
     SkinMatrix_SetTranslate(&spDC, this->elements[0].p2.x, this->elements[0].p2.y, this->elements[0].p2.z);
     SkinMatrix_SetScale(&sp9C, 0.1f, 0.1f, 0.1f);
@@ -708,21 +912,24 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
+        
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1263);
+    FrameInterpolation_RecordCloseChild();
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_SetupSimple(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1280);
+    OPEN_DISPS(gfxCtx);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1285);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1294);
+    OPEN_DISPS(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
@@ -743,7 +950,7 @@ void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx*
 
     gDPSetEnvColor(POLY_XLU_DISP++, this->altEnvColor.r, this->altEnvColor.g, this->altEnvColor.b, this->altEnvColor.a);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1329);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void (*sSetupHandlers[])(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) = {
@@ -757,7 +964,7 @@ s32 D_80115788 = 0; // unused
 void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
     Mtx* mtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1356);
+    OPEN_DISPS(gfxCtx);
 
     sSetupHandlers[this->drawMode](gfxCtx, this, vtx);
     gDPPipeSync(POLY_XLU_DISP++);
@@ -784,8 +991,6 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
                                 this->altPrimColor.b, this->altPrimColor.a * (1.0f - alphaRatio));
                 gDPPipeSync(POLY_XLU_DISP++);
             }
-
-            if (1) {} // Necessary to match
 
             gSPVertex(POLY_XLU_DISP++, &vtx[j], 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 3, 0, 0, 3, 2, 0);
@@ -829,7 +1034,7 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1452);
+    CLOSE_DISPS(gfxCtx);
 }
 
 Vtx_t D_8011578C[] = {
@@ -947,9 +1152,11 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 i;
     s32 j;
     s32 phi_t2;
+    static s32 epoch = 0;
+    epoch++;
 
     FrameInterpolation_RecordOpenChild(this, 0);
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1596);
+    OPEN_DISPS(gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -1044,8 +1251,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                            if (1) {} // Necessary to match
-
+                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }
@@ -1061,6 +1267,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1823);
+    CLOSE_DISPS(gfxCtx);
     FrameInterpolation_RecordCloseChild();
 }

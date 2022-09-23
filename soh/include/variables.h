@@ -101,7 +101,7 @@ extern "C"
 	extern void* gItemIcons[0x82];
 	extern u8 gItemAgeReqs[];
 	extern u8 gItemSlots[56];
-	extern void (*gSceneCmdHandlers[26])(GlobalContext*, SceneCmd*);
+	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(GlobalContext*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
@@ -171,10 +171,6 @@ extern "C"
 #define gTatumsPerBeat (D_8014A6C0[1])
 	extern const AudioContextInitSizes D_8014A6C4;
 	extern s16 gOcarinaSongItemMap[];
-	extern u8 gSoundFontTable[];
-	extern u8 gSequenceFontTable[];
-	extern u8 gSequenceTable[];
-	extern u8 gSampleBankTable[];
 	extern u8 D_80155F50[];
 	extern u8 D_80157580[];
 	extern u8 D_801579A0[];

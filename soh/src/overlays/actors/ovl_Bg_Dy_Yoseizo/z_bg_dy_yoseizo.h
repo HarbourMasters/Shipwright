@@ -24,7 +24,8 @@ typedef struct {
     /* 0x36 */ f32 pitch;
     /* 0x36 */ f32 yaw;
     /* 0x40 */ f32 roll;
-} BgDyYoseizoParticle; // size = 0x44
+    /* 0x44 */ u32 epoch;
+} BgDyYoseizoParticle; // size = 0x48
 
 typedef struct BgDyYoseizo {
     /* 0x0000 */ Actor actor;

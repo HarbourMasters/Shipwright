@@ -1,6 +1,6 @@
 #include "savestates.h"
 
-#include "GameVersions.h"
+#include <libultraship/GameVersions.h>
 
 #include <cstdio> // std::sprintf
 
@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <SohImGuiImpl.h>
+#include <libultraship/ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -85,8 +85,8 @@ typedef struct SaveStateInfo {
     OnePointCsFull D_8011D8DC_copy[3];
     OnePointCsFull D_8011D954_copy[4];
     OnePointCsFull D_8011D9F4_copy[3];
-    int16_t D_8011DB08_copy;
-    int16_t D_8011DB0C_copy;
+    int16_t depthPhase_copy;
+    int16_t screenPlanePhase_copy;
     int32_t sOOBTimer_copy;
     f32 D_8015CE50_copy;
     f32 D_8015CE54_copy;
@@ -264,6 +264,9 @@ typedef struct SaveStateInfo {
     uint8_t sKankyoIsSpawned_copy;
     int16_t sTrailingFairies_copy;
 
+    // z_en_heishi1
+    uint32_t sHeishi1PlayerIsCaughtCopy;
+
 
     //Misc static data
     // z_map_exp
@@ -434,8 +437,8 @@ void SaveState::BackupCameraData(void) {
     memcpy(info->D_8011D8DC_copy, D_8011D8DC, sizeof(info->D_8011D8DC_copy));
     memcpy(info->D_8011D954_copy, D_8011D954, sizeof(info->D_8011D954_copy));
     memcpy(info->D_8011D9F4_copy, D_8011D9F4, sizeof(info->D_8011D9F4_copy));
-    info->D_8011DB08_copy = D_8011DB08;
-    info->D_8011DB0C_copy = D_8011DB0C;
+    info->depthPhase_copy = depthPhase;
+    info->screenPlanePhase_copy = screenPlanePhase;
     info->sOOBTimer_copy = sOOBTimer;
     info->D_8015CE50_copy = D_8015CE50;
     info->D_8015CE54_copy = D_8015CE54;
@@ -462,8 +465,8 @@ void SaveState::LoadCameraData(void) {
     memcpy(D_8011D8DC, info->D_8011D8DC_copy, sizeof(info->D_8011D8DC_copy));
     memcpy(D_8011D954, info->D_8011D954_copy, sizeof(info->D_8011D954_copy));
     memcpy(D_8011D9F4, info->D_8011D9F4_copy, sizeof(info->D_8011D9F4_copy));
-    D_8011DB08 = info->D_8011DB08_copy;
-    D_8011DB0C = info->D_8011DB0C_copy;
+    depthPhase = info->depthPhase_copy;
+    screenPlanePhase = info->screenPlanePhase_copy;
     sOOBTimer = info->sOOBTimer_copy;
     D_8015CE50 = info->D_8015CE50_copy;
     D_8015CE54 = info->D_8015CE54_copy;
@@ -616,6 +619,8 @@ void SaveState::SaveOverlayStaticData(void) {
     info->D_80B5A4BC_copy = D_80B5A4BC;
     info->sKankyoIsSpawned_copy = sKankyoIsSpawned;
     info->sTrailingFairies_copy = sTrailingFairies;
+    
+    info->sHeishi1PlayerIsCaughtCopy = sHeishi1PlayerIsCaught;
 
 }
 
@@ -686,6 +691,8 @@ void SaveState::LoadOverlayStaticData(void) {
     D_80B5A4BC = info->D_80B5A4BC_copy;
     sKankyoIsSpawned = info->sKankyoIsSpawned_copy;
     sTrailingFairies = info->sTrailingFairies_copy;
+
+    sHeishi1PlayerIsCaught = info->sHeishi1PlayerIsCaughtCopy;
 }
 
 void SaveState::SaveMiscCodeData(void) {
@@ -816,7 +823,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    SohImGui::overlay->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -834,12 +841,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                SohImGui::overlay->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    SohImGui::overlay->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
@@ -855,28 +862,26 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gGlobalCtx == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        SohImGui::overlay->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
     switch (request.type) { 
         case RequestType::SAVE:
             requests.push(request);
-            break;
+            return SaveStateReturn::SUCCESS;
         case RequestType::LOAD:
             if (states.contains(request.slot)) {
                 requests.push(request);
+                return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                SohImGui::overlay->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
-            break;
         [[unlikely]] default: 
             SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             return SaveStateReturn::FAIL_BAD_REQUEST;
-            break;
-        
     }
 }
 
@@ -907,8 +912,8 @@ void SaveState::Save(void) {
     memcpy(&info->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
     memcpy(&info->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
     memcpy(&info->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
-    memcpy(&info->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
-    memcpy(&info->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
+    memcpy(&info->mtxStackCopy, sMatrixStack, sizeof(MtxF) * 20);
+    memcpy(&info->currentMtxCopy, sCurrentMatrix, sizeof(MtxF));
 
     //Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
@@ -931,8 +936,8 @@ void SaveState::Load(void) {
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
     memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
     memcpy(&sLightsBuffer, &info->lightBufferCopy, sizeof(sLightsBuffer));
-    memcpy(&sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
-    memcpy(&sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
+    memcpy(sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
+    memcpy(sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
     sWarpTimerTarget = info->blueWarpTimerCopy;
 
     memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));

@@ -20,7 +20,7 @@ Gfx sWipeDList[] = {
                           G_TX_MIRROR | G_TX_WRAP, 6, 6, 11, 1),
     gsDPSetTextureLUT(G_TT_NONE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPDisplayList(0x08000000),
+    gsSPDisplayList(SEG_ADDR(8, 0)),
     gsSPVertex(sWipe1Vtx, 25, 0),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
     gsSP2Triangles(5, 6, 7, 0, 6, 8, 9, 0),
@@ -89,6 +89,7 @@ void TransitionWipe_Draw(void* thisx, Gfx** gfxP) {
     TransitionWipe* this = (TransitionWipe*)thisx;
     s32 pad[4];
     Gfx* tex;
+    Gfx* wipeDl = sWipeDList;
 
     modelView = this->modelView[this->frame];
 

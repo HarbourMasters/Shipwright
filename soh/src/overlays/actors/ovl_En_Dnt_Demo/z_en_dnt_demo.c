@@ -135,6 +135,26 @@ void EnDntDemo_Judge(EnDntDemo* this, GlobalContext* globalCtx) {
             this->judgeTimer = 0;
         }
     } else {
+        if (gSaveContext.n64ddFlag) {
+            switch (Player_GetMask(globalCtx)) {
+                case PLAYER_MASK_SKULL:
+                    if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
+                        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+                        Flags_SetTreasure(globalCtx, 0x1F);
+                    }
+                    break;
+                case PLAYER_MASK_TRUTH:
+                    if (!Flags_GetTreasure(globalCtx, 0x1E)) {
+                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
+                        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+                        Flags_SetTreasure(globalCtx, 0x1E);
+                    }
+                    break;
+            }
+            return;
+        }
+
         if ((Player_GetMask(globalCtx) != 0) && (this->subCamera == SUBCAM_FREE)) {
             this->subCamera = OnePointCutscene_Init(globalCtx, 2220, -99, &this->scrubs[3]->actor, MAIN_CAM);
         }

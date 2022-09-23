@@ -8,6 +8,7 @@
 #include "objects/object_fw/object_fw.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_9)
 
@@ -421,6 +422,7 @@ void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* acc
             eff->pos = *initialPos;
             eff->accel = *accel;
             eff->velocity = *initialSpeed;
+            eff->epoch++;
             return;
         }
     }
@@ -458,13 +460,14 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     s16 i;
     s16 idx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fw.c", 1191);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
-    if (1) {}
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
+
         if (eff->type != 0) {
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0U);
@@ -479,13 +482,15 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fw.c", 1229),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             idx = eff->timer * (8.0f / eff->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fw.c", 1243);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

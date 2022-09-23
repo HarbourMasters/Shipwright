@@ -88,7 +88,6 @@ void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
     this->bullseyeCenter.x = sBullseyeOffset[type].x + this->dyna.actor.world.pos.x;
     this->bullseyeCenter.y = sBullseyeOffset[type].y + this->dyna.actor.world.pos.y;
     this->bullseyeCenter.z = sBullseyeOffset[type].z + this->dyna.actor.world.pos.z;
-    if (1) {}
     bullseye = (EnWallTubo*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->dyna.actor, globalCtx, ACTOR_EN_WALL_TUBO,
                                                this->bullseyeCenter.x, this->bullseyeCenter.y, this->bullseyeCenter.z,
                                                0, 0, 0, this->dyna.actor.params);
@@ -202,13 +201,13 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     BgBowlWall* this = (BgBowlWall*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 441);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x8,
                Gfx_TexScroll(globalCtx->state.gfxCtx, 0, -2 * (frames = globalCtx->state.frames), 16, 16));
     gDPPipeSync(POLY_OPA_DISP++);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 453),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->dyna.actor.params == 0) {
@@ -217,5 +216,5 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gBowlingRound2WallDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 464);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -367,15 +367,13 @@ void EnJsjutan_Update(Actor* thisx, GlobalContext* globalCtx2) {
     thisx->shape.rot.z = Math_CosS(globalCtx->gameplayFrames * 3500) * 300.0f;
 }
 
-extern uintptr_t jsjutanShadowTex;
-
 void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     EnJsjutan* this = (EnJsjutan*)thisx;
     GlobalContext* globalCtx = globalCtx2;
     s16 i;
     Actor* parent = thisx->parent;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_jsjutan.c", 701);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params == ENJSJUTAN_TYPE_01) {
         thisx->world.pos.x = parent->world.pos.x;
@@ -396,13 +394,12 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     }
 
     func_80A89A6C(this, globalCtx);
-    jsjutanShadowTex = sShadowTex;
 
     if (this->unk_164) {
         this->unk_164 = false;
         u8* carpTex = ResourceMgr_LoadTexByName(sCarpetTex);
         u8* shadTex = sShadowTex;
-        for (i = 0; i < ARRAY_COUNT(shadTex); i++) {
+        for (i = 0; i < ARRAY_COUNT(sShadowTex); i++) {
             if (((u16*)carpTex)[i] != 0) { // Hack to bypass ZAPD exporting textures as u64.
                 shadTex[i] = 0xFF;
             } else {
@@ -417,10 +414,11 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     Matrix_Translate(thisx->world.pos.x, 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, 1.0f, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_jsjutan.c", 782),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
+    gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowTex);
     gSPDisplayList(POLY_OPA_DISP++, sShadowMaterialDL);
     gDPPipeSync(POLY_OPA_DISP++);
 
@@ -436,7 +434,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     Matrix_Translate(thisx->world.pos.x, this->unk_168 + 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_jsjutan.c", 805),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     // Draws the carpet's texture.
     gSPDisplayList(POLY_OPA_DISP++, sCarpetMaterialDL);
@@ -451,5 +449,5 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_jsjutan.c", 823);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -18,11 +18,15 @@ void KaleidoSetup_Update(GlobalContext* globalCtx) {
         globalCtx->shootingGalleryStatus <= 1 && gSaveContext.unk_13F0 != 8 && gSaveContext.unk_13F0 != 9 &&
         (globalCtx->sceneNum != SCENE_BOWLING || !Flags_GetSwitch(globalCtx, 0x38))) {
 
+        if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) == 2 && !CHECK_BTN_ALL(input->press.button, BTN_START)) {
+            CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", 0);
+        }
+
         if (CHECK_BTN_ALL(input->cur.button, BTN_L) && CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
             if (BREG(0)) {
                 pauseCtx->debugState = 3;
             }
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
+        } else if ((CHECK_BTN_ALL(input->press.button, BTN_START) && !CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) || CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
             gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))

@@ -1,5 +1,7 @@
 #include "global.h"
-#include "Cvar.h"
+#include <libultraship/Cvar.h>
+
+extern bool gUseLegacySD;
 
 void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     f32 volRight, volLeft;
@@ -203,7 +205,6 @@ void Audio_ProcessNotes(void) {
 
     out:
         if (playbackState->priority != 0) {
-            if (1) {}
             noteSubEu = &note->noteSubEu;
             if (playbackState->unk_04 >= 1 || noteSubEu->bitField0.finished) {
                 if (playbackState->adsr.action.s.state == ADSR_STATE_DISABLED || noteSubEu->bitField0.finished) {
@@ -284,7 +285,19 @@ void Audio_ProcessNotes(void) {
             }
 
             subAttrs.frequency *= playbackState->vibratoFreqScale * playbackState->portamentoFreqScale;
-            subAttrs.frequency *= gAudioContext.audioBufferParameters.resampleRate;
+
+            f32 resampRate = gAudioContext.audioBufferParameters.resampleRate;
+
+            // CUSTOM SAMPLE CHECK
+            if (!noteSubEu2->bitField1.isSyntheticWave && noteSubEu2->sound.soundFontSound != NULL &&
+                noteSubEu2->sound.soundFontSound->sample != NULL &&
+                noteSubEu2->sound.soundFontSound->sample->sampleRateMagicValue == 'RIFF') {
+                resampRate = CALC_RESAMPLE_FREQ(noteSubEu2->sound.soundFontSound->sample->sampleRate);
+            }
+
+            subAttrs.frequency *= resampRate;
+
+
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
             noteSubEu->bitField1.bookOffset = bookOffset;
@@ -317,12 +330,14 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
         return NULL;
     }
 
-    if (instId >= gAudioContext.soundFonts[fontId].numInstruments) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x3000000;
-        return NULL;
-    }
+    int instCnt = 0;
+    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
-    inst = gAudioContext.soundFonts[fontId].instruments[instId];
+    if (instId >= sf->numInstruments)
+        return NULL;
+
+    inst = sf->instruments[instId];
+
     if (inst == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x1000000;
         return inst;
@@ -343,13 +358,10 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
         return NULL;
     }
 
-    if (drumId >= gAudioContext.soundFonts[fontId].numDrums) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x4000000;
-        return NULL;
-    }
-
-    drum = gAudioContext.soundFonts[fontId].drums[drumId];
-
+    
+    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
+    drum = sf->drums[drumId];
+    
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
     }
@@ -369,12 +381,8 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
         return NULL;
     }
 
-    if (sfxId >= gAudioContext.soundFonts[fontId].numSfx) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x4000000;
-        return NULL;
-    }
-
-    sfx = &gAudioContext.soundFonts[fontId].soundEffects[sfxId];
+    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
+    sfx = &sf->soundEffects[sfxId];
 
     if (sfx == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x5000000;

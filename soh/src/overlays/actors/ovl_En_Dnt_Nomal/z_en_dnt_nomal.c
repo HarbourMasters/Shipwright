@@ -250,10 +250,14 @@ void EnDntNomal_TargetWait(EnDntNomal* this, GlobalContext* globalCtx) {
             if (!LINK_IS_ADULT && !(gSaveContext.itemGetInf[1] & 0x2000)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
-                    OnePointCutscene_Init(globalCtx, 4140, -99, &this->actor, MAIN_CAM);
-                    func_8002DF54(globalCtx, &this->actor, 1);
-                    this->timer4 = 50;
-                    this->actionFunc = EnDntNomal_SetupTargetUnburrow;
+                    if(gSaveContext.n64ddFlag) {
+                        this->actionFunc = EnDntNomal_TargetGivePrize;
+                    } else {
+                        OnePointCutscene_Init(globalCtx, 4140, -99, &this->actor, MAIN_CAM);
+                        func_8002DF54(globalCtx, &this->actor, 1);
+                        this->timer4 = 50;
+                        this->actionFunc = EnDntNomal_SetupTargetUnburrow;
+                    }
                 }
             }
         } else if (sqrtf(SQ(dx) + SQ(dy) + SQ(dz)) < 24.0f) {
@@ -825,11 +829,11 @@ s32 EnDntNomal_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     EnDntNomal* this = (EnDntNomal*)thisx;
 
     if ((limbIndex == 1) || (limbIndex == 3) || (limbIndex == 4) || (limbIndex == 5) || (limbIndex == 6)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1733);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, sLeafColors[this->type - ENDNTNOMAL_STAGE].r,
                        sLeafColors[this->type - ENDNTNOMAL_STAGE].g, sLeafColors[this->type - ENDNTNOMAL_STAGE].b, 255);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1743);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     return false;
 }
@@ -853,7 +857,7 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f dustScale = { 0.25f, 0.25f, 0.25f };
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1790);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
     SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDntNomal_OverrideLimbDraw,
@@ -863,10 +867,10 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, sLeafColors[this->type - ENDNTNOMAL_STAGE].r,
                    sLeafColors[this->type - ENDNTNOMAL_STAGE].g, sLeafColors[this->type - ENDNTNOMAL_STAGE].b, 255);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1814),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDntStageFlowerDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1817);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc == EnDntNomal_StageCelebrate) {
         func_80033C30(&this->actor.world.pos, &dustScale, 255, globalCtx);
     }
@@ -875,14 +879,14 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, GlobalContext* globalCtx) {
 void EnDntNomal_DrawTargetScrub(Actor* thisx, GlobalContext* globalCtx) {
     EnDntNomal* this = (EnDntNomal*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1833);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnDntNomal_PostLimbDraw,
                       this);
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1848),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gHintNutsFlowerDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_nomal.c", 1851);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

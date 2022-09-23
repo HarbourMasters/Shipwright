@@ -16,6 +16,7 @@ typedef struct EnBx {
     /* 0x01B4 */ Vec3s unk_1B4[4];
     /* 0x01CC */ ColliderCylinder collider;
     /* 0x0218 */ ColliderQuad colliderQuad;
-} EnBx; // size = 0x0298
+    /* 0x0298 */ u32 epoch;
+} EnBx; // size = 0x029C
 
 #endif

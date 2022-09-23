@@ -102,7 +102,6 @@ void BgGndDarkmeiro_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     BgGndDarkmeiro* this = (BgGndDarkmeiro*)thisx;
 
     if ((this->dyna.actor.params & 0xFF) == 1) {
-        if (1) {}
         DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
 }
@@ -197,19 +196,19 @@ void BgGndDarkmeiro_DrawSwitchBlock(Actor* thisx, GlobalContext* globalCtx) {
             this->timer2 = vanishTimer * 8;
         }
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_darkmeiro.c", 378);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         //! @bug Due to a bug in the display list, the transparency data is not used.
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 198, 202, 208, this->timer2);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_darkmeiro.c", 380);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         Gfx_DrawDListXlu(globalCtx, gClearBlockDL);
     }
 }
 
 void BgGndDarkmeiro_DrawStaticBlock(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_darkmeiro.c", 391);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 198, 202, 208, 255);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_darkmeiro.c", 393);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     Gfx_DrawDListXlu(globalCtx, gClearBlockDL);
 }

@@ -550,13 +550,13 @@ void EnDodongo_Walk(EnDodongo* this, GlobalContext* globalCtx) {
     if ((s32)this->skelAnime.curFrame < 21) {
         if (!this->rightFootStep) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 10.0f, 3, 2.0f, 0xC8, 0xF, 0);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 10.0f, 3, 2.0f, 200, 15, false);
             this->rightFootStep = true;
         }
     } else {
         if (this->rightFootStep) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 10.0f, 3, 2.0f, 0xC8, 0xF, 0);
+            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 10.0f, 3, 2.0f, 200, 15, false);
             this->rightFootStep = false;
         }
     }
@@ -641,11 +641,11 @@ void EnDodongo_SweepTail(EnDodongo* this, GlobalContext* globalCtx) {
         tailPos.x = this->sphElements[1].dim.worldSphere.center.x;
         tailPos.y = this->sphElements[1].dim.worldSphere.center.y;
         tailPos.z = this->sphElements[1].dim.worldSphere.center.z;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
         tailPos.x = this->sphElements[2].dim.worldSphere.center.x;
         tailPos.y = this->sphElements[2].dim.worldSphere.center.y;
         tailPos.z = this->sphElements[2].dim.worldSphere.center.z;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
 
         if (this->colliderBody.base.atFlags & AT_HIT) {
             Player* player = GET_PLAYER(globalCtx);
@@ -924,7 +924,6 @@ void EnDodongo_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (this->iceTimer != 0) {
         this->actor.colorFilterTimer++;
-        if (1) {}
         this->iceTimer--;
         if ((this->iceTimer % 4) == 0) {
             index = this->iceTimer >> 2;

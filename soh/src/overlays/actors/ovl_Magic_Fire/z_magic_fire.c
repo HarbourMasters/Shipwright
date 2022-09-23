@@ -119,7 +119,6 @@ void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     s32 pad;
 
-    if (1) {}
     this->actor.world.pos = player->actor.world.pos;
     if ((globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
         (globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
@@ -217,9 +216,13 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad2;
     s32 i;
     u8 alpha;
-    
+    Color_RGB8 Spell_env_ori = {255, 0, 0};
+    Color_RGB8 Spell_col_ori = {255, 200, 0};
+    Color_RGB8 Spell_env = CVar_GetRGB("gDF_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVar_GetRGB("gDF_Col", Spell_col_ori);
+
     if (this->action > 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_magic_fire.c", 682);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (u8)(s32)(60 * this->screenTintIntensity),
                         (u8)(s32)(20 * this->screenTintIntensity), (u8)(s32)(0 * this->screenTintIntensity),
@@ -228,10 +231,15 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
         func_80093D84(globalCtx->state.gfxCtx);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 255, 200, 0, (u8)(this->alphaMultiplier * 255));
-        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, (u8)(this->alphaMultiplier * 255));
+        if (CVar_GetS32("gUseSpellsCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col_ori.r, Spell_col_ori.g, Spell_col_ori.b, (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env_ori.r, Spell_env_ori.g, Spell_env_ori.b, (u8)(this->alphaMultiplier * 255));
+        }
         Matrix_Scale(0.15f, 0.15f, 0.15f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_magic_fire.c", 715),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_XLU_DISP++);
         gSPTexture(POLY_XLU_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
@@ -247,7 +255,7 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                         511 - ((gameplayFrames * 5) % 512), 64, 64, 1, (gameplayFrames * 2) % 256,
                                         255 - ((gameplayFrames * 20) % 256), 32, 32));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_magic_fire.c", 750);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         alpha = (s32)(this->alphaMultiplier * 255);
         Vtx* vertices = ResourceMgr_LoadVtxByName(sSphereVtx);

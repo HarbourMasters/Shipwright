@@ -1,5 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -9,18 +11,20 @@ u8 gAmmoItems[] = {
 static s16 sEquipState = 0;
 static s16 sEquipAnimTimer = 0;
 static s16 sEquipMoveTimer = 10;
+bool gSelectingMask;
+bool gSelectingAdultTrade;
 
 static s16 sAmmoVtxOffset[] = {
-    0, 2, 4, 6, 99, 99, 8, 99, 99, 10, 99, 99, 99, 99, 99, 99, 12,
+    0, 2, 4, 6, 99, 99, 8, 99, 10, 99, 99, 99, 99, 99, 12,
 };
 
 extern const char* _gAmmoDigit0Tex[];
 
-void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item) {
+void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
     s16 ammo;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_item.c", 69);
+    OPEN_DISPS(gfxCtx);
 
     ammo = AMMO(item);
 
@@ -50,7 +54,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
     gDPPipeSync(POLY_KAL_DISP++);
 
     if (i != 0) {
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[item] + 27) * 4], 4, 0);
+        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[slot] + 31) * 4], 4, 0);
 
         gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[i]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -59,7 +63,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[item] + 28) * 4], 4, 0);
+    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[(sAmmoVtxOffset[slot] + 32) * 4], 4, 0);
 
     gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[ammo]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -67,7 +71,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_item.c", 116);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void KaleidoScope_SetCursorVtx(PauseContext* pauseCtx, u16 index, Vtx* vtx) {
@@ -96,9 +100,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     s16 cursorY;
     s16 oldCursorPoint;
     s16 moveCursorResult;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = (CVar_GetS32("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 234);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800949A8(globalCtx->state.gfxCtx);
 
@@ -108,7 +112,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     pauseCtx->nameColorSet = 0;
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
-        moveCursorResult = 0;
+        moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
 
         cursorItem = pauseCtx->cursorItem[PAUSE_ITEM];
@@ -137,8 +141,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] != 0) {
                             pauseCtx->cursorX[PAUSE_ITEM] -= 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] -= 1;
-
-                            if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                            if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                CVar_GetS32("gPauseAnyCursor", 0)) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -169,8 +173,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] < 5) {
                             pauseCtx->cursorX[PAUSE_ITEM] += 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] += 1;
-
-                            if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                            if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                CVar_GetS32("gPauseAnyCursor", 0)) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -282,7 +286,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         if (pauseCtx->cursorSpecialPos == 0) {
             if (cursorItem != PAUSE_ITEM_NONE) {
                 if ((ABS(pauseCtx->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-                    moveCursorResult = 0;
+                    moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
 
                     cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                     cursorY = pauseCtx->cursorY[PAUSE_ITEM];
@@ -291,8 +295,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] != 0) {
                                 pauseCtx->cursorY[PAUSE_ITEM] -= 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] -= 6;
-
-                                if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                                if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                    CVar_GetS32("gPauseAnyCursor", 0)) {
                                     moveCursorResult = 1;
                                 }
                             } else {
@@ -305,8 +309,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] < 3) {
                                 pauseCtx->cursorY[PAUSE_ITEM] += 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] += 6;
-
-                                if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                                if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                    CVar_GetS32("gPauseAnyCursor", 0)) {
                                     moveCursorResult = 1;
                                 }
                             } else {
@@ -338,6 +342,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             pauseCtx->cursorItem[PAUSE_ITEM] = cursorItem;
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
+                (CVar_GetS32("gMMBunnyHood", 0) && INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY) ? 9 : 1;
+
             if (!((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge)))) {
                 pauseCtx->nameColorSet = 1;
             }
@@ -347,10 +354,78 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 KaleidoScope_SetCursorVtx(pauseCtx, index, pauseCtx->itemVtx);
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
-                    if (CHECK_BTN_ANY(input->press.button, BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT)) {
+                    // only allow mask select when:
+                    // the shop is open:
+                    // * zelda's letter check: gSaveContext.eventChkInf[4] & 1
+                    // * kak gate check: gSaveContext.infTable[7] & 0x40
+                    // and the mask quest is complete: gSaveContext.eventChkInf[8] & 0x8000
+                    if (CVar_GetS32("gMaskSelect", 0) &&
+                        (gSaveContext.eventChkInf[8] & 0x8000) &&
+                        cursorSlot == SLOT_TRADE_CHILD && CHECK_BTN_ALL(input->press.button, BTN_A) &&
+                        (gSaveContext.eventChkInf[4] & 1) &&
+                        (gSaveContext.infTable[7] & 0x40)) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        gSelectingMask = !gSelectingMask;
+                    }
+                    if (gSelectingMask) {
+                        pauseCtx->cursorColorSet = 8;
+                        if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
+                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) &&
+                            INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_TRUTH) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            ++INV_CONTENT(ITEM_TRADE_CHILD);
+                        } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
+                                    dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) &&
+                                   INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_KEATON) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            --INV_CONTENT(ITEM_TRADE_CHILD);
+                        } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelX > 30 || pauseCtx->stickRelY < -30 || pauseCtx->stickRelY > 30) ||
+                                   dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT)) {
+                            if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_LETTER_ZELDA) {
+                                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_MASK_KEATON;
+                            } else {
+                                INV_CONTENT(ITEM_TRADE_CHILD) ^= ITEM_MASK_KEATON ^ ITEM_MASK_TRUTH;
+                            }
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        }
+                        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
+                            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD) {
+                                if (!LINK_IS_ADULT || CVar_GetS32("gNoRestrictAge", 0)) {
+                                    gSaveContext.equips.buttonItems[cSlotIndex+1] = INV_CONTENT(ITEM_TRADE_CHILD);
+                                } else if (INV_CONTENT(ITEM_TRADE_CHILD) != gSaveContext.equips.buttonItems[cSlotIndex+1]) {
+                                    gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
+                                    gSaveContext.equips.buttonItems[cSlotIndex+1] = ITEM_NONE;
+                                }
+                            }
+                        }
+                        gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
+                    }
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                        cursorSlot == SLOT_TRADE_ADULT && CHECK_BTN_ALL(input->press.button, BTN_A)) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        gSelectingAdultTrade = !gSelectingAdultTrade;
+                    }
+                    if (gSelectingAdultTrade) {
+                        pauseCtx->cursorColorSet = 8;
+                        if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
+                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
+                        } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
+                            dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            Inventory_ReplaceItem(globalCtx, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
+                        }
+                        gSelectingAdultTrade = cursorSlot == SLOT_TRADE_ADULT;
+                    }
+                    u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
+                    if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+                        buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+                    }
+                    if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
                         if (((gSlotAgeReqs[cursorSlot] == 9) ||
                              (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
-                            (cursorItem != ITEM_SOLD_OUT)) {
+                            (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
                             KaleidoScope_SetupItemEquip(globalCtx, cursorItem, cursorSlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);
@@ -384,7 +459,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
     gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
 
-    for (i = 0, j = 24 * 4; i < 3; i++, j += 4) {
+    for (i = 0, j = 24 * 4; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++, j += 4) {
         if ((gSaveContext.equips.buttonItems[i + 1] != ITEM_NONE) &&
             !((gSaveContext.equips.buttonItems[i + 1] >= ITEM_SHIELD_DEKU) &&
               (gSaveContext.equips.buttonItems[i + 1] <= ITEM_BOOTS_HOVER))) {
@@ -457,16 +532,18 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
     for (i = 0; i < 15; i++) {
         if ((gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
-            KaleidoScope_DrawAmmoCount(pauseCtx, globalCtx->state.gfxCtx, gSaveContext.inventory.items[i]);
+            KaleidoScope_DrawAmmoCount(pauseCtx, globalCtx->state.gfxCtx, gSaveContext.inventory.items[i], i);
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 516);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s16 animX, s16 animY) {
     Input* input = &globalCtx->state.input[0];
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    gSelectingMask = false;
+    gSelectingAdultTrade = false;
 
     if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
         pauseCtx->equipTargetCBtn = 0;
@@ -474,6 +551,16 @@ void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s
         pauseCtx->equipTargetCBtn = 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
         pauseCtx->equipTargetCBtn = 2;
+    } else if (CVar_GetS32("gDpadEquips", 0)) {
+        if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            pauseCtx->equipTargetCBtn = 3;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            pauseCtx->equipTargetCBtn = 4;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            pauseCtx->equipTargetCBtn = 5;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            pauseCtx->equipTargetCBtn = 6;
+        }
     }
 
     pauseCtx->equipTargetItem = item;
@@ -504,8 +591,9 @@ void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s
     }
 }
 
-static s16 sCButtonPosX[] = { 66, 90, 114 };
-static s16 sCButtonPosY[] = { 110, 92, 110 };
+// TODO update for final positions
+static s16 sCButtonPosX[] = { 66, 90, 114, 110, 110, 86, 134 };
+static s16 sCButtonPosY[] = { 110, 92, 110, 76, 44, 62, 62 };
 
 void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
     static s16 D_8082A488 = 0;
@@ -513,6 +601,170 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
     Vtx* bowItemVtx;
     u16 offsetX;
     u16 offsetY;
+
+    s16 Top_HUD_Margin = CVar_GetS32("gHUDMargin_T", 0);
+    s16 Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
+    s16 Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
+    s16 Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
+
+    s16 X_Margins_CL;
+    s16 X_Margins_CR;
+    s16 X_Margins_CD;
+    s16 Y_Margins_CL;
+    s16 Y_Margins_CR;
+    s16 Y_Margins_CD;
+    s16 X_Margins_BtnB;
+    s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
+    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        Y_Margins_BtnB = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_BtnB = 0;
+        Y_Margins_BtnB = 0;
+    }
+    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        Y_Margins_CL = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CL = 0;
+        Y_Margins_CL = 0;
+    }
+    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        Y_Margins_CR = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CR = 0;
+        Y_Margins_CR = 0;
+    }
+    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        Y_Margins_CD = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CD = 0;
+        Y_Margins_CD = 0;
+    }
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[7][2] = {
+        { C_LEFT_BUTTON_X+X_Margins_CL, C_LEFT_BUTTON_Y+Y_Margins_CL },
+        { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD },
+        { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y+Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y+Y_Margins_DPad_Items }, 
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y+Y_Margins_DPad_Items }, 
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
+    };
+    s16 DPad_ItemsOffset[4][2] = {
+        { 7,-8},//Up
+        { 7,24},//Down
+        {-9, 8},//Left
+        {23, 8},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        sCButtonPosY[3] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        sCButtonPosY[4] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        sCButtonPosY[5] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        sCButtonPosY[6] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[3] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            sCButtonPosX[4] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            sCButtonPosX[5] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            sCButtonPosX[6] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        }
+    } else {
+        sCButtonPosX[3] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[3][0]);
+        sCButtonPosX[4] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        sCButtonPosX[5] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        sCButtonPosX[6] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        sCButtonPosY[3] = ItemIconPos_ori[3][1];
+        sCButtonPosY[4] = ItemIconPos_ori[4][1];
+        sCButtonPosY[5] = ItemIconPos_ori[5][1];
+        sCButtonPosY[6] = ItemIconPos_ori[6][1];
+    }
+    //C button Left
+    if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+        sCButtonPosY[0] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+        if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[0] = CVar_GetS32("gCBtnLPosX", 0);
+        }
+    } else {
+        sCButtonPosX[0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
+        sCButtonPosY[0] = ItemIconPos_ori[0][1];
+    }
+    //C Button down
+    if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+        sCButtonPosY[1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+        if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[1] = CVar_GetS32("gCBtnDPosX", 0);
+        }
+    } else {
+        sCButtonPosX[1] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
+        sCButtonPosY[1] = ItemIconPos_ori[1][1];
+    }
+    //C button Right
+    if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+        sCButtonPosY[2] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+        if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+            sCButtonPosX[2] = CVar_GetS32("gCBtnRPosX", 0);
+        }
+    } else {
+        sCButtonPosX[2] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
+        sCButtonPosY[2] = ItemIconPos_ori[2][1];
+    }
+
+    sCButtonPosX[0] = sCButtonPosX[0] - 160;
+    sCButtonPosY[0] = 120 - sCButtonPosY[0];
+    sCButtonPosX[1] = sCButtonPosX[1] - 160;
+    sCButtonPosY[1] = 120 - sCButtonPosY[1];
+    sCButtonPosX[2] = sCButtonPosX[2] - 160;
+    sCButtonPosY[2] = 120 - sCButtonPosY[2];
+    sCButtonPosX[3] = sCButtonPosX[3] - 160;
+    sCButtonPosY[3] = 120 - sCButtonPosY[3];
+    sCButtonPosX[4] = sCButtonPosX[4] - 160;
+    sCButtonPosY[4] = 120 - sCButtonPosY[4];
+    sCButtonPosX[5] = sCButtonPosX[5] - 160;
+    sCButtonPosY[5] = 120 - sCButtonPosY[5];
+    sCButtonPosX[6] = sCButtonPosX[6] - 160;
+    sCButtonPosY[6] = 120 - sCButtonPosY[6];
 
     if (sEquipState == 0) {
         pauseCtx->equipAnimAlpha += 14;
@@ -544,7 +796,7 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
         offsetX = ABS(pauseCtx->equipAnimX - bowItemVtx->v.ob[0] * 10) / sEquipMoveTimer;
         offsetY = ABS(pauseCtx->equipAnimY - bowItemVtx->v.ob[1] * 10) / sEquipMoveTimer;
     } else {
-        offsetX = ABS(pauseCtx->equipAnimX - OTRGetRectDimensionFromRightEdge(sCButtonPosX[pauseCtx->equipTargetCBtn]) * 10) / sEquipMoveTimer;
+        offsetX = ABS(pauseCtx->equipAnimX - sCButtonPosX[pauseCtx->equipTargetCBtn] * 10) / sEquipMoveTimer;
         offsetY = ABS(pauseCtx->equipAnimY - sCButtonPosY[pauseCtx->equipTargetCBtn] * 10) / sEquipMoveTimer;
     }
 
@@ -574,7 +826,7 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
                 pauseCtx->equipAnimY += offsetY;
             }
         } else {
-            if (pauseCtx->equipAnimX >= OTRGetRectDimensionFromRightEdge(sCButtonPosX[pauseCtx->equipTargetCBtn]) * 10) {
+            if (pauseCtx->equipAnimX >= sCButtonPosX[pauseCtx->equipTargetCBtn] * 10) {
                 pauseCtx->equipAnimX -= offsetX;
             } else {
                 pauseCtx->equipAnimX += offsetX;
@@ -598,222 +850,34 @@ void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx) {
 
             osSyncPrintf("\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝\n");
 
-            if (pauseCtx->equipTargetCBtn == 0) {
-
-                if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[1]) {
-                    if (gSaveContext.equips.buttonItems[1] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[1] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[1] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[1] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[2] = gSaveContext.equips.buttonItems[1];
-                            gSaveContext.equips.cButtonSlots[1] = gSaveContext.equips.cButtonSlots[0];
-                            Interface_LoadItemIcon2(globalCtx, 2);
-                        }
-                    } else {
-                        gSaveContext.equips.buttonItems[2] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[1] = SLOT_NONE;
-                    }
-                } else if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[2]) {
-                    if (gSaveContext.equips.buttonItems[1] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[1] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[1] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[1] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[3] = gSaveContext.equips.buttonItems[1];
-                            gSaveContext.equips.cButtonSlots[2] = gSaveContext.equips.cButtonSlots[0];
-                            Interface_LoadItemIcon2(globalCtx, 3);
-                        }
-                    } else {
-                        gSaveContext.equips.buttonItems[3] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[2] = SLOT_NONE;
-                    }
+            // If the item is on another button already, swap the two
+            uint16_t targetButtonIndex = pauseCtx->equipTargetCBtn + 1;
+            for (uint16_t otherSlotIndex = 0; otherSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
+                 otherSlotIndex++) {
+                uint16_t otherButtonIndex = otherSlotIndex + 1;
+                if (otherSlotIndex == pauseCtx->equipTargetCBtn) {
+                    continue;
                 }
 
-                if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1)) {
-                    if ((gSaveContext.equips.buttonItems[1] == ITEM_BOW) ||
-                        ((gSaveContext.equips.buttonItems[1] >= ITEM_BOW_ARROW_FIRE) &&
-                         (gSaveContext.equips.buttonItems[1] <= ITEM_BOW_ARROW_LIGHT))) {
-                        pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                        pauseCtx->equipTargetSlot = SLOT_BOW;
-                    }
-                } else if (pauseCtx->equipTargetItem == ITEM_BOW) {
-                    if ((gSaveContext.equips.buttonItems[2] >= ITEM_BOW_ARROW_FIRE) &&
-                        (gSaveContext.equips.buttonItems[2] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[2] = gSaveContext.equips.buttonItems[1];
-                        gSaveContext.equips.cButtonSlots[1] = gSaveContext.equips.cButtonSlots[0];
-                        Interface_LoadItemIcon2(globalCtx, 2);
-                    } else if ((gSaveContext.equips.buttonItems[3] >= ITEM_BOW_ARROW_FIRE) &&
-                               (gSaveContext.equips.buttonItems[3] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[3] = gSaveContext.equips.buttonItems[1];
-                        gSaveContext.equips.cButtonSlots[2] = gSaveContext.equips.cButtonSlots[0];
-                        Interface_LoadItemIcon2(globalCtx, 3);
-                    }
-                }
-
-                gSaveContext.equips.buttonItems[1] = pauseCtx->equipTargetItem;
-                gSaveContext.equips.cButtonSlots[0] = pauseCtx->equipTargetSlot;
-                Interface_LoadItemIcon1(globalCtx, 1);
-
-                osSyncPrintf("Ｃ左sl_item_no=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetItem,
-                             gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
-                             gSaveContext.equips.buttonItems[3]);
-                osSyncPrintf("Ｃ左sl_number=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetSlot,
-                             gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
-                             gSaveContext.equips.cButtonSlots[2]);
-            } else if (pauseCtx->equipTargetCBtn == 1) {
-                osSyncPrintf("Ｃ下sl_item_no=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetItem,
-                             gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
-                             gSaveContext.equips.buttonItems[3]);
-                osSyncPrintf("Ｃ下sl_number=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetSlot,
-                             gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
-                             gSaveContext.equips.cButtonSlots[2]);
-
-                if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[0]) {
-                    if (gSaveContext.equips.buttonItems[2] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[2] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[2] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[2] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2];
-                            gSaveContext.equips.cButtonSlots[0] = gSaveContext.equips.cButtonSlots[1];
-                            Interface_LoadItemIcon2(globalCtx, 1);
-                        }
+                if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[otherSlotIndex]) {
+                    // Assign the other button to the target's current item
+                    if (gSaveContext.equips.buttonItems[targetButtonIndex] != ITEM_NONE) {
+                        gSaveContext.equips.buttonItems[otherButtonIndex] =
+                            gSaveContext.equips.buttonItems[targetButtonIndex];
+                        gSaveContext.equips.cButtonSlots[otherSlotIndex] =
+                            gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];
+                        Interface_LoadItemIcon2(globalCtx, otherButtonIndex);
                     } else {
-                        gSaveContext.equips.buttonItems[1] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[0] = SLOT_NONE;
+                        gSaveContext.equips.buttonItems[otherButtonIndex] = ITEM_NONE;
+                        gSaveContext.equips.cButtonSlots[otherSlotIndex] = SLOT_NONE;
                     }
-                } else if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[2]) {
-                    if (gSaveContext.equips.buttonItems[2] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[2] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[2] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[2] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[3] = gSaveContext.equips.buttonItems[2];
-                            gSaveContext.equips.cButtonSlots[2] = gSaveContext.equips.cButtonSlots[1];
-                            Interface_LoadItemIcon2(globalCtx, 3);
-                        }
-                    } else {
-                        gSaveContext.equips.buttonItems[3] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[2] = SLOT_NONE;
-                    }
+                    break; // Assume there is only one possible pre-existing equip
                 }
-
-                if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1)) {
-                    if ((gSaveContext.equips.buttonItems[2] == ITEM_BOW) ||
-                        ((gSaveContext.equips.buttonItems[2] >= ITEM_BOW_ARROW_FIRE) &&
-                         (gSaveContext.equips.buttonItems[2] <= ITEM_BOW_ARROW_LIGHT))) {
-                        pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                        pauseCtx->equipTargetSlot = SLOT_BOW;
-                    }
-                } else if (pauseCtx->equipTargetItem == ITEM_BOW) {
-                    if ((gSaveContext.equips.buttonItems[1] >= ITEM_BOW_ARROW_FIRE) &&
-                        (gSaveContext.equips.buttonItems[1] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2];
-                        Interface_LoadItemIcon2(globalCtx, 1);
-                    } else if ((gSaveContext.equips.buttonItems[3] >= ITEM_BOW_ARROW_FIRE) &&
-                               (gSaveContext.equips.buttonItems[3] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[3] = gSaveContext.equips.buttonItems[2];
-                        Interface_LoadItemIcon2(globalCtx, 3);
-                    }
-                }
-
-                gSaveContext.equips.buttonItems[2] = pauseCtx->equipTargetItem;
-                gSaveContext.equips.cButtonSlots[1] = pauseCtx->equipTargetSlot;
-                Interface_LoadItemIcon1(globalCtx, 2);
-
-                osSyncPrintf("Ｃ下sl_item_no=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetItem,
-                             gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
-                             gSaveContext.equips.buttonItems[3]);
-                osSyncPrintf("Ｃ下sl_number=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetSlot,
-                             gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
-                             gSaveContext.equips.cButtonSlots[2]);
-            } else {
-                osSyncPrintf("Ｃ右sl_item_no=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetItem,
-                             gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
-                             gSaveContext.equips.buttonItems[3]);
-                osSyncPrintf("Ｃ右sl_number=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetSlot,
-                             gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
-                             gSaveContext.equips.cButtonSlots[2]);
-
-                if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[0]) {
-                    if (gSaveContext.equips.buttonItems[3] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[3] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[3] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[3] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[3];
-                            gSaveContext.equips.cButtonSlots[0] = gSaveContext.equips.cButtonSlots[2];
-                            Interface_LoadItemIcon2(globalCtx, 1);
-                        }
-                    } else {
-                        gSaveContext.equips.buttonItems[1] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[0] = SLOT_NONE;
-                    }
-                } else if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[1]) {
-                    if (gSaveContext.equips.buttonItems[3] != ITEM_NONE) {
-                        if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1) &&
-                            ((gSaveContext.equips.buttonItems[3] == ITEM_BOW) ||
-                             ((gSaveContext.equips.buttonItems[3] >= ITEM_BOW_ARROW_FIRE) &&
-                              (gSaveContext.equips.buttonItems[3] <= ITEM_BOW_ARROW_LIGHT)))) {
-                            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                            pauseCtx->equipTargetSlot = SLOT_BOW;
-                        } else {
-                            gSaveContext.equips.buttonItems[2] = gSaveContext.equips.buttonItems[3];
-                            gSaveContext.equips.cButtonSlots[1] = gSaveContext.equips.cButtonSlots[2];
-                            Interface_LoadItemIcon2(globalCtx, 2);
-                        }
-                    } else {
-                        gSaveContext.equips.buttonItems[2] = ITEM_NONE;
-                        gSaveContext.equips.cButtonSlots[1] = SLOT_NONE;
-                    }
-                }
-
-                if ((pauseCtx->equipTargetItem >= 0xBF) && (pauseCtx->equipTargetItem <= 0xC1)) {
-                    if ((gSaveContext.equips.buttonItems[3] == ITEM_BOW) ||
-                        ((gSaveContext.equips.buttonItems[3] >= ITEM_BOW_ARROW_FIRE) &&
-                         (gSaveContext.equips.buttonItems[3] <= ITEM_BOW_ARROW_LIGHT))) {
-                        pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-                        pauseCtx->equipTargetSlot = SLOT_BOW;
-                    }
-                } else if (pauseCtx->equipTargetItem == ITEM_BOW) {
-                    if ((gSaveContext.equips.buttonItems[1] >= ITEM_BOW_ARROW_FIRE) &&
-                        (gSaveContext.equips.buttonItems[1] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[3];
-                        Interface_LoadItemIcon2(globalCtx, 1);
-                    } else if ((gSaveContext.equips.buttonItems[2] >= ITEM_BOW_ARROW_FIRE) &&
-                               (gSaveContext.equips.buttonItems[2] <= ITEM_BOW_ARROW_LIGHT)) {
-                        gSaveContext.equips.buttonItems[2] = gSaveContext.equips.buttonItems[3];
-                        Interface_LoadItemIcon2(globalCtx, 2);
-                    }
-                }
-
-                gSaveContext.equips.buttonItems[3] = pauseCtx->equipTargetItem;
-                gSaveContext.equips.cButtonSlots[2] = pauseCtx->equipTargetSlot;
-                Interface_LoadItemIcon1(globalCtx, 3);
-
-                osSyncPrintf("Ｃ右sl_item_no=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetItem,
-                             gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
-                             gSaveContext.equips.buttonItems[3]);
-                osSyncPrintf("Ｃ右sl_number=%d (1)=%d (2)=%d (3)=%d\n", pauseCtx->equipTargetSlot,
-                             gSaveContext.equips.cButtonSlots[0], gSaveContext.equips.cButtonSlots[1],
-                             gSaveContext.equips.cButtonSlots[2]);
             }
+
+            gSaveContext.equips.buttonItems[targetButtonIndex] = pauseCtx->equipTargetItem;
+            gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn] = pauseCtx->equipTargetSlot;
+            Interface_LoadItemIcon1(globalCtx, targetButtonIndex);
 
             pauseCtx->unk_1E4 = 0;
             sEquipMoveTimer = 10;

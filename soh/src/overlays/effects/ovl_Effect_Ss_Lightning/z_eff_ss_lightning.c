@@ -83,7 +83,7 @@ void EffectSsLightning_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this)
     s16 texIdx;
     f32 xzScale;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_lightning.c", 233);
+    OPEN_DISPS(gfxCtx);
 
     yScale = this->rScale * 0.01f;
     texIdx = this->rLifespan - this->life;
@@ -114,7 +114,7 @@ void EffectSsLightning_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this)
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_lightning.c", 281);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsLightning_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

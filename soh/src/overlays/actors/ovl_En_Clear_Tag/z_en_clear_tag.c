@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx);
@@ -278,6 +280,7 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             globalCtx->specialEffects = &sClearTagEffects[0];
             for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++) {
                 sClearTagEffects[i].type = CLEAR_TAG_EFFECT_AVAILABLE;
+                sClearTagEffects[i].epoch++;
             }
             this->drawMode = CLEAR_TAG_DRAW_MODE_ALL;
         }
@@ -686,7 +689,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnClearTag* this = (EnClearTag*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 983);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->drawMode != CLEAR_TAG_DRAW_MODE_EFFECT) {
         func_80093D84(globalCtx->state.gfxCtx);
 
@@ -695,12 +698,12 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 255, 0, 255);
 
             Matrix_Translate(25.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1004),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
 
             Matrix_Translate(-50.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1011),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
         } else {
@@ -718,7 +721,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_RotateY(yRotation, MTXMODE_APPLY);
             }
             Matrix_RotateZ(this->roll, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1030),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDL);
 
@@ -732,7 +735,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 200, 155);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 50, 0, 0);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1067),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingBackfireDL);
 
@@ -756,7 +759,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_RotateY(yRotation, MTXMODE_APPLY);
             }
             Matrix_RotateZ(this->roll, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1104),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingShadowDL);
         }
@@ -766,7 +769,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
         EnClearTag_DrawEffects(globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_clear_tag.c", 1119);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -896,12 +899,14 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     EnClearTagEffect* effect = (EnClearTagEffect*)globalCtx->specialEffects;
     EnClearTagEffect* firstEffect = effect;
 
-    OPEN_DISPS(gfxCtx, "../z_en_clear_tag.c", 1288);
+    OPEN_DISPS(gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
+        FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
         if (effect->type == CLEAR_TAG_EFFECT_DEBRIS) {
             // Apply the debris effect material if it has not already been applied.
             if (!isMaterialApplied) {
@@ -914,10 +919,12 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_RotateY(effect->rotationY, MTXMODE_APPLY);
             Matrix_RotateX(effect->rotationX, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_clear_tag.c", 1307),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDebrisEffectDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     // Draw all ground flash effects.
@@ -925,6 +932,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the flash ground effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -938,9 +947,11 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateX(effect->floorTangent.x, MTXMODE_APPLY);
             Matrix_RotateZ(effect->floorTangent.z, MTXMODE_APPLY);
             Matrix_Scale(effect->scale + effect->scale, 1.0f, effect->scale * 2.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_clear_tag.c", 1342),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectGroundDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -949,6 +960,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_SMOKE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the smoke effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -967,9 +980,11 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
             Matrix_Translate(0.0f, 20.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_clear_tag.c", 1392),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+        
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -978,6 +993,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FIRE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the fire effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -993,9 +1010,11 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Translate(effect->position.x, effect->position.y, effect->position.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_clear_tag.c", 1439),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1004,6 +1023,8 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+
             // Apply the flash billboard effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -1016,13 +1037,15 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Translate(effect->position.x, effect->position.y, effect->position.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_clear_tag.c", 1470),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectDL);
+
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_clear_tag.c", 1477);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnClearTag_Reset(void) {

@@ -5,24 +5,26 @@
 namespace Ship {
 	class KeyboardController : public Controller {
 		public:
-			KeyboardController(int32_t dwControllerNumber);
-			~KeyboardController();
+			KeyboardController();
 
-			void ReadFromSource();
-			void WriteToSource(ControllerCallback* controller);
-			bool Connected() const { return true; }
-			bool CanRumble() const { return false; }
-
+			void ReadFromSource(int32_t virtualSlot) override;
+			void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) override;
+			const std::string GetControllerName() override;
+			const std::string GetButtonName(int32_t virtualSlot, int32_t n64Button) override;
 			bool PressButton(int32_t dwScancode);
 			bool ReleaseButton(int32_t dwScancode);
+			bool Connected() const override;
+			bool CanRumble() const override;
+			bool CanGyro() const override;
+			void ClearRawPress() override;
+			int32_t ReadRawPress() override;
 			void ReleaseAllButtons();
-
-			bool HasPadConf() const { return false; }
-			std::optional<std::string> GetPadConfSection() { return {}; }
+			void SetLastScancode(int32_t key);
+			int32_t GetLastScancode();
+			void CreateDefaultBinding(int32_t virtualSlot) override;
 
 		protected:
-			std::string GetControllerType();
-			std::string GetConfSection();
-			std::string GetBindingConfSection();
+			int32_t lastScancode;
+			int32_t lastKey = -1;
 	};
 }

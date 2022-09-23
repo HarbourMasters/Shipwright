@@ -30,8 +30,8 @@ namespace Ship {
 			WAVEFORMATEX desired;
 			desired.wFormatTag = WAVE_FORMAT_PCM;
 			desired.nChannels = 2;
-			desired.nSamplesPerSec = 32000;
-			desired.nAvgBytesPerSec = 32000 * 2 * 2;
+			desired.nSamplesPerSec  = this->GetSampleRate();
+			desired.nAvgBytesPerSec = desired.nSamplesPerSec * 2 * 2;
 			desired.nBlockAlign = 4;
 			desired.wBitsPerSample = 16;
 			desired.cbSize = 0;
@@ -81,7 +81,7 @@ namespace Ship {
 	}
 
 	int WasapiAudioPlayer::GetDesiredBuffered(void) {
-		return 1680;
+		return 2480;
 	}
 
 	void WasapiAudioPlayer::Play(const uint8_t* Buffer, uint32_t BufferLen) {

@@ -17,6 +17,7 @@ typedef struct EnTkEff {
     /* 0x0014 */ Vec3f      pos;
     /* 0x0020 */ Vec3f      speed;
     /* 0x002C */ Vec3f      accel;
+    u32 epoch;
 } EnTkEff; // size = 0x0038
 
 struct EnTk;
@@ -47,6 +48,7 @@ typedef struct EnTk {
     /* 0x0296 */ Vec3s      morphTable[18];
     /* 0x0304 */ Vec3f      v3f_304;
     /* 0x0310 */ EnTkEff    eff[20];
+    u8 heartPieceSpawned;
 } EnTk; // size = 0x0770
 
 #endif

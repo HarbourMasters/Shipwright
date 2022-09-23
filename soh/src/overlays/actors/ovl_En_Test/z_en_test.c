@@ -1804,7 +1804,7 @@ void EnTest_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->actor.params == STALFOS_TYPE_INVISIBLE) {
-        if (globalCtx->actorCtx.unk_03 != 0) {
+        if (globalCtx->actorCtx.lensActive) {
             this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_7;
             this->actor.shape.shadowDraw = ActorShadow_DrawFeet;
         } else {
@@ -1823,13 +1823,13 @@ s32 EnTest_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         rot->y -= this->headRot.x;
         rot->z += this->headRot.z;
     } else if (limbIndex == STALFOS_LIMB_HEAD) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_test.c", 3582);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 80 + ABS((s16)(Math_SinS(globalCtx->gameplayFrames * 2000) * 175.0f)), 0, 0,
                        255);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_test.c", 3587);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     if ((this->actor.params == STALFOS_TYPE_INVISIBLE) && !CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
@@ -1877,7 +1877,7 @@ void EnTest_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, V
         Matrix_MultVec3f(&D_80864670, &sp64);
 
         if ((this->swordState >= 1) &&
-            ((this->actor.params != STALFOS_TYPE_INVISIBLE) || (globalCtx->actorCtx.unk_03 != 0))) {
+            ((this->actor.params != STALFOS_TYPE_INVISIBLE) || globalCtx->actorCtx.lensActive)) {
             EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &sp70, &sp64);
         } else if (this->swordState >= 0) {
             EffectBlure_AddSpace(Effect_GetByIndex(this->effectIndex));
@@ -1897,7 +1897,7 @@ void EnTest_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, V
             if ((this->unk_7C8 == 0x15) || (this->unk_7C8 == 0x16)) {
                 if (this->actor.speedXZ != 0.0f) {
                     Matrix_MultVec3f(&D_80864658, &sp64);
-                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 0x64, 0xF, 0);
+                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 100, 15, false);
                 }
             }
         }

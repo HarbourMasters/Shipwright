@@ -199,7 +199,7 @@ void func_80AE5054(EnReeba* this, GlobalContext* globalCtx) {
 
     if ((globalCtx->gameplayFrames % 4) == 0) {
         Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                 8.0f, 500, 10, 1);
+                                 8.0f, 500, 10, true);
     }
 
     if (this->unk_278 == 0) {
@@ -340,7 +340,7 @@ void func_80AE56E0(EnReeba* this, GlobalContext* globalCtx) {
     if ((this->unk_284 + 10.0f) <= this->actor.shape.yOffset) {
         if ((globalCtx->gameplayFrames % 4) == 0) {
             Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                     8.0f, 500, 10, 1);
+                                     8.0f, 500, 10, true);
         }
 
         Math_ApproachF(&this->actor.shape.yOffset, this->unk_284, 1.0f, this->unk_288);
@@ -652,7 +652,7 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnReeba* this = (EnReeba*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_reeba.c", 1062);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -664,7 +664,7 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     SkelAnime_DrawOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_reeba.c", 1088);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (BREG(0)) {
         Vec3f debugPos;

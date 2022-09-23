@@ -127,11 +127,9 @@ void OceffStorm_Draw2(Actor* thisx, GlobalContext* globalCtx) {
     u32 scroll = globalCtx->state.frames & 0xFFF;
     OceffStorm* this = (OceffStorm*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_oceff_storm.c", 449);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
-
-    if (1) {}
 
     POLY_XLU_DISP = func_80093F34(POLY_XLU_DISP);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -140,10 +138,11 @@ void OceffStorm_Draw2(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
     gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, scroll * 8, scroll * 4, 64, 64, 1,
                                                      scroll * 4, scroll * 4, 64, 64));
-    gSPTextureRectangle(POLY_XLU_DISP++, 0, 0, (SCREEN_WIDTH << 2), (SCREEN_HEIGHT << 2), G_TX_RENDERTILE, 0, 0, 140,
-                        (1 << 15) | (31 << 10) | 884);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
+                            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
+                            -0x008C);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_oceff_storm.c", 477);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void OceffStorm_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -151,7 +150,7 @@ void OceffStorm_Draw(Actor* thisx, GlobalContext* globalCtx) {
     OceffStorm* this = (OceffStorm*)thisx;
     Vtx* vtxPtr = ResourceMgr_LoadVtxByName(sCylinderVtx);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_oceff_storm.c", 486);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -163,7 +162,7 @@ void OceffStorm_Draw(Actor* thisx, GlobalContext* globalCtx) {
     vtxPtr[0].v.cn[3] = vtxPtr[6].v.cn[3] = vtxPtr[16].v.cn[3] = vtxPtr[25].v.cn[3] = this->vtxAlpha >> 1;
     vtxPtr[10].v.cn[3] = vtxPtr[22].v.cn[3] = this->vtxAlpha;
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_oceff_storm.c", 498),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, sCylinderMaterialDL);
@@ -171,7 +170,7 @@ void OceffStorm_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                                      1, scroll * 8, (0 - scroll) * 12, 32, 32));
     gSPDisplayList(POLY_XLU_DISP++, sCylinderModelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_oceff_storm.c", 512);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     OceffStorm_Draw2(&this->actor, globalCtx);
 }

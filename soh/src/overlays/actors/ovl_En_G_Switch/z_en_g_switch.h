@@ -32,6 +32,7 @@ typedef struct {
     /* 0x12 */ u8 flag;
     /* 0x14 */ Vec3f velocity;
     /* 0x20 */ Vec3f rot;
+    u32 epoch;
 } EnGSwitchEffect; // size = 0x2C
 
 typedef struct EnGSwitch {

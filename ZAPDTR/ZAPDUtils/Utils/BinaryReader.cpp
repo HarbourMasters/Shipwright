@@ -18,6 +18,16 @@ void BinaryReader::Close()
 	stream->Close();
 }
 
+void BinaryReader::SetEndianness(Endianness endianness)
+{
+	this->endianness = endianness;
+}
+
+Endianness BinaryReader::GetEndianness() const
+{
+	return endianness;
+}
+
 void BinaryReader::Seek(uint32_t offset, SeekOffsetType seekType)
 {
 	stream->Seek(offset, seekType);
@@ -28,9 +38,14 @@ uint32_t BinaryReader::GetBaseAddress()
 	return stream->GetBaseAddress();
 }
 
-void BinaryReader::Read([[maybe_unused]] char* buffer, int32_t length)
+void BinaryReader::Read(int32_t length)
 {
 	stream->Read(length);
+}
+
+void BinaryReader::Read(char* buffer, int32_t length)
+{
+	stream->Read(buffer, length);
 }
 
 char BinaryReader::ReadChar()
@@ -53,6 +68,10 @@ int16_t BinaryReader::ReadInt16()
 	int16_t result = 0;
 
 	stream->Read((char*)&result, sizeof(int16_t));
+
+	if (endianness != Endianness::Native)
+		result = BSWAP16(result);
+
 	return result;
 }
 
@@ -61,6 +80,10 @@ int32_t BinaryReader::ReadInt32()
 	int32_t result = 0;
 
 	stream->Read((char*)&result, sizeof(int32_t));
+
+	if (endianness != Endianness::Native)
+		result = BSWAP32(result);
+
 	return result;
 }
 
@@ -69,6 +92,10 @@ uint16_t BinaryReader::ReadUInt16()
 	uint16_t result = 0;
 
 	stream->Read((char*)&result, sizeof(uint16_t));
+
+	if (endianness != Endianness::Native)
+		result = BSWAP16(result);
+
 	return result;
 }
 
@@ -77,6 +104,10 @@ uint32_t BinaryReader::ReadUInt32()
 	uint32_t result = 0;
 
 	stream->Read((char*)&result, sizeof(uint32_t));
+
+	if (endianness != Endianness::Native)
+		result = BSWAP32(result);
+
 	return result;
 }
 
@@ -85,6 +116,10 @@ uint64_t BinaryReader::ReadUInt64()
 	uint64_t result = 0;
 
 	stream->Read((char*)&result, sizeof(uint64_t));
+
+	if (endianness != Endianness::Native)
+		result = BSWAP64(result);
+
 	return result;
 }
 
@@ -93,6 +128,15 @@ float BinaryReader::ReadSingle()
 	float result = NAN;
 
 	stream->Read((char*)&result, sizeof(float));
+
+	if (endianness != Endianness::Native)
+	{
+		float tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&result;
+		dst[3] = src[0]; dst[2] = src[1]; dst[1] = src[2]; dst[0] = src[3];
+		result = tmp;
+	}
 
 	if (std::isnan(result))
 		throw std::runtime_error("BinaryReader::ReadSingle(): Error reading stream");
@@ -105,6 +149,17 @@ double BinaryReader::ReadDouble()
 	double result = NAN;
 
 	stream->Read((char*)&result, sizeof(double));
+
+	if (endianness != Endianness::Native)
+	{
+		double tmp;
+		char* dst = (char*)&tmp;
+		char* src = (char*)&result;
+		dst[7] = src[0]; dst[6] = src[1]; dst[5] = src[2]; dst[4] = src[3];
+		dst[3] = src[4]; dst[2] = src[5]; dst[1] = src[6]; dst[0] = src[7];
+		result = tmp;
+	}
+
 	if (std::isnan(result))
 		throw std::runtime_error("BinaryReader::ReadDouble(): Error reading stream");
 

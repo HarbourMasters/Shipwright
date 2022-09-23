@@ -13,7 +13,7 @@ public:
 	Declaration* DeclareVar(const std::string& prefix, const std::string& bodyStr) override;
 	std::string GetBodySourceCode() const override;
 
-	std::string GetSourceOutputHeader(const std::string& prefix) override;
+	std::string GetSourceOutputHeader(const std::string& prefix, std::set<std::string> *nameSet) override;
 	std::string GetSourceTypeName() const override;
 	ZResourceType GetResourceType() const override;
 

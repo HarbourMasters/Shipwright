@@ -137,7 +137,7 @@ void func_8088B268(BgHidanRock* this, GlobalContext* globalCtx) {
                 }
             }
 
-            this->dyna.actor.speedXZ += CVar_GetS32("gFasterBlockPush", 0) != 0 ? 0.5f : 0.05f;
+            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
             this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
 
             if (D_8088BFC0 > 0.0f) {
@@ -156,7 +156,7 @@ void func_8088B268(BgHidanRock* this, GlobalContext* globalCtx) {
                 this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
                 D_8088BFC0 = 0.0f;
                 this->dyna.actor.speedXZ = 0.0f;
-                this->timer = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 2 : 5;
+                this->timer = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
             }
 
             func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
@@ -353,7 +353,7 @@ static void* sVerticalFlamesTexs[] = {
 void func_8088BC40(GlobalContext* globalCtx, BgHidanRock* this) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_rock.c", 808);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x01, 255, 255, 0, 150);
@@ -371,11 +371,11 @@ void func_8088BC40(GlobalContext* globalCtx, BgHidanRock* this) {
     Matrix_Scale(6.0f, this->unk_16C, 6.0f, MTXMODE_APPLY);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sVerticalFlamesTexs[globalCtx->gameplayFrames & 7]));
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_hidan_rock.c", 853),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigVerticalFlameDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_rock.c", 857);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgHidanRock_Draw(Actor* thisx, GlobalContext* globalCtx) {

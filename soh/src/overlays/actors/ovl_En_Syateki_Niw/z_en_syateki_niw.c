@@ -7,6 +7,7 @@
 #include "z_en_syateki_niw.h"
 #include "objects/object_niw/object_niw.h"
 #include "vt.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -582,10 +583,6 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp6C;
     Vec3f sp60;
 
-    if (1) {}
-    if (1) {}
-    if (1) {}
-
     func_80B132A8(this, globalCtx);
     this->unk_28C++;
     if (this->unk_254 != 0) {
@@ -717,6 +714,7 @@ void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f3
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 0) {
+            ptr->epoch++;
             ptr->unk_00 = 1;
             ptr->unk_04 = *arg1;
             ptr->unk_10 = *arg2;
@@ -766,28 +764,30 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
     u8 flag = 0;
 
-    OPEN_DISPS(gfxCtx, "../z_en_syateki_niw.c", 1234);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 1) {
             if (flag == 0) {
-                gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
+                gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherMaterialDL);
                 flag++;
             }
 
+            FrameInterpolation_RecordOpenChild(ptr, ptr->epoch);
             Matrix_Translate(ptr->unk_04.x, ptr->unk_04.y, ptr->unk_04.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(ptr->unk_2C, ptr->unk_2C, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_syateki_niw.c", 1251),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_syateki_niw.c", 1257);
+    CLOSE_DISPS(gfxCtx);
 }

@@ -6,6 +6,7 @@
 
 #include "z_mir_ray.h"
 #include "objects/object_mir_ray/object_mir_ray.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -168,11 +169,11 @@ void MirRay_Init(Actor* thisx, GlobalContext* globalCtx) {
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 0.0f);
     // "Generation of reflectable light!"
     osSyncPrintf("反射用 光の発生!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-    LOG_NUM("this->actor.arg_data", this->actor.params, "../z_mir_ray.c", 518);
+    LOG_NUM("this->actor.arg_data", this->actor.params);
 
     if (this->actor.params >= 0xA) {
         // "Reflected light generation failure"
-        LOG_STRING("反射光 発生失敗", "../z_mir_ray.c", 521);
+        LOG_STRING("反射光 発生失敗");
         Actor_Kill(&this->actor);
     }
 
@@ -440,11 +441,6 @@ void MirRay_ReflectedBeam(MirRay* this, GlobalContext* globalCtx, MirRayShieldRe
 
                 currentReflection->mtx.zw = 0.0f;
 
-                if (1) {}
-                if (1) {}
-                if (1) {}
-                if (1) {} // All four required to match
-
                 currentReflection->mtx.xx = currentReflection->mtx.yy = currentReflection->mtx.zz =
                     currentReflection->mtx.ww = 1.0f;
                 currentReflection->mtx.yx = currentReflection->mtx.zx = currentReflection->mtx.wx =
@@ -492,11 +488,11 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Mult(&player->shieldMf, MTXMODE_NEW);
         MirRay_SetIntensity(this, globalCtx);
         if (!(this->reflectIntensity <= 0.0f)) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_mir_ray.c", 966);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             func_80093D84(globalCtx->state.gfxCtx);
             Matrix_Scale(1.0f, 1.0f, this->reflectIntensity * 5.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_mir_ray.c", 972),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 150, (s16)(temp = this->reflectIntensity * 100.0f));
             gSPDisplayList(POLY_XLU_DISP++, gShieldBeamGlowDL);
@@ -516,20 +512,22 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
             for (i = 0; i < 6; i++) {
                 if (reflection[i].reflectionPoly != NULL) {
+                    FrameInterpolation_RecordOpenChild(&reflection[i], i);
                     Matrix_Translate(reflection[i].pos.x, reflection[i].pos.y, reflection[i].pos.z, MTXMODE_NEW);
                     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
                     Matrix_Mult(&reflection[i].mtx, MTXMODE_APPLY);
-                    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_mir_ray.c", 1006),
+                    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gDPSetRenderMode(POLY_XLU_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_DECAL2);
                     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 150, reflection[0].opacity);
                     gSPDisplayList(POLY_XLU_DISP++, gShieldBeamImageDL);
+                    FrameInterpolation_RecordCloseChild();
                 }
             }
 
             D_80B8E670 = 1;
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_mir_ray.c", 1027);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }
@@ -550,7 +548,6 @@ s32 MirRay_CheckInFrustum(Vec3f* vecA, Vec3f* vecB, f32 pointx, f32 pointy, f32 
     vecdiff.x = vecB->x - vecA->x;
     vecdiff.y = vecB->y - vecA->y;
     vecdiff.z = vecB->z - vecA->z;
-    if (1) {}
     dist = SQ(vecdiff.x) + SQ(vecdiff.y) + SQ(vecdiff.z);
 
     if (dist == 0.0f) {
@@ -571,7 +568,6 @@ s32 MirRay_CheckInFrustum(Vec3f* vecA, Vec3f* vecB, f32 pointx, f32 pointy, f32 
     // If the Point is within the bounding double cone, check if it is in the frustum by checking whether it is between
     // the bounding planes
     if ((SQ(closestPtx - pointx) + SQ(closestPty - pointy) + SQ(closestPtz - pointz)) <= SQ(coneRadius)) {
-        if (1) {}
 
         // Stores the vector difference again
         Math_Vec3f_Diff(vecB, vecA, &sp5C);

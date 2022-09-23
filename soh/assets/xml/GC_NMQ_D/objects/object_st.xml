@@ -33,8 +33,8 @@
         <DList Name="object_st_DL_0048B8" Offset="0x48B8"/>
         <DList Name="object_st_DL_004950" Offset="0x4950"/>
         <DList Name="object_st_DL_0049E8" Offset="0x49E8"/>
-        <DList Name="object_st_DL_004DB0" Offset="0x4DB0"/>
-        <DList Name="object_st_DL_004EB8" Offset="0x4EB8"/>
+        <DList Name="gSkulltulaTokenDL" Offset="0x4DB0"/>
+        <DList Name="gSkulltulaTokenFlameDL" Offset="0x4EB8"/>
         <Limb Name="object_st_Limb_0050C8" LimbType="Standard" Offset="0x50C8"/>
         <Limb Name="object_st_Limb_0050D4" LimbType="Standard" Offset="0x50D4"/>
         <Limb Name="object_st_Limb_0050E0" LimbType="Standard" Offset="0x50E0"/>

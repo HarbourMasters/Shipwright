@@ -249,7 +249,7 @@ void AudioHeap_PopCache(s32 tableType) {
     persistent->numEntries--;
 }
 
-void AudioHeap_InitMainPools(ptrdiff_t initPoolSize) {
+void AudioHeap_InitMainPools(size_t initPoolSize) {
     AudioHeap_AllocPoolInit(&gAudioContext.audioInitPool, gAudioContext.audioHeap, initPoolSize);
     AudioHeap_AllocPoolInit(&gAudioContext.audioSessionPool, gAudioContext.audioHeap + initPoolSize,
                             gAudioContext.audioHeapSize - initPoolSize);
@@ -1148,9 +1148,9 @@ void AudioHeap_UnapplySampleCacheForFont(SampleCacheEntry* entry, s32 fontId) {
     Drum* drum;
     Instrument* inst;
     SoundFontSound* sfx;
-    s32 instId;
-    s32 drumId;
-    s32 sfxId;
+    size_t instId;
+    size_t drumId;
+    size_t sfxId;
 
     for (instId = 0; instId < gAudioContext.soundFonts[fontId].numInstruments; instId++) {
         inst = Audio_GetInstrumentInner(fontId, instId);
@@ -1201,13 +1201,8 @@ void AudioHeap_DiscardSampleCacheEntry(SampleCacheEntry* entry) {
     }
 }
 
-void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample) {
-    if (sample != NULL) {
-        if (sample->sampleAddr == entry->allocatedAddr) {
-            sample->sampleAddr = entry->sampleAddr;
-            sample->medium = entry->origMedium;
-        }
-    }
+void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample)
+{
 }
 
 SampleCacheEntry* AudioHeap_AllocPersistentSampleCacheEntry(size_t size) {
@@ -1242,6 +1237,8 @@ void AudioHeap_DiscardSampleCaches(void) {
     s32 fontId;
     s32 j;
 
+    return;
+
     numFonts = gAudioContext.soundFontTable->numEntries;
     for (fontId = 0; fontId < numFonts; fontId++) {
         sampleBankId1 = gAudioContext.soundFonts[fontId].sampleBankId1;
@@ -1266,18 +1263,18 @@ void AudioHeap_DiscardSampleCaches(void) {
 }
 
 typedef struct {
-    u32 oldAddr;
-    u32 newAddr;
+    uintptr_t oldAddr;
+    uintptr_t newAddr;
     size_t size;
     u8 newMedium;
 } StorageChange;
 
 void AudioHeap_ChangeStorage(StorageChange* change, SoundFontSample* sample) {
     if (sample != NULL) {
-        u32 start = change->oldAddr;
-        u32 end = change->oldAddr + change->size;
+        uintptr_t start = change->oldAddr;
+        uintptr_t end = change->oldAddr + change->size;
 
-        if (start <= (u32)sample->sampleAddr && (u32)sample->sampleAddr < end) {
+        if (start <= sample->sampleAddr && sample->sampleAddr < end) {
             sample->sampleAddr = sample->sampleAddr - start + change->newAddr;
             sample->medium = change->newMedium;
         }
@@ -1300,7 +1297,7 @@ void AudioHeap_ApplySampleBankCacheInternal(s32 apply, s32 sampleBankId) {
     s32 numFonts;
     s32 instId;
     s32 drumId;
-    s32 sfxId;
+    size_t sfxId;
     StorageChange change;
     s32 sampleBankId1;
     s32 sampleBankId2;
@@ -1310,6 +1307,8 @@ void AudioHeap_ApplySampleBankCacheInternal(s32 apply, s32 sampleBankId) {
     SoundFontSound* sfx;
     u32* fakematch;
     s32 pad[4];
+
+    return;
 
     sampleBankTable = gAudioContext.sampleBankTable;
     numFonts = gAudioContext.soundFontTable->numEntries;

@@ -66,7 +66,7 @@ void func_808B3960(BgSpot15Rrbox* this, GlobalContext* globalCtx, CollisionHeade
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_spot15_rrbox.c", 171,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -260,7 +260,7 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     s32 approxFResult;
     Actor* actor = &this->dyna.actor;
 
-    this->unk_174 += CVar_GetS32("gFasterBlockPush", 0) != 0 ? 1.0f : 0.5f;
+    this->unk_174 = this->unk_174 + ((CVar_GetS32("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
 
     this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f);
 
@@ -294,7 +294,7 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
         this->dyna.unk_150 = 0.0f;
         this->unk_178 = 0.0f;
         this->unk_174 = 0.0f;
-        this->unk_168 = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3 : 10;
+        this->unk_168 = 10 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 2);
         func_808B4084(this, globalCtx);
     }
     Audio_PlayActorSound2(actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
@@ -323,7 +323,7 @@ void func_808B43D0(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
 
     if (actor->world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Lon Lon wooden crate fell too much"
-        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", "../z_bg_spot15_rrbox.c", 599,
+        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      actor->params);
 
         Actor_Kill(actor);

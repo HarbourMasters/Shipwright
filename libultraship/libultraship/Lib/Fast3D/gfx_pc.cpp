@@ -15,24 +15,28 @@
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
 #endif
+#include <PR/ultra64/types.h>
 #include <PR/ultra64/gbi.h>
 #include <PR/ultra64/gs2dex.h>
 #include <string>
 #include <iostream>
+
+#include "../../Cvar.h"
 
 #include "gfx_pc.h"
 #include "gfx_cc.h"
 #include "gfx_window_manager_api.h"
 #include "gfx_rendering_api.h"
 #include "gfx_screen_config.h"
-#include "../../SohHooks.h"
+#include "../../Hooks.h"
 
 #include "../../luslog.h"
 #include "../StrHash64.h"
-#include "../../SohImGuiImpl.h"
-#include "../../Environment.h"
+#include "../../ImGuiImpl.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
+#include "../../Utils.h"
+
 
 // OTRTODO: fix header files for these
 extern "C" {
@@ -45,6 +49,8 @@ extern "C" {
     char* ResourceMgr_LoadTexByName(char* texPath);
     int ResourceMgr_OTRSigCheck(char* imgData);
 }
+
+uintptr_t gfxFramebuffer;
 
 using namespace std;
 
@@ -60,8 +66,7 @@ using namespace std;
 #define SCALE_3_8(VAL_) ((VAL_) * 0x24)
 #define SCALE_8_3(VAL_) ((VAL_) / 0x24)
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+// SCREEN_WIDTH and SCREEN_HEIGHT are defined in the headerfile
 #define HALF_SCREEN_WIDTH (SCREEN_WIDTH / 2)
 #define HALF_SCREEN_HEIGHT (SCREEN_HEIGHT / 2)
 
@@ -216,7 +221,7 @@ static map<int, FBInfo>::iterator active_fb;
 static map<int, FBInfo> framebuffers;
 
 static set<pair<float, float>> get_pixel_depth_pending;
-static map<pair<float, float>, uint16_t> get_pixel_depth_cached;
+static unordered_map<pair<float, float>, uint16_t, hash_pair_ff> get_pixel_depth_cached;
 
 #ifdef _WIN32
 // TODO: Properly implement for MSVC
@@ -566,7 +571,7 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
 static void gfx_texture_cache_delete(const uint8_t* orig_addr)
 {
     while (gfx_texture_cache.map.bucket_count() > 0) {
-        TextureCacheKey key = { orig_addr, 0, 0, 0 }; // bucket index only depends on the address
+        TextureCacheKey key = { orig_addr, {0}, 0, 0 }; // bucket index only depends on the address
         size_t bucket = gfx_texture_cache.map.bucket(key);
         bool again = false;
         for (auto it = gfx_texture_cache.map.begin(bucket); it != gfx_texture_cache.map.end(bucket); ++it) {
@@ -901,6 +906,7 @@ static void calculate_normal_dir(const Light_t *light, float coeffs[3]) {
         light->dir[1] / 127.0f,
         light->dir[2] / 127.0f
     };
+
     gfx_transposed_matrix_mul(coeffs, light_dir, rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1]);
     gfx_normalize_vector(coeffs);
 }
@@ -1003,16 +1009,6 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
         const Vtx_tn *vn = &vertices[i].n;
         struct LoadedVertex *d = &rsp.loaded_vertices[dest_index];
 
-        if (markerOn)
-        {
-            int bp = 0;
-        }
-
-        if ((uintptr_t)vertices == 0x14913ec0)
-        {
-            int bp = 0;
-        }
-
         if (v == NULL)
             return;
 
@@ -1020,11 +1016,6 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
         float y = v->ob[0] * rsp.MP_matrix[0][1] + v->ob[1] * rsp.MP_matrix[1][1] + v->ob[2] * rsp.MP_matrix[2][1] + rsp.MP_matrix[3][1];
         float z = v->ob[0] * rsp.MP_matrix[0][2] + v->ob[1] * rsp.MP_matrix[1][2] + v->ob[2] * rsp.MP_matrix[2][2] + rsp.MP_matrix[3][2];
         float w = v->ob[0] * rsp.MP_matrix[0][3] + v->ob[1] * rsp.MP_matrix[1][3] + v->ob[2] * rsp.MP_matrix[2][3] + rsp.MP_matrix[3][3];
-
-        if (markerOn)
-        {
-            int bp = 0;
-        }
 
         x = gfx_adjust_x_for_aspect_ratio(x);
 
@@ -1077,10 +1068,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                 dotx /= 127.0f;
                 doty /= 127.0f;
 
-                if (dotx < -1.0f) dotx = -1.0f;
-                if (dotx > 1.0f) dotx = 1.0f;
-                if (doty < -1.0f) doty = -1.0f;
-                if (doty > 1.0f) doty = 1.0f;
+                dotx = Ship::Math::clamp(dotx, -1.0f, 1.0f);
+                doty = Ship::Math::clamp(doty, -1.0f, 1.0f);
 
                 if (rsp.geometry_mode & G_TEXTURE_GEN_LINEAR) {
                                     // Not sure exactly what formula we should use to get accurate values
@@ -1088,8 +1077,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                                     doty = (2.906921f * doty * doty + 1.36114f) * doty;
                                     dotx = (dotx + 1.0f) / 4.0f;
                                     doty = (doty + 1.0f) / 4.0f;*/
-                dotx = acosf(-dotx) /*/ (3.14159265f)*/ / 4.0f;
-                doty = acosf(-doty) /*/ (3.14159265f)*/ / 4.0f;
+                    dotx = acosf(-dotx) /* M_PI */ / 4.0f;
+                    doty = acosf(-doty) /* M_PI */ / 4.0f;
                 }
                 else {
                     dotx = (dotx + 1.0f) / 4.0f;
@@ -1110,12 +1099,12 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
 
         // trivial clip rejection
         d->clip_rej = 0;
-        if (x < -w) d->clip_rej |= 1;
-        if (x > w) d->clip_rej |= 2;
-        if (y < -w) d->clip_rej |= 4;
-        if (y > w) d->clip_rej |= 8;
-        //if (z < -w) d->clip_rej |= 16;
-        if (z > w) d->clip_rej |= 32;
+        if (x < -w) d->clip_rej |= 1; // CLIP_LEFT
+        if (x > w) d->clip_rej |= 2; // CLIP_RIGHT
+        if (y < -w) d->clip_rej |= 4; // CLIP_BOTTOM
+        if (y > w) d->clip_rej |= 8; // CLIP_TOP
+        // if (z < -w) d->clip_rej |= 16; // CLIP_NEAR
+        if (z > w) d->clip_rej |= 32; // CLIP_FAR
 
         d->x = x;
         d->y = y;
@@ -1129,13 +1118,10 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             }
 
             float winv = 1.0f / w;
-            if (winv < 0.0f) {
-                winv = 32767.0f;
-            }
+            if (winv < 0.0f) winv = std::numeric_limits<int16_t>::max();
 
             float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
-            if (fog_z < 0) fog_z = 0;
-            if (fog_z > 255) fog_z = 255;
+            fog_z = Ship::Math::clamp(fog_z, 0.0f, 255.0f);
             d->color.a = fog_z; // Use alpha variable to store fog factor
         } else {
             d->color.a = v->cn[3];
@@ -1223,8 +1209,8 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
         rdp.viewport_or_scissor_changed = false;
     }
 
-    uint64_t cc_id = rdp.combine_mode;
 
+    uint64_t cc_id = rdp.combine_mode;
     bool use_alpha = (rdp.other_mode_l & (3 << 20)) == (G_BL_CLR_MEM << 20) && (rdp.other_mode_l & (3 << 16)) == (G_BL_1MA << 16);
     bool use_fog = (rdp.other_mode_l >> 30) == G_BL_CLR_FOG;
     bool texture_edge = (rdp.other_mode_l & CVG_X_ALPHA) == CVG_X_ALPHA;
@@ -1398,12 +1384,25 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
             buf_vbo[buf_vbo_len++] = u / tex_width[t];
             buf_vbo[buf_vbo_len++] = v / tex_height[t];
 
-            if (tm & (1 << 2 * t)) {
+            bool clampS = tm & (1 << 2 * t);
+            bool clampT = tm & (1 << 2 * t + 1);
+
+            if (clampS) {
                 buf_vbo[buf_vbo_len++] = (tex_width2[t] - 0.5f) / tex_width[t];
             }
-            if (tm & (1 << 2 * t + 1)) {
+#ifdef __WIIU__
+            else {
+                buf_vbo[buf_vbo_len++] = 0.0f;
+            }
+#endif
+            if (clampT) {
                 buf_vbo[buf_vbo_len++] = (tex_height2[t] - 0.5f) / tex_height[t];
             }
+#ifdef __WIIU__
+            else {
+                buf_vbo[buf_vbo_len++] = 0.0f;
+            }
+#endif
         }
 
         if (use_fog) {
@@ -1480,6 +1479,12 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
                     buf_vbo[buf_vbo_len++] = color->r / 255.0f;
                     buf_vbo[buf_vbo_len++] = color->g / 255.0f;
                     buf_vbo[buf_vbo_len++] = color->b / 255.0f;
+#ifdef __WIIU__
+                    // padding
+                    if (!use_alpha) {
+                        buf_vbo[buf_vbo_len++] = 1.0f;
+                    }
+#endif
                 }
                 else {
                     if (use_fog && color == &v_arr[i]->color) {
@@ -1586,7 +1591,7 @@ static void gfx_sp_movemem(uint8_t index, uint8_t offset, const void* data) {
     }
 }
 
-static void gfx_sp_moveword(uint8_t index, uint16_t offset, uint32_t data) {
+static void gfx_sp_moveword(uint8_t index, uint16_t offset, uintptr_t data) {
     switch (index) {
         case G_MW_NUMLIGHT:
 #ifdef F3DEX_GBI_2
@@ -2105,11 +2110,6 @@ unsigned int dListBP;
 int matrixBP;
 uintptr_t clearMtx;
 
-extern "C"
-{
-    uintptr_t jsjutanShadowTex = 0;
-};
-
 static void gfx_run_dl(Gfx* cmd) {
     //puts("dl");
     int dummy = 0;
@@ -2129,6 +2129,10 @@ static void gfx_run_dl(Gfx* cmd) {
 
         switch (opcode) {
             // RSP commands:
+        case G_LOAD_UCODE:
+            rsp.fog_mul = 0;
+            rsp.fog_offset = 0;
+            break;
         case G_MARKER:
         {
             cmd++;
@@ -2168,7 +2172,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t mtxAddr = cmd->words.w1;
 
                 // OTRTODO: Temp way of dealing with gMtxClear. Need something more elegant in the future...
-                uint32_t gameVersion = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetGameVersion();
+                uint32_t gameVersion = Ship::Window::GetInstance()->GetResourceManager()->GetGameVersion();
                 if (gameVersion == OOT_PAL_GC) {
                     if (mtxAddr == SEG_ADDR(0, 0x0FBC20)) {
                         mtxAddr = clearMtx;
@@ -2662,15 +2666,22 @@ void gfx_get_dimensions(uint32_t *width, uint32_t *height) {
     gfx_wapi->get_dimensions(width, height);
 }
 
-void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, const char *game_name, bool start_in_fullscreen) {
+void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     gfx_wapi = wapi;
     gfx_rapi = rapi;
-    gfx_wapi->init(game_name, start_in_fullscreen);
+    gfx_wapi->init(game_name, start_in_fullscreen, width, height);
     gfx_rapi->init();
-    gfx_rapi->update_framebuffer_parameters(0, SCREEN_WIDTH, SCREEN_HEIGHT, 1, false, true, true, true);
+    gfx_rapi->update_framebuffer_parameters(0, width, height, 1, false, true, true, true);
+#ifdef __APPLE__
     gfx_current_dimensions.internal_mul = 1;
-    gfx_current_dimensions.width = SCREEN_WIDTH;
-    gfx_current_dimensions.height = SCREEN_HEIGHT;
+#else
+    gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
+#endif
+    gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
+#ifndef __WIIU__ // Wii U overrides dimentions in gfx_wapi->init to match framebuffer size
+    gfx_current_dimensions.width = width;
+    gfx_current_dimensions.height = height;
+#endif
     game_framebuffer = gfx_rapi->create_framebuffer();
     game_framebuffer_msaa_resolved = gfx_rapi->create_framebuffer();
 
@@ -2710,7 +2721,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
         //gfx_lookup_or_create_shader_program(precomp_shaders[i]);
     }
 
-    ModInternal::ExecuteHooks<ModInternal::GfxInit>();
+    Ship::ExecuteHooks<Ship::GfxInit>();
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {
@@ -2794,7 +2805,7 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
-    SohUtils::saveEnvironmentVar("framebuffer", string());
+    gfxFramebuffer = 0;
     if (game_renders_to_framebuffer) {
         gfx_rapi->start_draw_to_framebuffer(0, 1);
         gfx_rapi->clear_framebuffer();
@@ -2804,12 +2815,12 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
 
             if (different_size) {
                 gfx_rapi->resolve_msaa_color_buffer(game_framebuffer_msaa_resolved, game_framebuffer);
-                SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved)));
+                gfxFramebuffer = (uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved);
             } else {
                 gfx_rapi->resolve_msaa_color_buffer(0, game_framebuffer);
             }
         } else {
-            SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer)));
+            gfxFramebuffer = (uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer);
         }
     }
     SohImGui::DrawFramebufferAndGameInput();
@@ -2881,7 +2892,7 @@ uint16_t gfx_get_pixel_depth(float x, float y) {
 
     get_pixel_depth_pending.emplace(x, y);
 
-    map<pair<float, float>, uint16_t> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
+    unordered_map<pair<float, float>, uint16_t, hash_pair_ff> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
     get_pixel_depth_cached.merge(res);
     get_pixel_depth_pending.clear();
 

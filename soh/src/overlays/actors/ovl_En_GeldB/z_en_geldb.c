@@ -371,8 +371,8 @@ void EnGeldB_Wait(EnGeldB* this, GlobalContext* globalCtx) {
         this->actor.focus.pos = this->actor.world.pos;
         this->actor.bgCheckFlags &= ~2;
         this->actor.velocity.y = 0.0f;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, false);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, false);
     }
     if (SkelAnime_Update(&this->skelAnime)) {
         EnGeldB_SetupReady(this);
@@ -396,8 +396,8 @@ void EnGeldB_Flee(EnGeldB* this, GlobalContext* globalCtx) {
     }
     if (this->skelAnime.curFrame == 2.0f) {
         this->actor.gravity = 0.0f;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, false);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, false);
     }
     if (SkelAnime_Update(&this->skelAnime)) {
         Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.floorHeight + 300.0f, 1.0f, 20.5f, 0.0f);
@@ -926,8 +926,8 @@ void EnGeldB_SpinAttack(EnGeldB* this, GlobalContext* globalCtx) {
     if ((s32)this->skelAnime.curFrame < 9) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     } else if ((s32)this->skelAnime.curFrame == 13) {
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 3.0f, 2, 2.0f, 0, 0, false);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 3.0f, 2, 2.0f, 0, 0, false);
         this->swordState = 1;
         this->actor.speedXZ = 10.0f;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_ATTACK);
@@ -1430,7 +1430,7 @@ s32 EnGeldB_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
                              void* thisx) {
     EnGeldB* this = (EnGeldB*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_geldB.c", 2507);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (limbIndex == GELDB_LIMB_NECK) {
         rot->z += this->headRot.x;
         rot->x += this->headRot.y;
@@ -1446,7 +1446,7 @@ s32 EnGeldB_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 140, 0, 0, 255);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_geldB.c", 2529);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return false;
 }
 
@@ -1551,8 +1551,7 @@ void EnGeldB_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGeldB* this = (EnGeldB*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_geldB.c", 2672);
-    if (1) {}
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if ((this->spinAttackState >= 2) && SkelAnime_Update(&this->skelAnime)) {
         if (this->spinAttackState == 2) {
@@ -1605,7 +1604,7 @@ void EnGeldB_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_geldB.c", 2744);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnGeldB_DodgeRanged(GlobalContext* globalCtx, EnGeldB* this) {

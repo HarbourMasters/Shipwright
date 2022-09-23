@@ -1,7 +1,7 @@
 #include "ultra64.h"
 #include "global.h"
-#include "ultra64/abi.h"
-#include "mixer.h"
+#include <ultra64/abi.h>
+#include <libultraship/mixer.h>
 
 typedef struct {
     u8 unk_0;
@@ -363,7 +363,11 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     }
 }
 
-void Audio_QueueSeqCmd(u32 cmd) {
+extern f32 D_80130F24;
+extern f32 D_80130F28;
+
+void Audio_QueueSeqCmd(u32 cmd) 
+{
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }
 

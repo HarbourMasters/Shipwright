@@ -218,7 +218,6 @@ void func_80AAF3C0(EnMm2* this, GlobalContext* globalCtx) {
                         break;
                 };
                 if (this->unk_1F4 & 4) {
-                    if (1) {}
                     this->unk_1F4 &= ~4;
                     HIGH_SCORE(HS_MARATHON) += 1;
                 }
@@ -278,7 +277,7 @@ void func_80AAF668(EnMm2* this, GlobalContext* globalCtx) {
             HIGH_SCORE(HS_MARATHON) = gSaveContext.timer2Value;
         }
     } else {
-        LOG_HEX("((z_common_data.event_inf[1]) & (0x0001))", gSaveContext.eventInf[1] & 1, "../z_en_mm2.c", 541);
+        LOG_HEX("((z_common_data.event_inf[1]) & (0x0001))", gSaveContext.eventInf[1] & 1);
         if (!(gSaveContext.eventInf[1] & 1)) {
             this->unk_1F4 |= 2;
             this->unk_1F4 &= ~1;
@@ -311,12 +310,12 @@ void EnMm2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     static void* mouthTextures[] = { gRunningManMouthOpenTex, gRunningManMouthClosedTex };
     EnMm2* this = (EnMm2*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_mm2.c", 634);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(mouthTextures[this->mouthTexIndex]));
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnMm2_OverrideLimbDraw, EnMm2_PostLimbDraw, this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_mm2.c", 654);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnMm2_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

@@ -3,10 +3,12 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
+#include <libultraship/CrashHandler.h>
+
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
-u32 gSystemHeapSize = 0;
+size_t gSystemHeapSize = 0;
 
 PreNmiBuff* gAppNmiBufferPtr;
 SchedContext gSchedContext;
@@ -36,14 +38,25 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
-void main(int argc, char** argv)
+#ifdef _WIN32
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) 
+#else
+int main(int argc, char** argv)
+#endif
 {
+#ifdef __linux__
+    SetupHandlerLinux();
+#elif _WIN32
+    SetUnhandledExceptionFilter(seh_filter);
+#endif
+    
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
 
-    BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
     Main(0);
+    DeinitOTR();
+    return 0;
 }
 
 void Main(void* arg) {
@@ -53,7 +66,7 @@ void Main(void* arg) {
     uintptr_t sysHeap;
     uintptr_t fb;
     void* debugHeap;
-    s32 debugHeapSize;
+    size_t debugHeapSize;
     s16* msg;
 
     osSyncPrintf("mainproc 実行開始\n"); // "Start running"
@@ -64,18 +77,18 @@ void Main(void* arg) {
     Fault_Init();
     SysCfb_Init(0);
     Heaps_Alloc();
-    sysHeap = gSystemHeap;
+    sysHeap = (uintptr_t)gSystemHeap;
     fb = SysCfb_GetFbPtr(0);
     gSystemHeapSize = 1024 * 1024 * 4;
     // "System heap initalization"
     osSyncPrintf("システムヒープ初期化 %08x-%08x %08x\n", sysHeap, fb, gSystemHeapSize);
-    SystemHeap_Init(sysHeap, gSystemHeapSize); // initializes the system heap
+    SystemHeap_Init((void*)sysHeap, gSystemHeapSize); // initializes the system heap
     if (osMemSize >= 0x800000) {
-        debugHeap = SysCfb_GetFbEnd();
+        debugHeap = (void*)SysCfb_GetFbEnd();
         debugHeapSize = (0x80600000 - (uintptr_t)debugHeap);
     } else {
         debugHeapSize = 0x400;
-        debugHeap = SystemArena_MallocDebug(debugHeapSize, "../main.c", 565);
+        debugHeap = SYSTEM_ARENA_MALLOC_DEBUG(debugHeapSize);
     }
 
     debugHeapSize = 1024 * 64;
@@ -87,7 +100,7 @@ void Main(void* arg) {
     R_ENABLE_ARENA_DBG = 0;
 
     osCreateMesgQueue(&sSiIntMsgQ, sSiIntMsgBuf, 1);
-    osSetEventMesg(5, &sSiIntMsgQ, 0);
+    osSetEventMesg(5, &sSiIntMsgQ, OS_MESG_PTR(NULL));
 
     Main_LogSystemHeap();
 
@@ -118,7 +131,7 @@ void Main(void* arg) {
 
     while (true) {
         msg = NULL;
-        osRecvMesg(&irqMgrMsgQ, (OSMesg)&msg, OS_MESG_BLOCK);
+        osRecvMesg(&irqMgrMsgQ, (OSMesg*)&msg, OS_MESG_BLOCK);
         if (msg == NULL) {
             break;
         }

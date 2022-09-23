@@ -25,8 +25,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         gSaveContext.unk_13F4 = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
-    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-        gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+    }
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
@@ -68,9 +69,9 @@ static SceneSelectEntry sScenes[] = {
     { "24:Grave 1", Select_LoadGame, 0x031C },
     { "25:Grave 2", Select_LoadGame, 0x004B },
     { "26:Royal Family's Tomb", Select_LoadGame, 0x002D },
-    { "27:Great Fairy's Fountain (Din)", Select_LoadGame, 0x0315 },
-    { "28:Great Fairy's Fountain (Farore)", Select_LoadGame, 0x036D },
-    { "29:Great Fairy's Fountain (Nayru)", Select_LoadGame, 0x0371 },
+    { "27:Great Fairy's Fountain (Upgrades)", Select_LoadGame, 0x0315 },
+    { "28:Fairy's Fountain (Grotto)", Select_LoadGame, 0x036D },
+    { "29:Great Fairy's Fountain (Magic)", Select_LoadGame, 0x0371 },
     { "30:Ganon's Tower - Collapsing", Select_LoadGame, 0x043F },
     { "31:Castle Courtyard", Select_LoadGame, 0x0400 },
     { "32:Fishing Pond", Select_LoadGame, 0x045F },
@@ -128,7 +129,7 @@ static SceneSelectEntry sScenes[] = {
     { "84:Stairs to Ganondorf's Lair", Select_LoadGame, 0x041B },
     { "85:Ganondorf's Lair", Select_LoadGame, 0x041F },
     { "86:Ice Cavern", Select_LoadGame, 0x0088 },
-    { "87:DampÃ© Grave Relay Game", Select_LoadGame, 0x044F },
+    { "87:Dampe Grave Relay Game", Select_LoadGame, 0x044F },
     { "88:Inside Ganon's Castle", Select_LoadGame, 0x0467 },
     { "89:Ganon's Lair", Select_LoadGame, 0x0517 },
     { "90:Escaping Ganon's Castle 1", Select_LoadGame, 0x0179 },
@@ -512,7 +513,7 @@ void Select_DrawMenu(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     GfxPrint* printer;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 930);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -529,14 +530,14 @@ void Select_DrawMenu(SelectContext* this) {
     POLY_OPA_DISP = GfxPrint_Close(printer);
     GfxPrint_Destroy(printer);
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 966);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_DrawLoadingScreen(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     GfxPrint* printer;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 977);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -551,13 +552,13 @@ void Select_DrawLoadingScreen(SelectContext* this) {
     POLY_OPA_DISP = GfxPrint_Close(printer);
     GfxPrint_Destroy(printer);
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 1006);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_Draw(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 1013);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -570,7 +571,7 @@ void Select_Draw(SelectContext* this) {
         Select_DrawMenu(this);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 1037);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_Main(GameState* thisx) {
@@ -625,8 +626,8 @@ void Select_Init(GameState* thisx) {
     }
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)
-    this->staticSegment = GameState_Alloc(&this->state, size, "../z_select.c", 1114);
-    DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, "../z_select.c", 1115);
+    this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
+    DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, __FILE__, __LINE__);
 #endif
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.linkAge = 1;

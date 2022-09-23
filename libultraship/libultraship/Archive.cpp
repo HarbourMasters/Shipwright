@@ -6,6 +6,10 @@
 #include "Lib/StrHash64.h"
 #include <filesystem>
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 namespace Ship {
 	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting)
 	{
@@ -35,7 +39,7 @@ namespace Ship {
 		std::copy(archivePath.begin(), archivePath.end(), t_filename);
 
 		bool success = SFileCreateArchive(t_filename, MPQ_CREATE_LISTFILE | MPQ_CREATE_ATTRIBUTES | MPQ_CREATE_ARCHIVE_V2, fileCapacity, &archive->mainMPQ);
-		int error = GetLastError();
+		int32_t error = GetLastError();
 
 		delete[] t_filename;
 
@@ -46,7 +50,7 @@ namespace Ship {
 		}
 		else
 		{
-			SPDLOG_ERROR("({}) We tried to create an archive, but it has fallen and cannot get up.");
+			SPDLOG_ERROR("({}) We tried to create an archive, but it has fallen and cannot get up.", error);
 			return nullptr;
 		}
 	}
@@ -59,8 +63,10 @@ namespace Ship {
 			FileToLoad->path = filePath;
 		}
 
-		if (!SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle)) {
-			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+		bool attempt = SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle);
+
+		if (!attempt) {
+			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
 			return FileToLoad;
@@ -142,7 +148,7 @@ namespace Ship {
 		return FileToLoad;
 	}
 
-	bool Archive::AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize) {
+	bool Archive::AddFile(const std::string& oPath, uintptr_t fileData, DWORD dwFileSize) {
 		HANDLE hFile;
 #ifdef _WIN32
 		SYSTEMTIME sysTime;
@@ -154,6 +160,11 @@ namespace Ship {
 		time_t stupidHack;
 		time(&stupidHack);
 #endif
+
+		std::string path = oPath;
+
+		StringHelper::ReplaceOriginal(path, "\\", "/");
+
 		if (!SFileCreateFile(mainMPQ, path.c_str(), stupidHack, dwFileSize, 0, MPQ_FILE_COMPRESS, &hFile)) {
 			SPDLOG_ERROR("({}) Failed to create file of {} bytes {} in archive {}", GetLastError(), dwFileSize, path.c_str(), MainPath.c_str());
 			return false;
@@ -314,13 +325,21 @@ namespace Ship {
 #ifdef _WIN32
 		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
 #endif
+#if defined(__SWITCH__)
+		std::string fullPath = MainPath;
+#else
 		std::string fullPath = std::filesystem::absolute(MainPath).string();
+#endif
 
 #ifdef _WIN32
 		if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 #else
 		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 #endif
+
+	#ifdef __SWITCH__
+			Switch::ThrowMissingOTR(fullPath);
+	#endif
 			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
 			return false;
 		}
@@ -334,11 +353,13 @@ namespace Ship {
 			std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
 
 			for (size_t i = 0; i < lines.size(); i++) {
-				std::string line = StringHelper::Strip(lines[i], "\r");
-				//uint64_t hash = StringHelper::StrToL(lines[i], 16);
+				std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
+				std::string line2 = StringHelper::Replace(line, "\\", "/");
 
-				uint64_t hash = CRC64(line.c_str());
+				uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
+				uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
 				hashes[hash] = line;
+				hashes[hash2] = line2;
 			}
 		}
 
@@ -347,7 +368,11 @@ namespace Ship {
 
 	bool Archive::LoadPatchMPQ(const std::string& path) {
 		HANDLE patchHandle = NULL;
+#if defined(__SWITCH__)
+		std::string fullPath = path;
+#else
 		std::string fullPath = std::filesystem::absolute(path).string();
+#endif
 		if (mpqHandles.contains(fullPath)) {
 			return true;
 		}

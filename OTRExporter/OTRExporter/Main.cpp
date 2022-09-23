@@ -15,6 +15,7 @@
 #include "TextExporter.h"
 #include "BlobExporter.h"
 #include "MtxExporter.h"
+#include "AudioExporter.h"
 #include <Globals.h>
 #include <Utils/File.h>
 #include <Utils/Directory.h>
@@ -26,6 +27,7 @@ std::shared_ptr<Ship::Archive> otrArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
 std::map<std::string, std::vector<char>> files;
+std::mutex fileMutex;
 
 void InitVersionInfo();
 
@@ -45,7 +47,7 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 		if (File::Exists(otrFileName))
 			otrArchive = std::shared_ptr<Ship::Archive>(new Ship::Archive(otrFileName, true));
 		else
-			otrArchive = Ship::Archive::CreateArchive(otrFileName, 65536 / 2);
+			otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
 
 		auto lst = Directory::ListFiles("Extract");
 
@@ -61,13 +63,29 @@ static void ExporterProgramEnd()
 {
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
-		printf("Generating OTR Archive...\n");
-		otrArchive = Ship::Archive::CreateArchive(otrFileName, 65536 / 2);
+		printf("Creating version file...\n");
 
-		for (auto item : files)
-		{
+		// Get crc from rom
+		std::string romPath = Globals::Instance->baseRomPath.string();
+		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
+		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
+
+		// Write crc to version file
+		fs::path versionPath("Extract/version");
+		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
+		versionFile.write((char*)&crc, sizeof(crc));
+		versionFile.flush();
+		versionFile.close();
+
+		printf("Created version file.\n");
+
+		printf("Generating OTR Archive...\n");
+		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
+
+		for (auto item : files) {
 			auto fileData = item.second;
-			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(), fileData.size());
+			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(),
+		                      fileData.size());
 		}
 
 		// Add any additional files that need to be manually copied...
@@ -79,9 +97,9 @@ static void ExporterProgramEnd()
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 
-		otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
-		otrArchive->AddFile("Audioseq", (uintptr_t)Globals::Instance->GetBaseromFile("Audioseq").data(), Globals::Instance->GetBaseromFile("Audioseq").size());
-		otrArchive->AddFile("Audiotable", (uintptr_t)Globals::Instance->GetBaseromFile("Audiotable").data(), Globals::Instance->GetBaseromFile("Audiotable").size());
+		//otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
+		//otrArchive->AddFile("Audioseq", (uintptr_t)Globals::Instance->GetBaseromFile("Audioseq").data(), Globals::Instance->GetBaseromFile("Audioseq").size());
+		//otrArchive->AddFile("Audiotable", (uintptr_t)Globals::Instance->GetBaseromFile("Audiotable").data(), Globals::Instance->GetBaseromFile("Audiotable").size());
 	}
 }
 
@@ -158,7 +176,10 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 			fName = StringHelper::Sprintf("%s/%s", oName.c_str(), rName.c_str());
 
 		if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
+		{
+			std::unique_lock Lock(fileMutex);
 			files[fName] = strem->ToVector();
+		}
 		else
 			File::WriteAllBytes("Extract/" + fName, strem->ToVector());
 	}
@@ -176,6 +197,17 @@ static void ExporterXMLBegin()
 
 static void ExporterXMLEnd()
 {
+}
+
+void AddFile(std::string fName, std::vector<char> data)
+{
+	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+		File::WriteAllBytes("Extract/" + fName, data);
+	else
+	{
+		std::unique_lock Lock(fileMutex);
+		files[fName] = data;
+	}
 }
 
 static void ImportExporters()
@@ -211,6 +243,7 @@ static void ImportExporters()
 	exporterSet->exporters[ZResourceType::Text] = new OTRExporter_Text();
 	exporterSet->exporters[ZResourceType::Blob] = new OTRExporter_Blob();
 	exporterSet->exporters[ZResourceType::Mtx] = new OTRExporter_MtxExporter();
+	exporterSet->exporters[ZResourceType::Audio] = new OTRExporter_Audio();
 
 	Globals::AddExporter("OTR", exporterSet);
 

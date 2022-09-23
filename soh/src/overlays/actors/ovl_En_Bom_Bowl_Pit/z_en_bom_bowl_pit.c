@@ -177,14 +177,36 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, GlobalContext* globalCtx) {
 
     func_8002DF54(globalCtx, NULL, 7);
     this->getItemId = sGetItemIds[this->prizeIndex];
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
     if ((this->getItemId == GI_BOMB_BAG_30) && (CUR_CAPACITY(UPG_BOMB_BAG) == 30)) {
         this->getItemId = GI_BOMB_BAG_40;
     }
 
+    if (gSaveContext.n64ddFlag) {
+        switch (this->prizeIndex) {
+            case EXITEM_BOMB_BAG_BOWLING:
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                this->getItemId = this->getItemEntry.getItemId;
+                break;
+            case EXITEM_HEART_PIECE_BOWLING:
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+                this->getItemId = this->getItemEntry.getItemId;
+                break;
+            case EXITEM_BOMBCHUS_BOWLING:
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+                this->getItemId = this->getItemEntry.getItemId;
+                break;
+        }
+    }
+
     player->stateFlags1 &= ~0x20000000;
     this->actor.parent = NULL;
-    func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+    if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+    } else {
+        GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);
+    }
     player->stateFlags1 |= 0x20000000;
     this->actionFunc = EnBomBowlPit_WaitTillPrizeGiven;
 }
@@ -193,12 +215,18 @@ void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, GlobalContext* globalCt
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+         if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 2000.0f, 1000.0f);
+        }
     }
 }
 
 void EnBomBowlPit_Reset(EnBomBowlPit* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if (((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) &&
+          Message_ShouldAdvance(globalCtx)) ||
+        (gSaveContext.n64ddFlag && this->getItemId == GI_ICE_TRAP)) {
         // "Normal termination"/"completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (this->getItemId == GI_HEART_PIECE) {

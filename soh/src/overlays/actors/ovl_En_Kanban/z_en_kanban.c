@@ -790,7 +790,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     u8* shadowTex = Graph_Alloc(globalCtx->state.gfxCtx, 0x400);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1659);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, object_kanban_DL_000C30);
@@ -810,7 +810,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateX((this->spinRot.x / (f32)0x8000) * M_PI, MTXMODE_APPLY);
         Matrix_RotateY((this->spinRot.z / (f32)0x8000) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(this->offset.x, this->offset.y, this->offset.z - 100.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1715),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         for (i = 0; i < ARRAY_COUNT(sPartFlags); i++) {
             if (sPartFlags[i] & this->partFlags) {
@@ -819,7 +819,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     } else {
         Matrix_Translate(0.0f, 0.0f, -100.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1725),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->partFlags == 0xFFFF) {
             gSPDisplayList(POLY_OPA_DISP++, gSignRectangularDL);
@@ -839,7 +839,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 255, 255, 255, this->cutMarkAlpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 150, 0);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1773),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kanban_DL_001630);
         }
@@ -878,7 +878,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateX((this->spinRot.x / (f32)0x8000) * M_PI, MTXMODE_APPLY);
             Matrix_RotateY((this->spinRot.z / (f32)0x8000) * M_PI, MTXMODE_APPLY);
             Matrix_Translate(this->offset.x, this->offset.y, this->offset.z, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1833),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             for (i = 0; i < 0x400; i++) {
@@ -892,5 +892,5 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, sShadowDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_kanban.c", 1857);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "BitConverter.h"
 #include "Stream.h"
 
 class BinaryWriter
@@ -11,6 +12,8 @@ class BinaryWriter
 public:
 	BinaryWriter(Stream* nStream);
 	BinaryWriter(std::shared_ptr<Stream> nStream);
+
+	void SetEndianness(Endianness endianness);
 
 	std::shared_ptr<Stream> GetStream();
 	uint64_t GetBaseAddress();
@@ -34,4 +37,5 @@ public:
 
 protected:
 	std::shared_ptr<Stream> stream;
+	Endianness endianness = Endianness::Native;
 };

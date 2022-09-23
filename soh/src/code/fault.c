@@ -293,7 +293,7 @@ void Fault_Sleep(u32 duration) {
 
 void Fault_PadCallback(Input* input) {
     //! @bug This function is not called correctly and thus will crash from reading a bad pointer at 0x800C7E4C
-    PadMgr_RequestPadData(input, 0);
+    PadMgr_RequestPadData(&gPadMgr, input, 0);
 }
 
 void Fault_UpdatePadImpl() 
@@ -576,9 +576,6 @@ void Fault_WaitForButtonCombo()
     u32 s2;
     u32 kDown;
     u32 kCur;
-
-    if (1) {}
-    if (1) {}
 
     osSyncPrintf(
         VT_FGCOL(WHITE) "KeyWaitB (ＬＲＺ " VT_FGCOL(WHITE) "上" VT_FGCOL(YELLOW) "下 " VT_FGCOL(YELLOW) "上" VT_FGCOL(WHITE) "下 " VT_FGCOL(WHITE) "左" VT_FGCOL(

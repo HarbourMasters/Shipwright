@@ -74,7 +74,7 @@ size_t ZSymbol::GetRawDataSize() const
 	return typeSize;
 }
 
-std::string ZSymbol::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix)
+std::string ZSymbol::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix, std::set<std::string> *nameSet)
 {
 	if (isArray)
 	{
