@@ -2160,7 +2160,10 @@ void func_8002F7DC(Actor* actor, u16 sfxId) {
     Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 }
 
-void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
+void Audio_PlayActorSound2(Actor* actor, u16 sfxId) { //EDIT HERE
+    char src[80];
+    sprintf(src, "gSfxEditor_0x%x", sfxId);
+    sfxId = CVar_GetS32(src, sfxId);
     func_80078914(&actor->projectedPos, sfxId);
 }
 
