@@ -4982,92 +4982,96 @@ void CreateNaviRandoMessages() {
 CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
     { "You are a %bFOOL%w!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Tu es un %bIDIOT%w!" },
 
     { "You are a %bFOWL%w!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Tu es un %bglaçon%w, Harry!" },
 
     { "%bFOOL%w!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "%bIDIOT%w!" },
 
     { "You just got %bPUNKED%w!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Ça me %bglace%w le sang!" },
 
     { "Stay %bfrosty%w, @.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "%bReste au frais%w, @." },
 
     { "Take a %bchill pill%w, @.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Et c'est la douche %bfroide%w!" },
 
     { "%bWinter%w is coming.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "L'%bhiver%w vient." },
     
     { "%bICE%w to see you, @.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "%bGlacier%w!" },
 
     { "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "%Ça en jette un %bfroid%w." },
 
     { "It's a %bcold day%w in the Evil Realm.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Est-ce que tu as déjà eu des sueurs&%bfroides%w?" },
 
     { "Getting %bcold feet%w?",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "La vengeance est un plat qui se mange&%bfroid%w!" },
 
     { "Say hello to the %bZoras%w for me!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Dit bonjour aux %bZoras%w pour moi!" },
 
     { "Can you keep a %bcool head%w?",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Il faut parfois savoir garder la tête&%bfroide%w!" },
 
     { "Ganondorf used %bIce Trap%w!&It's super effective!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!" },
 
     { "Allow me to break the %bice%w!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Laisse moi briser la %bglace%w!" },
 
     { "%bCold pun%w.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!" },
 
     { "The %bTitanic%w would be scared of you, @.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Le %bTitanic%w aurait peur de toi,&@." },
 
     { "Oh no!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Oh non!" },
       
     { "What killed the dinosaurs?&The %bICE%w age!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!" },
 
     { "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
 
     { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
-      "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w." },
 
     { "Thank you %b@%w!&But your item is in another castle!",
       "Du bist ein %bDUMMKOPF!",
-      "%bIDIOT" },
+      "Merci %b@%w!&Mais ton objet est dans un autre&château!" },
 
+    { "%bFREEZE%w! Don't move!",
+      "Du bist ein %bDUMMKOPF!",
+      "J'espère que ça ne te fait ni chaud, ni&%bfroid%w." },
+      
 };
 
 void CreateIceTrapRandoMessages() {
