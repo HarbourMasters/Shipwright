@@ -5066,7 +5066,7 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
 
     { "Thank you %b@%w!&But your item is in another castle!",
       "Du bist ein %bDUMMKOPF!",
-      "Merci %b@%w!&&Mais ton objet est dans un autre château!" },
+      "Merci %b@%w!&Mais ton objet est dans un autre&château!" },
 
     { "%bFREEZE%w! Don't move!",
       "Du bist ein %bDUMMKOPF!",
