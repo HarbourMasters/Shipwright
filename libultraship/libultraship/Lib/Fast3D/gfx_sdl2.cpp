@@ -305,6 +305,8 @@ static void gfx_sdl_handle_events(void) {
                         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                     #endif
                 } else if (event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(wnd)) {
+                    // We listen specifically for main window close because closing main window
+                    // on macOS does not trigger SDL_Quit.
                     is_running = false;
                 }
                 break;
