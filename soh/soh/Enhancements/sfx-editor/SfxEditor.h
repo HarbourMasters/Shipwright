@@ -13,9 +13,9 @@ enum SeqType {
     SFX_SOUND = 1 << 6,
     SFX_SOUND_PL = 1 << 7,
     SFX_SOUND_ITEM = 1 << 8,
-    SFX_SOUND_ENV = 1 << 9, 
+    SFX_SOUND_ENV = 1 << 9,
     SFX_SOUND_EN = 1 << 10,
     SFX_SOUND_SY = 1 << 11,
-    SFX_SOUND_V = 1 << 12, 
+    SFX_SOUND_V = 1 << 12,
     SFX_OCARINA = 1 << 13,
 };

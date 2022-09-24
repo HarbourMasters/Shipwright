@@ -184,7 +184,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     { NA_SE_EN_IRONNACK_SWING_AXE, { "Iron Knuckle", "0x3929", SFX_SOUND } },
     { NA_SE_EN_FANTOM_ST_LAUGH, { "Phantom Ganon Laugh", "0x39D6", SFX_SOUND } },
     { NA_SE_EV_PLANT_BROKEN, { "Plant Explode", "0x284E", SFX_SOUND } },
-    { NA_SE_SY_GET_RUPY, { "Rupee", "0x4803", SFX_SOUND } }, 
+    { NA_SE_SY_GET_RUPY, { "Rupee", "0x4803", SFX_SOUND } },
     { NA_SE_VO_RT_CRASH, { "Ruto Crash", "0x6860", SFX_SOUND } },
     { NA_SE_VO_RT_LIFT, { "Ruto Lift", "0x6864", SFX_SOUND } },
     { NA_SE_VO_RT_THROW, { "Ruto Thrown", "0x6865", SFX_SOUND } },
@@ -241,10 +241,10 @@ void Draw_BgmTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         for (int i = 0; i < 4; i++) {
             char sound[35] = "";
             int max = 0;
-            
+
             if (i == 0) {
                 strcat(sound, "Randomize Sound: Low HP Beep");
-                max = 22;   
+                max = 22;
             }
             if (i == 1) {
                 strcat(sound, "Randomize Sound: Nightfall Howl");
@@ -257,7 +257,7 @@ void Draw_BgmTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
             if (i == 3) {
                 strcat(sound, "Randomize Sound: Hover Boots");
                 max = 5;
-            } 
+            }
             if (ImGui::Button(sound)) {
                 std::vector<u16> values;
                 for (const auto& [value, nameAndStorageKeySuffix] : map) {
@@ -293,7 +293,7 @@ void Draw_BgmTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
                 } else {
                     CVar_SetS32("gSfxEditor_0x8C9", randomValue);
                 }
-                SohImGui::needs_save = true; 
+                SohImGui::needs_save = true;
             }
         }
     }
@@ -376,7 +376,7 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, const std::strin
     srand(time(NULL));
     if (ImGui::Button("Reset All")) {
         for (const auto& [value, name] : map) {
-            const std::string storageKey = "g" + name + "SFX";    
+            const std::string storageKey = "g" + name + "SFX";
             CVar_SetS32(storageKey.c_str(), value);
         }
         SohImGui::needs_save = true;
@@ -389,7 +389,7 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, const std::strin
         values.push_back(value);
         }
         for (const auto& [value, name] : map) {
-            const std::string storageKey = "g" + name + "SFX";           
+            const std::string storageKey = "g" + name + "SFX";
             const int randomIndex = rand() % values.size();
             const int randomValue = values[randomIndex];
             values.erase(values.begin() + randomIndex);
