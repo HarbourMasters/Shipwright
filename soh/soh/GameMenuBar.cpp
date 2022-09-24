@@ -1507,6 +1507,11 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
 
+            UIWidgets::PaddedSeparator();
+
+            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
+            UIWidgets::Tooltip("Replaces some normal enemies with other random normal enemies.\n\nWARNING: Unstable and likely to softlock you in certain areas!");
+
             ImGui::EndMenu();
         }
     }

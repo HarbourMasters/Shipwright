@@ -7,6 +7,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/enemyrandomizer.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
@@ -3134,6 +3135,18 @@ int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        if (IsEnemyFoundToRandomize(actorId)) {
+            enemyEntry newEnemy = GetRandomizedEnemy();
+            actorId = newEnemy.enemyId;
+            params = newEnemy.enemyParam;
+            rotX = 0;
+            rotY = 0;
+            rotZ = 0;
+        }
+    }
+
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;

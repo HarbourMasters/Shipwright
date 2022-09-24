@@ -154,6 +154,7 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.h"
     #"soh/Enhancements/cvar.h"
     "soh/Enhancements/debugconsole.h"
+	"soh/Enhancements/enemyrandomizer.h"
     "soh/Enhancements/gameconsole.h"
     "soh/Enhancements/savestates.h"
     "soh/Enhancements/savestates_extern.inc"
@@ -269,6 +270,7 @@ source_group("Source Files\\soh" FILES ${Source_Files__soh})
 set(Source_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.c"
     "soh/Enhancements/debugconsole.cpp"
+	"soh/Enhancements/enemyrandomizer.cpp"
     "soh/Enhancements/gameconsole.c"
     "soh/Enhancements/savestates.cpp"
 )
