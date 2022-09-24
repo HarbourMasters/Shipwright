@@ -436,6 +436,10 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     append_line(fs_buf, &fs_len, cc_features.opt_alpha ? "vec4 texel;" : "vec3 texel;");
     for (int c = 0; c < (cc_features.opt_2cyc ? 2 : 1); c++) {
+        if (c == 1) {
+            append_str(fs_buf, &fs_len, "texel = mod((texel)-(-1.01), (1.01)-(-1.01)) + (-1.01);");
+        }
+
         append_str(fs_buf, &fs_len, "texel = ");
         if (!cc_features.color_alpha_same[c] && cc_features.opt_alpha) {
             append_str(fs_buf, &fs_len, "vec4(");
@@ -449,6 +453,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         }
         append_line(fs_buf, &fs_len, ";");
     }
+
+    append_str(fs_buf, &fs_len, "texel = mod((texel)-(-0.51), (1.51)-(-0.51)) + (-0.51);");
+    append_str(fs_buf, &fs_len, "texel = clamp(texel, 0.0, 1.0);");
     // TODO discard if alpha is 0?
     if (cc_features.opt_fog)
     {
