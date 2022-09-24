@@ -99,7 +99,7 @@ void CrowdControl::ReceiveFromCrowdControl()
 {
     printf("Waiting for a connection from Crowd Control...");
 
-    while (!connected && CVar_GetS32("gCrowdControl", 0) == 1) {
+    while (!connected && CVar_GetS32("gCrowdControl", 0)) {
         tcpsock = SDLNet_TCP_Open(&ip);
 
         if (tcpsock) {
@@ -109,7 +109,7 @@ void CrowdControl::ReceiveFromCrowdControl()
         }
     }
 
-    while (connected && CVar_GetS32("gCrowdControl", 0) == 1 && tcpsock) {
+    while (connected && CVar_GetS32("gCrowdControl", 0) && tcpsock) {
         int len = SDLNet_TCP_Recv(tcpsock, &received, 512);
 
         if (!len || !tcpsock || len == -1) {
@@ -202,7 +202,9 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->effectCategory = "no_z";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "wallmaster") == 0 ||
+        else if (strcmp(packet->effectType.c_str(), "spawn_wallmaster") == 0 ||
+            strcmp(packet->effectType.c_str(), "spawn_arwing") == 0 ||
+            strcmp(packet->effectType.c_str(), "spawn_darklink") == 0 ||
             strcmp(packet->effectType.c_str(), "cucco_storm") == 0) {
             packet->effectCategory = "spawn";
         }
@@ -245,7 +247,10 @@ void CrowdControl::ReceiveFromCrowdControl()
 }
 
 uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
-    if (gGlobalCtx == NULL) {
+
+    // Don't execute effect and don't advance timer when the player is not in a proper loaded savefile
+    // and when they're busy dying.
+    if (gGlobalCtx == NULL || gGlobalCtx->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
         return 0;
     }
 
@@ -297,7 +302,8 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
         }
     }
 
-    if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0) {
+    if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0
+                                                                       && gGlobalCtx->msgCtx.msgMode == 0) {
         if (strcmp(effectId, "high_gravity") == 0) {
             CMD_EXECUTE("gravity 2");
             return 1;
@@ -341,8 +347,14 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
         } else if (strcmp(effectId, "hover_boots") == 0) {
             CMD_EXECUTE("boots hover");
             return 1;
-        } else if (strcmp(effectId, "wallmaster") == 0) {
-            CMD_EXECUTE(std::format("spawn 17 {} {} {} {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0));
+        } else if (strcmp(effectId, "spawn_wallmaster") == 0) {
+            CMD_EXECUTE(std::format("spawn 17 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z));
+            return 1;
+        } else if (strcmp(effectId, "spawn_arwing") == 0) {
+            CMD_EXECUTE(std::format("spawn 315 {} {} {} {}", 1, player->actor.world.pos.x, player->actor.world.pos.y + 100, player->actor.world.pos.z));
+            return 1;
+        } else if (strcmp(effectId, "spawn_darklink") == 0) {
+            CMD_EXECUTE(std::format("spawn 51 {} {} {} {}", 0, player->actor.world.pos.x + 100, player->actor.world.pos.y, player->actor.world.pos.z));
             return 1;
         } else if (strcmp(effectId, "increase_speed") == 0) {
            CMD_EXECUTE("speed_modifier 2");

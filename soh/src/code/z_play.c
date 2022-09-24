@@ -1547,7 +1547,7 @@ void Gameplay_Main(GameState* thisx) {
 }
 
 u8 PlayerGrounded(Player* player) {
-    return IS_ZERO(player->actor.world.pos.y - player->actor.floorHeight);
+    return player->actor.bgCheckFlags & 1;
 }
 
 // original name: "Game_play_demo_mode_check"

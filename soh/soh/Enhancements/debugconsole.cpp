@@ -74,7 +74,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
             if (args[8][0] != ',') {
                 spawnPoint.rot.z = std::stoi(args[8]);
             }
-        case 5:
+        case 6:
             if (args[3][0] != ',') {
                 spawnPoint.pos.x = std::stoi(args[3]);
             }
@@ -134,9 +134,10 @@ static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::
     return CMD_SUCCESS;
 }
 
-static bool RuppeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() < 2)
+static bool RupeeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() < 2) {
         return CMD_FAILED;
+    }
 
     int rupeeAmount;
     try {
@@ -557,13 +558,8 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Player* player = GET_PLAYER(gGlobalCtx);
-    if (PlayerGrounded(player)) {
-        func_80837C0C(gGlobalCtx, player, 3, 0, 0, 0, 0);
-        return CMD_SUCCESS;
-    }
-
-    return CMD_FAILED;
+    gSaveContext.pendingIceTrapCount++;
+    return CMD_SUCCESS;
 }
 
 static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -991,7 +987,7 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
 
-    CMD_REGISTER("rupee", { RuppeHandler, "Set your rupee counter.", {
+    CMD_REGISTER("rupee", { RupeeHandler, "Set your rupee counter.", {
         {"amount", Ship::ArgumentType::NUMBER }
     }});
 
