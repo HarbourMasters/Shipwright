@@ -1480,7 +1480,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, GlobalContext* globalCtx) {
                             SKULL_KID_OCARINA_PLAY_NOTES;
                     }
                     this->songFailTimer = 160;
-                    Audio_OcaSetInstrument(6); // related instrument sound (flute?)
+                    Audio_OcaSetInstrument(CVar_GetS32("gFluteSFX",6)); // related instrument sound (flute?)
                     Audio_OcaSetSongPlayback(OCARINA_SONG_MEMORY_GAME + 1, 1);
                     globalCtx->msgCtx.msgMode = MSGMODE_MEMORY_GAME_LEFT_SKULLKID_PLAYING;
                     globalCtx->msgCtx.stateTimer = 2;
