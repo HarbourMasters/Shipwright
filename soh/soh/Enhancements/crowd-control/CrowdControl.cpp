@@ -31,26 +31,13 @@ void CrowdControl::InitCrowdControl() {
 
 void CrowdControl::RunCrowdControl(CCPacket* packet) {
     uint8_t paused = 0;
-    uint8_t lastResult = -1;
+    EffectResult lastResult = EffectResult::NotReady;
+    uint8_t isTimed = packet->timeRemaining > 0;
 
     while (connected) {
-        nlohmann::json dataSend;
-        dataSend["id"] = packet->packetId;
-        dataSend["type"] = 0;
-        dataSend["timeRemaining"] = packet->timeRemaining;
-
-        uint8_t returnSuccess = 0;
-        returnSuccess = ExecuteEffect(packet->effectType.c_str(), packet->effectValue);
-
-        if (returnSuccess == 2) {
-            dataSend["status"] = EffectResult::Failure;
-
-            std::string jsonResponse = dataSend.dump();
-            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
-            return;
-        }
-
-        if (returnSuccess == 1) {
+        EffectResult effectResult = ExecuteEffect(packet->effectType.c_str(), packet->effectValue, 0);
+        if (effectResult == EffectResult::Success) {
+            // If we have a success after being previously paused, we fire the Resumed event
             if (paused && packet->timeRemaining > 0) {
                 paused = 0;
                 nlohmann::json dataSend;
@@ -63,29 +50,48 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
                 SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
             }
 
+            // If time remaining has reached 0 or was 0, we have finished let's remove the command and end the thread
             if (packet->timeRemaining <= 0) {
                 receivedCommands.erase(std::remove(receivedCommands.begin(), receivedCommands.end(), packet), receivedCommands.end());
                 RemoveEffect(packet->effectType.c_str());
+
+                // If not timed, let's fire the one and only success
+                if (!isTimed) {
+                    nlohmann::json dataSend;
+                    dataSend["id"] = packet->packetId;
+                    dataSend["type"] = 0;
+                    dataSend["timeRemaining"] = packet->timeRemaining;
+                    dataSend["status"] = EffectResult::Success;
+
+                    std::string jsonResponse = dataSend.dump();
+                    SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+                }
+
                 return;
             }
 
+            // Decrement remaining time by the second that elapsed between thread runs
             packet->timeRemaining -= 1000;
-        }
-        else if (returnSuccess == 0 && paused == 0 && packet->timeRemaining > 0) {
+            // We don't want to emit repeated events, so ensure we only emit changes in events
+            if (effectResult != lastResult) {
+                lastResult = effectResult;
+
+                nlohmann::json dataSend;
+                dataSend["id"] = packet->packetId;
+                dataSend["type"] = 0;
+                dataSend["timeRemaining"] = packet->timeRemaining;
+                dataSend["status"] = effectResult;
+
+                std::string jsonResponse = dataSend.dump();
+                SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+            }
+        } else if (effectResult == EffectResult::Retry && paused == 0 && packet->timeRemaining > 0) {
             paused = 1;
             nlohmann::json dataSend;
             dataSend["id"] = packet->packetId;
             dataSend["type"] = 0;
             dataSend["timeRemaining"] = packet->timeRemaining;
             dataSend["status"] = EffectResult::Paused;
-
-            std::string jsonResponse = dataSend.dump();
-            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
-        }
-
-        if (returnSuccess != lastResult && !paused) {
-            lastResult = returnSuccess;
-            dataSend["status"] = returnSuccess == 1 ? EffectResult::Success : EffectResult::Retry;
 
             std::string jsonResponse = dataSend.dump();
             SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
@@ -221,29 +227,42 @@ void CrowdControl::ReceiveFromCrowdControl()
             packet->timeRemaining = 0;
         }
 
-        // Check if effect already exists
-        uint8_t anotherEffect = 0;
+        // Check if running effect is possible
+        EffectResult effectResult = ExecuteEffect(packet->effectType.c_str(), packet->effectValue, 1);
+        if (effectResult == EffectResult::Retry || effectResult == EffectResult::Failure) {
+            nlohmann::json dataSend;
+            dataSend["id"] = packet->packetId;
+            dataSend["type"] = 0;
+            dataSend["timeRemaining"] = packet->timeRemaining;
+            dataSend["status"] = effectResult;
 
-        nlohmann::json dataSend;
-        dataSend["id"] = packet->packetId;
-        dataSend["type"] = 0;
-        dataSend["timeRemaining"] = packet->timeRemaining;
+            std::string jsonResponse = dataSend.dump();
+            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+        } else {
+            // Check if effect already exists
+            uint8_t anotherEffect = 0;
+            for (CCPacket* pack : receivedCommands) {
+                if (pack != packet && pack->effectCategory == packet->effectCategory && pack->packetId < packet->packetId) {
+                    anotherEffect = 1;
 
-        for (CCPacket* pack : receivedCommands) {
-            if (pack != packet && pack->effectCategory == packet->effectCategory && pack->packetId < packet->packetId) {
-                anotherEffect = 1;
-                dataSend["status"] = EffectResult::Retry;
-                break;
+                    nlohmann::json dataSend;
+                    dataSend["id"] = packet->packetId;
+                    dataSend["type"] = 0;
+                    dataSend["timeRemaining"] = packet->timeRemaining;
+                    dataSend["status"] = EffectResult::Retry;
+
+                    std::string jsonResponse = dataSend.dump();
+                    SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+
+                    break;
+                }
             }
-        }
 
-        std::string jsonResponse = dataSend.dump();
-        SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
-
-        if (anotherEffect != 1) {
-            receivedCommands.push_back(packet);
-            std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
-            t.detach();
+            if (anotherEffect != 1) {
+                receivedCommands.push_back(packet);
+                std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
+                t.detach();
+            }
         }
     }
 
@@ -254,12 +273,11 @@ void CrowdControl::ReceiveFromCrowdControl()
     }
 }
 
-uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
-
+CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uint32_t value, uint8_t dryRun) {
     // Don't execute effect and don't advance timer when the player is not in a proper loaded savefile
     // and when they're busy dying.
     if (gGlobalCtx == NULL || gGlobalCtx->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
-        return 0;
+        return EffectResult::Retry;
     }
 
     Player* player = GET_PLAYER(gGlobalCtx);
@@ -267,57 +285,57 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
     if (player != NULL) {
         if (strcmp(effectId, "add_heart_container") == 0) {
             if (gSaveContext.healthCapacity >= 0x140) {
-                return 2;
+                return EffectResult::Failure;
             }
             
-            CMD_EXECUTE("add_heart_container");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("add_heart_container");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "remove_heart_container") == 0) {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
-                return 2;
+                return EffectResult::Failure;
             }
             
-            CMD_EXECUTE("remove_heart_container");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("remove_heart_container");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "fill_magic") == 0) {
             if (!gSaveContext.magicAcquired) {
-                return 2;
+                return EffectResult::Failure;
             }
 
             if (gSaveContext.magic >= (gSaveContext.doubleMagic + 1) + 0x30) {
-                return 2;
+                return EffectResult::Failure;
             }
 
-            CMD_EXECUTE("fill_magic");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("fill_magic");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "empty_magic") == 0) {
             if (!gSaveContext.magicAcquired || gSaveContext.magic <= 0) {
-                return 2;
+                return EffectResult::Failure;
             }
 
-            CMD_EXECUTE("empty_magic");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("empty_magic");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "add_rupees") == 0) {
-            CMD_EXECUTE(std::format("update_rupees {}", value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees {}", value));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "remove_rupees") == 0) {
             if (gSaveContext.rupees - value < 0) {
-                return 2;
+                return EffectResult::Failure;
             }
 
-            CMD_EXECUTE(std::format("update_rupees -{}", value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees -{}", value));
+            return EffectResult::Success;
         }
     }
 
     if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0
                                                                        && gGlobalCtx->msgCtx.msgMode == 0) {
         if (strcmp(effectId, "high_gravity") == 0) {
-            CMD_EXECUTE("gravity 2");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("gravity 2");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "low_gravity") == 0) {
-            CMD_EXECUTE("gravity 0");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("gravity 0");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "kill") == 0
                     || strcmp(effectId, "freeze") == 0
                     || strcmp(effectId, "burn") == 0
@@ -325,15 +343,15 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                     || strcmp(effectId, "cucco_storm") == 0
         ) {
             if (PlayerGrounded(player)) {
-                CMD_EXECUTE(std::format("{}", effectId));
-                return 1;
+                if (dryRun == 0) CMD_EXECUTE(std::format("{}", effectId));
+                return EffectResult::Success;
             }
-            return 0;
+            return EffectResult::Failure;
         } else if (strcmp(effectId, "heal") == 0
                     || strcmp(effectId, "knockback") == 0
         ) {
-            CMD_EXECUTE(std::format("{} {}", effectId, value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "giant_link") == 0
                     || strcmp(effectId, "minish_link") == 0
                     || strcmp(effectId, "no_ui") == 0
@@ -344,73 +362,73 @@ uint8_t CrowdControl::ExecuteEffect(const char* effectId, uint32_t value) {
                     || strcmp(effectId, "pacifist") == 0
                     || strcmp(effectId, "rainstorm") == 0
         ) {
-            CMD_EXECUTE(std::format("{} 1", effectId));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("{} 1", effectId));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "reverse") == 0) {
-            CMD_EXECUTE("reverse_controls 1"); 
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("reverse_controls 1"); 
+            return EffectResult::Success;
         } else if (strcmp(effectId, "iron_boots") == 0) {
-            CMD_EXECUTE("boots iron");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("boots iron");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "hover_boots") == 0) {
-            CMD_EXECUTE("boots hover");
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE("boots hover");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_wallmaster") == 0) {
-            CMD_EXECUTE(std::format("spawn 17 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 17 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_arwing") == 0) {
-            CMD_EXECUTE(std::format("spawn 315 {} {} {} {}", 1, player->actor.world.pos.x, player->actor.world.pos.y + 100, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 315 {} {} {} {}", 1, player->actor.world.pos.x, player->actor.world.pos.y + 100, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_darklink") == 0) {
-            CMD_EXECUTE(std::format("spawn 51 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 51 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_stalfos") == 0) {
-            CMD_EXECUTE(std::format("spawn 2 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 2 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_wolfos") == 0) {
-            CMD_EXECUTE(std::format("spawn 431 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 431 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_freezard") == 0) {
-            CMD_EXECUTE(std::format("spawn 289 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 289 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_keese") == 0) {
-            CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 2, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 2, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_icekeese") == 0) {
-            CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 4, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 4, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_firekeese") == 0) {
-            CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_tektite") == 0) {
-            CMD_EXECUTE(std::format("spawn 27 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 27 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_likelike") == 0) {
-            CMD_EXECUTE(std::format("spawn 221 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y + 200, player->actor.world.pos.z));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 221 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y + 200, player->actor.world.pos.z));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "increase_speed") == 0) {
-           CMD_EXECUTE("speed_modifier 2");
-            return 1;
+           if (dryRun == 0) CMD_EXECUTE("speed_modifier 2");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "decrease_speed") == 0) {
-           CMD_EXECUTE("speed_modifier -2");
-            return 1;
+           if (dryRun == 0) CMD_EXECUTE("speed_modifier -2");
+            return EffectResult::Success;
         } else if (strcmp(effectId, "damage_multiplier") == 0) {
-            CMD_EXECUTE(std::format("defense_modifier -{}", value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier -{}", value));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "defense_multiplier") == 0) {
-            CMD_EXECUTE(std::format("defense_modifier {}", value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier {}", value));
+            return EffectResult::Success;
         } else if (strcmp(effectId, "damage") == 0) {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
-                return 2;
+                return EffectResult::Failure;
             }
             
-            CMD_EXECUTE(std::format("damage {}", effectId, value));
-            return 1;
+            if (dryRun == 0) CMD_EXECUTE(std::format("damage {}", effectId, value));
+            return EffectResult::Success;
         }
     }
 
-    return 0;
+    return EffectResult::Retry;
 }
 
 void CrowdControl::RemoveEffect(const char* effectId) {
