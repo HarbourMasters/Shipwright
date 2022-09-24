@@ -404,7 +404,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
             if (dryRun == 0) CMD_EXECUTE(std::format("spawn 27 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
             return EffectResult::Success;
         } else if (strcmp(effectId, "spawn_likelike") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 221 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y + 200, player->actor.world.pos.z));
+            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 221 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
             return EffectResult::Success;
         } else if (strcmp(effectId, "increase_speed") == 0) {
            if (dryRun == 0) CMD_EXECUTE("speed_modifier 2");
