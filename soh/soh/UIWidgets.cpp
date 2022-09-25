@@ -325,7 +325,7 @@ namespace UIWidgets {
         if (PlusMinusButton) {
         #ifdef __SWITCH__
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-        #elif __WIIU__
+        #elif defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);

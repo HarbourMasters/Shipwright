@@ -343,7 +343,11 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         ImGui::TableSetupColumn(Col1Name.c_str(), FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
         Table_InitHeader(false);
+    #ifdef __WIIU__
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             CVar_SetS32("gHudColors", 2);
             CVar_SetS32("gUseNaviCol", 1);
             CVar_SetS32("gUseKeeseCol", 1);
@@ -358,7 +362,11 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         }
         UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
+    #ifdef __WIIU__
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             GetDefaultColorRGB(ColorSection, SectionSize);
         }
         UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");

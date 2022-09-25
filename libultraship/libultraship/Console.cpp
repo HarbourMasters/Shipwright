@@ -250,7 +250,11 @@ namespace Ship {
 			}
 
 			ImGui::SameLine();
+		#ifdef __WIIU__
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 50 * 2.0f);
+		#else
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 50);
+		#endif
 			if (ImGui::Button("Submit") && !input_focus && this->inputBuffer[0] != '\0' && this->inputBuffer[0] != ' ') {
 				this->Dispatch(std::string(this->inputBuffer));
 				memset(this->inputBuffer, 0, MAX_BUFFER_SIZE);
