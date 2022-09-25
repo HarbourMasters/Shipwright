@@ -35,6 +35,7 @@ namespace Ship {
 			SDL_GameController* Cont;
 			int32_t physicalSlot;
 			bool supportsGyro;
+			float NormaliseStickValue(float axisValue);
 			void NormalizeStickAxis(SDL_GameControllerAxis axisX, SDL_GameControllerAxis axisY, int16_t axisThreshold, int32_t virtualSlot);
 			bool Close();
 	};
