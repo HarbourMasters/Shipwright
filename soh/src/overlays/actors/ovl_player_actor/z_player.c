@@ -1668,6 +1668,9 @@ void func_8083315C(GlobalContext* globalCtx, Player* this) {
     s8 phi_v1;
     s8 phi_v0;
 
+    //MOUSE (RR)
+
+
     this->unk_A7C = D_808535D4;
     this->unk_A80 = D_808535D8;
 
@@ -1675,6 +1678,7 @@ void func_8083315C(GlobalContext* globalCtx, Player* this) {
 
     D_808535DC = Camera_GetInputDirYaw(GET_ACTIVE_CAM(globalCtx)) + D_808535D8;
 
+    this->quickspinCount = (this->quickspinCount + 1) % 5;
     this->unk_846 = (this->unk_846 + 1) % 4;
 
     if (D_808535D4 < 55.0f) {
@@ -1685,6 +1689,12 @@ void func_8083315C(GlobalContext* globalCtx, Player* this) {
         phi_v0 = (u16)((s16)(D_808535DC - this->actor.shape.rot.y) + 0x2000) >> 14;
     }
 
+    if(CVar_GetS32("gMouseTouchEnabled", 0)){
+        f32 x = sControlInput->cur.touch_x;
+        f32 y = sControlInput->cur.touch_y;
+        this->mouseQuickspinX[this->quickspinCount] = x;
+        this->mouseQuickspinY[this->quickspinCount] = y;
+    }
     this->unk_847[this->unk_846] = phi_v1;
     this->unk_84B[this->unk_846] = phi_v0;
 }
@@ -3457,6 +3467,64 @@ s32 func_808375D8(Player* this) {
         return 0;
     }
 
+
+    if(CVar_GetS32("gMouseTouchEnabled", 0)){ //mouse quickspin
+        iter2 = &sp3C[0];
+        u32 willSpin = 1;
+        for (i = 0; i < 4; i++, iter2++){
+            f32 relY = this->mouseQuickspinY[i + 1] - this->mouseQuickspinY[i];
+            f32 relX = this->mouseQuickspinX[i + 1] - this->mouseQuickspinX[i];
+            s16 aTan = Math_Atan2S(relY, -relX);
+            *iter = (u16)(aTan + 0x2000) >> 9;
+            if ((*iter2 = *iter) < 0) {
+                willSpin = 0;
+                break;
+            }
+            *iter2 *= 2;
+        }
+        temp1 = sp3C[0] - sp3C[1];
+        if (ABS(temp1) < 10) {
+            willSpin = 0;
+        }
+        iter2 = &sp3C[1];
+        for (i = 1; i < 3; i++, iter2++) {
+            temp2 = *iter2 - *(iter2 + 1);
+            if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
+                willSpin = 0;
+                break;
+            }
+        }
+        /*iter = &this->mouseQuickspinATan[0];
+        iter2 = &sp3C[0];
+        for (i = 0; i < 4; i++, iter++, iter2++) {
+            if ((*iter2 = *iter) < 0) {
+                willSpin = 0;
+                break;
+            }
+            *iter2 *= 2;
+        }
+
+        temp1 = sp3C[0] - sp3C[1];
+        if (ABS(temp1) < 10) {
+            willSpin = 0;
+        }
+
+        iter2 = &sp3C[1];
+        for (i = 1; i < 3; i++, iter2++) {
+            temp2 = *iter2 - *(iter2 + 1);
+            if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
+                willSpin = 0;
+                break;
+            }
+        }*/
+        if (willSpin){
+            return 1;
+        }
+    }
+    sp3C[0] = 0;
+    sp3C[1] = 0;
+    sp3C[2] = 0;
+    sp3C[3] = 0;
     iter = &this->unk_847[0];
     iter2 = &sp3C[0];
     for (i = 0; i < 4; i++, iter++, iter2++) {

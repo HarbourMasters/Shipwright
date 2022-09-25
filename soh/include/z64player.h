@@ -633,6 +633,10 @@ typedef struct Player {
     /* 0x0A95 */ PendingFlag pendingFlag;
     /* 0x0AA1 */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
     /* 0x0AA2 */ GetItemEntry getItemEntry;
+
+    /* 0x???? */ f32        mouseQuickspinX[5];
+    /* 0x???? */ f32        mouseQuickspinY[5];
+    /* 0x???? */ u8         quickspinCount;
 } Player; // size = 0xAAA
 
 #endif
