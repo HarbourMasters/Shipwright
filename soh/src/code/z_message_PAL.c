@@ -1281,7 +1281,7 @@ void Message_Decode(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &globalCtx->msgCtx.font;
 
-    if (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT || msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
+    if ((msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT) || msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
         // TODO: Figure out what specific textures to invalidate to prevent the ocarina textboxes from flashing
         gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
     } else {
@@ -1687,7 +1687,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     }
 
     sMessageHasSetSfx = D_8014B2F4 = sTextboxSkipped = sTextIsCredits = 0;
-    if (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT ||
+    if ((msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT) ||
         msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
         // TODO: Figure out what specific textures to invalidate to prevent the ocarina textboxes from flashing
         gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
