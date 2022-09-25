@@ -57,15 +57,19 @@ namespace Ship {
         return true;
     }
 
+    float SDLController::NormaliseStickValue(float axisValue) {
+        //scale {-32768 ... +32767} to {-84 ... +84}
+        return axisValue * 85.0f / 32767.0f;
+    }
+
     void SDLController::NormalizeStickAxis(SDL_GameControllerAxis axisX, SDL_GameControllerAxis axisY, int16_t axisThreshold, int32_t virtualSlot) {
         auto profile = getProfile(virtualSlot);
 
         const auto axisValueX = SDL_GameControllerGetAxis(Cont, axisX);
         const auto axisValueY = SDL_GameControllerGetAxis(Cont, axisY);
 
-        //scale {-32768 ... +32767} to {-84 ... +84}
-        auto ax = axisValueX * 85.0f / 32767.0f;
-        auto ay = axisValueY * 85.0f / 32767.0f;
+        auto ax = NormaliseStickValue(axisValueX);
+        auto ay = NormaliseStickValue(axisValueY);
 
         //create scaled circular dead-zone in range {-15 ... +15}
         auto len = sqrt(ax * ax + ay * ay);
@@ -225,11 +229,12 @@ namespace Ship {
                 NegButton == BTN_VSTICKUP || NegButton == BTN_VSTICKDOWN)) {
 
                 // The axis is being treated as a "button"
-                if (AxisValue > AxisMinimumPress) {
+                auto normalizedAxisValue = NormaliseStickValue(AxisValue);
+                if (normalizedAxisValue > AxisDeadzone) {
                     getPressedButtons(virtualSlot) |= PosButton;
                     getPressedButtons(virtualSlot) &= ~NegButton;
                 }
-                else if (AxisValue < -AxisMinimumPress) {
+                else if (normalizedAxisValue < -AxisDeadzone) {
                     getPressedButtons(virtualSlot) &= ~PosButton;
                     getPressedButtons(virtualSlot) |= NegButton;
                 }
