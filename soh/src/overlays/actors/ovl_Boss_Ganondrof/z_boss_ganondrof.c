@@ -208,56 +208,41 @@ static InitChainEntry sInitChain[] = {
 
 static Vec3f sAudioVec = { 0.0f, 0.0f, 50.0f };
 
-// OTRTODO: This code appears to cause the game to gradually crash...
-// Might be an OoB write. For now it's disabled.
 void BossGanondrof_ClearPixels8x8(s16* texture, u8* mask, s16 index)
 {
-    //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
-        //texture[index / 4] = 0;
         ResourceMgr_WriteTexS16ByName(texture, index / 4, 0);
     }
 }
 
 void BossGanondrof_ClearPixels16x8(s16* texture, u8* mask, s16 index) {
-    //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
-        //texture[index / 2] = 0;
         ResourceMgr_WriteTexS16ByName(texture, index / 2, 0);
 
     }
 }
 
 void BossGanondrof_ClearPixels16x16(s16* texture, u8* mask, s16 index, s16 bpp) {
-    //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
-        //texture[index] = 0;
         ResourceMgr_WriteTexS16ByName(texture, index, 0);
     }
 }
 
 void BossGanondrof_ClearPixels32x16(s16* texture, u8* mask, s16 index) {
-    //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
         s16 i = (index & 0xF) + ((index & 0xF0) << 1);
 
         ResourceMgr_WriteTexS16ByName(texture, i + 0x10, 0);
         ResourceMgr_WriteTexS16ByName(texture, i, 0);
-        //texture[i + 0x10] = 0;
-        //texture[i] = 0;
     }
 }
 
 void BossGanondrof_ClearPixels16x32(s16* texture, u8* mask, s16 index) {
-    //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
         s16 i = ((index & 0xF) * 2) + ((index & 0xF0) * 2);
 
         ResourceMgr_WriteTexS16ByName(texture, i + 1, 0);
         ResourceMgr_WriteTexS16ByName(texture, i, 0);
-
-        //texture[i + 1] = 0;
-        //texture[i] = 0;
     }
 
 }
@@ -1524,6 +1509,25 @@ void BossGanondrof_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnfHG* horse;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    if (this->work[GND_BODY_DECAY_FLAG]) {
+        for (int i = 0; i < 5; i++) {
+            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_8x8[i]);
+            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x8[i]);
+        }
+        for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x16); i++) {
+            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x16[i]);
+        }
+        for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x32); i++) {
+            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x32[i]);
+        }
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gPhantomGanonLimbTex_00B380);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gPhantomGanonEyeTex);
+        for (int i = 0; i < ARRAY_COUNT(sMouthTex_ci8_16x16); i++) {
+            gSPInvalidateTexCache(POLY_OPA_DISP++, sMouthTex_ci8_16x16[i]);
+        }
+    }
+
     osSyncPrintf("MOVE P = %x\n", this->actor.update);
     osSyncPrintf("STOP TIMER = %d ==============\n", this->actor.freezeTimer);
     horse = (EnfHG*)this->actor.child;
