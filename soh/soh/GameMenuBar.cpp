@@ -508,8 +508,8 @@ namespace GameMenuBar {
                 auto audioBackends = SohImGui::GetAvailableAudioBackends();
                 auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
 
-                if (ImGui::BeginCombo("##RApi", currentAudioBackend.second)) {
-                    for (uint8_t i = 0; i < sizeof(audioBackends) / sizeof(audioBackends[0]); i++) {
+                if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
+                    for (uint8_t i = 0; i < audioBackends.size(); i++) {
                         if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
                             SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
                         }

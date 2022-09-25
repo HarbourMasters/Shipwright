@@ -98,7 +98,7 @@ namespace SohImGui {
         "None"
     };
 
-    std::pair<const char*, const char*> renderingBackends[] = {
+    std::vector<std::pair<const char*, const char*>> renderingBackends = {
 #ifdef _WIN32
         { "dx11", "DirectX" },
 #endif
@@ -109,14 +109,14 @@ namespace SohImGui {
 #endif
     };
 
-    std::pair<const char*, const char*> audioBackends[] = {
+    std::vector<std::pair<const char*, const char*>> audioBackends = {
 #ifdef _WIN32
         { "wasapi", "Windows Audio Session API" },
 #endif
 #if defined(__linux)
         { "pulse", "PulseAudio" },
 #endif
-        { "sdl", "SDL Audio" }
+        { "sdl", "SDL Audio" },
     };
 
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
@@ -749,11 +749,11 @@ namespace SohImGui {
         return gfx_get_detected_hz();
     }
 
-    std::pair<const char*, const char*>* GetAvailableRenderingBackends() {
+    std::vector<std::pair<const char*, const char*>> GetAvailableRenderingBackends() {
         return renderingBackends;
     }
 
-    std::pair<const char*, const char*>* GetAvailableAudioBackends() {
+    std::vector<std::pair<const char*, const char*>> GetAvailableAudioBackends() {
         return audioBackends;
     }
 
