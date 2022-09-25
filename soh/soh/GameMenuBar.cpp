@@ -315,8 +315,6 @@ namespace GameMenuBar {
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
-        // D-pad Support on Pause
-        CVar_SetS32("gDpadPause", 1);
         // D-pad Support in text and file select
         CVar_SetS32("gDpadText", 1);
         // Play Ocarina with D-pad
