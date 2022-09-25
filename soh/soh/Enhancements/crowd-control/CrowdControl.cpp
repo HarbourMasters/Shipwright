@@ -373,38 +373,25 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
         } else if (strcmp(effectId, "hover_boots") == 0) {
             if (dryRun == 0) CMD_EXECUTE("boots hover");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_wallmaster") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 17 {} {} {} {}", 0, player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_arwing") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 315 {} {} {} {}", 1, player->actor.world.pos.x, player->actor.world.pos.y + 100, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_darklink") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 51 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_stalfos") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 2 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_wolfos") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 431 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_freezard") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 289 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_keese") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 2, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_icekeese") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 4, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_firekeese") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 19 {} {} {} {}", 1, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_tektite") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 27 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
-            return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_likelike") == 0) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("spawn 221 {} {} {} {}", 0, player->actor.world.pos.x + 75, player->actor.world.pos.y + 50, player->actor.world.pos.z));
+        } else if (strcmp(effectId, "spawn_wallmaster") == 0 
+            || strcmp(effectId, "spawn_arwing") == 0 
+            || strcmp(effectId, "spawn_darklink") == 0 
+            || strcmp(effectId, "spawn_stalfos") == 0 
+            || strcmp(effectId, "spawn_wolfos") == 0 
+            || strcmp(effectId, "spawn_freezard") == 0 
+            || strcmp(effectId, "spawn_keese") == 0 
+            || strcmp(effectId, "spawn_icekeese") == 0
+            || strcmp(effectId, "spawn_firekeese") == 0
+            || strcmp(effectId, "spawn_tektite") == 0
+            || strcmp(effectId, "spawn_likelike") == 0
+        ) {
+            if (dryRun == 0) {
+                if (CrowdControl::SpawnEnemy(effectId)) {
+                    return EffectResult::Success;
+                } else {
+                    return EffectResult::Failure;
+                }
+            }
             return EffectResult::Success;
         } else if (strcmp(effectId, "increase_speed") == 0) {
            if (dryRun == 0) CMD_EXECUTE("speed_modifier 2");
@@ -429,6 +416,67 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
     }
 
     return EffectResult::Retry;
+}
+
+bool CrowdControl::SpawnEnemy(const char* effectId) {
+    Player* player = GET_PLAYER(gGlobalCtx);
+
+    int enemyId = 0;
+    int enemyParams = 0;
+    float posXOffset = 0;
+    float posYOffset = 0;
+    float posZOffset = 0;
+
+    if (strcmp(effectId, "spawn_wallmaster") == 0) {
+        enemyId = 17;
+    } else if (strcmp(effectId, "spawn_arwing") == 0) {
+        enemyId = 315;
+        enemyParams = 1;
+        posYOffset = 100;
+    } else if (strcmp(effectId, "spawn_darklink") == 0) {
+        enemyId = 51;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_stalfos") == 0) {
+        enemyId = 2;
+        enemyParams = 1;
+        posXOffset = 75;
+    } else if (strcmp(effectId, "spawn_wolfos") == 0) {
+        enemyId = 431;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_freezard") == 0) {
+        enemyId = 289;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_keese") == 0) {
+        enemyId = 19;
+        enemyParams = 2;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_icekeese") == 0) {
+        enemyId = 19;
+        enemyParams = 4;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_firekeese") == 0) {
+        enemyId = 19;
+        enemyParams = 1;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_tektite") == 0) {
+        enemyId = 27;
+        posXOffset = 75;
+        posYOffset = 50;
+    } else if (strcmp(effectId, "spawn_likelike") == 0) {
+        enemyId = 221;
+        posXOffset = 75;
+        posYOffset = 50;
+    }
+
+    return Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, enemyId, player->actor.world.pos.x + posXOffset,
+        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams);
+
 }
 
 void CrowdControl::RemoveEffect(const char* effectId) {

@@ -79,6 +79,7 @@ class CrowdControl {
         void RunCrowdControl(CCPacket* packet);
         void ReceiveFromCrowdControl();
         EffectResult ExecuteEffect(const char* effectId, uint32_t value, uint8_t dryRun);
+        bool SpawnEnemy(const char* effectId);
         void RemoveEffect(const char* effectId);
 
     public:
