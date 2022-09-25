@@ -3458,6 +3458,7 @@ void func_80837530(GlobalContext* globalCtx, Player* this, s32 arg2) {
 s32 func_808375D8(Player* this) {
     s8 sp3C[4];
     s8* iter;
+    s8 iterMouse;
     s8* iter2;
     s8 temp1;
     s8 temp2;
@@ -3475,8 +3476,8 @@ s32 func_808375D8(Player* this) {
             f32 relY = this->mouseQuickspinY[i + 1] - this->mouseQuickspinY[i];
             f32 relX = this->mouseQuickspinX[i + 1] - this->mouseQuickspinX[i];
             s16 aTan = Math_Atan2S(relY, -relX);
-            *iter = (u16)(aTan + 0x2000) >> 9;
-            if ((*iter2 = *iter) < 0) {
+            iterMouse = (u16)(aTan + 0x2000) >> 9;
+            if ((*iter2 = iterMouse) < 0) {
                 willSpin = 0;
                 break;
             }
@@ -3494,29 +3495,6 @@ s32 func_808375D8(Player* this) {
                 break;
             }
         }
-        /*iter = &this->mouseQuickspinATan[0];
-        iter2 = &sp3C[0];
-        for (i = 0; i < 4; i++, iter++, iter2++) {
-            if ((*iter2 = *iter) < 0) {
-                willSpin = 0;
-                break;
-            }
-            *iter2 *= 2;
-        }
-
-        temp1 = sp3C[0] - sp3C[1];
-        if (ABS(temp1) < 10) {
-            willSpin = 0;
-        }
-
-        iter2 = &sp3C[1];
-        for (i = 1; i < 3; i++, iter2++) {
-            temp2 = *iter2 - *(iter2 + 1);
-            if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
-                willSpin = 0;
-                break;
-            }
-        }*/
         if (willSpin){
             return 1;
         }
