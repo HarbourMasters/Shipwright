@@ -523,9 +523,9 @@ void SaveManager::SaveFile(int fileNum) {
     }
 
 #ifdef __SWITCH__
-    const char* json_string = baseBlock.dump(4).c_str();
     FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
-    fwrite(json_string, sizeof(char), strlen(json_string), w);
+    std::string json_string = baseBlock.dump(4);
+    fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
 
