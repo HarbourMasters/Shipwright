@@ -1710,13 +1710,12 @@ void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player
     EnGirlA* item;
     EnGirlA* itemTemp;
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
-    // Need to make sure the mask shop gets correct ogItemIds
-    // RANDOTODO: return this from shopItemIdentity or avoid running some of this code completely
-    // when not randomized or in mask shop.
-    if (this->actor.params == OSSAN_TYPE_MASK) {
-        shopItemIdentity.ogItemId = this->shelfSlots[this->cursorIndex]->getItemId;
+    GetItemEntry getItemEntry;
+    if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+        getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    } else {
+        getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
     }
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
     
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
