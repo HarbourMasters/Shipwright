@@ -116,7 +116,7 @@ namespace SohImGui {
 #if defined(__linux)
         { "pulse", "PulseAudio" },
 #endif
-        { "sdl", "SDL Audio" },
+        { "sdl", "SDL Audio" }
     };
 
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
