@@ -509,14 +509,11 @@ namespace GameMenuBar {
                 auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
 
                 if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
-                    auto current = std::find(audioBackends.begin(), audioBackends.end(), currentAudioBackend);
-                    if (current != audioBackends.end()) {
-                        audioBackends.erase(current);
-                    }
-
-                    for (uint8_t i = 0; i < audioBackends.size(); i++) {
-                        if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-                            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
+                    if (audioBackends.size() > 1) {
+                        for (uint8_t i = 0; i < audioBackends.size(); i++) {
+                            if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+                                SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
+                            }
                         }
                     }
 
@@ -634,14 +631,11 @@ namespace GameMenuBar {
                 auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-                    auto current = std::find(renderingBackends.begin(), renderingBackends.end(), currentRenderingBackend);
-                    if (current != renderingBackends.end()) {
-                        renderingBackends.erase(current);
-                    }
-
-                    for (uint8_t i = 0; i < renderingBackends.size(); i++) {
-                        if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-                            SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
+                    if (renderingBackends.size() > 1) {
+                        for (uint8_t i = 0; i < renderingBackends.size(); i++) {
+                            if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+                                SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
+                            }
                         }
                     }
 
