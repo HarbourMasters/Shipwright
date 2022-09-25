@@ -199,8 +199,8 @@ extern "C" {
 
         if (res != nullptr)
         {
-            if (index < res->imageDataSize)
-                res->imageData[index] = value;
+            if ((index * 2) < res->imageDataSize)
+                ((s16*)res->imageData)[index] = value;
             else
             {
                 // Dangit Morita

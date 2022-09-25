@@ -66,7 +66,9 @@ set(Source_Files__Audio__extra
     "WasapiAudioPlayer.cpp"
     "WasapiAudioPlayer.h"
 )
-else()
+endif ()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__Audio__extra
     "PulseAudioPlayer.cpp"
     "PulseAudioPlayer.h"
