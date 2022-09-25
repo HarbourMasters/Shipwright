@@ -363,7 +363,7 @@ namespace SohImGui {
         }
 
         if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
-            io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+            io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
         } else {
             io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
         }
@@ -466,7 +466,7 @@ namespace SohImGui {
             ShowCursor(menu_bar, Dialogues::dMenubar);
             Window::GetInstance()->GetControlDeck()->SaveControllerSettings();
             if (CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0)) {
-                io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
             } else {
                 io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
             }
