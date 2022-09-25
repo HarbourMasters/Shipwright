@@ -504,6 +504,20 @@ namespace GameMenuBar {
                 UIWidgets::Spacer(0);
                 BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
 
+                ImGui::Text("Audio API (Needs reload)");
+                auto audioBackends = SohImGui::GetAvailableAudioBackends();
+                auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
+
+                if (ImGui::BeginCombo("##RApi", currentAudioBackend.second)) {
+                    for (uint8_t i = 0; i < sizeof(audioBackends) / sizeof(audioBackends[0]); i++) {
+                        if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+                            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
+                        }
+                    }
+
+                    ImGui::EndCombo();
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -611,13 +625,13 @@ namespace GameMenuBar {
                 }
 
                 ImGui::Text("Renderer API (Needs reload)");
-                auto backends = SohImGui::GetAvailableRenderingBackends();
-                auto currentBackend = SohImGui::GetCurrentRenderingBackend();
+                auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
+                auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
-                if (ImGui::BeginCombo("##RApi", currentBackend.second)) {
-                    for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
-                        if (ImGui::Selectable(backends[i].second, backends[i] == currentBackend)) {
-                            SohImGui::SetCurrentRenderingBackend(i, backends[i]);
+                if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
+                    for (uint8_t i = 0; i < sizeof(renderingBackends) / sizeof(renderingBackends[0]); i++) {
+                        if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+                            SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
                         }
                     }
 
