@@ -146,7 +146,7 @@ namespace SohImGui {
         if (renderingBackend.empty()) {
             lastRenderingBackendID = 0;
         } else {
-            for (size_t i = 0; i < (sizeof(renderingBackends) / sizeof(renderingBackends[0])); i++) {
+            for (size_t i = 0; i < renderingBackends.size(); i++) {
                 if(renderingBackend == renderingBackends[i].first) {
                     lastRenderingBackendID = i;
                     break;
@@ -158,7 +158,7 @@ namespace SohImGui {
         if (audioBackend.empty()) {
             lastAudioBackendID = 0;
         } else {
-            for (size_t i = 0; i < (sizeof(audioBackends) / sizeof(audioBackends[0])); i++) {
+            for (size_t i = 0; i < audioBackends.size(); i++) {
                 if(audioBackend == audioBackends[i].first) {
                     lastAudioBackendID = i;
                     break;

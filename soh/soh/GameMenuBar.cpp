@@ -629,7 +629,7 @@ namespace GameMenuBar {
                 auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-                    for (uint8_t i = 0; i < sizeof(renderingBackends) / sizeof(renderingBackends[0]); i++) {
+                    for (uint8_t i = 0; i < renderingBackends.size(); i++) {
                         if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
                             SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
                         }
