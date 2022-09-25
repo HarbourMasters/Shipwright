@@ -1523,7 +1523,7 @@ s32 Camera_Free(Camera* camera) {
         camera->globalCtx->camY = -0x228C;
     }
 
-    camera->dist = Camera_LERPCeilF(para1->distTarget, camera->dist, 1.0f / camera->rUpdateRateInv, 0.0f);
+    camera->dist = Camera_LERPCeilF(CVar_GetS32("gCustomCameraDistMax", para1->distTarget), camera->dist, 1.0f / camera->rUpdateRateInv, 0.0f);
     OLib_Vec3fDiffToVecSphGeo(&spA8, at, eyeNext);
 
     spA8.r = camera->dist;
