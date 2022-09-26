@@ -65,6 +65,8 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
 
                     std::string jsonResponse = dataSend.dump();
                     SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
+
+                    delete packet;
                 }
 
                 return;
@@ -123,145 +125,150 @@ void CrowdControl::ReceiveFromCrowdControl()
             break;
         }
 
-        nlohmann::json dataReceived = nlohmann::json::parse(received);
+        try {
+            nlohmann::json dataReceived = nlohmann::json::parse(received);
 
-        CCPacket* packet = new CCPacket();
-        packet->packetId = dataReceived["id"];
-        auto parameters = dataReceived["parameters"];
-        if (parameters.size() > 0) {
-            packet->effectValue = dataReceived["parameters"][0];
-        }
-        packet->effectType = dataReceived["code"].get<std::string>();
+            CCPacket* packet = new CCPacket();
+            packet->packetId = dataReceived["id"];
+            auto parameters = dataReceived["parameters"];
+            if (parameters.size() > 0) {
+                packet->effectValue = dataReceived["parameters"][0];
+            }
+            packet->effectType = dataReceived["code"].get<std::string>();
 
-        if (packet->effectType == "high_gravity" ||
-            packet->effectType == "low_gravity") {
-            packet->effectCategory = "gravity";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "damage_multiplier"
-                    || packet->effectType == "defense_multiplier"
-        ) {
-            packet->effectCategory = "defense";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "giant_link" ||
-            packet->effectType == "minish_link" ||
-            packet->effectType == "invisible" ||
-            packet->effectType == "paper_link") {
-            packet->effectCategory = "link_size";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "freeze" ||
-            packet->effectType == "damage" ||
-            packet->effectType == "heal" ||
-            packet->effectType == "knockback" ||
-            packet->effectType == "electrocute" ||
-            packet->effectType == "burn" ||
-            packet->effectType == "kill") {
-            packet->effectCategory = "link_damage";
-        }
-        else if (packet->effectType == "hover_boots" ||
-            packet->effectType == "iron_boots") {
-            packet->effectCategory = "boots";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "add_heart_container" ||
-            packet->effectType == "remove_heart_container") {
-            packet->effectCategory = "heart_container";
-        }
-        else if (packet->effectType == "no_ui") {
-            packet->effectCategory = "ui";
-            packet->timeRemaining = 60000;
-        }
-        else if (packet->effectType == "fill_magic" ||
-            packet->effectType == "empty_magic") {
-            packet->effectCategory = "magic";
-        }
-        else if (packet->effectType == "ohko") {
-            packet->effectCategory = "ohko";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "pacifist") {
-            packet->effectCategory = "pacifist";
-            packet->timeRemaining = 15000;
-        }
-        else if (packet->effectType == "rainstorm") {
-            packet->effectCategory = "weather";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "reverse") {
-            packet->effectCategory = "controls";
-            packet->timeRemaining = 60000;
-        }
-        else if (packet->effectType == "add_rupees"
-                    || packet->effectType == "remove_rupees"
-        ) {
-            packet->effectCategory = "rupees";
-        }
-        else if (packet->effectType == "increase_speed"
-                    || packet->effectType == "decrease_speed"
-        ) {
-            packet->effectCategory = "speed";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "no_z") {
-            packet->effectCategory = "no_z";
-            packet->timeRemaining = 30000;
-        }
-        else if (packet->effectType == "spawn_wallmaster" ||
-            packet->effectType == "spawn_arwing" ||
-            packet->effectType == "spawn_darklink" ||
-            packet->effectType == "spawn_stalfos" ||
-            packet->effectType == "spawn_wolfos" ||
-            packet->effectType == "spawn_freezard" ||
-            packet->effectType == "spawn_keese" ||
-            packet->effectType == "spawn_icekeese" ||
-            packet->effectType == "spawn_firekeese" ||
-            packet->effectType == "spawn_tektite" ||
-            packet->effectType == "spawn_likelike" ||
-            packet->effectType == "cucco_storm") {
-            packet->effectCategory = "spawn";
-        }
-        else {
-            packet->effectCategory = "none";
-            packet->timeRemaining = 0;
-        }
+            if (packet->effectType == "high_gravity" ||
+                packet->effectType == "low_gravity") {
+                packet->effectCategory = "gravity";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "damage_multiplier"
+                        || packet->effectType == "defense_multiplier"
+            ) {
+                packet->effectCategory = "defense";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "giant_link" ||
+                packet->effectType == "minish_link" ||
+                packet->effectType == "invisible" ||
+                packet->effectType == "paper_link") {
+                packet->effectCategory = "link_size";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "freeze" ||
+                packet->effectType == "damage" ||
+                packet->effectType == "heal" ||
+                packet->effectType == "knockback" ||
+                packet->effectType == "electrocute" ||
+                packet->effectType == "burn" ||
+                packet->effectType == "kill") {
+                packet->effectCategory = "link_damage";
+            }
+            else if (packet->effectType == "hover_boots" ||
+                packet->effectType == "iron_boots") {
+                packet->effectCategory = "boots";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "add_heart_container" ||
+                packet->effectType == "remove_heart_container") {
+                packet->effectCategory = "heart_container";
+            }
+            else if (packet->effectType == "no_ui") {
+                packet->effectCategory = "ui";
+                packet->timeRemaining = 60000;
+            }
+            else if (packet->effectType == "fill_magic" ||
+                packet->effectType == "empty_magic") {
+                packet->effectCategory = "magic";
+            }
+            else if (packet->effectType == "ohko") {
+                packet->effectCategory = "ohko";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "pacifist") {
+                packet->effectCategory = "pacifist";
+                packet->timeRemaining = 15000;
+            }
+            else if (packet->effectType == "rainstorm") {
+                packet->effectCategory = "weather";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "reverse") {
+                packet->effectCategory = "controls";
+                packet->timeRemaining = 60000;
+            }
+            else if (packet->effectType == "add_rupees"
+                        || packet->effectType == "remove_rupees"
+            ) {
+                packet->effectCategory = "rupees";
+            }
+            else if (packet->effectType == "increase_speed"
+                        || packet->effectType == "decrease_speed"
+            ) {
+                packet->effectCategory = "speed";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "no_z") {
+                packet->effectCategory = "no_z";
+                packet->timeRemaining = 30000;
+            }
+            else if (packet->effectType == "spawn_wallmaster" ||
+                packet->effectType == "spawn_arwing" ||
+                packet->effectType == "spawn_darklink" ||
+                packet->effectType == "spawn_stalfos" ||
+                packet->effectType == "spawn_wolfos" ||
+                packet->effectType == "spawn_freezard" ||
+                packet->effectType == "spawn_keese" ||
+                packet->effectType == "spawn_icekeese" ||
+                packet->effectType == "spawn_firekeese" ||
+                packet->effectType == "spawn_tektite" ||
+                packet->effectType == "spawn_likelike" ||
+                packet->effectType == "cucco_storm") {
+                packet->effectCategory = "spawn";
+            }
+            else {
+                packet->effectCategory = "none";
+                packet->timeRemaining = 0;
+            }
 
-        // Check if running effect is possible
-        EffectResult effectResult = ExecuteEffect(packet->effectType.c_str(), packet->effectValue, 1);
-        if (effectResult == EffectResult::Retry || effectResult == EffectResult::Failure) {
-            nlohmann::json dataSend;
-            dataSend["id"] = packet->packetId;
-            dataSend["type"] = 0;
-            dataSend["timeRemaining"] = packet->timeRemaining;
-            dataSend["status"] = effectResult;
+            // Check if running effect is possible
+            EffectResult effectResult = ExecuteEffect(packet->effectType.c_str(), packet->effectValue, 1);
+            if (effectResult == EffectResult::Retry || effectResult == EffectResult::Failure) {
+                nlohmann::json dataSend;
+                dataSend["id"] = packet->packetId;
+                dataSend["type"] = 0;
+                dataSend["timeRemaining"] = packet->timeRemaining;
+                dataSend["status"] = effectResult;
 
-            std::string jsonResponse = dataSend.dump();
-            SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
-        } else {
-            bool anotherEffectOfCategoryActive = false;
-            for (CCPacket* pack : receivedCommands) {
-                if (pack != packet && pack->effectCategory == packet->effectCategory && pack->packetId < packet->packetId) {
-                    anotherEffectOfCategoryActive = true;
+                std::string jsonResponse = dataSend.dump();
+                SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
+            } else {
+                bool anotherEffectOfCategoryActive = false;
+                for (CCPacket* pack : receivedCommands) {
+                    if (pack != packet && pack->effectCategory == packet->effectCategory && pack->packetId < packet->packetId) {
+                        anotherEffectOfCategoryActive = true;
 
-                    nlohmann::json dataSend;
-                    dataSend["id"] = packet->packetId;
-                    dataSend["type"] = 0;
-                    dataSend["timeRemaining"] = packet->timeRemaining;
-                    dataSend["status"] = EffectResult::Retry;
+                        nlohmann::json dataSend;
+                        dataSend["id"] = packet->packetId;
+                        dataSend["type"] = 0;
+                        dataSend["timeRemaining"] = packet->timeRemaining;
+                        dataSend["status"] = EffectResult::Retry;
 
-                    std::string jsonResponse = dataSend.dump();
-                    SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
+                        std::string jsonResponse = dataSend.dump();
+                        SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
 
-                    break;
+                        break;
+                    }
+                }
+
+                if (anotherEffectOfCategoryActive != true) {
+                    receivedCommands.push_back(packet);
+                    std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
+                    t.detach();
                 }
             }
-
-            if (anotherEffectOfCategoryActive != true) {
-                receivedCommands.push_back(packet);
-                std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
-                t.detach();
-            }
+        } catch (nlohmann::json::parse_error& e) {
+            printf("Error parsing JSON: %s\n", e.what());
+            continue;
         }
     }
 
