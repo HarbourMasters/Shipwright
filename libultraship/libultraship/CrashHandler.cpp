@@ -15,7 +15,7 @@
 
 extern "C" void DeinitOTR(void);
 
-static CrashHandlerCallback sCallbackFunc;
+static CrashHandlerCallback sCallbackFunc = nullptr;
 
 static const char* GetGameVersionString() {
     if(Ship::Window::GetInstance()->GetResourceManager()->IsRunning()) {
@@ -433,8 +433,8 @@ extern "C" LONG seh_filter(struct _EXCEPTION_POINTERS* ex) {
     
     WRITE_VAR_LINE(buffer, &curBufferPos, "Exception: ", exceptionString);
     printStack(ex->ContextRecord, buffer, &curBufferPos);
+    MessageBoxA(nullptr, "SoH Has crashed. Please upload the logs to the support channel in discord.", "Crash", MB_OK | MB_ICONERROR);
     CrashHandler_PrintCommon(buffer, &curBufferPos);
-    MessageBox(nullptr, L"SoH Has crashed. Please upload the logs to the support channel in discord.", L"Crash", MB_OK | MB_ICONERROR);
 
     return EXCEPTION_EXECUTE_HANDLER;
 }
