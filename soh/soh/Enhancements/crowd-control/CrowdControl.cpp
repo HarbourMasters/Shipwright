@@ -30,16 +30,16 @@ void CrowdControl::InitCrowdControl() {
 }
 
 void CrowdControl::RunCrowdControl(CCPacket* packet) {
-    uint8_t paused = 0;
+    bool paused = false;
     EffectResult lastResult = EffectResult::NotReady;
-    uint8_t isTimed = packet->timeRemaining > 0;
+    bool isTimed = packet->timeRemaining > 0;
 
     while (connected) {
         EffectResult effectResult = ExecuteEffect(packet->effectType.c_str(), packet->effectValue, 0);
         if (effectResult == EffectResult::Success) {
             // If we have a success after being previously paused, we fire the Resumed event
             if (paused && packet->timeRemaining > 0) {
-                paused = 0;
+                paused = false;
                 nlohmann::json dataSend;
                 dataSend["id"] = packet->packetId;
                 dataSend["type"] = 0;
@@ -47,7 +47,7 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
                 dataSend["status"] = EffectResult::Resumed;
 
                 std::string jsonResponse = dataSend.dump();
-                SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+                SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
             }
 
             // If time remaining has reached 0 or was 0, we have finished let's remove the command and end the thread
@@ -64,7 +64,7 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
                     dataSend["status"] = EffectResult::Success;
 
                     std::string jsonResponse = dataSend.dump();
-                    SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+                    SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
                 }
 
                 return;
@@ -83,10 +83,10 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
                 dataSend["status"] = effectResult;
 
                 std::string jsonResponse = dataSend.dump();
-                SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+                SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
             }
-        } else if (effectResult == EffectResult::Retry && paused == 0 && packet->timeRemaining > 0) {
-            paused = 1;
+        } else if (effectResult == EffectResult::Retry && paused == false && packet->timeRemaining > 0) {
+            paused = true;
             nlohmann::json dataSend;
             dataSend["id"] = packet->packetId;
             dataSend["type"] = 0;
@@ -94,7 +94,7 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
             dataSend["status"] = EffectResult::Paused;
 
             std::string jsonResponse = dataSend.dump();
-            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+            SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
         }
         
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -116,7 +116,7 @@ void CrowdControl::ReceiveFromCrowdControl()
     }
 
     while (connected && CVar_GetS32("gCrowdControl", 0) && tcpsock) {
-        int len = SDLNet_TCP_Recv(tcpsock, &received, 512);
+        int len = SDLNet_TCP_Recv(tcpsock, &received, sizeof(received));
 
         if (!len || !tcpsock || len == -1) {
             printf("SDLNet_TCP_Recv: %s\n", SDLNet_GetError());
@@ -237,13 +237,12 @@ void CrowdControl::ReceiveFromCrowdControl()
             dataSend["status"] = effectResult;
 
             std::string jsonResponse = dataSend.dump();
-            SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+            SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
         } else {
-            // Check if effect already exists
-            uint8_t anotherEffect = 0;
+            bool anotherEffectOfCategoryActive = false;
             for (CCPacket* pack : receivedCommands) {
                 if (pack != packet && pack->effectCategory == packet->effectCategory && pack->packetId < packet->packetId) {
-                    anotherEffect = 1;
+                    anotherEffectOfCategoryActive = true;
 
                     nlohmann::json dataSend;
                     dataSend["id"] = packet->packetId;
@@ -252,13 +251,13 @@ void CrowdControl::ReceiveFromCrowdControl()
                     dataSend["status"] = EffectResult::Retry;
 
                     std::string jsonResponse = dataSend.dump();
-                    SDLNet_TCP_Send(tcpsock, const_cast<char*> (jsonResponse.data()), jsonResponse.size() + 1);
+                    SDLNet_TCP_Send(tcpsock, jsonResponse.c_str(), jsonResponse.size() + 1);
 
                     break;
                 }
             }
 
-            if (anotherEffect != 1) {
+            if (anotherEffectOfCategoryActive != true) {
                 receivedCommands.push_back(packet);
                 std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
                 t.detach();

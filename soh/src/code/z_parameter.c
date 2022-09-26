@@ -2917,8 +2917,9 @@ s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange) {
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
     if (oneHitKO) {
-        if (healthChange < 0)
+        if (healthChange < 0) {
             gSaveContext.health = 0;
+        }
         
         return 0;
     }
