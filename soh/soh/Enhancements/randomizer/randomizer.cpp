@@ -1137,7 +1137,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return CAN_OBTAIN;
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             // If Bombchus aren't in logic, you need a bomb bag to purchase them
             // If they are in logic, you need to have already obtained them somewhere else
@@ -1513,7 +1512,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             }
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_5:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
@@ -1857,7 +1855,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_HEART:
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BUY_DEKU_SEEDS_30:
         case RG_SOLD_OUT:
         case RG_BUY_BLUE_FIRE:
