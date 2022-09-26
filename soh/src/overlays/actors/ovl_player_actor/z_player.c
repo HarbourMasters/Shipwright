@@ -4617,7 +4617,9 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && (interactActorId == ACTOR_EN_ISHI || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
+            // Same actor is used for small and large silver rocks, use actor params to identify large ones
+            bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
                 LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 5.0f);
             } else {
                 LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
