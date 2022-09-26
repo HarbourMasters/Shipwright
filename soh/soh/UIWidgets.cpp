@@ -333,7 +333,10 @@ namespace UIWidgets {
         }
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
-            CVar_SetFloat(cvarName, val);
+            if (isPercentage)
+                CVar_SetFloat(cvarName, roundf(val * 100) / 100);
+            else
+                CVar_SetFloat(cvarName, roundf(val * 10) / 10);
             SohImGui::RequestCvarSaveOnNextTick();
         }
         if (PlusMinusButton) {
