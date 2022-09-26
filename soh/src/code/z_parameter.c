@@ -2607,6 +2607,10 @@ void PerformAutosave(GlobalContext* globalCtx, u8 item) {
                 case ITEM_ARROWS_LARGE:
                 case ITEM_SEEDS_30:
                     break;
+                case ITEM_SWORD_MASTER:
+                    if (globalCtx->sceneNum == SCENE_GANON_DEMO) {
+                        break;
+                    }
                 default:
                     Gameplay_PerformSave(globalCtx);
                     break;
