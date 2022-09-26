@@ -233,11 +233,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                     input->cur.button &= ~(BTN_Z);
                 }
 
-                // Do not block buttons in the pause menu while pacifist mode is enabled
-                if (pacifistMode && gGlobalCtx->pauseCtx.state == 0) {
-                    input->cur.button &= ~(BTN_CLEFT | BTN_CRIGHT | BTN_CUP | BTN_CDOWN | BTN_B);
-                }
-
                 if (reverseControls) {
                     if (input->cur.stick_x == -128) {
                         input->cur.stick_x = 127;
