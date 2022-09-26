@@ -40,13 +40,13 @@ const char* MarginCvarList[] {
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
     unsigned long range = 255 - 0;
-    #ifndef __SWITCH__
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     std::random_device rd;
     std::mt19937 rng(rd());
-    #else
+#else
     size_t seed = std::hash<std::string>{}(std::to_string(rand()));
     std::mt19937_64 rng(seed);
-    #endif
+#endif
     std::uniform_int_distribution<int> dist(0, 255 - 1);
     
     NewColor.x = (float)(dist(rng)) / 255;
@@ -55,9 +55,9 @@ ImVec4 GetRandomValue(int MaximumPossible){
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
-    #ifdef __SWITCH__
+#if defined(__SWITCH__) || defined(__WIIU__)
     srand(time(NULL));
-    #endif
+#endif
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
