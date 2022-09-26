@@ -133,93 +133,93 @@ void CrowdControl::ReceiveFromCrowdControl()
         }
         packet->effectType = dataReceived["code"].get<std::string>();
 
-        if (strcmp(packet->effectType.c_str(), "high_gravity") == 0 ||
-            strcmp(packet->effectType.c_str(), "low_gravity") == 0) {
+        if (packet->effectType == "high_gravity" ||
+            packet->effectType == "low_gravity") {
             packet->effectCategory = "gravity";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "damage_multiplier") == 0
-                    || strcmp(packet->effectType.c_str(), "defense_multiplier") == 0
+        else if (packet->effectType == "damage_multiplier"
+                    || packet->effectType == "defense_multiplier"
         ) {
             packet->effectCategory = "defense";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "giant_link") == 0 ||
-            strcmp(packet->effectType.c_str(), "minish_link") == 0 ||
-            strcmp(packet->effectType.c_str(), "invisible") == 0 ||
-            strcmp(packet->effectType.c_str(), "paper_link") == 0) {
+        else if (packet->effectType == "giant_link" ||
+            packet->effectType == "minish_link" ||
+            packet->effectType == "invisible" ||
+            packet->effectType == "paper_link") {
             packet->effectCategory = "link_size";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "freeze") == 0 ||
-            strcmp(packet->effectType.c_str(), "damage") == 0 ||
-            strcmp(packet->effectType.c_str(), "heal") == 0 ||
-            strcmp(packet->effectType.c_str(), "knockback") == 0 ||
-            strcmp(packet->effectType.c_str(), "electrocute") == 0 ||
-            strcmp(packet->effectType.c_str(), "burn") == 0 ||
-            strcmp(packet->effectType.c_str(), "kill") == 0) {
+        else if (packet->effectType == "freeze" ||
+            packet->effectType == "damage" ||
+            packet->effectType == "heal" ||
+            packet->effectType == "knockback" ||
+            packet->effectType == "electrocute" ||
+            packet->effectType == "burn" ||
+            packet->effectType == "kill") {
             packet->effectCategory = "link_damage";
         }
-        else if (strcmp(packet->effectType.c_str(), "hover_boots") == 0 ||
-            strcmp(packet->effectType.c_str(), "iron_boots") == 0) {
+        else if (packet->effectType == "hover_boots" ||
+            packet->effectType == "iron_boots") {
             packet->effectCategory = "boots";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "add_heart_container") == 0 ||
-            strcmp(packet->effectType.c_str(), "remove_heart_container") == 0) {
+        else if (packet->effectType == "add_heart_container" ||
+            packet->effectType == "remove_heart_container") {
             packet->effectCategory = "heart_container";
         }
-        else if (strcmp(packet->effectType.c_str(), "no_ui") == 0) {
+        else if (packet->effectType == "no_ui") {
             packet->effectCategory = "ui";
             packet->timeRemaining = 60000;
         }
-        else if (strcmp(packet->effectType.c_str(), "fill_magic") == 0 ||
-            strcmp(packet->effectType.c_str(), "empty_magic") == 0) {
+        else if (packet->effectType == "fill_magic" ||
+            packet->effectType == "empty_magic") {
             packet->effectCategory = "magic";
         }
-        else if (strcmp(packet->effectType.c_str(), "ohko") == 0) {
+        else if (packet->effectType == "ohko") {
             packet->effectCategory = "ohko";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "pacifist") == 0) {
+        else if (packet->effectType == "pacifist") {
             packet->effectCategory = "pacifist";
             packet->timeRemaining = 15000;
         }
-        else if (strcmp(packet->effectType.c_str(), "rainstorm") == 0) {
+        else if (packet->effectType == "rainstorm") {
             packet->effectCategory = "weather";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "reverse") == 0) {
+        else if (packet->effectType == "reverse") {
             packet->effectCategory = "controls";
             packet->timeRemaining = 60000;
         }
-        else if (strcmp(packet->effectType.c_str(), "add_rupees") == 0
-                    || strcmp(packet->effectType.c_str(), "remove_rupees") == 0
+        else if (packet->effectType == "add_rupees"
+                    || packet->effectType == "remove_rupees"
         ) {
             packet->effectCategory = "rupees";
         }
-        else if (strcmp(packet->effectType.c_str(), "increase_speed") == 0
-                    || strcmp(packet->effectType.c_str(), "decrease_speed") == 0
+        else if (packet->effectType == "increase_speed"
+                    || packet->effectType == "decrease_speed"
         ) {
             packet->effectCategory = "speed";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "no_z") == 0) {
+        else if (packet->effectType == "no_z") {
             packet->effectCategory = "no_z";
             packet->timeRemaining = 30000;
         }
-        else if (strcmp(packet->effectType.c_str(), "spawn_wallmaster") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_arwing") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_darklink") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_stalfos") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_wolfos") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_freezard") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_keese") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_icekeese") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_firekeese") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_tektite") == 0 ||
-            strcmp(packet->effectType.c_str(), "spawn_likelike") == 0 ||
-            strcmp(packet->effectType.c_str(), "cucco_storm") == 0) {
+        else if (packet->effectType == "spawn_wallmaster" ||
+            packet->effectType == "spawn_arwing" ||
+            packet->effectType == "spawn_darklink" ||
+            packet->effectType == "spawn_stalfos" ||
+            packet->effectType == "spawn_wolfos" ||
+            packet->effectType == "spawn_freezard" ||
+            packet->effectType == "spawn_keese" ||
+            packet->effectType == "spawn_icekeese" ||
+            packet->effectType == "spawn_firekeese" ||
+            packet->effectType == "spawn_tektite" ||
+            packet->effectType == "spawn_likelike" ||
+            packet->effectType == "cucco_storm") {
             packet->effectCategory = "spawn";
         }
         else {
@@ -272,7 +272,7 @@ void CrowdControl::ReceiveFromCrowdControl()
     }
 }
 
-CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uint32_t value, uint8_t dryRun) {
+CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uint32_t value, bool dryRun) {
     // Don't execute effect and don't advance timer when the player is not in a proper loaded savefile
     // and when they're busy dying.
     if (gGlobalCtx == NULL || gGlobalCtx->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
@@ -282,21 +282,21 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
     Player* player = GET_PLAYER(gGlobalCtx);
 
     if (player != NULL) {
-        if (strcmp(effectId, "add_heart_container") == 0) {
+        if (effectId == "add_heart_container") {
             if (gSaveContext.healthCapacity >= 0x140) {
                 return EffectResult::Failure;
             }
             
             if (dryRun == 0) CMD_EXECUTE("add_heart_container");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "remove_heart_container") == 0) {
+        } else if (effectId == "remove_heart_container") {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return EffectResult::Failure;
             }
             
             if (dryRun == 0) CMD_EXECUTE("remove_heart_container");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "fill_magic") == 0) {
+        } else if (effectId == "fill_magic") {
             if (!gSaveContext.magicAcquired) {
                 return EffectResult::Failure;
             }
@@ -307,17 +307,17 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
 
             if (dryRun == 0) CMD_EXECUTE("fill_magic");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "empty_magic") == 0) {
+        } else if (effectId == "empty_magic") {
             if (!gSaveContext.magicAcquired || gSaveContext.magic <= 0) {
                 return EffectResult::Failure;
             }
 
             if (dryRun == 0) CMD_EXECUTE("empty_magic");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "add_rupees") == 0) {
+        } else if (effectId == "add_rupees") {
             if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees {}", value));
             return EffectResult::Success;
-        } else if (strcmp(effectId, "remove_rupees") == 0) {
+        } else if (effectId == "remove_rupees") {
             if (gSaveContext.rupees - value < 0) {
                 return EffectResult::Failure;
             }
@@ -329,60 +329,60 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
 
     if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0
                                                                        && gGlobalCtx->msgCtx.msgMode == 0) {
-        if (strcmp(effectId, "high_gravity") == 0) {
+        if (effectId == "high_gravity") {
             if (dryRun == 0) CMD_EXECUTE("gravity 2");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "low_gravity") == 0) {
+        } else if (effectId == "low_gravity") {
             if (dryRun == 0) CMD_EXECUTE("gravity 0");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "kill") == 0
-                    || strcmp(effectId, "freeze") == 0
-                    || strcmp(effectId, "burn") == 0
-                    || strcmp(effectId, "electrocute") == 0
-                    || strcmp(effectId, "cucco_storm") == 0
+        } else if (effectId == "kill"
+                    || effectId == "freeze"
+                    || effectId == "burn"
+                    || effectId == "electrocute"
+                    || effectId == "cucco_storm"
         ) {
             if (PlayerGrounded(player)) {
                 if (dryRun == 0) CMD_EXECUTE(std::format("{}", effectId));
                 return EffectResult::Success;
             }
             return EffectResult::Failure;
-        } else if (strcmp(effectId, "heal") == 0
-                    || strcmp(effectId, "knockback") == 0
+        } else if (effectId == "heal"
+                    || effectId == "knockback"
         ) {
             if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
             return EffectResult::Success;
-        } else if (strcmp(effectId, "giant_link") == 0
-                    || strcmp(effectId, "minish_link") == 0
-                    || strcmp(effectId, "no_ui") == 0
-                    || strcmp(effectId, "invisible") == 0
-                    || strcmp(effectId, "paper_link") == 0
-                    || strcmp(effectId, "no_z") == 0
-                    || strcmp(effectId, "ohko") == 0
-                    || strcmp(effectId, "pacifist") == 0
-                    || strcmp(effectId, "rainstorm") == 0
+        } else if (effectId == "giant_link"
+                    || effectId == "minish_link"
+                    || effectId == "no_ui"
+                    || effectId == "invisible"
+                    || effectId == "paper_link"
+                    || effectId == "no_z"
+                    || effectId == "ohko"
+                    || effectId == "pacifist"
+                    || effectId == "rainstorm"
         ) {
             if (dryRun == 0) CMD_EXECUTE(std::format("{} 1", effectId));
             return EffectResult::Success;
-        } else if (strcmp(effectId, "reverse") == 0) {
+        } else if (effectId == "reverse") {
             if (dryRun == 0) CMD_EXECUTE("reverse_controls 1"); 
             return EffectResult::Success;
-        } else if (strcmp(effectId, "iron_boots") == 0) {
+        } else if (effectId == "iron_boots") {
             if (dryRun == 0) CMD_EXECUTE("boots iron");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "hover_boots") == 0) {
+        } else if (effectId == "hover_boots") {
             if (dryRun == 0) CMD_EXECUTE("boots hover");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "spawn_wallmaster") == 0 
-            || strcmp(effectId, "spawn_arwing") == 0 
-            || strcmp(effectId, "spawn_darklink") == 0 
-            || strcmp(effectId, "spawn_stalfos") == 0 
-            || strcmp(effectId, "spawn_wolfos") == 0 
-            || strcmp(effectId, "spawn_freezard") == 0 
-            || strcmp(effectId, "spawn_keese") == 0 
-            || strcmp(effectId, "spawn_icekeese") == 0
-            || strcmp(effectId, "spawn_firekeese") == 0
-            || strcmp(effectId, "spawn_tektite") == 0
-            || strcmp(effectId, "spawn_likelike") == 0
+        } else if (effectId == "spawn_wallmaster" 
+            || effectId == "spawn_arwing" 
+            || effectId == "spawn_darklink" 
+            || effectId == "spawn_stalfos" 
+            || effectId == "spawn_wolfos" 
+            || effectId == "spawn_freezard" 
+            || effectId == "spawn_keese" 
+            || effectId == "spawn_icekeese"
+            || effectId == "spawn_firekeese"
+            || effectId == "spawn_tektite"
+            || effectId == "spawn_likelike"
         ) {
             if (dryRun == 0) {
                 if (CrowdControl::SpawnEnemy(effectId)) {
@@ -392,19 +392,19 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
                 }
             }
             return EffectResult::Success;
-        } else if (strcmp(effectId, "increase_speed") == 0) {
+        } else if (effectId == "increase_speed") {
            if (dryRun == 0) CMD_EXECUTE("speed_modifier 2");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "decrease_speed") == 0) {
+        } else if (effectId == "decrease_speed") {
            if (dryRun == 0) CMD_EXECUTE("speed_modifier -2");
             return EffectResult::Success;
-        } else if (strcmp(effectId, "damage_multiplier") == 0) {
+        } else if (effectId == "damage_multiplier") {
             if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier -{}", value));
             return EffectResult::Success;
-        } else if (strcmp(effectId, "defense_multiplier") == 0) {
+        } else if (effectId == "defense_multiplier") {
             if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier {}", value));
             return EffectResult::Success;
-        } else if (strcmp(effectId, "damage") == 0) {
+        } else if (effectId == "damage") {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return EffectResult::Failure;
             }
@@ -417,7 +417,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(const char* effectId, uin
     return EffectResult::Retry;
 }
 
-bool CrowdControl::SpawnEnemy(const char* effectId) {
+bool CrowdControl::SpawnEnemy(std::string effectId) {
     Player* player = GET_PLAYER(gGlobalCtx);
 
     int enemyId = 0;
@@ -426,48 +426,48 @@ bool CrowdControl::SpawnEnemy(const char* effectId) {
     float posYOffset = 0;
     float posZOffset = 0;
 
-    if (strcmp(effectId, "spawn_wallmaster") == 0) {
+    if (effectId == "spawn_wallmaster") {
         enemyId = 17;
-    } else if (strcmp(effectId, "spawn_arwing") == 0) {
+    } else if (effectId == "spawn_arwing") {
         enemyId = 315;
         enemyParams = 1;
         posYOffset = 100;
-    } else if (strcmp(effectId, "spawn_darklink") == 0) {
+    } else if (effectId == "spawn_darklink") {
         enemyId = 51;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_stalfos") == 0) {
+    } else if (effectId == "spawn_stalfos") {
         enemyId = 2;
         enemyParams = 1;
         posXOffset = 75;
-    } else if (strcmp(effectId, "spawn_wolfos") == 0) {
+    } else if (effectId == "spawn_wolfos") {
         enemyId = 431;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_freezard") == 0) {
+    } else if (effectId == "spawn_freezard") {
         enemyId = 289;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_keese") == 0) {
+    } else if (effectId == "spawn_keese") {
         enemyId = 19;
         enemyParams = 2;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_icekeese") == 0) {
+    } else if (effectId == "spawn_icekeese") {
         enemyId = 19;
         enemyParams = 4;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_firekeese") == 0) {
+    } else if (effectId == "spawn_firekeese") {
         enemyId = 19;
         enemyParams = 1;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_tektite") == 0) {
+    } else if (effectId == "spawn_tektite") {
         enemyId = 27;
         posXOffset = 75;
         posYOffset = 50;
-    } else if (strcmp(effectId, "spawn_likelike") == 0) {
+    } else if (effectId == "spawn_likelike") {
         enemyId = 221;
         posXOffset = 75;
         posYOffset = 50;
@@ -478,7 +478,7 @@ bool CrowdControl::SpawnEnemy(const char* effectId) {
 
 }
 
-void CrowdControl::RemoveEffect(const char* effectId) {
+void CrowdControl::RemoveEffect(std::string effectId) {
     if (gGlobalCtx == NULL) {
         return;
     }
@@ -486,34 +486,34 @@ void CrowdControl::RemoveEffect(const char* effectId) {
     Player* player = GET_PLAYER(gGlobalCtx);
 
     if (player != NULL) {
-        if (strcmp(effectId, "giant_link") == 0
-                || strcmp(effectId, "minish_link") == 0
-                || strcmp(effectId, "no_ui") == 0
-                || strcmp(effectId, "invisible") == 0
-                || strcmp(effectId, "paper_link") == 0
-                || strcmp(effectId, "no_z") == 0
-                || strcmp(effectId, "ohko") == 0
-                || strcmp(effectId, "pacifist") == 0
-                || strcmp(effectId, "rainstorm") == 0
+        if (effectId == "giant_link"
+                || effectId == "minish_link"
+                || effectId == "no_ui"
+                || effectId == "invisible"
+                || effectId == "paper_link"
+                || effectId == "no_z"
+                || effectId == "ohko"
+                || effectId == "pacifist"
+                || effectId == "rainstorm"
         ) {
             CMD_EXECUTE(std::format("{} 0", effectId));
             return;
-        } else if (strcmp(effectId, "iron_boots") == 0 || strcmp(effectId, "hover_boots") == 0) {
+        } else if (effectId == "iron_boots" || effectId == "hover_boots") {
             CMD_EXECUTE("boots kokiri");
             return;
-        } else if (strcmp(effectId, "high_gravity") == 0 || strcmp(effectId, "low_gravity") == 0) {
+        } else if (effectId == "high_gravity" || effectId == "low_gravity") {
             CMD_EXECUTE("gravity 1");
             return;
-        } else if (strcmp(effectId, "reverse") == 0) {
+        } else if (effectId == "reverse") {
             CMD_EXECUTE("reverse_controls 0");
             return;
-        } else if (strcmp(effectId, "increase_speed") == 0
-                    || strcmp(effectId, "decrease_speed") == 0
+        } else if (effectId == "increase_speed"
+                    || effectId == "decrease_speed"
         ) {
             CMD_EXECUTE("speed_modifier 0");
             return;
-        } else if (strcmp(effectId, "damage_multiplier") == 0
-                    || strcmp(effectId, "defense_multiplier") == 0
+        } else if (effectId == "damage_multiplier"
+                    || effectId == "defense_multiplier"
         ) {
             CMD_EXECUTE("defense_modifier 0");
             return;
