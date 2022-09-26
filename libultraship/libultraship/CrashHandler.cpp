@@ -2,8 +2,94 @@
 #include "Utils/StringHelper.h"
 #include "CrashHandler.h"
 #include "Window.h"
+#include "ResourceMgr.h"
+#include "GameVersions.h"
+#include "Cvar.h"
+
+#define WRITE_VAR_LINE(buff, len, varName, varValue) \
+    append_str(buff, len, varName);                  \
+    append_line(buff, len, varValue);
+#define WRITE_VAR(buff, len, varName, varValue) \
+    append_str(buff, len, varName);             \
+    append_str(buff, len, varValue);
 
 extern "C" void DeinitOTR(void);
+
+static CrashHandlerCallback sCallbackFunc = nullptr;
+
+static const char* GetGameVersionString() {
+    if(Ship::Window::GetInstance()->GetResourceManager()->IsRunning()) {
+        uint32_t version = Ship::Window::GetInstance()->GetResourceManager()->GetGameVersion();
+        switch (version) {
+            case OOT_NTSC_10:
+                return "NTSC 1.0";
+            case OOT_NTSC_11:
+                return "NTSC 1.1";
+            case OOT_NTSC_12:
+                return "NTSC 1.2";
+            case OOT_PAL_10:
+                return "PAL 1.0";
+            case OOT_PAL_11:
+                return "PAL 1.1";
+            case OOT_NTSC_JP_GC_CE:
+                return "NTSC JP_GC_CE";
+            case OOT_NTSC_JP_GC:
+                return "NTSC_JP_GC";
+            case OOT_NTSC_US_GC:
+                return "NTSC_US_GC";
+            case OOT_PAL_GC:
+                return "PAL_GC";
+            case OOT_NTSC_JP_MQ:
+                return "NTSC_JP_MQ";
+            case OOT_NTSC_US_MQ:
+                return "NTSC_US_MQ";
+            case OOT_PAL_MQ:
+                return "PAL_MQ";
+            case OOT_PAL_GC_DBG1:
+                return "DBG_1";
+            case OOT_PAL_GC_DBG2:
+                return "DBG_2";
+            case OOT_PAL_GC_MQ_DBG:
+                return "MQ_DBG";
+            case OOT_IQUE_TW:
+                return "IQUE_TW";
+            case OOT_IQUE_CN:
+                return "IQUE_CN";
+            case OOT_UNKNOWN:
+                return "UNKNOWN";
+        }
+
+    }
+    return "ResourceMGR not ready";
+}
+
+
+static void append_str(char* buf, size_t* len, const char* str) {
+    while (*str != '\0')
+        buf[(*len)++] = *str++;
+}
+
+static void append_line(char* buf, size_t* len, const char* str) {
+    while (*str != '\0')
+        buf[(*len)++] = *str++;
+    buf[(*len)++] = '\n';
+}
+
+
+/**
+ * @brief Prints common data relevant to the crash
+ * 
+ * @param buffer 
+ */
+static void CrashHandler_PrintCommon(char* buffer, size_t* curBufferPos) {
+    WRITE_VAR_LINE(buffer, curBufferPos, "OTR Generated with: ", GetGameVersionString());
+    if (sCallbackFunc != nullptr) {
+        sCallbackFunc(buffer, curBufferPos);
+    }
+
+
+    SPDLOG_CRITICAL(buffer);
+}
 
 #if defined(__linux__)
 #include <csignal>
@@ -15,98 +101,103 @@ extern "C" void DeinitOTR(void);
 #include <SDL.h>
 
 
-
-static void PrintRegisters(ucontext_t* ctx) {
-    char regbuffer[1024];
-    SPDLOG_CRITICAL("Registers:");
+static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
+    char regbuffer[128];
+    append_line(buffer, pos, "Registers:");
 #if defined(__x86_64__)
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]);
-    SPDLOG_CRITICAL("RAX: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]);
-    SPDLOG_CRITICAL("RDI: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RSI]);
-    SPDLOG_CRITICAL("RSI: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RDX]);
-    SPDLOG_CRITICAL("RDX: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RCX]);
-    SPDLOG_CRITICAL("RCX: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R8]);
-    SPDLOG_CRITICAL("R8 : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R9]);
-    SPDLOG_CRITICAL("R9 : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R10]);
-    SPDLOG_CRITICAL("R10: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R11]);
-    SPDLOG_CRITICAL("R11: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]);
-    SPDLOG_CRITICAL("RSP: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RBX]);
-    SPDLOG_CRITICAL("RBX: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RBP]);
-    SPDLOG_CRITICAL("RBP: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R12]);
-    SPDLOG_CRITICAL("R12: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R13]);
-    SPDLOG_CRITICAL("R13: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R14]);
-    SPDLOG_CRITICAL("R14: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_R15]);
-    SPDLOG_CRITICAL("R15: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_RIP]);
-    SPDLOG_CRITICAL("RIP: {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
-    SPDLOG_CRITICAL("EFLAGS: {} ", regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RAX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RDI: 0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RSI: 0x%016llX", ctx->uc_mcontext.gregs[REG_RSI]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RDX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RDX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RCX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RCX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R8:  0x%016llX", ctx->uc_mcontext.gregs[REG_R8]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R9:  0x%016llX", ctx->uc_mcontext.gregs[REG_R9]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R10: 0x%016llX", ctx->uc_mcontext.gregs[REG_R10]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R11: 0x%016llX", ctx->uc_mcontext.gregs[REG_R11]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RSP: 0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RBX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RBX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RBP: 0x%016llX", ctx->uc_mcontext.gregs[REG_RBP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R12: 0x%016llX", ctx->uc_mcontext.gregs[REG_R12]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R13: 0x%016llX", ctx->uc_mcontext.gregs[REG_R13]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R14: 0x%016llX", ctx->uc_mcontext.gregs[REG_R14]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R15: 0x%016llX", ctx->uc_mcontext.gregs[REG_R15]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RIP: 0x%016llX", ctx->uc_mcontext.gregs[REG_RIP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "EFL: 0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
+    append_line(buffer, pos, regbuffer);
 #else
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
-    SPDLOG_CRITICAL("EDI : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ESI]);
-    SPDLOG_CRITICAL("ESI : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EBP]);
-    SPDLOG_CRITICAL("EBP : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ESP]);
-    SPDLOG_CRITICAL("ESP : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EBX]);
-    SPDLOG_CRITICAL("EBX : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EDX]);
-    SPDLOG_CRITICAL("EDX : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_ECX]);
-    SPDLOG_CRITICAL("ECX : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EAX]);
-    SPDLOG_CRITICAL("EAX : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EIP]);
-    SPDLOG_CRITICAL("EIP : {} ", regbuffer);
-    snprintf(regbuffer, std::size(regbuffer),"0x%08lX", ctx->uc_mcontext.gregs[REG_EFL]);
-    SPDLOG_CRITICAL("EFL : {} ", regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"ESI: 0x%08lX", ctx->uc_mcontext.gregs[REG_ESI]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EBP: 0x%08lX", ctx->uc_mcontext.gregs[REG_EBP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"ESP: 0x%08lX", ctx->uc_mcontext.gregs[REG_ESP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EBX: 0x%08lX", ctx->uc_mcontext.gregs[REG_EBX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EDX: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"ECX: 0x%08lX", ctx->uc_mcontext.gregs[REG_ECX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EAX: 0x%08lX", ctx->uc_mcontext.gregs[REG_EAX]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EIP: 0x%08lX", ctx->uc_mcontext.gregs[REG_EIP]);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer),"EFL: 0x%08lX", ctx->uc_mcontext.gregs[REG_EFL]);
+    append_line(buffer, pos, regbuffer);
 #endif
 }
 
 static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data) {
+    constexpr size_t MAX_BUFF_SIZE = 32768;
+    size_t curBufferPos = 0;
+    char buffer[MAX_BUFF_SIZE];
+    char intToCharBuffer[16];
+
     std::array<void*, 4096> arr;
     ucontext_t* ctx = static_cast<ucontext_t*>(data);
     constexpr size_t nMaxFrames = arr.size();
     size_t size = backtrace(arr.data(), nMaxFrames);
     char** symbols = backtrace_symbols(arr.data(), nMaxFrames);
 
-    SPDLOG_CRITICAL("(Signal: {})", sig);
+    snprintf(intToCharBuffer, sizeof(intToCharBuffer), "Signal: %i", sig);
+    append_line(buffer, &curBufferPos, intToCharBuffer);
 
     switch (sig) {
         case SIGILL:
-            SPDLOG_CRITICAL("ILLEGAL INSTRUCTION");
+            append_line(buffer, &curBufferPos, "ILLEGAL INSTRUCTION");
             break;
         case SIGABRT:
-            SPDLOG_CRITICAL("ABORT");
+            append_line(buffer, &curBufferPos, "ABORT");
             break;
         case SIGFPE:
-            SPDLOG_CRITICAL("ERRONEUS ARITHEMETIC OPERATION");
+            append_line(buffer, &curBufferPos, "ERRONEUS ARITHEMETIC OPERATION");
             break;
         case SIGSEGV:
-            SPDLOG_CRITICAL("INVALID ACCESS TO STORAGE");
+            append_line(buffer, &curBufferPos, "INVALID ACCESS TO STORAGE");
             break;
     }
 
-    PrintRegisters(ctx);
+    PrintRegisters(ctx, buffer, &curBufferPos);
 
-    SPDLOG_CRITICAL("Traceback:");
+    append_line(buffer, &curBufferPos, "Traceback:");
     for (size_t i = 1; i < size; i++) {
         Dl_info info;
         int gotAddress = dladdr(arr[i], &info);
@@ -133,11 +224,13 @@ static void ErrorHandler(int sig, siginfo_t* sigInfo, void* data) {
                                                  (char*)arr[i] - (char*)info.dli_saddr);
             free(demangled);
         }
-
-        SPDLOG_CRITICAL("{} {}", i, functionName.c_str());
+        snprintf(intToCharBuffer, sizeof(intToCharBuffer), "%i ", (int)i);
+        WRITE_VAR_LINE(buffer, &curBufferPos, intToCharBuffer, functionName.c_str());
     }
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SoH has crashed", "SoH Has crashed. Please upload the logs to the support channel in discord.", nullptr);
     free(symbols);
+    CrashHandler_PrintCommon(buffer, &curBufferPos);
+
     DeinitOTR();
     Ship::Window::GetInstance()->GetLogger()->flush();
     spdlog::shutdown();
@@ -149,116 +242,97 @@ static void ShutdownHandler(int sig, siginfo_t* sigInfo, void* data) {
     exit(1);
 }
 
-extern "C" void SetupHandlerLinux() {
-    struct sigaction action;
-    struct sigaction shutdownAction;
-
-    action.sa_flags = SA_SIGINFO;
-    action.sa_sigaction = ErrorHandler;
-
-    sigaction(SIGILL, &action, nullptr);
-    sigaction(SIGABRT, &action, nullptr);
-    sigaction(SIGFPE, &action, nullptr);
-    sigaction(SIGSEGV, &action, nullptr);
-
-    shutdownAction.sa_flags = SA_SIGINFO;
-    shutdownAction.sa_sigaction = ShutdownHandler;
-    sigaction(SIGINT, &shutdownAction, nullptr);
-    sigaction(SIGTERM, &shutdownAction, nullptr);
-    sigaction(SIGQUIT, &shutdownAction, nullptr);
-    sigaction(SIGKILL, &shutdownAction, nullptr);
-}
 #elif _WIN32
 
 #if defined(_WIN32) && !defined(_WIN64)
 #define WINDOWS_32_BIT
 #endif
 
-static void PrintRegisters(CONTEXT* ctx) {
-    SPDLOG_CRITICAL("Register dump");
-    char regBuff[50];
+static void PrintRegisters(CONTEXT* ctx, char* buffer, size_t* pos) {
+    append_line(buffer, pos, "Registers: ");
+    char regBuff[25];
 #if defined(_M_AMD64)
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rax);
-    SPDLOG_CRITICAL("RAX: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RAX: 0x%016llX", ctx->Rax);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rcx);
-    SPDLOG_CRITICAL("RCX: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RCX: 0x%016llX", ctx->Rcx);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rdx);
-    SPDLOG_CRITICAL("RDX: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RDX: 0x%016llX", ctx->Rdx);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rbx);
-    SPDLOG_CRITICAL("RBX: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RBX: 0x%016llX", ctx->Rbx);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rsp);
-    SPDLOG_CRITICAL("RSP: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RSP: 0x%016llX", ctx->Rsp);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rbp);
-    SPDLOG_CRITICAL("RBP: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RBP: 0x%016llX", ctx->Rbp);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rsi);
-    SPDLOG_CRITICAL("RSI: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RSI: 0x%016llX", ctx->Rsi);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rdi);
-    SPDLOG_CRITICAL("RDI: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RDI: 0x%016llX", ctx->Rdi);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R9);
-    SPDLOG_CRITICAL("R9:  {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R9:  0x%016llX", ctx->R9);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R10);
-    SPDLOG_CRITICAL("R10: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R10: 0x%016llX", ctx->R10);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R11);
-    SPDLOG_CRITICAL("R11: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R11: 0x%016llX", ctx->R11);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R12);
-    SPDLOG_CRITICAL("R12: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R12: 0x%016llX", ctx->R12);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R13);
-    SPDLOG_CRITICAL("R13: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R13: 0x%016llX", ctx->R13);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R14);
-    SPDLOG_CRITICAL("R14: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R14: 0x%016llX", ctx->R14);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->R15);
-    SPDLOG_CRITICAL("R15: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "R15: 0x%016llX", ctx->R15);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%016llX", ctx->Rip);
-    SPDLOG_CRITICAL("RIP: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "RIP: 0x%016llX", ctx->Rip);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->EFlags);
-    SPDLOG_CRITICAL("EFLAGS: {}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EFLAGS: 0x%08lX", ctx->EFlags);
+    append_line(buffer, pos, regBuff);
 #elif WINDOWS_32_BIT
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Edi);
-    SPDLOG_CRITICAL("EDI: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EDI: 0x%08lX", ctx->Edi);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Esi);
-    SPDLOG_CRITICAL("ESI: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "ESI: 0x%08lX", ctx->Esi);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ebx);
-    SPDLOG_CRITICAL("EBX: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EBX: 0x%08lX", ctx->Ebx);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ecx);
-    SPDLOG_CRITICAL("ECX: 0x{}", ctx->Ecx);
+    sprintf_s(regBuff, std::size(regBuff), "ECX: 0x%08lX", ctx->Ecx);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Eax);
-    SPDLOG_CRITICAL("EAX: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EAX: 0x%08lX", ctx->Eax);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Ebp);
-    SPDLOG_CRITICAL("EBP: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EBP: 0x%08lX", ctx->Ebp);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Esp);
-    SPDLOG_CRITICAL("ESP: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "ESP: 0x%08lX", ctx->Esp);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->EFlags);
-    SPDLOG_CRITICAL("EFLAGS: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EFLAGS: 0x%08lX", ctx->EFlags);
+    append_line(buffer, pos, regBuff);
 
-    snprintf(regBuff, std::size(regBuff), "0x%08lX", ctx->Eip);
-    SPDLOG_CRITICAL("EIP: 0x{}", regBuff);
+    sprintf_s(regBuff, std::size(regBuff), "EIP: 0x%08lX", ctx->Eip);
+    append_line(buffer, pos, regBuff);
 #endif
 }
 
-static void printStack(CONTEXT* ctx) {
+static void printStack(CONTEXT* ctx, char* logBuffer, size_t* pos) {
     BOOL result;
     HANDLE process;
     HANDLE thread;
@@ -289,7 +363,7 @@ static void printStack(CONTEXT* ctx) {
     CONTEXT ctx2;
     memcpy(&ctx2, ctx, sizeof(CONTEXT));
 
-    PrintRegisters(&ctx2);
+    PrintRegisters(&ctx2, logBuffer, pos);
 
     process = GetCurrentProcess();
     thread = GetCurrentThread();
@@ -323,12 +397,16 @@ static void printStack(CONTEXT* ctx) {
         line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
 #endif
         if (SymGetLineFromAddr(process, stack.AddrPC.Offset, &disp, &line)) {
-            SPDLOG_CRITICAL("{} in {}: line: {}: ", symbol->Name, line.FileName, line.LineNumber);
+            char lineNumberStr[16];
+            sprintf_s(lineNumberStr, sizeof(lineNumberStr), "Line: %d", line.LineNumber);
+            append_str(logBuffer, pos, symbol->Name); append_str(logBuffer, pos, " in "); append_str(logBuffer, pos, line.FileName); append_line(logBuffer, pos, lineNumberStr);
+            //SPDLOG_CRITICAL("{} in {}: line: {}: ", symbol->Name, line.FileName, line.LineNumber);
         }
         else {
-            char addrString[25];
-            snprintf(addrString, std::size(addrString), "0x%016llX", symbol->Address);
-            SPDLOG_CRITICAL("at {}, addr 0x{}", symbol->Name, addrString);
+            char addrString[20];
+            sprintf_s(addrString, std::size(addrString), "0x%016llX", symbol->Address);
+            WRITE_VAR(logBuffer, pos, "At ", symbol->Name); WRITE_VAR_LINE(logBuffer, pos, "Addr: ", addrString);
+            //SPDLOG_CRITICAL("at {}, addr 0x{}", symbol->Name, addrString);
             hModule = nullptr;
             GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
                 (LPCTSTR)(stack.AddrPC.Offset), &hModule);
@@ -336,9 +414,11 @@ static void printStack(CONTEXT* ctx) {
             if (hModule != nullptr) {
                 GetModuleFileNameA(hModule, module, sizeof(module));
             }
-            SPDLOG_CRITICAL("In {}", module);
+            WRITE_VAR_LINE(logBuffer, pos, "In: ", module);
+           // SPDLOG_CRITICAL("In {}", module);
         }
     }
+    CrashHandler_PrintCommon(logBuffer, pos);
     Ship::Window::GetInstance()->GetLogger()->flush();
     spdlog::shutdown();
     DeinitOTR();
@@ -346,15 +426,47 @@ static void printStack(CONTEXT* ctx) {
 
 extern "C" LONG seh_filter(struct _EXCEPTION_POINTERS* ex) {
     char exceptionString[20];
+    constexpr size_t MAX_BUFF_SIZE = 32768;
+    size_t curBufferPos = 0;
+    char buffer[MAX_BUFF_SIZE];
+    
     
     snprintf(exceptionString, std::size(exceptionString), "0x%x", ex->ExceptionRecord->ExceptionCode);
     
-    SPDLOG_CRITICAL("EXCEPTION {} occurred", exceptionString);
-    printStack(ex->ContextRecord);
-    MessageBox(nullptr, L"SoH Has crashed. Please upload the logs to the support channel in discord.", L"Crash", MB_OK | MB_ICONERROR);
+    WRITE_VAR_LINE(buffer, &curBufferPos, "Exception: ", exceptionString);
+    printStack(ex->ContextRecord, buffer, &curBufferPos);
+    MessageBoxA(nullptr, "SoH Has crashed. Please upload the logs to the support channel in discord.", "Crash", MB_OK | MB_ICONERROR);
+    CrashHandler_PrintCommon(buffer, &curBufferPos);
 
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
-
 #endif
+
+extern "C" void CrashHandler_Init(CrashHandlerCallback callback) {
+    #if defined(__linux__)
+    struct sigaction action;
+    struct sigaction shutdownAction;
+
+    action.sa_flags = SA_SIGINFO;
+    action.sa_sigaction = ErrorHandler;
+
+    sigaction(SIGILL, &action, nullptr);
+    sigaction(SIGABRT, &action, nullptr);
+    sigaction(SIGFPE, &action, nullptr);
+    sigaction(SIGSEGV, &action, nullptr);
+
+    shutdownAction.sa_flags = SA_SIGINFO;
+    shutdownAction.sa_sigaction = ShutdownHandler;
+    sigaction(SIGINT, &shutdownAction, nullptr);
+    sigaction(SIGTERM, &shutdownAction, nullptr);
+    sigaction(SIGQUIT, &shutdownAction, nullptr);
+    sigaction(SIGKILL, &shutdownAction, nullptr);
+    #elif _WIN32
+    SetUnhandledExceptionFilter(seh_filter);
+    #endif
+
+    sCallbackFunc = callback;
+
+
+}
