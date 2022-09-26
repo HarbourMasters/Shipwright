@@ -83,6 +83,7 @@ extern "C"
 {
 #endif
     void func_80AB70A0(EnNiw* this, GlobalContext* globalCtx);
+    void func_80AB70A0_nocutscene(EnNiw* this, GlobalContext* globalCtx);
 #ifdef __cplusplus
 #undef this
 };
