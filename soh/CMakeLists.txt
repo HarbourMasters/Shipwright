@@ -263,6 +263,7 @@ set(Source_Files__soh
     "soh/GameMenuBar.cpp"
     "soh/UIWidgets.hpp"
     "soh/UIWidgets.cpp"
+    "soh/CrashHandlerExt.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
 

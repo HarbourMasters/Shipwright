@@ -48,7 +48,6 @@ std::vector<uint32_t> GetMinVanillaShopItems(int total_replaced) {
     BUY_ARROWS_10,
     BUY_ARROWS_30,
     BUY_ARROWS_50,
-    BUY_BOMBCHU_5,
     BUY_BOMBCHU_10,
     BUY_BOMBCHU_10,
     BUY_BOMBCHU_20,

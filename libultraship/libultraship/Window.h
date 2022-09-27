@@ -75,6 +75,7 @@ namespace Ship {
 
 			std::string gfxBackend;
 			std::string gfxApi;
+			std::string audioBackend;
 			GfxRenderingAPI* RenderingApi;
 			GfxWindowManagerAPI* WmApi;
 			bool bIsFullscreen;

@@ -200,8 +200,8 @@ extern "C" {
 
         if (res != nullptr)
         {
-            if (index < res->imageDataSize)
-                res->imageData[index] = value;
+            if ((index * 2) < res->imageDataSize)
+                ((s16*)res->imageData)[index] = value;
             else
             {
                 // Dangit Morita
@@ -265,6 +265,7 @@ namespace Ship {
             GetConfig()->setBool("Window.Options", false);
             GetConfig()->setString("Window.GfxBackend", "");
             GetConfig()->setString("Window.GfxApi", "");
+            GetConfig()->setString("Window.AudioBackend", "");
 
             GetConfig()->setBool("Window.Fullscreen.Enabled", false);
             GetConfig()->setInt("Window.Fullscreen.Width", 1920);
@@ -285,7 +286,6 @@ namespace Ship {
         InitializeConfiguration();
         InitializeResourceManager();
         CreateDefaults();
-        InitializeAudioPlayer();
         InitializeControlDeck();
 
         bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false);
@@ -302,6 +302,9 @@ namespace Ship {
         gfxBackend = GetConfig()->getString("Window.GfxBackend");
         gfxApi = GetConfig()->getString("Window.GfxApi");
         InitializeWindowManager();
+
+        audioBackend = GetConfig()->getString("Window.AudioBackend");
+        InitializeAudioPlayer();
 
         gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
@@ -444,6 +447,21 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
+
+        // Config can override
+#ifdef _WIN32
+        if (audioBackend == "wasapi") {
+            APlayer = std::make_shared<WasapiAudioPlayer>();
+        }
+#endif
+#if defined(__linux)
+        if (audioBackend == "pulse") {
+            APlayer = std::make_shared<PulseAudioPlayer>();
+        }
+#endif
+        if (audioBackend == "sdl") {
+            APlayer = std::make_shared<SDLAudioPlayer>();
+        }
     }
 
     void Window::InitializeWindowManager() {
