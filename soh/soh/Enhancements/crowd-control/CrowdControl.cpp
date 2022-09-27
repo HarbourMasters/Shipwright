@@ -419,7 +419,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
                 return EffectResult::Failure;
             }
             
-            if (dryRun == 0) CMD_EXECUTE(std::format("damage {}", effectId, value));
+            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
             return EffectResult::Success;
         }
     }
