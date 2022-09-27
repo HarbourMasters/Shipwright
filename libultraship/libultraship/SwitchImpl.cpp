@@ -160,8 +160,13 @@ static void on_applet_hook(AppletHookType hook, void *param) {
                     clkrstSetClockRate(&session, SWITCH_CPU_SPEEDS_VALUES[ Ship::STOCK ]);
                     clkrstCloseSession(&session);
                 }
-            } else
+                /* Lost focus, enable suspension */
+                appletSetFocusHandlingMode(AppletFocusHandlingMode_SuspendHomeSleep);
+            } else {
+                /* Regained focus, disable suspension */
+                appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
                 Ship::Switch::ApplyOverclock();
+            }
             break;
 
          /* Performance mode */
