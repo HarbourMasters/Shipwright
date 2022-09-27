@@ -385,7 +385,6 @@ set(Source_Files__src__boot
     "src/boot/idle.c"
     "src/boot/is_debug.c"
     "src/boot/logutils.c"
-    "src/boot/missing_gcc_functions.c"
     "src/boot/stackcheck.c"
     "src/boot/viconfig.c"
     "src/boot/yaz0.c"

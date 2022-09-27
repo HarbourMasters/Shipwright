@@ -660,7 +660,12 @@ namespace SohImGui {
 
         ImGui::End();
 
+    #ifdef __WIIU__
+        const float scale = CVar_GetFloat("gInputScale", 1.0f) * 2.0f;
+    #else
         const float scale = CVar_GetFloat("gInputScale", 1.0f);
+    #endif
+
         ImVec2 BtnPos = ImVec2(160 * scale, 85 * scale);
 
         if (CVar_GetS32("gInputEnabled", 0)) {

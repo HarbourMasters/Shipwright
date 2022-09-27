@@ -325,7 +325,7 @@ namespace UIWidgets {
         if (PlusMinusButton) {
         #ifdef __SWITCH__
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-        #elif __WIIU__
+        #elif defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -439,9 +439,9 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            #ifdef __SWITCH__
+#if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
-            #endif
+#endif
             ImVec4 color = GetRandomValue(255);
             colors->x = color.x;
             colors->y = color.y;
