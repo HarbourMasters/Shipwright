@@ -467,8 +467,8 @@ void Draw_ItemsSkills(){
         Table_InitHeader();
         DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
-        UIWidgets::EnhancementSliderInt("Sword Trail Length: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
-        UIWidgets::Tooltip("Determines length of Link's sword trails.");
+        UIWidgets::EnhancementSliderInt("Sword Trail Duration: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines the duration of Link's sword trails.");
         ResetTrailLength("gTrailDuration", 4);
         UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
         if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
