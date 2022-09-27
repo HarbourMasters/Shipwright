@@ -114,7 +114,7 @@ namespace GameMenuBar {
         // Invert Camera X Axis
         CVar_SetS32("gInvertXAxis", 0);
         // Invert Camera Y Axis
-        CVar_SetS32("gInvertYAxis", 0);
+        CVar_SetS32("gInvertYAxis", 1);
         // Right Stick Aiming
         CVar_SetS32("gRightStickAiming", 0);
         // Auto-Center First Person View
