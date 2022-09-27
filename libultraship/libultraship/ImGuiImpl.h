@@ -80,12 +80,16 @@ namespace SohImGui {
 
     Backend WindowBackend();
     float WindowRefreshRate();
-    std::pair<const char*, const char*>* GetAvailableRenderingBackends();
+    std::vector<std::pair<const char*, const char*>> GetAvailableRenderingBackends();
     std::pair<const char*, const char*> GetCurrentRenderingBackend();
     void SetCurrentRenderingBackend(uint8_t index, std::pair<const char*, const char*>);
     const char** GetSupportedTextureFilters();
     void SetResolutionMultiplier(float multiplier);
     void SetMSAALevel(uint32_t value);
+
+    std::vector<std::pair<const char*, const char*>> GetAvailableAudioBackends();
+    std::pair<const char*, const char*> GetCurrentAudioBackend();
+    void SetCurrentAudioBackend(uint8_t index, std::pair<const char*, const char*>);
 
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled = false, bool isHidden = false);
     void EnableWindow(const std::string& name, bool isEnabled = true);
