@@ -474,7 +474,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
 
-        if (!((CVar_GetS32("gEzEquipSwap", 0) != 0) ||
+        if (!((CVar_GetS32("gTimelessEquipment", 0) != 0) ||
               (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
               (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                ((void)0, gSaveContext.linkAge)))) {
@@ -512,7 +512,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
-            if ((CVar_GetS32("gEzEquipSwap", 0) != 0) ||
+            if ((CVar_GetS32("gTimelessEquipment", 0) != 0) ||
                 (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
                 (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                  ((void)0, gSaveContext.linkAge))) {
@@ -647,7 +647,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
 
             if ((gBitFlags[bit] & gSaveContext.inventory.equipment) && (pauseCtx->cursorSpecialPos == 0)) {
-                if ((CVar_GetS32("gEzEquipSwap", 0) != 0) || (gEquipAgeReqs[i][k + 1] == 9) || (gEquipAgeReqs[i][k + 1] == ((void)0, gSaveContext.linkAge))) {
+                if ((CVar_GetS32("gTimelessEquipment", 0) != 0) || (gEquipAgeReqs[i][k + 1] == 9) || (gEquipAgeReqs[i][k + 1] == ((void)0, gSaveContext.linkAge))) {
                     if (temp == cursorSlot) {
                         pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
                             pauseCtx->equipVtx[j].v.ob[0] - 2;
@@ -704,7 +704,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         for (k = 0, bit = rowStart, point = 4; k < 3; k++, point += 4, temp++, bit++) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
-            bool age_restricted = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            bool age_restricted = (CVar_GetS32("gTimelessEquipment", 0) == 0) && (gItemAgeReqs[itemId] != 9) &&
+                                  (gItemAgeReqs[itemId] != gSaveContext.linkAge);
             if (age_restricted) {
                 gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gsSPGrayscale(POLY_KAL_DISP++, true);
