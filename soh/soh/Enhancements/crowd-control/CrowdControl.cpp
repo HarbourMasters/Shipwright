@@ -448,8 +448,9 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
         posYOffset = 50;
     } else if (effectId == "spawn_stalfos") {
         enemyId = 2;
-        enemyParams = 1;
+        enemyParams = 2;
         posXOffset = 75;
+        posYOffset = 50;
     } else if (effectId == "spawn_wolfos") {
         enemyId = 431;
         posXOffset = 75;
