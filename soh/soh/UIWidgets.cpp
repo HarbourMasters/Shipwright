@@ -337,7 +337,7 @@ namespace UIWidgets {
             if (isPercentage) {
                 CVar_SetFloat(cvarName, roundf(val * 100) / 100);
             } else {
-                CVar_SetFloat(cvarName, roundf(val * 10) / 10);
+                CVar_SetFloat(cvarName, val);
             }
             SohImGui::RequestCvarSaveOnNextTick();
         }
