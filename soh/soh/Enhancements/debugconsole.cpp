@@ -35,7 +35,6 @@ uint32_t noUI;
 uint32_t giantLink;
 uint32_t minishLink;
 uint32_t paperLink;
-uint32_t gravityLevel = GRAVITY_LEVEL_NORMAL;
 uint32_t resetLinkScale;
 uint32_t invisibleLink;
 uint32_t oneHitKO;
@@ -43,6 +42,7 @@ uint32_t pacifistMode;
 int32_t defenseModifier;
 uint32_t noZ;
 uint32_t reverseControls;
+uint32_t gravityLevel = GRAVITY_LEVEL_NORMAL;
 int32_t speedModifier;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
