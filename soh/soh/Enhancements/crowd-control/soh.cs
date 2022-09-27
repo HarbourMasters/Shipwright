@@ -68,6 +68,7 @@ public class SoH : SimpleTCPPack
 				new Effect("Burn Link", "burn"),
 				new Effect("Electrocute Link", "electrocute"),
 				new Effect("Iron Boots", "iron_boots") { Duration = 30 },
+				new Effect("Give Deku Shield", "give_dekushield"),
 				new Effect("Spawn Enemy", "spawn_enemy", ItemKind.Folder),
 			};
 			
@@ -83,7 +84,7 @@ public class SoH : SimpleTCPPack
         new ItemType("Rupees", "rupees999", ItemType.Subtype.Slider, "{\"min\":1,\"max\":999}"),
 		new ItemType("Health", "health20", ItemType.Subtype.Slider, "{\"min\":1,\"max\":20}"),
 		new ItemType("Damage/Defense Multiplier", "damdefmulti", ItemType.Subtype.Slider, "{\"min\":1,\"max\":10}"),
-		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":4}")
+		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}")
     };
 	
 }

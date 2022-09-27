@@ -10908,9 +10908,9 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     MREG(55) = this->actor.world.rot.y;
 
     if (giantLink == 1) {
-        this->actor.scale.x = 0.025f;
-        this->actor.scale.y = 0.025f;
-        this->actor.scale.z = 0.025f;
+        this->actor.scale.x = 0.02f;
+        this->actor.scale.y = 0.02f;
+        this->actor.scale.z = 0.02f;
     }
 
     if (minishLink == 1) {

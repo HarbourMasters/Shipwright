@@ -94,6 +94,18 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     return CMD_SUCCESS;
 }
 
+static bool GiveDekuShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
+    // Give Deku Shield to the player, and automatically equip it when they're child and have no shield currently equiped.
+    Player* player = GET_PLAYER(gGlobalCtx);
+    Item_Give(gGlobalCtx, ITEM_SHIELD_DEKU);
+    if (LINK_IS_CHILD && player->currentShield == PLAYER_SHIELD_NONE) {
+        player->currentShield = PLAYER_SHIELD_DEKU;
+        Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+    }
+    SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave Deku Shield");
+    return CMD_SUCCESS;
+}
+
 static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     gSaveContext.health = 0;
     SohImGui::GetConsole()->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
@@ -991,6 +1003,9 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", {
         { "Item ID", Ship::ArgumentType::NUMBER }
     }});
+
+    CMD_REGISTER("givedekushield", { GiveDekuShieldHandler, "Gives a deku shield and equips it when Link is a child with no shield equiped." });
+
     CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
                               { "data", Ship::ArgumentType::NUMBER },
                               { "x", Ship::ArgumentType::PLAYER_POS, true },
