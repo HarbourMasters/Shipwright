@@ -52,7 +52,9 @@ void CrowdControl::RunCrowdControl(CCPacket* packet) {
 
             // If time remaining has reached 0 or was 0, we have finished let's remove the command and end the thread
             if (packet->timeRemaining <= 0) {
+                receivedCommandsMutex.lock();
                 receivedCommands.erase(std::remove(receivedCommands.begin(), receivedCommands.end(), packet), receivedCommands.end());
+                receivedCommandsMutex.unlock();
                 RemoveEffect(packet->effectType.c_str());
 
                 // If not timed, let's fire the one and only success
@@ -261,7 +263,9 @@ void CrowdControl::ReceiveFromCrowdControl()
                 }
 
                 if (anotherEffectOfCategoryActive != true) {
+                    receivedCommandsMutex.lock();
                     receivedCommands.push_back(packet);
+                    receivedCommandsMutex.unlock();
                     std::thread t = std::thread(&CrowdControl::RunCrowdControl, this, packet);
                     t.detach();
                 }

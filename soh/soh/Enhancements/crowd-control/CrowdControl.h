@@ -75,6 +75,7 @@ class CrowdControl {
         char received[512];
 
         std::vector<CCPacket*> receivedCommands;
+        std::mutex receivedCommandsMutex;
 
         void RunCrowdControl(CCPacket* packet);
         void ReceiveFromCrowdControl();
