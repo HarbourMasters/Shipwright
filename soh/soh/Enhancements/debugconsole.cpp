@@ -31,18 +31,18 @@ extern GlobalContext* gGlobalCtx;
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
 
-bool noUI;
-bool giantLink;
-bool minishLink;
-bool paperLink;
+uint32_t noUI;
+uint32_t giantLink;
+uint32_t minishLink;
+uint32_t paperLink;
 uint32_t gravityLevel = GRAVITY_LEVEL_NORMAL;
-bool resetLinkScale;
-bool invisibleLink;
-bool oneHitKO;
-bool pacifistMode;
+uint32_t resetLinkScale;
+uint32_t invisibleLink;
+uint32_t oneHitKO;
+uint32_t pacifistMode;
 int32_t defenseModifier;
-bool noZ;
-bool reverseControls;
+uint32_t noZ;
+uint32_t reverseControls;
 int32_t speedModifier;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -466,7 +466,7 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        invisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        invisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (!invisibleLink) {
             Player* player = GET_PLAYER(gGlobalCtx);
             player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
@@ -486,12 +486,12 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        giantLink = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        giantLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (giantLink) {
-            paperLink = false;
-            minishLink = false;
+            paperLink = 0;
+            minishLink = 0;
         } else {
-            resetLinkScale = true;
+            resetLinkScale = 1;
         }
 
         return CMD_SUCCESS;
@@ -508,12 +508,12 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     try {
-        minishLink = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        minishLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (minishLink) {
-            paperLink = false;
-            giantLink = false;
+            paperLink = 0;
+            giantLink = 0;
         } else {
-            resetLinkScale = true;
+            resetLinkScale = 1;
         }
 
         return CMD_SUCCESS;
@@ -561,7 +561,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     }
 
     try {
-        noUI = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        noUI = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] No UI value must be a number.");
@@ -653,7 +653,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     try {
-        noZ = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        noZ = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] NoZ value must be a number.");
@@ -668,7 +668,7 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
     }
 
     try {
-        oneHitKO = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        oneHitKO = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] One-hit KO value must be a number.");
@@ -683,7 +683,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
     }
 
     try {
-        pacifistMode = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        pacifistMode = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         // Force interface to update to make the buttons transparent
         gSaveContext.unk_13E8 = 50;
         Interface_Update(gGlobalCtx);
@@ -701,12 +701,12 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        paperLink = std::stoi(args[1], nullptr, 10) == 0 ? false : true;
+        paperLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (paperLink) {
-            minishLink = false;
-            giantLink = false;
+            minishLink = 0;
+            giantLink = 0;
         } else {
-            resetLinkScale = true;
+            resetLinkScale = 1;
         }
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {

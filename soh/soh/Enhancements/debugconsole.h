@@ -9,18 +9,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern bool noUI;
-extern bool giantLink;
-extern bool minishLink;
-extern bool paperLink;
+extern uint32_t noUI;
+extern uint32_t giantLink;
+extern uint32_t minishLink;
+extern uint32_t paperLink;
 extern uint32_t gravityLevel;
-extern bool resetLinkScale;
-extern bool invisibleLink;
-extern bool oneHitKO;
-extern bool pacifistMode;
+extern uint32_t resetLinkScale;
+extern uint32_t invisibleLink;
+extern uint32_t oneHitKO;
+extern uint32_t pacifistMode;
 extern int32_t defenseModifier;
-extern bool noZ;
-extern bool reverseControls;
+extern uint32_t noZ;
+extern uint32_t reverseControls;
 extern int32_t speedModifier;
 #ifdef __cplusplus
 }
