@@ -86,8 +86,8 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
-
-	    if (SohImGui::GetInputEditor()->IsOpened()) return;
+        
+        if (SohImGui::GetInputEditor()->IsOpened()) return;
 
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);

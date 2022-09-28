@@ -243,6 +243,13 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Header_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.h"
+)
+source_group("Header Files\\soh\\Enhancements\\crowd-control" FILES ${Header_Files__soh__Enhancements__crowd_control})
+endif()
+
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
     "soh/OTRAudio.h"
@@ -377,6 +384,13 @@ set(Source_Files__soh__Enhancements__item_tables
 )
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\crowd-control" FILES ${Source_Files__soh__Enhancements__crowd_control})
+endif()
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1588,6 +1602,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__controls}
@@ -1599,6 +1614,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}
@@ -1680,6 +1696,11 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(SDL2-net)
+    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
@@ -1690,6 +1711,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
 	${SDL2-INCLUDE}
+    ${SDL2-NET-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
@@ -1700,12 +1722,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Debug>:"
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_DX11"
+				"ENABLE_DX11;"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
 			"INCLUDE_GAME_PRINTF;"
+            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1941,6 +1964,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
+            "SDL2::SDL2_net;"
 			"glfw;"
 			"winmm;"
 			"imm32;"

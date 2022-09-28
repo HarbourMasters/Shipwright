@@ -22,7 +22,7 @@ set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng SDL2 GLEW glfw3)
+vcpkg_install_packages(zlib bzip2 libpng SDL2 SDL2-net GLEW glfw3)
 endif()
 
 ################################################################################

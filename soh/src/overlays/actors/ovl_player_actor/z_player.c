@@ -21,7 +21,8 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
-#include <soh/Enhancements/item-tables/ItemTableTypes.h>
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "soh/Enhancements/debugconsole.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -6021,9 +6022,19 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
     if (this->swordState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
+
+        if (chaosEffectSpeedModifier != 0) {
+            if (chaosEffectSpeedModifier > 0) {
+                maxSpeed *= chaosEffectSpeedModifier;
+            } else {
+                maxSpeed /= abs(chaosEffectSpeedModifier);
+            }
+        }
+
         if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         }
+
         this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
     }
 
@@ -7630,9 +7641,18 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
         func_80837268(this, &sp2C, &sp2A, 0.018f, globalCtx);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
+            if (chaosEffectSpeedModifier != 0) {
+                if (chaosEffectSpeedModifier > 0) {
+                    sp2C *= chaosEffectSpeedModifier;
+                } else {
+                    sp2C /= abs(chaosEffectSpeedModifier);
+                }
+            }
+
             if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
             }
+
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, globalCtx);
 
@@ -10888,6 +10908,39 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     MREG(53) = this->actor.world.pos.y;
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
+
+    if (chaosEffectGiantLink) {
+        this->actor.scale.x = 0.02f;
+        this->actor.scale.y = 0.02f;
+        this->actor.scale.z = 0.02f;
+    }
+
+    if (chaosEffectMinishLink) {
+        this->actor.scale.x = 0.001f;
+        this->actor.scale.y = 0.001f;
+        this->actor.scale.z = 0.001f;
+    }
+
+    if (chaosEffectPaperLink) {
+        this->actor.scale.x = 0.001f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+    }
+
+    if (chaosEffectResetLinkScale) {
+        this->actor.scale.x = 0.01f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+        chaosEffectResetLinkScale = 0;
+    }
+
+    if (chaosEffectGravityLevel == GRAVITY_LEVEL_HEAVY) {
+        this->actor.gravity = -4.0f;
+    }
+
+    if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
+        this->actor.gravity = -0.3f;
+    }
 }
 
 static struct_80858AC8 D_80858AC8;

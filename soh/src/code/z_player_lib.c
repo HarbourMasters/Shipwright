@@ -5,6 +5,8 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
+#include "soh/Enhancements/debugconsole.h"
+
 typedef struct {
     /* 0x00 */ u8 flag;
     /* 0x02 */ u16 textId;
@@ -1035,6 +1037,11 @@ s32 func_80090014(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         } else if (limbIndex == PLAYER_LIMB_WAIST) {
             *dList = ResourceMgr_LoadGfxByName(this->waistDLists[sDListsLodOffset]);
         }
+    }
+
+    if (chaosEffectInvisibleLink) {
+        this->actor.shape.shadowDraw = NULL;
+        *dList = NULL;
     }
 
     return false;
