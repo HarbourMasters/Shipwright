@@ -1,3 +1,7 @@
+/*  gfx_gx2.h - Fast3D GX2 backend for libultraship
+
+    Created in 2022 by GaryOderNichts
+*/
 #ifndef GFX_GX2_H
 #define GFX_GX2_H
 

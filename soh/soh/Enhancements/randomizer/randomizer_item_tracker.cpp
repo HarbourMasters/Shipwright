@@ -704,8 +704,13 @@ void LabeledComboBoxRightAligned(const char* label, const char* cvar, std::vecto
     s32 currentValue = CVar_GetS32(cvar, defaultValue);
     std::string hiddenLabel = "##" + std::string(cvar);
     ImGui::Text(label);
+#ifdef __WIIU__
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f + 40.0f));
+    ImGui::PushItemWidth((ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f) + 60.0f);
+#else
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f + 20.0f));
     ImGui::PushItemWidth((ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f) + 30.0f);
+#endif
     if (ImGui::BeginCombo(hiddenLabel.c_str(), options[currentValue].c_str())) {
         for (int i = 0; i < options.size(); i++) {
             if (ImGui::Selectable(options[i].c_str())) {

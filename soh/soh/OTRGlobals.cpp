@@ -64,6 +64,11 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "GameMenuBar.hpp"
 
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+CrowdControl* CrowdControl::Instance;
+#endif
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -349,6 +354,11 @@ extern "C" void InitOTR() {
     InitItemTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    CrowdControl::Instance->InitCrowdControl();
+#endif
 }
 
 extern "C" void DeinitOTR() {
