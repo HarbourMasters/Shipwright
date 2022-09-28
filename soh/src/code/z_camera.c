@@ -1732,9 +1732,11 @@ s32 Camera_Normal1(Camera* camera) {
         }
 
         // crit wiggle
-        if (gSaveContext.health <= 16 && ((camera->globalCtx->state.frames % 256) == 0)) {
-            wiggleAdj = Rand_ZeroOne() * 10000.0f;
-            camera->inputDir.y = wiggleAdj + camera->inputDir.y;
+        if(!CVar_GetS32("gDisableCritWiggle",0)) {
+            if (gSaveContext.health <= 16 && ((camera->globalCtx->state.frames % 256) == 0)) {
+                wiggleAdj = Rand_ZeroOne() * 10000.0f;
+                camera->inputDir.y = wiggleAdj + camera->inputDir.y;
+            }
         }
     } else {
         anim->swing.swingUpdateRate = norm1->unk_0C;
