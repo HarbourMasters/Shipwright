@@ -38,9 +38,9 @@
 #define LINK_IS_ADULT (gSaveContext.linkAge == 0)
 #define LINK_IS_CHILD (gSaveContext.linkAge == 1)
 
-#define CHECK_EQUIPMENT_AGE(i, j) ((CVar_GetS32("gTimelessEquipment", 0) != 0) || (gEquipAgeReqs[i][j] == 9) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
-#define CHECK_SLOT_AGE(slotIndex) ((CVar_GetS32("gTimelessEquipment", 0) != 0) || (gSlotAgeReqs[slotIndex] == 9) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
-#define CHECK_ITEM_AGE(itemIndex) ((CVar_GetS32("gTimelessEquipment", 0) != 0) || (gItemAgeReqs[itemIndex] == 9) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
+#define CHECK_EQUIPMENT_AGE(i, j) (CVar_GetS32("gTimelessEquipment", 0) || (gEquipAgeReqs[i][j] == 9) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
+#define CHECK_SLOT_AGE(slotIndex) (CVar_GetS32("gTimelessEquipment", 0) || (gSlotAgeReqs[slotIndex] == 9) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
+#define CHECK_ITEM_AGE(itemIndex) (CVar_GetS32("gTimelessEquipment", 0) || (gItemAgeReqs[itemIndex] == 9) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
 
 #define YEARS_CHILD 5
 #define YEARS_ADULT 17

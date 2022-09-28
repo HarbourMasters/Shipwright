@@ -343,7 +343,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
             gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
-                ((CVar_GetS32("gMMBunnyHood", 0) || (CVar_GetS32("gTimelessEquipment", 0) != 0)) &&
+                ((CVar_GetS32("gMMBunnyHood", 0) || CVar_GetS32("gTimelessEquipment", 0)) &&
                  INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
                     ? 9
                     : 1;
