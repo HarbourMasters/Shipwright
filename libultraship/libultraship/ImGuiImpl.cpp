@@ -41,6 +41,7 @@
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
+#define IMGUI_BTN_SWAP_AB_XY
 #endif
 
 #ifdef ENABLE_OPENGL
