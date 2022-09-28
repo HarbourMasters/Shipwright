@@ -229,11 +229,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
             case 0:
                 input->cur = *padnow1;
 
-                if (noZ) {
+                if (chaosEffectNoZ) {
                     input->cur.button &= ~(BTN_Z);
                 }
 
-                if (reverseControls) {
+                if (chaosEffectReverseControls) {
                     if (input->cur.stick_x == -128) {
                         input->cur.stick_x = 127;
                     } else {
