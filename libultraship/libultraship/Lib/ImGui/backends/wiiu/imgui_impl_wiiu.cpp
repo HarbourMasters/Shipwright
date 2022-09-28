@@ -1,5 +1,6 @@
 // dear imgui: Platform Backend for the Wii U
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "imgui_impl_wiiu.h"
 #include <stdlib.h> // malloc/free
 
@@ -86,8 +87,12 @@ void     ImGui_ImplWiiU_Shutdown()
 static void ImGui_ImplWiiU_UpdateKeyboardInput(ImGui_ImplWiiU_ControllerInput* input)
 {
     ImGuiIO& io = ImGui::GetIO();
+    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+    if (!state)
+        return;
 
-    VPADGetTPCalibratedPoint(VPAD_CHAN_0, &input->vpad->tpNormal, &input->vpad->tpNormal);
+    if (input->vpad)
+        VPADGetTPCalibratedPoint(VPAD_CHAN_0, &input->vpad->tpNormal, &input->vpad->tpNormal);
 
     nn::swkbd::ControllerInfo controllerInfo;
     controllerInfo.vpad = input->vpad;
@@ -104,6 +109,8 @@ static void ImGui_ImplWiiU_UpdateKeyboardInput(ImGui_ImplWiiU_ControllerInput* i
 
     if (nn::swkbd::IsDecideOkButton(NULL))
     {
+        state->ClearText();
+
         // Add entered text
         const char16_t* string = nn::swkbd::GetInputFormString();
         for (int i = 0; *string; string++)
@@ -248,6 +255,21 @@ bool     ImGui_ImplWiiU_ProcessInput(ImGui_ImplWiiU_ControllerInput* input)
     // Show keyboard if wanted
     if (io.WantTextInput && !bd->WantedTextInput) 
     {
+        ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+        if (state)
+        {
+            if (!(state->Flags & ImGuiInputTextFlags_AlwaysOverwrite))
+                bd->AppearArg.inputFormArg.initialText = (char16_t*) state->TextW.Data;
+
+            bd->AppearArg.inputFormArg.maxTextLength = state->BufCapacityA;
+            bd->AppearArg.inputFormArg.higlightInitialText = !!(state->Flags & ImGuiInputTextFlags_AutoSelectAll);
+
+            if (state->Flags & ImGuiInputTextFlags_Password)
+                bd->AppearArg.inputFormArg.passwordMode = nn::swkbd::PasswordMode::Fade;
+            else
+                bd->AppearArg.inputFormArg.passwordMode = nn::swkbd::PasswordMode::Clear;
+        }
+
         // Open the keyboard for the controller which requested the text input
         bd->AppearArg.keyboardArg.configArg.controllerType = bd->LastController;
 

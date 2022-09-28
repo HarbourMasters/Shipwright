@@ -1,3 +1,7 @@
+/*  gfx_gx2.cpp - Fast3D GX2 backend for libultraship
+
+    Created in 2022 by GaryOderNichts
+*/
 #ifdef __WIIU__
 
 #include "../../Window.h"
@@ -444,7 +448,7 @@ static void gfx_gx2_init(void) {
     memcpy(&depthReadBuffer, &main_framebuffer.depth_buffer, sizeof(GX2DepthBuffer));
 
     depthReadBuffer.surface.tileMode = GX2_TILE_MODE_LINEAR_ALIGNED;
-    depthReadBuffer.surface.width = 1;
+    depthReadBuffer.surface.width = 32;
     depthReadBuffer.surface.height = 1;
 
     GX2CalcSurfaceSizeAndAlignment(&depthReadBuffer.surface);
@@ -734,35 +738,55 @@ static std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_g
     }
 
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
+    if (!coordinates.size()) {
+        return res;
+    }
 
-    for (const auto& c : coordinates) {
-        // bug? coordinates sometimes read from oob
-        if ((c.first < 0.0f) || (c.first > (float) buffer->depth_buffer.surface.width)
-            || (c.second < 0.0f) || (c.second > (float) buffer->depth_buffer.surface.height)) {
-            res.emplace(c, 0);
-            continue;
+    GX2Rect srcRects[32];
+    GX2Point dstPoints[32];
+    size_t num_coordinates = coordinates.size();
+    while (num_coordinates > 0) {
+        size_t numRects = 32;
+        if (num_coordinates < numRects) {
+            numRects = num_coordinates;
+        }
+        num_coordinates -= numRects;
+
+        // initialize rects and points
+        for (size_t i = 0; i < numRects; ++i) {
+            const auto& c = *std::next(coordinates.begin(), num_coordinates + i);
+            const int32_t x = (int32_t) std::clamp(c.first, 0.0f, (float) buffer->depth_buffer.surface.width - 1);
+            const int32_t y = (int32_t) std::clamp(c.second, 0.0f, (float) buffer->depth_buffer.surface.height - 1);
+
+            srcRects[i] = GX2Rect{
+                x,
+                (int32_t) buffer->depth_buffer.surface.height - y,
+                x + 1,
+                (int32_t) (buffer->depth_buffer.surface.height - y) + 1
+            };
+
+            // dst points will be spread over the x-axis of the buffer
+            dstPoints[i] = GX2Point{ i, 0 };
         }
 
+        // Invalidate the buffer first
         GX2Invalidate(GX2_INVALIDATE_MODE_CPU | GX2_INVALIDATE_MODE_DEPTH_BUFFER, depthReadBuffer.surface.image, depthReadBuffer.surface.imageSize);
 
-        // copy the pixel to the depthReadBuffer
-        GX2Rect srcRect = { 
-            (int32_t) c.first,
-            (int32_t) buffer->depth_buffer.surface.height - (int32_t) c.second,
-            (int32_t) c.first + 1,
-            (int32_t) (buffer->depth_buffer.surface.height - (int32_t) c.second) + 1
-        };
-        GX2Point dstPoint = { 0, 0 };
-        GX2CopySurfaceEx(&buffer->depth_buffer.surface, 0, 0, &depthReadBuffer.surface, 0, 0, 1, &srcRect, &dstPoint);
-        GX2DrawDone();
+        // Perform the copy
+        GX2CopySurfaceEx(&buffer->depth_buffer.surface, 0, 0, &depthReadBuffer.surface, 0, 0, numRects, srcRects, dstPoints);
 
+        // Wait for draws to be done and restore context, in case GPU was used
+        GX2DrawDone();
         gfx_wiiu_set_context_state();
 
-        // read the pixel from the depthReadBuffer
-        uint32_t tmp = __builtin_bswap32(*(uint32_t *)depthReadBuffer.surface.image);
-        float val = *(float *)&tmp;
+        // read the pixels from the depthReadBuffer
+        for (size_t i = 0; i < numRects; ++i) {
+            uint32_t tmp = __builtin_bswap32(*((uint32_t *)depthReadBuffer.surface.image + i));
+            float val = *(float *)&tmp;
 
-        res.emplace(c, val * 65532.0f);
+            const auto& c = *std::next(coordinates.begin(), num_coordinates + i);
+            res.emplace(c, val * 65532.0f);
+        }
     }
 
     return res;

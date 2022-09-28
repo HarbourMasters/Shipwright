@@ -511,7 +511,7 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
     if (this) {}
     func_8002ED80(&this->actor, globalCtx, 0);
     if (gSaveContext.n64ddFlag) {
-        GetItemEntry randoGetItem;
+        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         switch (this->type) {
             case EXITEM_BOMB_BAG_BOWLING:
             case EXITEM_BOMB_BAG_COUNTER:
@@ -526,9 +526,11 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
                 break;
         }
 
-        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-        GetItemEntry_Draw(globalCtx, randoGetItem);
-        return;
+        if (randoGetItem.getItemId != GI_NONE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+            GetItemEntry_Draw(globalCtx, randoGetItem);
+            return;
+        }
     }
 
     GetItem_Draw(globalCtx, this->giDrawId);
