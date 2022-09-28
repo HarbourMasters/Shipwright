@@ -312,6 +312,9 @@ namespace GameMenuBar {
         CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
+
+        //Crit wiggle disable
+        CVar_SetS32("gDisableCritWiggle", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
