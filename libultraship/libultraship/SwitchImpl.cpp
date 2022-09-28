@@ -5,6 +5,7 @@
 #include "SwitchPerformanceProfiles.h"
 #include "Cvar.h"
 #include "Hooks.h"
+#include "Lib/ImGui/imgui_internal.h"
 
 extern "C" s32 CVar_GetS32(const char* name, s32 defaultValue);
 extern "C" void CVar_SetS32(const char* name, s32 value);
@@ -15,6 +16,7 @@ extern "C" void CVar_SetS32(const char* name, s32 value);
 static AppletHookCookie applet_hook_cookie;
 static bool isRunning = true;
 static bool hasFocus  = true;
+static bool isShowingVirtualKeyboard = true;
 
 void DetectAppletMode();
 
@@ -87,6 +89,43 @@ void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
     fonts->Build ();
 
     plExit();
+}
+
+void Ship::Switch::ImGuiSwapABXY(int start_event) {
+    auto& input_queue = ImGui::GetCurrentContext()->InputEventsQueue;
+
+    for (int n = start_event; n < input_queue.Size; n++)
+    {
+        ImGuiInputEvent& e = input_queue[n];
+        if (e.Type == ImGuiInputEventType_Key)
+        {
+            switch (e.Key.Key)
+            {
+                case ImGuiKey_GamepadFaceLeft:  e.Key.Key = ImGuiKey_GamepadFaceUp; break;   // X<>Y
+                case ImGuiKey_GamepadFaceUp:    e.Key.Key = ImGuiKey_GamepadFaceLeft; break;
+                case ImGuiKey_GamepadFaceRight: e.Key.Key = ImGuiKey_GamepadFaceDown; break;   // A<>B
+                case ImGuiKey_GamepadFaceDown:  e.Key.Key = ImGuiKey_GamepadFaceRight; break;
+            }
+        }
+    }
+}
+
+void Ship::Switch::ImGuiProcessEvent() {
+    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+
+    if (io->WantTextInput) {
+        if (!isShowingVirtualKeyboard) {
+            state->ClearText();
+
+            isShowingVirtualKeyboard = true;
+            SDL_StartTextInput();
+        }
+    } else {
+        if (isShowingVirtualKeyboard) {
+            isShowingVirtualKeyboard = false;
+            SDL_StopTextInput();
+        }
+    }
 }
 
 bool Ship::Switch::IsRunning(){

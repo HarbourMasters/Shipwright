@@ -88,10 +88,6 @@ namespace SohImGui {
     int lastAudioBackendID = 0;
     bool statsWindowOpen;
 
-#ifdef __SWITCH__
-    bool showingVirtualKeyboard = false;
-#endif
-
     const char* filters[3] = {
 #ifdef __WIIU__
         "",
@@ -233,23 +229,8 @@ namespace SohImGui {
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
 
 #ifdef __SWITCH__
-            ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
-
-            if (io->WantTextInput) {
-                if (!showingVirtualKeyboard) {
-                    state->ClearText();
-
-                    showingVirtualKeyboard = true;
-                    SDL_StartTextInput();
-                }
-            } else {
-                if (showingVirtualKeyboard) {
-                    showingVirtualKeyboard = false;
-                    SDL_StopTextInput();
-                }
-            }
+            Ship::Switch::ImGuiProcessEvent();
 #endif
-
             break;
 #endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -466,8 +447,15 @@ namespace SohImGui {
 
     void DrawMainMenuAndCalculateGameSize(void) {
         console->Update();
+
+        const int input_queue_size_before = ImGui::GetCurrentContext()->InputEventsQueue.Size;
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
+
+#ifdef __SWITCH__
+        Ship::Switch::ImGuiSwapABXY(input_queue_size_before);
+#endif
+
         ImGui::NewFrame();
 
         const std::shared_ptr<Window> wnd = Window::GetInstance();

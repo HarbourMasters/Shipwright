@@ -125,7 +125,6 @@ namespace ImGui
 */
 
 #ifdef __SWITCH__
-#define IMGUI_BTN_SWAP_AB_XY
 #define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #include <glad/glad.h>
 #endif
