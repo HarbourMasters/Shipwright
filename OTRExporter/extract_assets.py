@@ -11,10 +11,6 @@ import argparse
 def BuildOTR(xmlPath, rom, zapd_exe=None):
     shutil.copytree("assets", "Extract/assets")
 
-    checksum = int(Z64Rom(rom).checksum.value, 16)
-    with open("Extract/version", "wb") as f:
-        f.write(struct.pack('<L', checksum))
-
     if not zapd_exe:
         zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
 

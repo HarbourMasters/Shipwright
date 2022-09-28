@@ -6,6 +6,7 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -93,17 +94,33 @@ void func_80AACA94(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx) != 0) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AACA40;
-        func_80088AA0(240);
-        gSaveContext.eventInf[1] &= ~1;
+        if (!gSaveContext.n64ddFlag) {
+            func_80088AA0(240);
+            gSaveContext.eventInf[1] &= ~1;
+        }
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_EYEDROPS, 10000.0f, 50.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_FROG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        } else {
+            s32 getItemID = GI_EYEDROPS;
+            func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
+        }
     }
 }
 
 void func_80AACB14(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         this->actionFunc = func_80AACA94;
-        func_8002F434(&this->actor, globalCtx, GI_EYEDROPS, 10000.0f, 50.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_FROG);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        } else {
+            s32 getItemID = GI_EYEDROPS;
+            func_8002F434(&this->actor, globalCtx, getItemID, 10000.0f, 50.0f);
+        }
     }
 }
 
@@ -129,7 +146,7 @@ void func_80AACC04(EnMk* this, GlobalContext* globalCtx) {
     if (this->timer > 0) {
         this->timer--;
     } else {
-        this->timer = 16;
+        this->timer = gSaveContext.n64ddFlag ? 0 : 16;
         this->actionFunc = func_80AACBAC;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000D88, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000D88), ANIMMODE_LOOP, -4.0f);
@@ -142,7 +159,7 @@ void func_80AACCA0(EnMk* this, GlobalContext* globalCtx) {
         this->timer--;
         this->actor.shape.rot.y += 0x800;
     } else {
-        this->timer = 120;
+        this->timer = gSaveContext.n64ddFlag ? 0 : 120;
         this->actionFunc = func_80AACC04;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000724, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000724), ANIMMODE_LOOP, -4.0f);
@@ -158,7 +175,7 @@ void func_80AACD48(EnMk* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AACCA0;
         globalCtx->msgCtx.msgMode = MSGMODE_PAUSED;
         player->exchangeItemId = EXCH_ITEM_NONE;
-        this->timer = 16;
+        this->timer = gSaveContext.n64ddFlag ? 0 : 16;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000D88, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000D88), ANIMMODE_LOOP, -4.0f);
         this->flags &= ~2;
@@ -198,14 +215,24 @@ void func_80AACFA0(EnMk* this, GlobalContext* globalCtx) {
         gSaveContext.itemGetInf[1] |= 1;
     } else {
         // not sure when/how/if this is getting called
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        }
     }
 }
 
 void func_80AAD014(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         this->actionFunc = func_80AACFA0;
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
+        if (!gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+        }
     }
 
     this->flags |= 1;

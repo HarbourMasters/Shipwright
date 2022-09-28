@@ -15,6 +15,7 @@ void EnDns_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnDns_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnDns_Draw(Actor* thisx, GlobalContext* globalCtx);
 
+u32 EnDns_RandomizerPurchaseableCheck(EnDns* this);
 u32 func_809EF5A4(EnDns* this);
 u32 func_809EF658(EnDns* this);
 u32 func_809EF70C(EnDns* this);
@@ -24,6 +25,7 @@ u32 func_809EF854(EnDns* this);
 u32 func_809EF8F4(EnDns* this);
 u32 func_809EF9A4(EnDns* this);
 
+void EnDns_RandomizerPurchase(EnDns* this);
 void func_809EF9F8(EnDns* this);
 void func_809EFA28(EnDns* this);
 void func_809EFA58(EnDns* this);
@@ -155,7 +157,6 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_InitCylinder(globalCtx, &this->collider);
     Collider_SetCylinderType1(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 35.0f);
-    this->actor.textId = D_809F040C[this->actor.params];
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->maintainCollider = 1;
@@ -164,7 +165,27 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = -1.0f;
+    this->actor.textId = D_809F040C[this->actor.params];
     this->dnsItemEntry = sItemEntries[this->actor.params];
+    if (gSaveContext.n64ddFlag) {
+        // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        this->scrubIdentity = Randomizer_IdentifyScrub(globalCtx->sceneNum, this->actor.params, respawnData);
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 1 || Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 3 && this->scrubIdentity.itemPrice != -1) {
+            this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
+        }
+
+        if (this->scrubIdentity.isShuffled) {
+            this->dnsItemEntry->getItemId = this->scrubIdentity.getItemId;
+            this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;
+            this->dnsItemEntry->setRupeesAndFlags = EnDns_RandomizerPurchase;
+            this->dnsItemEntry->itemAmount = 1;
+            // Currently the textID is simply identified by the item price since that is the only thing
+            // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
+            this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
+        }
+    }
     this->actionFunc = EnDns_SetupWait;
 }
 
@@ -184,6 +205,13 @@ void EnDns_ChangeAnim(EnDns* this, u8 index) {
 }
 
 /* Item give checking functions */
+
+u32 EnDns_RandomizerPurchaseableCheck(EnDns* this) {
+    if (gSaveContext.rupees < this->dnsItemEntry->itemPrice || Flags_GetRandomizerInf(this->scrubIdentity.randomizerInf)) {
+        return 0;
+    }
+    return 4;
+}
 
 u32 func_809EF5A4(EnDns* this) {
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
@@ -281,6 +309,10 @@ u32 func_809EF9A4(EnDns* this) {
 }
 
 /* Paying and flagging functions */
+void EnDns_RandomizerPurchase(EnDns* this) {
+    Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
+    Flags_SetRandomizerInf(this->scrubIdentity.randomizerInf);
+}
 
 void func_809EF9F8(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
@@ -369,24 +401,25 @@ void EnDns_Talk(EnDns* this, GlobalContext* globalCtx) {
 }
 
 void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
-    if (this->actor.params == 0x9) {
-        if (gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, Randomizer_GetRandomizedItemId(GI_STICK_UPGRADE_30, this->actor.id, this->actor.params, globalCtx->sceneNum), 130.0f, 100.0f);
-        } else if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
-            func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
+    if (!gSaveContext.n64ddFlag || !this->scrubIdentity.isShuffled) {
+        if (this->actor.params == 0x9) {
+            if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
+                func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
+            } else {
+                func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_30, 130.0f, 100.0f);
+            }
+        } else if (this->actor.params == 0xA) {
+            if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
+                func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
+            } else {
+                func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_40, 130.0f, 100.0f);
+            }
         } else {
-            func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_30, 130.0f, 100.0f);
-        }
-    } else if (this->actor.params == 0xA) {
-        if (gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, Randomizer_GetRandomizedItemId(GI_NUT_UPGRADE_40, this->actor.id, this->actor.params, globalCtx->sceneNum), 130.0f, 100.0f);
-        } else if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
-            func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
-        } else {
-            func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_40, 130.0f, 100.0f);
+            func_8002F434(&this->actor, globalCtx, this->dnsItemEntry->getItemId, 130.0f, 100.0f);
         }
     } else {
-        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetRandomizedItemId(this->dnsItemEntry->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum) : this->dnsItemEntry->getItemId, 130.0f, 100.0f);
+        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
+        GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 130.0f, 100.0f);
     }
 }
 
@@ -482,6 +515,11 @@ void EnDns_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
+    if (gSaveContext.n64ddFlag && this->scrubIdentity.isShuffled) {
+        // Currently the textID is simply identified by the item price since that is the only thing
+        // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
+        this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
+    }
     Actor_SetFocus(&this->actor, 60.0f);
     Actor_SetScale(&this->actor, 0.01f);
     SkelAnime_Update(&this->skelAnime);

@@ -235,7 +235,7 @@ void AreaTable_Init_DodongosCavern() {
   areaTable[DODONGOS_CAVERN_BOSS_ROOM] = Area("Dodongos Cavern Boss Room", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&DodongosCavernClear, {[]{return DodongosCavernClear || (Here(DODONGOS_CAVERN_BOSS_ROOM, []{return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield);}) && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword));},
-                                         /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOSS_ROOM, []{return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) || (GlitchBlueFireWall && BlueFire);}) && (HasExplosives || GoronBracelet) && (IsAdult || Sticks || KokiriSword || CanUse(MEGATON_HAMMER));}}),
+                                         /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOSS_ROOM, []{return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) || (GlitchBlueFireWall && HasBottle && BlueFireAccess);}) && (HasExplosives || GoronBracelet) && (IsAdult || Sticks || KokiriSword || CanUse(MEGATON_HAMMER));}}),
                 }, {
                   //Locations
                   LocationAccess(DODONGOS_CAVERN_BOSS_ROOM_CHEST,    {[]{return true;}}),

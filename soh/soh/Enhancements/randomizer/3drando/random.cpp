@@ -15,7 +15,11 @@ void Random_Init(uint32_t seed) {
 uint32_t Random(int min, int max) {
     if (!init) {
         //No seed given, get a random number from device to seed
+#if !defined(__SWITCH__) && !defined(__WIIU__)
         const auto seed = static_cast<uint32_t>(std::random_device{}());
+#else
+        uint32_t seed = static_cast<uint32_t>(std::hash<std::string>{}(std::to_string(rand())));
+#endif
         Random_Init(seed);
     }
     std::uniform_int_distribution<uint32_t> distribution(min, max-1);

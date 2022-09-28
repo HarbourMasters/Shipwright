@@ -324,8 +324,8 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
 
 void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, RandomizerCheck check) {
     Flags_SetTreasure(globalCtx, 0x1F);
-    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
-    func_8002F434(&song->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
+    GiveItemEntryFromActor(&song->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
 }
 
 void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
@@ -337,7 +337,7 @@ void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
             GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
         this->actionFunc = func_80ABF708;

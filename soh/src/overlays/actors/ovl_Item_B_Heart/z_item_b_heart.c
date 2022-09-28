@@ -59,11 +59,11 @@ void ItemBHeart_Update(Actor* thisx, GlobalContext* globalCtx) {
         Flags_SetCollectible(globalCtx, 0x1F);
         Actor_Kill(&this->actor);
     } else {
-        if (gSaveContext.n64ddFlag) {
-            s32 getItemId = Randomizer_GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 40.0f);
-        } else {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, globalCtx, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
+        } else {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->actor.params, GI_HEART_CONTAINER_2);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 40.0f);
         }
     }
 }
@@ -99,8 +99,8 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        GetItem_Draw(globalCtx,
-                     Randomizer_GetItemModelFromId(Randomizer_GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum)));
+        GetItemEntry_Draw(globalCtx, Randomizer_GetItemFromActor(this->actor.id, 
+            globalCtx->sceneNum,this->actor.params, GI_HEART_CONTAINER_2));
     } else {
         if (flag) {
             func_80093D84(globalCtx->state.gfxCtx);

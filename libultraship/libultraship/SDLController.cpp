@@ -1,5 +1,5 @@
 #include "SDLController.h"
-#include "GlobalCtx2.h"
+
 #include "spdlog/spdlog.h"
 #include "Window.h"
 #include <Utils/StringHelper.h>
@@ -11,6 +11,10 @@
 extern "C" uint8_t __osMaxControllers;
 
 namespace Ship {
+
+    SDLController::SDLController(int32_t physicalSlot) : Controller(), Cont(nullptr), physicalSlot(physicalSlot) {
+
+    }
 
     bool SDLController::Open() {
         const auto NewCont = SDL_GameControllerOpen(physicalSlot);
@@ -166,6 +170,10 @@ namespace Ship {
 
             getGyroX(virtualSlot) *= gyro_sensitivity;
             getGyroY(virtualSlot) *= gyro_sensitivity;
+        }
+        else {
+            getGyroX(virtualSlot) = 0;
+            getGyroY(virtualSlot) = 0;
         }
 
         getPressedButtons(virtualSlot) = 0;
@@ -449,5 +457,24 @@ namespace Ship {
         profile->GyroData[DRIFT_X] = 0.0f;
         profile->GyroData[DRIFT_Y] = 0.0f;
         profile->GyroData[GYRO_SENSITIVITY] = 1.0f;
+    }
+
+    bool SDLController::Connected() const {
+	    return Cont != nullptr;
+    }
+
+    bool SDLController::CanGyro() const {
+	    return supportsGyro;
+    }
+
+    bool SDLController::CanRumble() const {
+#if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
+        return SDL_GameControllerHasRumble(Cont);
+#endif
+        return false;
+    }
+
+    void SDLController::ClearRawPress() {
+	    
     }
 }

@@ -69,7 +69,7 @@ static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 
 // NULL-terminated arrays of eye textures
 static void* sEyeTexturesAOB[] = { gDogLadyEyeOpenTex, gDogLadyEyeHalfTex, gDogLadyEyeClosedTex, NULL };
-static void* sEyeTexturesAHG7[] = { object_ahg_Tex_0005FC, object_ahg_Tex_0006FC, object_ahg_Tex_0007FC, NULL };
+static void* sEyeTexturesAHG7[] = { object_ahg_Tex_00057C, object_ahg_Tex_00067C, object_ahg_Tex_00077C, NULL };
 static void* sEyeTexturesBBA[] = { object_bba_Tex_0004C8, NULL };
 static void* sEyeTexturesBJI13[] = { object_bji_Tex_0005FC, object_bji_Tex_0009FC, object_bji_Tex_000DFC, NULL };
 static void* sEyeTexturesBOJ2[] = { object_boj_Tex_0005FC, object_boj_Tex_0006FC, object_boj_Tex_0007FC, NULL };
@@ -112,8 +112,8 @@ static EnHyHeadInfo sHeadInfo[] = {
     /* ENHY_HEAD_AHG_8 */ { OBJECT_AHG, object_ahg_DL_005508, NULL },
     /* ENHY_HEAD_AHG_9 */ { OBJECT_AHG, object_ahg_DL_005728, NULL },
     /* ENHY_HEAD_BBA */ { OBJECT_BBA, object_bba_DL_002948, sEyeTexturesBBA },
-    /* ENHY_HEAD_CNE_11 */ { OBJECT_CNE, object_cne_DL_001300, NULL },
-    /* ENHY_HEAD_CNE_12 */ { OBJECT_CNE, object_cne_DL_002860, NULL },
+    /* ENHY_HEAD_CNE_11 */ { OBJECT_CNE, gCneHeadBrownHairDL, NULL },
+    /* ENHY_HEAD_CNE_12 */ { OBJECT_CNE, gCneHeadOrangeHairDL, NULL },
     /* ENHY_HEAD_BJI_13 */ { OBJECT_BJI, object_bji_DL_002560, sEyeTexturesBJI13 },
     /* ENHY_HEAD_BJI_14 */ { OBJECT_BJI, object_bji_DL_003F68, NULL },
     /* ENHY_HEAD_COB */ { OBJECT_COB, object_cob_DL_001300, NULL },
@@ -141,7 +141,7 @@ static EnHySkeletonInfo sSkeletonInfo[] = {
     /* ENHY_SKEL_BOJ */ { OBJECT_BOJ, &object_boj_Skel_0000F0 },
     /* ENHY_SKEL_AHG */ { OBJECT_AHG, &object_ahg_Skel_0000F0 },
     /* ENHY_SKEL_BBA */ { OBJECT_BBA, &object_bba_Skel_0000F0 },
-    /* ENHY_SKEL_CNE */ { OBJECT_CNE, &object_cne_Skel_0000F0 },
+    /* ENHY_SKEL_CNE */ { OBJECT_CNE, &gCneSkel },
     /* ENHY_SKEL_BJI */ { OBJECT_BJI, &object_bji_Skel_0000F0 },
     /* ENHY_SKEL_COB */ { OBJECT_COB, &object_cob_Skel_0021F8 },
 };
@@ -659,7 +659,18 @@ s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    func_80A6F7CC(this, globalCtx, (gSaveContext.infTable[25] & 2) ? GI_RUPEE_BLUE : gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE) : GI_HEART_PIECE);
+                    if (gSaveContext.infTable[25] & 2) { // Already brought the lost dog back
+                        func_80A6F7CC(this, globalCtx, GI_RUPEE_BLUE);
+                    } else {
+                        if (!gSaveContext.n64ddFlag) {
+                            func_80A6F7CC(this, globalCtx, GI_HEART_PIECE);
+                        } else {
+                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
+                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
+                            this->unkGetItemId = this->getItemEntry.getItemId;
+                            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+                        }
+                    }
                     this->actionFunc = func_80A714C4;
                     break;
             }
@@ -883,6 +894,7 @@ void EnHy_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     }
 
+    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     this->actionFunc = EnHy_InitImpl;
 }
 
@@ -1050,8 +1062,11 @@ void func_80A714C4(EnHy* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = func_80A71530;
     } else {
-        func_8002F434(&this->actor, globalCtx, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
-                      fabsf(this->actor.yDistToPlayer) + 1.0f);
+        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+            func_8002F434(&this->actor, globalCtx, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        } else {
+            GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        }
     }
 }
 

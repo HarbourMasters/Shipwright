@@ -7,7 +7,7 @@
 #endif
 
 #include "Hooks.h"
-#include "GlobalCtx2.h"
+
 #include "Window.h"
 
 namespace Ship {
@@ -70,7 +70,7 @@ namespace Ship {
 		});
 
 		if (find == Mappings.end()) return "Unknown";
-		const char* name = GlobalCtx2::GetInstance()->GetWindow()->GetKeyName(find->first);
+		const char* name = Window::GetInstance()->GetKeyName(find->first);
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 
@@ -99,5 +99,29 @@ namespace Ship {
 
 	const std::string KeyboardController::GetControllerName() {
 		return "Keyboard";
+	}
+
+	bool KeyboardController::Connected() const {
+		return true;
+	}
+
+	bool KeyboardController::CanRumble() const {
+		return false;
+	}
+
+	bool KeyboardController::CanGyro() const {
+		return false;
+	}
+
+	void KeyboardController::ClearRawPress() {
+		lastKey = -1;
+	}
+
+	void KeyboardController::SetLastScancode(int32_t key) {
+		lastScancode = key;
+	}
+
+	int32_t KeyboardController::GetLastScancode() {
+		return lastScancode;
 	}
 }

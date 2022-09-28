@@ -188,7 +188,7 @@
         <Texture Name="gLinkAdultCollarTex" OutName="collar" Format="rgba16" Width="16" Height="32" Offset="0x9580"/>        
         <Texture Name="gLinkAdultTunicTex" OutName="tunic" Format="ci8" Width="16" Height="32" Offset="0x9380" TlutOffset="0x5A00"/>
         <Texture Name="gLinkAdultNeckTex" OutName="neck" Format="ci8" Width="16" Height="32" Offset="0x7980" TlutOffset="0x5A00"/>
-        <Texture Name="gLinkAdultNose2Tex" OutName="nose2" Format="ci8" Width="16" Height="16" Offset="0x5200"/>
+        <Texture Name="gLinkAdultNose2Tex" OutName="nose2" Format="ci8" Width="16" Height="16" Offset="0x5200" TlutOffset="0x5C00"/>
 
         <!-- Gauntlets -->
         <DList Name="gLinkAdultLeftGauntletPlate1DL" Offset="0x25218"/>
@@ -240,7 +240,7 @@
         <Texture Name="gLinkAdultNoseTex" OutName="nose" Format="ci8" Width="16" Height="16" Offset="0x5100" TlutOffset="0x5C00"/>
         
         <!-- Tluts -->
-        <Texture Name="gLinkAdultHeadTlut" OutName="head_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5C00"/>
+        <Texture Name="gLinkAdultHeadTLUT" OutName="head_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5C00"/>
         <Texture Name="gLinkAdultTlut_005E00" OutName="tlut_5E00" Format="rgba16" Width="16" Height="16" Offset="0x5E00"/>
 
         <!-- Unused -->

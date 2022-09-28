@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
+#include "soh/Enhancements/debugconsole.h"
+
 //#include <string.h>
 
 #ifdef _MSC_VER
@@ -226,6 +228,25 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         switch (padnow1->err_no) {
             case 0:
                 input->cur = *padnow1;
+
+                if (chaosEffectNoZ) {
+                    input->cur.button &= ~(BTN_Z);
+                }
+
+                if (chaosEffectReverseControls) {
+                    if (input->cur.stick_x == -128) {
+                        input->cur.stick_x = 127;
+                    } else {
+                        input->cur.stick_x *= -1;
+                    }
+
+                    if (input->cur.stick_y == -128) {
+                        input->cur.stick_y = 127;
+                    } else {
+                        input->cur.stick_y *= -1;
+                    }
+                }
+
                 if (!padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = true;
                     osSyncPrintf(VT_FGCOL(YELLOW));
@@ -288,6 +309,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     OTRControllerCallback(&controllerCallback);
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        Controller_BlockGameInput();
+    } else {
+        Controller_UnblockGameInput();
+    }
 
     PadMgr_UnlockPadData(padMgr);
 }
@@ -331,16 +357,20 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     }
     padMgr->validCtrlrsMask = mask;
 
-    /* if (gFaultStruct.msgId) {
-        PadMgr_RumbleStop(padMgr);
-    } else */ if (padMgr->rumbleOffFrames > 0) {
-        --padMgr->rumbleOffFrames;
-        PadMgr_RumbleStop(padMgr);
-    } else if (padMgr->rumbleOnFrames == 0) {
-        PadMgr_RumbleStop(padMgr);
-    } else if (!padMgr->preNMIShutdown) {
-        PadMgr_RumbleControl(padMgr);
-        --padMgr->rumbleOnFrames;
+    // TODO: Workaround for rumble being too long. Implement os thread functions.
+    // Game logic runs at 20hz but input thread runs at 60 hertz, so we call this 3 times
+    for (i = 0; i < 3; i++) {
+        /* if (gFaultStruct.msgId) {
+            PadMgr_RumbleStop(padMgr);
+        } else */ if (padMgr->rumbleOffFrames > 0) {
+            --padMgr->rumbleOffFrames;
+            PadMgr_RumbleStop(padMgr);
+        } else if (padMgr->rumbleOnFrames == 0) {
+            PadMgr_RumbleStop(padMgr);
+        } else if (!padMgr->preNMIShutdown) {
+            PadMgr_RumbleControl(padMgr);
+            --padMgr->rumbleOnFrames;
+        }
     }
 }
 

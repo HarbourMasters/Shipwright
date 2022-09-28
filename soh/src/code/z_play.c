@@ -4,8 +4,10 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/debugconsole.h"
+#include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
 #include <time.h>
 
@@ -200,9 +202,9 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     Player* player = GET_PLAYER(globalCtx);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
-        GiveItemWithoutActor(globalCtx, getItemId);
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTrapCount) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
@@ -216,9 +218,10 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
          gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
-        GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetEventChkInf(0xAA);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
+        GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+        player->pendingFlag.flagID = 0xAA;
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
     }
 }
 
@@ -228,9 +231,10 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
             !Player_InBlockingCsMode(globalCtx, player)) {
-            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
-            GiveItemWithoutActor(globalCtx, getItemId);
-            Flags_SetEventChkInf(0xAC);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+            player->pendingFlag.flagID = 0xAC;
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
     }
 }
@@ -242,22 +246,23 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
-        GiveItemWithoutActor(globalCtx, getItemId);
-        player->pendingFlag.flagID = 0x1E;
-        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
+        if (GiveItemEntryWithoutActor(globalCtx, getItem)) {
+            player->pendingFlag.flagID = 0x1E;
+            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        }
     }
 }
 
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
     if (gSaveContext.entranceIndex == 0x05E0) {
-        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemId && getItemId != GI_ICE_TRAP)) &&
-            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
-            GiveItemWithoutActor(globalCtx, getItemId);
-            Flags_SetEventChkInf(0xC1);
+        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+            GiveItemEntryWithoutActor(globalCtx, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0xC1;
         }
     }
 }
@@ -398,7 +403,7 @@ void Gameplay_Init(GameState* thisx) {
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
             if (Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) {
+                Inventory_HatchPocketCucco(globalCtx)) {
                 Message_StartTextbox(globalCtx, 0x3066, NULL);
             }
             gSaveContext.nextDayTime = 0xFFFE;
@@ -414,6 +419,13 @@ void Gameplay_Init(GameState* thisx) {
     PreRender_SetValues(&globalCtx->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
     globalCtx->transitionMode = 0;
+
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        globalCtx->transitionMode = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    }
+
     FrameAdvance_Init(&globalCtx->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&globalCtx->state);
@@ -1471,6 +1483,13 @@ time_t Gameplay_GetRealTime() {
 void Gameplay_Main(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
 
+    if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
+        CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    }
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    }
+
     D_8012D1F8 = &globalCtx->state.input[0];
 
     DebugDisplay_Init();
@@ -1525,6 +1544,10 @@ void Gameplay_Main(GameState* thisx) {
 
     }
 
+}
+
+u8 PlayerGrounded(Player* player) {
+    return player->actor.bgCheckFlags & 1;
 }
 
 // original name: "Game_play_demo_mode_check"
@@ -1983,17 +2006,22 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
 }
 
 void Gameplay_PerformSave(GlobalContext* globalCtx) {
-    Gameplay_SaveSceneFlags(globalCtx);
-    gSaveContext.savedSceneNum = globalCtx->sceneNum;
-    if (gSaveContext.temporaryWeapon) {
-        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-        Save_SaveFile();
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-    } else {
-        Save_SaveFile();
+    if (globalCtx != NULL) {
+        Gameplay_SaveSceneFlags(globalCtx);
+        gSaveContext.savedSceneNum = globalCtx->sceneNum;
+        if (gSaveContext.temporaryWeapon) {
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+            Save_SaveFile();
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        } else {
+            Save_SaveFile();
+        }
+        if (CVar_GetS32("gAutosave", 0)) {
+            Overlay_DisplayText(3.0f, "Game Saved");
+        }
     }
 }

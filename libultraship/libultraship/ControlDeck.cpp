@@ -5,6 +5,7 @@
 #include "DummyController.h"
 #include <Utils/StringHelper.h>
 #include "Cvar.h"
+#include "Lib/ImGui/imgui.h"
 
 #ifndef __WIIU__
 #include "KeyboardController.h"
@@ -73,27 +74,28 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-
-	#ifdef __SWITCH__
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0);
-	#else
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-	#endif
-
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+
+			// If the controller backend is "Auto" we need to get the real device
+			// we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(shouldBlockGameInput && device->GetGuid() != "Keyboard") {
+					if(ShouldBlockGameInput(device->GetGuid())) {
+						device->Read(nullptr, i);
 						continue;
 					}
+
 					device->Read(&pad[i], i);
 				}
 				continue;
 			}
-			if(shouldBlockGameInput && backend->GetGuid() != "Keyboard") {
+
+			if(ShouldBlockGameInput(backend->GetGuid())) {
+				backend->Read(nullptr, i);
 				continue;
 			}
+
 			backend->Read(&pad[i], i);
 		}
 	}
@@ -101,7 +103,7 @@ namespace Ship {
 #define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), virtualSlot, __VA_ARGS__)
 
     void ControlDeck::LoadControllerSettings() {
-        std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+        std::shared_ptr<Mercury> Config = Window::GetInstance()->GetConfig();
 
         for (auto const& val : Config->rjson["Controllers"]["Deck"].items()) {
             int32_t slot = std::stoi(val.key().substr(5));
@@ -187,7 +189,7 @@ namespace Ship {
     }
 
     void ControlDeck::SaveControllerSettings() {
-        std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+        std::shared_ptr<Mercury> Config = Window::GetInstance()->GetConfig();
 
         for (size_t i = 0; i < virtualDevices.size(); i++) {
             std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
@@ -261,4 +263,25 @@ namespace Ship {
         return controllerBits;
     }
 
+    void ControlDeck::BlockGameInput() {
+        shouldBlockGameInput = true;
+    }
+
+    void ControlDeck::UnblockGameInput() {
+        shouldBlockGameInput = false;
+    }
+
+    bool ControlDeck::ShouldBlockGameInput(std::string inputDeviceGuid) const {
+        // We block controller input if F1 menu is open and control navigation is on.
+        // This is because we don't want controller inputs to affect the game
+        bool shouldBlockControllerInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+
+        // We block keyboard input if you're currently typing into a textfield.
+        // This is because we don't want your keyboard typing to affect the game.
+        ImGuiIO io = ImGui::GetIO();
+        bool shouldBlockKeyboardInput = io.WantCaptureKeyboard;
+
+        bool inputDeviceIsKeyboard = inputDeviceGuid == "Keyboard";
+        return shouldBlockGameInput || (inputDeviceIsKeyboard ? shouldBlockKeyboardInput : shouldBlockControllerInput);
+    }
 }

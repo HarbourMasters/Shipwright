@@ -1,7 +1,7 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include "endianness.h"
+#include <libultraship/endianness.h>
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 #define ARRAY_COUNTU(arr) (u32)(sizeof(arr) / sizeof(arr[0]))
@@ -260,5 +260,8 @@ extern GraphicsContext* __gfxCtx;
 
 #define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 
+#define NUM_TRIALS 6
+#define NUM_SHOP_ITEMS 64
+#define NUM_SCRUBS 35
 
 #endif

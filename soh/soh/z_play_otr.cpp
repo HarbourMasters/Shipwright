@@ -1,10 +1,10 @@
-﻿#include "OTRGlobals.h"
-#include "ResourceMgr.h"
-#include "Scene.h"
-#include "Utils/StringHelper.h"
+#include "OTRGlobals.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/Scene.h>
+#include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include "Vertex.h"
+#include <libultraship/Vertex.h>
 
 extern "C" void Gameplay_InitScene(GlobalContext * globalCtx, s32 spawn);
 extern "C" void Gameplay_InitEnvironment(GlobalContext * globalCtx, s16 skyboxId);
@@ -68,7 +68,7 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(globalCtx, globalCtx->sceneSegment);
     Gameplay_InitEnvironment(globalCtx, globalCtx->skyboxId);
-    /* auto data = static_cast<Ship::Vertex*>(Ship::GlobalCtx2::GetInstance()
+    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
                                                .get());

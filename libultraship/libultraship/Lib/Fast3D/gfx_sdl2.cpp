@@ -189,6 +189,7 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     }
 #endif
 
+    SDL_GL_MakeCurrent(wnd, ctx);
     SDL_GL_SetSwapInterval(1);
 
     SohImGui::WindowImpl window_impl;
@@ -303,6 +304,10 @@ static void gfx_sdl_handle_events(void) {
                     #else
                         SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                     #endif
+                } else if (event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(wnd)) {
+                    // We listen specifically for main window close because closing main window
+                    // on macOS does not trigger SDL_Quit.
+                    is_running = false;
                 }
                 break;
             case SDL_DROPFILE:

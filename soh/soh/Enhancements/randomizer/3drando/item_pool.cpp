@@ -9,7 +9,7 @@
 #include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "z64item.h"
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 
 using namespace Settings;
@@ -727,6 +727,16 @@ void GenerateItemPool() {
   } else {
     PlaceItemInLocation(GC_MEDIGORON, GIANTS_KNIFE, false, true);
     PlaceItemInLocation(WASTELAND_BOMBCHU_SALESMAN, BOMBCHU_10, false, true);
+  }
+
+  if (ShuffleFrogSongRupees) {
+    AddItemToMainPool(PURPLE_RUPEE, 5);
+  } else {
+    PlaceItemInLocation(ZR_FROGS_ZELDAS_LULLABY, PURPLE_RUPEE, false, true);
+    PlaceItemInLocation(ZR_FROGS_EPONAS_SONG, PURPLE_RUPEE, false, true);
+    PlaceItemInLocation(ZR_FROGS_SARIAS_SONG, PURPLE_RUPEE, false, true);
+    PlaceItemInLocation(ZR_FROGS_SUNS_SONG, PURPLE_RUPEE, false, true);
+    PlaceItemInLocation(ZR_FROGS_SONG_OF_TIME, PURPLE_RUPEE, false, true);
   }
 
   if (ShuffleAdultTradeQuest) {

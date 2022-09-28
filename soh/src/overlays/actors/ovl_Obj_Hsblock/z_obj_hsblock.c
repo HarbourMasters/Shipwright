@@ -43,7 +43,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 2000, ICHAIN_STOP),
 };
 
-static CollisionHeader* sCollisionHeaders[] = { &gHookshotTargetCol, &gHookshotTargetCol, &gHookshotPostCol };
+static CollisionHeader* sCollisionHeaders[] = { &gHookshotPostCol, &gHookshotPostCol, &gHookshotTargetCol };
 
 static Color_RGB8 sFireTempleColor = { 165, 125, 55 };
 

@@ -5,6 +5,8 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
+#include "soh/Enhancements/debugconsole.h"
+
 typedef struct {
     /* 0x00 */ u8 flag;
     /* 0x02 */ u16 textId;
@@ -1037,6 +1039,11 @@ s32 func_80090014(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
     }
 
+    if (chaosEffectInvisibleLink) {
+        this->actor.shape.shadowDraw = NULL;
+        *dList = NULL;
+    }
+
     return false;
 }
 
@@ -1170,7 +1177,15 @@ void Player_DrawGetItemImpl(GlobalContext* globalCtx, Player* this, Vec3f* refPo
     Matrix_RotateZYX(0, globalCtx->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    GetItem_Draw(globalCtx, drawIdPlusOne - 1);
+    if (!(this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP)) {
+        // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
+        if (this->getItemEntry.drawFunc != NULL &&
+            (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+            this->getItemEntry.drawFunc(globalCtx, &this->getItemEntry);
+        } else {
+            GetItem_Draw(globalCtx, drawIdPlusOne - 1);
+        }
+    }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
@@ -1242,6 +1257,10 @@ f32 sSwordLengths[] = {
     0.0f, 4000.0f, 3000.0f, 5500.0f, 0.0f, 2500.0f,
 };
 
+f32 sSwordTypes[] = {
+    0, 5, 4, 6, 0, 8,
+};
+
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
 
 Color_RGB8 sBottleColors[] = {
@@ -1304,6 +1323,7 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex), 7); // default sword type
                     func_800906D4(globalCtx, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->swordInfo[0].tip, &sp124[0]);
@@ -1326,6 +1346,10 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                if (CVar_GetS32("gSeperateSwords", 0) != 0)
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex), sSwordTypes[Player_GetSwordHeld(this)]);
+                else
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->swordEffectIndex),1); //default sword type
             }
 
             func_80090A28(this, spE4);
@@ -1494,7 +1518,7 @@ u32 func_80091738(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime) {
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
-    SkelAnime_InitLink(globalCtx, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_003238, 9,
+    SkelAnime_InitLink(globalCtx, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_link_normal_wait, 9,
                        ptr, ptr, PLAYER_LIMB_MAX);
 
     return size + 0x8800 + 0x90;
@@ -1676,20 +1700,20 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
     uintptr_t* PauseMenuAnimSet[15][4] = {
         { 0, 0, 0, 0 }, // 0 = none
         // IDLE               // Two Handed       // No shield        // Kid Hylian Shield
-        { gPlayerAnim_003238, gPlayerAnim_002BE0, gPlayerAnim_003240, gPlayerAnim_003240 }, // Idle
-        { gPlayerAnim_003200, gPlayerAnim_003200, gPlayerAnim_003200, gPlayerAnim_003200 }, // Idle look around
-        { gPlayerAnim_0033E0, gPlayerAnim_0033E0, gPlayerAnim_0033E0, gPlayerAnim_0033E0 }, // Idle Belt
-        { gPlayerAnim_003418, gPlayerAnim_003418, gPlayerAnim_003418, gPlayerAnim_003418 }, // Idle shield adjust
-        { gPlayerAnim_003420, gPlayerAnim_003428, gPlayerAnim_003420, gPlayerAnim_003420 }, // Idle test sword
-        { gPlayerAnim_0033F0, gPlayerAnim_0033F0, gPlayerAnim_0033F0, gPlayerAnim_0033F0 }, // Idle yawn
-        { gPlayerAnim_0025D0, gPlayerAnim_002BD0, gPlayerAnim_0025D0, gPlayerAnim_0025D0 }, // Battle Stance
-        { gPlayerAnim_003290, gPlayerAnim_002BF8, gPlayerAnim_003290, gPlayerAnim_003290 }, // Walking (No shield)
-        { gPlayerAnim_003268, gPlayerAnim_002BF8, gPlayerAnim_003268, gPlayerAnim_003268 }, // Walking (Holding shield)
-        { gPlayerAnim_003138, gPlayerAnim_002B40, gPlayerAnim_003138, gPlayerAnim_003138 }, // Running (No shield)
-        { gPlayerAnim_003140, gPlayerAnim_002B40, gPlayerAnim_003140, gPlayerAnim_003140 }, // Running (Holding shield)
-        { gPlayerAnim_0031A8, gPlayerAnim_0031A8, gPlayerAnim_0031A8, gPlayerAnim_0031A8 }, // Hand on hip
-        { gPlayerAnim_002AF0, gPlayerAnim_002928, gPlayerAnim_002AF0, gPlayerAnim_002AF0 }, // Spin Charge
-        { gPlayerAnim_002820, gPlayerAnim_002820, gPlayerAnim_002820, gPlayerAnim_002820 }, // Look at hand
+        { gPlayerAnim_link_normal_wait, gPlayerAnim_link_fighter_wait_long, gPlayerAnim_link_normal_wait_free, gPlayerAnim_link_normal_wait_free }, // Idle
+        { gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f }, // Idle look around
+        { gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f }, // Idle Belt
+        { gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f }, // Idle shield adjust
+        { gPlayerAnim_link_wait_itemD1_20f, gPlayerAnim_link_wait_itemD2_20f, gPlayerAnim_link_wait_itemD1_20f, gPlayerAnim_link_wait_itemD1_20f }, // Idle test sword
+        { gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f }, // Idle yawn
+        { gPlayerAnim_link_anchor_waitR, gPlayerAnim_link_fighter_waitR_long, gPlayerAnim_link_anchor_waitR, gPlayerAnim_link_anchor_waitR }, // Battle Stance
+        { gPlayerAnim_link_normal_walk_free, gPlayerAnim_link_fighter_walk_long, gPlayerAnim_link_normal_walk_free, gPlayerAnim_link_normal_walk_free }, // Walking (No shield)
+        { gPlayerAnim_link_normal_walk, gPlayerAnim_link_fighter_walk_long, gPlayerAnim_link_normal_walk, gPlayerAnim_link_normal_walk }, // Walking (Holding shield)
+        { gPlayerAnim_link_normal_run, gPlayerAnim_link_fighter_run_long, gPlayerAnim_link_normal_run, gPlayerAnim_link_normal_run }, // Running (No shield)
+        { gPlayerAnim_link_normal_run_free, gPlayerAnim_link_fighter_run_long, gPlayerAnim_link_normal_run_free, gPlayerAnim_link_normal_run_free }, // Running (Holding shield)
+        { gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait }, // Hand on hip
+        { gPlayerAnim_link_fighter_power_kiru_wait, gPlayerAnim_link_fighter_Lpower_kiru_wait, gPlayerAnim_link_fighter_power_kiru_wait, gPlayerAnim_link_fighter_power_kiru_wait }, // Spin Charge
+        { gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait }, // Look at hand
     };
     s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
@@ -1848,10 +1872,10 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
 
         anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
 
-        //anim = gPlayerAnim_003428; // Use for biggoron sword?
+        //anim = gPlayerAnim_link_wait_itemD2_20f; // Use for biggoron sword?
 
         if (CVar_GetS32("gPauseTriforce", 0)) {
-            anim = gPlayerAnim_002D00;
+            anim = gPlayerAnim_link_magic_kaze2;
             sword = 0;
             shield = 0;
         }
@@ -1871,17 +1895,17 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
 
         if (!LINK_IS_ADULT) {
             if (shield == PLAYER_SHIELD_DEKU) {
-                srcTable = D_040020D0;
+                srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
-                srcTable = D_04002040;
+                srcTable = gLinkPauseChildJointTable;
             }
         } else {
             if (sword == 3) {
-                srcTable = D_04002160;
+                srcTable = gLinkPauseAdultBgsJointTable;
             } else if (shield != PLAYER_SHIELD_NONE) {
-                srcTable = D_04002280;
+                srcTable = gLinkPauseAdultShieldJointTable;
             } else {
-                srcTable = D_040021F0;
+                srcTable = gLinkPauseAdultJointTable;
             }
         }
 

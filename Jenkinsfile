@@ -23,7 +23,7 @@ pipeline {
                     ])
                     sh '''
                         cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+                        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                         cmake --build build-cmake --target ExtractAssets --config Release
                     '''
                     stash includes: 'soh/assets/**/*', name: 'assets'
@@ -206,9 +206,10 @@ pipeline {
                             docker exec sohwiiucont scripts/wiiu/build.sh
                             
                             mv build-wiiu/soh/*.rpx soh.rpx
+                            mv build-wiiu/soh/*.wuhb soh.wuhb
                             mv README.md readme.txt
                             
-                            7z a soh-wiiu.7z soh.rpx readme.txt
+                            7z a soh-wiiu.7z soh.rpx soh.wuhb readme.txt
                             
                             '''
                         }
