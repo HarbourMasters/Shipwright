@@ -530,27 +530,25 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(SDL2)
     find_package(GLEW)
     find_package(X11)
     if (NOT GLEW_FOUND)
-        if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-            include (FetchContent)
-            FetchContent_Declare(
-                glew
-                GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-                SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
-            )
-            FetchContent_MakeAvailable(glew)
-            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
-        endif()
+        include (FetchContent)
+        FetchContent_Declare(
+            glew
+            GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
+        )
+        FetchContent_MakeAvailable(glew)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
     endif()
 
     if (NOT GLEW_FOUND)
        set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/include)
     else()
-        set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+        set(GLEW-INCLUDE ${GLEW_INCLUDE_DIRS})
     endif()
     set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")

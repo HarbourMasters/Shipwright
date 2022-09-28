@@ -189,7 +189,6 @@ namespace Logic {
   bool BombchuDrop      = false;
   bool AmmoCanDrop      = false;
 
-  bool BuyBombchus5     = false;
   bool BuyBombchus10    = false;
   bool BuyBombchus20    = false;
   bool BuySeed          = false;
@@ -708,7 +707,7 @@ namespace Logic {
 
     FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
     CanPlayBowling  = (BombchusInLogic && FoundBombchus) || (!BombchusInLogic && BombBag);
-    HasBombchus     = (BuyBombchus5 || BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
+    HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
 
     HasExplosives =  Bombs || (BombchusInLogic && HasBombchus);
 
@@ -1067,7 +1066,6 @@ namespace Logic {
      FairyPond        = false;
      BombchuDrop      = false;
 
-     BuyBombchus5     = false;
      BuyBombchus10    = false;
      BuyBombchus20    = false;
      BuySeed          = false;

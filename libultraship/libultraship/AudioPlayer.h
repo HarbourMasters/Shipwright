@@ -19,6 +19,6 @@ namespace Ship {
 #include "WasapiAudioPlayer.h"
 #elif defined(__linux)
 #include "PulseAudioPlayer.h"
-#else
-#include "SDLAudioPlayer.h"
 #endif
+
+#include "SDLAudioPlayer.h"
