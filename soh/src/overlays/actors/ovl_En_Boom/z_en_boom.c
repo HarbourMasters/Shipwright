@@ -97,6 +97,11 @@ void EnBoom_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetQuad(globalCtx, &this->collider, &this->actor, &sQuadInit);
 
     EnBoom_SetupAction(this, EnBoom_Fly);
+
+    Player* player = GET_PLAYER(globalCtx);
+    if(player->boomSpawnGrab){
+        this->grabbed = player->boomSpawnGrab;
+    }
 }
 
 void EnBoom_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -158,7 +163,7 @@ void EnBoom_Fly(EnBoom* this, GlobalContext* globalCtx) {
     collided = this->collider.base.atFlags & AT_HIT;
     collided = !!(collided);
     if (collided) {
-        if (((this->collider.base.at->id == ACTOR_EN_ITEM00) || (this->collider.base.at->id == ACTOR_EN_SI))) {
+        if (((this->collider.base.at->id == ACTOR_EN_ITEM00) || (this->collider.base.at->id == ACTOR_EN_SI) || (this->collider.base.at->id == ACTOR_EN_BOM))) {
             this->grabbed = this->collider.base.at;
             if (this->collider.base.at->id == ACTOR_EN_SI) {
                 this->collider.base.at->flags |= ACTOR_FLAG_13;
@@ -191,11 +196,12 @@ void EnBoom_Fly(EnBoom* this, GlobalContext* globalCtx) {
             player->stateFlags1 &= ~PLAYER_STATE1_25;
             player->boomerangQuickRecall = false;
             Actor_Kill(&this->actor);
+            player->boomSpawnGrab = 0;
         }
     } else {
         collided = (this->collider.base.atFlags & AT_HIT);
         collided = (!!(collided));
-        if (collided) {
+        if (collided && this->collider.base.at != player->boomSpawnGrab) {
             // Copy the position from the prevous frame to the boomerang to start the bounce back.
             Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
         } else {

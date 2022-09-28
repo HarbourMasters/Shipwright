@@ -96,13 +96,15 @@ void EnBom_Init(Actor* thisx, GlobalContext* globalCtx) {
     thisx->colChkInfo.mass = 200;
     thisx->colChkInfo.cylRadius = 5;
     thisx->colChkInfo.cylHeight = 10;
-    this->timer = 70;
+    this->timer = 270;
     this->flashSpeedScale = 7;
     Collider_InitCylinder(globalCtx, &this->bombCollider);
     Collider_InitJntSph(globalCtx, &this->explosionCollider);
     Collider_SetCylinder(globalCtx, &this->bombCollider, thisx, &sCylinderInit);
     Collider_SetJntSph(globalCtx, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
     this->explosionColliderItems[0].info.toucher.damage += (thisx->shape.rot.z & 0xFF00) >> 8;
+
+    this->bombCollider.info.bumper.dmgFlags |= 16; //makes boomerang interact with it
 
     thisx->shape.rot.z &= 0xFF;
     if (thisx->shape.rot.z & 0x80) {
@@ -267,8 +269,11 @@ void EnBom_Update(Actor* thisx, GlobalContext* globalCtx2) {
 
         if ((this->bombCollider.base.acFlags & AC_HIT) || ((this->bombCollider.base.ocFlags1 & OC1_HIT) &&
                                                            (this->bombCollider.base.oc->category == ACTORCAT_ENEMY))) {
-            this->timer = 0;
-            thisx->shape.rot.z = 0;
+            if (this->bombCollider.base.ac != NULL &&              //no segfault pls
+                this->bombCollider.base.ac->id != ACTOR_EN_BOOM) { //makes sure boomerang won't explode it
+                this->timer = 0;
+                thisx->shape.rot.z = 0;
+            }
         } else {
             // if a lit stick touches the bomb, set timer to 100
             // these bombs never have a timer over 70, so this isnt used

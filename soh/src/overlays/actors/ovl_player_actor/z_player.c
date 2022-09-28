@@ -6446,8 +6446,57 @@ s32 func_8083EB44(Player* this, GlobalContext* globalCtx) {
         CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)) {
         if (!func_80835644(globalCtx, this, this->heldActor)) {
             if (!func_8083EAF0(this, this->heldActor)) {
-                func_80835C58(globalCtx, this, func_808464B0, 1);
-                func_80832264(globalCtx, this, D_80853914[PLAYER_ANIMGROUP_30][this->modelAnimType]);
+                u8 bombarang = 0;
+                if(this->heldActor->id == ACTOR_EN_BOM) {
+                    //check for cbutton/dpad equips
+                    //Please do let me (RR) know if there's something better than a big-ass if statement
+                    if (
+                            (gSaveContext.equips.buttonItems[1] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_CLEFT))) ||
+
+                            (gSaveContext.equips.buttonItems[2] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_CDOWN))) ||
+
+                            (gSaveContext.equips.buttonItems[3] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_CRIGHT))) ||
+
+                            (gSaveContext.equips.buttonItems[4] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_DUP))) ||
+
+                            (gSaveContext.equips.buttonItems[5] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_DDOWN))) ||
+
+                            (gSaveContext.equips.buttonItems[6] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_DLEFT))) ||
+
+                            (gSaveContext.equips.buttonItems[7] == ITEM_BOOMERANG &&
+                            (CHECK_BTN_ANY(sControlInput->press.button, BTN_DRIGHT)))){
+
+                            this->boomSpawnGrab = this->heldActor;
+                            bombarang = 1;
+                    }
+                }
+                if (!bombarang){
+                    func_80835C58(globalCtx, this, func_808464B0, 1);
+                    func_80832264(globalCtx, this, D_80853914[PLAYER_ANIMGROUP_30][this->modelAnimType]);
+                }
+                else {
+                    func_80835C58(globalCtx, this, func_808464B0, 1);
+                    //call default boomerang behavior
+                    func_8083399C(globalCtx, this, PLAYER_AP_BOOMERANG);
+
+                    LinkAnimationHeader* anim;
+                    f32 frame;
+                    anim = func_808346C4(globalCtx, this);
+                    frame = Animation_GetLastFrame(anim);
+                    LinkAnimation_Change(globalCtx, &this->skelAnime2, &gPlayerAnim_link_boom_throw_wait2waitR, 1.0f, frame, frame, ANIMMODE_ONCE, 0.0f);
+                    //func_8002F7DC(&this->actor, NA_SE_IT_SHIELD_POSTURE);
+
+                    func_80833638(this, func_80835884);
+                    this->unk_834 = 10;
+                    LinkAnimation_PlayOnce(globalCtx, &this->skelAnime2, &gPlayerAnim_link_boom_throw_wait2waitR);
+                    //this->heldActor = NULL;
+                }
             } else {
                 func_8083EA94(this, globalCtx);
             }
@@ -9557,6 +9606,8 @@ void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeade
     Collider_SetQuad(globalCtx, &this->swordQuads[1], &this->actor, &D_80854650);
     Collider_InitQuad(globalCtx, &this->shieldQuad);
     Collider_SetQuad(globalCtx, &this->shieldQuad, &this->actor, &D_808546A0);
+
+    this->boomSpawnGrab = 0;
 }
 
 static void (*D_80854738[])(GlobalContext* globalCtx, Player* this) = {
