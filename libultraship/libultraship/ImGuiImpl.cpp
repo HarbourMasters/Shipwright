@@ -229,7 +229,7 @@ namespace SohImGui {
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
 
 #ifdef __SWITCH__
-            Ship::Switch::ImGuiProcessEvent();
+            Ship::Switch::ImGuiProcessEvent(io->WantTextInput);
 #endif
             break;
 #endif

@@ -28,7 +28,7 @@ namespace Ship {
             static void Exit();
             static void SetupFont(ImFontAtlas* fonts);
             static void ImGuiSwapABXY(int start_event);
-            static void ImGuiProcessEvent();
+            static void ImGuiProcessEvent(bool wantsTextInput);
             static bool IsRunning();
             static void GetDisplaySize(int *width, int *height);
             static void ApplyOverclock();

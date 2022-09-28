@@ -110,10 +110,10 @@ void Ship::Switch::ImGuiSwapABXY(int start_event) {
     }
 }
 
-void Ship::Switch::ImGuiProcessEvent() {
+void Ship::Switch::ImGuiProcessEvent(bool wantsTextInput) {
     ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
 
-    if (io->WantTextInput) {
+    if (wantsTextInput) {
         if (!isShowingVirtualKeyboard) {
             state->ClearText();
 
