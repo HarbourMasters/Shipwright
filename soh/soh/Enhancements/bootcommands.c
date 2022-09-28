@@ -26,6 +26,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
     CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
 	CVar_RegisterS32("gInvertYAxis", 1);
+    CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

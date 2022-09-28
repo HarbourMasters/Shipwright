@@ -40,13 +40,13 @@ const char* MarginCvarList[] {
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
     unsigned long range = 255 - 0;
-    #ifndef __SWITCH__
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     std::random_device rd;
     std::mt19937 rng(rd());
-    #else
+#else
     size_t seed = std::hash<std::string>{}(std::to_string(rand()));
     std::mt19937_64 rng(seed);
-    #endif
+#endif
     std::uniform_int_distribution<int> dist(0, 255 - 1);
     
     NewColor.x = (float)(dist(rng)) / 255;
@@ -55,9 +55,9 @@ ImVec4 GetRandomValue(int MaximumPossible){
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
-    #ifdef __SWITCH__
+#if defined(__SWITCH__) || defined(__WIIU__)
     srand(time(NULL));
-    #endif
+#endif
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
@@ -343,7 +343,11 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         ImGui::TableSetupColumn(Col1Name.c_str(), FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
         Table_InitHeader(false);
+    #ifdef __WIIU__
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             CVar_SetS32("gHudColors", 2);
             CVar_SetS32("gUseNaviCol", 1);
             CVar_SetS32("gUseKeeseCol", 1);
@@ -358,7 +362,11 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         }
         UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
+    #ifdef __WIIU__
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             GetDefaultColorRGB(ColorSection, SectionSize);
         }
         UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
@@ -459,8 +467,8 @@ void Draw_ItemsSkills(){
         Table_InitHeader();
         DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
-        UIWidgets::EnhancementSliderInt("Sword Trail Length: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
-        UIWidgets::Tooltip("Determines length of Link's sword trails.");
+        UIWidgets::EnhancementSliderInt("Sword Trail Duration: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines the duration of Link's sword trails.");
         ResetTrailLength("gTrailDuration", 4);
         UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
         if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {

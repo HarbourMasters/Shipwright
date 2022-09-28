@@ -114,7 +114,7 @@ namespace GameMenuBar {
         // Invert Camera X Axis
         CVar_SetS32("gInvertXAxis", 0);
         // Invert Camera Y Axis
-        CVar_SetS32("gInvertYAxis", 0);
+        CVar_SetS32("gInvertYAxis", 1);
         // Right Stick Aiming
         CVar_SetS32("gRightStickAiming", 0);
         // Auto-Center First Person View
@@ -315,8 +315,6 @@ namespace GameMenuBar {
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
-        // D-pad Support on Pause
-        CVar_SetS32("gDpadPause", 1);
         // D-pad Support in text and file select
         CVar_SetS32("gDpadText", 1);
         // Play Ocarina with D-pad
@@ -504,6 +502,22 @@ namespace GameMenuBar {
                 UIWidgets::Spacer(0);
                 BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
 
+                ImGui::Text("Audio API (Needs reload)");
+                auto audioBackends = SohImGui::GetAvailableAudioBackends();
+                auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
+
+                if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
+                    if (audioBackends.size() > 1) {
+                        for (uint8_t i = 0; i < audioBackends.size(); i++) {
+                            if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+                                SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
+                            }
+                        }
+                    }
+
+                    ImGui::EndCombo();
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -586,7 +600,7 @@ namespace GameMenuBar {
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
                 #ifdef __SWITCH__
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-                #elif __WIIU__
+                #elif defined(__WIIU__)
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
                 #else
                     ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -611,13 +625,15 @@ namespace GameMenuBar {
                 }
 
                 ImGui::Text("Renderer API (Needs reload)");
-                auto backends = SohImGui::GetAvailableRenderingBackends();
-                auto currentBackend = SohImGui::GetCurrentRenderingBackend();
+                auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
+                auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
-                if (ImGui::BeginCombo("##RApi", currentBackend.second)) {
-                    for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
-                        if (ImGui::Selectable(backends[i].second, backends[i] == currentBackend)) {
-                            SohImGui::SetCurrentRenderingBackend(i, backends[i]);
+                if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
+                    if (renderingBackends.size() > 1) {
+                        for (uint8_t i = 0; i < renderingBackends.size(); i++) {
+                            if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+                                SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
+                            }
                         }
                     }
 
@@ -1090,7 +1106,11 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+        #ifdef __WIIU__
+            static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
+        #else
             static ImVec2 buttonSize(200.0f, 0.0f);
+        #endif
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gCosmeticsEditorEnabled", 0);
@@ -1155,7 +1175,7 @@ namespace GameMenuBar {
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             #ifdef __SWITCH__
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-            #elif __WIIU__
+            #elif defined(__WIIU__)
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
             #else
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
@@ -1389,7 +1409,11 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+        #ifdef __WIIU__
+            static ImVec2 buttonSize(160.0f * 2.0f, 0.0f);
+        #else
             static ImVec2 buttonSize(160.0f, 0.0f);
+        #endif
             if (ImGui::Button(GetWindowButtonText("Stats", CVar_GetS32("gStatsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gStatsEnabled", 0);
@@ -1445,7 +1469,11 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+        #ifdef __WIIU__
+            static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
+        #else
             static ImVec2 buttonSize(200.0f, 0.0f);
+        #endif
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVar_GetS32("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gRandomizerSettingsEnabled", 0);
@@ -1471,6 +1499,8 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
+            UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
+            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
 
             UIWidgets::PaddedSeparator();
 
