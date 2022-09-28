@@ -67,7 +67,9 @@
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
-#include "imgui_internal.h
+#ifdef __SWITCH__
+#include "imgui_internal.h"
+#endif
 
 // SDL
 // (the multi-viewports feature requires SDL features supported from SDL 2.0.4+. SDL 2.0.5+ is highly recommended)
@@ -269,9 +271,10 @@ bool ImGui_ImplSDL2_ProcessEvent(const SDL_Event* event)
 {
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplSDL2_Data* bd = ImGui_ImplSDL2_GetBackendData();
-    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
 
 #ifdef __SWITCH__
+    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+
     if (io.WantTextInput) {
         if (!bd->ShowingVirtualKeyboard) {
             state->ClearText();
