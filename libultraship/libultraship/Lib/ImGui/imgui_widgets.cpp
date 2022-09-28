@@ -4598,9 +4598,11 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                 apply_new_text_length = state->CurLenA;
             }
         }
-
+// Not sure why these are being cleared here, but we need the flags for the software keyboard in the wiiu backend
+#ifndef __WIIU__
         // Clear temporary user storage
         state->Flags = ImGuiInputTextFlags_None;
+#endif
     }
 
     // Copy result to user buffer. This can currently only happen when (g.ActiveId == id)
