@@ -104,15 +104,135 @@ Other changes:
 
 Breaking changes:
 
+ - Renamed and merged keyboard modifiers key enums and flags into a same set:  (#4921, #456)
+    - ImGuiKey_ModCtrl  and ImGuiModFlags_Ctrl  -> ImGuiMod_Ctrl
+    - ImGuiKey_ModShift and ImGuiModFlags_Shift -> ImGuiMod_Shift
+    - ImGuiKey_ModAlt   and ImGuiModFlags_Alt   -> ImGuiMod_Alt
+    - ImGuiKey_ModSuper and ImGuiModFlags_Super -> ImGuiMod_Super
+   Kept inline redirection enums (will obsolete).
+   This change simplifies a few things, reduces confusion, and will facilitate upcoming
+   shortcut/input ownership apis.
+   - The ImGuiKey_ModXXX were introduced in 1.87 and mostly used by backends.
+   - The ImGuiModFlags_XXX have been exposed in imgui.h but not really used by any public api,
+     only by third-party extensions. They were however subject to a recent rename
+     (ImGuiKeyModFlags_XXX -> ImGuiModFlags_XXX) and we are exceptionally commenting out
+     the older ImGuiKeyModFlags_XXX names ahead of obsolescence schedule to reduce confusion
+     and because they were not meant to be used anyway.
+ - Removed io.NavInputs[] and ImGuiNavInput enum that were used to feed gamepad inputs.
+   Basically 1.87 already obsoleted them from the backend's point of view, but internally
+   our navigation code still used this array and enum, so they were still present.
+   Not anymore! (#4921, #4858, #787, #1599, #323)
+   Transition guide:
+    - Official backends from 1.87+                  -> no issue.
+    - Official backends from 1.60 to 1.86           -> will build and convert gamepad inputs, unless IMGUI_DISABLE_OBSOLETE_KEYIO is defined. Need updating!
+    - Custom backends not writing to io.NavInputs[] -> no issue.
+    - Custom backends writing to io.NavInputs[]     -> will build and convert gamepad inputs, unless IMGUI_DISABLE_OBSOLETE_KEYIO is defined. Need fixing!
+    - TL;DR: Backends should call io.AddKeyEvent()/io.AddKeyAnalogEvent() with ImGuiKey_GamepadXXX values instead of filling io.NavInput[].
+   That data was essentially 1.60's attempt to combine keyboard and gamepad inputs with named
+   semantic, but the additional indirection and copy added complexity and got in the way of other
+   incoming work. User's code (other than backends) should not be affected, unless you have custom
+   widgets intercepting navigation events via the named enums (in which case you can upgrade your code).
+ - Changed signature of ImageButton() function: (#5533, #4471, #2464, #1390)
+   - Added 'const char* str_id' parameter + removed 'int frame_padding = -1' parameter.
+   - Old signature: bool ImageButton(ImTextureID tex_id, ImVec2 size, ImVec2 uv0 = ImVec2(0,0), ImVec2 uv1 = ImVec2(1,1), int frame_padding = -1, ImVec4 bg_col = ImVec4(0,0,0,0), ImVec4 tint_col = ImVec4(1,1,1,1));
+     - used the ImTextureID value to create an ID. This was inconsistent with other functions, led to ID conflicts, and caused problems with engines using transient ImTextureID values.
+     - had a FramePadding override which was inconsistent with other functions and made the already-long signature even longer.
+   - New signature: bool ImageButton(const char* str_id, ImTextureID tex_id, ImVec2 size, ImVec2 uv0 = ImVec2(0,0), ImVec2 uv1 = ImVec2(1,1), ImVec4 bg_col = ImVec4(0,0,0,0), ImVec4 tint_col = ImVec4(1,1,1,1));
+     - requires an explicit identifier. You may still use e.g. PushID() calls and then pass an empty identifier.
+     - always uses style.FramePadding for padding, to be consistent with other buttons. You may use PushStyleVar() to alter this.
+   - As always we are keeping a redirection function available (will obsolete later).
+ - Removed the bizarre legacy default argument for 'TreePush(const void* ptr = NULL)'. (#1057)
+   Must always pass a pointer value explicitly, NULL is ok.
+ - Commented out redirecting functions/enums names that were marked obsolete in 1.77 and 1.78 (June 2020): (#3361)
+   - DragScalar(), DragScalarN(), DragFloat(), DragFloat2(), DragFloat3(), DragFloat4()
+   - SliderScalar(), SliderScalarN(), SliderFloat(), SliderFloat2(), SliderFloat3(), SliderFloat4()
+     - For old signatures ending with (..., const char* format, float power = 1.0f) -> use (..., format ImGuiSliderFlags_Logarithmic) if power != 1.0f.
+   - BeginPopupContextWindow(const char*, ImGuiMouseButton, bool)                   -> use BeginPopupContextWindow(const char*, ImGuiPopupFlags)
+ - Obsoleted using SetCursorPos()/SetCursorScreenPos() to extend parent window/cell boundaries. (#5548)
+   This relates to when moving the cursor position beyond current boundaries WITHOUT submitting an item.
+   - Previously this would make the window content size ~200x200:
+       Begin(...) + SetCursorScreenPos(GetCursorScreenPos() + ImVec2(200,200)) + End();
+   - Instead, please submit an item:
+       Begin(...) + SetCursorScreenPos(GetCursorScreenPos() + ImVec2(200,200)) + Dummy(ImVec2(0,0)) + End();
+   - Alternative:
+       Begin(...) + Dummy(ImVec2(200,200)) + End();
+   Content size is now only extended when submitting an item.
+   With '#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS' this will now be detected and assert.
+   Without '#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS' this will silently be fixed until we obsolete it.
+   (This incorrect pattern has been mentioned or suggested in: #4510, #3355, #1760, #1490, #4152, #150,
+    threads have been amended to refer to this issue).
+
+
 Other Changes:
 
+- Popups & Modals: fixed nested Begin() being erroneously input-inhibited. While it is
+  unusual, you can nest a Begin() inside a popup or modal, it is occasionally useful to
+  achieve certains things (e.g. some ways to implement suggestion popup #718, #4461).
 - InputText: added experimental io.ConfigInputTextEnterKeepActive feature to make pressing
   Enter keep the input active and select all text.
+- InputText: numerical fields automatically accept full-width characters (U+FF01..U+FF5E)
+  by converting them to half-width (U+0021..U+007E).
+- InputText: added ImGuiInputTextFlags_EscapeClearsAll flag: first press on Escape clears
+  text if any, second press deactivate the InputText(). (#5688)
+- InputText: added support for shift+click style selection. (#5619) [@procedural]
+- InputText: clarified that callbacks cannot modify buffer when using the ReadOnly flag.
+- InputText: fixed minor one-frame selection glitch when reverting with Escape.
+- IsItemHovered: Added ImGuiHoveredFlags_DelayNormal and ImGuiHoveredFlags_DelayShort flags,
+  allowing to introduce a shared delay for tooltip idioms. The delays are respectively
+  io.HoverDelayNormal (default to 0.30f) and io.HoverDelayFast (default to 0.10f). (#1485)
+- IsItemHovered: Added ImGuiHoveredFlags_NoSharedDelay to disable sharing delays between itemm,
+  so moving from one item to a nearby one will requires delay to elapse again. (#1485)
+- Tables,Columns: fixed a layout issue where SameLine() prior to a row change would set the
+  next row in such state where subsequent SameLine() would move back to previous row.
+- Tabs: Fixed a crash when closing multiple windows (possible with docking only) with an
+  appended TabItemButton(). (#5515, #3291) [@rokups]
+- Tabs: Fixed shrinking policy leading to infinite loops when fed unrounded tab widths. (#5652)
+- Tabs: Fixed shrinking policy sometimes erroneously making right-most tabs stray a little out
+  bar boundaries (bug in 1.88). (#5652).
+- Tabs: Enforcing minimum size of 1.0f, fixed asserting on zero-tab widths. (#5572)
+- Window: Fixed a potential crash when appending to a child window. (#5515, #3496, #4797) [@rokups]
+- IO: Added ImGuiMod_Shortcut which is ImGuiMod_Super on Mac and ImGuiMod_Ctrl otherwise. (#456)
+- IO: Added ImGuiKey_MouseXXX aliases for mouse buttons/wheel so all operations done on ImGuiKey
+  can apply to mouse data as well. (#4921)
+- Menus: Fixed incorrect sub-menu parent association when opening a menu by closing another.
+  Among other things, it would accidentally break part of the closing heuristic logic when moving
+  towards a sub-menu. (#2517, #5614). [@rokups]
+- Menus: Fixed gaps in closing logic which would make child-menu erroneously close when crossing
+  the gap between a menu item inside a window and a child-menu in a secondary viewport. (#5614)
+- Nav: Fixed moving/resizing window with gamepad or keyboard when running at very high framerate.
+- Nav: Pressing Space/GamepadFaceDown on a repeating button uses the same repeating rate as a mouse hold.
+- Nav: Fixed an issue opening a menu with Right key from a non-menu window.
+- Platform IME: [Windows] Removed call to ImmAssociateContextEx() leading to freeze on some setups.
+  (#2589, #5535, #5264, #4972)
+- Misc: ImGuiKey is now a typed enum, allowing ImGuiKey_XXX symbols to be named in debuggers. (#4921)
+- Misc: better error reporting for PopStyleColor()/PopStyleVar() + easier to recover. (#1651)
+- Misc: io.Framerate moving average now converge in 60 frames instead of 120. (#5236, #4138)
+- Debug Tools: Debug Log: Added 'IO' and 'Clipper' events logging.
+- Debug Tools: Item Picker: Mouse button can be changed by holding Ctrl+Shift, making it easier
+  to use the Item Picker in e.g. menus. (#2673)
+- Docs: Fixed various typos in comments and documentations. (#5649, #5675, #5679) [@tocic, @lessigsx]
+- Demo: Improved "Constrained-resizing window" example, more clearly showcase aspect-ratio. (#5627)
+- Demo: Added more explicit "Center window" mode to "Overlay example". (#5618)
+- Examples: Added all SDL examples to default VS solution.
+- Backends: GLFW: Honor GLFW_CURSOR_DISABLED by not setting mouse position. (#5625) [@scorpion-26]
+- Backends: SDL: Disable SDL 2.0.22 new "auto capture" which prevents drag and drop across windows
+  (e.g. for multi-viewport support) and don't capture mouse when drag and dropping. (#5710)
 - Backends: Metal: Use __bridge for ARC based systems. (#5403) [@stack]
+- Backends: Metal: Add dispatch synchronization. (#5447) [@luigifcruz]
+- Backends: Metal: Update deprecated property 'sampleCount'->'rasterSampleCount'. (#5603) [@dcvz]
 - Backends: OSX: Fixes to support full app creation in C++. (#5403) [@stack]
 
 Docking+Viewports Branch:
 
+- Docking: Fixed incorrect focus highlight on docking node when focusing a menu. (#5702)
+- Docking, Nav: Fixed using gamepad/keyboard navigation not being able enter menu layer when
+  it only contained the standard Collapse/Close buttons and no actual menu. (#5463, #4792)
+- Docking: Fixed regression introduced in v1.87 when docked window content not rendered
+  while switching between with CTRL+Tab. [@rokups]
+- Docking: Fixed amending into an existing tab bar from rendering invisible items. (#5515)
+- Docking+Viewports: Fixed undocking window node causing parent viewports to become unresponsive
+  in certain situation (e.g. hidden tab bar). (#5503) [@rokups]
+- Backends: SDL: Fixed building backend under non-OSX Apple targets (e.g. iPhone). (#5665)
 - Backends: GLFW: Fixed leftover static variable preventing from changing or
   reinitializing backend while application is running. (#4616, #5434) [@rtoumazet]
 
@@ -193,8 +313,8 @@ Other Changes:
   merging draw-call of the last column didn't always work (regression since 1.87). (#4843, #4844) [@rokups]
 - Inputs: Fixed IsMouseClicked() repeat mode rate being half of keyboard repeat rate.
 - ColorEdit: Fixed text baseline alignment after a SameLine() after a ColorEdit() with visible label.
-- TabBar: BeginTabItem() now reacts to SetNextItemWidth(). (#5262)
-- TabBar: Tweak shrinking policy so that while resizing tabs that don't need shrinking keep their
+- Tabs: BeginTabItem() now reacts to SetNextItemWidth(). (#5262)
+- Tabs: Tweak shrinking policy so that while resizing tabs that don't need shrinking keep their
   initial width more precisely (without the occasional +1 worth of width).
 - Menus: Adjusted BeginMenu() closing logic so hovering void or non-MenuItem() in parent window
   always lead to menu closure. Fixes using items that are not MenuItem() or BeginItem() at the root
@@ -209,10 +329,10 @@ Other Changes:
 - DrawList: Fixed texture-based anti-aliasing path with RGBA textures (#5132, #3245) [@cfillion]
 - DrawList: Fixed divide-by-zero or glitches with Radius/Rounding values close to zero. (#5249, #5293, #3491)
 - DrawList: Circle with a radius smaller than 0.5f won't appear, to be consistent with other primitives. [@thedmd]
-- Debug: Added ShowDebugLogWindow() showing an opt-in synthetic log of principal events (focus, popup,
-  active id changes) helping to diagnose issues.
-- Debug: Added DebugTextEncoding() function to facilitate diagnosing issues when not sure about whether
-  you have a UTF-8 text encoding issue or a font loading issue. [@LaMarche05, @ocornut]
+- Debug Tools: Debug Log: Added ShowDebugLogWindow() showing an opt-in synthetic log of principal events
+  (focus, popup, active id changes) helping to diagnose issues.
+- Debug Tools: Added DebugTextEncoding() function to facilitate diagnosing issues when not sure about
+  whether you have a UTF-8 text encoding issue or a font loading issue. [@LaMarche05, @ocornut]
 - Demo: Add better demo of how to use SetNextFrameWantCaptureMouse()/SetNextFrameWantCaptureKeyboard().
 - Metrics: Added a "UTF-8 Encoding Viewer" section using the aforementioned DebugTextEncoding() function.
 - Metrics: Added "InputText" section to visualize internal state (#4947, #4949).
@@ -562,7 +682,7 @@ If you are stuck on ancient compiler you may need to stay at this version onward
 
 Breaking Changes:
 
-- Removed GetWindowContentRegionWidth() function. Keep inline redirection helper.
+- Removed GetWindowContentRegionWidth() function. Kept inline redirection helper.
   Can use 'GetWindowContentRegionMax().x - GetWindowContentRegionMin().x' instead but it's not
   very useful in practice, and the only use of it in the demo was illfit.
   Using 'GetContentRegionAvail().x' is generally a better choice.
@@ -741,7 +861,7 @@ Other Changes:
   Convenient for some small columns. Name will still appear in context menu. (#4206).
 - Tables: Fixed columns order on TableSetupScrollFreeze() if previous data got frozen columns out of their section.
 - Tables: Fixed invalid data in TableGetSortSpecs() when SpecsDirty flag is unset. (#4233)
-- TabBar: Fixed using more than 32 KB-worth of tab names. (#4176)
+- Tabs: Fixed using more than 32 KB-worth of tab names. (#4176)
 - InputInt/InputFloat: When used with Steps values and _ReadOnly flag, the step button look disabled. (#211)
 - InputText: Fixed named filtering flags disabling newline or tabs in multiline inputs (#4409, #4410) [@kfsone]
 - Drag and Drop: drop target highlight doesn't try to bypass host clipping rectangle. (#4281, #3272)
@@ -851,7 +971,7 @@ Other Changes:
 - Tables: Expose TableSetColumnEnabled() in public api. (#3935)
 - Tables: Better preserve widths when columns count changes. (#4046)
 - Tables: Sharing more memory buffers between tables, reducing general memory footprints. (#3740)
-- TabBar: Fixed mouse reordering with very fast movements (e.g. crossing multiple tabs in a single
+- Tabs: Fixed mouse reordering with very fast movements (e.g. crossing multiple tabs in a single
   frame and then immediately standing still (would only affect automation/bots). [@rokups]
 - Menus: made MenuItem() in a menu bar reflect the 'selected' argument with a highlight. (#4128) [@mattelegende]
 - Drags, Sliders, Inputs: Specifying a NULL format to Float functions default them to "%.3f" to be
@@ -1168,11 +1288,11 @@ Other Changes:
   - Added 2 enums: ImGuiSortDirection, ImGuiTableBgTarget
   - Added 1 style variable: ImGuiStyleVar_CellPadding
   - Added 5 style colors: ImGuiCol_TableHeaderBg, ImGuiCol_TableBorderStrong, ImGuiCol_TableBorderLight, ImGuiCol_TableRowBg, ImGuiCol_TableRowBgAlt.
-- Tab Bar: Made it possible to append to an existing tab bar by calling BeginTabBar()/EndTabBar() again.
-- Tab Bar: Fixed using more than 128 tabs in a tab bar (scrolling policy recommended).
-- Tab Bar: Do not display a tooltip if the name already fits over a given tab. (#3521)
-- Tab Bar: Fixed minor/unlikely bug skipping over a button when scrolling left with arrows.
-- Tab Bar: Requested ideal content size (for auto-fit) doesn't affect horizontal scrolling. (#3414)
+- Tabs: Made it possible to append to an existing tab bar by calling BeginTabBar()/EndTabBar() again.
+- Tabs: Fixed using more than 128 tabs in a tab bar (scrolling policy recommended).
+- Tabs: Do not display a tooltip if the name already fits over a given tab. (#3521)
+- Tabs: Fixed minor/unlikely bug skipping over a button when scrolling left with arrows.
+- Tabs: Requested ideal content size (for auto-fit) doesn't affect horizontal scrolling. (#3414)
 - Drag and Drop: Fix losing drop source ActiveID (and often source tooltip) when opening a TreeNode()
   or CollapsingHeader() while dragging. (#1738)
 - Drag and Drop: Fix drag and drop to tie same-size drop targets by chosen the later one. Fixes dragging
@@ -1301,16 +1421,16 @@ Other Changes:
   rather than the Mouse Down+Up sequence, even if the _OpenOnArrow flag isn't set. This is standard behavior
   and amends the change done in 1.76 which only affected cases were _OpenOnArrow flag was set.
   (This is also necessary to support full multi/range-select/drag and drop operations.)
-- Tab Bar: Added TabItemButton() to submit tab that behave like a button. (#3291) [@Xipiryon]
-- Tab Bar: Added ImGuiTabItemFlags_Leading and ImGuiTabItemFlags_Trailing flags to position tabs or button
+- Tabs: Added TabItemButton() to submit tab that behave like a button. (#3291) [@Xipiryon]
+- Tabs: Added ImGuiTabItemFlags_Leading and ImGuiTabItemFlags_Trailing flags to position tabs or button
   at either end of the tab bar. Those tabs won't be part of the scrolling region, and when reordering cannot
   be moving outside of their section. Most often used with TabItemButton(). (#3291) [@Xipiryon]
-- Tab Bar: Added ImGuiTabItemFlags_NoReorder flag to disable reordering a given tab.
-- Tab Bar: Keep tab item close button visible while dragging a tab (independent of hovering state).
-- Tab Bar: Fixed a small bug where closing a tab that is not selected would leave a tab hole for a frame.
-- Tab Bar: Fixed a small bug where scrolling buttons (with ImGuiTabBarFlags_FittingPolicyScroll) would
+- Tabs: Added ImGuiTabItemFlags_NoReorder flag to disable reordering a given tab.
+- Tabs: Keep tab item close button visible while dragging a tab (independent of hovering state).
+- Tabs: Fixed a small bug where closing a tab that is not selected would leave a tab hole for a frame.
+- Tabs: Fixed a small bug where scrolling buttons (with ImGuiTabBarFlags_FittingPolicyScroll) would
   generate an unnecessary extra draw call.
-- Tab Bar: Fixed a small bug where toggling a tab bar from Reorderable to not Reorderable would leave
+- Tabs: Fixed a small bug where toggling a tab bar from Reorderable to not Reorderable would leave
   tabs reordered in the tab list popup. [@Xipiryon]
 - Columns: Fix inverted ClipRect being passed to renderer when using certain primitives inside of
   a fully clipped column. (#3475) [@szreder]
@@ -1419,7 +1539,7 @@ Other Changes:
   limits when close-enough by (WindowPadding - ItemPadding), which was a tweak with too many
   side-effects. The behavior is still present in SetScrollHere functions as they are more explicitly
   aiming at making widgets visible. May later be moved to a flag.
-- Tab Bar: Allow calling SetTabItemClosed() after a tab has been submitted (will process next frame).
+- Tabs: Allow calling SetTabItemClosed() after a tab has been submitted (will process next frame).
 - InvisibleButton: Made public a small selection of ImGuiButtonFlags (previously in imgui_internal.h)
   and allowed to pass them to InvisibleButton(): ImGuiButtonFlags_MouseButtonLeft/Right/Middle.
   This is a small but rather important change because lots of multi-button behaviors could previously
@@ -1871,11 +1991,11 @@ Other Changes:
 - ColorPicker: Made rendering aware of global style alpha of the picker can be faded out. (#2711)
   Note that some elements won't accurately fade down with the same intensity, and the color wheel
   when enabled will have small overlap glitches with (style.Alpha < 1.0).
-- TabBar: Fixed single-tab not shrinking their width down.
-- TabBar: Fixed clicking on a tab larger than tab-bar width creating a bouncing feedback loop.
-- TabBar: Feed desired width (sum of unclipped tabs width) into layout system to allow for auto-resize. (#2768)
+- Tabs: Fixed single-tab not shrinking their width down.
+- Tabs: Fixed clicking on a tab larger than tab-bar width creating a bouncing feedback loop.
+- Tabs: Feed desired width (sum of unclipped tabs width) into layout system to allow for auto-resize. (#2768)
   (before 1.71 tab bars fed the sum of current width which created feedback loops in certain situations).
-- TabBar: Improved shrinking for large number of tabs to avoid leaving extraneous space on the right side.
+- Tabs: Improved shrinking for large number of tabs to avoid leaving extraneous space on the right side.
   Individuals tabs are given integer-rounded width and remainder is spread between tabs left-to-right.
 - Columns, Separator: Fixed a bug where non-visible separators within columns would alter the next row position
   differently than visible ones.
@@ -1997,7 +2117,7 @@ Other Changes:
 - Scrollbar: Avoid overlapping the opposite side when window (often a child window) is forcibly too small.
 - Combo: Hide arrow when there's not enough space even for the square button.
 - InputText: Testing for newly added ImGuiKey_KeyPadEnter key. (#2677, #2005) [@amc522]
-- TabBar: Fixed unfocused tab bar separator color (was using ImGuiCol_Tab, should use ImGuiCol_TabUnfocusedActive).
+- Tabs: Fixed unfocused tab bar separator color (was using ImGuiCol_Tab, should use ImGuiCol_TabUnfocusedActive).
 - Columns: Fixed a regression from 1.71 where the right-side of the contents rectangle within each column
   would wrongly use a WindowPadding.x instead of ItemSpacing.x like it always did. (#125, #2666)
 - Columns: Made the right-most edge reaches up to the clipping rectangle (removing half of WindowPadding.x
@@ -2019,8 +2139,8 @@ Other Changes:
   returning true. This also effectively make ColorEdit4() not incorrect trigger IsItemDeactivatedAfterEdit()
   when clicking the color button to open the picker popup. (#1875)
 - Misc: Added IMGUI_DISABLE_METRICS_WINDOW imconfig.h setting to explicitly compile out ShowMetricsWindow().
-- Debug, Metrics: Added "Tools->Item Picker" tool which allow clicking on a widget to break in the debugger
-  within the item code. The tool calls IM_DEBUG_BREAK() which can be redefined in imconfig.h if needed.
+- Debug Tools: Added "Metrics->Tools->Item Picker" tool which allow clicking on a widget to break in the
+  debugger within the item code. The tool calls IM_DEBUG_BREAK() which can be redefined in imconfig.h.
 - ImDrawList: Fixed CloneOutput() helper crashing. (#1860) [@gviot]
 - ImDrawList::ChannelsSplit(), ImDrawListSplitter: Fixed an issue with merging draw commands between
   channel 0 and 1. (#2624)
@@ -2111,7 +2231,7 @@ Other Changes:
   viewport triggering the issue. (#2609)
 - TreeNode, CollapsingHeader: Fixed highlight frame not covering horizontal area fully when using
   horizontal scrolling. (#2211, #2579)
-- TabBar: Fixed BeginTabBar() within a window with horizontal scrolling from creating a feedback
+- Tabs: Fixed BeginTabBar() within a window with horizontal scrolling from creating a feedback
   loop with the horizontal contents size.
 - Columns: Fixed Columns() within a window with horizontal scrolling from not covering the full
   horizontal area (previously only worked with an explicit contents size). (#125)
@@ -2280,14 +2400,14 @@ Other Changes:
 - ColorEdit: Fixed tooltip not honoring the ImGuiColorEditFlags_NoAlpha contract of never
   reading the 4th float in the array (value was read and discarded). (#2384) [@haldean]
 - MenuItem, Selectable: Fixed disabled widget interfering with navigation (fix c2db7f63 in 1.67).
-- TabBar: Fixed a crash when using many BeginTabBar() recursively (didn't affect docking). (#2371)
-- TabBar: Added extra mis-usage error recovery. Past the assert, common mis-usage don't lead to
+- Tabs: Fixed a crash when using many BeginTabBar() recursively (didn't affect docking). (#2371)
+- Tabs: Added extra mis-usage error recovery. Past the assert, common mis-usage don't lead to
   hard crashes any more, facilitating integration with scripting languages. (#1651)
-- TabBar: Fixed ImGuiTabItemFlags_SetSelected being ignored if the tab is not visible (with
+- Tabs: Fixed ImGuiTabItemFlags_SetSelected being ignored if the tab is not visible (with
   scrolling policy enabled) or if is currently appearing.
-- TabBar: Fixed Tab tooltip code making drag and drop tooltip disappear during the frame where
+- Tabs: Fixed Tab tooltip code making drag and drop tooltip disappear during the frame where
   the drag payload activate a tab.
-- TabBar: Reworked scrolling policy (when ImGuiTabBarFlags_FittingPolicyScroll is set) to
+- Tabs: Reworked scrolling policy (when ImGuiTabBarFlags_FittingPolicyScroll is set) to
   teleport the view when aiming at a tab far away the visible section, and otherwise accelerate
   the scrolling speed to cap the scrolling time to 0.3 seconds.
 - Text: Fixed large Text/TextUnformatted calls not feeding their size into layout when starting
