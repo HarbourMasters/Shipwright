@@ -88,6 +88,10 @@ namespace SohImGui {
     int lastAudioBackendID = 0;
     bool statsWindowOpen;
 
+#ifdef __SWITCH__
+    bool showingVirtualKeyboard = false;
+#endif
+
     const char* filters[3] = {
 #ifdef __WIIU__
         "",
@@ -227,6 +231,25 @@ namespace SohImGui {
 #else
         case Backend::SDL:
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
+
+#ifdef __SWITCH__
+            ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
+
+            if (io->WantTextInput) {
+                if (!showingVirtualKeyboard) {
+                    state->ClearText();
+
+                    showingVirtualKeyboard = true;
+                    SDL_StartTextInput();
+                }
+            } else {
+                if (showingVirtualKeyboard) {
+                    showingVirtualKeyboard = false;
+                    SDL_StopTextInput();
+                }
+            }
+#endif
+
             break;
 #endif
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)

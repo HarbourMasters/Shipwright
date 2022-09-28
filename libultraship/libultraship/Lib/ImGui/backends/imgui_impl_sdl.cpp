@@ -106,7 +106,6 @@ struct ImGui_ImplSDL2_Data
     char*           ClipboardTextData;
     bool            MouseCanUseGlobalState;
     bool            UseVulkan;
-    bool            ShowingVirtualKeyboard;
 
     ImGui_ImplSDL2_Data()   { memset((void*)this, 0, sizeof(*this)); }
 };
@@ -271,24 +270,6 @@ bool ImGui_ImplSDL2_ProcessEvent(const SDL_Event* event)
 {
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplSDL2_Data* bd = ImGui_ImplSDL2_GetBackendData();
-
-#ifdef __SWITCH__
-    ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
-
-    if (io.WantTextInput) {
-        if (!bd->ShowingVirtualKeyboard) {
-            state->ClearText();
-
-            bd->ShowingVirtualKeyboard = true;
-            SDL_StartTextInput();
-        }
-    } else {
-        if (bd->ShowingVirtualKeyboard) {
-            bd->ShowingVirtualKeyboard = false;
-            SDL_StopTextInput();
-        }
-    }
-#endif
 
     switch (event->type)
     {
