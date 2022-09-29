@@ -1,0 +1,8 @@
+<Root>
+    <File Name="syotes2_scene" Segment="2">
+        <Scene Name="syotes2_scene" Offset="0x0"/>
+    </File>
+    <File Name="syotes2_room_0" Segment="3">
+        <Room Name="syotes2_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_En_Bili" BaseAddress="0x809BF8A0" RangeStart="0x1E50" RangeEnd="0x1E70">
+        <DList Name="D_809C16F0" Offset="0x1E50"/>
+        <DList Name="D_809C1700" Offset="0x1E60"/>
+
+    </File>
+</Root>

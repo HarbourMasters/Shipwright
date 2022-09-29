@@ -1,0 +1,41 @@
+<Root>
+    <File Name="object_demo_kekkai" Segment="6">
+        <!-- Demo_Kekkai -->
+        <DList Name="gTowerBarrierDL" Offset="0x4930"/>
+        <DList Name="gTrialBarrierFloorDL" Offset="0x4F00"/>
+        <Array Name="gTrialBarrierEnergyVtx" Count="102" Offset="0x4FD0">
+            <Vtx/>
+        </Array>
+        <DList Name="gTrialBarrierEnergyDL" Offset="0x5A30"/>
+        <DList Name="gTrialBarrierOrbDL" Offset="0x5CB0"/>
+
+        <!-- Bg_Gnd_Darkmeiro -->
+        <DList Name="gShadowTrialPathDL" Offset="0x88B0"/>
+        <DList Name="gClearBlockDL" Offset="0xBEC0"/>
+        <Collision Name="gClearBlockCol" Offset="0xC080"/>
+
+        <!-- Bg_Gnd_Firemeiro -->
+        <DList Name="gFireTrialPlatformDL" Offset="0xE210"/>
+        <Collision Name="gFireTrialPlatformCol" Offset="0xECD8"/>
+
+        <!-- Bg_Gnd_Iceblock -->
+        <DList Name="gWaterTrialIceBlockDL" Offset="0x4420"/>
+        <Collision Name="gWaterTrialIceBlockCol" Offset="0x4618"/>
+
+        <!-- Bg_Gnd_Nisekabe -->
+        <DList Name="gLightTrialFakeWallDL" Offset="0x9230"/>
+        <DList Name="gGanonsCastleUnusedFakeWallDL" Offset="0xA390"/>
+        <DList Name="gGanonsCastleScrubsFakeWallDL" Offset="0xB4A0"/>
+
+        <!-- Bg_Gnd_Soulmeiro -->
+        <DList Name="gSpiritTrialWebDL" Offset="0x7C00"/>
+        <DList Name="gSpiritTrialLightSourceDL" Offset="0x2320"/>
+        <DList Name="gSpiritTrialLightFloorDL" Offset="0x35A0"/>
+
+        <!-- Object_Kankyo -->
+        <DList Name="gDemoKekkaiDL_005FF0" Offset="0x5FF0"/>
+
+        <!-- Door_Shutter -->
+        <DList Name="gGanonsCastleDoorDL" Offset="0x20D0"/>
+    </File>
+</Root>

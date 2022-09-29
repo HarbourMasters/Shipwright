@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_saw" Segment="6">
+        <DList Name="gGiSawDL" Offset="0x07E0"/>
+    </File>
+</Root>

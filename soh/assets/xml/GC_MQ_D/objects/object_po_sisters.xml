@@ -1,0 +1,28 @@
+<Root>
+    <File Name="object_po_sisters" Segment="6">
+        <Animation Name="gPoeSistersAttackAnim" Offset="0x0114"/>
+        <Animation Name="gPoeSistersMegCryAnim" Offset="0x0680"/>
+        <Animation Name="gPoeSistersDamagedAnim" Offset="0x08C0"/>
+        <Animation Name="gPoeSistersFleeAnim" Offset="0x0A54"/>
+        <Animation Name="gPoeSistersFloatAnim" Offset="0x0D40"/>
+        <Animation Name="gPoeSistersAppearDisappearAnim" Offset="0x119C"/>
+        <Animation Name="gPoeSistersSwayAnim" Offset="0x14CC"/>
+        <DList Name="gPoeSistersMegFaceDL" Offset="0x1CB0"/>
+        <DList Name="gPoeSistersMegBodyDL" Offset="0x1DE0"/>
+        <DList Name="gPoSistersTorchDL" Offset="0x27B0"/>
+        <DList Name="gPoeSistersJoelleFaceDL" Offset="0x2EB8"/>
+        <DList Name="gPoeSistersJoelleBodyDL" Offset="0x2F88"/>
+        <DList Name="gPoeSistersBethBodyDL" Offset="0x3628"/>
+        <DList Name="gPoeSistersBethFaceDL" Offset="0x3880"/>
+        <DList Name="gPoeSistersAmyBodyDL" Offset="0x3DC8"/>
+        <DList Name="gPoSistersAmyFaceDL" Offset="0x4020"/>
+        <DList Name="gPoSistersBurnDL" Offset="0x46E0"/>
+        <Skeleton Name="gPoeSistersSkel" Type="Normal" LimbType="Standard" Offset="0x65C8"/>
+        <DList Name="gPoSistersJoellePaintingDL" Offset="0x6830"/>
+        <DList Name="gPoSistersBethPaintingDL" Offset="0x6D60"/>
+        <DList Name="gPoSistersAmyPaintingDL" Offset="0x7230"/>
+        <DList Name="gPoSistersAmyBlockDL" Offset="0x75A0"/>
+        <Collision Name="gPoSistersAmyBlockCol" Offset="0x7860"/>
+        <DList Name="gPoSistersAmyBethBlockDL" Offset="0x79E0"/>
+    </File>
+</Root>

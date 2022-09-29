@@ -1,0 +1,71 @@
+<Root>
+    <File Name="object_owl" Segment="6">
+        <!-- Flying Owl Skeleton -->
+        <Skeleton Name="gOwlFlyingSkel" Type="Flex" LimbType="Standard" Offset="0xC0E8"/>
+
+        <!-- Default Owl Limbs -->
+        <Limb Name="gOwlRootLimb" LimbType="Standard" Offset="0xBFA8"/>
+        <Limb Name="gOwlNeckLimb" LimbType="Standard" Offset="0xBFB4"/>
+        <Limb Name="gOwlHeadLimb" LimbType="Standard" Offset="0xBFC0"/>
+        <Limb Name="gOwlRightEyebrowLimb" LimbType="Standard" Offset="0xBFCC"/>
+        <Limb Name="gOwlLeftEyebrowLimb" LimbType="Standard" Offset="0xBFD8"/>
+        <Limb Name="gOwlLowerLeftWingLimb" LimbType="Standard" Offset="0xBFE4"/>
+        <Limb Name="gOwlMiddleLeftWing1Limb" LimbType="Standard" Offset="0xBFF0"/>
+        <Limb Name="gOwlMiddleLeftWing2Limb" LimbType="Standard" Offset="0xBFFC"/>
+        <Limb Name="gOwlUpperLeftWingLimb" LimbType="Standard" Offset="0xC008"/>
+        <Limb Name="gOwlLowerRightWingLimb" LimbType="Standard" Offset="0xC014"/>
+        <Limb Name="gOwlMiddleRightWing1Limb" LimbType="Standard" Offset="0xC020"/>
+        <Limb Name="gOwlMiddleRightWing2Limb" LimbType="Standard" Offset="0xC02C"/>
+        <Limb Name="gOwlUpperRightWingLimb" LimbType="Standard" Offset="0xC038"/>
+        <Limb Name="gOwlUpperRightLegLimb" LimbType="Standard" Offset="0xC044"/>
+        <Limb Name="gOwlLowerRightLegLimb" LimbType="Standard" Offset="0xC050"/>
+        <Limb Name="gOwlRightClawLimb" LimbType="Standard" Offset="0xC05C"/>
+        <Limb Name="gOwlUpperLeftLegLimb" LimbType="Standard" Offset="0xC068"/>
+        <Limb Name="gOwlLowerLeftLegLimb" LimbType="Standard" Offset="0xC074"/>
+        <Limb Name="gOwlLeftClawLimb" LimbType="Standard" Offset="0xC080"/>
+        <Limb Name="gOwlTailLimb" LimbType="Standard" Offset="0xC08C"/>
+
+        <!-- Default Owl Limb DisplayLists -->
+        <DList Name="gOwlTorsoDL" Offset="0x4B40"/>
+        <DList Name="gOwlNeckDL" Offset="0x4CB8"/>
+        <DList Name="gOwlHeadDL" Offset="0x4DE0"/>
+        <DList Name="gOwlRightEyebrowDL" Offset="0x5318"/>
+        <DList Name="gOwlLeftEyebrowDL" Offset="0x5260"/>
+        <DList Name="gOwlLowerLeftWingDL" Offset="0x5720"/>
+        <DList Name="gOwlMiddleLeftWing1DL" Offset="0x5960"/>
+        <DList Name="gOwlMiddleLeftWing2DL" Offset="0x5BB8"/>
+        <DList Name="gOwlUpperLeftWingDL" Offset="0x5DE8"/>
+        <DList Name="gOwlLowerRightWingDL" Offset="0x6068"/>
+        <DList Name="gOwlMiddleRightWing1DL" Offset="0x62A8"/>
+        <DList Name="gOwlMiddleRightWing2DL" Offset="0x6500"/>
+        <DList Name="gOwlUpperRightWingDL" Offset="0x6730"/>
+        <DList Name="gOwlUpperRightLegDL" Offset="0x53D0"/>
+        <DList Name="gOwlLowerRightLegDL" Offset="0x5498"/>
+        <DList Name="gOwlRightClawDL" Offset="0x5588"/>
+        <DList Name="gOwlUpperLeftLegDL" Offset="0x6A58"/>
+        <DList Name="gOwlLowerLeftLegDL" Offset="0x6B20"/>
+        <DList Name="gOwlLeftClawDL" Offset="0x6C10"/>
+        <DList Name="gOwlTailDL" Offset="0x69B0"/>
+
+        <!-- Owl Animations -->
+        <Animation Name="gOwlTakeoffAnim" Offset="0x1168"/>
+        <Animation Name="gOwlFlyAnim" Offset="0x15CC"/>
+        <Animation Name="gOwlGlideAnim" Offset="0xC1C4"/>
+        <Animation Name="gOwlUnfoldWingsAnim" Offset="0xC684"/>
+        <Animation Name="gOwlPerchAnim" Offset="0xC8A0"/>
+
+        <!-- Owl Perching Skeleton -->
+        <Skeleton Name="gOwlPerchingSkel" Type="Flex" LimbType="Standard" Offset="0x100B0"/>
+
+        <!-- The two following TLUTs are identical and both are used as TLUTs for the eye textures -->
+        <!-- TLUT used in gOwlPerchingSkel -->
+        <Texture Name="object_owl_TLUT_006DA8" OutName="tlut_00006DA8" Format="rgba16" Width="16" Height="16" Offset="0x6DA8"/>
+        <!-- TLUT used in gOwlFlyingSkel -->
+        <Texture Name="object_owl_TLUT_006FA8" OutName="tlut_00006FA8" Format="rgba16" Width="16" Height="16" Offset="0x6FA8"/>
+
+        <!-- Eye Textures -->
+        <Texture Name="gObjOwlEyeOpenTex" OutName="owl_eye_open" Format="ci8" Width="32" Height="32" Offset="0x89A8" TlutOffset="0x6DA8"/>
+        <Texture Name="gObjOwlEyeHalfTex" OutName="owl_eye_half" Format="ci8" Width="32" Height="32" Offset="0x8DA8" TlutOffset="0x6DA8"/>
+        <Texture Name="gObjOwlEyeClosedTex" OutName="owl_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x91A8" TlutOffset="0x6DA8"/>
+    </File>
+</Root>

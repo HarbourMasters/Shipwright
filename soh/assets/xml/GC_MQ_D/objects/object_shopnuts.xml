@@ -1,0 +1,67 @@
+<Root>
+    <File Name="object_shopnuts" Segment="6">
+        <!-- Business Scrub Skeleton -->
+        <Skeleton Name="gBusinessScrubSkel" Type="Flex" LimbType="Standard" Offset="0x41A8"/>
+
+        <!-- Business Scrub Limbs -->
+        <Limb Name="gBusinessScrubRootLimb" LimbType="Standard" Offset="0x4098"/>
+        <Limb Name="gBusinessScrubLeftThighLimb" LimbType="Standard" Offset="0x40A4"/>
+        <Limb Name="gBusinessScrubLeftShinLimb" LimbType="Standard" Offset="0x40B0"/>
+        <Limb Name="gBusinessScrubLeftFootLimb" LimbType="Standard" Offset="0x40BC"/>
+        <Limb Name="gBusinessScrubRightThighLimb" LimbType="Standard" Offset="0x40C8"/>
+        <Limb Name="gBusinessScrubRightShinLimb" LimbType="Standard" Offset="0x40D4"/>
+        <Limb Name="gBusinessScrubRightFootLimb" LimbType="Standard" Offset="0x40E0"/>
+        <Limb Name="gBusinessScrubTopLeafLimb" LimbType="Standard" Offset="0x40EC"/>
+        <Limb Name="gBusinessScrubNoseLimb" LimbType="Standard" Offset="0x40F8"/>
+        <Limb Name="gBusinessScrubLeftUpperArmLimb" LimbType="Standard" Offset="0x4104"/>
+        <Limb Name="gBusinessScrubLeftForearmLimb" LimbType="Standard" Offset="0x4110"/>
+        <Limb Name="gBusinessScrubLeftHandLimb" LimbType="Standard" Offset="0x411C"/>
+        <Limb Name="gBusinessScrubRightUpperArmLimb" LimbType="Standard" Offset="0x4128"/>
+        <Limb Name="gBusinessScrubRightForearmLimb" LimbType="Standard" Offset="0x4134"/>
+        <Limb Name="gBusinessScrubRightHandLimb" LimbType="Standard" Offset="0x4140"/>
+        <Limb Name="gBusinessScrubEyesLimb" LimbType="Standard" Offset="0x414C"/>
+        <Limb Name="gBusinessScrubBodyLimb" LimbType="Standard" Offset="0x4158"/>
+
+        <!-- Business Scrub Limb DisplayLists -->
+        <DList Name="gBusinessScrubRootLeafDL" Offset="0x3C80"/>
+        <DList Name="gBusinessScrubLeftThighDL" Offset="0x2640"/>
+        <DList Name="gBusinessScrubLeftShinDL" Offset="0x2570"/>
+        <DList Name="gBusinessScrubLeftFootDL" Offset="0x2488"/>
+        <DList Name="gBusinessScrubRightThighDL" Offset="0x23D8"/>
+        <DList Name="gBusinessScrubRightShinDL" Offset="0x2308"/>
+        <DList Name="gBusinessScrubRightFootDL" Offset="0x2220"/>
+        <DList Name="gBusinessScrubTopLeafDL" Offset="0x3D30"/>
+        <DList Name="gBusinessScrubNoseDL" Offset="0x3B68"/>
+        <DList Name="gBusinessScrubLeftUpperArmDL" Offset="0x2170"/>
+        <DList Name="gBusinessScrubLeftForearmDL" Offset="0x20A0"/>
+        <DList Name="gBusinessScrubLeftHandDL" Offset="0x1FA8"/>
+        <DList Name="gBusinessScrubRightUpperArmDL" Offset="0x1EF8"/>
+        <DList Name="gBusinessScrubRightForearmDL" Offset="0x1E28"/>
+        <DList Name="gBusinessScrubRightHandDL" Offset="0x1D30"/>
+        <DList Name="gBusinessScrubEyesDL" Offset="0x3AD0"/>
+        <DList Name="gBusinessScrubBodyDL" Offset="0x3930"/>
+
+        <!-- Business Scrub Textures -->
+        <Texture Name="gBusinessScrubBodyTex" OutName="body" Format="rgba16" Width="16" Height="16" Offset="0x26F0"/>
+        <Texture Name="gBusinessScrubNoseTex" OutName="nose" Format="rgba16" Width="8" Height="8" Offset="0x28F0"/>
+        <Texture Name="gBusinessScrubNostrilTex" OutName="nostril" Format="rgba16" Width="8" Height="8" Offset="0x2970"/>
+        <Texture Name="gBusinessScrubEyeTex" OutName="eye" Format="rgba16" Width="8" Height="8" Offset="0x29F0"/>
+        <Texture Name="gBusinessScrubLeafStemTex" OutName="leaf_stem" Format="rgba16" Width="8" Height="8" Offset="0x2A70"/>
+        <Texture Name="gBusinessScrubLeafTex" OutName="leaf" Format="rgba16" Width="32" Height="32" Offset="0x2AF0"/>
+        <Texture Name="gBusinessScrubDekuNutTex" OutName="deku_nut" Format="rgba16" Width="16" Height="16" Offset="0x3DD8"/>
+
+        <!-- Other Business Scrub DisplayLists -->
+        <DList Name="gBusinessScrubDekuNutDL" Offset="0x4008"/>
+
+        <!-- Business Scrub Animations -->
+        <Animation Name="gBusinessScrubAnim_1EC" Offset="0x1EC"/>
+        <Animation Name="gBusinessScrubAnim_39C" Offset="0x39C"/>
+        <Animation Name="gBusinessScrubRotateAnim" Offset="0x764"/>
+        <Animation Name="gBusinessScrubNervousTransitionAnim" Offset="0x9A0"/>
+        <Animation Name="gBusinessScrubLookAroundAnim" Offset="0xBA0"/>
+        <Animation Name="gBusinessScrubNervousIdleAnim" Offset="0x1108"/>
+        <Animation Name="gBusinessScrubAnim_139C" Offset="0x139C"/>
+        <Animation Name="gBusinessScrubAnim_4404" Offset="0x4404"/>
+        <Animation Name="gBusinessScrubAnim_4574" Offset="0x4574"/>
+    </File>
+</Root>

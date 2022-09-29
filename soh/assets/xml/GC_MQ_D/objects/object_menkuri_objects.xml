@@ -1,0 +1,18 @@
+<Root>
+    <File Name="object_menkuri_objects" Segment="6">
+        <Texture Name="gGTGDoorTex" OutName="gtg_door" Format="i4" Width="64" Height="128" Offset="0x0"/>
+        <Texture Name="gGTGFakeWallTex" OutName="gtg_fake_wall" Format="rgba16" Width="64" Height="32" Offset="0x1180"/>
+        <Texture Name="gGTGFakeCeilingTex" OutName="gtg_fake_ceiling" Format="rgba16" Width="32" Height="32" Offset="0x2340"/>
+        <Texture Name="gGTGRotatingRingPlatformInnerCircleTex" OutName="gtg_rotating_ring_platform_inner_circle" Format="i4" Width="64" Height="128" Offset="0x4310"/>
+        <Texture Name="gGTGStatueTex" OutName="gtg_statue" Format="i4" Width="64" Height="128" Offset="0x5310"/>
+        <Texture Name="gGTGTex_6310" OutName="gtg_6310" Format="rgba16" Width="32" Height="32" Offset="0x6310"/>
+        <Texture Name="gGTGStatueEyeTex" OutName="gtg_statue_eye" Format="i4" Width="64" Height="128" Offset="0x6B10"/>
+        <Texture Name="gGTGRotatingRingPlatformOuterCircleTex" OutName="gtg_rotating_ring_platform_outer_circle" Format="i4" Width="128" Height="64" Offset="0x7B10"/>
+        <DList Name="gGTGDoorDL" Offset="0x10D0"/>
+        <DList Name="gGTGFakeWallDL" Offset="0x2280"/>
+        <DList Name="gGTGFakeCeilingDL" Offset="0x2BC0"/>
+        <DList Name="gGTGEyeStatueEyeDL" Offset="0x2D20"/>
+        <DList Name="gGTGRotatingRingPlatformDL" Offset="0x38D0"/>
+        <Collision Name="gGTGRotatingRingPlatformCol" Offset="0x42D8"/>
+    </File>
+</Root>

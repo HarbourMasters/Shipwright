@@ -1,0 +1,21 @@
+<Root>
+    <File Name="ganon_sonogo_scene" Segment="2">
+        <Path Name="ganon_sonogo_scenePathList_000254" Offset="0x0254" NumPaths="5"/>
+        <Scene Name="ganon_sonogo_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganon_sonogo_room_0" Segment="3">
+        <Room Name="ganon_sonogo_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ganon_sonogo_room_1" Segment="3">
+        <Room Name="ganon_sonogo_room_1" Offset="0x0"/>
+    </File>
+    <File Name="ganon_sonogo_room_2" Segment="3">
+        <Room Name="ganon_sonogo_room_2" Offset="0x0"/>
+    </File>
+    <File Name="ganon_sonogo_room_3" Segment="3">
+        <Room Name="ganon_sonogo_room_3" Offset="0x0"/>
+    </File>
+    <File Name="ganon_sonogo_room_4" Segment="3">
+        <Room Name="ganon_sonogo_room_4" Offset="0x0"/>
+    </File>
+</Root>
