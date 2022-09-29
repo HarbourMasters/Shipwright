@@ -51,7 +51,7 @@ void Ship::Switch::Exit(){
     appletSetGamePlayRecordingState(false);
 }
 
-void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
+void Ship::Switch::ImGuiSetupFont(ImFontAtlas* fonts) {
     plInitialize(PlServiceType_System);
     static PlFontData stdFontData, extFontData;
 

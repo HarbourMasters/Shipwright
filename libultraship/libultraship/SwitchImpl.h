@@ -26,7 +26,7 @@ namespace Ship {
         public:
             static void Init(SwitchPhase phase);
             static void Exit();
-            static void SetupFont(ImFontAtlas* fonts);
+            static void ImGuiSetupFont(ImFontAtlas* fonts);
             static void ImGuiSwapABXY(int start_event);
             static void ImGuiProcessEvent(bool wantsTextInput);
             static bool IsRunning();

@@ -357,7 +357,7 @@ namespace SohImGui {
         CVar_RegisterS32("gRandoRelevantNavi", 1);
         CVar_RegisterS32("gRandoMatchKeyColors", 1);
     #ifdef __SWITCH__
-        Ship::Switch::SetupFont(io->Fonts);
+        Ship::Switch::ImGuiSetupFont(io->Fonts);
     #endif
 
     #ifdef __WIIU__
