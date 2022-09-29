@@ -15,6 +15,8 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+extern "C" uint32_t ResourceMgr_GetGameVersion();
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
@@ -47,6 +49,7 @@ SaveManager::SaveManager() {
         }
 
         info.randoSave = 0;
+        info.isMasterQuest = 0;
     }
 }
 
@@ -246,6 +249,7 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
+    fileMetaInfo[fileNum].isMasterQuest = gSaveContext.isMasterQuest;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -391,6 +395,8 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    gSaveContext.isMasterQuest = ResourceMgr_IsGameMasterQuest();
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -943,6 +949,7 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
+    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
 }
 
 void SaveManager::SaveBase() {
@@ -1096,6 +1103,7 @@ void SaveManager::SaveBase() {
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
+    SaveManager::Instance->SaveData("isMasterQuest", ResourceMgr_IsGameMasterQuest());
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1217,6 +1225,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
+    fileMetaInfo[to].isMasterQuest = fileMetaInfo[from].isMasterQuest;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

@@ -1,0 +1,24 @@
+<Root>
+    <File Name="object_mori_objects" Segment="6">
+        <Texture Name="gMoriHashiraTLUT" OutName="hashira_tlut" Format="rgba16" Width="112" Height="1" Offset="0x0000"/>
+        <Texture Name="gMoriHashiraTex" OutName="hashira" Format="ci8" Width="32" Height="32" Offset="0x00E0" TlutOffset="0x0000"/>
+        <Texture Name="gMoriHashigoClaspTLUT" OutName="hashigo_clasp_tlut" Format="rgba16" Width="112" Height="1" Offset="0x3810"/>
+        <Texture Name="gMoriHashigoClaspTex" OutName="hashigo_clasp" Format="ci8" Width="32" Height="32" Offset="0x38F0" TlutOffset="0x3810"/>
+        <Collision Name="gMoriBigstCol" Offset="0x221C"/>
+        <DList Name="gMoriBigstDL" Offset="0x1E50"/>
+        <Collision Name="gMoriElevatorCol" Offset="0x35F8"/>
+        <DList Name="gMoriElevatorDL" Offset="0x2AD0"/>
+        <Collision Name="gMoriHashigoCol" Offset="0x37D8"/>
+        <DList Name="gMoriHashigoLadderDL" Offset="0x36B0"/>
+        <DList Name="gMoriHashigoClaspDL" Offset="0x4770"/>
+        <Collision Name="gMoriHashira1Col" Offset="0x1AF8"/>
+        <Collision Name="gMoriHashira2Col" Offset="0x89E0"/>
+        <DList Name="gMoriHashiraPlatformsDL" Offset="0x1300"/>
+        <DList Name="gMoriHashiraGateDL" Offset="0x8840"/>
+        <DList Name="gMoriIdomizuWaterDL" Offset="0x49D0"/>
+        <Collision Name="gMoriKaitenkabeCol" Offset="0x63B8"/>
+        <DList Name="gMoriKaitenkabeDL" Offset="0x56B0"/>
+        <Collision Name="gMoriRakkatenjoCol" Offset="0x87AC"/>
+        <DList Name="gMoriRakkatenjoDL" Offset="0x7690"/>
+    </File>
+</Root>

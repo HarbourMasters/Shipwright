@@ -1,0 +1,6 @@
+﻿<Root>
+    <File Name="object_spot01_objects2" Segment="6" >
+        <!-- Seems to be empty -->
+        <Blob Name="object_spot01_objects2_Blob_000000" Size="0x10" Offset="0x0"/>
+    </File>
+</Root>

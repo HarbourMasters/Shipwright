@@ -1,0 +1,34 @@
+<Root>
+    <File Name="object_fhg" Segment="6">
+
+        <!-- Skeleton -->
+        <Skeleton Name="gPhantomHorseSkel" Type="Normal" LimbType="Skin" Offset="0xB098"/>
+
+        <!-- Animations -->
+        <Animation Name="gPhantomHorseRunningAnim" Offset="0xB4C8"/>
+        <Animation Name="gPhantomHorseAirAnim" Offset="0xB9D0"/>
+        <Animation Name="gPhantomHorseLeapAnim" Offset="0xC65C"/>
+        <Animation Name="gPhantomHorseLandAnim" Offset="0xCB1C"/>
+        <Animation Name="gPhantomHorseRearingAnim" Offset="0xDDB8"/>
+        <Animation Name="gPhantomHorseIdleAnim" Offset="0xE8A0"/>
+
+        <!-- Unused animations -->
+        <Animation Name="gPhantomHorseUnusedRearingAnim" Offset="0x5804"/>
+        <Animation Name="gPhantomHorseStillAnim" Offset="0x5990"/>
+        <Animation Name="gPhantomHorseFenceJumpAnim" Offset="0xC180"/>
+
+        <!-- Boss title card -->
+        <Texture Name="gPhantomGanonTitleCardTex" OutName="phantom_ganon_title_card" Format="i8" Width="128" Height="120" Offset="0x59A0"/>
+
+        <!-- Energy attack DLists -->
+        <DList Name="gPhantomWarpDL" Offset="0xFAA0"/>
+        <DList Name="gPhantomLightningBlastDL" Offset="0xFCF8"/>
+        <DList Name="gPhantomLightningDL" Offset="0x105E0"/>
+        <DList Name="gPhantomEnergyBallDL" Offset="0x12160"/>
+
+        <!-- Unused DLists -->
+        <DList Name="gPhantomUnkDL_FCA0" Offset="0xFCA0"/>
+        <DList Name="gPhantomUnkDL_10CA0" Offset="0x10CA0"/>
+
+    </File>
+</Root>

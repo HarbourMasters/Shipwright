@@ -1,0 +1,42 @@
+<Root>
+    <File Name="men_scene" Segment="2">
+        <Texture Name="gGTGDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0xF8C0"/>
+        <Texture Name="gGTGNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x100C0"/>
+        <Scene Name="men_scene" Offset="0x0"/>
+    </File>
+    <File Name="men_room_0" Segment="3">
+        <DList Name="gMenDL_008118" Offset="0x8118"/>
+        <DList Name="gMenDL_00FF78" Offset="0xFF78"/>
+        <Room Name="men_room_0" Offset="0x0"/>
+    </File>
+    <File Name="men_room_1" Segment="3">
+        <Room Name="men_room_1" Offset="0x0"/>
+    </File>
+    <File Name="men_room_2" Segment="3">
+        <Room Name="men_room_2" Offset="0x0"/>
+    </File>
+    <File Name="men_room_3" Segment="3">
+        <Room Name="men_room_3" Offset="0x0"/>
+    </File>
+    <File Name="men_room_4" Segment="3">
+        <Room Name="men_room_4" Offset="0x0"/>
+    </File>
+    <File Name="men_room_5" Segment="3">
+        <Room Name="men_room_5" Offset="0x0"/>
+    </File>
+    <File Name="men_room_6" Segment="3">
+        <Room Name="men_room_6" Offset="0x0"/>
+    </File>
+    <File Name="men_room_7" Segment="3">
+        <Room Name="men_room_7" Offset="0x0"/>
+    </File>
+    <File Name="men_room_8" Segment="3">
+        <Room Name="men_room_8" Offset="0x0"/>
+    </File>
+    <File Name="men_room_9" Segment="3">
+        <Room Name="men_room_9" Offset="0x0"/>
+    </File>
+    <File Name="men_room_10" Segment="3">
+        <Room Name="men_room_10" Offset="0x0"/>
+    </File>
+</Root>

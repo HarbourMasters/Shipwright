@@ -1,0 +1,15 @@
+<Root>
+    
+    <File Name="object_poh" Segment="6">
+        <Animation Name="gPoeAttackAnim" Offset="0x01A8"/>
+        <Animation Name="gPoeDamagedAnim" Offset="0x04EC"/>
+        <Animation Name="gPoeFleeAnim" Offset="0x06E0"/>
+        <Animation Name="gPoeFloatAnim" Offset="0x0A60"/>
+        <Animation Name="gPoeAppearAnim" Offset="0x11C4"/>
+        <Animation Name="gPoeDisappearAnim" Offset="0x15B0"/>
+        <DList Name="gPoeBurnDL" Offset="0x2608"/>
+        <DList Name="gPoeLanternDL" Offset="0x2D28"/>
+        <DList Name="gPoeSoulDL" Offset="0x3850"/>
+        <Skeleton Name="gPoeSkel" Type="Normal" LimbType="Standard" Offset="0x50D0"/>
+    </File>
+</Root>

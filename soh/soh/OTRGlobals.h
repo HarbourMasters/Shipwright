@@ -44,6 +44,7 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
+uint32_t ResourceMgr_IsGameMasterQuest();
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);

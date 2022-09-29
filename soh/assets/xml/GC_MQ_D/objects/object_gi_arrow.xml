@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_arrow" Segment="6">
+        <DList Name="gGiArrowSmallDL" Offset="0x0340"/>
+        <DList Name="gGiArrowMediumDL" Offset="0x0B90"/>
+        <DList Name="gGiArrowLargeDL" Offset="0x1830"/>
+    </File>
+</Root>

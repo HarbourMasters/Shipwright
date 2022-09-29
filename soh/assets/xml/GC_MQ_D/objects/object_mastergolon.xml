@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_mastergolon" Segment="6">
+        <Animation Name="gGoronShopkeeperAnim" Offset="0xFC"/>
+    </File>
+</Root>
