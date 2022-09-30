@@ -7,12 +7,13 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define NUM_NAVI_MESSAGES 19
 
 class Randomizer {
   private:
-    std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
+    std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
     std::string childAltarText;
     std::string adultAltarText;
@@ -24,7 +25,7 @@ class Randomizer {
     void ParseRequiredTrialsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-
+    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
 
   public:
     Randomizer();
@@ -52,16 +53,16 @@ class Randomizer {
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    RandomizerGet GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    RandomizerGet GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck);
+    RandomizerGetData GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    RandomizerGetData GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
-    GetItemID GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId);
-    GetItemID GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
+    GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
+    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);

@@ -57,7 +57,13 @@ void SaveManager::LoadRandomizerVersion1() {
     if(!CVar_GetS32("gRandomizer", 0)) return;
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
-        SaveManager::Instance->LoadData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
+        SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
+            SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
+            SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
+            std::string trickName;
+            SaveManager::Instance->LoadData("trickName", trickName);
+            memcpy(gSaveContext.itemLocations[i].get.trickName, trickName.c_str(), trickName.length());
+        });
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 
@@ -123,7 +129,11 @@ void SaveManager::SaveRandomizer() {
     if(!gSaveContext.n64ddFlag) return;
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
-        SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
+        SaveManager::Instance->SaveStruct("get" + std::to_string(i), [&]() {
+            SaveManager::Instance->SaveData("rgID", gSaveContext.itemLocations[i].get.rgID);
+            SaveManager::Instance->SaveData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
+            SaveManager::Instance->SaveData("trickName", gSaveContext.itemLocations[i].get.trickName);
+        });
         SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 

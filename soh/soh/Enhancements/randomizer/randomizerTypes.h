@@ -964,6 +964,12 @@ typedef enum {
     RG_MAX
 } RandomizerGet;
 
+typedef struct {
+    RandomizerGet rgID;
+    RandomizerGet fakeRgID;
+    char trickName[50];
+} RandomizerGetData;
+
 typedef enum {
     RSK_NONE,
     RSK_LOGIC_RULES,

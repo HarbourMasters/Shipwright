@@ -65,7 +65,7 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGet get;
+    RandomizerGetData get;
 } ItemLocationRando;
 
 typedef struct {
