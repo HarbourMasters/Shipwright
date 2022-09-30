@@ -1,0 +1,27 @@
+<Root>
+    <File Name="object_spot08_obj" Segment="6">
+        <!-- Zora's Fountain Ice Ramp -->
+        <DList Name="gZorasFountainIceRampDL" Offset="0xDE0"/>
+        <Texture Name="gZorasFountainIceRampTLUT" OutName="ice_ramp_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0"/>
+        <Texture Name="gZorasFountainIceRampLowerSideTex" OutName="ice_ramp_lower_side" Format="ci4" Width="64" Height="64" Offset="0x20" TlutOffset="0x0"/>
+        <Texture Name="gZorasFountainIceRampSurfaceTex" OutName="ice_ramp_surface" Format="rgba16" Width="32" Height="32" Offset="0x3E00"/>
+        <Texture Name="gZorasFountainIceRampUpperSideTex" OutName="ice_ramp_upper_side" Format="rgba16" Width="32" Height="32" Offset="0x4600"/>
+        <Texture Name="gZorasFountainIceRampMiddleSlopeTex" OutName="ice_ramp_middle_slope" Format="rgba16" Width="32" Height="32" Offset="0x4E00"/>
+        <Collision Name="gZorasFountainIceRampCol" Offset="0x1904"/>
+
+        <!-- Zora's Fountain Iceberg -->
+        <DList Name="gZorasFountainIcebergDL" Offset="0x2BD0"/>
+        <Texture Name="gZorasFountainIceberg1TLUT" OutName="iceberg_tlut_1" Format="rgba16" Width="4" Height="4" Offset="0x1930"/>
+        <Texture Name="gZorasFountainIceberg2TLUT" OutName="iceberg_tlut_2" Format="rgba16" Width="4" Height="4" Offset="0x1950"/>
+        <Texture Name="gZorasFountainIcebergSideTex" OutName="iceberg_side" Format="ci4" Width="64" Height="64" Offset="0x1970" TlutOffset="0x1930"/>
+        <Texture Name="gZorasFountainIcebergTopTex" OutName="iceberg_top" Format="ci4" Width="64" Height="64" Offset="0x2170" TlutOffset="0x1950"/>
+        <Texture Name="gZorasFountainIcebergUndersideTex" OutName="iceberg_underside" Format="rgba16" Width="64" Height="8" Offset="0x3A00"/>
+        <Collision Name="gZorasFountainIcebergCol" Offset="0x2FD8"/>
+
+        <!-- Zora's Fountain Bombable Wall -->
+        <DList Name="gZorasFountainBombableWallDL" Offset="0x3898"/>
+        <Texture Name="gZorasFountainBombableWallTLUT" OutName="bombable_wall_tlut" Format="rgba16" Width="4" Height="4" Offset="0x3010"/>
+        <Texture Name="gZorasFountainBombableWallTex" OutName="bombable_wall" Format="ci4" Width="128" Height="32" Offset="0x3038" TlutOffset="0x3010"/>
+        <Collision Name="gZorasFountainBombableWallCol" Offset="0x39D4"/>
+    </File>
+</Root>

@@ -1,0 +1,15 @@
+<Root>
+    <File Name="object_blkobj" Segment="6">
+        <!-- Illusion Room Collision -->
+        <Collision Name="gIllusionRoomCol" Offset="0x7564"/>
+
+        <!-- Illusion Room DLists -->
+        <DList Name="gIllusionRoomNormalDL" Offset="0x14E0"/>
+        <DList Name="gIllusionRoomIllusionDL" Offset="0x53D0"/>
+
+        <!-- Unused Content -->
+
+        <!-- Illusion room DLists -->
+        <DList Name="gIllusionRoomTreeDL" Offset="0x7EB0"/>
+    </File>
+</Root>

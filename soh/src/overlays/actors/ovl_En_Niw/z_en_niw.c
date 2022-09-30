@@ -764,6 +764,12 @@ void func_80AB70A0(EnNiw* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80AB70F8;
 }
 
+void func_80AB70A0_nocutscene(EnNiw* this, GlobalContext* globalCtx) {
+    this->timer5 = 10;
+    this->unk_2A2 = 1;
+    this->actionFunc = func_80AB70F8;
+}
+
 void func_80AB70F8(EnNiw* this, GlobalContext* globalCtx) {
     this->sfxTimer1 = 100;
 

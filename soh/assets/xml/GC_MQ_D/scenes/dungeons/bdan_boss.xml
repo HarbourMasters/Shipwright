@@ -1,0 +1,11 @@
+<Root>
+    <File Name="bdan_boss_scene" Segment="2">
+        <Scene Name="bdan_boss_scene" Offset="0x0"/>
+    </File>
+    <File Name="bdan_boss_room_0" Segment="3">
+        <Room Name="bdan_boss_room_0" Offset="0x0"/>
+    </File>
+    <File Name="bdan_boss_room_1" Segment="3">
+        <Room Name="bdan_boss_room_1" Offset="0x0"/>
+    </File>
+</Root>

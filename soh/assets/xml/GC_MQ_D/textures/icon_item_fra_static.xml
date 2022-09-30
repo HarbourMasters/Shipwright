@@ -1,0 +1,37 @@
+<Root>
+    <File Name="icon_item_fra_static" Segment="13">
+        <Texture Name="gPauseDekuTitleFRATex" OutName="pause_deku_title_fra" Format="ia8" Width="96" Height="16" Offset="0x0"/>
+        <Texture Name="gPauseDodongoTitleFRATex" OutName="pause_dodongo_title_fra" Format="ia8" Width="96" Height="16" Offset="0x600"/>
+        <Texture Name="gPauseJabuTitleFRATex" OutName="pause_inside_jabu_title_fra" Format="ia8" Width="96" Height="16" Offset="0xC00"/>
+        <Texture Name="gPauseForestTitleFRATex" OutName="pause_forest_title_fra" Format="ia8" Width="96" Height="16" Offset="0x1200"/>
+        <Texture Name="gPauseFireTitleFRATex" OutName="pause_fire_title_fra" Format="ia8" Width="96" Height="16" Offset="0x1800"/>
+        <Texture Name="gPauseWaterTitleFRATex" OutName="pause_water_title_fra" Format="ia8" Width="96" Height="16" Offset="0x1E00"/>
+        <Texture Name="gPauseSpiritTitleFRATex" OutName="pause_spirit_title_fra" Format="ia8" Width="96" Height="16" Offset="0x2400"/>
+        <Texture Name="gPauseShadowTitleFRATex" OutName="pause_shadow_title_fra" Format="ia8" Width="96" Height="16" Offset="0x2A00"/>
+        <Texture Name="gPauseBotWTitleFRATex" OutName="pause_botw_title_fra" Format="ia8" Width="96" Height="16" Offset="0x3000"/>
+        <Texture Name="gPauseIceCavernTitleFRATex" OutName="pause_ice_cavern_title_fra" Format="ia8" Width="96" Height="16" Offset="0x3600"/>
+        <Texture Name="gPauseToEquipFRATex" OutName="pause_to_equip_fra" Format="ia8" Width="80" Height="16" Offset="0x3C00"/>
+        <Texture Name="gPauseToDecideFRATex" OutName="pause_to_decide_fra" Format="ia8" Width="72" Height="16" Offset="0x4100"/>
+        <Texture Name="gPauseToPlayMelodyFRATex" OutName="pause_to_play_melody_fra" Format="ia8" Width="112" Height="16" Offset="0x4580"/>
+        <Texture Name="gPauseToSelectItemFRATex" OutName="pause_to_select_item_fra" Format="ia8" Width="128" Height="16" Offset="0x4C80"/>
+        <Texture Name="gPauseToMapFRATex" OutName="pause_to_map_fra" Format="ia8" Width="128" Height="16" Offset="0x5480"/>
+        <Texture Name="gPauseToQuestStatusFRATex" OutName="pause_to_quest_status_fra" Format="ia8" Width="128" Height="16" Offset="0x5C80"/>
+        <Texture Name="gPauseToEquipmentFRATex" OutName="pause_to_equipment_fra" Format="ia8" Width="128" Height="16" Offset="0x6480"/>
+        <Texture Name="gPauseSavePromptFRATex" OutName="pause_save_prompt_fra" Format="ia8" Width="152" Height="16" Offset="0x6C80"/>
+        <Texture Name="gPauseSaveConfirmationFRATex" OutName="pause_save_confirmation_fra" Format="ia8" Width="152" Height="16" Offset="0x7600"/>
+        <Texture Name="gPauseYesFRATex" OutName="pause_yes_fra" Format="ia8" Width="48" Height="16" Offset="0x7F80"/>
+        <Texture Name="gPauseNoFRATex" OutName="pause_no_fra" Format="ia8" Width="48" Height="16" Offset="0x8280"/>
+        <Texture Name="gPauseCurrentPositionFRATex" OutName="pause_current_position_fra" Format="i4" Width="64" Height="8" Offset="0x8580"/>
+        <Texture Name="gPauseEquipment00FRATex" OutName="pause_equipment_0_0_fra" Format="ia8" Width="80" Height="32" Offset="0x8680"/>
+        <Texture Name="gPauseEquipment10FRATex" OutName="pause_equipment_1_0_fra" Format="ia8" Width="80" Height="32" Offset="0x9080"/>
+        <Texture Name="gPauseEquipment20FRATex" OutName="pause_equipment_2_0_fra" Format="ia8" Width="80" Height="32" Offset="0x9A80"/>
+        <Texture Name="gPauseSelectItem00FRATex" OutName="pause_select_item_0_0_fra" Format="ia8" Width="80" Height="32" Offset="0xA480"/>
+        <Texture Name="gPauseSelectItem10FRATex" OutName="pause_select_item_1_0_fra" Format="ia8" Width="80" Height="32" Offset="0xAE80"/>
+        <Texture Name="gPauseSelectItem20FRATex" OutName="pause_select_item_2_0_fra" Format="ia8" Width="80" Height="32" Offset="0xB880"/>
+        <Texture Name="gPauseMap10FRATex" OutName="pause_map_1_0_fra" Format="ia8" Width="80" Height="32" Offset="0xC280"/>
+        <Texture Name="gPauseQuestStatus10FRATex" OutName="pause_quest_status_1_0_fra" Format="ia8" Width="80" Height="32" Offset="0xCC80"/>
+        <Texture Name="gPauseSave00FRATex" OutName="pause_save_0_0_fra" Format="ia8" Width="80" Height="32" Offset="0xD680"/>
+        <Texture Name="gPauseSave10FRATex" OutName="pause_save_1_0_fra" Format="ia8" Width="80" Height="32" Offset="0xE080"/>
+        <Texture Name="gPauseSave20FRATex" OutName="pause_save_2_0_fra" Format="ia8" Width="80" Height="32" Offset="0xEA80"/>
+    </File>
+</Root>

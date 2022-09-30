@@ -1,19 +1,21 @@
 #ifndef CRASH_HANDLER_H
 #define CRASH_HANDLER_H
 
-#ifdef __linux__
+#include <stddef.h>
+
+typedef void(*CrashHandlerCallback)(char*, size_t*);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void SetupHandlerLinux(void);
+void CrashHandler_Init(CrashHandlerCallback callback);
 
 #ifdef __cplusplus
 }
 #endif
 
-#elif _WIN32 // __linux__ ^^^^ _WIN32 vvvvv
+#ifdef _WIN32
 #include <windows.h>
 #include <DbgHelp.h>
 
