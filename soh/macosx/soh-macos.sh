@@ -40,6 +40,10 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 		export ROM=GC_NMQ_D;;
 	0227d7c0074f2d0ac935631990da8ec5914597b4)
 		export ROM=GC_NMQ_PAL_F;;
+	50bebedad9e0f10746a52b07239e47fa6c284d03)
+		export ROM=GC_MQ_D;;
+	079b855b943d6ad8bd1eb026c0ed169ecbdac7da
+		export ROM=GC_MQ_D;;	
 	*)
 		WRONGHASH="$(osascript -ss - "$ROMHASH" <<-EOF
 		display dialog "Incompatible ROM hash $ROMHASH" \
