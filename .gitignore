@@ -53,7 +53,7 @@ graphs/
 !*_custom*
 .extracted-assets.json
 
-!OTRExporter/assets/ship_of_harkinian/textures/*
+!OTRExporter/assets/**/*.png
 
 # Docs
 !docs/tutorial/

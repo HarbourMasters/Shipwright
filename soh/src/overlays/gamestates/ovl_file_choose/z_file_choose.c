@@ -1112,7 +1112,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
                                 this->nameAlpha[i]);
             }
-            gDPLoadTextureBlock(POLY_OPA_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/textures/gFileSelRANDButtonTex"), G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelRANDButtonTex"), G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
@@ -1129,7 +1129,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
                                 this->nameAlpha[i]);
             }
-            gDPLoadTextureBlock(POLY_OPA_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/textures/gFileSelMQButtonTex"), G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelMQButtonTex"), G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
