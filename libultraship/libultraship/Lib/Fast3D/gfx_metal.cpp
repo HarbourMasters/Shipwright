@@ -122,18 +122,12 @@ struct CoordUniforms {
     simd::uint2 coords[MAX_PIXEL_DEPTH_COORDS];
 };
 
-struct TextureVertex {
-    simd::float2 position;
-    simd::float2 texcoord;
-};
-
 static struct {
     // Elements that only need to be setup once
     SDL_Renderer* renderer;
     void* layer; // CA::MetalLayer*
     MTL::Device* device;
     MTL::CommandQueue* command_queue;
-    MTL::RenderPipelineState* drawable_render_pipeline;
 
     std::queue<MTL::Buffer*> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
@@ -154,6 +148,7 @@ static struct {
 
     // Current state
     struct ShaderProgramMetal* shader_program;
+    CA::MetalDrawable* current_drawable;
     std::set<int> drawn_framebuffers;
     NS::AutoreleasePool* frame_autorelease_pool;
 
@@ -231,7 +226,13 @@ bool Metal_Init() {
     return ImGui_ImplMetal_Init(mctx.device);
 }
 
+static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height);
+
 void Metal_NewFrame() {
+    int width, height;
+    SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
+    gfx_metal_setup_screen_framebuffer(width, height);
+
     MTL::RenderPassDescriptor* current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 }
@@ -287,48 +288,6 @@ static void gfx_metal_init(void) {
             uint2 coord = query_coords.coords[thread_position.x];
             output_values[thread_position.x] = depth_texture.read(coord);
         }
-
-        // Vertex shader outputs and fragment shader inputs for texturing pipeline.
-        struct TexturePipelineRasterizerData
-        {
-            float4 position [[position]];
-            float2 texcoord;
-        };
-
-        struct TextureVertex {
-            float2 position;
-            float2 texcoord;
-        };
-
-        // Vertex shader which adjusts positions by an aspect ratio and passes texture
-        // coordinates through to the rasterizer.
-        vertex TexturePipelineRasterizerData
-        textureVertexShader(const uint vertexID [[ vertex_id ]],
-                            const device TextureVertex *vertices [[ buffer(0) ]])
-        {
-            TexturePipelineRasterizerData out;
-
-            out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-
-            out.position.x = vertices[vertexID].position.x;
-            out.position.y = vertices[vertexID].position.y;
-
-            out.texcoord = vertices[vertexID].texcoord;
-
-            return out;
-        }
-        // Fragment shader that samples a texture and outputs the sampled color.
-        fragment float4 textureFragmentShader(TexturePipelineRasterizerData in      [[stage_in]],
-                                              texture2d<float>              texture [[texture(0)]])
-        {
-            sampler simpleSampler;
-
-            // Sample data from the texture.
-            float4 colorSample = texture.sample(simpleSampler, in.texcoord);
-
-            // Return the color sample as the final color.
-            return colorSample;
-        }
     )";
 
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
@@ -341,21 +300,6 @@ static void gfx_metal_init(void) {
 
     mctx.depth_compute_function = library->newFunction(NS::String::string("depthKernel", NS::UTF8StringEncoding));
 
-    // Setup drawable render pipeline
-    MTL::RenderPipelineDescriptor* pipeline_state_descriptor = MTL::RenderPipelineDescriptor::alloc()->init();
-    pipeline_state_descriptor->setLabel(NS::String::string("Drawable Render Pipeline", NS::UTF8StringEncoding));
-    pipeline_state_descriptor->setSampleCount(1);
-    pipeline_state_descriptor->setVertexFunction(library->newFunction(NS::String::string("textureVertexShader", NS::UTF8StringEncoding)));
-    pipeline_state_descriptor->setFragmentFunction(library->newFunction(NS::String::string("textureFragmentShader", NS::UTF8StringEncoding)));
-    pipeline_state_descriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
-    pipeline_state_descriptor->vertexBuffers()->object(0)->setMutability(MTL::MutabilityImmutable);
-
-    mctx.drawable_render_pipeline = mctx.device->newRenderPipelineState(pipeline_state_descriptor, &error);
-
-    if (error != nullptr)
-        SPDLOG_ERROR("Failed to create pipeline state to render to screen: {}", error->localizedDescription()->cString(NS::UTF8StringEncoding));
-
-    pipeline_state_descriptor->release();
     autorelease_pool->release();
 }
 
@@ -667,43 +611,7 @@ void gfx_metal_end_frame(void) {
 
     auto screen_framebuffer = mctx.framebuffers[0];
     screen_framebuffer.command_encoder->endEncoding();
-
-
-    // Do second render pass to copy framebuffer 0 to screen
-    CA::MetalDrawable* drawable = get_layer_next_drawable(mctx.layer);
-
-    auto drawable_render_pass_descriptor = MTL::RenderPassDescriptor::alloc()->init();
-    drawable_render_pass_descriptor->colorAttachments()->object(0)->setTexture(drawable->texture());
-    drawable_render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    drawable_render_pass_descriptor->colorAttachments()->object(0)->setClearColor({ 0, 0, 0, 1 });
-    drawable_render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
-
-    // quad_vertex_buffer is a fullscreen quad of 6 vertices so we can use it for the render pass
-    static const TextureVertex quad_vertices[] =
-    {
-        // Positions     , Texture coordinates
-        { {  1,  -1 },  { 1.0, 1.0 } },
-        { { -1,  -1 },  { 0.0, 1.0 } },
-        { { -1,   1 },  { 0.0, 0.0 } },
-
-        { {  1,  -1 },  { 1.0, 1.0 } },
-        { { -1,   1 },  { 0.0, 0.0 } },
-        { {  1,   1 },  { 1.0, 0.0 } },
-    };
-
-    MTL::RenderCommandEncoder* render_encoder = screen_framebuffer.command_buffer->renderCommandEncoder(drawable_render_pass_descriptor);
-    render_encoder->setLabel(NS::String::string("Drawable Render Pass", NS::UTF8StringEncoding));
-    render_encoder->setRenderPipelineState(mctx.drawable_render_pipeline);
-    render_encoder->setVertexBytes(&quad_vertices, sizeof(quad_vertices), 0);
-
-    int texture_id = mctx.framebuffers[0].texture_id;
-    MTL::Texture* tex_to_copy = mctx.textures[texture_id].texture;
-
-    render_encoder->setFragmentTexture(tex_to_copy, 0);
-    render_encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0.f, 6);
-    render_encoder->endEncoding();
-
-    screen_framebuffer.command_buffer->presentDrawable(drawable);
+    screen_framebuffer.command_buffer->presentDrawable(mctx.current_drawable);
 
     pop_buffer_and_wait_to_requeue(screen_framebuffer.command_buffer);
     screen_framebuffer.command_buffer->commit();
@@ -729,7 +637,6 @@ void gfx_metal_end_frame(void) {
         fb.last_zmode_decal = -1;
     }
 
-    drawable_render_pass_descriptor->release();
     mctx.frame_autorelease_pool->release();
 }
 
@@ -753,7 +660,79 @@ int gfx_metal_create_framebuffer(void) {
     return (int)index;
 }
 
+static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) {
+    mctx.current_drawable = nullptr;
+    mctx.current_drawable = get_layer_next_drawable(mctx.layer);
+
+    bool msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
+
+    FramebufferMetal& fb = mctx.framebuffers[0];
+    TextureDataMetal& tex = mctx.textures[fb.texture_id];
+
+    NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
+
+    if (tex.texture != nullptr)
+        tex.texture->release();
+
+    tex.texture = mctx.current_drawable->texture();
+
+    MTL::RenderPassDescriptor* render_pass_descriptor = MTL::RenderPassDescriptor::renderPassDescriptor();
+    MTL::ClearColor clear_color = MTL::ClearColor::Make(0, 0, 0, 1);
+    render_pass_descriptor->colorAttachments()->object(0)->setTexture(tex.texture);
+    render_pass_descriptor->colorAttachments()->object(0)->setLoadAction(msaa_enabled ? MTL::LoadActionLoad : MTL::LoadActionClear);
+    render_pass_descriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
+    render_pass_descriptor->colorAttachments()->object(0)->setClearColor(clear_color);
+
+    tex.width = width;
+    tex.height = height;
+
+    // recreate depth texture only if necessary (size changed)
+    if (fb.depth_texture == nullptr || (fb.depth_texture->width() != width || fb.depth_texture->height() != height)) {
+        if (fb.depth_texture != nullptr)
+            fb.depth_texture->release();
+
+        // If possible, we eventually we want to disable this when msaa is enabled since we don't need this depth texture
+        // However, problem is if the user switches to msaa during game, we need a way to then generate it before drawing.
+        MTL::TextureDescriptor* depth_tex_desc = MTL::TextureDescriptor::texture2DDescriptor(MTL::PixelFormatDepth32Float, width, height, true);
+
+        depth_tex_desc->setTextureType(MTL::TextureType2D);
+        depth_tex_desc->setStorageMode(MTL::StorageModePrivate);
+        depth_tex_desc->setSampleCount(1);
+        depth_tex_desc->setArrayLength(1);
+        depth_tex_desc->setMipmapLevelCount(1);
+        depth_tex_desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
+
+        fb.depth_texture = mctx.device->newTexture(depth_tex_desc);
+    }
+
+    render_pass_descriptor->depthAttachment()->setTexture(fb.depth_texture);
+    render_pass_descriptor->depthAttachment()->setLoadAction(MTL::LoadActionClear);
+    render_pass_descriptor->depthAttachment()->setStoreAction(MTL::StoreActionStore);
+    render_pass_descriptor->depthAttachment()->setClearDepth(1);
+
+    if (fb.render_pass_descriptor != nullptr)
+        fb.render_pass_descriptor->release();
+
+    fb.render_pass_descriptor = render_pass_descriptor;
+    fb.render_pass_descriptor->retain();
+    fb.render_target = true;
+    fb.has_depth_buffer = true;
+
+    autorelease_pool->release();
+}
+
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
+    // Screen framebuffer is handled separately on a frame by frame basis
+    // see `gfx_metal_setup_screen_framebuffer`.
+    if (fb_id == 0) {
+        int width, height;
+        SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
+        set_layer_drawable_size(mctx.layer, width, height);
+
+        return;
+    }
+
+
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
 
@@ -768,12 +747,6 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
     NS::AutoreleasePool* autorelease_pool = NS::AutoreleasePool::alloc()->init();
 
     if (diff || (fb.render_pass_descriptor != nullptr) != render_target) {
-        if (diff && fb_id == 0) {
-            int width, height;
-            SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
-            set_layer_drawable_size(mctx.layer, width, height);
-        }
-
         MTL::TextureDescriptor* tex_descriptor = MTL::TextureDescriptor::alloc()->init();
         tex_descriptor->setTextureType(MTL::TextureType2D);
         tex_descriptor->setWidth(width);
@@ -909,7 +882,12 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
     MTL::Texture* source_texture = mctx.textures[source_texture_id].texture;
 
     int target_texture_id = mctx.framebuffers[fb_id_target].texture_id;
-    MTL::Texture* target_texture = mctx.textures[target_texture_id].texture;
+    MTL::Texture* target_texture = target_texture_id == 0 ? mctx.current_drawable->texture() : mctx.textures[target_texture_id].texture;
+
+    // Workaround for detecting when transitioning to/from full screen mode.
+    if (source_texture->width() != target_texture->width() || source_texture->height() != target_texture->height()) {
+        return;
+    }
 
     // Copy over the source framebuffer's texture to the target
     auto& source_framebuffer = mctx.framebuffers[fb_id_source];
