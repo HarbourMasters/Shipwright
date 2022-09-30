@@ -2036,7 +2036,7 @@ INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
 endif()
 
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
-execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/briaguya-ai/SDL_GameControllerDB/vx-gaming-command-series/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
