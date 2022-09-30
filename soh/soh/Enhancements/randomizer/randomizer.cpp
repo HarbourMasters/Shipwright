@@ -1005,7 +1005,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[index].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
                         merchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
-                        gSaveContext.itemLocations[index].get.fakeRgID = RG_NONE;
                     } else if (itemit.key() == "model") {
                         gSaveContext.itemLocations[index].get.fakeRgID = SpoilerfileGetNameToEnum[itemit.value()];
                     }
