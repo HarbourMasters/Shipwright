@@ -67,7 +67,7 @@ void _assert(const char* exp, const char* file, s32 line);
 #elif defined(__linux__)
 void __assert(const char* exp, const char* file, s32 line) __THROW;
 #elif !defined(__APPLE__) && !defined(__SWITCH__)
-void __assert(const char* exp, const char* file, s32 line) __THROW;
+void __assert(const char* exp, const char* file, s32 line);
 #endif
 #if defined(__APPLE__) && defined(NDEBUG)
 void __assert(const char* exp, const char* file, s32 line);
