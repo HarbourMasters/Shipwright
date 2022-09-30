@@ -7,6 +7,7 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define NUM_NAVI_MESSAGES 19
 
@@ -24,8 +25,7 @@ class Randomizer {
     void ParseRequiredTrialsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-    GetItemEntry GetItemEntryFromRGData(RandomizerGetData, GetItemID ogItemId, bool checkObtainability = true);
-
+    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
 
   public:
     Randomizer();

@@ -2617,7 +2617,7 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true) {
+GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability) {
     // Go ahead and early return the ogItemId's entry if we somehow get RG_NONE.
     if (rgData.rgID == RG_NONE) {
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
@@ -2647,7 +2647,7 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
     return giEntry;
 }
 
-GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true) {
+GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
     RandomizerGetData rgData = this->itemLocations[randomizerCheck];
     return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
 }
