@@ -96,7 +96,7 @@ void EnBom_Init(Actor* thisx, GlobalContext* globalCtx) {
     thisx->colChkInfo.mass = 200;
     thisx->colChkInfo.cylRadius = 5;
     thisx->colChkInfo.cylHeight = 10;
-    this->timer = 270;
+    this->timer = 70;
     this->flashSpeedScale = 7;
     Collider_InitCylinder(globalCtx, &this->bombCollider);
     Collider_InitJntSph(globalCtx, &this->explosionCollider);
