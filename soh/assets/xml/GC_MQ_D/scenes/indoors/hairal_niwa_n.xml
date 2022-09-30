@@ -1,0 +1,8 @@
+<Root>
+    <File Name="hairal_niwa_n_scene" Segment="2">
+        <Scene Name="hairal_niwa_n_scene" Offset="0x0"/>
+    </File>
+    <File Name="hairal_niwa_n_room_0" Segment="3">
+        <Room Name="hairal_niwa_n_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+<Root>
+    
+    <File Name="object_ny" Segment="6">
+        <Texture Name="gEnNyRockBodyTex" OutName="rock_body" Format="rgba16" Width="16" Height="16" Offset="0x0000"/>
+        <Texture Name="gEnNySpikeTex" OutName="spike" Format="rgba16" Width="32" Height="32" Offset="0x0200"/>
+        <Texture Name="gEnNyMetalBodyTex" OutName="metal_body" Format="rgba16" Width="32" Height="32" Offset="0x0A00"/>
+        <DList Name="gEnNyRockBodyDL" Offset="0x1DD0"/>
+        <DList Name="gEnNyMetalBodyDL" Offset="0x1EA8"/>
+        <DList Name="gEnNySpikeDL" Offset="0x1FC8"/>
+    </File>
+</Root>

@@ -1,0 +1,15 @@
+<Root>
+    <File Name="spot06_scene" Segment="2">
+        <Cutscene Name="gLakeHyliaFireArrowsCS" Offset="0x7020"/>
+        <Cutscene Name="gLakeHyliaOwlCs" Offset="0x1B0C0"/>
+        <Path Name="spot06_scenePathList_007764" Offset="0x7764" NumPaths="2"/>
+        <Cutscene Name="gLakeHyliaIntroCs" Offset="0x7A30"/>
+        <Scene Name="spot06_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot06_room_0" Segment="3">
+        <DList Name="gSpot06DL_00A400" Offset="0xA400"/>
+        <DList Name="gSpot06DL_00A608" Offset="0xA608"/>
+
+        <Room Name="spot06_room_0" Offset="0x0"/>
+    </File>
+</Root>

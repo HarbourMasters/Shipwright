@@ -312,6 +312,9 @@ namespace GameMenuBar {
         CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
+
+        //Crit wiggle disable
+        CVar_SetS32("gDisableCritWiggle", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
@@ -979,6 +982,9 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
+
+                UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", "gDisableCritWiggle", true, false);
+                UIWidgets::Tooltip("Disable random camera wiggle at low health");
 
                 ImGui::EndMenu();
             }

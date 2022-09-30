@@ -1,0 +1,30 @@
+<Root>
+    <File Name="object_dnk" Segment="6">
+        <!-- Forest Stage scrub skeleton -->
+        <Skeleton Name="gDntStageSkel" Type="Normal" LimbType="Standard" Offset="0x2AF0"/>
+
+        <!-- Forest Stage scrub animations -->
+        <Animation Name="gDntStageSpitAnim" Offset="0x31C"/>
+        <Animation Name="gDntStageHideAnim" Offset="0x430"/>
+        <Animation Name="gDntStageDanceAnim" Offset="0x6CC"/>
+        <Animation Name="gDntStageUnburrowAnim" Offset="0x894"/>
+        <Animation Name="gDntStageUpAnim" Offset="0xB70"/>
+        <Animation Name="gDntStageWalkAnim" Offset="0x2E1C"/>
+
+        <!-- Forest Stage scrub eye textures -->
+        <Texture Name="gDntStageEyeOpenTex" OutName="dnt_stage_eye_open" Format="rgba16" Width="8" Height="8" Offset="0x27D0"/>
+        <Texture Name="gDntStageEyeHalfTex" OutName="dnt_stage_eye_half" Format="rgba16" Width="8" Height="8" Offset="0x25D0"/>
+        <Texture Name="gDntStageEyeShutTex" OutName="dnt_stage_eye_shut" Format="rgba16" Width="8" Height="8" Offset="0x2750"/>
+
+        <!-- Forest Stage scrub flower -->
+        <DList Name="gDntStageFlowerDL" Offset="0x1B00"/>
+
+        <!-- Forest Stage scrub Deku Nut (used by Nutsball) -->
+        <DList Name="gDntStageNutDL" Offset="0x1890"/>
+
+        <!-- Unused Content -->
+
+        <!-- Forest Stage scrub animation -->
+        <Animation Name="gDntStageWaitAnim" Offset="0x2CB8"/>
+    </File>
+</Root>

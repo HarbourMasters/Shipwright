@@ -1,0 +1,33 @@
+<Root>
+    <File Name="object_xc" Segment="6">
+        <Skeleton Name="gSheikSkel" Type="Flex" LimbType="Standard" Offset="0x12AF0"/>
+        <Animation Name="gSheikPlayingHarpAnim" Offset="0xB6C"/>
+        <Animation Name="gSheikShowingTriforceOnHandAnim" Offset="0x1A08"/>
+        <Animation Name="gSheikShowingTriforceOnHandIdleAnim" Offset="0x1D14"/>
+        <Animation Name="gSheikPlayingHarp2Anim" Offset="0x289C"/>
+        <Animation Name="gSheikPlayingHarp3Anim" Offset="0x35C8"/>
+        <Animation Name="gSheikPlayingHarp4Anim" Offset="0x4570"/>
+        <Animation Name="gSheikIdleAnim" Offset="0x4828"/>
+        <Texture Name="object_xc_TLUT_004A40" OutName="tlut_00004A40" Format="rgba16" Width="16" Height="16" Offset="0x4A40"/>
+        <Animation Name="gSheikWalkingAnim" Offset="0x12FD0"/>
+        <Animation Name="gSheikArmsCrossedIdleAnim" Offset="0x13AA4"/>
+        <Animation Name="gSheikFallingFromContortionsAnim" Offset="0x149E4"/>
+        <Animation Name="gSheikContortionsAnim" Offset="0x169E8"/>
+        <Animation Name="gSheikPlayingHarp5Anim" Offset="0x177F8"/>
+        <Animation Name="gSheikInitialHarpAnim" Offset="0x17C54"/>
+        <Animation Name="gSheikDefenseStanceAnim" Offset="0x18B00"/>
+        <Animation Name="gSheikThrowingNutAnim" Offset="0x19598"/>
+        <Animation Name="gSheikKneelingAnim" Offset="0x19C30"/>
+        <Animation Name="gSheikHittingGroundAnim" Offset="0x19F78"/>
+        <Animation Name="gSheikAnim_01A048" Offset="0x1A048"/>
+        <Animation Name="gSheikPullingOutHarpAnim" Offset="0x1B19C"/>
+        <Animation Name="gSheikFallingFromSkyAnim" Offset="0x1C0E8"/>
+        <Texture Name="gSheikEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x4CC0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeHalfClosedTex" OutName="eye_half_closed" Format="ci8" Width="32" Height="32" Offset="0x50C0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeShutTex" OutName="eye_shut" Format="ci8" Width="32" Height="32" Offset="0x54C0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeSquintingTex" OutName="eye_squinting" Format="ci8" Width="32" Height="32" Offset="0x58C0" TlutOffset="0x4A40"/>
+        <DList Name="gSheikHarpDL" Offset="0x11150"/>
+        <DList Name="gSheikDL_011620" Offset="0x11620"/>
+        <DList Name="gSheikDL_012970" Offset="0x12970"/>
+    </File>
+</Root>
