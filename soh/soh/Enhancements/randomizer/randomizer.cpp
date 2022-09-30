@@ -442,11 +442,18 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
         RandomizerGet shopItemGet = this->itemLocations[shopItemCheck].rgID;
+        std::vector<std::string> shopItemName;
         // TODO: This should eventually be replaced with a full fledged trick model & trick name system
         if (shopItemGet == RG_ICE_TRAP) {
             shopItemGet = this->itemLocations[shopItemCheck].fakeRgID;
+            shopItemName = {
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName)
+            };
+        } else { 
+            shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         }
-        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         u16 shopItemPrice = merchantPrices[shopItemCheck];
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
@@ -1007,6 +1014,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         merchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
                     } else if (itemit.key() == "model") {
                         gSaveContext.itemLocations[index].get.fakeRgID = SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "trickName") {
+                        memcpy(gSaveContext.itemLocations[index].get.trickName, std::string(itemit.value()).c_str(), std::string(itemit.value()).length());
                     }
                 }
             } else {

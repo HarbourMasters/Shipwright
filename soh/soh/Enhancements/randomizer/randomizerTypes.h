@@ -967,6 +967,7 @@ typedef enum {
 typedef struct {
     RandomizerGet rgID;
     RandomizerGet fakeRgID;
+    char trickName[50];
 } RandomizerGetData;
 
 typedef enum {
