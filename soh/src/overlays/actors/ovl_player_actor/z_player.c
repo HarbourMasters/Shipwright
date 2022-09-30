@@ -23,7 +23,8 @@
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
 //Mod
-#include <libultraship/Lib/Fast3D/gfx_sdl.h>
+//#include <libultraship/Lib/Fast3D/gfx_sdl.h>
+#include <libultraship/Window.h>
 
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
@@ -5454,7 +5455,7 @@ s32 func_8083C2B0(Player* this, GlobalContext* globalCtx) {
             if (CVar_GetS32("gMouseTouchEnabled", 0)) {
                 u32 width = OTRGetCurrentWidth();
                 u32 height = OTRGetCurrentHeight();
-                gfx_sdl.move_cursor(width/2, height/2);
+                WmApi->move_cursor(width/2, height/2);
             }
             /* */
 
