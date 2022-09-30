@@ -381,6 +381,12 @@ s32 EnGirlA_TryChangeShopItem(EnGirlA* this, GlobalContext* globalCtx) {
             ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
             if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
                 this->actor.params = SI_SOLD_OUT;
+                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+
+                // Undo the rotation for spiritual stones
+                if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
+                    this->actor.shape.rot.y = this->actor.shape.rot.y - 20000;
+                }
                 return true;
             }
             break;

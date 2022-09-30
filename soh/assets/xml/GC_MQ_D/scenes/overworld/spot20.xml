@@ -1,0 +1,14 @@
+<Root>
+    <File Name="spot20_scene" Segment="2">
+        <Cutscene Name="gLonLonRanchIntroCs" Offset="0x5BD0"/>
+        <Texture Name="gLonLonRanchDayWindowTex" OutName="day_window" Format="rgba16" Width="32" Height="64" Offset="0x81E0"/>
+        <Texture Name="gLonLonRangeNightWindowsTex" OutName="night_window" Format="rgba16" Width="32" Height="64" Offset="0xFBE0"/>
+        <Path Name="spot20_scenePathList_005844" Offset="0x5844" NumPaths="2"/>
+        <Scene Name="spot20_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot20_room_0" Segment="3">
+        <DList Name="gSpot20DL_005E50" Offset="0x5E50"/>
+        <DList Name="gSpot20DL_0066B8" Offset="0x66B8"/>
+        <Room Name="spot20_room_0" Offset="0x0"/>
+    </File>
+</Root>

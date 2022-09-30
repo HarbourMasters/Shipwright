@@ -25,6 +25,8 @@
 //Mod
 #include <libultraship/Lib/Fast3D/gfx_sdl.h>
 
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "soh/Enhancements/debugconsole.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -4666,7 +4668,9 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && (interactActorId == ACTOR_EN_ISHI || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
+            // Same actor is used for small and large silver rocks, use actor params to identify large ones
+            bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
                 LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 5.0f);
             } else {
                 LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
@@ -6077,9 +6081,19 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
     if (this->swordState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
+
+        if (chaosEffectSpeedModifier != 0) {
+            if (chaosEffectSpeedModifier > 0) {
+                maxSpeed *= chaosEffectSpeedModifier;
+            } else {
+                maxSpeed /= abs(chaosEffectSpeedModifier);
+            }
+        }
+
         if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         }
+
         this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
     }
 
@@ -7686,9 +7700,18 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
         func_80837268(this, &sp2C, &sp2A, 0.018f, globalCtx);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
+            if (chaosEffectSpeedModifier != 0) {
+                if (chaosEffectSpeedModifier > 0) {
+                    sp2C *= chaosEffectSpeedModifier;
+                } else {
+                    sp2C /= abs(chaosEffectSpeedModifier);
+                }
+            }
+
             if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
             }
+
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, globalCtx);
 
@@ -10957,6 +10980,39 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     MREG(53) = this->actor.world.pos.y;
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
+
+    if (chaosEffectGiantLink) {
+        this->actor.scale.x = 0.02f;
+        this->actor.scale.y = 0.02f;
+        this->actor.scale.z = 0.02f;
+    }
+
+    if (chaosEffectMinishLink) {
+        this->actor.scale.x = 0.001f;
+        this->actor.scale.y = 0.001f;
+        this->actor.scale.z = 0.001f;
+    }
+
+    if (chaosEffectPaperLink) {
+        this->actor.scale.x = 0.001f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+    }
+
+    if (chaosEffectResetLinkScale) {
+        this->actor.scale.x = 0.01f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+        chaosEffectResetLinkScale = 0;
+    }
+
+    if (chaosEffectGravityLevel == GRAVITY_LEVEL_HEAVY) {
+        this->actor.gravity = -4.0f;
+    }
+
+    if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
+        this->actor.gravity = -0.3f;
+    }
 }
 
 static struct_80858AC8 D_80858AC8;
@@ -11207,8 +11263,8 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
     /* ********************************************************** */
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
-        if (CVar_GetS32("gAutoCenterView", 0) != 0) {
-            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+        if (CVar_GetS32("gAutoCenterView", 0)) {
+            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
             Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
             temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
@@ -11218,7 +11274,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
             temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
             temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
-                          (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+                          (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1));
             this->actor.focus.rot.x += temp3;
 
             if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -11227,7 +11283,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
             if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
                 this->actor.focus.rot.x -=
-                    (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+                    (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
             }
 
             this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
@@ -11254,7 +11310,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
         temp3 =
             ((sControlInput->rel.stick_y >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) *
-                                                                 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+                                                                 1500.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1));
         this->actor.focus.rot.x += temp3;
 
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -11263,7 +11319,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.x -=
-                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
         }
 
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);

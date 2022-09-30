@@ -1,0 +1,76 @@
+<Root>
+    <File Name="object_oB2" Segment="6">
+        <!-- The commented limbs references dlists in a wrong offset, making ZAPD crash. -->
+        <!-- This object is not used in-game. -->
+
+        <Limb Name="object_oB2_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_oB2_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_oB2_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_oB2_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_oB2_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_oB2_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_oB2_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_oB2_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <!--
+        <Limb Name="object_oB2_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_oB2_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oB2_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        -->
+        <Limb Name="object_oB2_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_oB2_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_oB2_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_oB2_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+        <!--
+        <Limb Name="object_oB2_Limb_0000B4" LimbType="Standard" Offset="0xB4"/>
+        <Limb Name="object_oB2_Limb_0000C0" LimbType="Standard" Offset="0xC0"/>
+        <Limb Name="object_oB2_Limb_0000CC" LimbType="Standard" Offset="0xCC"/>
+        <Limb Name="object_oB2_Limb_0000D8" LimbType="Standard" Offset="0xD8"/>
+        -->
+        <Limb Name="object_oB2_Limb_0000E4" LimbType="Standard" Offset="0xE4"/>
+        <Limb Name="object_oB2_Limb_0000F0" LimbType="Standard" Offset="0xF0"/>
+        <Limb Name="object_oB2_Limb_0000FC" LimbType="Standard" Offset="0xFC"/>
+        <!--
+        <Limb Name="object_oB2_Limb_000108" LimbType="Standard" Offset="0x108"/>
+        -->
+        <Limb Name="object_oB2_Limb_000114" LimbType="Standard" Offset="0x114"/>
+        <Limb Name="object_oB2_Limb_000120" LimbType="Standard" Offset="0x120"/>
+        <Limb Name="object_oB2_Limb_00012C" LimbType="Standard" Offset="0x12C"/>
+        <Limb Name="object_oB2_Limb_000138" LimbType="Standard" Offset="0x138"/>
+        <!--
+        <Limb Name="object_oB2_Limb_000144" LimbType="Standard" Offset="0x144"/>
+        <Limb Name="object_oB2_Limb_000150" LimbType="Standard" Offset="0x150"/>
+        <Limb Name="object_oB2_Limb_00015C" LimbType="Standard" Offset="0x15C"/>
+        -->
+        <Limb Name="object_oB2_Limb_000168" LimbType="Standard" Offset="0x168"/>
+        <Limb Name="object_oB2_Limb_000174" LimbType="Standard" Offset="0x174"/>
+        <Limb Name="object_oB2_Limb_000180" LimbType="Standard" Offset="0x180"/>
+        <Limb Name="object_oB2_Limb_00018C" LimbType="Standard" Offset="0x18C"/>
+        <!--
+        <Limb Name="object_oB2_Limb_000198" LimbType="Standard" Offset="0x198"/>
+        <Limb Name="object_oB2_Limb_0001A4" LimbType="Standard" Offset="0x1A4"/>
+        <Limb Name="object_oB2_Limb_0001B0" LimbType="Standard" Offset="0x1B0"/>
+        <Limb Name="object_oB2_Limb_0001BC" LimbType="Standard" Offset="0x1BC"/>
+        -->
+        <!--
+        <Skeleton Name="object_oB2_Skel_000260" Type="Normal" LimbType="Standard" Offset="0x260"/>
+        -->
+        <DList Name="object_oB2_DL_001F68" Offset="0x1F68"/>
+        <DList Name="object_oB2_DL_0021D0" Offset="0x21D0"/>
+        <DList Name="object_oB2_DL_002450" Offset="0x2450"/>
+        <DList Name="object_oB2_DL_0025B8" Offset="0x25B8"/>
+        <DList Name="object_oB2_DL_002678" Offset="0x2678"/>
+        <DList Name="object_oB2_DL_002758" Offset="0x2758"/>
+        <DList Name="object_oB2_DL_0028B8" Offset="0x28B8"/>
+        <DList Name="object_oB2_DL_002978" Offset="0x2978"/>
+        <Texture Name="object_oB2_Tex_002A58" OutName="tex_00002A58" Format="rgba16" Width="16" Height="16" Offset="0x2A58"/>
+        <Texture Name="object_oB2_Tex_002C58" OutName="tex_00002C58" Format="rgba16" Width="8" Height="8" Offset="0x2C58"/>
+        <Texture Name="object_oB2_Tex_002CD8" OutName="tex_00002CD8" Format="rgba16" Width="32" Height="16" Offset="0x2CD8"/>
+        <Texture Name="object_oB2_Tex_0030D8" OutName="tex_000030D8" Format="rgba16" Width="16" Height="8" Offset="0x30D8"/>
+        <Texture Name="object_oB2_Tex_0031D8" OutName="tex_000031D8" Format="rgba16" Width="32" Height="32" Offset="0x31D8"/>
+        <Texture Name="object_oB2_Tex_0039D8" OutName="tex_000039D8" Format="rgba16" Width="16" Height="16" Offset="0x39D8"/>
+        <Texture Name="object_oB2_Tex_003BD8" OutName="tex_00003BD8" Format="rgba16" Width="8" Height="8" Offset="0x3BD8"/>
+        <Texture Name="object_oB2_Tex_003C58" OutName="tex_00003C58" Format="rgba16" Width="16" Height="16" Offset="0x3C58"/>
+        <Texture Name="object_oB2_Tex_003E58" OutName="tex_00003E58" Format="rgba16" Width="16" Height="16" Offset="0x3E58"/>
+        <Texture Name="object_oB2_Tex_004058" OutName="tex_00004058" Format="rgba16" Width="8" Height="8" Offset="0x4058"/>
+    </File>
+</Root>

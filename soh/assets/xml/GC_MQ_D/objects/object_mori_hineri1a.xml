@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_mori_hineri1a" Segment="6">
+        <DList Name="object_mori_hineri1a_DL_001980" Offset="0x1980"/>
+        <Collision Name="object_mori_hineri1a_Col_003490" Offset="0x3490"/>
+    </File>
+</Root>

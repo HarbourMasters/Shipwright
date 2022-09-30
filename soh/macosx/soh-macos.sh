@@ -67,7 +67,7 @@ done
 
 arch_name="$(uname -m)"
 launch_arch="arm64"
-if [ "${arch_name}" = "x86_64" ] && [ "$(sysctl -in sysctl.proc_translated)" = "0" ]; then
+if [ "${arch_name}" = "x86_64" ] && [ "$(sysctl -in sysctl.proc_translated)" != "1" ]; then
 	launch_arch="x86_64"
 fi
 

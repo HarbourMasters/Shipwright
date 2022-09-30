@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_fire" Segment="6">
+        <DList Name="gFireDL" Offset="0x40"/>
+
+        <Texture Name="gFire0Tex" OutName="fire_0" Format="ia8" Width="32" Height="64" Offset="0x00A0"/>
+        <Texture Name="gFire1Tex" OutName="fire_1" Format="ia8" Width="32" Height="64" Offset="0x08A0"/>
+        <Texture Name="gFire2Tex" OutName="fire_2" Format="ia8" Width="32" Height="64" Offset="0x10A0"/>
+        <Texture Name="gFire3Tex" OutName="fire_3" Format="ia8" Width="32" Height="64" Offset="0x18A0"/>
+        <Texture Name="gFire4Tex" OutName="fire_4" Format="ia8" Width="32" Height="64" Offset="0x20A0"/>
+        <Texture Name="gFire5Tex" OutName="fire_5" Format="ia8" Width="32" Height="64" Offset="0x28A0"/>
+        <Texture Name="gFire6Tex" OutName="fire_6" Format="ia8" Width="32" Height="64" Offset="0x30A0"/>
+        <Texture Name="gFire7Tex" OutName="fire_7" Format="ia8" Width="32" Height="64" Offset="0x38A0"/>
+    </File>
+</Root>

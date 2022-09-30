@@ -10,9 +10,20 @@
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 void EnMag_Init(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_InitMq(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_InitVanilla(Actor* thisx, GlobalContext* globalCtx);
+
 void EnMag_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx);
+
 void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp);
+void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp);
+
+typedef void (*EnMagDrawInnerFunc)(struct Actor*, GlobalContext*, Gfx**);
+
+static EnMagDrawInnerFunc drawInnerFunc;
 
 const ActorInit En_Mag_InitVars = {
     ACTOR_EN_MAG,
@@ -22,14 +33,25 @@ const ActorInit En_Mag_InitVars = {
     sizeof(EnMag),
     (ActorFunc)EnMag_Init,
     (ActorFunc)EnMag_Destroy,
-    (ActorFunc)EnMag_Update,
+    (ActorFunc)NULL,
     (ActorFunc)EnMag_Draw,
     NULL,
 };
 
-static s16 sDelayTimer = 0;
-#ifdef MASTER_QUEST
 void EnMag_Init(Actor* thisx, GlobalContext* globalCtx) {
+    if (ResourceMgr_IsGameMasterQuest()) {
+        EnMag_InitMq(thisx, globalCtx);
+        drawInnerFunc = EnMag_DrawInnerMq;
+        thisx->update = EnMag_UpdateMq;
+    } else {
+        EnMag_InitVanilla(thisx, globalCtx);
+        thisx->update = EnMag_UpdateVanilla;
+        drawInnerFunc = EnMag_DrawInnerVanilla;
+    }
+}
+
+static s16 sDelayTimer = 0;
+void EnMag_InitMq(Actor* thisx, GlobalContext* globalCtx) {
     EnMag* this = (EnMag*)thisx;
 
     YREG(1) = 63;
@@ -98,8 +120,8 @@ void EnMag_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_E31C = 0;
     this->unk_E320 = 0;
 }
-#else
-void EnMag_Init(Actor* thisx, GlobalContext* globalCtx) {
+
+void EnMag_InitVanilla(Actor* thisx, GlobalContext* globalCtx) {
     EnMag* this = (EnMag*)thisx;
     Color_RGB8 Original_Prim = { 255, 255, 170 };
     Color_RGB8 Original_Env = { 255, 100, 0 };
@@ -188,13 +210,11 @@ void EnMag_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_E31C = 0;
     this->unk_E320 = 0;
 }
-#endif
 
 void EnMag_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 }
 
-#ifdef MASTER_QUEST
-void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad[2];
     EnMag* this = (EnMag*)thisx;
 
@@ -353,8 +373,8 @@ void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 }
-#else
-void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
+
+void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad[2];
     EnMag* this = (EnMag*)thisx;
     Color_RGB8 Original_Prim = { 255, 255, 170 };
@@ -539,9 +559,8 @@ void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 }
-#endif
 
-void EnMag_DrawTextureI8(Gfx** gfxp, void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
+void EnMag_DrawTextureI8(Gfx** gfxp, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
     Gfx* gfx = *gfxp;
 
@@ -554,7 +573,7 @@ void EnMag_DrawTextureI8(Gfx** gfxp, void* texture, s16 texWidth, s16 texHeight,
     *gfxp = gfx;
 }
 
-void EnMag_DrawEffectTextures(Gfx** gfxp, void* maskTex, void* effectTex, s16 maskWidth, s16 maskHeight,
+void EnMag_DrawEffectTextures(Gfx** gfxp, const void* maskTex, void* effectTex, s16 maskWidth, s16 maskHeight,
                               s16 effectWidth, s16 effectHeight, s16 rectLeft, s16 rectTop, s16 rectWidth,
                               s16 rectHeight, u16 dsdx, u16 dtdy, u16 shifts, u16 shiftt, u16 flag, EnMag* this) {
     Gfx* gfx = *gfxp;
@@ -575,7 +594,7 @@ void EnMag_DrawEffectTextures(Gfx** gfxp, void* maskTex, void* effectTex, s16 ma
     *gfxp = gfx;
 }
 
-void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, u8* source, u32 width, u32 height) {
+void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
     Gfx* gfx = *gfxp;
     u8* curTexture;
     s32 textureCount;
@@ -650,8 +669,9 @@ void EnMag_DrawCharTexture(Gfx** gfxp, u8* texture, s32 rectLeft, s32 rectTop) {
 
     *gfxp = gfx;
 }
-#ifdef MASTER_QUEST
-void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
+
+
+void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
@@ -735,7 +755,7 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
 
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->subAlpha);
-        EnMag_DrawImageRGBA32(&gfx, 174, 145, (u8*)gTitleMasterQuestSubtitleTex, 128, 32);
+        EnMag_DrawImageRGBA32(&gfx, 174, 145, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
     }
 
     func_8009457C(&gfx);
@@ -840,8 +860,8 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
 
     *gfxp = gfx;
 }
-#else
-void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
+
+void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
@@ -851,7 +871,7 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
     static u8 pressStartFontIndexes[] = {
         0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
     };
-    static void* effectMaskTextures[] = {
+    static const void* effectMaskTextures[] = {
         gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
         gTitleEffectMask10Tex, gTitleEffectMask11Tex, gTitleEffectMask12Tex,
         gTitleEffectMask20Tex, gTitleEffectMask21Tex, gTitleEffectMask22Tex,
@@ -1027,7 +1047,6 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
 
     *gfxp = gfx;
 }
-#endif
 
 void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
@@ -1040,7 +1059,7 @@ void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gfx = Graph_GfxPlusOne(gfxRef);
     gSPDisplayList(OVERLAY_DISP++, gfx);
 
-    EnMag_DrawInner(thisx, globalCtx, &gfx);
+    drawInnerFunc(thisx, globalCtx, &gfx);
 
     gSPEndDisplayList(gfx++);
     Graph_BranchDlist(gfxRef, gfx);

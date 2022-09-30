@@ -10,6 +10,7 @@ typedef struct {
     u32 questItems;
     s8 defense;
     u16 health;
+    u32 isMasterQuest;
     u8 seedHash[5];
     u8 randoSave;
 } SaveFileMetaInfo;
