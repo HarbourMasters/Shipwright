@@ -725,6 +725,10 @@ const char* gfx_dxgi_get_key_name(int scancode) {
     return text;
 }
 
+void gfx_dxgi_move_cursor(int x, int y) {
+    //TODO (RR): do the thing
+}
+
 extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_init,
     gfx_dxgi_set_keyboard_callbacks,
@@ -741,7 +745,8 @@ extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_set_target_fps,
     gfx_dxgi_set_maximum_frame_latency,
     gfx_dxgi_get_detected_hz,
-    gfx_dxgi_get_key_name
+    gfx_dxgi_get_key_name,
+    gfx_dxgi_move_cursor
 };
 
 #endif
