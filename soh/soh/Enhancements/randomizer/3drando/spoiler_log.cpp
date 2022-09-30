@@ -679,6 +679,18 @@ static void WriteAllLocations(int language) {
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
           jsonData["locations"][location->GetName()]["item"] = placedItemName;
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else if (location->GetPlacedItemKey() == ICE_TRAP) {
+            switch (language) {
+                case 0:
+                default:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
+                break;
+            }
         } else {
           jsonData["locations"][location->GetName()] = placedItemName;
         }
