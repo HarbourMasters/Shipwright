@@ -6,6 +6,8 @@
 #include "soh/Enhancements/gameconsole.h"
 #include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/debugconsole.h"
+#include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
 #include <time.h>
 
@@ -1542,6 +1544,10 @@ void Gameplay_Main(GameState* thisx) {
 
     }
 
+}
+
+u8 PlayerGrounded(Player* player) {
+    return player->actor.bgCheckFlags & 1;
 }
 
 // original name: "Game_play_demo_mode_check"

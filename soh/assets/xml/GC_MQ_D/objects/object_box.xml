@@ -1,0 +1,29 @@
+<Root>
+    <File Name="object_box" Segment="6">
+        <Skeleton Name="gTreasureChestCurveSkel" Type="Curve" LimbType="Curve" Offset="0x5EB8"/>
+        <CurveAnimation Name="gTreasureChestCurveAnim_4B60" SkelOffset="0x5EB8" Offset="0x4B60"/>
+        <CurveAnimation Name="gTreasureChestCurveAnim_4F70" SkelOffset="0x5EB8" Offset="0x4F70"/>
+        <Animation Name="gTreasureChestAnim_000128" Offset="0x128"/>
+        <Animation Name="gTreasureChestAnim_00024C" Offset="0x24C"/>
+        <Animation Name="gTreasureChestAnim_00043C" Offset="0x43C"/>
+
+        <DList Name="gTreasureChestChestFrontDL" Offset="0x6F0"/>
+        <Texture Name="gTreasureChestFrontTex" OutName="chest_front" Format="rgba16" Width="32" Height="64" Offset="0x1798"/>
+
+        <DList Name="gTreasureChestBossKeyChestFrontDL" Offset="0xAE8"/>
+        <Texture Name="gTreasureChestBossKeyFrontTex" OutName="boss_key_front_tex" Format="rgba16" Width="32" Height="64" Offset="0x3798"/>
+
+        <DList Name="gTreasureChestChestSideAndLidDL" Offset="0x10C0"/>
+        <Texture Name="gTreasureChestSideAndTopTex" OutName="side_and_top" Format="rgba16" Width="32" Height="32" Offset="0x2798"/>
+
+        <DList Name="gTreasureChestBossKeyChestSideAndTopDL" Offset="0x1678"/>
+        <Texture Name="gTreasureChestBossKeySideAndTopTex" OutName="boss_key_side_and_top" Format="rgba16" Width="32" Height="32" Offset="0x2F98"/>
+
+        <Skeleton Name="gTreasureChestSkel" Type="Normal" LimbType="Standard" Offset="0x47D8"/>
+        <Collision Name="gTreasureChestCol" Offset="0x5FC8"/>
+
+        <!--Large Unaccounted-->
+        <Blob Name="gBoxBlob_00025C" Size="0xF4" Offset="0x025C"/>
+        <Blob Name="gBoxBlob_00044C" Size="0x64" Offset="0x044C"/>
+    </File>
+</Root>

@@ -301,10 +301,11 @@ namespace UIWidgets {
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
         float val = CVar_GetFloat(cvarName, defaultValue);
 
-        if (!isPercentage)
+        if (!isPercentage) {
             ImGui::Text(text, val);
-        else
+        } else {
             ImGui::Text(text, static_cast<int>(100 * val));
+        }
 
         Spacer(0);
 
@@ -312,10 +313,11 @@ namespace UIWidgets {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
             if (ImGui::Button(MinusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val -= 0.1f;
-                else
+                } else {
                     val -= 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
@@ -325,15 +327,18 @@ namespace UIWidgets {
         if (PlusMinusButton) {
         #ifdef __SWITCH__
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-        #elif __WIIU__
+        #elif defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
         #endif
         }
-        if (ImGui::SliderFloat(id, &val, min, max, format))
-        {
-            CVar_SetFloat(cvarName, val);
+        if (ImGui::SliderFloat(id, &val, min, max, format)) {
+            if (isPercentage) {
+                CVar_SetFloat(cvarName, roundf(val * 100) / 100);
+            } else {
+                CVar_SetFloat(cvarName, val);
+            }
             SohImGui::RequestCvarSaveOnNextTick();
         }
         if (PlusMinusButton) {
@@ -345,24 +350,23 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val += 0.1f;
-                else
+                } else {
                     val += 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
         }
 
-        if (val < min)
-        {
+        if (val < min) {
             val = min;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
 
-        if (val > max)
-        {
+        if (val > max) {
             val = max;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -439,9 +443,9 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            #ifdef __SWITCH__
+#if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
-            #endif
+#endif
             ImVec4 color = GetRandomValue(255);
             colors->x = color.x;
             colors->y = color.y;

@@ -112,11 +112,6 @@ void Mercury::reload() {
     }
     std::ifstream ifs(this->path_);
 
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    ifs.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
-
     try {
         this->rjson = json::parse(ifs);
         this->vjson = this->rjson.flatten();
@@ -128,11 +123,5 @@ void Mercury::reload() {
 
 void Mercury::save() const {
     std::ofstream file(this->path_);
-
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    file.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
-
     file << this->vjson.unflatten().dump(4);
 }

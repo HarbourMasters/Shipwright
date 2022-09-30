@@ -23,6 +23,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -3704,6 +3706,11 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
+        return;
+    }
+
+    if (ResourceMgr_IsGameMasterQuest()) {
+        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
