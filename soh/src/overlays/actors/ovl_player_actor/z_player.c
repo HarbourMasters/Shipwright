@@ -27,6 +27,7 @@
 #include <libultraship/Lib/Fast3D/gfx_sdl.h>
 #define WIN_API gfx_sdl
 #elif defined(ENABLE_DX11) || defined(ENABLE_DX12)
+#undef DECLARE_GFX_DXGI_FUNCTIONS
 #include <libultraship/Lib/Fast3D/gfx_dxgi.h>
 #define WIN_API gfx_dxgi_api
 #endif
