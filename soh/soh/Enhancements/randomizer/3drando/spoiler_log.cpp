@@ -683,13 +683,13 @@ static void WriteAllLocations(int language) {
                     case 0:
                     default:
                         jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
                         jsonData["locations"][location->GetName()]["trickName"] = 
                             NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
                         break;
                     case 2:
                         jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
                         jsonData["locations"][location->GetName()]["trickName"] =
                             NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
                         break;
@@ -702,12 +702,12 @@ static void WriteAllLocations(int language) {
                 case 0:
                 default:
                     jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
                     break;
                 case 2:
                     jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
-                break;
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                    break;
             }
         } else {
           jsonData["locations"][location->GetName()] = placedItemName;

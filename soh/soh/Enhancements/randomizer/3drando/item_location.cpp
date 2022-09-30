@@ -1489,6 +1489,7 @@ std::vector<uint32_t> everyPossibleLocation = {};
 
 //set of overrides to write to the patch
 std::set<ItemOverride, ItemOverride_Compare> overrides = {};
+std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
 
 std::vector<std::vector<uint32_t>> playthroughLocations;
 std::vector<uint32_t> wothLocations;
@@ -1618,6 +1619,7 @@ void CreateItemOverrides() {
         ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
         // If this is an ice trap in a shop, change the name based on what the model will look like
         if (loc->GetPlaceduint32_t() == ICE_TRAP && loc->IsCategory(Category::cShop)) {
+            iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
             NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
         }
         overrides.insert({
