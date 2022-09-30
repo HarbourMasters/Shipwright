@@ -26,7 +26,7 @@
 #if defined(ENABLE_OPENGL)
 #include <libultraship/Lib/Fast3D/gfx_sdl.h>
 #define WIN_API gfx_sdl
-#else if defined(ENABLE_DX11) || defined(ENABLE_DX12)
+#elif defined(ENABLE_DX11) || defined(ENABLE_DX12)
 #include <libultraship/Lib/Fast3D/gfx_dxgi.h>
 #define WIN_API gfx_dxgi_api
 #endif
