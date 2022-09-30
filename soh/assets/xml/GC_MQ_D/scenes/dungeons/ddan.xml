@@ -1,0 +1,70 @@
+<Root>
+    <File Name="ddan_scene" Segment="2">
+        <Texture Name="gDCDayEntranceTex" OutName="day_entrance" Format="ci8" Width="32" Height="64" Offset="0x12378" TlutOffset="0x11D70"/>
+        <Texture Name="gDCNightEntranceTex" OutName="night_entrance" Format="ci8" Width="32" Height="64" Offset="0x13378" TlutOffset="0x11D70"/>
+
+        <!-- These textures are used in room 0 with a TLUT at 0x11290 in room 0, and in room 3 with a TLUT at 0x008630 in room 3 (those two TLUTs are identical, but duplicated) -->
+        <Texture Name="gDCLavaFloor1Tex" OutName="lava_floor_1" Format="ci8" Width="32" Height="32" Offset="0x11F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor2Tex" OutName="lava_floor_2" Format="ci8" Width="32" Height="32" Offset="0x14778" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor3Tex" OutName="lava_floor_3" Format="ci8" Width="32" Height="32" Offset="0x14378" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor4Tex" OutName="lava_floor_4" Format="ci8" Width="32" Height="32" Offset="0x13F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor5Tex" OutName="lava_floor_5" Format="ci8" Width="32" Height="32" Offset="0x14B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor6Tex" OutName="lava_floor_6" Format="ci8" Width="32" Height="32" Offset="0x13B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor7Tex" OutName="lava_floor_7" Format="ci8" Width="32" Height="32" Offset="0x12F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor8Tex" OutName="lava_floor_8" Format="ci8" Width="32" Height="32" Offset="0x12B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+
+        <Cutscene Name="gDcOpeningCs" Offset="0x14F80"/>
+        <Scene Name="ddan_scene" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_0" Segment="3">
+        <Room Name="ddan_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_1" Segment="3">
+        <Room Name="ddan_room_1" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_2" Segment="3">
+        <Room Name="ddan_room_2" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_3" Segment="3">
+        <Room Name="ddan_room_3" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_4" Segment="3">
+        <Room Name="ddan_room_4" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_5" Segment="3">
+        <Room Name="ddan_room_5" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_6" Segment="3">
+        <Room Name="ddan_room_6" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_7" Segment="3">
+        <Room Name="ddan_room_7" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_8" Segment="3">
+        <Room Name="ddan_room_8" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_9" Segment="3">
+        <Room Name="ddan_room_9" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_10" Segment="3">
+        <Room Name="ddan_room_10" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_11" Segment="3">
+        <Room Name="ddan_room_11" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_12" Segment="3">
+        <Room Name="ddan_room_12" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_13" Segment="3">
+        <Room Name="ddan_room_13" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_14" Segment="3">
+        <Room Name="ddan_room_14" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_15" Segment="3">
+        <Room Name="ddan_room_15" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_16" Segment="3">
+        <Room Name="ddan_room_16" Offset="0x0"/>
+    </File>
+</Root>

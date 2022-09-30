@@ -1,0 +1,82 @@
+<Root>
+    <File Name="object_mo" Segment="6">
+        <!-- Morpha's Title Card -->
+        <Texture Name="gMorphaTitleCardTex" Format="i8" Width="128" Height="120" Offset="0x1010"/>
+
+        <!-- DLists for Morpha's Core -->
+        <DList Name="gMorphaCoreMembraneDL" Offset="0x6700"/>
+        <DList Name="gMorphaCoreNucleusDL" Offset="0x6838"/>
+
+        <!-- DLists for Morpha's tentacle segments -->
+        <DList Name="gMorphaTentacleBaseDL" Offset="0x7C00"/>
+        <DList Name="gMorphaTentaclePart0DL" Offset="0x7C78"/>
+        <DList Name="gMorphaTentaclePart1DL" Offset="0x7D38"/>
+        <DList Name="gMorphaTentaclePart2DL" Offset="0x7D88"/>
+        <DList Name="gMorphaTentaclePart3DL" Offset="0x7DD0"/>
+        <DList Name="gMorphaTentaclePart4DL" Offset="0x7E18"/>
+        <DList Name="gMorphaTentaclePart5DL" Offset="0x7E60"/>
+        <DList Name="gMorphaTentaclePart6DL" Offset="0x7EA8"/>
+        <DList Name="gMorphaTentaclePart7DL" Offset="0x7EF0"/>
+        <DList Name="gMorphaTentaclePart8DL" Offset="0x7F38"/>
+        <DList Name="gMorphaTentaclePart9DL" Offset="0x7F80"/>
+        <DList Name="gMorphaTentaclePart10DL" Offset="0x7FC8"/>
+        <DList Name="gMorphaTentaclePart11DL" Offset="0x8010"/>
+        <DList Name="gMorphaTentaclePart12DL" Offset="0x8058"/>
+        <DList Name="gMorphaTentaclePart13DL" Offset="0x80A0"/>
+        <DList Name="gMorphaTentaclePart14DL" Offset="0x80E8"/>
+        <DList Name="gMorphaTentaclePart15DL" Offset="0x8130"/>
+        <DList Name="gMorphaTentaclePart16DL" Offset="0x8178"/>
+        <DList Name="gMorphaTentaclePart17DL" Offset="0x81C0"/>
+        <DList Name="gMorphaTentaclePart18DL" Offset="0x8208"/>
+        <DList Name="gMorphaTentaclePart19DL" Offset="0x8250"/>
+        <DList Name="gMorphaTentaclePart20DL" Offset="0x8298"/>
+        <DList Name="gMorphaTentaclePart21DL" Offset="0x82E0"/>
+        <DList Name="gMorphaTentaclePart22DL" Offset="0x8328"/>
+        <DList Name="gMorphaTentaclePart23DL" Offset="0x8370"/>
+        <DList Name="gMorphaTentaclePart24DL" Offset="0x83B8"/>
+        <DList Name="gMorphaTentaclePart25DL" Offset="0x8400"/>
+        <DList Name="gMorphaTentaclePart26DL" Offset="0x8448"/>
+        <DList Name="gMorphaTentaclePart27DL" Offset="0x8490"/>
+        <DList Name="gMorphaTentaclePart28DL" Offset="0x84D8"/>
+        <DList Name="gMorphaTentaclePart29DL" Offset="0x8520"/>
+        <DList Name="gMorphaTentaclePart30DL" Offset="0x8568"/>
+        <DList Name="gMorphaTentaclePart31DL" Offset="0x85B0"/>
+        <DList Name="gMorphaTentaclePart32DL" Offset="0x85F8"/>
+        <DList Name="gMorphaTentaclePart33DL" Offset="0x8640"/>
+        <DList Name="gMorphaTentaclePart34DL" Offset="0x8688"/>
+        <DList Name="gMorphaTentaclePart35DL" Offset="0x86D0"/>
+        <DList Name="gMorphaTentaclePart36DL" Offset="0x8718"/>
+        <DList Name="gMorphaTentaclePart37DL" Offset="0x8760"/>
+        <DList Name="gMorphaTentaclePart38DL" Offset="0x87A8"/>
+        <DList Name="gMorphaTentaclePart39DL" Offset="0x87F0"/>
+        <DList Name="gMorphaTentaclePart40DL" Offset="0x8838"/>
+        <Texture Name="gMorphaWaterTex" Format="rgba16" Width="32" Height="32" Offset="0x8870"/>
+
+        <!-- DLists for Morpha's particles -->
+        <DList Name="gMorphaBubbleDL" Offset="0x140"/>
+        <DList Name="gMorphaDropletMaterialDL" Offset="0xF20"/>
+        <DList Name="gMorphaDropletModelDL" Offset="0xF70"/>
+        <DList Name="gMorphaWetSpotModelDL" Offset="0xFC8"/>
+
+        <!-- DList for the water in the room and in front of the camera -->
+        <DList Name="gMorphaWaterDL" Offset="0x4C50"/>
+
+        <!-- Unused content -->
+
+        <!-- This is the dlist for EnVbBall for some reason. -->
+        <DList Name="gMorphaDL_000550" Offset="0x550"/>
+
+        <DList Name="gMorphaDL_000EC0" Offset="0xEC0"/>
+        <DList Name="gMorphaDL_000EF8" Offset="0xEF8"/>
+        <DList Name="gMorphaDL_007BF8" Offset="0x7BF8"/>
+
+        <Array Name="gMorphaVtx_006938" Count="14" Offset="0x6938">
+            <Vtx/>
+        </Array>
+
+        <Array Name="gMorphaVtx_007BB8" Count="4" Offset="0x7BB8">
+            <Vtx/>
+        </Array>
+
+    </File>
+</Root>

@@ -33,11 +33,16 @@ static const u32 sLineBytesImageSizes[] = { 0, 1, 2, 2 };
 #define G_IM_SIZ_MARK_LINE_BYTES sLineBytesImageSizes[markInfo->imageSize]
 
 extern PauseMapMarksData gPauseMapMarkDataTable[];
+extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 
 void PauseMapMark_Init(GlobalContext* globalCtx) {
     gBossMarkState = 0;
     gBossMarkScale = 1.0f;
-    gLoadedPauseMarkDataTable = gPauseMapMarkDataTable;
+    if(ResourceMgr_IsGameMasterQuest()) {
+        gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
+    } else {
+        gLoadedPauseMarkDataTable = gPauseMapMarkDataTable;
+    }
 }
 
 void PauseMapMark_Clear(GlobalContext* globalCtx) {

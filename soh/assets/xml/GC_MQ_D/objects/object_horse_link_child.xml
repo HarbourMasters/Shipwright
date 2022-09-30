@@ -1,0 +1,21 @@
+<Root>
+    <File Name="object_horse_link_child" Segment="6">
+        <Skeleton Name="gChildEponaSkel" Type="Normal" LimbType="Skin" Offset="0x7B20"/>
+
+        <!-- Idle animation. -->
+        <Animation Name="gChildEponaIdleAnim" Offset="0x43E4"/>
+        <!-- The animation that horses usually do. You know, that one... moving its head... -->
+        <Animation Name="gChildEponaWhinnyAnim" Offset="0x4B08"/>
+        <!-- Walking slow. -->
+        <Animation Name="gChildEponaWalkingAnim" Offset="0x53F0"/>
+        <!-- Walking fast. -->
+        <Animation Name="gChildEponaTrottingAnim" Offset="0x360C"/>
+        <!-- Running. -->
+        <Animation Name="gChildEponaGallopingAnim" Offset="0x2F98"/>
+
+        <Texture Name="gChildEponaEyeTLUT" OutName="child_epona_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1728"/>
+        <Texture Name="gChildEponaEyeOpenTex" OutName="child_epona_eye_open" Format="ci8" Width="32" Height="16" Offset="0x1D28"  TlutOffset="0x1728"/>
+        <Texture Name="gChildEponaEyeHalfTex" OutName="child_epona_eye_half" Format="ci8" Width="32" Height="16" Offset="0x1928"  TlutOffset="0x1728"/>
+        <Texture Name="gChildEponaEyeCloseTex" OutName="child_epona_eye_close" Format="ci8" Width="32" Height="16" Offset="0x1B28"  TlutOffset="0x1728"/>
+    </File>
+</Root>

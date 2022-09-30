@@ -1,0 +1,18 @@
+<Root>
+    <File Name="spot00_scene" Segment="2">
+        <Cutscene Name="gHyruleFieldGetOoTCs" Offset="0xBB80"/>
+        <Cutscene Name="gHyruleFieldZeldaSongOfTimeCs" Offset="0xF870"/>
+        <Cutscene Name="gHyruleFieldEastEponaJumpCs" Offset="0xFF00"/>
+        <Cutscene Name="gHyruleFieldIntroCs" Offset="0x13AA0"/>
+        <Cutscene Name="gHyruleFieldSouthEponaJumpCs" Offset="0xF9E0"/>
+        <Cutscene Name="gHyruleFieldWestEponaJumpCs" Offset="0x10550"/>
+        <Cutscene Name="gHyruleFieldGateEponaJumpCs" Offset="0x10B30"/>
+        <Path Name="spot00_scenePathList_011AB4" Offset="0x11AB4" NumPaths="2"/>
+        <Scene Name="spot00_scene" Offset="0x0"/>
+        <Texture Name="spot00_scene_Tex_02A198" Format="ia8" Width="8" Height="16" Offset="0x2A198"/>
+    </File>
+    <File Name="spot00_room_0" Segment="3">
+        <Room Name="spot00_room_0" Offset="0x0"/>
+        <DList Name="spot00_room_0DL_012B20" Offset="0x12B20"/>
+    </File>
+</Root>
