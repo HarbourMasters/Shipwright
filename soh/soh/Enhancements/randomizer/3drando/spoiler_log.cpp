@@ -684,16 +684,19 @@ static void WriteAllLocations(int language) {
                     default:
                         jsonData["locations"][location->GetName()]["model"] =
                             ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
+                        jsonData["locations"][location->GetName()]["trickName"] = 
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
                         break;
                     case 2:
                         jsonData["locations"][location->GetName()]["model"] =
                             ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
+                        jsonData["locations"][location->GetName()]["trickName"] =
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
                         break;
                 }
             }
             jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
-        } else if ((location->GetType() == ItemLocationType::Collectable || location->GetType() == ItemLocationType::GSToken) 
-            && location->GetPlacedItemKey() == ICE_TRAP) {
+        } else if (location->GetPlacedItemKey() == ICE_TRAP) {
             jsonData["locations"][location->GetName()]["item"] = placedItemName;
             switch (language) {
                 case 0:
