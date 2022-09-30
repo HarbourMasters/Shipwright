@@ -677,19 +677,19 @@ static void WriteAllLocations(int language) {
 
         // Eventually check for other things here like fake name
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-          jsonData["locations"][location->GetName()]["item"] = placedItemName;
-          switch (language) {
-              case 0:
-              default:
-                  jsonData["locations"][location->GetName()]["model"] =
-                      ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
-                  break;
-              case 2:
-                  jsonData["locations"][location->GetName()]["model"] =
-                      ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
-                  break;
-          }
-          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
+            switch (language) {
+                case 0:
+                default:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(location->GetPlacedItem().Value().looksLikeItemId).GetName().french;
+                    break;
+            }
+            jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         } else if (location->GetPlacedItemKey() == ICE_TRAP) {
             jsonData["locations"][location->GetName()]["item"] = placedItemName;
             switch (language) {
