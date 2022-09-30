@@ -1617,10 +1617,13 @@ void CreateItemOverrides() {
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
         ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
-        // If this is an ice trap in a shop, change the name based on what the model will look like
-        if (loc->GetPlaceduint32_t() == ICE_TRAP && loc->IsCategory(Category::cShop)) {
+        // If this is an ice trap, store the disguise model in iceTrapModels
+        if (loc->GetPlaceduint32_t() == ICE_TRAP) {
             iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
-            NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
+            // If this is ice trap is in a shop, change the name based on what the model will look like
+            if (loc->IsCategory(Category::cShop)) {
+                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
+            }
         }
         overrides.insert({
             .key = loc->Key(),

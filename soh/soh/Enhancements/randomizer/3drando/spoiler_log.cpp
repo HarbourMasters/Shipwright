@@ -696,7 +696,7 @@ static void WriteAllLocations(int language) {
                 }
             }
             jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
-        } else if (location->GetPlacedItemKey() == ICE_TRAP) {
+        } else if (location->GetPlacedItemKey() == ICE_TRAP && iceTrapModels.contains(location->GetRandomizerCheck())) {
             jsonData["locations"][location->GetName()]["item"] = placedItemName;
             switch (language) {
                 case 0:
