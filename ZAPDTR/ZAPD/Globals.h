@@ -64,6 +64,7 @@ public:
 	bool forceStatic = false;
 	bool forceUnaccountedStatic = false;
 	bool otrMode = true;
+	bool buildRawTexture = false;
 
 	ZRom* rom;
 	std::vector<ZFile*> files;

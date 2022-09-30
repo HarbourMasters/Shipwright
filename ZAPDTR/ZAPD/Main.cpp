@@ -256,6 +256,10 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->forceUnaccountedStatic = true;
 		}
+		else if (arg == "-brt" || arg == "--build-raw-texture")
+		{
+			Globals::Instance->buildRawTexture = true;
+		}
 	}
 
 	// Parse File Mode
