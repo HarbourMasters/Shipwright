@@ -8,8 +8,6 @@
 #include "Utils/Directory.h"
 #include "Utils/File.h"
 #include "Utils/Path.h"
-#include "Utils/MemoryStream.h"
-#include "Utils/BinaryWriter.h"
 #include "WarningHandler.h"
 
 REGISTER_ZFILENODE(Texture, ZTexture);

@@ -14,10 +14,10 @@ while [[ ! -e "$SHIP_HOME"/oot.otr ]]; do
 	ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
 	export OLDPWD="$PWD"
 	mkdir -p "$ASSETDIR"/tmp
-	mkdir -p "$ASSETDIR"/Extract/assets
+	mkdir -p "$ASSETDIR"/Extract
 	if [ -e "$SHIP_HOME"/*.*64 ]; then
 		ln -s "$SHIP_HOME"/*.*64 "$ASSETDIR"/tmp/rom.z64
-		cp -r "$ASSETDIR"/assets/game/ship_of_harkinian "$ASSETDIR"/Extract/assets/
+		cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets
 		cd "$ASSETDIR"
 		ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
 		case "$ROMHASH" in
