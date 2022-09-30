@@ -680,6 +680,7 @@ static void WriteAllLocations(int language) {
           jsonData["locations"][location->GetName()]["item"] = placedItemName;
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         } else if (location->GetPlacedItemKey() == ICE_TRAP) {
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
             switch (language) {
                 case 0:
                 default:
