@@ -23,6 +23,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -1137,7 +1139,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return CAN_OBTAIN;
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             // If Bombchus aren't in logic, you need a bomb bag to purchase them
             // If they are in logic, you need to have already obtained them somewhere else
@@ -1513,7 +1514,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             }
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_5:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
@@ -1857,7 +1857,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_HEART:
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BUY_DEKU_SEEDS_30:
         case RG_SOLD_OUT:
         case RG_BUY_BLUE_FIRE:
@@ -3616,8 +3615,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
-    cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 0);
+    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 1);
+    cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
                                         CVar_GetS32("gRandomizeStartingOcarina", 0);
@@ -3707,6 +3706,11 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
+        return;
+    }
+
+    if (ResourceMgr_IsGameMasterQuest()) {
+        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
@@ -3977,9 +3981,9 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 1);
                 ImGui::PopItemWidth();
-                if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
+                if (CVar_GetS32("gRandomizeGanonTrial", 1) == 1) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                     "gRandomizeGanonTrialCount", 1, 6, "", 6, true);

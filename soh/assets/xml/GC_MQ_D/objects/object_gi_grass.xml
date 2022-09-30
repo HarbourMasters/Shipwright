@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_grass" Segment="6">
+        <DList Name="gGiGrassDL" Offset="0x08E0"/>
+    </File>
+</Root>

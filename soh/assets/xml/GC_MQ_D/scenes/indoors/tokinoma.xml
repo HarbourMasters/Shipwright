@@ -1,0 +1,14 @@
+<Root>
+    <File Name="tokinoma_scene" Segment="2">
+        <Cutscene  Name="gTempleOfTimeFirstAdultCs" Offset="0x46F0"/>
+        <Cutscene  Name="gTempleOfTimePreludeCs" Offset="0x6D20"/>
+        <Cutscene Name="gTempleOfTimeIntroCs" Offset="0xCE00"/>
+        <Scene Name="tokinoma_scene" Offset="0x0"/>
+    </File>
+    <File Name="tokinoma_room_0" Segment="3">
+        <Room Name="tokinoma_room_0" Offset="0x0"/>
+    </File>
+    <File Name="tokinoma_room_1" Segment="3">
+        <Room Name="tokinoma_room_1" Offset="0x0"/>
+    </File>
+</Root>

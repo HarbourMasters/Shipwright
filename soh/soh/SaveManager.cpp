@@ -15,6 +15,8 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+extern "C" uint32_t ResourceMgr_GetGameVersion();
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
@@ -47,6 +49,7 @@ SaveManager::SaveManager() {
         }
 
         info.randoSave = 0;
+        info.isMasterQuest = 0;
     }
 }
 
@@ -196,11 +199,6 @@ void SaveManager::Init() {
     if (std::filesystem::exists(sGlobalPath)) {
         std::ifstream input(sGlobalPath);
 
-#ifdef __WIIU__
-        alignas(0x40) char buffer[8192];
-        input.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
-
         nlohmann::json globalBlock;
         input >> globalBlock;
 
@@ -251,6 +249,7 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
+    fileMetaInfo[fileNum].isMasterQuest = gSaveContext.isMasterQuest;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -397,6 +396,8 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 
+    gSaveContext.isMasterQuest = ResourceMgr_IsGameMasterQuest();
+
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
@@ -522,19 +523,13 @@ void SaveManager::SaveFile(int fileNum) {
         section.second.second();
     }
 
-#ifdef __SWITCH__
-    const char* json_string = baseBlock.dump(4).c_str();
+#if defined(__SWITCH__) || defined(__WIIU__)
     FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
-    fwrite(json_string, sizeof(char), strlen(json_string), w);
+    std::string json_string = baseBlock.dump(4);
+    fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
-
     std::ofstream output(GetFileName(fileNum));
-
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    output.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
     output << std::setw(4) << baseBlock << std::endl;
 #endif
 
@@ -547,13 +542,8 @@ void SaveManager::SaveGlobal() {
     globalBlock["audioSetting"] = gSaveContext.audioSetting;
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
+
     std::ofstream output("Save/global.sav");
-
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    output.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
-
     output << std::setw(4) << globalBlock << std::endl;
 }
 
@@ -562,11 +552,6 @@ void SaveManager::LoadFile(int fileNum) {
     InitFile(false);
 
     std::ifstream input(GetFileName(fileNum));
-
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    input.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
 
     nlohmann::json saveBlock;
     input >> saveBlock;
@@ -964,6 +949,7 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
+    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
 }
 
 void SaveManager::SaveBase() {
@@ -1117,6 +1103,7 @@ void SaveManager::SaveBase() {
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
+    SaveManager::Instance->SaveData("isMasterQuest", ResourceMgr_IsGameMasterQuest());
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1238,6 +1225,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
+    fileMetaInfo[to].isMasterQuest = fileMetaInfo[from].isMasterQuest;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
@@ -1557,11 +1545,6 @@ void SaveManager::ConvertFromUnversioned() {
 #define SLOT_OFFSET(index) (SRAM_HEADER_SIZE + 0x10 + (index * SLOT_SIZE))
 
     std::ifstream input("oot_save.sav", std::ios::binary);
-
-#ifdef __WIIU__
-    alignas(0x40) char buffer[8192];
-    input.rdbuf()->pubsetbuf(buffer, sizeof(buffer));
-#endif
 
     std::vector<char> data(std::istreambuf_iterator<char>(input), {});
     input.close();

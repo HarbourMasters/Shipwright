@@ -42,28 +42,33 @@ static MapMarkInfo sMapMarkInfoTable[] = {
     { gMapBossIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 32, 32, 1 << 10, 1 << 10 },     // Boss Skull Icon
 };
 
-static MapMarkDataOverlay sMapMarkDataOvl = {
-    NULL,
-    //(uintptr_t)_ovl_map_mark_dataSegmentRomStart,
-    //(uintptr_t)_ovl_map_mark_dataSegmentRomEnd,
-    //_ovl_map_mark_dataSegmentStart,
-    //_ovl_map_mark_dataSegmentEnd,
-    0, 0, 0, 0,
-    gMapMarkDataTable,
-};
+//static MapMarkDataOverlay sMapMarkDataOvl = {
+//    NULL,
+//    //(uintptr_t)_ovl_map_mark_dataSegmentRomStart,
+//    //(uintptr_t)_ovl_map_mark_dataSegmentRomEnd,
+//    //_ovl_map_mark_dataSegmentStart,
+//    //_ovl_map_mark_dataSegmentEnd,
+//    0, 0, 0, 0,
+//    gMapMarkDataTableVanilla,
+//};
 
 MapMarkData** sLoadedMarkDataTable;
 
 void MapMark_Init(GlobalContext* globalCtx) {
-    MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
-    u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
+    //MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
+    //u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 
-    overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&globalCtx->state, overlaySize);
-    LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
+    //overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&globalCtx->state, overlaySize);
+    //LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
 
-    Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
+    //Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
 
-    sLoadedMarkDataTable = gMapMarkDataTable;
+    if(ResourceMgr_IsGameMasterQuest()) {
+        sLoadedMarkDataTable = gMapMarkDataTableMq;
+    } else {
+        sLoadedMarkDataTable = gMapMarkDataTableVanilla;
+    }
+    //sLoadedMarkDataTable = gMapMarkDataTableVanilla;
     //sLoadedMarkDataTable = (void*)(uintptr_t)(
         //(overlay->vramTable != NULL)
             //? (void*)((uintptr_t)overlay->vramTable - ((intptr_t)overlay->vramStart - (intptr_t)overlay->loadedRamAddr))
@@ -71,7 +76,7 @@ void MapMark_Init(GlobalContext* globalCtx) {
 }
 
 void MapMark_ClearPointers(GlobalContext* globalCtx) {
-    sMapMarkDataOvl.loadedRamAddr = NULL;
+    //sMapMarkDataOvl.loadedRamAddr = NULL;
     sLoadedMarkDataTable = NULL;
 }
 

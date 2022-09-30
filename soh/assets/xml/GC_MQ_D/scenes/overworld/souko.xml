@@ -1,0 +1,16 @@
+<Root>
+    <File Name="souko_scene" Segment="2">
+        <Texture Name="gLonLonHouseDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0x5210"/>
+        <Texture Name="gLonLonHouseNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0x5010"/>
+        <Scene Name="souko_scene" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_0" Segment="3">
+        <Room Name="souko_room_0" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_1" Segment="3">
+        <Room Name="souko_room_1" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_2" Segment="3">
+        <Room Name="souko_room_2" Offset="0x0"/>
+    </File>
+</Root>

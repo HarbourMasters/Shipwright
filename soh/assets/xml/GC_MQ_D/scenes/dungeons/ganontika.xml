@@ -1,0 +1,82 @@
+<Root>
+    <File Name="ganontika_scene" Segment="2">
+        <Cutscene Name="gForestTrialSageCs" Offset="0x19EE0"/>
+        <Cutscene Name="gWaterTrialSageCs" Offset="0x1A8E0"/>
+        <Cutscene Name="gShadowTrialSageCs" Offset="0x1B2B0"/>
+        <Cutscene Name="gFireTrialSageCs" Offset="0x1BC80"/>
+        <Cutscene Name="gLightTrialSageCs" Offset="0x1C6B0"/>
+        <Cutscene Name="gSpiritTrialSageCs" Offset="0x1D080"/>
+
+        <Cutscene Name="gTowerBarrierCs" Offset="0x1DA50"/>
+
+        <Cutscene Name="gLightBarrierCs" Offset="0x1DF90"/>
+        <Cutscene Name="gFireBarrierCs" Offset="0x1E3E0"/>
+        <Cutscene Name="gForestBarrierCs" Offset="0x1E790"/>
+        <Cutscene Name="gSpiritBarrierCs" Offset="0x1EB40"/>
+        <Cutscene Name="gWaterBarrierCs" Offset="0x1EF70"/>
+        <Cutscene Name="gShadowBarrierCs" Offset="0x21380"/>
+
+        <Path Name="ganontika_scenePathList_000668" Offset="0x0668" NumPaths="6"/>
+        <Scene Name="ganontika_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_0" Segment="3">
+        <Room Name="ganontika_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_1" Segment="3">
+        <Room Name="ganontika_room_1" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_2" Segment="3">
+        <Room Name="ganontika_room_2" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_3" Segment="3">
+        <Room Name="ganontika_room_3" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_4" Segment="3">
+        <Room Name="ganontika_room_4" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_5" Segment="3">
+        <Room Name="ganontika_room_5" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_6" Segment="3">
+        <Room Name="ganontika_room_6" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_7" Segment="3">
+        <Room Name="ganontika_room_7" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_8" Segment="3">
+        <Room Name="ganontika_room_8" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_9" Segment="3">
+        <Room Name="ganontika_room_9" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_10" Segment="3">
+        <Room Name="ganontika_room_10" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_11" Segment="3">
+        <Room Name="ganontika_room_11" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_12" Segment="3">
+        <Room Name="ganontika_room_12" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_13" Segment="3">
+        <Room Name="ganontika_room_13" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_14" Segment="3">
+        <Room Name="ganontika_room_14" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_15" Segment="3">
+        <Room Name="ganontika_room_15" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_16" Segment="3">
+        <Room Name="ganontika_room_16" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_17" Segment="3">
+        <Room Name="ganontika_room_17" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_18" Segment="3">
+        <Room Name="ganontika_room_18" Offset="0x0"/>
+    </File>
+    <File Name="ganontika_room_19" Segment="3">
+        <Room Name="ganontika_room_19" Offset="0x0"/>
+    </File>
+</Root>
