@@ -2639,7 +2639,7 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         } else {
             modIndex = MOD_RANDOMIZER;
         }
-        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, rgData.fakeRgID);
+        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
         giEntry.gid = fakeGiEntry.gid;
         giEntry.gi = fakeGiEntry.gi;
         giEntry.drawFunc = fakeGiEntry.drawFunc;
