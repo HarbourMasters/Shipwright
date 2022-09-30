@@ -347,10 +347,6 @@ public:
       return parentRegion;
     }
 
-    ItemLocationType GetType() const {
-        return type;
-    }
-
     void AddExcludeOption() {
       //setting description  /*--------------------------------------------------*/
       std::string_view desc = "Decide which locations you want to exclude from\n"
