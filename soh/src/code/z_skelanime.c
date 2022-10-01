@@ -478,6 +478,11 @@ void SkelAnime_GetFrameData(AnimationHeader* animation, s32 frame, s32 limbCount
             LOG_ADDRESS("tbl", staticData);
         }
 
+        lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: jointIndices->z >= staticIndexMax: %i", jointIndices->z >= staticIndexMax);
+        lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: jointIndicies->z: %i", jointIndices->z);
+        lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: staticIndexMax: %i", staticIndexMax);
+        lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: ARRAY_COUNT(dynamicData): %i", ARRAY_COUNT(dynamicData));
+
         frameTable->x =
             (jointIndices->x >= staticIndexMax) ? dynamicData[jointIndices->x] : staticData[jointIndices->x];
         frameTable->y =
