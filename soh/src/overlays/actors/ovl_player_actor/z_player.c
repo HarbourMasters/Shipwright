@@ -2165,8 +2165,13 @@ void func_80834298(Player* this, GlobalContext* globalCtx) {
     }
 }
 
+//Sets the projectile weapon & ammoType when firing, returns current ammo amount
 s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
-    if (LINK_IS_ADULT) {
+    bool useSlingshot = CVar_GetS32("gBowSlingshotFix", 0) && globalCtx->shootingGalleryStatus == 0
+        ? (this->heldItemId == ITEM_SLINGSHOT)
+        : !LINK_IS_ADULT;
+
+    if (!useSlingshot) {
         *itemPtr = ITEM_BOW;
         if (this->stateFlags1 & PLAYER_STATE1_23) {
             *typePtr = ARROW_NORMAL_HORSE;
@@ -4874,10 +4879,13 @@ s32 func_8083AD4C(GlobalContext* globalCtx, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            if (LINK_IS_ADULT) {
-                cameraMode = CAM_MODE_BOWARROW;
-            } else {
+            bool useSlinshotCamera = CVar_GetS32("gBowSlingshotFix", 0) && globalCtx->shootingGalleryStatus == 0
+                ? this->heldItemId == ITEM_SLINGSHOT 
+                : !LINK_IS_ADULT;
+            if (useSlinshotCamera) {
                 cameraMode = CAM_MODE_SLINGSHOT;
+            } else {
+                cameraMode = CAM_MODE_BOWARROW;
             }
         } else {
             cameraMode = CAM_MODE_BOOMERANG;

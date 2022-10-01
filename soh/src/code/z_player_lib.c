@@ -1398,7 +1398,11 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
-            BowStringData* stringData = &sBowStringData[gSaveContext.linkAge];
+            //for some reason the shooting gallery minigame always has the held item set to bow, even though we're firing slinshot+seeds
+            bool useSlingshotString = CVar_GetS32("gBowSlingshotFix", 0) && globalCtx->shootingGalleryStatus == 0
+                ? this->heldItemId == ITEM_SLINGSHOT
+                : LINK_IS_CHILD;
+            BowStringData* stringData = &sBowStringData[useSlingshotString ? 1 : 0];
 
             OPEN_DISPS(globalCtx->state.gfxCtx);
 

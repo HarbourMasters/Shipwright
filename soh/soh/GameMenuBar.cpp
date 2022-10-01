@@ -1078,6 +1078,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingshotFix", true, false);
+                UIWidgets::Tooltip("Allows child to use bow with arrows\nAllows adult to use slingshot with seeds.\nDoesn't enable equipping them from the item screen");
 
                 ImGui::EndMenu();
             }
