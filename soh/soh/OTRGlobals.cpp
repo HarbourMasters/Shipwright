@@ -1771,9 +1771,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessageEntry messageEntry;
-    Player* player = GET_PLAYER(globalCtx);
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
+            Player* player = GET_PLAYER(globalCtx);
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 messageEntry = Randomizer_GetIceTrapMessage();
             } else {
