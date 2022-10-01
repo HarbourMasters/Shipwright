@@ -830,6 +830,8 @@ std::string ZTexture::GetBodySourceCode() const
 		// Please don't remove this line, unless you somehow made a way to prevent
 		// that warning when building the OoT repo.
 		sourceOutput += "\n";
+	} else if (Globals::Instance->buildRawTexture) {
+		sourceOutput += std::string(textureDataRaw.begin(), textureDataRaw.end());
 	}
 
 	return sourceOutput;

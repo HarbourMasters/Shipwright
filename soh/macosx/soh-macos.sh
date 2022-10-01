@@ -12,7 +12,7 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 	export ASSETDIR
 	cp -r "$RESPATH/assets" "$ASSETDIR"
 	mkdir -p "$ASSETDIR"/tmp
-	mkdir -p "$ASSETDIR"/Extract/assets
+	mkdir -p "$ASSETDIR"/Extract
 	DROPROM="$(osascript -ss - "$ASSETDIR" <<-EOF
 	set romFile to choose file of type {"b64","n64","v64","z64"} with prompt "Please select your ROM:"
 	set destinationFolder to POSIX file "$ASSETDIR"
@@ -32,7 +32,7 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 		fi
 	done
 	cp "$ASSETDIR"/*.*64 "$ASSETDIR"/tmp/rom.z64
-	cp -r "$ASSETDIR"/assets/game/ship_of_harkinian "$ASSETDIR"/Extract/assets/
+	cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets/
 	cd "$ASSETDIR" || return
 	ROMHASH="$(shasum "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')"
 	case "$ROMHASH" in

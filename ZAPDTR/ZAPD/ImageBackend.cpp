@@ -147,7 +147,7 @@ void ImageBackend::ReadPng(const char* filename)
 
 void ImageBackend::ReadPng(const fs::path& filename)
 {
-	ReadPng(filename.c_str());
+	ReadPng(filename.string().c_str());
 }
 
 void ImageBackend::WritePng(const char* filename)
