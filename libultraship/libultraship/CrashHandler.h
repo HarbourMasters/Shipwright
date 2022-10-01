@@ -34,6 +34,6 @@ LONG seh_filter(struct _EXCEPTION_POINTERS* ex);
 #endif
 
 #pragma comment(lib, "Dbghelp.lib")
-#endif
+#endif //WIN32
 
 #endif // CRASH_HANDLER_H

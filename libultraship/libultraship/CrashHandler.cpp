@@ -91,7 +91,7 @@ static void CrashHandler_PrintCommon(char* buffer, size_t* curBufferPos) {
     SPDLOG_CRITICAL(buffer);
 }
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 #include <csignal>
 #include <cstdio>
 #include <cxxabi.h>  // for __cxa_demangle
@@ -141,8 +141,8 @@ static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer), "EFL: 0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
     append_line(buffer, pos, regbuffer);
-#else
-    snprintf(regbuffer, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
+#elif __i386__
+    snprintf(image.png, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer),"ESI: 0x%08lX", ctx->uc_mcontext.gregs[REG_ESI]);
     append_line(buffer, pos, regbuffer);
@@ -162,6 +162,23 @@ static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer),"EFL: 0x%08lX", ctx->uc_mcontext.gregs[REG_EFL]);
     append_line(buffer, pos, regbuffer);
+#elif __arm64__
+    for(unsigned int i = 0; i < std::size(ctx->uc_mcontext->__ss.__x); i++) {
+        snprintf(regbuffer, std::size(regbuffer), "X%u: 0x%016llX", i, ctx->uc_mcontext->__ss.__x[i]);
+        append_line(buffer, pos, regbuffer);
+    }
+        snprintf(regbuffer, std::size(regbuffer), "FP: 0x%016llX", ctx->uc_mcontext->__ss.__fp);
+        append_line(buffer, pos, regbuffer);
+
+        snprintf(regbuffer, std::size(regbuffer), "LR: 0x%016llX", ctx->uc_mcontext->__ss.__lr);
+        append_line(buffer, pos, regbuffer);
+        
+        snprintf(regbuffer, std::size(regbuffer), "SP: 0x%016llX", ctx->uc_mcontext->__ss.__sp);
+        append_line(buffer, pos, regbuffer);
+        
+        snprintf(regbuffer, std::size(regbuffer), "PC: 0x%016llX", ctx->uc_mcontext->__ss.__pc);
+        append_line(buffer, pos, regbuffer);
+
 #endif
 }
 
@@ -444,7 +461,7 @@ extern "C" LONG seh_filter(struct _EXCEPTION_POINTERS* ex) {
 #endif
 
 extern "C" void CrashHandler_Init(CrashHandlerCallback callback) {
-    #if defined(__linux__)
+    #if defined(__linux__) || defined(__APPLE__)
     struct sigaction action;
     struct sigaction shutdownAction;
 
