@@ -10,6 +10,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define NUM_NAVI_MESSAGES 19
+#define NUM_ICE_TRAP_MESSAGES 23
 
 class Randomizer {
   private:
@@ -36,6 +37,7 @@ class Randomizer {
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
+    static const std::string IceTrapRandoMessageTableID;
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
     std::unordered_map<RandomizerInf, bool> trialsRequired;
