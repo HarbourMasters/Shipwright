@@ -2638,7 +2638,8 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
     }
     // After this point we can assume we are dealing with a randomizer exclusive item.
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, rgData.rgID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(
+        MOD_RANDOMIZER, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
     // If we have an ice trap, we want to change the GID and DrawFunc to the fakeRgID's values.
     if (rgData.rgID == RG_ICE_TRAP) {
         ModIndex modIndex;
