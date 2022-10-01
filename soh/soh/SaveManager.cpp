@@ -543,7 +543,10 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    std::ofstream output("Save/global.sav");
+    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
+
+    std::ofstream output(sGlobalPath);
     output << std::setw(4) << globalBlock << std::endl;
 }
 
