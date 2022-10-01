@@ -4986,7 +4986,7 @@ void CreateNaviRandoMessages() {
 CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
     { "You are a %bFOOL%w!",
       "Du bist ein %bDUMMKOPF%w!",
-      "Tu es un %bIDIOT%w!" },
+      "%bPauvre fou%w..." },
 
     { "You are a %bFOWL%w!",
       "Du bist eine %bFrostbeule%w!",
@@ -4994,7 +4994,7 @@ CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
 
     { "%bFOOL%w!",
       "%bDUMMKOPF%w!",
-      "%bIDIOT%w!" },
+      "%bSot%w que tu es." },
 
     { "You just got %bPUNKED%w!",
       "Du wurdest %beiskalt%w erwischt!",
