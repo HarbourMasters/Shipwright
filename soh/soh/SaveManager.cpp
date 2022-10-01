@@ -595,7 +595,7 @@ void SaveManager::LoadFile(int fileNum) {
 }
 
 bool SaveManager::SaveFile_Exist(int fileNum) {
-    
+
     try {
         std::filesystem::exists(GetFileName(fileNum));
         printf("File[%d] - exist \n",fileNum);
@@ -1234,6 +1234,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+    fileMetaInfo[fileNum].isMasterQuest = false;
 }
 
 bool SaveManager::IsRandoFile() {
