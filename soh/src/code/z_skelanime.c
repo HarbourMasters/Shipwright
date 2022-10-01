@@ -472,6 +472,10 @@ void SkelAnime_GetFrameData(AnimationHeader* animation, s32 frame, s32 limbCount
 
     for (i = 0; i < limbCount; i++, frameTable++, jointIndices++) {
         if ((frameTable == NULL) || (jointIndices == NULL) || (dynamicData == NULL) || (staticData == NULL)) {
+            lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: frameTable == NULL: %i", frameTable == NULL);
+            lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: jointIndices == NULL: %i", jointIndices == NULL);
+            lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: dynamicData == NULL: %i", dynamicData == NULL);
+            lusprintf(__FILE__, __LINE__, 2, "SkelAnime_GetFrameData: staticData == NULL: %i", staticData == NULL);
             LOG_ADDRESS("out", frameTable);
             LOG_ADDRESS("ref_tbl", jointIndices);
             LOG_ADDRESS("frame_tbl", dynamicData);
