@@ -691,7 +691,7 @@ static void WriteAllLocations(int language) {
                         jsonData["locations"][location->GetName()]["model"] =
                             ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
                         jsonData["locations"][location->GetName()]["trickName"] =
-                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
                         break;
                 }
             }
