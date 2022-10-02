@@ -160,7 +160,7 @@ Gfx* D_80125E58[] = {
     gLinkChildRightHandClosedFarDL,
 };
 
-Gfx* D_80125E68[] = {
+Gfx* D_RightHandBowSlingshot[] = {
     gLinkAdultRightHandHoldingBowNearDL,
     gLinkChildRightHandHoldingSlingshotNearDL,
     gLinkAdultRightHandHoldingBowFarDL,
@@ -188,7 +188,7 @@ Gfx* D_80125E98[] = {
     gLinkChildWaistFarDL,
 };
 
-Gfx* D_80125EA8[] = {
+Gfx* D_LeftHandBowSlingshot[] = {
     gLinkAdultRightHandHoldingBowNearDL,
     gLinkChildRightHandHoldingSlingshotNearDL,
     gLinkAdultRightHandHoldingBowFarDL,
@@ -265,7 +265,7 @@ Gfx* sHoldingFirstPersonWeaponDLs[] = {
 // Indexed by model types (left hand, right hand, sheath or waist)
 Gfx** sPlayerDListGroups[] = {
     D_80125E08, D_80125E18, D_80125E38, D_80125E28, D_80125DE8, D_80125EE8, D_80125EF8,
-    D_80125F08, D_80125E48, D_80125E58, D_80125CE8, D_80125E68, D_80125EA8, D_80125EB8,
+    D_80125F08, D_80125E48, D_80125E58, D_80125CE8, D_RightHandBowSlingshot, D_LeftHandBowSlingshot, D_80125EB8,
     D_80125EC8, D_80125ED8, D_80125E78, D_80125E88, D_80125D28, D_80125D88, D_80125E98,
 };
 
@@ -379,16 +379,40 @@ void Player_SetModelsForHoldingShield(Player* this) {
 }
 
 void Player_SetModels(Player* this, s32 modelGroup) {
-    this->leftHandType = gPlayerModelTypes[modelGroup][1];
-    this->rightHandType = gPlayerModelTypes[modelGroup][2];
-    this->sheathType = gPlayerModelTypes[modelGroup][3];
 
-    this->leftHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][1]][gSaveContext.linkAge];
-    this->rightHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][2]][gSaveContext.linkAge];
-    this->sheathDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][3]][gSaveContext.linkAge];
-    this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
+    Player_SetLeftHandModels(this, modelGroup);
+    Player_SetRightHandModels(this, modelGroup);
+    Player_SetSheathModels(this, modelGroup);
+    Player_SetWaistModels(this, modelGroup);
 
     Player_SetModelsForHoldingShield(this);
+}
+
+void Player_SetLeftHandModels(Player * this, s32 modelGroup) {
+    this->leftHandType = gPlayerModelTypes[modelGroup][1];
+    this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+
+    if(CVar_GetS32("gBowSlingshotFix", 0) && (this->leftHandType == 11 || this->leftHandType == 12)) {
+        this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][Player_HoldsSlingshot(this)];
+    }
+}
+
+void Player_SetRightHandModels(Player * this, s32 modelGroup) {
+    this->rightHandType = gPlayerModelTypes[modelGroup][2];
+    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+
+    if(CVar_GetS32("gBowSlingshotFix", 0) && (this->rightHandType == 11 || this->rightHandType == 12)){
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    }
+}
+
+void Player_SetSheathModels(Player * this, s32 modelGroup) {
+    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+}
+
+void Player_SetWaistModels(Player * this, s32 modelGroup) {
+    this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {
@@ -536,6 +560,19 @@ s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
 
 s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemActionParam == PLAYER_AP_HOOKSHOT) || (this->heldItemActionParam == PLAYER_AP_LONGSHOT);
+}
+
+s32 Player_HoldsBow(Player* this){
+    return (
+        this->heldItemId == ITEM_BOW ||
+        this->heldItemId == ITEM_BOW_ARROW_FIRE ||
+        this->heldItemId == ITEM_BOW_ARROW_ICE ||
+        this->heldItemId == ITEM_BOW_ARROW_LIGHT
+    );
+}
+
+s32 Player_HoldsSlingshot(Player* this){
+    return this->heldItemId == ITEM_SLINGSHOT;
 }
 
 s32 func_8008F128(Player* this) {
@@ -1057,13 +1094,20 @@ s32 func_800902F0(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
             *dList = sArmOutDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             *dList = sHandOutDLs[gSaveContext.linkAge];
+            if (CVar_GetS32("gBowSlingshotFix", 0) && (Player_HoldsSlingshot(this) || Player_HoldsBow(this))){
+                *dList = sHandOutDLs[Player_HoldsSlingshot(this)];
+            }
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
             *dList = sRightShoulderNearDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
             *dList = D_80125F30[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
-                                                : sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
+            *dList = sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
+            if(Player_HoldsHookshot(this)){
+                *dList = gLinkAdultRightHandHoldingHookshotFarDL;
+            } else if (CVar_GetS32("gBowSlingshotFix", 0) && (Player_HoldsSlingshot(this) || Player_HoldsBow(this))){
+                *dList = sHoldingFirstPersonWeaponDLs[Player_HoldsSlingshot(this)];
+            }
         } else {
             *dList = NULL;
         }
@@ -1572,7 +1616,11 @@ s32 func_80091880(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         return 0;
     }
 
-    dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    s32 linksAge = gSaveContext.linkAge;
+    if(CVar_GetS32("gBowSlingshotFix", 0) && (type == 11 || type == 12)){
+        linksAge = Player_HoldsSlingshot(GET_PLAYER(globalCtx));
+    }
+    dLists = &sPlayerDListGroups[type][linksAge];
     *dList = dLists[dListOffset];
 
     return 0;
