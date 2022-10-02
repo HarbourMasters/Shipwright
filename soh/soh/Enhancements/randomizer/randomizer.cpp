@@ -23,6 +23,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -38,6 +40,7 @@ const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
+const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 
 static const char* englishRupeeNames[80] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
@@ -253,7 +256,6 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     }
 
     for(auto randoSetting : gSaveContext.randoSettings) {
-        if(randoSetting.key == RSK_NONE) break;
         this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
@@ -490,8 +492,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
     try {
         // clear out existing settings
-        // RANDOTODO don't use magic number for settings array size
-        for(size_t i = 0; i < 300; i++) {
+        for(size_t i = 0; i < RSK_MAX; i++) {
             gSaveContext.randoSettings[i].key = RSK_NONE;
             gSaveContext.randoSettings[i].value = 0;
         }
@@ -500,13 +501,12 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
 
-        int index = 0;
-
         for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
             // todo load into cvars for UI
             
             std::string numericValueString;
             if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                RandomizerSettingKey index = SpoilerfileSettingNameToEnum[it.key()];
                 gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
@@ -792,7 +792,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                 }
-                index++;
             }
         }
 
@@ -992,25 +991,23 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        index = 0;
         for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                     // todo handle prices
                     if (itemit.key() == "item") {
-                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                        gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                        gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        merchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
+                        merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
                     }
                 }
             } else {
-                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[it.value()];
             }
-
-            index++;
         }
 
         if(!silent) {
@@ -1137,7 +1134,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return CAN_OBTAIN;
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             // If Bombchus aren't in logic, you need a bomb bag to purchase them
             // If they are in logic, you need to have already obtained them somewhere else
@@ -1513,7 +1509,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             }
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_5:
-        case RG_BUY_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
@@ -1857,7 +1852,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_HEART:
         case RG_BUY_BOMBCHU_10:
         case RG_BUY_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_5:
         case RG_BUY_DEKU_SEEDS_30:
         case RG_SOLD_OUT:
         case RG_BUY_BLUE_FIRE:
@@ -3616,8 +3610,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
-    cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 0);
+    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 1);
+    cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
                                         CVar_GetS32("gRandomizeStartingOcarina", 0);
@@ -3707,6 +3701,11 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
+        return;
+    }
+
+    if (ResourceMgr_IsGameMasterQuest()) {
+        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
@@ -3977,9 +3976,9 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 1);
                 ImGui::PopItemWidth();
-                if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
+                if (CVar_GetS32("gRandomizeGanonTrial", 1) == 1) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                     "gRandomizeGanonTrialCount", 1, 6, "", 6, true);
@@ -4820,16 +4819,9 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        if (messageEntry.giid == RG_ICE_TRAP) {
-            customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
-                                                { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
-                                                  messageEntry.german, messageEntry.french });
-        } else {
-            customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
-                                                       messageEntry.iid,
-                                                       { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
-                                                         messageEntry.german, messageEntry.french });
-        }
+        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
+                                                    { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                        messageEntry.german, messageEntry.french });
     }
 }
 
@@ -4985,12 +4977,115 @@ void CreateNaviRandoMessages() {
     }
 }
 
+CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
+    { "You are a %bFOOL%w!",
+      "Du bist ein %bDUMMKOPF%w!",
+      "%bPauvre fou%w..." },
+
+    { "You are a %bFOWL%w!",
+      "Du bist eine %bFrostbeule%w!",
+      "Tu es un %bglaçon%w, Harry!" },
+
+    { "%bFOOL%w!",
+      "%bDUMMKOPF%w!",
+      "%bSot%w que tu es." },
+
+    { "You just got %bPUNKED%w!",
+      "Du wurdest %beiskalt%w erwischt!",
+      "Ça me %bglace%w le sang!" },
+
+    { "Stay %bfrosty%w, @.",
+      "Es läuft dir %beiskalt%w den Rücken&hinunter, @.",
+      "%bReste au frais%w, @." },
+
+    { "Take a %bchill pill%w, @.",
+      "Bleib %bcool%w, @.",
+      "Et c'est la douche %bfroide%w!" },
+
+    { "%bWinter%w is coming.",
+      "Der %bWinter%w naht.",
+      "L'%bhiver%w vient." },
+    
+    { "%bICE%w to see you, @.",
+      "Alles %bcool%w im Pool?",
+      "%bGlacier%w!" },
+
+    { "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
+      "%bAbkühlung gefällig%w?",
+      "%Ça en jette un %bfroid%w." },
+
+    { "It's a %bcold day%w in the Evil Realm.",
+      "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
+      "Est-ce que tu as déjà eu des sueurs&%bfroides%w?" },
+
+    { "Getting %bcold feet%w?",
+      "Bekommst du etwa %bkalte%w Füße?",
+      "La vengeance est un plat qui se mange&%bfroid%w!" },
+
+    { "Say hello to the %bZoras%w for me!",
+      "Sag den %bZoras%w viele Grüße von mir!",
+      "Dit bonjour aux %bZoras%w pour moi!" },
+
+    { "Can you keep a %bcool head%w?",
+      "Bewahre einen %bkühlen%w! Kopf.",
+      "Il faut parfois savoir garder la tête&%bfroide%w!" },
+
+    { "Ganondorf used %bIce Trap%w!&It's super effective!",
+      "Ganondorf setzt %bEisstrahl%w ein.&Das ist sehr effektiv!",
+      "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!" },
+
+    { "Allow me to break the %bice%w!",
+      "Ein Lächeln ist der beste Weg,&um das %bEis%w zu brechen!",
+      "Laisse moi briser la %bglace%w!" },
+
+    { "%bCold pun%w.",
+      "%bEiskalt%w lässt du meine Seele&erfrier'n.",
+      "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!" },
+
+    { "The %bTitanic%w would be scared of you,&@.",
+      "Die %bTitanic%w hätte Angst vor dir,&@.",
+      "Le %bTitanic%w aurait peur de toi,&@." },
+
+    { "Oh no!",
+      "Oh nein!",
+      "Oh non!" },
+      
+    { "What killed the dinosaurs?&The %bICE%w age!",
+      "Was die Dinosaurier getötet hat?&Die %bEiszeit%w!",
+      "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!" },
+
+    { "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
+      "Nachts ist es %bkälter%w als draußen.",
+      "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
+
+    { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w." },
+
+    { "Thank you %b@%w!&But your item is in another castle!",
+      "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloss!",
+      "Merci %b@%w!&Mais ton objet est dans un autre&château!" },
+
+    { "%bFREEZE%w! Don't move!",
+      "	Kalt. Kalt. Kälter. %bEISKALT%w!",
+      "J'espère que ça ne te fait ni chaud, ni&%bfroid%w." },
+      
+};
+
+void CreateIceTrapRandoMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::IceTrapRandoMessageTableID);
+    for (u8 i = 0; i <= (NUM_ICE_TRAP_MESSAGES - 1); i++) {
+        customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, i,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, IceTrapMessages[i].english,
+                                              IceTrapMessages[i].german, IceTrapMessages[i].french });
+    }
+}
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!",
-                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!", "\x08\x06\x50%bIDIOT%w"),
         GIMESSAGE_NO_GERMAN(
             RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
@@ -5111,6 +5206,7 @@ void Randomizer::CreateCustomMessages() {
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
     CreateNaviRandoMessages();
+    CreateIceTrapRandoMessages();
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {

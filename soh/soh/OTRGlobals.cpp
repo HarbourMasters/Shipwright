@@ -10,6 +10,8 @@
 #include <libultraship/PlayerAnimation.h>
 #include <libultraship/Skeleton.h>
 #include <libultraship/Window.h>
+#include <libultraship/GameVersions.h>
+
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
@@ -63,6 +65,11 @@
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "GameMenuBar.hpp"
+
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+CrowdControl* CrowdControl::Instance;
+#endif
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -165,7 +172,7 @@ extern "C" void OTRAudio_Exit() {
 }
 
 extern "C" void VanillaItemTable_Init() {
-    GetItemEntry getItemTable[] = {
+    static GetItemEntry getItemTable[] = {
         GET_ITEM(ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_5),
         GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, MOD_NONE, GI_NUTS_5),
         GET_ITEM(ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBCHUS_10),
@@ -349,6 +356,11 @@ extern "C" void InitOTR() {
     InitItemTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    CrowdControl::Instance->InitCrowdControl();
+#endif
 }
 
 extern "C" void DeinitOTR() {
@@ -535,6 +547,34 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
 extern "C" uint32_t ResourceMgr_GetGameVersion()
 {
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
+}
+
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
+    uint32_t version = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
+
+    switch (version) {
+        case OOT_PAL_MQ:
+        case OOT_NTSC_JP_MQ:
+        case OOT_NTSC_US_MQ:
+        case OOT_PAL_GC_MQ_DBG:
+            return 1;
+        case OOT_NTSC_10:
+        case OOT_NTSC_11:
+        case OOT_NTSC_12:
+        case OOT_PAL_10:
+        case OOT_PAL_11:
+        case OOT_NTSC_JP_GC_CE:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_US_GC:
+        case OOT_PAL_GC:
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+            return 0;
+        default:
+            SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
+            return 0;
+
+    }
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
@@ -1620,6 +1660,11 @@ extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
+extern "C" CustomMessageEntry Randomizer_GetIceTrapMessage() {
+    u16 iceTrapTextId = rand() % NUM_ICE_TRAP_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
@@ -1728,8 +1773,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            messageEntry =
-                Randomizer_GetCustomGetItemMessage(GET_PLAYER(globalCtx));
+            Player* player = GET_PLAYER(globalCtx);
+            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+                messageEntry = Randomizer_GetIceTrapMessage();
+            } else {
+                messageEntry = Randomizer_GetCustomGetItemMessage(player);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&

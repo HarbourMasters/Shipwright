@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_magicpot" Segment="6">
+        <DList Name="gGiMagicJarSmallDL" Offset="0x0580"/>
+        <DList Name="gGiMagicJarLargeDL" Offset="0x0EE0"/>
+    </File>
+</Root>

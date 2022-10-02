@@ -1,0 +1,11 @@
+<Root>
+    <File Name="yousei_izumi_yoko_scene" Segment="2">
+        <Cutscene Name="gGreatFairyFaroresWindCs" Offset="0x0160"/>
+        <Cutscene Name="gGreatFairyDinsFireCs" Offset="0x1020"/>
+        <Cutscene Name="gGreatFairyNayrusLoveCs" Offset="0x1F40"/>
+        <Scene Name="yousei_izumi_yoko_scene" Offset="0x0"/>
+    </File>
+    <File Name="yousei_izumi_yoko_room_0" Segment="3">
+        <Room Name="yousei_izumi_yoko_room_0" Offset="0x0"/>
+    </File>
+</Root>

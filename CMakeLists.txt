@@ -10,7 +10,7 @@ project(Ship C CXX)
 
 set(PROJECT_VERSION_MAJOR "4")
 set(PROJECT_VERSION_MINOR "0")
-set(PROJECT_VERSION_PATCH "0")
+set(PROJECT_VERSION_PATCH "1")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
@@ -22,7 +22,7 @@ set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng SDL2 GLEW glfw3)
+vcpkg_install_packages(zlib bzip2 libpng SDL2 SDL2-net GLEW glfw3)
 endif()
 
 ################################################################################

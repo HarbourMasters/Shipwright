@@ -946,7 +946,6 @@ typedef enum {
     RG_BUY_HEART,
     RG_BUY_BOMBCHU_10,
     RG_BUY_BOMBCHU_20,
-    RG_BUY_BOMBCHU_5,
     RG_BUY_DEKU_SEEDS_30,
     RG_SOLD_OUT,
     RG_BUY_BLUE_FIRE,
@@ -1025,7 +1024,8 @@ typedef enum {
     RSK_SUNLIGHT_ARROWS,
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHUS_IN_LOGIC,
-    RSK_LINKS_POCKET
+    RSK_LINKS_POCKET,
+    RSK_MAX
 } RandomizerSettingKey;
 
 typedef enum {
