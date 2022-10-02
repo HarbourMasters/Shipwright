@@ -385,7 +385,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                     break;
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
-                    func_8008EF44(globalCtx, 15);
+                    Player_SetShootingGalleryAmmo(globalCtx, 15);
                     this->actionFunc = EnSyatekiMan_RestartGame;
                     break;
                 default:

@@ -2166,10 +2166,10 @@ void func_80834298(Player* this, GlobalContext* globalCtx) {
 }
 
 //Sets the projectile weapon & ammoType when firing, returns current ammo amount
-s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
-    bool useSlingshot = CVar_GetS32("gBowSlingshotFix", 0) && globalCtx->shootingGalleryStatus == 0
+s32 Player_ModifyProjectileType(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
+    bool useSlingshot = CVar_GetS32("gBowSlingshotFix", 0)
         ? (this->heldItemId == ITEM_SLINGSHOT)
-        : !LINK_IS_ADULT;
+        : LINK_IS_CHILD;
 
     if (!useSlingshot) {
         *itemPtr = ITEM_BOW;
@@ -2209,7 +2209,7 @@ s32 func_8083442C(Player* this, GlobalContext* globalCtx) {
         if (this->unk_860 >= 0) {
             func_8002F7DC(&this->actor, D_80854398[ABS(this->unk_860) - 1]);
 
-            if (!Player_HoldsHookshot(this) && (func_80834380(globalCtx, this, &item, &arrowType) > 0)) {
+            if (!Player_HoldsHookshot(this) && (Player_ModifyProjectileType(globalCtx, this, &item, &arrowType) > 0)) {
                 magicArrowType = arrowType - ARROW_FIRE;
 
                 if (this->unk_860 >= 0) {
@@ -2511,7 +2511,7 @@ s32 func_808350A4(GlobalContext* globalCtx, Player* this) {
 
     if (this->heldActor != NULL) {
         if (!Player_HoldsHookshot(this)) {
-            func_80834380(globalCtx, this, &item, &arrowType);
+            Player_ModifyProjectileType(globalCtx, this, &item, &arrowType);
 
             if (gSaveContext.minigameState == 1) {
                 globalCtx->interfaceCtx.hbaAmmo--;
@@ -4874,14 +4874,14 @@ void func_8083AA10(Player* this, GlobalContext* globalCtx) {
     }
 }
 
-s32 func_8083AD4C(GlobalContext* globalCtx, Player* this) {
+s32 Camera_UpdateCameraMode(GlobalContext* globalCtx, Player* this) {
     s32 cameraMode;
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            bool useSlinshotCamera = CVar_GetS32("gBowSlingshotFix", 0) && globalCtx->shootingGalleryStatus == 0
+            bool useSlinshotCamera = CVar_GetS32("gBowSlingshotFix", 0)
                 ? this->heldItemId == ITEM_SLINGSHOT 
-                : !LINK_IS_ADULT;
+                : LINK_IS_CHILD;
             if (useSlinshotCamera) {
                 cameraMode = CAM_MODE_SLINGSHOT;
             } else {
@@ -5087,7 +5087,7 @@ s32 func_8083B040(Player* this, GlobalContext* globalCtx) {
                         Camera_SetParam(Gameplay_GetCamera(globalCtx, 0), 8, this->unk_6A8);
                     }
                 }
-            } else if (func_8083AD4C(globalCtx, this)) {
+            } else if (Camera_UpdateCameraMode(globalCtx, this)) {
                 if (!(this->stateFlags1 & PLAYER_STATE1_23)) {
                     func_80835C58(globalCtx, this, func_8084B1D8, 1);
                     this->unk_850 = 13;
@@ -11375,7 +11375,7 @@ void func_8084B1D8(Player* this, GlobalContext* globalCtx) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->csMode != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || func_80833B54(this) ||
-        (this->unk_664 != NULL) || !func_8083AD4C(globalCtx, this) ||
+        (this->unk_664 != NULL) || !Camera_UpdateCameraMode(globalCtx, this) ||
         (((this->unk_6AD == 2) && (CHECK_BTN_ANY(sControlInput->press.button, BTN_A | BTN_B | BTN_R) ||
                                    func_80833B2C(this) || (!func_8002DD78(this) && !func_808334B4(this)))) ||
          ((this->unk_6AD == 1) && CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)))) {
@@ -11398,7 +11398,13 @@ s32 func_8084B3CC(GlobalContext* globalCtx, Player* this) {
         func_80835C58(globalCtx, this, func_8084FA54, 0);
 
         if (!func_8002DD6C(this) || Player_HoldsHookshot(this)) {
-            func_80835F44(globalCtx, this, 3);
+            s32 itemToUse = ITEM_BOW;
+
+            if (CVar_GetS32("gBowSlingshotFix", 0) && LINK_IS_CHILD){
+                itemToUse = ITEM_SLINGSHOT;
+            }
+
+            func_80835F44(globalCtx, this, itemToUse);
         }
 
         this->stateFlags1 |= PLAYER_STATE1_20;
@@ -12202,7 +12208,7 @@ void func_8084CC98(Player* this, GlobalContext* globalCtx) {
         }
 
         if (this->stateFlags1 & PLAYER_STATE1_20) {
-            if (!func_8083AD4C(globalCtx, this) || CHECK_BTN_ANY(sControlInput->press.button, BTN_A) ||
+            if (!Camera_UpdateCameraMode(globalCtx, this) || CHECK_BTN_ANY(sControlInput->press.button, BTN_A) ||
                 func_80833BCC(this)) {
                 this->unk_6AD = 0;
                 this->stateFlags1 &= ~PLAYER_STATE1_20;
@@ -13349,7 +13355,7 @@ void func_8084F9C0(Player* this, GlobalContext* globalCtx) {
 void func_8084FA54(Player* this, GlobalContext* globalCtx) {
     this->unk_6AD = 2;
 
-    func_8083AD4C(globalCtx, this);
+    Camera_UpdateCameraMode(globalCtx, this);
     LinkAnimation_Update(globalCtx, &this->skelAnime);
     func_80836670(this, globalCtx);
 
