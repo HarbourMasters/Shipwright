@@ -412,7 +412,6 @@ void Draw_Npcs(){
 }
 void Draw_ItemsSkills(){
     DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section));
-
     UIWidgets::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
     UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0)) {
