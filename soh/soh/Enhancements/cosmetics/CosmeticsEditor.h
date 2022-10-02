@@ -37,6 +37,7 @@ static ImVec4 cp_minimap_colors;   static ImVec4 le_minimap_colors;
 static ImVec4 rupee_colors;        static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
 static ImVec4 fileselect_colors;   static ImVec4 fileselect_text_colors;
 static ImVec4 kokiri_col;          static ImVec4 goron_col;               static ImVec4 zora_col;
+static ImVec4 silvergaunts_col;    static ImVec4 goldengaunts_col;
 static ImVec4 navi_idle_i_col;     static ImVec4 navi_idle_o_col;
 static ImVec4 navi_npc_i_col;      static ImVec4 navi_npc_o_col;
 static ImVec4 navi_enemy_i_col;    static ImVec4 navi_enemy_o_col;
@@ -90,6 +91,10 @@ static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of th
 static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
 static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
 static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
+
+//Tunics colors
+static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
+static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
 
 //Arrows (Fire -> Ice -> Light)
 static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };
@@ -207,6 +212,10 @@ static CosmeticsColorSection Tunics_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false }
+};
+static CosmeticsColorSection Gauntlets_Section[] = {
+    { &SilverGauntlets, false, false },
+    { &GoldenGauntlets, true, false },
 };
 static CosmeticsColorSection Arrows_section[] = {
     { &Normal_Arrow_Prim, false, false },
@@ -343,6 +352,8 @@ static CosmeticsColorSection Everything_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
+    { &SilverGauntlets, true, false },
+    { &GoldenGauntlets, true, false },
     { &Normal_Arrow_Prim, false, false },
     { &Normal_Arrow_Env, true, false },
     { &Fire_Arrow_Prim, false, true },
