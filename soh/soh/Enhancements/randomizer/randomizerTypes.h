@@ -1024,7 +1024,8 @@ typedef enum {
     RSK_SUNLIGHT_ARROWS,
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHUS_IN_LOGIC,
-    RSK_LINKS_POCKET
+    RSK_LINKS_POCKET,
+    RSK_MAX
 } RandomizerSettingKey;
 
 typedef enum {
