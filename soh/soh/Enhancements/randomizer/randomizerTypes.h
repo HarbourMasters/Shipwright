@@ -1040,7 +1040,7 @@ typedef struct ScrubIdentity {
     RandomizerCheck randomizerCheck;
     GetItemID getItemId;
     int32_t itemPrice;
-    bool isShuffled;
+    uint32_t isShuffled;
 } ScrubIdentity;
 
 typedef struct ShopItemIdentity {
