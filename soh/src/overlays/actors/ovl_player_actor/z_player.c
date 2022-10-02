@@ -10437,6 +10437,9 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
+extern s32 inventorySingleUseItem = ITEM_NONE;
+extern bool itemWasUsedFromInventoryScreen = false;
+
 void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     s32 pad;
 
@@ -10476,6 +10479,12 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     func_808473D4(globalCtx, this);
     func_80836BEC(this, globalCtx);
+
+    // If a single-use item was used from the inventory screen, perform its action
+    if (itemWasUsedFromInventoryScreen && CVar_GetS32("gInventorySingleUseItems", 0)) {
+        func_80835F44(globalCtx, this, inventorySingleUseItem);
+        itemWasUsedFromInventoryScreen = false;
+    }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
         func_80848A04(globalCtx, this);

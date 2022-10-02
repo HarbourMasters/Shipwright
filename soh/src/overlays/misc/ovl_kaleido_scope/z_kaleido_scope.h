@@ -37,4 +37,6 @@ void PauseMapMark_Draw(GlobalContext* globalCtx);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
 
+bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx);
+
 #endif

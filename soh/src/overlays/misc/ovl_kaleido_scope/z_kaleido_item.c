@@ -84,6 +84,45 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_ITEM] * 4, pauseCtx->itemVtx);
 }
 
+bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx) {
+    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+    PauseContext* pauseCtx = &globalCtx->pauseCtx;
+
+    u16 cursorItem;
+    u16 cursorSlot;
+
+    // If we aren't paused or we aren't on the inventory subscreen, return false
+    if (!(CVar_GetS32("gInventorySingleUseItems", 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) &&
+          (pauseCtx->pageIndex == PAUSE_ITEM))) {
+        return false;
+    }
+
+    cursorItem = pauseCtx->cursorItem[PAUSE_ITEM];
+    cursorSlot = pauseCtx->cursorSlot[PAUSE_ITEM];
+
+    // Check that we have the item and that it passes age restrictions
+    if (((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
+        (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
+        // If we're on a valid item and it isn't restricted by scene or by ammo/magic
+        if (interfaceCtx->restrictions.ocarina    == 0 && cursorSlot == SLOT_OCARINA ||
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_NUT          && AMMO(ITEM_NUT)     > 0 ||
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BOMB         && AMMO(ITEM_BOMB)    > 0 ||
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BOMBCHU      && AMMO(ITEM_BOMBCHU) > 0 ||
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BEAN         && AMMO(ITEM_BEAN)    > 0 ||
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_LENS         && gSaveContext.magicAcquired && gSaveContext.magic >=  1 ||
+            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_DINS_FIRE    && gSaveContext.magicAcquired && gSaveContext.magic >= 12 ||
+            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_NAYRUS_LOVE  && gSaveContext.magicAcquired && gSaveContext.magic >= 24 ||
+            interfaceCtx->restrictions.farores    == 0 && cursorSlot == SLOT_FARORES_WIND && gSaveContext.magicAcquired && gSaveContext.magic >= 12 ){
+
+            return true;
+        }
+    }
+    return false;
+}
+
+extern s32  inventorySingleUseItem = ITEM_NONE;
+extern bool itemWasUsedFromInventoryScreen = false;
+
 void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     static s16 magicArrowEffectsR[] = { 255, 100, 255 };
     static s16 magicArrowEffectsG[] = { 0, 100, 255 };
@@ -354,6 +393,20 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 KaleidoScope_SetCursorVtx(pauseCtx, index, pauseCtx->itemVtx);
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
+                    if (CVar_GetS32("gInventorySingleUseItems", 0)){
+                        // One-time use of certain items from Inventory Screen
+                        if (CHECK_BTN_ALL(input->press.button, BTN_A) &&
+                            KaleidoScope_IsValidItemForSingleUse(globalCtx)) {
+                            // Update these variables for use in z_player.c
+                            inventorySingleUseItem = cursorItem;
+                            itemWasUsedFromInventoryScreen = true;
+                            // Unpause
+                            Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
+                            pauseCtx->state = 0x12;
+                            WREG(2) = -6240;
+                            func_800F64E0(0);
+                        }
+                    }
                     // only allow mask select when:
                     // the shop is open:
                     // * zelda's letter check: gSaveContext.eventChkInf[4] & 1

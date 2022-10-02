@@ -1017,6 +1017,14 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
         sCursorColors[2][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
     }
 
+    if (KaleidoScope_IsValidItemForSingleUse(globalCtx) && CVar_GetS32("gInventorySingleUseItems", 0)) {
+        // If using the "Single Use Items From Inventory" enhancement, draw the cursor
+        // in the same colour as your "A" button when it's on a valid item
+        sCursorColors[1][0] = sCursorColors[2][0];
+        sCursorColors[1][1] = sCursorColors[2][1];
+        sCursorColors[1][2] = sCursorColors[2][2];
+    }
+
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
         ((pauseCtx->pageIndex == PAUSE_QUEST) && ((temp < 3) || (temp == 5) || (temp == 8)))) {
 
@@ -1128,6 +1136,18 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         D_8082ACF4[11][1] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).g;
         D_8082ACF4[11][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
     }
+
+    if (KaleidoScope_IsValidItemForSingleUse(globalCtx) && CVar_GetS32("gInventorySingleUseItems", 0)) {
+        // If using the "Single Use Items From Inventory" enhancement, draw the cursor
+        // in the same colour as your "A" button when it's on a valid item
+        D_8082ACF4[4][0] = D_8082ACF4[8][0];
+        D_8082ACF4[4][1] = D_8082ACF4[8][1];
+        D_8082ACF4[4][2] = D_8082ACF4[8][2];
+        D_8082ACF4[7][0] = D_8082ACF4[11][0];
+        D_8082ACF4[7][1] = D_8082ACF4[11][1];
+        D_8082ACF4[7][2] = D_8082ACF4[11][2];
+    }
+
     static s16 D_8082AD3C = 20;
     static s16 D_8082AD40 = 0;
     static s16 D_8082AD44 = 0;
