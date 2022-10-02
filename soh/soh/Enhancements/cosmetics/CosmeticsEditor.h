@@ -87,12 +87,12 @@ static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects t
 static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
-//Tunics colors
+//Tunic colors
 static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
 static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
 static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
 
-//Gauntlets colors
+//Gauntlet colors
 static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
 static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
 
