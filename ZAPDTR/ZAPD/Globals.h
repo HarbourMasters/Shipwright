@@ -64,6 +64,7 @@ public:
 	bool forceStatic = false;
 	bool forceUnaccountedStatic = false;
 	bool otrMode = true;
+	bool buildRawTexture = false;
 
 	ZRom* rom;
 	std::vector<ZFile*> files;
@@ -85,6 +86,7 @@ public:
 	std::map<int32_t, std::vector<ZFile*>> GetSegmentRefFiles(int workerID);
 	void AddFile(ZFile* file, int workerID);
 	void AddExternalFile(ZFile* file, int workerID);
+	void BuildAssetTexture(const fs::path& pngFilePath, TextureType texType, const fs::path& outPath);
 
 	ZResourceExporter* GetExporter(ZResourceType resType);
 	ExporterSet* GetExporterSet();
