@@ -3381,6 +3381,7 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
 
 void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+    s16 magicDrop = R_MAGIC_BAR_LARGE_Y-R_MAGIC_BAR_SMALL_Y+2;
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
@@ -3408,6 +3409,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         s16 rMagicBarX;
         s16 PosX_MidEnd;
         s16 rMagicFillX;
+        s32 lineLength = CVar_GetS32("gHeartsLineLength", 10);
         if (CVar_GetS32("gMagicBarPosType", 0) != 0) {
             magicBarY = CVar_GetS32("gMagicBarPosY", 0)+Y_Margins;
             if (CVar_GetS32("gMagicBarPosType", 0) == 1) {//Anchor Left
@@ -3432,10 +3434,20 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
                 rMagicBarX = -9999;
                 PosX_MidEnd = -9999;
                 rMagicFillX = -9999;
+            } else if (CVar_GetS32("gMagicBarPosType", 0) == 5) {//Anchor To life meter
+                magicBarY = R_MAGIC_BAR_SMALL_Y-2 +
+                            magicDrop*(lineLength == 0 ? 0 : (gSaveContext.healthCapacity-1)/(0x10*lineLength)) +
+                            CVar_GetS32("gMagicBarPosY", 0) + getHealthMeterYOffset();
+                s16 xPushover = CVar_GetS32("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_BAR_X-1;
+                PosX_Start = xPushover;
+                rMagicBarX = xPushover;
+                PosX_MidEnd = xPushover+8;
+                rMagicFillX = CVar_GetS32("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_FILL_X-1;
             }
         } else {
-            if (gSaveContext.healthCapacity > 0xA0) {
-                magicBarY = magicBarY_original_l;
+            if ((gSaveContext.healthCapacity-1)/0x10 >= lineLength && lineLength != 0) {
+                magicBarY = magicBarY_original_l +
+                            magicDrop*(lineLength == 0 ? 0 : ((gSaveContext.healthCapacity-1)/(0x10*lineLength) - 1));
             } else {
                 magicBarY = magicBarY_original_s;
             }
