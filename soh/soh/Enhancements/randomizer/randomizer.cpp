@@ -1013,8 +1013,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
                             SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "trickName") {
-                        memcpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
-                               std::string(itemit.value()).c_str(), std::string(itemit.value()).length());
+                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName, std::string(itemit.value()).c_str(), 50);
                     }
                 }
             } else {
@@ -1038,11 +1037,11 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-RandomizerGetData Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
-RandomizerGetData Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck) {
     return this->itemLocations[randomizerCheck];
 }
 
@@ -1052,7 +1051,7 @@ GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorPa
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
-    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck).rgID);
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetDataFromKnownCheck(randomizerCheck).rgID);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
@@ -2606,7 +2605,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
             break;
     }
 
-    RandomizerGetData randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
+    RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
     if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
         shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet.rgID];
     }
