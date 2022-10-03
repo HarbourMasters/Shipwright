@@ -738,15 +738,11 @@ static std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_g
     }
 
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
-    if (!coordinates.size()) {
-        return res;
-    }
-
-    GX2Rect srcRects[32];
-    GX2Point dstPoints[32];
+    GX2Rect srcRects[25];
+    GX2Point dstPoints[25];
     size_t num_coordinates = coordinates.size();
     while (num_coordinates > 0) {
-        size_t numRects = 32;
+        size_t numRects = 25;
         if (num_coordinates < numRects) {
             numRects = num_coordinates;
         }
@@ -755,8 +751,8 @@ static std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_g
         // initialize rects and points
         for (size_t i = 0; i < numRects; ++i) {
             const auto& c = *std::next(coordinates.begin(), num_coordinates + i);
-            const int32_t x = (int32_t) std::clamp(c.first, 0.0f, (float) buffer->depth_buffer.surface.width - 1);
-            const int32_t y = (int32_t) std::clamp(c.second, 0.0f, (float) buffer->depth_buffer.surface.height - 1);
+            const int32_t x = (int32_t) std::clamp(c.first, 0.0f, (float) (buffer->depth_buffer.surface.width - 1));
+            const int32_t y = (int32_t) std::clamp(c.second, 0.0f, (float) (buffer->depth_buffer.surface.height - 1));
 
             srcRects[i] = GX2Rect{
                 x,

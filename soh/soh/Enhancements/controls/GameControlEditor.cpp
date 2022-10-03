@@ -238,7 +238,7 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
         UIWidgets::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gAutoCenterView");
+        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gDisableAutoCenterView");
         UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
 	}
 	

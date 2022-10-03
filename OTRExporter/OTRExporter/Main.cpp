@@ -93,7 +93,27 @@ static void ExporterProgramEnd()
 
 		for (auto item : lst)
 		{
+			std::vector<std::string> splitPath = StringHelper::Split(item, ".");
+
+			if (splitPath.size() >= 3) {
+				std::string extension = splitPath.at(splitPath.size() - 1);
+				std::string format = splitPath.at(splitPath.size() - 2);
+				splitPath.pop_back();
+				splitPath.pop_back();
+				std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
+				if (extension == "png" && (format == "rgba32" || format == "rgb5a1" || format == "i4" || format == "i8" || format == "ia4" || format == "ia8" || format == "ia16" || format == "ci4" || format == "ci8")) {
+					Globals::Instance->buildRawTexture = true;
+					Globals::Instance->BuildAssetTexture(item, ZTexture::GetTextureTypeFromString(format), afterPath);
+					Globals::Instance->buildRawTexture = false;
+
+					auto fileData = File::ReadAllBytes(afterPath);
+					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
+					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+				}
+			}
+
 			auto fileData = File::ReadAllBytes(item);
+			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 
