@@ -32,6 +32,13 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
 
+    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+        CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
+        CVar_SetS32("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
+        CVar_SetS32("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVar_Save();
+    }
+
     gSaveContext.respawnFlag = 0;
     gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = -1;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
@@ -172,7 +179,7 @@ static SceneSelectEntry sScenes[] = {
 };
 
 static BetterSceneSelectEntry sBetterScenes[] = {
-    { " 1:Hyrule Field", Select_LoadGame, { 
+    { " 1:Hyrule Field", Select_LoadGame, 8, { 
         { "Near Drawbridge", 0x00CD },
         { "From Drawbridge", 0x01FD },
         { "From Kakariko Village", 0x017D },
@@ -182,7 +189,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Gerudo Valley", 0x018D },
         { "From Lon Lon Ranch", 0x01F9 },
     }},
-    { " 2:Kokiri Forest", Select_LoadGame, {
+    { " 2:Kokiri Forest", Select_LoadGame, 9, {
         { "From Links House", 0x0211 },
         { "From Bridge", 0x020D },
         { "From Lost Woods", 0x0286 },
@@ -193,7 +200,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Midos House", 0x0443 },
         { "From Sarias House", 0x0447 },
     }},
-    { " 3:Kokiri Buildings", Select_LoadGame, {
+    { " 3:Kokiri Buildings", Select_LoadGame, 6, {
         { "Links Bed", 0x00BB },
         { "Kokiri Shop", 0x00C1 },
         { "Twins House", 0x009C },
@@ -201,24 +208,24 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Midos House", 0x0433 },
         { "Sarias House", 0x0437 },
     }},
-    { " 4:Lost Woods", Select_LoadGame, { 
+    { " 4:Lost Woods", Select_LoadGame, 5, { 
         { "From Kokiri Forest", 0x011E },
         { "From Sacred Meadow", 0x01A9 },
         { "From Goron City", 0x04D6 },
         { "From Zora River", 0x04DA },
         { "Bridge", 0x05E0 },
     }},
-    { " 5:Sacred Forest Meadow", Select_LoadGame, { 
+    { " 5:Sacred Forest Meadow", Select_LoadGame, 3, { 
         { "From Lost Woods", 0x00FC },
         { "From Forest Temple", 0x0215 },
         { "Minuet of Forest Warp", 0x0600 },
     }},
-    { " 6:Castle Town Entrance", Select_LoadGame, {
+    { " 6:Castle Town Entrance", Select_LoadGame, 3, {
         { "From Hyrule Field", 0x0276 },
         { "From Market", 0x0033 },
         { "From Pot House", 0x026E },
     }},
-    { " 7:Market", Select_LoadGame, {
+    { " 7:Market", Select_LoadGame, 11, {
         { "From Castle Town Entrance", 0x00B1 },
         { "From Shooting Gallery", 0x01CD },
         { "From Happy Mask Shop", 0x01D1 },
@@ -231,14 +238,14 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Bazaar Shop", 0x03B8 },
         { "From Bomchu Bowling Minigame", 0x03BC },
     }},
-    { " 8:Castle Town Alley", Select_LoadGame, { 
+    { " 8:Castle Town Alley", Select_LoadGame, 5, { 
         { "From Market (Right)", 0x00AD },
         { "From Market (Left)", 0x029A }, 
         { "From Alley House", 0x0067 },
         { "From Dog House", 0x038C }, 
         { "From Bombchu Shop", 0x03C0 },
     }},
-    { " 9:Castle Town Buildings", Select_LoadGame, { 
+    { " 9:Castle Town Buildings", Select_LoadGame, 10, { 
         { "Pot House", 0x007E },
         { "Shooting Gallery Minigame", 0x016D },
         { "Treasure Box Minigame", 0x0063 },
@@ -250,37 +257,37 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Dog House", 0x0398 },
         { "Alley House", 0x043B },
     }},
-    { "10:Temple of Time", Select_LoadGame, { 
+    { "10:Temple of Time", Select_LoadGame, 5, { 
         { "From Outside", 0x053 },
         { "From Master Sword Pedestal", 0x02CA },
         { "Prelude of Light Warp", 0x05F4 },
         { "Outside Temple of Time - From Market", 0x0171 },
         { "Outside Temple of Time - From Temple of Time", 0x0472 },
     }},
-    { "11:Hyrule Castle", Select_LoadGame, {
+    { "11:Hyrule Castle", Select_LoadGame, 5, {
         { "From Market", 0x0138 },
         { "From Castle Courtyard", 0x023D },
         { "From Great Fairy", 0x0340 },
         { "From Courtyard Guard Capture", 0x04FA },
         { "Great Fairy", 0x04C2 },
     }},
-    { "12:Hyrule Castle Courtyard", Select_LoadGame, {
+    { "12:Hyrule Castle Courtyard", Select_LoadGame, 3, {
         { "From Crawlspace", 0x007A },
         { "From Zelda", 0x0296 },
         { "Zeldas Courtyard", 0x0400 },
     }},
-    { "13:Lon Lon Ranch", Select_LoadGame, { 
+    { "13:Lon Lon Ranch", Select_LoadGame, 4, { 
         { "From Hyrule Field", 0x0157 },
         { "From Ranch House", 0x0378 },
         { "From Stables", 0x042F },
         { "Epona Song Cutscene", 0x02AE },
     }},
-    { "14:Lon Lon Ranch Buildings", Select_LoadGame, {
+    { "14:Lon Lon Ranch Buildings", Select_LoadGame, 3, {
         { "Ranch House", 0x004F },
         { "Stables", 0x02F9 },
         { "Back Tower", 0x05D0 },
     }},
-    { "15:Kakariko Village", Select_LoadGame, {
+    { "15:Kakariko Village", Select_LoadGame, 15, {
         { "From Hyrule Field", 0x00DB },
         { "From Death Mountain", 0x0191 },
         { "From Graveyard", 0x0195 },
@@ -297,7 +304,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Skulltula House", 0x04EE },
         { "Owl Drop Spot from Death Mountain", 0x0554 },
     }},
-    { "16:Kakariko Buildings", Select_LoadGame, {
+    { "16:Kakariko Buildings", Select_LoadGame, 9, {
         { "Shooting Gallery Minigame", 0x003B },
         { "Grannys Potion Shop", 0x0072 },
         { "Bazaar Shop", 0x00B7 },
@@ -308,7 +315,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Windmill", 0x0453 },
         { "Skulltula House", 0x0550 },
     }}, 
-    { "17:Graveyard", Select_LoadGame, {
+    { "17:Graveyard", Select_LoadGame, 9, {
         { "From Kakariko", 0x00E4 },
         { "From Shadow Temple", 0x0205 },
         { "From Gravekeepers Hut", 0x0355 },
@@ -319,14 +326,14 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Inside Dampe's Hut", 0x030D },
         { "Nocturne of Shadow Warp", 0x0568 },
     }},
-    { "18:Graves", Select_LoadGame, {
+    { "18:Graves", Select_LoadGame, 5, {
         { "Dampes Grave Minigame", 0x044F },
         { "Royal Familys Tomb", 0x002D },
         { "Royal Familys Tomb, Suns Song Cutscene", 0x0574 },
         { "Treasure Chest Grave", 0x004B },
         { "ReDead Grave", 0x031C },
     }},
-    { "19:Death Mountain Trail", Select_LoadGame, {
+    { "19:Death Mountain Trail", Select_LoadGame, 6, {
         { "From Kakariko Village", 0x013D },
         { "From Goron City", 0x01B9 },
         { "From Death Mountain Crater", 0x01BD },
@@ -334,14 +341,14 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Great Fairy", 0x045B },
         { "Great Fairy", 0x0315 },
     }},
-    { "20:Goron City", Select_LoadGame, {
+    { "20:Goron City", Select_LoadGame, 5, {
         { "From Death Mountain Trail", 0x014D },
         { "From Death Mountain Crater", 0x01C1 },
         { "From Goron City Shop", 0x03FC },
         { "From Lost Woods", 0x04E2 },
         { "Goron City Shop", 0x037C },
     }},
-    { "21:Death Mountain Crater", Select_LoadGame, {
+    { "21:Death Mountain Crater", Select_LoadGame, 6, {
         { "From Death Mountain Trail", 0x0147 },
         { "From Goron City", 0x0246 },
         { "From Fire Temple", 0x024A },
@@ -349,26 +356,26 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Great Fairy", 0x04BE },
         { "Bolero of Fire Warp", 0x04F6 },
     }},
-    { "22:Zora River", Select_LoadGame, {
+    { "22:Zora River", Select_LoadGame, 3, {
         { "From Hyrule Field", 0x00EA },
         { "From Zoras Domain", 0x019D },
         { "From Lost Woods", 0x01DD },
     }},
-    { "23:Zoras Domain", Select_LoadGame, {
+    { "23:Zoras Domain", Select_LoadGame, 5, {
         { "From Zora River", 0x0108 },
         { "From Zoras Fountain", 0x01A1 },
         { "From Lake Hylia", 0x0328 },
         { "From Zora Shop", 0x03C4 },
         { "Zora Shop", 0x0380 },
     }},
-    { "24:Zoras Fountain", Select_LoadGame, {
+    { "24:Zoras Fountain", Select_LoadGame, 5, {
         { "From Zoras Domain", 0x0225 },
         { "From Jabu Jabu", 0x0221 },
         { "From Ice Cavern", 0x03D4 },
         { "From Fairy Fountain", 0x0394 },
         { "Great Fairy", 0x0371 },
     }},
-    { "25:Lake Hylia", Select_LoadGame, {
+    { "25:Lake Hylia", Select_LoadGame, 7, {
         { "From Hyrule Field", 0x0102 },
         { "From Gerudo Valley", 0x0219 },
         { "From Water Temple", 0x021D },
@@ -377,18 +384,18 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Zoras Domain", 0x0560 },
         { "Serenade Of Water Warp", 0x0604 },
     }},
-    { "26:Lake Hylia Buildings", Select_LoadGame, { 
+    { "26:Lake Hylia Buildings", Select_LoadGame, 2, { 
         { "Laboratory", 0x0043 }, 
         { "Fishing Pond Minigame", 0x045F },
     }},
-    { "27:Gerudo Valley", Select_LoadGame, {
+    { "27:Gerudo Valley", Select_LoadGame, 5, {
         { "From Hyrule Field", 0x0117 },
         { "From Gerudo Fortress", 0x022D },
         { "From Carpenter's Tent", 0x03D0 },
         { "Carpenter's Tent/ Running Man Minigame", 0x03A0 },
         { "Thrown out of Fortress", 0x01A5 },
     }},
-    { "28:Gerudo Fortress", Select_LoadGame, {
+    { "28:Gerudo Fortress", Select_LoadGame, 18, {
         { "From Gerudo Valley", 0x0129 },
         { "From Traning Grounds", 0x03A8 },
         { "From Haunted Wasteland", 0x03AC },
@@ -408,7 +415,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Thieves Hideout (12)", 0x02DE },
         { "From Thieves Hideout (13)", 0x03A4 },
     }},
-    { "29:Thieves Hideout", Select_LoadGame, {
+    { "29:Thieves Hideout", Select_LoadGame, 13, {
         { "From Gerudo Fortress (1)", 0x0486 },
         { "From Gerudo Fortress (2)", 0x048A },
         { "From Gerudo Fortress (3)", 0x048E },
@@ -423,11 +430,11 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Gerudo Fortress (12)", 0x04B2 },
         { "From Gerudo Fortress (13)", 0x0570 },
     }},
-    { "30:Haunted Wasteland", Select_LoadGame, {
+    { "30:Haunted Wasteland", Select_LoadGame, 2, {
         { "From Gerudo Fortress", 0x0130 },
         { "From Desert Colossus", 0x0365 },
     }},
-    { "31:Desert Colossus", Select_LoadGame, {
+    { "31:Desert Colossus", Select_LoadGame, 7, {
         { "From Haunted Wasteland", 0x0123 },
         { "From Spirit Temple", 0x01E1 },
         { "From Spirit Temple (Left Hand)", 0x01E5 },
@@ -436,41 +443,41 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Great Fairy", 0x0588 },
         { "Requiem of Spirit Warp", 0x01F1 },
     }},
-    { "32:Deku Tree", Select_LoadGame, {
+    { "32:Deku Tree", Select_LoadGame, 3, {
         { "Entrance", 0x0001 },
         { "From Gohma Fight", 0x0252 },
         { "Gohma Fight", 0x040F },
     }},
-    { "33:Dodongos Cavern", Select_LoadGame, {
+    { "33:Dodongos Cavern", Select_LoadGame, 3, {
         { "Entrance", 0x0004 },
         { "From King Dodongo", 0x00C5 },
         { "King Dodongo", 0x040B },
     }},
-    { "34:Jabu Jabu", Select_LoadGame, {
+    { "34:Jabu Jabu", Select_LoadGame, 2, {
         { "Entrance", 0x0028 },
         { "Barinade Fight", 0x0301 },
     }},
-    { "35:Forest Temple", Select_LoadGame, {
+    { "35:Forest Temple", Select_LoadGame, 4, {
         { "Entrance", 0x0169 },
         { "Crushing Room", 0x0584 },
         { "Before Phantom Ganon", 0x024E },
         { "Phantom Ganon Fight", 0x000C },
     }},
-    { "36:Fire Temple", Select_LoadGame, {
+    { "36:Fire Temple", Select_LoadGame, 3, {
         { "Entrance", 0x0165 },
         { "Before Volvagia", 0x0175 },
         { "Volvagia", 0x0305 },
     }},
-    { "37:Water Temple", Select_LoadGame, { 
+    { "37:Water Temple", Select_LoadGame, 2, { 
         { "Entrance", 0x0010 },
         { "Barinade", 0x0417 },
     }},
-    { "38:Shadow Temple", Select_LoadGame, {
+    { "38:Shadow Temple", Select_LoadGame, 3, {
         { "Entrance", 0x0037 },
         { "Outside Bongo Bongo", 0x02B2 },
         { "Bongo Bongo", 0x0413 },
     }},
-    { "39:Spirit Temple", Select_LoadGame, {
+    { "39:Spirit Temple", Select_LoadGame, 6, {
         { "Entrance", 0x0082 },
         { "From Left Hand", 0x03F0 },
         { "From Right Hand", 0x03F4 },
@@ -478,7 +485,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Naboora Fight", 0x008D },
         { "Twinrova", 0x05EC },
     }},
-    { "40:Ganons Castle", Select_LoadGame, {
+    { "40:Ganons Castle", Select_LoadGame, 9, {
         { "Entrance", 0x0467 },
         { "From Tower", 0x0534 },
         { "Stairs to Lair - From Castle", 0x041B },
@@ -489,16 +496,16 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Ganon Battle", 0x0517 },
         { "Ganon Death Cutscene", 0x043F },
     }},
-    { "41:Bottom of the Well", Select_LoadGame, {
+    { "41:Bottom of the Well", Select_LoadGame, 1, {
         { "Entrance", 0x0098 },
     }},
-    { "42:Ice Cavern", Select_LoadGame, {
+    { "42:Ice Cavern", Select_LoadGame, 1, {
         { "Entrance", 0x0088 },
     }},
-    { "43:Gerudo Training Grounds", Select_LoadGame, {
+    { "43:Gerudo Training Grounds", Select_LoadGame, 1, {
         { "Entrance", 0x0008 },
     }},
-    { "44:Warps", Select_LoadGame, {
+    { "44:Warps", Select_LoadGame, 6, {
         { "Prelude of Light Warp", 0x05F4 },
         { "Minuet of Forest Warp", 0x0600 },
         { "Bolero of Fire Warp", 0x04F6 },
@@ -506,7 +513,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Nocturne of Shadow Warp", 0x0568 },
         { "Requiem of Spirit Warp", 0x01F1 },
     }},
-    { "45:Shops", Select_LoadGame, {
+    { "45:Shops", Select_LoadGame, 9, {
         { "Kokiri Shop", 0x00C1 },
         { "Potion Shop (Market)", 0x0388 },
         { "Bazaar Shop (Market)", 0x052C },
@@ -517,7 +524,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Goron City Shop", 0x037C },
         { "Zora Shop", 0x0380 },
     }},
-    { "46:Debug (Use with caution)", Select_LoadGame, {
+    { "46:Debug (Use with caution)", Select_LoadGame, 10, {
         { "Test Room", 0x0520 },
         { "SRD Map", 0x0018 },
         { "Test Map", 0x0094 },
@@ -769,18 +776,15 @@ void Better_Select_UpdateMenu(SelectContext* this) {
 
         if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
             this->pageDownIndex--;
-            this->pageDownIndex = MIN(14, MAX(0, this->pageDownIndex));
             Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name == NULL) {
-                // Need an easy way to get the last valid item in this array
-                this->pageDownIndex = 0;
+            if (this->pageDownIndex < 0) {
+                this->pageDownIndex = this->betterScenes[this->currentScene].count - 1;
             }
         }
         if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
             this->pageDownIndex++;
-            this->pageDownIndex = MIN(14, MAX(0, this->pageDownIndex));
             Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name == NULL) {
+            if (this->pageDownIndex > this->betterScenes[this->currentScene].count - 1) {
                 this->pageDownIndex = 0;
             }
         }
@@ -1202,6 +1206,11 @@ void Select_Init(GameState* thisx) {
         this->currentScene = dREG(80);
         this->topDisplayedScene = dREG(81);
         this->pageDownIndex = dREG(82);
+    }
+    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+        this->currentScene = CVar_GetS32("gBetterDebugWarpScreenCurrentScene", 0);
+        this->topDisplayedScene = CVar_GetS32("gBetterDebugWarpScreenTopDisplayedScene", 0);
+        this->pageDownIndex = CVar_GetS32("gBetterDebugWarpScreenPageDownIndex", 0);
     }
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)

@@ -1172,7 +1172,8 @@ typedef struct {
 typedef struct {
     /*      */ char* name;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
-    /*      */ BetterSceneSelectEntrancePair entrancePairs[19];
+    /*      */ s32 count;
+    /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
 
 typedef struct SelectContext {
