@@ -3614,8 +3614,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
     //Starting Age is forced to child if forest setting is set to closed. (0 = Adult, 1 = Child)
-    cvarSettings[RSK_STARTING_AGE] = (!(CVar_GetS32("gRandomizeForest", 0)) && 
-                                        CVar_GetS32("gRandomizeStartingAge", 1));
+    cvarSettings[RSK_STARTING_AGE] = ((CVar_GetS32("gRandomizeForest", 0) != 0) && 
+                                        (CVar_GetS32("gRandomizeStartingAge", 1)));
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
@@ -3737,7 +3737,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
 
     // World Settings
-    const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
+    const char* randoStartingAge[3] = { "Adult", "Child", "Random" };
     const char* randoShuffleEntrances[2] = { "Off", "On" };
     const char* randoShuffleDungeonsEntrances[2] = { "Off", "On" };
     const char* randoShuffleOverworldEntrances[2] = { "Off", "On" };
@@ -3920,7 +3920,8 @@ void DrawRandoEditor(bool& open) {
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disableRandoStartingAgeText, "") != 0) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
                     }
-                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
+                    CVar_SetS32("gRandomizeStartingAge", 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 1);
                     ImGui::PopStyleVar(1);
                     ImGui::PopItemFlag();
                 }
