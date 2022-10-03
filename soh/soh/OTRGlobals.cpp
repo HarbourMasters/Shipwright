@@ -1696,57 +1696,15 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    s16 getItemModIndex;
-    RandomizerCheck randomizerCheck = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
-    // if we got unknown check here, we don't need to do anything else, just return the ogId.
-    if (randomizerCheck == RC_UNKNOWN_CHECK) {
-        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
-    }
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromActor(actorId, sceneNum, actorParams, ogId);
-
-    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
-        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-    }
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    s16 getItemModIndex;
-
-    // if we got unknown check here, we don't need to do anything else, just return the ogId.
-    if (randomizerCheck == RC_UNKNOWN_CHECK) {
-        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
-    }
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromKnownCheck(randomizerCheck, ogId);
-
-    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
-        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-    }
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromKnownCheck(randomizerCheck, ogId);
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
 }
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
