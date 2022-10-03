@@ -193,6 +193,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+    { "World Settings:Starting Age", RSK_STARTING_AGE },
     { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
@@ -543,6 +544,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Closed as child") {
                             gSaveContext.randoSettings[index].value = 1;
                         } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_STARTING_AGE:
+                        if(it.value() == "Adult") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Child") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "Random") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
@@ -3603,6 +3613,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
+    //Starting Age is forced to child if forest setting is set to closed. (0 = Adult, 1 = Child)
+    cvarSettings[RSK_STARTING_AGE] = (!(CVar_GetS32("gRandomizeForest", 0)) && 
+                                        CVar_GetS32("gRandomizeStartingAge", 1));
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
@@ -3887,6 +3900,32 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
                 ImGui::PushItemWidth(-FLT_MIN);
+
+                //Starting Age
+                //Disabled when Forest is set to Closed
+                bool disableRandoStartingAge = !CVar_GetS32("gRandomizeForest", 0);
+                const char* disableRandoStartingAgeText = "This option is disabled because \"Forest\" is set to \"Closed\"";
+                ImGui::Text(Settings::StartingAge.GetName().c_str());
+                if (!disableRandoStartingAge) {
+                UIWidgets::InsertHelpHoverText(
+                    "Choose which age Link will start as.\n\n"
+                    "Starting as adult means you start with the Master Sword in your inventory.\n"
+                    "Only the child option is compatible with Closed Forest."    
+                );
+                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
+                }
+                else {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disableRandoStartingAgeText, "") != 0) {
+                       ImGui::SetTooltip("%s", disableRandoStartingAgeText);
+                    }
+                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
+                    ImGui::PopStyleVar(1);
+                    ImGui::PopItemFlag();
+                }
+                
+                UIWidgets::PaddedSeparator();
 
                 // Gerudo Fortress
                 ImGui::Text("Gerudo Fortress Carpenters");

@@ -2517,6 +2517,7 @@ namespace Settings {
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
     ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
     OpenDoorOfTime.SetSelectedIndex(cvarSettings[RSK_DOOR_OF_TIME]);
+    StartingAge.SetSelectedIndex(cvarSettings[RSK_STARTING_AGE]);
     GerudoFortress.SetSelectedIndex(cvarSettings[RSK_GERUDO_FORTRESS]);
     Bridge.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE]);
     BridgeStoneCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT]);
@@ -2559,6 +2560,7 @@ namespace Settings {
 
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
+    //TODO: Merchants
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);

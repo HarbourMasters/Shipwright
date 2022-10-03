@@ -368,6 +368,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
+        int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+        switch (startingAge) {
+            case 0: //Adult
+                gSaveContext.linkAge = 0;
+                break;
+            case 1: //Child
+                gSaveContext.linkAge = 1;
+                break;
+        }
+
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
             case 0: // open
