@@ -1013,7 +1013,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
                             SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "trickName") {
-                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName, std::string(itemit.value()).c_str(), 50);
+                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
