@@ -49,6 +49,45 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
 }
 
+void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
+    osSyncPrintf(VT_FGCOL(BLUE));
+    osSyncPrintf("\n\n\nＦＩＬＥ＿ＮＯ＝%x\n\n\n", gSaveContext.fileNum);
+    osSyncPrintf(VT_RST);
+    if (gSaveContext.fileNum == 0xFF) {
+        Sram_InitDebugSave();
+        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magic = 0;
+        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicLevel = gSaveContext.magic;
+    }
+    for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+    }
+    gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+    Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
+    gSaveContext.entranceIndex = this->betterGrottos[grottoIndex].entranceIndex;
+    gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = this->betterGrottos[grottoIndex].returnEntranceIndex;
+    gSaveContext.respawn[RESPAWN_MODE_RETURN].roomIndex = this->betterGrottos[grottoIndex].roomIndex;
+    gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x4ff;
+    gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = this->betterGrottos[grottoIndex].pos;
+
+    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+        CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
+        CVar_SetS32("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
+        CVar_SetS32("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVar_Save();
+    }
+
+    gSaveContext.respawnFlag = 0;
+    gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = -1;
+    gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+    gSaveContext.natureAmbienceId = 0xFF;
+    gSaveContext.showTitleCard = true;
+    gWeatherMode = 0;
+    this->state.running = false;
+    SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+}
+
 static SceneSelectEntry sScenes[] = {
     { " 1:Hyrule Field", Select_LoadGame, 0x00CD },
     { " 2:Kakariko Village", Select_LoadGame, 0x00DB },
@@ -524,7 +563,48 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Goron City Shop", 0x037C },
         { "Zora Shop", 0x0380 },
     }},
-    { "46:Debug (Use with caution)", Select_LoadGame, 10, {
+    { "46:Great Fairies", Select_LoadGame, 5, {
+        { "Hyrule Castle", 0x04C2 },
+        { "Death Mountain Trail", 0x0315 },
+        { "Death Mountain Crater", 0x04BE },
+        { "Zoras Fountain", 0x0371 },
+        { "Desert Colossus", 0x0588 },
+    }},
+    { "47:Chest Grottos", Select_Grotto_LoadGame, 11, {
+        { "Kokiri Forest (Song of Storms)", 0x00 },
+        { "Lost Woods", 0x01 },
+        { "Sacred Forest Meadow", 0x02 },
+        { "Hyrule Field (Near Market)", 0x03 },
+        { "Hyrule Field (Open Near Lake)", 0x04 },
+        { "Hyrule Field (SE Boulder)", 0x05 },
+        { "Kakariko (Open)", 0x06 },
+        { "Kakariko (Redead)", 0x07 },
+        { "Death Mountain Trail (Song of Storms)", 0x08 },
+        { "Death Mountain Crater", 0x09 },
+        { "Zora River (Open)", 0x0A },
+    }},
+    { "48:Scrub Grottos", Select_Grotto_LoadGame, 10, {
+        { "Hyrule Field (Near Lake)", 0x0B },
+        { "Death Mountain Crater", 0x0C },
+        { "Goron City", 0x0D },
+        { "Lon Lon Ranch", 0x0E },
+        { "Lake Hylia", 0x0F },
+        { "Lost Woods", 0x10 },
+        { "Zora River (Song of Storms)", 0x11 },
+        { "Sacred Forest Meadow (Song of Storms)", 0x12 },
+        { "Gerudo Valley (Song of Storms)", 0x13 },
+        { "Desert Colossus", 0x14 },
+    }},
+    { "49:Other Grottos", Select_Grotto_LoadGame, 7, {
+        { "Scrub Theatre", 0x15 },
+        { "Spider Grotto (Hyrule Field)", 0x16 },
+        { "Spider Grotto (Hyrule Castle)", 0x17 },
+        { "Cow Grotto (Hyrule Field)", 0x18 },
+        { "Cow Grotto (Death Mountain Trail)", 0x19 },
+        { "Flooded Grotto (Gerudo Valley)", 0x1A },
+        { "Flooded Grotto (Hyrule Field)", 0x1B },
+    }},
+    { "50:Debug (Use with caution)", Select_LoadGame, 10, {
         { "Test Room", 0x0520 },
         { "SRD Map", 0x0018 },
         { "Test Map", 0x0094 },
@@ -536,6 +616,37 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Depth Test", 0x00B6 },
         { "Hyrule Garden Game (Broken)", 0x0076 },
     }},
+};
+
+static BetterSceneSelectGrottoData sBetterGrottos[] = {
+    { 0x003F, 0x00EE, 0, 0x2C,       {  -504.0,   380.0, -1224.0 }},
+    { 0x003F, 0x04D6, 2, 0x14,       {   922.0,     0.0,  -933.0 }},
+    { 0x05B4, 0x00FC, 0, 0xFFFFFFED, {  -201.0,     0.0,  1906.0 }},
+    { 0x003F, 0x00CD, 0, 0x00,       { -1428.0,     0.0,   790.0 }},
+    { 0x003F, 0x0189, 0, 0x03,        { -4026.0, -700.0, 13858.0 }},
+    { 0x003F, 0x0189, 0, 0x22,       {  -259.0,  -500.0, 12356.0 }},
+    { 0x003F, 0x034D, 0, 0x28,       {   861.0,    80.0,  -253.0 }},
+    { 0x05A0, 0x034D, 0, 0xFFFFFFE7, {  -400.0,     0.0,   408.0 }},
+    { 0x003F, 0x01B9, 0, 0x57,       {  -389.0,  1386.0, -1202.0 }},
+    { 0x003F, 0x0147, 1, 0x7A,       {    50.0,  1233.0,  1776.0 }},
+    { 0x003F, 0x019D, 0, 0x29,       {   369.0,   570.0,   128.0 }},
+    { 0x059C, 0x0189, 0, 0xFFFFFFE6, { -5002.0,  -700.0, 13823.0 }},
+    { 0x05A4, 0x0246, 1, 0xFFFFFFF9, { -1703.0,   722.0,  -481.0 }},
+    { 0x05A4, 0x014D, 3, 0xFFFFFFFB, {  1091.0,   580.0, -1192.0 }},
+    { 0x05A4, 0x05D4, 0, 0xFFFFFFFC, {  1798.0,     0.0,  1498.0 }},
+    { 0x05A4, 0x021D, 0, 0xFFFFFFEF, { -3044.0, -1033.0,  6070.0 }},
+    { 0x05B0, 0x01A9, 8, 0xFFFFFFF5, {   677.0,     0.0, -2515.0 }},
+    { 0x05BC, 0x00EA, 0, 0xFFFFFFEB, { -1632.0,   100.0,  -123.0 }},
+    { 0x05BC, 0x0215, 0, 0xFFFFFFEE, {   317.0,   480.0, -2303.0 }},
+    { 0x05BC, 0x03D0, 0, 0xFFFFFFF0, { -1321.0,    15.0,  -968.0 }},
+    { 0x05BC, 0x01F1, 0, 0xFFFFFFFD, {    71.0,   -32.0, -1303.0 }},
+    { 0x05C4, 0x04D6, 6, 0xFFFFFFF3, {    75.0,   -20.0, -1596.0 }},
+    { 0x0598, 0x017D, 0, 0xFFFFFFE5, {  2059.0,    20.0,  -174.0 }},
+    { 0x05B8, 0x023D, 0, 0xFFFFFFF6, {   986.0,  1571.0,   837.0 }},
+    { 0x05A8, 0x018D, 0, 0xFFFFFFE4, { -7873.0,  -300.0,  6916.0 }},
+    { 0x05FC, 0x01B9, 0, 0xFFFFFFF8, {  -678.0,  1946.0,  -284.0 }},
+    { 0x05AC, 0x0117, 0, 0xFFFFFFF2, {   271.0,  -555.0,  1465.0 }},
+    { 0x05C0, 0x00CD, 0, 0xFFFFFFE1, { -4945.0,  -300.0,  2841.0 }},
 };
 
 void Select_UpdateMenu(SelectContext* this) {
@@ -933,7 +1044,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
         if (scene == this->currentScene) {
             GfxPrint_SetColor(printer, 255, 100, 100, 255);
         } else {
-            GfxPrint_SetColor(printer, 100, 100, 100, 255);
+            GfxPrint_SetColor(printer, 175, 175, 175, 255);
         }
 
         name = this->betterScenes[scene].name;
@@ -1178,6 +1289,7 @@ void Select_Init(GameState* thisx) {
     this->state.destroy = Select_Destroy;
     this->scenes = sScenes;
     this->betterScenes = sBetterScenes;
+    this->betterGrottos = sBetterGrottos;
     this->topDisplayedScene = 0;
     this->currentScene = 0;
     this->pageDownStops[0] = 0;  // Hyrule Field

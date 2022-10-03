@@ -1165,8 +1165,8 @@ typedef struct {
 } SceneSelectEntry; // size = 0xC
 
 typedef struct {
-  char* name;
-  s32 entranceIndex;
+  /*      */ char* name;
+  /*      */ s32 entranceIndex;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
@@ -1175,6 +1175,14 @@ typedef struct {
     /*      */ s32 count;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
+
+typedef struct {
+    /*      */ s32 entranceIndex;
+    /*      */ s32 returnEntranceIndex;
+    /*      */ s8 roomIndex;
+    /*      */ s8 data;
+    /*      */ Vec3f pos;
+} BetterSceneSelectGrottoData;
 
 typedef struct SelectContext {
     /* 0x0000 */ GameState state;
@@ -1198,6 +1206,7 @@ typedef struct SelectContext {
     /* 0x0238 */ u8* staticSegment;
     /*        */ s32 currentEntrance;
     /*        */ BetterSceneSelectEntry* betterScenes;
+    /*        */ BetterSceneSelectGrottoData* betterGrottos;
 } SelectContext; // size = 0x240
 
 typedef struct {
