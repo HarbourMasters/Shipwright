@@ -95,6 +95,8 @@ set(PROJECT_NAME soh)
 ################################################################################
 # Source groups
 ################################################################################
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
+
 set(Header_Files
     "resource.h"
 )
@@ -395,7 +397,7 @@ endif()
 set(Source_Files__src__boot
     "src/boot/assert.c"
     "src/boot/boot_main.c"
-    "src/boot/build.c"
+    "${CMAKE_BINARY_DIR}/build.c"
     "src/boot/idle.c"
     "src/boot/is_debug.c"
     "src/boot/logutils.c"
@@ -2039,6 +2041,7 @@ find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download fi
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
@@ -2057,8 +2060,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
 nx_generate_nacp(Ship.nacp
    NAME "Ship of Harkinian"
-   AUTHOR "Harbour Masters"
-   VERSION "4.0.0"
+   AUTHOR "${PROJECT_TEAM}"
+   VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
 )
  
 nx_create_nro(soh
@@ -2075,7 +2078,7 @@ wut_create_rpx(${PROJECT_NAME})
 wut_create_wuhb(${PROJECT_NAME}
 	NAME       "Ship of Harkinian"
 	SHORTNAME  "SoH"
-	AUTHOR     "Harbour Masters"
+	AUTHOR     "${PROJECT_TEAM}"
 	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
 )
 
