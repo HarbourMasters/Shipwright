@@ -441,12 +441,19 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
 
     for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
-        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck];
+        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck].rgID;
+        std::vector<std::string> shopItemName;
         // TODO: This should eventually be replaced with a full fledged trick model & trick name system
         if (shopItemGet == RG_ICE_TRAP) {
-            shopItemGet = RG_HUGE_RUPEE;
+            shopItemGet = this->itemLocations[shopItemCheck].fakeRgID;
+            shopItemName = {
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName)
+            };
+        } else { 
+            shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         }
-        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         u16 shopItemPrice = merchantPrices[shopItemCheck];
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
@@ -474,7 +481,7 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
         this->itemLocations[itemLocation.check] = itemLocation.get;
     }
 
-    itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
+    itemLocations[RC_UNKNOWN_CHECK].rgID = itemLocations[RC_UNKNOWN_CHECK].fakeRgID = RG_NONE;
 }
 
 void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
@@ -999,14 +1006,21 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                     // todo handle prices
                     if (itemit.key() == "item") {
                         gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
-                        gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[itemit.value()];
+                        gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
                         merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
+                    } else if (itemit.key() == "model") {
+                        gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
+                            SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "trickName") {
+                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
-                gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
-                gSaveContext.itemLocations[randomizerCheck].get = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
+                gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
             }
         }
 
@@ -1024,20 +1038,21 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-RandomizerGet Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
-RandomizerGet Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck) {
     return this->itemLocations[randomizerCheck];
 }
 
-GetItemID Randomizer::GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
-    return GetItemIdFromRandomizerGet(GetRandomizerGetFromActor(actorId, sceneNum, actorParams), ogItemId);
+GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    RandomizerGetData rgData = this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
+    return GetItemEntryFromRGData(rgData, ogItemId);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
-    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck));
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetDataFromKnownCheck(randomizerCheck).rgID);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
@@ -1932,7 +1947,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
 }
 
 bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
-    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    RandomizerGet randoGet = this->itemLocations[randoCheck].rgID;
     return IsItemVanilla(randoGet);
 }
 
@@ -2591,9 +2606,9 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
             break;
     }
 
-    RandomizerGet randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
-    if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
-        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
+    RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
+    if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
+        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet.rgID];
     }
 
     if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
@@ -2607,8 +2622,40 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-GetItemID Randomizer::GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId) {
-    return GetItemIdFromRandomizerGet(this->itemLocations[randomizerCheck], ogItemId);
+GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability) {
+    // Go ahead and early return the ogItemId's entry if we somehow get RG_NONE.
+    if (rgData.rgID == RG_NONE) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
+    }
+    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(rgData.rgID) != CAN_OBTAIN) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+    // Can't get RG_ICE_TRAP if the rgID corresponds to a vanilla item
+    if (IsItemVanilla(rgData.rgID)) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
+    }
+    // After this point we can assume we are dealing with a randomizer exclusive item.
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(
+        MOD_RANDOMIZER, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
+    // If we have an ice trap, we want to change the GID and DrawFunc to the fakeRgID's values.
+    if (rgData.rgID == RG_ICE_TRAP) {
+        ModIndex modIndex;
+        if (IsItemVanilla(rgData.fakeRgID)) {
+            modIndex = MOD_NONE;
+        } else {
+            modIndex = MOD_RANDOMIZER;
+        }
+        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
+        giEntry.gid = fakeGiEntry.gid;
+        giEntry.gi = fakeGiEntry.gi;
+        giEntry.drawFunc = fakeGiEntry.drawFunc;
+    }
+    return giEntry;
+}
+
+GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
+    RandomizerGetData rgData = this->itemLocations[randomizerCheck];
+    return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
