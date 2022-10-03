@@ -526,6 +526,8 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gHeartsCount");
             DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10, true);
+            UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -536,6 +538,8 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Magic meter", "gMagicBar");
             DrawPositionsRadioBoxes("gMagicBar");
+            UIWidgets::EnhancementRadioButton("Anchor to life bar", "gMagicBarPosType", 5);
+            UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
             DrawPositionSlider("gMagicBar", 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
             DrawScaleSlider("gMagicBar",1.0f);
             ImGui::NewLine();
