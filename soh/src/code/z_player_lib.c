@@ -424,8 +424,8 @@ void Player_SetEquipmentData(GlobalContext* globalCtx, Player* this) {
     }
 }
 
-bool SingleUseItem_BottleWasUsed();
-void SingleUseItem_RestoreCLeft();
+bool ItemUseFromInventory_BottleWasUsed();
+void ItemUseFromInventory_RestoreCLeft();
 
 void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s32 actionParam) {
     Inventory_UpdateBottleItem(globalCtx, item, this->heldItemButton);
@@ -439,8 +439,8 @@ void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s
 
     // SINGLE-USE ITEMS FROM INVENTORY: If our bottle content is updated, restore the original 
     // C-Left button item.
-    if (SingleUseItem_BottleWasUsed() && CVar_GetS32("gInventorySingleUseItems", 0)) {
-        SingleUseItem_RestoreCLeft();
+    if (ItemUseFromInventory_BottleWasUsed() && CVar_GetS32("gItemUseFromInventory", 0)) {
+        ItemUseFromInventory_RestoreCLeft();
     }
 }
 

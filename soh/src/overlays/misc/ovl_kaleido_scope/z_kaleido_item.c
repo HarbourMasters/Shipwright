@@ -92,7 +92,7 @@ bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx) {
     u16 cursorSlot;
 
     // If we aren't paused or we aren't on the inventory subscreen, return false
-    if (!(CVar_GetS32("gInventorySingleUseItems", 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) &&
+    if (!(CVar_GetS32("gItemUseFromInventory", 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) &&
           (pauseCtx->pageIndex == PAUSE_ITEM))) {
         return false;
     }
@@ -408,12 +408,12 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 KaleidoScope_SetCursorVtx(pauseCtx, index, pauseCtx->itemVtx);
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
-                    if (CVar_GetS32("gInventorySingleUseItems", 0)){
+                    if (CVar_GetS32("gItemUseFromInventory", 0)){
                         // One-time use of certain items from Inventory Screen
                         if (CHECK_BTN_ALL(input->press.button, BTN_A) &&
                             KaleidoScope_IsValidItemForSingleUse(globalCtx)) {
                             // Update these variables for use in z_player.c
-                            SingleUseItem_SetItemAndSlot(cursorItem, cursorSlot);
+                            ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot);
                             // Unpause
                             Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                             pauseCtx->state = 0x12;

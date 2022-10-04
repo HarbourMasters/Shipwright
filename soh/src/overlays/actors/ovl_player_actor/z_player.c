@@ -340,10 +340,10 @@ void func_80853080(Player* this, GlobalContext* globalCtx);
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
 s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
-// For Single-use Items from inventory
-void SingleUseItem_SetItemAndSlot(s32 item, u16 slot);
-void SingleUseItem_RestoreCLeft();
-bool SingleUseItem_BottleWasUsed();
+// For enhancement "Item Use From Inventory"
+void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot);
+void ItemUseFromInventory_RestoreCLeft();
+bool ItemUseFromInventory_BottleWasUsed();
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -10472,20 +10472,20 @@ bool bottleWasUsedFromInventoryScreen = false;
 bool usingItemFromInventory = false;
 s16 singleUseBottleFrameCount = 0;
 
-void SingleUseItem_SetItemAndSlot(s32 item, u16 slot) {
+void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot) {
     inventorySingleUseItem = item;
     inventorySingleUseSlot = slot;
     itemWasUsedFromInventoryScreen = true;
 }
 
-void SingleUseItem_RestoreCLeft() {
+void ItemUseFromInventory_RestoreCLeft() {
     gSaveContext.equips.buttonItems[1] = inventorySingleUsePrevCLeftItem;
     gSaveContext.equips.cButtonSlots[0] = inventorySingleUsePrevCLeftSlot;
     bottleWasUsedFromInventoryScreen = false;
     singleUseBottleFrameCount = 0;
 }
 
-bool SingleUseItem_BottleWasUsed() {
+bool ItemUseFromInventory_BottleWasUsed() {
     return bottleWasUsedFromInventoryScreen;
 }
 
@@ -10553,14 +10553,14 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     if (singleUseBottleFrameCount > 0) {
         singleUseBottleFrameCount++;
         if (singleUseBottleFrameCount >= 14) {
-            SingleUseItem_RestoreCLeft();
+            ItemUseFromInventory_RestoreCLeft();
         }
     }
 
-     if (itemWasUsedFromInventoryScreen && CVar_GetS32("gInventorySingleUseItems", 0)) {
-        usingItemFromInventory = true;
-        itemWasUsedFromInventoryScreen = false;
-     }
+    if (itemWasUsedFromInventoryScreen && CVar_GetS32("gItemUseFromInventory", 0)) {
+       usingItemFromInventory = true;
+       itemWasUsedFromInventoryScreen = false;
+    }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
         func_80848A04(globalCtx, this);

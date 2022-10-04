@@ -986,8 +986,8 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", "gDisableCritWiggle", true, false);
                 UIWidgets::Tooltip("Disable random camera wiggle at low health");
 
-                UIWidgets::PaddedEnhancementCheckbox("Single-Use Items From Inventory", "gInventorySingleUseItems", true, false);
-                UIWidgets::Tooltip("Allow certain single-use items to be used by pressing A on the Inventory Subscreen.");
+                UIWidgets::PaddedEnhancementCheckbox("Use Items Directly From Inventory", "gItemUseFromInventory", true, false);
+                UIWidgets::Tooltip("Allows some items to be used once by pressing A on the Inventory Subscreen.");
 
                 ImGui::EndMenu();
             }
