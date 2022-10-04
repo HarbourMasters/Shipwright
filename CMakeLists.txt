@@ -6,11 +6,10 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
 
-project(Ship C CXX)
-
-set(PROJECT_VERSION_MAJOR "4")
-set(PROJECT_VERSION_MINOR "0")
-set(PROJECT_VERSION_PATCH "1")
+project(Ship LANGUAGES C CXX
+	VERSION 4.0.1)
+set(PROJECT_BUILD_NAME "ZHORA BRAVO" CACHE STRING "")
+set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
