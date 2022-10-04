@@ -142,7 +142,7 @@ static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     snprintf(regbuffer, std::size(regbuffer), "EFL: 0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
     append_line(buffer, pos, regbuffer);
 #elif __i386__
-    snprintf(image.png, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
+    snprintf(regbuffer, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer),"ESI: 0x%08lX", ctx->uc_mcontext.gregs[REG_ESI]);
     append_line(buffer, pos, regbuffer);
