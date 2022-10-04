@@ -1618,8 +1618,8 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
-    Randomizer_LoadMerchantMessages("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadMerchantMessages("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
