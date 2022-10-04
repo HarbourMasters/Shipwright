@@ -1018,7 +1018,7 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
     }
 
     if (ItemUseFromInventory_IsValidItemForUse(globalCtx) && CVar_GetS32("gItemUseFromInventory", 0)) {
-        // If using the "Single Use Items From Inventory" enhancement, draw the cursor
+        // For enhancement "Item Use From Inventory", draw the cursor
         // in the same colour as your "A" button when it's on a valid item
         sCursorColors[1][0] = sCursorColors[2][0];
         sCursorColors[1][1] = sCursorColors[2][1];
@@ -1138,7 +1138,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     }
 
     if (ItemUseFromInventory_IsValidItemForUse(globalCtx) && CVar_GetS32("gItemUseFromInventory", 0)) {
-        // If using the "Single Use Items From Inventory" enhancement, draw the cursor
+        // For enhancement "Item Use From Inventory", draw the cursor
         // in the same colour as your "A" button when it's on a valid item
         D_8082ACF4[4][0] = D_8082ACF4[8][0];
         D_8082ACF4[4][1] = D_8082ACF4[8][1];

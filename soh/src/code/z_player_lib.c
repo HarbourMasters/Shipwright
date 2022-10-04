@@ -438,8 +438,8 @@ void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s
 
     this->itemActionParam = actionParam;
 
-    // SINGLE-USE ITEMS FROM INVENTORY: If our bottle content is updated, restore the original 
-    // C-Left button item.
+    // For enhancement "Item Use From Inventory": If our bottle content is updated, 
+    // restore the original C-Left button item.
     if (ItemUseFromInventory_BottleWasUsed() && CVar_GetS32("gItemUseFromInventory", 0)) {
         ItemUseFromInventory_RestoreCLeft();
     }
