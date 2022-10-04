@@ -1493,7 +1493,20 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
+        } else { //This situation should only really apply in rando where adult has never been child before
+            if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+                gSaveContext.infTable[29] |= 1;
+            }
+
+            //zero out items
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
+                }
+            }
         }
+            gSaveContext.equips.equipment = 0x1111;
     }
 
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
