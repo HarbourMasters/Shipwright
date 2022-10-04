@@ -12,7 +12,9 @@
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
+    "gGauntlets_Silver", "gGauntlets_Golden",
     "gFireArrowCol", "gIceArrowCol",
+    "gNormalArrowCol", "gNormalArrowColEnv",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
     "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
     "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
@@ -23,7 +25,10 @@ const char* RainbowColorCvarList[] = {
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
     "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
-    "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+    "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gKSwordTrailTopCol", "gKSwordTrailBottomCol","gMSwordTrailTopCol", "gMSwordTrailBottomCol","gBSwordTrailTopCol", "gBSwordTrailBottomCol",
+    "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
+    "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
     "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
@@ -36,8 +41,13 @@ const char* MarginCvarList[] {
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
     unsigned long range = 255 - 0;
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     std::random_device rd;
     std::mt19937 rng(rd());
+#else
+    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
+    std::mt19937_64 rng(seed);
+#endif
     std::uniform_int_distribution<int> dist(0, 255 - 1);
     
     NewColor.x = (float)(dist(rng)) / 255;
@@ -46,6 +56,9 @@ ImVec4 GetRandomValue(int MaximumPossible){
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+#if defined(__SWITCH__) || defined(__WIIU__)
+    srand(time(NULL));
+#endif
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
@@ -121,6 +134,13 @@ void ResetPositionAll() {
         }
     }
 }
+
+void ResetTrailLength(const char* variable, int value) {
+    if (ImGui::Button("Reset")) {
+        CVar_SetS32(variable, value);
+        }
+    }
+
 void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
@@ -324,12 +344,17 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         ImGui::TableSetupColumn(Col1Name.c_str(), FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
         Table_InitHeader(false);
+    #ifdef __WIIU__
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             CVar_SetS32("gHudColors", 2);
             CVar_SetS32("gUseNaviCol", 1);
             CVar_SetS32("gUseKeeseCol", 1);
             CVar_SetS32("gUseDogsCol", 1);
             CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseGauntletsCol", 1);
             CVar_SetS32("gUseArrowsCol", 1);
             CVar_SetS32("gUseSpellsCol", 1);
             CVar_SetS32("gUseChargedCol", 1);
@@ -339,7 +364,11 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         }
         UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
+    #ifdef __WIIU__
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
         if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
             GetDefaultColorRGB(ColorSection, SectionSize);
         }
         UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
@@ -396,6 +425,21 @@ void Draw_ItemsSkills(){
         DrawColorSection(Tunics_Section, SECTION_SIZE(Tunics_Section));
         ImGui::EndTable();
     }
+
+    UIWidgets::EnhancementCheckbox("Custom gauntlets color", "gUseGauntletsCol");
+    UIWidgets::Tooltip(
+        "Enable/Disable custom Link's gauntlets colors\nIf disabled you will have original colors for Link's gauntlets.");
+    if (CVar_GetS32("gUseGauntletsCol", 0)) {
+        DrawRandomizeResetButton("Link's gauntlets", Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+    };
+    if (CVar_GetS32("gUseGauntletsCol", 0) && ImGui::BeginTable("tableGauntlets", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Silver Gauntlets", FlagsCell, TablesCellsWidth / 2);
+        ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 2);
+        Table_InitHeader();
+        DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+        ImGui::EndTable();
+    }
+
     UIWidgets::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
     if (CVar_GetS32("gUseArrowsCol",0)) {
         DrawRandomizeResetButton("elemental arrows", Arrows_section, SECTION_SIZE(Arrows_section));
@@ -429,15 +473,34 @@ void Draw_ItemsSkills(){
         DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
         ImGui::EndTable();
     }
-    UIWidgets::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
-    if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, FlagsTable)) {
-        ImGui::TableSetupColumn("Custom Trails", FlagsCell, TablesCellsWidth);
+    UIWidgets::EnhancementCheckbox("Custom trails", "gUseTrailsCol");
+    if (CVar_GetS32("gUseTrailsCol", 0)) {
+        DrawRandomizeResetButton("trails", AllTrail_section, SECTION_SIZE(AllTrail_section));
+    }
+    if (CVar_GetS32("gUseTrailsCol", 0) && ImGui::BeginTable("tabletrails", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        DrawColorSection(Trails_section, SECTION_SIZE(Trails_section));
-        UIWidgets::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        UIWidgets::Tooltip("The longer the trails the weirder it become");
-        ImGui::NewLine();
+        DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
         ImGui::EndTable();
+        UIWidgets::EnhancementSliderInt("Sword Trail Duration: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines the duration of Link's sword trails.");
+        ResetTrailLength("gTrailDuration", 4);
+        UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
+        if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
+            if (ImGui::BeginTable("tabletrailswords", 2, FlagsTable)) {
+                ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Deku Stick", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Megaton Hammer", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(SwordTrail_section, SECTION_SIZE(SwordTrail_section));
+                ImGui::EndTable();
+            }
+        }
+        ImGui::NewLine();
     }
 }
 void Draw_Menus(){
@@ -480,6 +543,8 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gHeartsCount");
             DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10, true);
+            UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -490,6 +555,8 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Magic meter", "gMagicBar");
             DrawPositionsRadioBoxes("gMagicBar");
+            UIWidgets::EnhancementRadioButton("Anchor to life bar", "gMagicBarPosType", 5);
+            UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
             DrawPositionSlider("gMagicBar", 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
             DrawScaleSlider("gMagicBar",1.0f);
             ImGui::NewLine();

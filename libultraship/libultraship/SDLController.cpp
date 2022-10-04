@@ -171,6 +171,10 @@ namespace Ship {
             getGyroX(virtualSlot) *= gyro_sensitivity;
             getGyroY(virtualSlot) *= gyro_sensitivity;
         }
+        else {
+            getGyroX(virtualSlot) = 0;
+            getGyroY(virtualSlot) = 0;
+        }
 
         getPressedButtons(virtualSlot) = 0;
 

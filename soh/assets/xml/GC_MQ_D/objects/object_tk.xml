@@ -1,0 +1,18 @@
+<Root>
+    <File Name="object_tk" Segment="6">
+        <Animation Name="gDampeDigAnim" Offset="0x1144"/>
+        <Animation Name="gDampeWalkAnim" Offset="0x1FA8"/>
+        <Animation Name="gDampeRestAnim" Offset="0x2F84"/>
+        <Animation Name="gDampeFloatAnim" Offset="0x3768"/>
+        <Texture Name="gDampeEyeOpenTex" OutName="dampe_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x3B40"/>
+        <Texture Name="gDampeEyeHalfTex" OutName="dampe_eye_half_open" Format="rgba16" Width="32" Height="32" Offset="0x4340"/>
+        <Texture Name="gDampeEyeClosedTex" OutName="dampe_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x4B40"/>
+        <Texture Name="gDampeUnkTex" OutName="dampe_unk" Format="ci8" Width="16" Height="16" Offset="0x5540" TlutOffset="0x3780"/>
+        <DList Name="gDampeShovelDL" Offset="0xACE0"/>
+        <DList Name="gDampeLanternDL" Offset="0xB838"/>
+        <DList Name="gDampeHaloDL" Offset="0xBBA0"/>
+        <DList Name="gDampeEff1DL" Offset="0xBC90"/>
+        <DList Name="gDampeEff2DL" Offset="0xBCA0"/>
+        <Skeleton Name="gDampeSkel" Type="Flex" LimbType="Standard" Offset="0xBE40"/>
+    </File>
+</Root>

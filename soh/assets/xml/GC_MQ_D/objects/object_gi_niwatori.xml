@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_gi_niwatori" Segment="6">
+        <DList Name="gGiChickenColorDL" Offset="0x15F0"/>
+        <DList Name="gGiCojiroColorDL" Offset="0x1610"/>
+        <DList Name="gGiChickenDL" Offset="0x1630"/>
+        <DList Name="gGiChickenEyesDL" Offset="0x1948"/>
+    </File>
+</Root>

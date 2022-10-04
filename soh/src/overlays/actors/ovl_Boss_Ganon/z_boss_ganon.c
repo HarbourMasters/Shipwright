@@ -352,7 +352,7 @@ void BossGanon_Init(Actor* thisx, GlobalContext* globalCtx2) {
         Actor_ProcessInitChain(thisx, sInitChain);
         ActorShape_Init(&thisx->shape, 0, NULL, 0);
         Actor_SetScale(thisx, 0.01f);
-        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gDorfSkel, NULL, NULL, NULL, 0);
+        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGanondorfSkel, NULL, NULL, NULL, 0);
         Collider_InitCylinder(globalCtx, &this->collider);
         Collider_SetCylinder(globalCtx, &this->collider, thisx, &sDorfCylinderInit);
 
@@ -481,7 +481,7 @@ void BossGanon_SetupIntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
         this->unk_198 = 1;
         this->animBankIndex = animBankIndex;
         gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[animBankIndex].segment);
-        Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_005FFC, 0.0f);
+        Animation_MorphToLoop(&this->skelAnime, &gGanondorfPlayOrganAnim, 0.0f);
     } else {
         this->actionFunc = BossGanon_SetupIntroCutscene;
     }
@@ -565,7 +565,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
                 this->csTimer = 0;
                 player->actor.world.pos.z = 20.0f;
                 this->useOpenHand = false;
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_0089F8, -5.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfStandBackwardsAnim, -5.0f);
                 this->fwork[GDF_FWORK_1] = 1000.0f;
                 BossGanon_SetIntroCsCamera(this, 11);
                 this->unk_198 = 2;
@@ -805,12 +805,12 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
 
             if (this->csTimer == 30) {
                 Audio_QueueSeqCmd(0x100100FF);
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_004F64);
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_004F64, -5.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfStopPlayingOrganAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfStopPlayingOrganAnim, -5.0f);
             }
 
             if ((this->csTimer > 30) && Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_006AF4, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfLeanOnOrganAnim, 0.0f);
                 this->fwork[GDF_FWORK_1] = 1000.0f;
             }
 
@@ -850,12 +850,12 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
 
             if (this->csTimer <= 20) {
                 if (this->csTimer == 20) {
-                    Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_004304, -5.0f);
-                    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_004304);
+                    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfStandUpFromOrganAnim, -5.0f);
+                    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfStandUpFromOrganAnim);
                 }
             } else if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 Message_StartTextbox(globalCtx, 0x70CA, NULL);
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_0089F8, -5.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfStandBackwardsAnim, -5.0f);
                 this->fwork[GDF_FWORK_1] = 1000.0f;
             }
 
@@ -869,8 +869,8 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             this->envLightMode = 3;
 
             if (this->csTimer == 20) {
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_001F58, -5.0f);
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_001F58);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfTurnAroundAnim, -5.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfTurnAroundAnim);
             }
 
             if (this->csTimer > 10) {
@@ -905,7 +905,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             this->csCamEye.z += 6.0f;
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1] - 5.0f)) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_003018, -5.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfStandIdleAnim, -5.0f);
                 this->fwork[GDF_FWORK_1] = 1000.0f;
             }
 
@@ -916,7 +916,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             this->csState = 19;
             this->csTimer = 0;
             Message_StartTextbox(globalCtx, 0x70CC, NULL);
-            Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_007268, -5.0f);
+            Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfRaiseHandStartAnim, -5.0f);
             this->triforceType = GDF_TRIFORCE_DORF;
             this->fwork[GDF_TRIFORCE_SCALE] = 10.0f;
             this->fwork[GDF_TRIFORCE_PRIM_A] = 0.0f;
@@ -952,7 +952,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             }
 
             if (this->csTimer == 17) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_007A64, -5.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfRaiseHandLoopAnim, -5.0f);
             }
 
             if ((this->csTimer > 80) && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) {
@@ -1067,7 +1067,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
 
             if (this->csTimer == 20) {
                 BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp3Anim, 0.0f);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp3Anim, 0.0f);
                 SkelAnime_Update(&this->skelAnime);
                 this->actor.shape.yOffset = 0.0f;
                 sBossGanonCape->attachShouldersTimer = 18.0f;
@@ -1082,7 +1082,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x100)) {
                     TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gDorfTitleCardTex), 160, 180, 128, 40, false);
+                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, false);
                 }
 
                 gSaveContext.eventChkInf[7] |= 0x100;
@@ -1169,8 +1169,8 @@ void BossGanon_SetupDeathCutscene(BossGanon* this, GlobalContext* globalCtx) {
         this->unk_198 = 1;
         this->animBankIndex = animBankIndex;
         gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[animBankIndex].segment);
-        Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_00EA00, 0.0f);
-        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_00EA00);
+        Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfDefeatedStartAnim, 0.0f);
+        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfDefeatedStartAnim);
         this->unk_508 = 0.0f;
     }
 }
@@ -1182,8 +1182,8 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, GlobalContext* globalCtx) {
     if (Object_IsLoaded(&globalCtx->objectCtx, animBankIndex)) {
         this->animBankIndex = animBankIndex;
         gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[animBankIndex].segment);
-        Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_00EA00, 0.0f);
-        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_00EA00);
+        Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfDefeatedStartAnim, 0.0f);
+        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfDefeatedStartAnim);
         this->actionFunc = BossGanon_DeathAndTowerCutscene;
         this->csTimer = 0;
         this->csState = 100;
@@ -1199,10 +1199,11 @@ void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
     u8* tex1 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
     u8* tex2 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
 
     for (i = 0; i < 2048; i++) {
         if ((tex1[i] != 0) && (Rand_ZeroOne() < 0.03f)) {
-            if ((((u8*)gDorfWindowShatterTemplateTex)[i] == 0) || (windowShatterState == GDF_WINDOW_SHATTER_FULL)) {
+            if ((templateTex[i] == 0) || (windowShatterState == GDF_WINDOW_SHATTER_FULL)) {
                 tex1[i] = tex2[i] = 1;
             }
         }
@@ -1282,7 +1283,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
             this->csCamAt.z = this->unk_1FC.z;
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_00F19C, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfDefeatedLoopAnim, 0.0f);
                 this->csState = 2;
                 this->csTimer = 0;
             }
@@ -1328,8 +1329,8 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
 
             if ((this->fwork[GDF_FWORK_1] > 100.0f) && (this->csTimer > 100) &&
                 (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) {
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_00B668, 0.0f);
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_00B668);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfVomitStartAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfVomitStartAnim);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_TOKETU);
             } else {
                 if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1] - 16.0f)) {
@@ -1352,7 +1353,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
                 }
 
                 if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                    Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_00BE38, 0.0f);
+                    Animation_MorphToLoop(&this->skelAnime, &gGanondorfVomitLoopAnim, 0.0f);
                     this->csState = 4;
                     this->csTimer = 0;
                 }
@@ -1375,8 +1376,8 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
             if ((this->csTimer > 70) && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE)) {
                 this->csState = 6;
                 this->csTimer = 0;
-                Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_010298, 0.0f);
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_010298);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfYellStartAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfYellStartAnim);
 
                 this->csCamMovementScale = 0.05f;
                 this->csCamMaxStepScale = 0.0f;
@@ -1407,7 +1408,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
             Math_ApproachF(&this->csCamMaxStepScale, 0.2f, 1.0f, 0.01f);
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                Animation_MorphToLoop(&this->skelAnime, &object_ganon_anime2_Anim_010514, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfYellLoopAnim, 0.0f);
                 this->csState = 7;
                 this->csTimer = 0;
                 this->unk_2E8 = 0;
@@ -1521,8 +1522,8 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
             this->csCamIndex = Gameplay_CreateSubCamera(globalCtx);
             Gameplay_ChangeCameraStatus(globalCtx, MAIN_CAM, CAM_STAT_WAIT);
             Gameplay_ChangeCameraStatus(globalCtx, this->csCamIndex, CAM_STAT_ACTIVE);
-            Animation_MorphToPlayOnce(&this->skelAnime, &object_ganon_anime2_Anim_00ADDC, 0.0f);
-            this->fwork[1] = Animation_GetLastFrame(&object_ganon_anime2_Anim_00EA00);
+            Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfCollapseAnim, 0.0f);
+            this->fwork[1] = Animation_GetLastFrame(&gGanondorfDefeatedStartAnim);
             this->csState = 101;
             this->skelAnime.playSpeed = 0.0f;
             sBossGanonZelda = (EnZl3*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ZL3, 0.0f,
@@ -1889,8 +1890,8 @@ void BossGanon_PoundFloor(BossGanon* this, GlobalContext* globalCtx) {
             Math_ApproachF(&this->actor.velocity.y, 20.0f, 1.0f, 1.0f);
 
             if (this->timers[0] == 14) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfPoundAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfPoundAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfPoundAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfPoundAnim, 0.0f);
                 this->actor.velocity.y = 0.0f;
             }
 
@@ -1932,8 +1933,8 @@ void BossGanon_PoundFloor(BossGanon* this, GlobalContext* globalCtx) {
             this->envLightMode = 1;
 
             if (this->timers[0] == 0) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfPoundEndAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfPoundEndAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfPoundEndAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfPoundEndAnim, 0.0f);
                 this->unk_1C2 = 3;
                 this->unk_19F = 1;
                 this->actor.velocity.y = 0.0f;
@@ -1945,8 +1946,8 @@ void BossGanon_PoundFloor(BossGanon* this, GlobalContext* globalCtx) {
             Math_ApproachF(&this->actor.velocity.y, 20.0f, 1.0f, 1.0f);
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfGetUp3Anim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp3Anim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfGetUp3Anim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp3Anim, 0.0f);
                 SkelAnime_Update(&this->skelAnime);
                 sBossGanonCape->attachShouldersTimer = 18.0f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_GANON_MANTLE);
@@ -2015,16 +2016,16 @@ void BossGanon_ChargeBigMagic(BossGanon* this, GlobalContext* globalCtx) {
     switch (this->unk_1C2) {
         case 0:
             if (this->timers[0] == 0) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicChargeStartAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfBigMagicChargeStartAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicChargeStartAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBigMagicChargeStartAnim, 0.0f);
                 this->unk_1C2 = 1;
             }
             break;
 
         case 1:
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicChargeHoldAnim);
-                Animation_MorphToLoop(&this->skelAnime, &gDorfBigMagicChargeHoldAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicChargeHoldAnim);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfBigMagicChargeHoldAnim, 0.0f);
                 this->unk_1C2 = 2;
                 this->timers[0] = 100;
             }
@@ -2046,8 +2047,8 @@ void BossGanon_ChargeBigMagic(BossGanon* this, GlobalContext* globalCtx) {
             }
 
             if (this->timers[0] == 0) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicWindupAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfBigMagicWindupAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicWindupAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBigMagicWindupAnim, 0.0f);
                 this->unk_1C2 = 3;
                 this->timers[0] = 6;
                 this->timers[1] = 15;
@@ -2146,8 +2147,8 @@ void BossGanon_ChargeBigMagic(BossGanon* this, GlobalContext* globalCtx) {
             }
 
             if (this->timers[1] == 0) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicThrowAnim);
-                Animation_MorphToLoop(&this->skelAnime, &gDorfBigMagicThrowAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicThrowAnim);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfBigMagicThrowAnim, 0.0f);
                 this->unk_1C2 = 4;
                 this->unk_288 = 0.0f;
                 this->unk_290 = 0.0f;
@@ -2175,8 +2176,8 @@ void BossGanon_ChargeBigMagic(BossGanon* this, GlobalContext* globalCtx) {
             }
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicThrowEndAnim);
-                Animation_MorphToLoop(&this->skelAnime, &gDorfBigMagicThrowEndAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicThrowEndAnim);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfBigMagicThrowEndAnim, 0.0f);
                 this->unk_1C2 = 5;
             }
             break;
@@ -2193,7 +2194,7 @@ void BossGanon_ChargeBigMagic(BossGanon* this, GlobalContext* globalCtx) {
 
 void BossGanon_SetupWait(BossGanon* this, GlobalContext* globalCtx) {
     BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-    Animation_MorphToLoop(&this->skelAnime, &gDorfFloatAnim, -10.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gGanondorfFloatAnim, -10.0f);
     this->actionFunc = BossGanon_Wait;
     this->fwork[GDF_FWORK_0] = 0.0f;
     this->timers[0] = (s16)Rand_ZeroFloat(64.0f) + 30;
@@ -2258,8 +2259,8 @@ void BossGanon_Wait(BossGanon* this, GlobalContext* globalCtx) {
 
 void BossGanon_SetupChargeLightBall(BossGanon* this, GlobalContext* globalCtx) {
     BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfChargeLightBallAnim);
-    Animation_MorphToPlayOnce(&this->skelAnime, &gDorfChargeLightBallAnim, -3.0f);
+    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfChargeLightBallAnim);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfChargeLightBallAnim, -3.0f);
     this->actionFunc = BossGanon_ChargeLightBall;
     this->timers[0] = 25;
 }
@@ -2305,13 +2306,13 @@ void BossGanon_ChargeLightBall(BossGanon* this, GlobalContext* globalCtx) {
 
 void BossGanon_SetupPlayTennis(BossGanon* this, GlobalContext* globalCtx) {
     BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfThrowAnim);
-    Animation_MorphToPlayOnce(&this->skelAnime, &gDorfThrowAnim, 0.0f);
+    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfThrowAnim);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfThrowAnim, 0.0f);
     this->actionFunc = BossGanon_PlayTennis;
 }
 
 void BossGanon_PlayTennis(BossGanon* this, GlobalContext* globalCtx) {
-    static AnimationHeader* volleyAnims[] = { &gDorfVolleyLeftAnim, &gDorfVolleyRightAnim };
+    static AnimationHeader* volleyAnims[] = { &gGanondorfVolleyLeftAnim, &gGanondorfVolleyRightAnim };
     static s16 capeRightArmDurations[] = { 26, 20 };
     s16 rand;
 
@@ -2324,7 +2325,7 @@ void BossGanon_PlayTennis(BossGanon* this, GlobalContext* globalCtx) {
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 this->unk_1C2 = 1;
-                Animation_MorphToLoop(&this->skelAnime, &gDorfFloatAnim, 0.0f);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfFloatAnim, 0.0f);
             }
 
             if (this->skelAnime.curFrame <= 12.0f) {
@@ -2373,8 +2374,8 @@ void BossGanon_PlayTennis(BossGanon* this, GlobalContext* globalCtx) {
 void BossGanon_SetupBlock(BossGanon* this, GlobalContext* globalCtx) {
     if ((this->actionFunc != BossGanon_Block) || (this->unk_1C2 != 0)) {
         BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBlockAnim);
-        Animation_MorphToPlayOnce(&this->skelAnime, &gDorfBlockAnim, 0.0f);
+        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBlockAnim);
+        Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBlockAnim, 0.0f);
         this->actionFunc = BossGanon_Block;
     }
 
@@ -2395,8 +2396,8 @@ void BossGanon_Block(BossGanon* this, GlobalContext* globalCtx) {
     if (this->unk_1C2 == 0) {
         if (this->timers[0] == 0) {
             this->unk_1C2 = 1;
-            Animation_MorphToPlayOnce(&this->skelAnime, &gDorfBlockReleaseAnim, 0.0f);
-            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBlockReleaseAnim);
+            Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBlockReleaseAnim, 0.0f);
+            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBlockReleaseAnim);
             SkelAnime_Update(&this->skelAnime);
             sBossGanonCape->attachShouldersTimer = 15.0f;
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_GANON_MANTLE);
@@ -2422,8 +2423,8 @@ void BossGanon_SetupHitByLightBall(BossGanon* this, GlobalContext* globalCtx) {
     s16 i;
 
     BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfBigMagicHitAnim);
-    Animation_MorphToPlayOnce(&this->skelAnime, &gDorfBigMagicHitAnim, 0);
+    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfBigMagicHitAnim);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfBigMagicHitAnim, 0);
     this->timers[0] = 70;
     sBossGanonCape->attachRightArmTimer = sBossGanonCape->attachLeftArmTimer = 0;
 
@@ -2450,16 +2451,16 @@ void BossGanon_HitByLightBall(BossGanon* this, GlobalContext* globalCtx) {
         BossGanonEff_SpawnShock(globalCtx, 1500.0f, GDF_SHOCK_DORF_YELLOW);
 
         if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
-            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfLightArrowWaitAnim);
-            Animation_MorphToLoop(&this->skelAnime, &gDorfLightArrowWaitAnim, 0.0f);
+            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfLightArrowWaitAnim);
+            Animation_MorphToLoop(&this->skelAnime, &gGanondorfLightArrowWaitAnim, 0.0f);
             this->unk_1C2 = 1;
         }
     } else if (this->unk_1C2 == 1) {
         BossGanonEff_SpawnShock(globalCtx, 1000.0f, GDF_SHOCK_DORF_YELLOW);
 
         if (this->timers[0] == 0) {
-            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfGetUp3Anim);
-            Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp3Anim, 0.0f);
+            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfGetUp3Anim);
+            Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp3Anim, 0.0f);
             this->unk_1C2 = 2;
             SkelAnime_Update(&this->skelAnime);
             sBossGanonCape->attachShouldersTimer = 18.0f;
@@ -2494,8 +2495,8 @@ void BossGanon_SetupVulnerable(BossGanon* this, GlobalContext* globalCtx) {
 
     if (this->actionFunc != BossGanon_Vulnerable) {
         BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfLightArrowHitAnim);
-        Animation_MorphToPlayOnce(&this->skelAnime, &gDorfLightArrowHitAnim, 0.0f);
+        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfLightArrowHitAnim);
+        Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfLightArrowHitAnim, 0.0f);
         sBossGanonCape->attachRightArmTimer = sBossGanonCape->attachLeftArmTimer = 0;
         this->actionFunc = BossGanon_Vulnerable;
 
@@ -2553,16 +2554,16 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
         case 0:
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 this->unk_1C2 = 1;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfLightEnergyHitAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfLightEnergyHitAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfLightEnergyHitAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfLightEnergyHitAnim, 0.0f);
             }
             break;
 
         case 1:
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 this->unk_1C2 = 2;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfKneelVulnerableAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfKneelVulnerableAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfDownedAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfDownedAnim, 0.0f);
             }
             break;
 
@@ -2574,8 +2575,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
                 this->actor.world.pos.y = 40.0f;
                 this->actor.velocity.y = 0.0f;
                 this->unk_1C2 = 3;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfLandAnim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfLandAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfLandAnim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfLandAnim, 0.0f);
                 this->timers[0] = 70;
                 this->actor.flags |= ACTOR_FLAG_10;
             }
@@ -2588,8 +2589,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 this->unk_1C2 = 4;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfVulnerableAnim);
-                Animation_MorphToLoop(&this->skelAnime, &gDorfVulnerableAnim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfVulnerableAnim);
+                Animation_MorphToLoop(&this->skelAnime, &gGanondorfVulnerableAnim, 0.0f);
             }
             break;
 
@@ -2600,8 +2601,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
 
             if (this->timers[0] == 0) {
                 this->unk_1C2 = 5;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfGetUp1Anim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp1Anim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfGetUp1Anim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp1Anim, 0.0f);
                 this->unk_2D4 = 80;
 
                 for (i = 1; i < 15; i++) {
@@ -2619,8 +2620,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
 
             if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
                 this->unk_1C2 = 6;
-                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfGetUp2Anim);
-                Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp2Anim, 0.0f);
+                this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfGetUp2Anim);
+                Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp2Anim, 0.0f);
                 sBossGanonCape->minDist = 20.0f;
                 this->unk_19F = 1;
             }
@@ -2638,8 +2639,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
         case 7:
             this->envLightMode = 0;
             Math_ApproachF(&this->actor.world.pos.y, 150.0f, 0.05f, 30.0f);
-            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfGetUp3Anim);
-            Animation_MorphToPlayOnce(&this->skelAnime, &gDorfGetUp3Anim, 0.0f);
+            this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfGetUp3Anim);
+            Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfGetUp3Anim, 0.0f);
             this->unk_1C2 = 8;
             SkelAnime_Update(&this->skelAnime);
             sBossGanonCape->attachShouldersTimer = 18.0f;
@@ -2672,8 +2673,8 @@ void BossGanon_Vulnerable(BossGanon* this, GlobalContext* globalCtx) {
 
 void BossGanon_SetupDamaged(BossGanon* this, GlobalContext* globalCtx) {
     BossGanon_SetAnimationObject(this, globalCtx, OBJECT_GANON_ANIME1);
-    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfDamageAnim);
-    Animation_MorphToPlayOnce(&this->skelAnime, &gDorfDamageAnim, 0.0f);
+    this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfDamageAnim);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfDamageAnim, 0.0f);
     this->actionFunc = BossGanon_Damaged;
 }
 
@@ -2690,8 +2691,8 @@ void BossGanon_Damaged(BossGanon* this, GlobalContext* globalCtx) {
     if (Animation_OnFrame(&this->skelAnime, this->fwork[GDF_FWORK_1])) {
         this->actionFunc = BossGanon_Vulnerable;
         this->unk_1C2 = 4;
-        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gDorfVulnerableAnim);
-        Animation_MorphToLoop(&this->skelAnime, &gDorfVulnerableAnim, 0.0f);
+        this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfVulnerableAnim);
+        Animation_MorphToLoop(&this->skelAnime, &gGanondorfVulnerableAnim, 0.0f);
     }
 }
 
@@ -3210,7 +3211,7 @@ s32 BossGanon_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
     switch (limbIndex) {
         case 10:
             if (this->useOpenHand) {
-                *dList = gDorfOpenHandDL;
+                *dList = gGanondorfRightHandOpenDL;
             }
             break;
 
@@ -3282,7 +3283,7 @@ void BossGanon_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         Matrix_MultVec3f(&D_808E4DB8, &this->unk_208);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfEyesDL));
 
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     } else if (limbIndex == 6) {
@@ -3363,7 +3364,7 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
         func_80093D84(globalCtx->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
         if (this->unk_2E8 != 0) {
             Player* player = GET_PLAYER(globalCtx);
@@ -3378,7 +3379,7 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
                 Matrix_RotateZ(Rand_CenteredFloat(M_PI), MTXMODE_APPLY);
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+                gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
                 
                 FrameInterpolation_RecordCloseChild();
             }
@@ -3403,9 +3404,9 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
                                                 (this->unk_1A2 + i) * -15, 32, 64));
                     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 255, 170, 255);
                     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 128);
-                    gSPDisplayList(POLY_XLU_DISP++, gDorfShockGlowDL);
+                    gSPDisplayList(POLY_XLU_DISP++, gGanondorfShockGlowDL);
                 } else {
-                    gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+                    gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
                 }
 
                 FrameInterpolation_RecordCloseChild();
@@ -3433,7 +3434,7 @@ void BossGanon_DrawHandLightBall(BossGanon* this, GlobalContext* globalCtx) {
             gDPSetEnvColor(POLY_XLU_DISP++, 100, 255, 0, 0);
         }
 
-        gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
         Matrix_Translate(this->unk_260.x, this->unk_260.y, this->unk_260.z, MTXMODE_NEW);
         Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
@@ -3441,7 +3442,7 @@ void BossGanon_DrawHandLightBall(BossGanon* this, GlobalContext* globalCtx) {
         Matrix_RotateZ(this->unk_258, 1);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
 
         alpha = ((this->unk_1A2 % 2) != 0) ? 100 : 80;
         gDPPipeSync(POLY_XLU_DISP++);
@@ -3450,7 +3451,7 @@ void BossGanon_DrawHandLightBall(BossGanon* this, GlobalContext* globalCtx) {
         Matrix_Scale(this->handLightBallScale * 0.75f, 1.0f, this->handLightBallScale * 0.75f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfLightCoreDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightCoreDL);
     }
 
     CLOSE_DISPS(gfxCtx);
@@ -3478,7 +3479,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
         Matrix_Scale(this->unk_28C, this->unk_28C, this->unk_28C, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfLightFlecksDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightFlecksDL);
 
         // background circle texture
         Matrix_Translate(this->unk_278.x, this->unk_278.y, this->unk_278.z, MTXMODE_NEW);
@@ -3490,19 +3491,19 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
         gSPSegment(
             POLY_XLU_DISP++, 0x09,
             Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 0x20, 0x20, 1, 0, this->unk_1A2 * -4, 0x20, 0x20));
-        gSPDisplayList(POLY_XLU_DISP++, gDorfBigMagicBGCircleDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfBigMagicBGCircleDL);
 
         // yellow background dot
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 170, 0, (s8)this->unk_288);
         gSPSegment(POLY_XLU_DISP++, 0x0A,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 0x20, 0x20, 1, this->unk_1A2 * 2,
                                     this->unk_1A2 * -0x14, 0x40, 0x40));
-        gSPDisplayList(POLY_XLU_DISP++, gDorfDotDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfDotDL);
 
         // light ball material
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 100, 0);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
         // light ball geometry
         Matrix_Translate(this->unk_278.x, this->unk_278.y, this->unk_278.z, MTXMODE_NEW);
@@ -3511,7 +3512,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
         Matrix_RotateZ((this->unk_1A2 * 10.0f) / 1000.0f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
 
         BossGanon_InitRand(this->unk_1AA + 1, 0x71AC, 0x263A);
         Matrix_Translate(this->unk_278.x, this->unk_278.y, this->unk_278.z, MTXMODE_NEW);
@@ -3534,7 +3535,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
             Matrix_Scale(4.0f, 4.0f, 1.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfLightRayTriDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightRayTriDL);
 
             Matrix_Pop();
 
@@ -3589,7 +3590,7 @@ void BossGanon_DrawTriforce(BossGanon* this, GlobalContext* globalCtx) {
         Matrix_Scale(this->fwork[GDF_TRIFORCE_SCALE], this->fwork[GDF_TRIFORCE_SCALE], 1.0f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gDorfTriforceDL));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfTriforceDL));
 
         Matrix_Pop();
 
@@ -3624,7 +3625,7 @@ void BossGanon_DrawDarkVortex(BossGanon* this, GlobalContext* globalCtx) {
                      MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gDorfVortexDL));
+        gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfVortexDL));
 
         Matrix_Pop();
 
@@ -3798,10 +3799,11 @@ void BossGanon_DrawShadowTexture(void* tex, BossGanon* this, GlobalContext* glob
     Matrix_Scale(0.95000005f, 1.0f, 0.95000005f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, gDorfShadowSetupDL);
+    gSPDisplayList(POLY_OPA_DISP++, gGanondorfShadowSetupDL);
     gDPLoadTextureBlock(POLY_OPA_DISP++, tex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
-    gSPDisplayList(POLY_OPA_DISP++, gDorfShadowModelDL);
+    gSPDisplayList(POLY_OPA_DISP++, gGanondorfShadowModelDL);
+    gSPInvalidateTexCache(POLY_OPA_DISP++, tex); // Shadow texture will change every frame, no use keeping it around
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -3815,6 +3817,12 @@ void BossGanon_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
+    // Invalidate textures if they have changed
+    if (this->windowShatterState != GDF_WINDOW_SHATTER_OFF) {
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_006C18);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_007418);
+    }
+
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -3822,7 +3830,7 @@ void BossGanon_Draw(Actor* thisx, GlobalContext* globalCtx) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 50, 0, 0, 900, 1099);
     }
 
-    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDorfEyeTex));
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfNormalEyeTex));
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           BossGanon_OverrideLimbDraw, BossGanon_PostLimbDraw, &this->actor);
@@ -4167,10 +4175,10 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Scale(this->actor.scale.x * 0.75f, 1.0f, this->actor.scale.z * 0.75f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_XLU_DISP++, gDorfLightCoreDL);
+    gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightCoreDL);
 
     Matrix_Pop();
-    gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+    gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[GDF_FWORK_1]);
@@ -4186,7 +4194,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
             Matrix_Pop();
 
             FrameInterpolation_RecordCloseChild();
@@ -4196,7 +4204,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateZ((this->actor.shape.rot.z / 32768.0f) * 3.1416f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -4309,7 +4317,7 @@ void func_808E229C(Actor* thisx, GlobalContext* globalCtx2) {
     func_80093D84(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
-    gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+    gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
     for (i = 9; i >= 0; i--) {
         temp = (s16)(((this->unk_1A6 - i) + 0xF) % 15);
@@ -4320,7 +4328,7 @@ void func_808E229C(Actor* thisx, GlobalContext* globalCtx2) {
         Matrix_RotateZ(((2.0f * (i * M_PI)) / 10.0f) + BINANG_TO_RAD(this->actor.shape.rot.z), MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+        gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -4573,9 +4581,9 @@ void func_808E2544(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 static Gfx* sBigMagicLightStreakDLists[] = {
-    gDorfLightStreak12DL, gDorfLightStreak11DL, gDorfLightStreak10DL, gDorfLightStreak9DL,
-    gDorfLightStreak8DL,  gDorfLightStreak7DL,  gDorfLightStreak6DL,  gDorfLightStreak5DL,
-    gDorfLightStreak4DL,  gDorfLightStreak3DL,  gDorfLightStreak2DL,  gDorfLightStreak1DL,
+    gGanondorfLightStreak12DL, gGanondorfLightStreak11DL, gGanondorfLightStreak10DL, gGanondorfLightStreak9DL,
+    gGanondorfLightStreak8DL,  gGanondorfLightStreak7DL,  gGanondorfLightStreak6DL,  gGanondorfLightStreak5DL,
+    gGanondorfLightStreak4DL,  gGanondorfLightStreak3DL,  gGanondorfLightStreak2DL,  gGanondorfLightStreak1DL,
 };
 
 void func_808E324C(Actor* thisx, GlobalContext* globalCtx) {
@@ -4612,9 +4620,9 @@ void func_808E324C(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_RotateZ(Rand_CenteredFloat(M_PI), MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+    gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
 
-    gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+    gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
@@ -4819,9 +4827,9 @@ void BossGanon_UpdateEffects(GlobalContext* globalCtx) {
 }
 
 static void* sLightningTextures[] = {
-    gDorfLightning1Tex,  gDorfLightning1Tex,  gDorfLightning2Tex,  gDorfLightning3Tex, gDorfLightning4Tex,
-    gDorfLightning5Tex,  gDorfLightning6Tex,  gDorfLightning7Tex,  gDorfLightning8Tex, gDorfLightning9Tex,
-    gDorfLightning10Tex, gDorfLightning11Tex, gDorfLightning12Tex,
+    gGanondorfLightning1Tex,  gGanondorfLightning1Tex,  gGanondorfLightning2Tex,  gGanondorfLightning3Tex, gGanondorfLightning4Tex,
+    gGanondorfLightning5Tex,  gGanondorfLightning6Tex,  gGanondorfLightning7Tex,  gGanondorfLightning8Tex, gGanondorfLightning9Tex,
+    gGanondorfLightning10Tex, gGanondorfLightning11Tex, gGanondorfLightning12Tex,
 };
 
 static u8 sLightningPrimColors[] = {
@@ -4851,7 +4859,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_OPA_DISP++);
             if (flag == 0) {
-                gSPDisplayList(POLY_OPA_DISP++, gDorfWindowShardMaterialDL);
+                gSPDisplayList(POLY_OPA_DISP++, gGanondorfWindowShardMaterialDL);
                 flag++;
             }
             if ((eff->timer & 7) != 0) {
@@ -4865,7 +4873,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateX(eff->unk_44, MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_OPA_DISP++, gDorfWindowShardModelDL);
+            gSPDisplayList(POLY_OPA_DISP++, gGanondorfWindowShardModelDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -4879,7 +4887,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             if (flag == 0) {
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
-                gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+                gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
                 flag++;
             }
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, eff->alpha);
@@ -4889,7 +4897,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateZ(eff->unk_3C, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -4903,7 +4911,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             if (flag == 0) {
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
-                gSPDisplayList(POLY_XLU_DISP++, gDorfLightBallMaterialDL);
+                gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
                 flag++;
             }
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, eff->alpha);
@@ -4915,7 +4923,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateX(M_PI / 2, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfSquareDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -4943,7 +4951,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateZ(eff->unk_3C, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfShockDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfShockDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -4967,7 +4975,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLightningTextures[eff->timer]));
-            gSPDisplayList(POLY_XLU_DISP++, gDorfLightningDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightningDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -4987,7 +4995,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Scale(eff->scale, eff->unk_40 * eff->scale, eff->scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfImpactDarkDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfImpactDarkDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -5007,7 +5015,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Scale(eff->scale, eff->unk_40 * eff->scale, eff->scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfImpactLightDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfImpactLightDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -5028,7 +5036,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
                          (eff->scale * 200.0f) / 1500.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfShockwaveDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfShockwaveDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -5049,7 +5057,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gDorfDotDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGanondorfDotDL);
             FrameInterpolation_RecordCloseChild();
         }
     }

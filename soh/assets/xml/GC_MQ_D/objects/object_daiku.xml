@@ -1,0 +1,60 @@
+<Root>
+    <File Name="object_daiku" Segment="6">
+        <Animation Name="object_daiku_Anim_000600" Offset="0x600"/>
+        <Animation Name="object_daiku_Anim_000C44" Offset="0xC44"/>
+        <Animation Name="object_daiku_Anim_001AB0" Offset="0x1AB0"/>
+        <Texture Name="object_daiku_TLUT_001AC0" OutName="tlut_00001AC0" Format="rgba16" Width="16" Height="16" Offset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001CC0" OutName="tex_00001CC0" Format="ci8" Width="8" Height="8" Offset="0x1CC0" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001D00" OutName="tex_00001D00" Format="ci8" Width="16" Height="16" Offset="0x1D00" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001E00" OutName="tex_00001E00" Format="rgba16" Width="4" Height="4" Offset="0x1E00"/>
+        <Texture Name="object_daiku_Tex_001E20" OutName="tex_00001E20" Format="ci8" Width="8" Height="16" Offset="0x1E20" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001EA0" OutName="tex_00001EA0" Format="ci8" Width="8" Height="8" Offset="0x1EA0" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001EE0" OutName="tex_00001EE0" Format="ci8" Width="16" Height="16" Offset="0x1EE0" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_001FE0" OutName="tex_00001FE0" Format="ci8" Width="8" Height="8" Offset="0x1FE0" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_002020" OutName="tex_00002020" Format="rgba16" Width="32" Height="32" Offset="0x2020"/>
+        <Texture Name="object_daiku_Tex_002820" OutName="tex_00002820" Format="ci8" Width="16" Height="16" Offset="0x2820" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_002920" OutName="tex_00002920" Format="ci8" Width="8" Height="8" Offset="0x2920" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_002960" OutName="tex_00002960" Format="ci8" Width="8" Height="8" Offset="0x2960" TlutOffset="0x1AC0"/>
+        <Texture Name="object_daiku_Tex_0029A0" OutName="tex_000029A0" Format="ci8" Width="8" Height="8" Offset="0x29A0" TlutOffset="0x1AC0"/>
+        <DList Name="object_daiku_DL_005490" Offset="0x5490"/>
+        <DList Name="object_daiku_DL_005880" Offset="0x5880"/>
+        <DList Name="object_daiku_DL_005990" Offset="0x5990"/>
+        <DList Name="object_daiku_DL_005AC0" Offset="0x5AC0"/>
+        <DList Name="object_daiku_DL_005BD0" Offset="0x5BD0"/>
+        <DList Name="object_daiku_DL_005CF0" Offset="0x5CF0"/>
+        <DList Name="object_daiku_DL_006210" Offset="0x6210"/>
+        <DList Name="object_daiku_DL_006520" Offset="0x6520"/>
+        <DList Name="object_daiku_DL_006650" Offset="0x6650"/>
+        <DList Name="object_daiku_DL_006780" Offset="0x6780"/>
+        <DList Name="object_daiku_DL_0068F0" Offset="0x68F0"/>
+        <DList Name="object_daiku_DL_006A20" Offset="0x6A20"/>
+        <DList Name="object_daiku_DL_006B50" Offset="0x6B50"/>
+        <DList Name="object_daiku_DL_006CC0" Offset="0x6CC0"/>
+        <DList Name="object_daiku_DL_006EB0" Offset="0x6EB0"/>
+        <DList Name="object_daiku_DL_007158" Offset="0x7158"/>
+        <DList Name="object_daiku_DL_007268" Offset="0x7268"/>
+        <DList Name="object_daiku_DL_007380" Offset="0x7380"/>
+        <DList Name="object_daiku_DL_007630" Offset="0x7630"/>
+        <DList Name="object_daiku_DL_007740" Offset="0x7740"/>
+        <Limb Name="object_daiku_Limb_007858" LimbType="Standard" Offset="0x7858"/>
+        <Limb Name="object_daiku_Limb_007864" LimbType="Standard" Offset="0x7864"/>
+        <Limb Name="object_daiku_Limb_007870" LimbType="Standard" Offset="0x7870"/>
+        <Limb Name="object_daiku_Limb_00787C" LimbType="Standard" Offset="0x787C"/>
+        <Limb Name="object_daiku_Limb_007888" LimbType="Standard" Offset="0x7888"/>
+        <Limb Name="object_daiku_Limb_007894" LimbType="Standard" Offset="0x7894"/>
+        <Limb Name="object_daiku_Limb_0078A0" LimbType="Standard" Offset="0x78A0"/>
+        <Limb Name="object_daiku_Limb_0078AC" LimbType="Standard" Offset="0x78AC"/>
+        <Limb Name="object_daiku_Limb_0078B8" LimbType="Standard" Offset="0x78B8"/>
+        <Limb Name="object_daiku_Limb_0078C4" LimbType="Standard" Offset="0x78C4"/>
+        <Limb Name="object_daiku_Limb_0078D0" LimbType="Standard" Offset="0x78D0"/>
+        <Limb Name="object_daiku_Limb_0078DC" LimbType="Standard" Offset="0x78DC"/>
+        <Limb Name="object_daiku_Limb_0078E8" LimbType="Standard" Offset="0x78E8"/>
+        <Limb Name="object_daiku_Limb_0078F4" LimbType="Standard" Offset="0x78F4"/>
+        <Limb Name="object_daiku_Limb_007900" LimbType="Standard" Offset="0x7900"/>
+        <Limb Name="object_daiku_Limb_00790C" LimbType="Standard" Offset="0x790C"/>
+        <Skeleton Name="object_daiku_Skel_007958" Type="Flex" LimbType="Standard" Offset="0x7958"/>
+        <Animation Name="object_daiku_Anim_007DE0" Offset="0x7DE0"/>
+        <Animation Name="object_daiku_Anim_008164" Offset="0x8164"/>
+        <Animation Name="object_daiku_Anim_00885C" Offset="0x885C"/>
+    </File>
+</Root>

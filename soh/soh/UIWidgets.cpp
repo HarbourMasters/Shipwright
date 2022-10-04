@@ -13,6 +13,7 @@
 #include <libultraship/Cvar.h>
 
 #include <ultra64/types.h>
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 namespace UIWidgets {
 
@@ -300,10 +301,11 @@ namespace UIWidgets {
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
         float val = CVar_GetFloat(cvarName, defaultValue);
 
-        if (!isPercentage)
+        if (!isPercentage) {
             ImGui::Text(text, val);
-        else
+        } else {
             ImGui::Text(text, static_cast<int>(100 * val));
+        }
 
         Spacer(0);
 
@@ -311,10 +313,11 @@ namespace UIWidgets {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
             if (ImGui::Button(MinusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val -= 0.1f;
-                else
+                } else {
                     val -= 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
@@ -322,15 +325,20 @@ namespace UIWidgets {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
         if (PlusMinusButton) {
-    #ifdef __WIIU__
+        #ifdef __SWITCH__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+        #elif defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
-    #else
+        #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-    #endif
+        #endif
         }
-        if (ImGui::SliderFloat(id, &val, min, max, format))
-        {
-            CVar_SetFloat(cvarName, val);
+        if (ImGui::SliderFloat(id, &val, min, max, format)) {
+            if (isPercentage) {
+                CVar_SetFloat(cvarName, roundf(val * 100) / 100);
+            } else {
+                CVar_SetFloat(cvarName, val);
+            }
             SohImGui::RequestCvarSaveOnNextTick();
         }
         if (PlusMinusButton) {
@@ -342,24 +350,23 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val += 0.1f;
-                else
+                } else {
                     val += 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
         }
 
-        if (val < min)
-        {
+        if (val < min) {
             val = min;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
 
-        if (val > max)
-        {
+        if (val > max) {
             val = max;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -436,15 +443,16 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            s16 RND_R = rand() % (255 - 0);
-            s16 RND_G = rand() % (255 - 0);
-            s16 RND_B = rand() % (255 - 0);
-            colors->x = (float)RND_R / 255;
-            colors->y = (float)RND_G / 255;
-            colors->z = (float)RND_B / 255;
-            NewColors.r = fmin(fmax(colors->x, 0), 255);
-            NewColors.g = fmin(fmax(colors->y, 0), 255);
-            NewColors.b = fmin(fmax(colors->z, 0), 255);
+#if defined(__SWITCH__) || defined(__WIIU__)
+            srand(time(NULL));
+#endif
+            ImVec4 color = GetRandomValue(255);
+            colors->x = color.x;
+            colors->y = color.y;
+            colors->z = color.z;
+            NewColors.r = fmin(fmax(colors->x * 255, 0), 255);
+            NewColors.g = fmin(fmax(colors->y * 255, 0), 255);
+            NewColors.b = fmin(fmax(colors->z * 255, 0), 255);
             CVar_SetRGBA(cvarName, NewColors);
             CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
             SohImGui::RequestCvarSaveOnNextTick();

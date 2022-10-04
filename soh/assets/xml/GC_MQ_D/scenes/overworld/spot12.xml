@@ -1,0 +1,15 @@
+<Root>
+    <File Name="spot12_scene" Segment="2">
+        <Cutscene Name="gGerudoFortressFirstCaptureCs" Offset="0x55C0"/>
+        <Cutscene Name="gGerudoFortressIntroCs" Offset="0x6490"/>
+        <Texture Name="gSpot12_009678Tex" Format="rgba16" Width="64" Height="32" Offset="0x9678"/>
+        <Texture Name="gSpot12_00DE78Tex" Format="rgba16" Width="64" Height="32" Offset="0xDE78"/>
+        <Scene Name="spot12_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot12_room_0" Segment="3">
+        <Room Name="spot12_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot12_room_1" Segment="3">
+        <Room Name="spot12_room_1" Offset="0x0"/>
+    </File>
+</Root>

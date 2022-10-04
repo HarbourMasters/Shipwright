@@ -117,11 +117,13 @@ void func_80A90264(EnKakasi2* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     this->unk_194++;
+    
+    bool skipScarecrow = globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
+                            ((CVar_GetS32("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
+                            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 
-    if (((BREG(1) != 0) || ((CVar_GetS32("gSkipScarecrow", 0) != 0) && 
-            (globalCtx->msgCtx.ocarinaAction == OCARINA_ACTION_FREE_PLAY) && gSaveContext.scarecrowSpawnSongSet)) &&
-            (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
-            (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)){
+    if ((BREG(1) != 0) || skipScarecrow && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+        (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(globalCtx, &this->collider);
         Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);

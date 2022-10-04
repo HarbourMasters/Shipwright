@@ -14,10 +14,10 @@ while [[ ! -e "$SHIP_HOME"/oot.otr ]]; do
 	ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
 	export OLDPWD="$PWD"
 	mkdir -p "$ASSETDIR"/tmp
-	mkdir -p "$ASSETDIR"/Extract/assets
+	mkdir -p "$ASSETDIR"/Extract
 	if [ -e "$SHIP_HOME"/*.*64 ]; then
 		ln -s "$SHIP_HOME"/*.*64 "$ASSETDIR"/tmp/rom.z64
-		cp -r "$ASSETDIR"/assets/game/ship_of_harkinian "$ASSETDIR"/Extract/assets/
+		cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets
 		cd "$ASSETDIR"
 		ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
 		case "$ROMHASH" in
@@ -25,6 +25,10 @@ while [[ ! -e "$SHIP_HOME"/oot.otr ]]; do
 			ROM=GC_NMQ_D;;
 		0227d7c0074f2d0ac935631990da8ec5914597b4)
 			ROM=GC_NMQ_PAL_F;;
+		50bebedad9e0f10746a52b07239e47fa6c284d03)
+			ROM=GC_MQ_D;;
+		079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+			ROM=GC_MQ_D;;	
 		*)
   			if [ -n "$ZENITY" ]; then
 				zenity --error --timeout=10 --text="ROM hash <b>$ROMHASH</b> does not match" --title="Incorrect ROM file" --width=500 --width=200

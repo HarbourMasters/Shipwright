@@ -10,6 +10,8 @@
 #include <libultraship/PlayerAnimation.h>
 #include <libultraship/Skeleton.h>
 #include <libultraship/Window.h>
+#include <libultraship/GameVersions.h>
+
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
@@ -33,6 +35,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
@@ -62,6 +65,11 @@
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "GameMenuBar.hpp"
+
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+CrowdControl* CrowdControl::Instance;
+#endif
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -164,7 +172,7 @@ extern "C" void OTRAudio_Exit() {
 }
 
 extern "C" void VanillaItemTable_Init() {
-    GetItemEntry getItemTable[] = {
+    static GetItemEntry getItemTable[] = {
         GET_ITEM(ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBS_5),
         GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, MOD_NONE, GI_NUTS_5),
         GET_ITEM(ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, MOD_NONE, GI_BOMBCHUS_10),
@@ -348,6 +356,11 @@ extern "C" void InitOTR() {
     InitItemTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    CrowdControl::Instance->InitCrowdControl();
+#endif
 }
 
 extern "C" void DeinitOTR() {
@@ -534,6 +547,34 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
 extern "C" uint32_t ResourceMgr_GetGameVersion()
 {
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
+}
+
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
+    uint32_t version = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
+
+    switch (version) {
+        case OOT_PAL_MQ:
+        case OOT_NTSC_JP_MQ:
+        case OOT_NTSC_US_MQ:
+        case OOT_PAL_GC_MQ_DBG:
+            return 1;
+        case OOT_NTSC_10:
+        case OOT_NTSC_11:
+        case OOT_NTSC_12:
+        case OOT_PAL_10:
+        case OOT_PAL_11:
+        case OOT_NTSC_JP_GC_CE:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_US_GC:
+        case OOT_PAL_GC:
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+            return 0;
+        default:
+            SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
+            return 0;
+
+    }
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
@@ -1549,6 +1590,18 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     return 0;
 }
 
+extern "C" void Controller_BlockGameInput() {
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+
+    controlDeck->BlockGameInput();
+}
+
+extern "C" void Controller_UnblockGameInput() {
+    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+
+    controlDeck->UnblockGameInput();
+}
+
 extern "C" void Hooks_ExecuteAudioInit() {
     Ship::ExecuteHooks<Ship::AudioInit>();
 }
@@ -1566,8 +1619,20 @@ extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
+extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages(spoilerFileName);
+}
+
+extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
@@ -1578,22 +1643,26 @@ extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }
 
-extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
-    int price = 0;
-    switch (scrubTextId) {
-        case TEXT_SCRUB_POH:
-            price = 10;
-            break;
-        case TEXT_SCRUB_STICK_UPGRADE:
-        case TEXT_SCRUB_NUT_UPGRADE:
-            price = 40;
-            break;
-    }
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
+}
+
+extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
+    u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetIceTrapMessage() {
+    u16 iceTrapTextId = rand() % NUM_ICE_TRAP_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
@@ -1626,39 +1695,29 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
 }
 
-extern "C" GetItemEntry Randomizer_GetRandomizedItem(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(
-            OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams))) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
+}
+
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
+}
+
+extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+    return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
+}
+
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
+    s16 giid;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        giid = player->getItemEntry.getItemId;
     } else {
-        getItemModIndex = MOD_RANDOMIZER;
+        giid = player->getItemId;
     }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
-}
-
-extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
-    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
-         Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
-}
-
-extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    return gSaveContext.n64ddFlag && Randomizer_GetItemFromKnownCheck(randomizerCheck, ogId).getItemId == RG_ICE_TRAP;
-}
-
-extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
     const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
@@ -1672,8 +1731,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            messageEntry =
-                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+            Player* player = GET_PLAYER(globalCtx);
+            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+                messageEntry = Randomizer_GetIceTrapMessage();
+            } else {
+                messageEntry = Randomizer_GetCustomGetItemMessage(player);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
@@ -1699,7 +1762,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
 
             RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, globalCtx->sceneNum, actorParams);
 
             messageEntry = Randomizer_GetHintFromCheck(hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
@@ -1711,13 +1774,37 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_GetGanonHintText();
             }
-        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
-            messageEntry = Randomizer_GetScrubMessage(textId);
+        // Business Scrub textID is TEXT_SCRUB_RANDOM + their price, anywhere from 0-95
+        } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + 95) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+        // Shop items each have two message entries
+        } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId <= TEXT_SHOP_ITEM_RANDOM + (NUM_SHOP_ITEMS * 2)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
+                   textId == TEXT_HUGE_RUPEE)) {
+            messageEntry = Randomizer::GetRupeeMessage(textId);
+            // In rando, replace Navi's general overworld hints with rando-related gameplay tips
+        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+            messageEntry = Randomizer_GetNaviMessage();
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
+        } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+                   (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
+            // The freeze text cannot be manually dismissed and must be auto-dismissed.
+            // This is fine and even wanted when skull tokens are not shuffled, but when
+            // when they are shuffled we don't want to be able to manually dismiss the box.
+            // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
+            // animation until the text box auto-dismisses.
+            // RANDOTODO: Implement a way to determine if an item came from a skulltula and
+            // inject the auto-dismiss control code if it did.
+            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 &&
+                !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) > 0)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
@@ -1734,7 +1821,6 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =
@@ -1742,4 +1828,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         }
     }
     return false;
+}
+
+extern "C" void Overlay_DisplayText(float duration, const char* text) {
+    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }

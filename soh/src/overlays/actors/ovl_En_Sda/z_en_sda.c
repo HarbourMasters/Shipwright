@@ -358,6 +358,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
     gSPDisplayList(POLY_XLU_DISP++, D_80AFA3D8);
     gDPLoadTextureBlock(POLY_XLU_DISP++, shadowTexture, G_IM_FMT_I, G_IM_SIZ_8b, 0x40, 0x40, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
+    gSPInvalidateTexCache(POLY_XLU_DISP++, (uintptr_t)shadowTexture); // Don't remember this texture, it will only be used this frame.
     gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
 
     for (phi_s1 = 0; phi_s1 < KREG(78); phi_s1++) {

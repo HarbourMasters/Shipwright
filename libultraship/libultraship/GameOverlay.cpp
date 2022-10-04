@@ -220,9 +220,15 @@ namespace Ship {
 				const float duration = overlay->duration / overlay->fadeTime;
 
 				const ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, duration);
+			#ifdef __WIIU__
+				const float textWidth = this->GetStringWidth(overlay->value) * 2.0f;
+				const float textOffset = 40.0f * 2.0f;
+			#else
 				const float textWidth = this->GetStringWidth(overlay->value);
+				const float textOffset = 40.0f;
+			#endif
 
-				this->TextDraw(GetScreenWidth() - textWidth - 40, GetScreenHeight() - 40 - notY, true, color, text);
+				this->TextDraw(GetScreenWidth() - textWidth - textOffset, GetScreenHeight() - textOffset - notY, true, color, text);
 				notY += 30;
 				overlay->duration -= .05f;
 			}

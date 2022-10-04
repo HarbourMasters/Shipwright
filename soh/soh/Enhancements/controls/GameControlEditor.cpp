@@ -238,9 +238,9 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        DrawHelpIcon("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+        DrawHelpIcon("Allows for aiming with the right stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::PaddedEnhancementCheckbox("Auto-Center First Person View", "gAutoCenterView");
+        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gDisableAutoCenterView");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
     }
 
