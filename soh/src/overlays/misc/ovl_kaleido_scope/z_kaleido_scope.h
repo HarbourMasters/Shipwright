@@ -37,7 +37,7 @@ void PauseMapMark_Draw(GlobalContext* globalCtx);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
 
-bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx);
+bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx);
 void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot);
 
 #endif

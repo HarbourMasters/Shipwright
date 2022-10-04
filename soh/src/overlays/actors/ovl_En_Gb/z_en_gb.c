@@ -26,6 +26,8 @@ void func_80A2FC0C(EnGb* this, GlobalContext* globalCtx);
 
 void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx);
 void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx);
+// For enhancement "Item Use From Inventory"
+void ItemUseFromInventory_StopBottleFrameCount();
 
 const ActorInit En_Gb_InitVars = {
     ACTOR_EN_GB,
@@ -295,6 +297,11 @@ void func_80A2F83C(EnGb* this, GlobalContext* globalCtx) {
             case EXCH_ITEM_BIG_POE:
                 player->actor.textId = 0x70F7;
                 this->actionFunc = func_80A2FA50;
+                // If using a Big Poe from inventory, prevent C-Left from being restored too early
+                // (To prevent bottle duping and inventory overwrite)
+                if (ItemUseFromInventory_BottleWasUsed()) {
+                    ItemUseFromInventory_StopBottleFrameCount();
+                }
                 break;
         }
         return;

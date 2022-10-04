@@ -279,6 +279,10 @@ Gfx gCullFrontDList[] = {
     gsSPEndDisplayList(),
 };
 
+// For enhancement "Item Use From Inventory"
+bool ItemUseFromInventory_BottleWasUsed();
+void ItemUseFromInventory_RestoreCLeft();
+
 Vec3f* D_80160000;
 s32 sDListsLodOffset;
 Vec3f sGetItemRefPos;
@@ -423,9 +427,6 @@ void Player_SetEquipmentData(GlobalContext* globalCtx, Player* this) {
         Player_SetBootData(globalCtx, this);
     }
 }
-
-bool ItemUseFromInventory_BottleWasUsed();
-void ItemUseFromInventory_RestoreCLeft();
 
 void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s32 actionParam) {
     Inventory_UpdateBottleItem(globalCtx, item, this->heldItemButton);

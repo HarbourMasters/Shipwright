@@ -344,6 +344,7 @@ void func_80853148(GlobalContext* globalCtx, Actor* actor);
 void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot);
 void ItemUseFromInventory_RestoreCLeft();
 bool ItemUseFromInventory_BottleWasUsed();
+void ItemUseFromInventory_StopBottleFrameCount();
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -10465,28 +10466,33 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
-s32 inventorySingleUseItem, inventorySingleUsePrevCLeftItem = ITEM_NONE;
-u16 inventorySingleUseSlot, inventorySingleUsePrevCLeftSlot = SLOT_NONE;
-bool itemWasUsedFromInventoryScreen = false;
-bool bottleWasUsedFromInventoryScreen = false;
+// Vars for "Item Use From Inventory" enhancement
+s32 inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
+u16 inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
+bool itemWasUsedFromInventory = false;
+bool bottleWasUsedFromInventory = false;
 bool usingItemFromInventory = false;
-s16 singleUseBottleFrameCount = 0;
+s16 usedBottleFrameCount = 0;
 
 void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot) {
-    inventorySingleUseItem = item;
-    inventorySingleUseSlot = slot;
-    itemWasUsedFromInventoryScreen = true;
+    inventoryUsedItem = item;
+    inventoryUsedSlot = slot;
+    itemWasUsedFromInventory = true;
 }
 
 void ItemUseFromInventory_RestoreCLeft() {
-    gSaveContext.equips.buttonItems[1] = inventorySingleUsePrevCLeftItem;
-    gSaveContext.equips.cButtonSlots[0] = inventorySingleUsePrevCLeftSlot;
-    bottleWasUsedFromInventoryScreen = false;
-    singleUseBottleFrameCount = 0;
+    gSaveContext.equips.buttonItems[1] = inventoryPrevCLeftItem;
+    gSaveContext.equips.cButtonSlots[0] = inventoryPrevCLeftSlot;
+    bottleWasUsedFromInventory = false;
+    ItemUseFromInventory_StopBottleFrameCount();
+}
+
+void ItemUseFromInventory_StopBottleFrameCount() {
+    usedBottleFrameCount = 0;
 }
 
 bool ItemUseFromInventory_BottleWasUsed() {
-    return bottleWasUsedFromInventoryScreen;
+    return bottleWasUsedFromInventory;
 }
 
 void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
@@ -10529,37 +10535,42 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     func_808473D4(globalCtx, this);
     func_80836BEC(this, globalCtx);
 
-    // If a single-use item was used from the inventory screen, perform its action
+    // If an item was used from the inventory screen, perform its action
     if (usingItemFromInventory) {
         usingItemFromInventory = false;
-        this->heldItemButton = 1; // C-Left
-        if (inventorySingleUseSlot >= SLOT_BOTTLE_1 && inventorySingleUseSlot <= SLOT_BOTTLE_4) {
-            bottleWasUsedFromInventoryScreen = true;
+
+        if (inventoryUsedSlot >= SLOT_BOTTLE_1 && inventoryUsedSlot <= SLOT_BOTTLE_4) {
+            bottleWasUsedFromInventory = true;
             // Borrow C-Left when using bottles to prevent bottle duping or overwriting other items
-            inventorySingleUsePrevCLeftItem = gSaveContext.equips.buttonItems[1];
-            inventorySingleUsePrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
-            gSaveContext.equips.buttonItems[1] = inventorySingleUseItem;
-            gSaveContext.equips.cButtonSlots[0] = inventorySingleUseSlot;
-            // Start counting frames so we don't restore the original C-Left item too early
-            if (inventorySingleUseItem == ITEM_BOTTLE || inventorySingleUseItem == ITEM_BIG_POE ||
-                inventorySingleUseItem == ITEM_LETTER_RUTO) {
-                singleUseBottleFrameCount = 1;
+            this->heldItemButton = 1; // C-Left
+            inventoryPrevCLeftItem = gSaveContext.equips.buttonItems[1];
+            inventoryPrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
+            gSaveContext.equips.buttonItems[1] = inventoryUsedItem;
+            gSaveContext.equips.cButtonSlots[0] = inventoryUsedSlot;
+            // If Link swings an empty bottle or holds out a Big Poe Bottle or Ruto's Letter,
+            // start counting frames to prevent the original C-Left equip from being restored too soon
+            if (inventoryUsedItem == ITEM_BOTTLE || inventoryUsedItem == ITEM_BIG_POE || 
+                inventoryUsedItem == ITEM_LETTER_RUTO) {
+                usedBottleFrameCount = 1;
             }
         }
-        func_80835F44(globalCtx, this, inventorySingleUseItem);
+        func_80835F44(globalCtx, this, inventoryUsedItem);
     }
     
-    // Single-use items from inventory: Restore the original C-Left equip after 14 frames
-    if (singleUseBottleFrameCount > 0) {
-        singleUseBottleFrameCount++;
-        if (singleUseBottleFrameCount >= 14) {
+    // Item use from inventory: Restore the original C-Left equip after 14 frames
+    if (usedBottleFrameCount > 0) {
+        usedBottleFrameCount++;
+        if (usedBottleFrameCount >= 14) {
             ItemUseFromInventory_RestoreCLeft();
         }
     }
 
-    if (itemWasUsedFromInventoryScreen && CVar_GetS32("gItemUseFromInventory", 0)) {
+    // Item use from inventory: If an item was used from inventory, update these bools so that
+    // the item's action is performed on the next call of "Player_UpdateCommon".
+    // This one cycle delay is needed for showing items to NPCs (i.e. bottles/trade items)
+    if (itemWasUsedFromInventory && CVar_GetS32("gItemUseFromInventory", 0)) {
        usingItemFromInventory = true;
-       itemWasUsedFromInventoryScreen = false;
+       itemWasUsedFromInventory = false;
     }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {

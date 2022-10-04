@@ -84,7 +84,7 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_ITEM] * 4, pauseCtx->itemVtx);
 }
 
-bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx) {
+bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
 
@@ -125,13 +125,13 @@ bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx) {
             }
             return true;
         }
-        // For trade items, also make sure this item is not already equipped (to prevent accidental item duping)
-        if (interfaceCtx->restrictions.tradeItems == 0 && cursorSlot >= SLOT_TRADE_ADULT && cursorSlot <= SLOT_TRADE_CHILD) {
-            for (int i = 0; i <= 7; i++) {
-                if (gSaveContext.equips.cButtonSlots[i] == cursorSlot) {
-                    return false;
-                }
-            }
+
+        // For trade items, make sure we are not conflicting with selectable adult trade items in rando
+        // and make sure we aren't on a mask (Link can't wear a mask without it being equipped to a C button)
+        if (interfaceCtx->restrictions.tradeItems == 0 && 
+            (cursorSlot == SLOT_TRADE_ADULT && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) || 
+            (cursorSlot == SLOT_TRADE_CHILD && !(cursorItem >= ITEM_MASK_KEATON && cursorItem <= ITEM_MASK_TRUTH))) {
+
             return true;
         }
     }
@@ -410,8 +410,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     if (CVar_GetS32("gItemUseFromInventory", 0)){
                         // One-time use of certain items from Inventory Screen
-                        if (CHECK_BTN_ALL(input->press.button, BTN_A) &&
-                            KaleidoScope_IsValidItemForSingleUse(globalCtx)) {
+                        if (CHECK_BTN_ALL(input->press.button, BTN_A) && ItemUseFromInventory_IsValidItemForUse(globalCtx)) {
                             // Update these variables for use in z_player.c
                             ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot);
                             // Unpause
