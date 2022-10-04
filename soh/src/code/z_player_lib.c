@@ -424,6 +424,9 @@ void Player_SetEquipmentData(GlobalContext* globalCtx, Player* this) {
     }
 }
 
+bool SingleUseItem_BottleWasUsed();
+void SingleUseItem_RestoreCLeft();
+
 void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s32 actionParam) {
     Inventory_UpdateBottleItem(globalCtx, item, this->heldItemButton);
 
@@ -433,6 +436,12 @@ void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s
     }
 
     this->itemActionParam = actionParam;
+
+    // SINGLE-USE ITEMS FROM INVENTORY: If our bottle content is updated, restore the original 
+    // C-Left button item.
+    if (SingleUseItem_BottleWasUsed() && CVar_GetS32("gInventorySingleUseItems", 0)) {
+        SingleUseItem_RestoreCLeft();
+    }
 }
 
 void func_8008EDF0(Player* this) {

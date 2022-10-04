@@ -116,12 +116,27 @@ bool KaleidoScope_IsValidItemForSingleUse(GlobalContext* globalCtx) {
 
             return true;
         }
+        // For bottles, also make sure this bottle is not already equipped (to prevent accidental bottle duping)
+        if (interfaceCtx->restrictions.bottles == 0 && cursorSlot >= SLOT_BOTTLE_1 && cursorSlot <= SLOT_BOTTLE_4) {
+            for (int i = 0; i <= 7; i++) {
+                if (gSaveContext.equips.cButtonSlots[i] == cursorSlot) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        // For trade items, also make sure this item is not already equipped (to prevent accidental item duping)
+        if (interfaceCtx->restrictions.tradeItems == 0 && cursorSlot >= SLOT_TRADE_ADULT && cursorSlot <= SLOT_TRADE_CHILD) {
+            for (int i = 0; i <= 7; i++) {
+                if (gSaveContext.equips.cButtonSlots[i] == cursorSlot) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
     return false;
 }
-
-extern s32  inventorySingleUseItem = ITEM_NONE;
-extern bool itemWasUsedFromInventoryScreen = false;
 
 void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     static s16 magicArrowEffectsR[] = { 255, 100, 255 };
@@ -398,8 +413,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (CHECK_BTN_ALL(input->press.button, BTN_A) &&
                             KaleidoScope_IsValidItemForSingleUse(globalCtx)) {
                             // Update these variables for use in z_player.c
-                            inventorySingleUseItem = cursorItem;
-                            itemWasUsedFromInventoryScreen = true;
+                            SingleUseItem_SetItemAndSlot(cursorItem, cursorSlot);
                             // Unpause
                             Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                             pauseCtx->state = 0x12;

@@ -340,6 +340,10 @@ void func_80853080(Player* this, GlobalContext* globalCtx);
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
 s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
+// For Single-use Items from inventory
+void SingleUseItem_SetItemAndSlot(s32 item, u16 slot);
+void SingleUseItem_RestoreCLeft();
+bool SingleUseItem_BottleWasUsed();
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -10461,8 +10465,29 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
-extern s32 inventorySingleUseItem = ITEM_NONE;
-extern bool itemWasUsedFromInventoryScreen = false;
+s32 inventorySingleUseItem, inventorySingleUsePrevCLeftItem = ITEM_NONE;
+u16 inventorySingleUseSlot, inventorySingleUsePrevCLeftSlot = SLOT_NONE;
+bool itemWasUsedFromInventoryScreen = false;
+bool bottleWasUsedFromInventoryScreen = false;
+bool usingItemFromInventory = false;
+s16 singleUseBottleFrameCount = 0;
+
+void SingleUseItem_SetItemAndSlot(s32 item, u16 slot) {
+    inventorySingleUseItem = item;
+    inventorySingleUseSlot = slot;
+    itemWasUsedFromInventoryScreen = true;
+}
+
+void SingleUseItem_RestoreCLeft() {
+    gSaveContext.equips.buttonItems[1] = inventorySingleUsePrevCLeftItem;
+    gSaveContext.equips.cButtonSlots[0] = inventorySingleUsePrevCLeftSlot;
+    bottleWasUsedFromInventoryScreen = false;
+    singleUseBottleFrameCount = 0;
+}
+
+bool SingleUseItem_BottleWasUsed() {
+    return bottleWasUsedFromInventoryScreen;
+}
 
 void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     s32 pad;
@@ -10505,10 +10530,37 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     func_80836BEC(this, globalCtx);
 
     // If a single-use item was used from the inventory screen, perform its action
-    if (itemWasUsedFromInventoryScreen && CVar_GetS32("gInventorySingleUseItems", 0)) {
+    if (usingItemFromInventory) {
+        usingItemFromInventory = false;
+        this->heldItemButton = 1; // C-Left
+        if (inventorySingleUseSlot >= SLOT_BOTTLE_1 && inventorySingleUseSlot <= SLOT_BOTTLE_4) {
+            bottleWasUsedFromInventoryScreen = true;
+            // Borrow C-Left when using bottles to prevent bottle duping or overwriting other items
+            inventorySingleUsePrevCLeftItem = gSaveContext.equips.buttonItems[1];
+            inventorySingleUsePrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
+            gSaveContext.equips.buttonItems[1] = inventorySingleUseItem;
+            gSaveContext.equips.cButtonSlots[0] = inventorySingleUseSlot;
+            // Start counting frames so we don't restore the original C-Left item too early
+            if (inventorySingleUseItem == ITEM_BOTTLE || inventorySingleUseItem == ITEM_BIG_POE ||
+                inventorySingleUseItem == ITEM_LETTER_RUTO) {
+                singleUseBottleFrameCount = 1;
+            }
+        }
         func_80835F44(globalCtx, this, inventorySingleUseItem);
-        itemWasUsedFromInventoryScreen = false;
     }
+    
+    // Single-use items from inventory: Restore the original C-Left equip after 14 frames
+    if (singleUseBottleFrameCount > 0) {
+        singleUseBottleFrameCount++;
+        if (singleUseBottleFrameCount >= 14) {
+            SingleUseItem_RestoreCLeft();
+        }
+    }
+
+     if (itemWasUsedFromInventoryScreen && CVar_GetS32("gInventorySingleUseItems", 0)) {
+        usingItemFromInventory = true;
+        itemWasUsedFromInventoryScreen = false;
+     }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
         func_80848A04(globalCtx, this);
