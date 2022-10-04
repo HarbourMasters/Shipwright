@@ -1493,8 +1493,11 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
-        } else { //This situation should only really apply in rando where adult has never been child before
-            if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+        } else if (gSaveContext.n64ddFlag) {
+            /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
+            will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
+            (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items)*/
+            if (1 << 0 & gSaveContext.inventory.equipment == 0) {
                 gSaveContext.infTable[29] |= 1;
             }
 
@@ -1505,8 +1508,8 @@ void Inventory_SwapAgeEquipment(void) {
                     gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
                 }
             }
-        }
             gSaveContext.equips.equipment = 0x1111;
+        }
     }
 
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;

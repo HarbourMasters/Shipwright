@@ -548,12 +548,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_STARTING_AGE:
-                        if(it.value() == "Adult") {
+                        if(it.value() == "Child") {
                             gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "Child") {
+                        } else if (it.value() == "Adult") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_GERUDO_FORTRESS:
@@ -3614,8 +3612,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
     //Starting Age is forced to child if forest setting is set to closed. (0 = Adult, 1 = Child)
-    cvarSettings[RSK_STARTING_AGE] = ((CVar_GetS32("gRandomizeForest", 0) != 0) && 
-                                        (CVar_GetS32("gRandomizeStartingAge", 1)));
+    cvarSettings[RSK_STARTING_AGE] = ((CVar_GetS32("gRandomizeForest", 0)) && 
+                                        (CVar_GetS32("gRandomizeStartingAge", 0)));
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
@@ -3737,7 +3735,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
 
     // World Settings
-    const char* randoStartingAge[3] = { "Adult", "Child", "Random" };
+    const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
     const char* randoShuffleEntrances[2] = { "Off", "On" };
     const char* randoShuffleDungeonsEntrances[2] = { "Off", "On" };
     const char* randoShuffleOverworldEntrances[2] = { "Off", "On" };
@@ -3904,27 +3902,28 @@ void DrawRandoEditor(bool& open) {
                 //Starting Age
                 //Disabled when Forest is set to Closed
                 bool disableRandoStartingAge = !CVar_GetS32("gRandomizeForest", 0);
-                const char* disableRandoStartingAgeText = "This option is disabled because \"Forest\" is set to \"Closed\"";
+                const char* disableRandoStartingAgeText = "This option is disabled because \"Forest\" is set to \"Closed\".";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
-                if (!disableRandoStartingAge) {
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
                     "Starting as adult means you start with the Master Sword in your inventory.\n"
                     "Only the child option is compatible with Closed Forest."    
                 );
-                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
-                }
-                else {
+               if (disableRandoStartingAge) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disableRandoStartingAgeText, "") != 0) {
+                }    
+                UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
+                //    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                //    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                if (disableRandoStartingAge) {
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
                     }
                     CVar_SetS32("gRandomizeStartingAge", 1);
-                    UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 1);
                     ImGui::PopStyleVar(1);
                     ImGui::PopItemFlag();
-                }
+                }                
                 
                 UIWidgets::PaddedSeparator();
 
