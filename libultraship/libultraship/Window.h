@@ -50,6 +50,7 @@ namespace Ship {
 			const char* GetKeyName(int32_t scancode);
 			int32_t GetLastScancode();
 			void SetLastScancode(int32_t scanCode);
+            void MoveCursor(int32_t x, int32_t y);
 
 		protected:
 			Window() = default;

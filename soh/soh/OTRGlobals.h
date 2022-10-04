@@ -80,6 +80,7 @@ uint64_t osGetTime(void);
 uint32_t osGetCount(void);
 uint32_t OTRGetCurrentWidth(void);
 uint32_t OTRGetCurrentHeight(void);
+void OTRMoveCursor(uint32_t x, uint32_t y); //(RR) for shield
 float OTRGetAspectRatio(void);
 float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);

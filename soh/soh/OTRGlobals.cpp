@@ -1519,6 +1519,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
+extern "C" void OTRMoveCursor(uint32_t x, uint32_t y) {
+    Ship::Window::GetInstance()->MoveCursor(x, y);
+}
+
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
