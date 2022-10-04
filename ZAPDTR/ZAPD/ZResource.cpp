@@ -342,12 +342,29 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		else if (StringHelper::Contains(xmlPath, "text/"))
 			prefix = "text";
 
-		if (prefix != "")
-			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+		if (prefix != "") {
+            if (prefix == "scenes") {
+				str += StringHelper::Sprintf("#define d%s \"__OTR__%s/nonmq/%s/%s\"\n", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+				str += StringHelper::Sprintf("#define dMQ%s \"__OTR__%s/mq/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			} else {
+			    str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+            }
+        }
 		else
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
 		if (nameSet && nameSet->find(name) == nameSet->end()) {
+            if (prefix == "scenes") {
+				str += StringHelper::Sprintf(R"(
+#ifdef _WIN32
+static const __declspec(align(2)) char %s[] = d%s;
+static const __declspec(align(2)) char MQ%s[] = dMQ%s;
+#else
+static const char %s[] __attribute__((aligned (2))) = d%s;
+static const char MQ%s[] __attribute__((aligned(2))) = dMQ%s;
+#endif
+			)", name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str());
+        } else {
 			str += StringHelper::Sprintf(R"(
 #ifdef _WIN32
 static const __declspec(align(2)) char %s[] = d%s;
@@ -355,9 +372,13 @@ static const __declspec(align(2)) char %s[] = d%s;
 static const char %s[] __attribute__((aligned (2))) = d%s;
 #endif
 			)", name.c_str(), name.c_str(), name.c_str(), name.c_str());
+        }
 
 			if (nameSet) {
 				nameSet->insert(name);
+                if (prefix == "scenes") {
+                    nameSet->insert("MQ" + name);
+                }
 			}
 		}
 

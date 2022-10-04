@@ -882,8 +882,16 @@ std::string OTRExporter_DisplayList::GetPrefix(ZResource* res)
 	std::string prefix = "";
 	std::string xmlPath = StringHelper::Replace(res->parent->GetXmlFilePath().string(), "\\", "/");
 
-	if (StringHelper::Contains(oName, "_scene") || StringHelper::Contains(oName, "_room"))
+	if (StringHelper::Contains(oName, "_scene") || StringHelper::Contains(oName, "_room")) {
 		prefix = "scenes";
+        if (Globals::Instance->rom->IsMQ()) {
+            printf("MQ\n");
+            prefix += "/mq";
+        } else {
+            printf("Not MQ\n");
+            prefix += "/nonmq";
+        }
+    }
 	else if (StringHelper::Contains(xmlPath, "objects/"))
 		prefix = "objects";
 	else if (StringHelper::Contains(xmlPath, "textures/"))

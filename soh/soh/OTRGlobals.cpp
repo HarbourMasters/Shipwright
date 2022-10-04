@@ -608,6 +608,17 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
 }
 
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
+    std::string Path = path;
+    if (ResourceMgr_IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
+}
+
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
     return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->buffer.get();
 }
@@ -673,14 +684,22 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
+    auto res = ResourceMgr_LoadResource(filePath);
 
     if (res->resType == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->instructions[0]);
     else if (res->resType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
-    else
-        return ResourceMgr_LoadTexByName(filePath);
+    else {
+        std::string Path = filePath;
+        if (ResourceMgr_IsGameMasterQuest()) {
+            size_t pos = 0;
+            if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+                Path.replace(pos, 7, "/mq/");
+            }
+        }
+        return ResourceMgr_LoadTexByName(Path.c_str());
+    }
 }
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
@@ -688,36 +707,32 @@ extern "C" Sprite* GetSeedTexture(uint8_t index) {
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
-    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
+    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(ResourceMgr_LoadResource(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::DisplayList>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
     return (Gfx*)&res->instructions[0];
 }
 
 extern "C" Gfx* ResourceMgr_PatchGfxByName(const char* path, int size) {
-    auto res = std::static_pointer_cast<Ship::DisplayList>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
     res->instructions.resize(res->instructions.size() + size);
     return (Gfx*)&res->instructions[0];
 }
 
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
     return (char*)res->scalars.data();
 }
 
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
-    auto res =
-        std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (char*)res->cachedGameAsset;
@@ -739,7 +754,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 {
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(path));
 
     if (colRes->cachedGameAsset != nullptr)
         return (CollisionHeader*)colRes->cachedGameAsset;
@@ -833,8 +848,8 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 {
-	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
-	return (Vtx*)res->vertices.data();
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
+    return (Vtx*)res->vertices.data();
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
@@ -928,8 +943,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     if (cSample != nullptr)
         return cSample;
 
-    auto sample = std::static_pointer_cast<Ship::AudioSample>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto sample = std::static_pointer_cast<Ship::AudioSample>(ResourceMgr_LoadResource(path));
 
     if (sample == nullptr)
         return NULL;
@@ -975,8 +989,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    auto soundFont =
-        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto soundFont = std::static_pointer_cast<Ship::AudioSoundFont>(ResourceMgr_LoadResource(path));
 
     if (soundFont == nullptr)
         return NULL;
@@ -1119,8 +1132,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Animation>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Animation>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (AnimationHeaderCommon*)res->cachedGameAsset;
@@ -1188,7 +1200,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Skeleton>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Skeleton>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (SkeletonHeader*)res->cachedGameAsset;
@@ -1221,8 +1233,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 
     for (size_t i = 0; i < res->limbTable.size(); i++) {
         std::string limbStr = res->limbTable[i];
-        auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(
-            OTRGlobals::Instance->context->GetResourceManager()->LoadResource(limbStr.c_str()));
+        auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(ResourceMgr_LoadResource(limbStr.c_str()));
 
         if (limb->limbType == Ship::LimbType::LOD) {
             LodLimb* limbC = (LodLimb*)malloc(sizeof(LodLimb));
@@ -1376,7 +1387,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Cutscene>(ResourceMgr_LoadResource(path));
     return (s32*)res->commands.data();
 }
 
