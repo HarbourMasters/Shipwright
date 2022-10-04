@@ -81,7 +81,6 @@ enum class EntranceType {
 class Entrance {
 public:
 
-
     Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
         : connectedRegion(connectedRegion_) {
         conditions_met.resize(2);
@@ -320,8 +319,6 @@ private:
 int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
 EntranceTrackingData* GetEntranceTrackingData();
-
-
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
 extern bool noRandomEntrances;

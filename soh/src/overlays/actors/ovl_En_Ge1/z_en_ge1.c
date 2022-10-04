@@ -211,11 +211,9 @@ void EnGe1_MoveForRandomizer(EnGe1* this, GlobalContext* globalCtx) {
         this->actor.world.pos.x = -1224.0f;
         this->actor.world.pos.z = -3160.0f;
         this->actor.world.pos.y = 93.291f;
-        this->actor.shape.rot.y = -23120.0f;
-        
+        this->actor.shape.rot.y = -23120.0f; 
     }
 }
-
 
 void EnGe1_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     EnGe1* this = (EnGe1*)thisx;
@@ -660,6 +658,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     Actor* horse;
     gSaveContext.isHorseEvent = 1;
+
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(globalCtx)) {
         this->actor.flags &= ~ACTOR_FLAG_16;
 

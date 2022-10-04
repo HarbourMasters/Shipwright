@@ -1859,7 +1859,6 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
-
     OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
 }
 
@@ -2100,6 +2099,7 @@ void Gameplay_SaveSceneFlags(GlobalContext* globalCtx) {
 void Gameplay_SetRespawnData(GlobalContext* globalCtx, s32 respawnMode, s16 entranceIndex, s32 roomIndex,
                              s32 playerParams, Vec3f* pos, s16 yaw) {
     RespawnData* respawnData = &gSaveContext.respawn[respawnMode];
+
     respawnData->entranceIndex = entranceIndex;
     respawnData->roomIndex = roomIndex;
     respawnData->pos = *pos;

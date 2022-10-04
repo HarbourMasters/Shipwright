@@ -664,7 +664,7 @@ void func_80A7A568(EnIn* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80A7B024;
         gSaveContext.timer1State = 0;
     } else if (this->unk_308.unk_00 == 2) {
-        if (globalCtx->msgCtx.choiceIndex == 0){
+        if (globalCtx->msgCtx.choiceIndex == 0) {
             gSaveContext.isHorseEvent = 1;
             if (gSaveContext.rupees < 50) {
                 globalCtx->msgCtx.stateTimer = 4;

@@ -493,7 +493,6 @@ void Randomizer::LoadEntranceOverrides(const char* spoilerFileName, bool silent)
     }
 }
 
-
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1031,7 +1030,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
     }
 }
 
-
 void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream) {
@@ -1064,7 +1062,6 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
         return;
     }
 }
-
 
 bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);

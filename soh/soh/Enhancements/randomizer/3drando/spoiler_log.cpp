@@ -709,6 +709,7 @@ const char* SpoilerLog_Write(int language) {
     playthroughLocations.clear();
     playthroughBeatable = false;
     wothLocations.clear();
+
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
