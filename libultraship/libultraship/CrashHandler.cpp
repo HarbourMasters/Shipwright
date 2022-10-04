@@ -104,7 +104,45 @@ static void CrashHandler_PrintCommon(char* buffer, size_t* curBufferPos) {
 static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     char regbuffer[128];
     append_line(buffer, pos, "Registers:");
-#if defined(__x86_64__)
+#if __x86_64__
+    #if defined (__APPLE__)
+    snprintf(regbuffer, std::size(regbuffer), "RAX: 0x%016llX", ctx->uc_mcontext->__ss.__rax);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RDI: 0x%016llX", ctx->uc_mcontext->__ss.__rdi);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RSI: 0x%016llX", ctx->uc_mcontext->__ss.__rsi);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RDX: 0x%016llX", ctx->uc_mcontext->__ss.__rdx);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RCX: 0x%016llX", ctx->uc_mcontext->__ss.__rcx);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R8:  0x%016llX", ctx->uc_mcontext->__ss.__r8);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R9:  0x%016llX", ctx->uc_mcontext->__ss.__r9);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R10: 0x%016llX", ctx->uc_mcontext->__ss.__r10);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R11: 0x%016llX", ctx->uc_mcontext->__ss.__r11);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RSP: 0x%016llX", ctx->uc_mcontext->__ss.__rsp); 
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RBX: 0x%016llX", ctx->uc_mcontext->__ss.__rbx);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RBP: 0x%016llX", ctx->uc_mcontext->__ss.__rbp);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R12: 0x%016llX", ctx->uc_mcontext->__ss.__r12);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R13: 0x%016llX", ctx->uc_mcontext->__ss.__r13);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R14: 0x%016llX", ctx->uc_mcontext->__ss.__r14);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "R15: 0x%016llX", ctx->uc_mcontext->__ss.__r15);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "RIP: 0x%016llX", ctx->uc_mcontext->__ss.__rip);
+    append_line(buffer, pos, regbuffer);
+    snprintf(regbuffer, std::size(regbuffer), "EFL: 0x%016llX", ctx->uc_mcontext->__ss.__rflags); //WHY NOT EFLAGS?
+    append_line(buffer, pos, regbuffer);
+    #else // __APPLE__
     snprintf(regbuffer, std::size(regbuffer), "RAX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RAX]);
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer), "RDI: 0x%016llX", ctx->uc_mcontext.gregs[REG_RDI]);
@@ -123,7 +161,7 @@ static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer), "R11: 0x%016llX", ctx->uc_mcontext.gregs[REG_R11]);
     append_line(buffer, pos, regbuffer);
-    snprintf(regbuffer, std::size(regbuffer), "RSP: 0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]);
+    snprintf(regbuffer, std::size(regbuffer), "RSP: 0x%016llX", ctx->uc_mcontext.gregs[REG_RSP]); 
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer), "RBX: 0x%016llX", ctx->uc_mcontext.gregs[REG_RBX]);
     append_line(buffer, pos, regbuffer);
@@ -141,6 +179,7 @@ static void PrintRegisters(ucontext_t* ctx, char* buffer, size_t* pos) {
     append_line(buffer, pos, regbuffer);
     snprintf(regbuffer, std::size(regbuffer), "EFL: 0x%016llX", ctx->uc_mcontext.gregs[REG_EFL]);
     append_line(buffer, pos, regbuffer);
+    #endif
 #elif __i386__
     snprintf(regbuffer, std::size(regbuffer),"EDI: 0x%08lX", ctx->uc_mcontext.gregs[REG_EDI]);
     append_line(buffer, pos, regbuffer);
