@@ -37,6 +37,7 @@ static ImVec4 cp_minimap_colors;   static ImVec4 le_minimap_colors;
 static ImVec4 rupee_colors;        static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
 static ImVec4 fileselect_colors;   static ImVec4 fileselect_text_colors;
 static ImVec4 kokiri_col;          static ImVec4 goron_col;               static ImVec4 zora_col;
+static ImVec4 silvergaunts_col;    static ImVec4 goldengaunts_col;
 static ImVec4 navi_idle_i_col;     static ImVec4 navi_idle_o_col;
 static ImVec4 navi_npc_i_col;      static ImVec4 navi_npc_o_col;
 static ImVec4 navi_enemy_i_col;    static ImVec4 navi_enemy_o_col;
@@ -73,8 +74,8 @@ static CosmeticsColorIndividual Navi_Npc_Inner = { "Navi NPC (Primary)", "Inner 
 static CosmeticsColorIndividual Navi_Npc_Outer = { "Navi NPC (Secondary)", "Outer color for Navi (when Navi fly around NPCs)", "gNavi_NPC_Outer", navi_npc_o_col, ImVec4(150, 150, 255, 255), false, false, false };
 static CosmeticsColorIndividual Navi_Enemy_Inner = { "Navi Enemy (Primary)", "Inner color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Inner", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false, false, false };
 static CosmeticsColorIndividual Navi_Enemy_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Outer", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Prop_Inner = { "Navi Enemy (Primary)", "Inner color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Prop_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Prop_Inner = { "Navi Props (Primary)", "Inner color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Prop_Outer = { "Navi Props (Secondary)", "Outer color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false, false, false };
 
 //Keese
 static CosmeticsColorIndividual Keese1_prim = { "Fire Primary color", "Affects the primary color of the Fire itself of the Keese", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255), true, false, false };
@@ -86,10 +87,14 @@ static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects t
 static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
-//Tunics colors
+//Tunic colors
 static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
 static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
 static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
+
+//Gauntlet colors
+static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
+static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
 
 //Arrows (Fire -> Ice -> Light)
 static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };
@@ -207,6 +212,10 @@ static CosmeticsColorSection Tunics_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false }
+};
+static CosmeticsColorSection Gauntlets_Section[] = {
+    { &SilverGauntlets, false, false },
+    { &GoldenGauntlets, true, false },
 };
 static CosmeticsColorSection Arrows_section[] = {
     { &Normal_Arrow_Prim, false, false },
@@ -343,6 +352,8 @@ static CosmeticsColorSection Everything_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
+    { &SilverGauntlets, true, false },
+    { &GoldenGauntlets, true, false },
     { &Normal_Arrow_Prim, false, false },
     { &Normal_Arrow_Env, true, false },
     { &Fire_Arrow_Prim, false, true },

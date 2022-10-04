@@ -674,4 +674,8 @@ namespace Ship {
     void Window::SetLastScancode(int32_t scanCode) {
 	    lastScancode = scanCode;
     }
+
+    void Window::MoveCursor(int32_t x, int32_t y){
+        WmApi->move_cursor(x, y);
+    }
 }

@@ -256,7 +256,6 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     }
 
     for(auto randoSetting : gSaveContext.randoSettings) {
-        if(randoSetting.key == RSK_NONE) break;
         this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
@@ -500,8 +499,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
     try {
         // clear out existing settings
-        // RANDOTODO don't use magic number for settings array size
-        for(size_t i = 0; i < 300; i++) {
+        for(size_t i = 0; i < RSK_MAX; i++) {
             gSaveContext.randoSettings[i].key = RSK_NONE;
             gSaveContext.randoSettings[i].value = 0;
         }
@@ -510,13 +508,12 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
 
-        int index = 0;
-
         for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
             // todo load into cvars for UI
             
             std::string numericValueString;
             if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                RandomizerSettingKey index = SpoilerfileSettingNameToEnum[it.key()];
                 gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
@@ -802,7 +799,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                 }
-                index++;
             }
         }
 
@@ -1002,13 +998,14 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        index = 0;
         for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                     // todo handle prices
                     if (itemit.key() == "item") {
+/*<<<<<<< HEAD
                         gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                         gSaveContext.itemLocations[index].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
@@ -1023,9 +1020,25 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                 gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
                 gSaveContext.itemLocations[index].get.rgID = SpoilerfileGetNameToEnum[it.value()];
                 gSaveContext.itemLocations[index].get.fakeRgID = RG_NONE;
+=======*/
+                        gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                        gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "price") {
+                        merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
+                    } else if (itemit.key() == "model") {
+                        gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
+                            SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "trickName") {
+                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+                    }
+                }
+            } else {
+                gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
+                gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
+//>>>>>>> mouse
             }
-
-            index++;
         }
 
         if(!silent) {
@@ -1042,11 +1055,19 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
+/*<<<<<<< HEAD
 RandomizerGetData Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
 RandomizerGetData Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+=======*/
+RandomizerGetData Randomizer::GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
+}
+
+RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck) {
+//>>>>>>> mouse
     return this->itemLocations[randomizerCheck];
 }
 
@@ -1056,7 +1077,11 @@ GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorPa
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
+/*<<<<<<< HEAD
     return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck).rgID);
+=======*/
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetDataFromKnownCheck(randomizerCheck).rgID);
+//>>>>>>> mouse
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
@@ -2610,7 +2635,11 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
             break;
     }
 
+/*<<<<<<< HEAD
     RandomizerGetData randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
+=======*/
+    RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
+//>>>>>>> mouse
     if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
         shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet.rgID];
     }

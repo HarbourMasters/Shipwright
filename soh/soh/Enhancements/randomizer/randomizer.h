@@ -55,8 +55,13 @@ class Randomizer {
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+/*<<<<<<< HEAD
     RandomizerGetData GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerGetData GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck);
+=======*/
+    RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
+//>>>>>>> mouse
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;

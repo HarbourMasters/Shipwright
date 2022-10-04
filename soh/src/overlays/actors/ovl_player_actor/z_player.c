@@ -22,16 +22,6 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 
-//Mod
-#if defined(ENABLE_OPENGL)
-#include <libultraship/Lib/Fast3D/gfx_sdl.h>
-#define WIN_API gfx_sdl
-#elif defined(ENABLE_DX11) || defined(ENABLE_DX12)
-#undef DECLARE_GFX_DXGI_FUNCTIONS
-#include <libultraship/Lib/Fast3D/gfx_dxgi.h>
-#define WIN_API gfx_dxgi_api
-#endif
-
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
 
@@ -5461,9 +5451,7 @@ s32 func_8083C2B0(Player* this, GlobalContext* globalCtx) {
             if (CVar_GetS32("gMouseTouchEnabled", 0)) {
                 u32 width = OTRGetCurrentWidth();
                 u32 height = OTRGetCurrentHeight();
-#ifdef WIN_API
-                WIN_API.move_cursor(width/2, height/2);
-#endif
+                OTRMoveCursor(width/2, height/2);
             }
             /* */
 
@@ -11326,7 +11314,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
         if (!CVar_GetS32("gDisableAutoCenterView", 0)) {
-            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
+            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1);
             Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
             temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
