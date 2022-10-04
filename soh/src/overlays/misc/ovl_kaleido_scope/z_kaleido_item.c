@@ -131,7 +131,6 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
         if (interfaceCtx->restrictions.tradeItems == 0 && 
             (cursorSlot == SLOT_TRADE_ADULT && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) || 
             (cursorSlot == SLOT_TRADE_CHILD && !(cursorItem >= ITEM_MASK_KEATON && cursorItem <= ITEM_MASK_TRUTH))) {
-
             return true;
         }
     }
@@ -408,11 +407,10 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 KaleidoScope_SetCursorVtx(pauseCtx, index, pauseCtx->itemVtx);
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
+                    // For enhancement "Item Use From Inventory"
                     if (CVar_GetS32("gItemUseFromInventory", 0)){
-                        // One-time use of certain items from Inventory Screen
                         if (CHECK_BTN_ALL(input->press.button, BTN_A) && ItemUseFromInventory_IsValidItemForUse(globalCtx)) {
-                            // Update these variables for use in z_player.c
-                            ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot);
+                            ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot); // In z_player.c
                             // Unpause
                             Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                             pauseCtx->state = 0x12;
