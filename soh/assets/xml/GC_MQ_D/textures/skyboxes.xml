@@ -1,0 +1,113 @@
+<Root>
+    <File Name="vr_fine0_static">
+        <Texture Name="gSunriseSkybox1Tex" OutName="sunrise_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_fine0_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseSkybox2Tex" OutName="sunrise_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_fine0_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseSkybox3Tex" OutName="sunrise_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_fine0_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseSkybox4Tex" OutName="sunrise_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_fine0_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseSkybox5Tex" OutName="sunrise_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_fine0_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_fine0_pal_static">
+        <Texture Name="gSunriseSkyboxTLUT" OutName="sunrise_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_fine1_static">
+        <Texture Name="gDaySkybox1Tex" OutName="day_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_fine1_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDaySkybox2Tex" OutName="day_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_fine1_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDaySkybox3Tex" OutName="day_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_fine1_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDaySkybox4Tex" OutName="day_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_fine1_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDaySkybox5Tex" OutName="day_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_fine1_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_fine1_pal_static">
+        <Texture Name="gDaySkyboxTLUT" OutName="day_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_fine2_static">
+        <Texture Name="gSunsetSkybox1Tex" OutName="sunset_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_fine2_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetSkybox2Tex" OutName="sunset_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_fine2_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetSkybox3Tex" OutName="sunset_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_fine2_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetSkybox4Tex" OutName="sunset_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_fine2_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetSkybox5Tex" OutName="sunset_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_fine2_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_fine2_pal_static">
+        <Texture Name="gSunsetSkyboxTLUT" OutName="sunset_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_fine3_static">
+        <Texture Name="gNightSkybox1Tex" OutName="night_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_fine3_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightSkybox2Tex" OutName="night_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_fine3_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightSkybox3Tex" OutName="night_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_fine3_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightSkybox4Tex" OutName="night_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_fine3_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightSkybox5Tex" OutName="night_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_fine3_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_fine3_pal_static">
+        <Texture Name="gNightSkyboxTLUT" OutName="night_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_cloud0_static">
+        <Texture Name="gSunriseOvercastSkybox1Tex" OutName="overcast_sunrise_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_cloud0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseOvercastSkybox2Tex" OutName="overcast_sunrise_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_cloud0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseOvercastSkybox3Tex" OutName="overcast_sunrise_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_cloud0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseOvercastSkybox4Tex" OutName="overcast_sunrise_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_cloud0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunriseOvercastSkybox5Tex" OutName="overcast_sunrise_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_cloud0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_cloud0_pal_static">
+        <Texture Name="gSunriseOvercastSkyboxTLUT" OutName="overcast_sunrise_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_cloud1_static">
+        <Texture Name="gDayOvercastSkybox1Tex" OutName="overcast_day_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_cloud1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDayOvercastSkybox2Tex" OutName="overcast_day_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_cloud1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDayOvercastSkybox3Tex" OutName="overcast_day_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_cloud1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDayOvercastSkybox4Tex" OutName="overcast_day_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_cloud1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gDayOvercastSkybox5Tex" OutName="overcast_day_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_cloud1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_cloud1_pal_static">
+        <Texture Name="gDayOvercastSkyboxTLUT" OutName="overcast_day_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_cloud2_static">
+        <Texture Name="gSunsetOvercastSkybox1Tex" OutName="overcast_sunset_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_cloud2_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetOvercastSkybox2Tex" OutName="overcast_sunset_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_cloud2_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetOvercastSkybox3Tex" OutName="overcast_sunset_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_cloud2_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetOvercastSkybox4Tex" OutName="overcast_sunset_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_cloud2_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gSunsetOvercastSkybox5Tex" OutName="overcast_sunset_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_cloud2_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_cloud2_pal_static">
+        <Texture Name="gSunsetOvercastSkyboxTLUT" OutName="overcast_sunset_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_cloud3_static">
+        <Texture Name="gNightOvercastSkybox1Tex" OutName="overcast_night_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_cloud3_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightOvercastSkybox2Tex" OutName="overcast_night_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_cloud3_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightOvercastSkybox3Tex" OutName="overcast_night_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_cloud3_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightOvercastSkybox4Tex" OutName="overcast_night_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_cloud3_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gNightOvercastSkybox5Tex" OutName="overcast_night_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_cloud3_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_cloud3_pal_static">
+        <Texture Name="gNightOvercastSkyboxTLUT" OutName="overcast_night_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_holy0_static">
+        <Texture Name="gHoly0Skybox1Tex" OutName="holy0_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly0Skybox2Tex" OutName="holy0_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly0Skybox3Tex" OutName="holy0_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly0Skybox4Tex" OutName="holy0_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly0Skybox5Tex" OutName="holy0_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly0Skybox6Tex" OutName="holy0_6" Format="ci8" Width="128" Height="128" Offset="0xC000" ExternalTlut="vr_holy0_pal_static" SplitTlut="false" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_holy0_pal_static">
+        <Texture Name="gHoly0SkyboxTLUT" OutName="holy0_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+
+    <File Name="vr_holy1_static">
+        <Texture Name="gHoly1Skybox1Tex" OutName="holy1_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly1Skybox2Tex" OutName="holy1_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly1Skybox3Tex" OutName="holy1_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly1Skybox4Tex" OutName="holy1_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly1Skybox5Tex" OutName="holy1_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+        <Texture Name="gHoly1Skybox6Tex" OutName="holy1_6" Format="ci8" Width="128" Height="128" Offset="0xC000" ExternalTlut="vr_holy1_pal_static" SplitTlut="true" ExternalTlutOffset="0x000"/>
+    </File>
+    <File Name="vr_holy1_pal_static">
+        <Texture Name="gHoly1SkyboxTLUT" OutName="holy1_tlut" Format="rgba16" Width="16" Height="8" Offset="0x0"/>
+    </File>
+</Root>

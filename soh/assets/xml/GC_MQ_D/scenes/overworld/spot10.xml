@@ -1,0 +1,37 @@
+<Root>
+    <File Name="spot10_scene" Segment="2">
+        <Path Name="spot10_scenePathList_00C080" Offset="0xC080" NumPaths="3"/>
+
+        <Scene Name="spot10_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_0" Segment="3">
+        <Room Name="spot10_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_1" Segment="3">
+        <Room Name="spot10_room_1" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_2" Segment="3">
+        <Room Name="spot10_room_2" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_3" Segment="3">
+        <Room Name="spot10_room_3" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_4" Segment="3">
+        <Room Name="spot10_room_4" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_5" Segment="3">
+        <Room Name="spot10_room_5" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_6" Segment="3">
+        <Room Name="spot10_room_6" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_7" Segment="3">
+        <Room Name="spot10_room_7" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_8" Segment="3">
+        <Room Name="spot10_room_8" Offset="0x0"/>
+    </File>
+    <File Name="spot10_room_9" Segment="3">
+        <Room Name="spot10_room_9" Offset="0x0"/>
+    </File>
+</Root>

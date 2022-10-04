@@ -12,6 +12,7 @@
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
+    "gGauntlets_Silver", "gGauntlets_Golden",
     "gFireArrowCol", "gIceArrowCol",
     "gNormalArrowCol", "gNormalArrowColEnv",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
@@ -353,6 +354,7 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
             CVar_SetS32("gUseKeeseCol", 1);
             CVar_SetS32("gUseDogsCol", 1);
             CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseGauntletsCol", 1);
             CVar_SetS32("gUseArrowsCol", 1);
             CVar_SetS32("gUseSpellsCol", 1);
             CVar_SetS32("gUseChargedCol", 1);
@@ -423,6 +425,21 @@ void Draw_ItemsSkills(){
         DrawColorSection(Tunics_Section, SECTION_SIZE(Tunics_Section));
         ImGui::EndTable();
     }
+
+    UIWidgets::EnhancementCheckbox("Custom gauntlets color", "gUseGauntletsCol");
+    UIWidgets::Tooltip(
+        "Enable/Disable custom Link's gauntlets colors\nIf disabled you will have original colors for Link's gauntlets.");
+    if (CVar_GetS32("gUseGauntletsCol", 0)) {
+        DrawRandomizeResetButton("Link's gauntlets", Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+    };
+    if (CVar_GetS32("gUseGauntletsCol", 0) && ImGui::BeginTable("tableGauntlets", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Silver Gauntlets", FlagsCell, TablesCellsWidth / 2);
+        ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 2);
+        Table_InitHeader();
+        DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+        ImGui::EndTable();
+    }
+
     UIWidgets::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
     if (CVar_GetS32("gUseArrowsCol",0)) {
         DrawRandomizeResetButton("elemental arrows", Arrows_section, SECTION_SIZE(Arrows_section));
@@ -526,6 +543,8 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gHeartsCount");
             DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10, true);
+            UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -536,6 +555,8 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Magic meter", "gMagicBar");
             DrawPositionsRadioBoxes("gMagicBar");
+            UIWidgets::EnhancementRadioButton("Anchor to life bar", "gMagicBarPosType", 5);
+            UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
             DrawPositionSlider("gMagicBar", 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
             DrawScaleSlider("gMagicBar",1.0f);
             ImGui::NewLine();

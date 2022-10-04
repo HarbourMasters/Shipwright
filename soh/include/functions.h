@@ -20,11 +20,11 @@ extern "C"
 #endif
 
 f32 fabsf(f32 f);
-#pragma intrinsic(fabsf)
+//#pragma intrinsic(fabsf)
 f32 sqrtf(f32 f);
-#pragma intrinsic(sqrtf)
+//#pragma intrinsic(sqrtf)
 f64 sqrt(f64 d);
-#pragma intrinsic(sqrt)
+//#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
@@ -976,6 +976,8 @@ void Color_RGBA8_Copy(Color_RGBA8* dst, Color_RGBA8* src);
 void func_80078884(u16 sfxId);
 void func_800788CC(u16 sfxId);
 void func_80078914(Vec3f* arg0, u16 sfxId);
+s16 getHealthMeterXOffset();
+s16 getHealthMeterYOffset();
 void HealthMeter_Init(GlobalContext* globalCtx);
 void HealthMeter_Update(GlobalContext* globalCtx);
 void HealthMeter_Draw(GlobalContext* globalCtx);
@@ -2418,8 +2420,6 @@ void Opening_Init(GameState* thisx);
 void Opening_Destroy(GameState* thisx);
 void FileChoose_Init(GameState* thisx);
 void FileChoose_Destroy(GameState* thisx);
-
-char* SetQuote();
 
 void Heaps_Alloc(void);
 void Heaps_Free(void);

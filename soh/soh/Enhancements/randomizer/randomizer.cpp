@@ -23,6 +23,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -38,6 +40,7 @@ const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
+const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 
 static const char* englishRupeeNames[80] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
@@ -253,7 +256,6 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     }
 
     for(auto randoSetting : gSaveContext.randoSettings) {
-        if(randoSetting.key == RSK_NONE) break;
         this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
@@ -439,12 +441,19 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
 
     for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
-        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck];
+        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck].rgID;
+        std::vector<std::string> shopItemName;
         // TODO: This should eventually be replaced with a full fledged trick model & trick name system
         if (shopItemGet == RG_ICE_TRAP) {
-            shopItemGet = RG_HUGE_RUPEE;
+            shopItemGet = this->itemLocations[shopItemCheck].fakeRgID;
+            shopItemName = {
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName),
+                std::string(this->itemLocations[shopItemCheck].trickName)
+            };
+        } else { 
+            shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         }
-        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
         u16 shopItemPrice = merchantPrices[shopItemCheck];
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
@@ -472,7 +481,7 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
         this->itemLocations[itemLocation.check] = itemLocation.get;
     }
 
-    itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
+    itemLocations[RC_UNKNOWN_CHECK].rgID = itemLocations[RC_UNKNOWN_CHECK].fakeRgID = RG_NONE;
 }
 
 void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
@@ -490,8 +499,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
     try {
         // clear out existing settings
-        // RANDOTODO don't use magic number for settings array size
-        for(size_t i = 0; i < 300; i++) {
+        for(size_t i = 0; i < RSK_MAX; i++) {
             gSaveContext.randoSettings[i].key = RSK_NONE;
             gSaveContext.randoSettings[i].value = 0;
         }
@@ -500,13 +508,12 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
 
-        int index = 0;
-
         for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
             // todo load into cvars for UI
             
             std::string numericValueString;
             if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                RandomizerSettingKey index = SpoilerfileSettingNameToEnum[it.key()];
                 gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
@@ -792,7 +799,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                 }
-                index++;
             }
         }
 
@@ -992,25 +998,30 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        index = 0;
         for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                     // todo handle prices
                     if (itemit.key() == "item") {
-                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                        gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                        gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "price") {
-                        merchantPrices[gSaveContext.itemLocations[index].check] = itemit.value();
+                        merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
+                    } else if (itemit.key() == "model") {
+                        gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
+                            SpoilerfileGetNameToEnum[itemit.value()];
+                    } else if (itemit.key() == "trickName") {
+                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
-                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
+                gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
+                gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
             }
-
-            index++;
         }
 
         if(!silent) {
@@ -1027,20 +1038,21 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-RandomizerGet Randomizer::GetRandomizerGetFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
 }
 
-RandomizerGet Randomizer::GetRandomizerGetFromKnownCheck(RandomizerCheck randomizerCheck) {
+RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck) {
     return this->itemLocations[randomizerCheck];
 }
 
-GetItemID Randomizer::GetItemIdFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
-    return GetItemIdFromRandomizerGet(GetRandomizerGetFromActor(actorId, sceneNum, actorParams), ogItemId);
+GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    RandomizerGetData rgData = this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
+    return GetItemEntryFromRGData(rgData, ogItemId);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
-    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetFromKnownCheck(randomizerCheck));
+    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetDataFromKnownCheck(randomizerCheck).rgID);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
@@ -1935,7 +1947,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
 }
 
 bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
-    RandomizerGet randoGet = this->itemLocations[randoCheck];
+    RandomizerGet randoGet = this->itemLocations[randoCheck].rgID;
     return IsItemVanilla(randoGet);
 }
 
@@ -2594,9 +2606,9 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
             break;
     }
 
-    RandomizerGet randoGet = GetRandomizerGetFromKnownCheck(shopItemIdentity.randomizerCheck);
-    if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
-        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
+    RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
+    if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
+        shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet.rgID];
     }
 
     if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
@@ -2610,8 +2622,40 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-GetItemID Randomizer::GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId) {
-    return GetItemIdFromRandomizerGet(this->itemLocations[randomizerCheck], ogItemId);
+GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability) {
+    // Go ahead and early return the ogItemId's entry if we somehow get RG_NONE.
+    if (rgData.rgID == RG_NONE) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
+    }
+    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(rgData.rgID) != CAN_OBTAIN) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+    // Can't get RG_ICE_TRAP if the rgID corresponds to a vanilla item
+    if (IsItemVanilla(rgData.rgID)) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
+    }
+    // After this point we can assume we are dealing with a randomizer exclusive item.
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(
+        MOD_RANDOMIZER, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
+    // If we have an ice trap, we want to change the GID and DrawFunc to the fakeRgID's values.
+    if (rgData.rgID == RG_ICE_TRAP) {
+        ModIndex modIndex;
+        if (IsItemVanilla(rgData.fakeRgID)) {
+            modIndex = MOD_NONE;
+        } else {
+            modIndex = MOD_RANDOMIZER;
+        }
+        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
+        giEntry.gid = fakeGiEntry.gid;
+        giEntry.gi = fakeGiEntry.gi;
+        giEntry.drawFunc = fakeGiEntry.drawFunc;
+    }
+    return giEntry;
+}
+
+GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
+    RandomizerGetData rgData = this->itemLocations[randomizerCheck];
+    return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -3704,6 +3748,11 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
+        return;
+    }
+
+    if (ResourceMgr_IsGameMasterQuest()) {
+        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
@@ -4817,16 +4866,9 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        if (messageEntry.giid == RG_ICE_TRAP) {
-            customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
-                                                { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
-                                                  messageEntry.german, messageEntry.french });
-        } else {
-            customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid,
-                                                       messageEntry.iid,
-                                                       { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
-                                                         messageEntry.german, messageEntry.french });
-        }
+        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
+                                                    { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
+                                                        messageEntry.german, messageEntry.french });
     }
 }
 
@@ -4982,12 +5024,115 @@ void CreateNaviRandoMessages() {
     }
 }
 
+CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
+    { "You are a %bFOOL%w!",
+      "Du bist ein %bDUMMKOPF%w!",
+      "%bPauvre fou%w..." },
+
+    { "You are a %bFOWL%w!",
+      "Du bist eine %bFrostbeule%w!",
+      "Tu es un %bglaçon%w, Harry!" },
+
+    { "%bFOOL%w!",
+      "%bDUMMKOPF%w!",
+      "%bSot%w que tu es." },
+
+    { "You just got %bPUNKED%w!",
+      "Du wurdest %beiskalt%w erwischt!",
+      "Ça me %bglace%w le sang!" },
+
+    { "Stay %bfrosty%w, @.",
+      "Es läuft dir %beiskalt%w den Rücken&hinunter, @.",
+      "%bReste au frais%w, @." },
+
+    { "Take a %bchill pill%w, @.",
+      "Bleib %bcool%w, @.",
+      "Et c'est la douche %bfroide%w!" },
+
+    { "%bWinter%w is coming.",
+      "Der %bWinter%w naht.",
+      "L'%bhiver%w vient." },
+    
+    { "%bICE%w to see you, @.",
+      "Alles %bcool%w im Pool?",
+      "%bGlacier%w!" },
+
+    { "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
+      "%bAbkühlung gefällig%w?",
+      "%Ça en jette un %bfroid%w." },
+
+    { "It's a %bcold day%w in the Evil Realm.",
+      "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
+      "Est-ce que tu as déjà eu des sueurs&%bfroides%w?" },
+
+    { "Getting %bcold feet%w?",
+      "Bekommst du etwa %bkalte%w Füße?",
+      "La vengeance est un plat qui se mange&%bfroid%w!" },
+
+    { "Say hello to the %bZoras%w for me!",
+      "Sag den %bZoras%w viele Grüße von mir!",
+      "Dit bonjour aux %bZoras%w pour moi!" },
+
+    { "Can you keep a %bcool head%w?",
+      "Bewahre einen %bkühlen%w! Kopf.",
+      "Il faut parfois savoir garder la tête&%bfroide%w!" },
+
+    { "Ganondorf used %bIce Trap%w!&It's super effective!",
+      "Ganondorf setzt %bEisstrahl%w ein.&Das ist sehr effektiv!",
+      "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!" },
+
+    { "Allow me to break the %bice%w!",
+      "Ein Lächeln ist der beste Weg,&um das %bEis%w zu brechen!",
+      "Laisse moi briser la %bglace%w!" },
+
+    { "%bCold pun%w.",
+      "%bEiskalt%w lässt du meine Seele&erfrier'n.",
+      "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!" },
+
+    { "The %bTitanic%w would be scared of you,&@.",
+      "Die %bTitanic%w hätte Angst vor dir,&@.",
+      "Le %bTitanic%w aurait peur de toi,&@." },
+
+    { "Oh no!",
+      "Oh nein!",
+      "Oh non!" },
+      
+    { "What killed the dinosaurs?&The %bICE%w age!",
+      "Was die Dinosaurier getötet hat?&Die %bEiszeit%w!",
+      "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!" },
+
+    { "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
+      "Nachts ist es %bkälter%w als draußen.",
+      "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
+
+    { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
+      "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w." },
+
+    { "Thank you %b@%w!&But your item is in another castle!",
+      "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloss!",
+      "Merci %b@%w!&Mais ton objet est dans un autre&château!" },
+
+    { "%bFREEZE%w! Don't move!",
+      "	Kalt. Kalt. Kälter. %bEISKALT%w!",
+      "J'espère que ça ne te fait ni chaud, ni&%bfroid%w." },
+      
+};
+
+void CreateIceTrapRandoMessages() {
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::IceTrapRandoMessageTableID);
+    for (u8 i = 0; i <= (NUM_ICE_TRAP_MESSAGES - 1); i++) {
+        customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, i,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, IceTrapMessages[i].english,
+                                              IceTrapMessages[i].german, IceTrapMessages[i].french });
+    }
+}
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE(RG_ICE_TRAP, ITEM_NONE, "\x08\x06\x30You are a %bFOWL%w!",
-                  "\x08\x06\x15 Du bist ein %bDUMMKOPF%w!", "\x08\x06\x50%bIDIOT%w"),
         GIMESSAGE_NO_GERMAN(
             RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
@@ -5108,6 +5253,7 @@ void Randomizer::CreateCustomMessages() {
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
     CreateNaviRandoMessages();
+    CreateIceTrapRandoMessages();
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {

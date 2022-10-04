@@ -117,8 +117,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInvertYAxis", 1);
         // Right Stick Aiming
         CVar_SetS32("gRightStickAiming", 0);
-        // Auto-Center First Person View
-        CVar_SetS32("gAutoCenterView", 0);
+        // Disable Auto-Center First Person View
+        CVar_SetS32("gDisableAutoCenterView", 0);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);
@@ -312,6 +312,9 @@ namespace GameMenuBar {
         CVar_SetS32("gGsCutscene", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
+
+        //Crit wiggle disable
+        CVar_SetS32("gDisableCritWiggle", 0);
     }
 
     void applyEnhancementPresetVanillaPlus(void) {
@@ -979,6 +982,9 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
+
+                UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", "gDisableCritWiggle", true, false);
+                UIWidgets::Tooltip("Disable random camera wiggle at low health");
 
                 ImGui::EndMenu();
             }
