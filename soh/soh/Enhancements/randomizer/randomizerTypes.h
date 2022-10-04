@@ -4,6 +4,8 @@
 #include "z64item.h"
 #include "randomizer_inf.h"
 
+#define MAX_TRICK_NAME_SIZE 50
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -964,6 +966,12 @@ typedef enum {
     RG_MAX
 } RandomizerGet;
 
+typedef struct {
+    RandomizerGet rgID;
+    RandomizerGet fakeRgID;
+    char trickName[MAX_TRICK_NAME_SIZE];
+} RandomizerGetData;
+
 typedef enum {
     RSK_NONE,
     RSK_LOGIC_RULES,
@@ -1041,7 +1049,7 @@ typedef struct ScrubIdentity {
     RandomizerCheck randomizerCheck;
     GetItemID getItemId;
     int32_t itemPrice;
-    bool isShuffled;
+    uint8_t isShuffled;
 } ScrubIdentity;
 
 typedef struct ShopItemIdentity {

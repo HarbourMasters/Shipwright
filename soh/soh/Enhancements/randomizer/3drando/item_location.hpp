@@ -489,6 +489,7 @@ extern std::vector<uint32_t> everyPossibleLocation;
 
 //set of overrides to write to the patch
 extern std::set<ItemOverride, ItemOverride_Compare> overrides;
+extern std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels;
 
 extern std::vector<std::vector<uint32_t>> playthroughLocations;
 extern std::vector<uint32_t> wothLocations;
