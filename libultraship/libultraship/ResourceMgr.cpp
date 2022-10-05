@@ -164,31 +164,6 @@ namespace Ship {
 		return gameVersion;
 	}
 
-    uint32_t ResourceMgr::IsGameMasterQuest() {
-        switch (gameVersion) {
-        case OOT_PAL_MQ:
-        case OOT_NTSC_JP_MQ:
-        case OOT_NTSC_US_MQ:
-        case OOT_PAL_GC_MQ_DBG:
-            return 1;
-        case OOT_NTSC_10:
-        case OOT_NTSC_11:
-        case OOT_NTSC_12:
-        case OOT_PAL_10:
-        case OOT_PAL_11:
-        case OOT_NTSC_JP_GC_CE:
-        case OOT_NTSC_JP_GC:
-        case OOT_NTSC_US_GC:
-        case OOT_PAL_GC:
-        case OOT_PAL_GC_DBG1:
-        case OOT_PAL_GC_DBG2:
-            return 0;
-        default:
-            SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", gameVersion);
-            return 0;
-        }
-    }
-
 	void ResourceMgr::SetGameVersion(uint32_t newGameVersion) {
 		gameVersion = newGameVersion;
 	}

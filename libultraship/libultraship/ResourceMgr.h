@@ -28,7 +28,6 @@ namespace Ship {
 		const std::string* HashToString(uint64_t Hash) const;
 		void InvalidateResourceCache();
 		uint32_t GetGameVersion();
-        uint32_t IsGameMasterQuest();
 		void SetGameVersion(uint32_t newGameVersion);
 		std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
 		std::shared_ptr<File> LoadFile(const std::string& FilePath);

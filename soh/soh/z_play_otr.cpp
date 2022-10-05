@@ -29,7 +29,7 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
     std::string sceneVersion;
-    if (OTRGlobals::Instance->context->GetResourceManager()->IsGameMasterQuest()) {
+    if (IsGameMasterQuest()) {
         sceneVersion = "mq";
     } else {
         sceneVersion = "nonmq";

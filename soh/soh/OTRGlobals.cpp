@@ -549,7 +549,7 @@ extern "C" uint32_t ResourceMgr_GetGameVersion()
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
+uint32_t IsGameMasterQuest() {
     uint32_t version = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 
     switch (version) {
@@ -573,8 +573,11 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
         default:
             SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
             return 0;
-
     }
+}
+
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
+    return IsGameMasterQuest();
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
