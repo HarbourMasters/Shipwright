@@ -154,6 +154,8 @@ namespace GameMenuBar {
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
         CVar_SetS32("gRememberSaveLocation", 0);
+        // Item use from inventory
+        CVar_SetS32("gItemUseFromInventory", 0);
 
         // Damage Multiplier (0 to 8)
         CVar_SetS32("gDamageMul", 0);
