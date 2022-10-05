@@ -3611,7 +3611,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
-    //Starting Age is forced to child if forest setting is set to closed. (0 = Adult, 1 = Child)
+    //Starting Age is forced to child if forest setting is set to closed. (0 = Child, 1 = Adult)
     cvarSettings[RSK_STARTING_AGE] = ((CVar_GetS32("gRandomizeForest", 0)) && 
                                         (CVar_GetS32("gRandomizeStartingAge", 0)));
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
@@ -3914,13 +3914,11 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 }    
                 UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, 0);
-                //    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                //    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 if (disableRandoStartingAge) {
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
                     }
-                    CVar_SetS32("gRandomizeStartingAge", 1);
+                    CVar_SetS32("gRandomizeStartingAge", 0);
                     ImGui::PopStyleVar(1);
                     ImGui::PopItemFlag();
                 }                
