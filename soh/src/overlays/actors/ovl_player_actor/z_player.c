@@ -10535,7 +10535,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     func_808473D4(globalCtx, this);
     func_80836BEC(this, globalCtx);
 
-    // If an item was used from the inventory screen, perform its action
+    // Item use from inventory: If an item is being used from the inventory screen, perform its action
     if (usingItemFromInventory) {
         usingItemFromInventory = false;
 
@@ -10554,7 +10554,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
                 usedBottleFrameCount = 1;
             }
         }
-        func_80835F44(globalCtx, this, inventoryUsedItem);
+        func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
     }
     
     // Item use from inventory: Restore the original C-Left equip after 14 frames
