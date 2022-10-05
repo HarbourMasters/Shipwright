@@ -781,6 +781,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
+                    UIWidgets::PaddedEnhancementCheckbox("Use Items Directly From Inventory", "gItemUseFromInventory", true, false);
+                    UIWidgets::Tooltip("Allows some items to be used once by pressing A on the Inventory Subscreen.");
                     ImGui::EndMenu();
                 }
 
@@ -985,9 +987,6 @@ namespace GameMenuBar {
 
                 UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", "gDisableCritWiggle", true, false);
                 UIWidgets::Tooltip("Disable random camera wiggle at low health");
-
-                UIWidgets::PaddedEnhancementCheckbox("Use Items Directly From Inventory", "gItemUseFromInventory", true, false);
-                UIWidgets::Tooltip("Allows some items to be used once by pressing A on the Inventory Subscreen.");
 
                 ImGui::EndMenu();
             }
