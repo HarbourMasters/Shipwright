@@ -176,7 +176,8 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
 #ifndef __SWITCH__
     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
-    if (start_in_fullscreen) {
+    bool steamDeckGameMode = (std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope");
+    if (start_in_fullscreen || steamDeckGameMode) {
         set_fullscreen(true, false);
     }
 #endif
