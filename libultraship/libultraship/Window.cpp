@@ -286,11 +286,12 @@ namespace Ship {
         CreateDefaults();
         InitializeControlDeck();
 
-        bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false);
+        bool steamDeckGameMode = std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope";
+        bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false) || steamDeckGameMode;
 
         if (bIsFullscreen) {
-            dwWidth = GetConfig()->getInt("Window.Fullscreen.Width", 1920);
-            dwHeight = GetConfig()->getInt("Window.Fullscreen.Height", 1080);
+            dwWidth = GetConfig()->getInt("Window.Fullscreen.Width", steamDeckGameMode ? 1280 : 1920);
+            dwHeight = GetConfig()->getInt("Window.Fullscreen.Height", steamDeckGameMode ? 800 : 1080);
         } else {
             dwWidth = GetConfig()->getInt("Window.Width", 640);
             dwHeight = GetConfig()->getInt("Window.Height", 480);
