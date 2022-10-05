@@ -10557,7 +10557,8 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
         func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
     }
     
-    // Item use from inventory: Restore the original C-Left equip after 14 frames
+    // Bottle use from inventory: Restore the original C-Left equip after 14 frames
+    // If something is caught in the bottle, this counter will be reset to 0
     if (usedBottleFrameCount > 0) {
         usedBottleFrameCount++;
         if (usedBottleFrameCount >= 14) {
