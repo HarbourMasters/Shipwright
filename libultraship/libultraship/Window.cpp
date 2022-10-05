@@ -38,6 +38,8 @@
 #include "SwitchImpl.h"
 #elif defined(__WIIU__)
 #include "WiiUImpl.h"
+#elif defined(__linux__)
+#include <sys/utsname.h>
 #endif
 
 
@@ -286,7 +288,18 @@ namespace Ship {
         CreateDefaults();
         InitializeControlDeck();
 
-        bool steamDeckGameMode = std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope";
+        bool steamDeckGameMode = false;
+    #ifdef __linux__
+        struct utsname uts;
+        int err = uname(&uts);
+        if (err == 0) {
+            SPDLOG_TRACE("OS: {} {} {} {}", uts.sysname, uts.release, uts.version, uts.machine);
+            if (strcmp(uts.version, "SteamOS") == 0) {
+                steamDeckGameMode = std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope";
+            }
+        }
+    #endif
+
         bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false) || steamDeckGameMode;
 
         if (bIsFullscreen) {
