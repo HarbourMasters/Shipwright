@@ -38,10 +38,7 @@
 #include "SwitchImpl.h"
 #elif defined(__WIIU__)
 #include "WiiUImpl.h"
-#elif defined(__linux__)
-#include <sys/utsname.h>
 #endif
-
 
 #define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::Window::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
 
@@ -290,12 +287,16 @@ namespace Ship {
 
         bool steamDeckGameMode = false;
     #ifdef __linux__
-        struct utsname uts;
-        int err = uname(&uts);
-        if (err == 0) {
-            SPDLOG_TRACE("OS: {} {} {} {}", uts.sysname, uts.release, uts.version, uts.machine);
-            if (strcmp(uts.version, "SteamOS") == 0) {
-                steamDeckGameMode = std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope";
+        std::ifstream osReleaseFile("/etc/os-release");
+        if (osReleaseFile.is_open()) {
+            std::string line;
+            while (std::getline(osReleaseFile, line)) {
+                if (line.find("VARIANT_ID") != std::string::npos) {
+                    if (line.find("steamdeck") != std::string::npos) {
+                        steamDeckGameMode = std::getenv("XDG_CURRENT_DESKTOP") != nullptr && std::string(std::getenv("XDG_CURRENT_DESKTOP")) == "gamescope";
+                    }
+                    break;
+                }
             }
         }
     #endif
