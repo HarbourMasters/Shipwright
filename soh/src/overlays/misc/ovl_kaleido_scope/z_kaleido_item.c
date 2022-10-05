@@ -126,11 +126,12 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
             return true;
         }
 
-        // For trade items, make sure we are not conflicting with selectable adult trade items in rando
+        // For trade items, make sure we are not conflicting with selectable masks or adult trade items
         // and make sure we aren't on a mask (Link can't wear a mask without it being equipped to a C button)
         if (interfaceCtx->restrictions.tradeItems == 0 && 
             (cursorSlot == SLOT_TRADE_ADULT && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) || 
-            (cursorSlot == SLOT_TRADE_CHILD && !(cursorItem >= ITEM_MASK_KEATON && cursorItem <= ITEM_MASK_TRUTH))) {
+            (cursorSlot == SLOT_TRADE_CHILD && !(cursorItem >= ITEM_MASK_KEATON && cursorItem <= ITEM_MASK_TRUTH)
+                                            && !(CVar_GetS32("gMaskSelect", 0)))) {
             return true;
         }
     }
