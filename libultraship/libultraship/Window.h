@@ -84,6 +84,7 @@ namespace Ship {
 			int32_t lastScancode;
 			std::string Name;
 			std::string MainPath;
+            std::string BasePath;
 			std::string PatchesPath;
 	};
 }

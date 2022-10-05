@@ -581,8 +581,11 @@ namespace Ship {
 
     void Window::InitializeResourceManager() {
         MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+        // Allows for loading a base OTR before Main and patching Main onto it, if it exists.
+        // If either it or Main does not exist, the other will be used as the only OTR.
+        BasePath = Config->getString("Game.Base Archive", GetPathRelativeToAppDirectory("oot-mq.otr"));
         PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
-        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, BasePath, PatchesPath);
 
         if (!ResMan->DidLoadSuccessfully())
         {

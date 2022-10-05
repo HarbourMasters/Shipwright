@@ -9,8 +9,9 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
-		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
+	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath) 
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
+		OTR = std::make_shared<Archive>(MainPath, BasePath, PatchesPath, false);
 
 		gameVersion = OOT_UNKNOWN;
 

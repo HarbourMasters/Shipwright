@@ -21,7 +21,7 @@ namespace Ship
 	{
 	public:
 		Archive(const std::string& MainPath, bool enableWriting);
-		Archive(const std::string& MainPath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap = true);
+		Archive(const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap = true);
 		~Archive();
 
 		bool IsMainMPQValid();
@@ -42,6 +42,7 @@ namespace Ship
 		bool Unload();
 	private:
 		std::string MainPath;
+        std::string BasePath;
 		std::string PatchesPath;
 		std::map<std::string, HANDLE> mpqHandles;
 		std::vector<std::string> addedFiles;
@@ -51,5 +52,6 @@ namespace Ship
 		bool LoadMainMPQ(bool enableWriting, bool genCRCMap);
 		bool LoadPatchMPQs();
 		bool LoadPatchMPQ(const std::string& path);
+        void GenerateCRCMap();
 	};
 }

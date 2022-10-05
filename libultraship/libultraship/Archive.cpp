@@ -11,12 +11,13 @@
 #endif
 
 namespace Ship {
-	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting)
+	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", "", enableWriting)
 	{
 		mainMPQ = nullptr;
 	}
 
-	Archive::Archive(const std::string& MainPath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap) : MainPath(MainPath), PatchesPath(PatchesPath) {
+	Archive::Archive(const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap)
+        : MainPath(MainPath), BasePath(BasePath), PatchesPath(PatchesPath) {
 		mainMPQ = nullptr;
 		Load(enableWriting, genCRCMap);
 	}
@@ -320,8 +321,51 @@ namespace Ship {
 		return true;
 	}
 
+    void Archive::GenerateCRCMap() {
+        auto listFile = LoadFile("(listfile)", false);
+
+        std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
+
+        for (size_t i = 0; i < lines.size(); i++)
+        {
+            std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
+            std::string line2 = StringHelper::Replace(line, "\\", "/");
+
+            uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
+            uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
+            hashes[hash] = line;
+            hashes[hash2] = line2;
+        }
+    }
+
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
 		HANDLE mpqHandle = NULL;
+        HANDLE baseMpqHandle = NULL;
+#ifdef _WIN32
+        std::wstring wfullBasePath = std::filesystem::absolute(BasePath).wstring();
+#endif
+#if defined(__SWITCH__)
+        std::string fullBasePath = BasePath;
+#else
+        std::string fullBasePath = std::filesystem::absolute(BasePath).string();
+#endif
+        bool baseOtrLoaded = false;
+#ifdef _WIN32
+        if (SFileOpenArchive(wfullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
+        {
+#else
+        if (SFileOpenArchive(fullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
+        {
+#endif
+            SPDLOG_INFO("Opened base mpq file {}.", fullBasePath.c_str());
+            baseOtrLoaded = true;
+            mpqHandles[fullBasePath] = baseMpqHandle;
+            mainMPQ = baseMpqHandle;
+
+            if (genCRCMap) {
+                GenerateCRCMap();
+            }
+        }
 #ifdef _WIN32
 		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
 #endif
@@ -330,37 +374,31 @@ namespace Ship {
 #else
 		std::string fullPath = std::filesystem::absolute(MainPath).string();
 #endif
-
+        if (!baseOtrLoaded) {
 #ifdef _WIN32
-		if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+            if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 #else
-		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+            if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 #endif
 
 	#ifdef __SWITCH__
-			Switch::ThrowMissingOTR(fullPath);
+                Switch::ThrowMissingOTR(fullPath);
 	#endif
-			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
-			return false;
-		}
+                SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
+                return false;
+            }
+        
 
-		mpqHandles[fullPath] = mpqHandle;
-		mainMPQ = mpqHandle;
+            mpqHandles[fullPath] = mpqHandle;
+            mainMPQ = mpqHandle;
+        } else {
+            if (LoadPatchMPQ(fullPath)) {
+                SPDLOG_INFO("({}) Opened main MPQ as a patch onto Base", fullPath.c_str());
+            }
+        }
 
-		if (genCRCMap) {
-			auto listFile = LoadFile("(listfile)", false);
-
-			std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
-
-			for (size_t i = 0; i < lines.size(); i++) {
-				std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
-				std::string line2 = StringHelper::Replace(line, "\\", "/");
-
-				uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
-				uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
-				hashes[hash] = line;
-				hashes[hash2] = line2;
-			}
+        if (genCRCMap) {
+			GenerateCRCMap();
 		}
 
 		return true;
