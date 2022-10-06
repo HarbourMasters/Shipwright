@@ -84,6 +84,7 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_ITEM] * 4, pauseCtx->itemVtx);
 }
 
+// For enhancement "Item Use From Inventory"
 bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
