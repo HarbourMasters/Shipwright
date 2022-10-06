@@ -858,6 +858,7 @@ void Better_Select_UpdateMenu(SelectContext* this) {
 
     if (this->verticalInputAccumulator == 0) {
         if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
+            gSaveContext.isDebugWarp = 1;
             selectedScene = &this->betterScenes[this->currentScene];
             if (selectedScene->loadFunc != NULL) {
                 selectedScene->loadFunc(this, selectedScene->entrancePairs[this->pageDownIndex].entranceIndex);
