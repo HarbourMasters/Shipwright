@@ -50,7 +50,8 @@ SaveManager::SaveManager() {
         }
 
         info.randoSave = 0;
-        info.isMasterQuest = 0;
+        info.requiresMasterQuest = 0;
+        info.requiresOriginal = 0;
     }
 }
 
@@ -301,7 +302,8 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    fileMetaInfo[fileNum].isMasterQuest = gSaveContext.isMasterQuest;
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest;
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -448,7 +450,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 
-    gSaveContext.isMasterQuest = ResourceMgr_IsGameMasterQuest();
+    gSaveContext.isMasterQuest = CVar_GetS32("gMasterQuest", 0);
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -1280,7 +1282,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
-    fileMetaInfo[to].isMasterQuest = fileMetaInfo[from].isMasterQuest;
+    fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
+    fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

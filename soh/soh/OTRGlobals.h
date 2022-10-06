@@ -25,8 +25,13 @@ public:
     OTRGlobals();
     ~OTRGlobals();
 
+    bool HasMasterQuest();
+    bool HasOriginal();
+
 private:
 	void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
 };
 
 uint32_t IsGameMasterQuest();
@@ -45,8 +50,10 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-uint32_t ResourceMgr_GetGameVersion();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_GameHasMasterQuest();
+uint32_t ResourceMgr_GameHasOriginal();
+uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);

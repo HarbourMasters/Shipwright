@@ -80,9 +80,47 @@ OTRGlobals::OTRGlobals() {
     context = Ship::Window::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
+
+    hasMasterQuest = hasOriginal = false;
+
+    auto versions = context->GetResourceManager()->GetGameVersions();
+
+    for (uint32_t version : versions) {
+        switch (version) {
+            case OOT_PAL_MQ:
+            case OOT_NTSC_JP_MQ:
+            case OOT_NTSC_US_MQ:
+            case OOT_PAL_GC_MQ_DBG:
+                hasMasterQuest = true;
+                break;
+            case OOT_NTSC_10:
+            case OOT_NTSC_11:
+            case OOT_NTSC_12:
+            case OOT_PAL_10:
+            case OOT_PAL_11:
+            case OOT_NTSC_JP_GC_CE:
+            case OOT_NTSC_JP_GC:
+            case OOT_NTSC_US_GC:
+            case OOT_PAL_GC:
+            case OOT_PAL_GC_DBG1:
+            case OOT_PAL_GC_DBG2:
+                hasOriginal = true;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 OTRGlobals::~OTRGlobals() {
+}
+
+bool OTRGlobals::HasMasterQuest() {
+    return hasMasterQuest;
+}
+
+bool OTRGlobals::HasOriginal() {
+    return hasOriginal;
 }
 
 struct ExtensionEntry {
@@ -574,6 +612,14 @@ uint32_t IsGameMasterQuest() {
             SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
             return 0;
     }
+}
+
+extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
+    return OTRGlobals::Instance->HasMasterQuest();
+}
+
+extern "C" uint32_t ResourceMgr_GameHasOriginal() {
+    return OTRGlobals::Instance->HasOriginal();
 }
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {

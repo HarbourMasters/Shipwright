@@ -1,6 +1,8 @@
 #include "Archive.h"
 #include "Resource.h"
 #include "File.h"
+#include "Window.h"
+#include "ResourceMgr.h"
 #include "spdlog/spdlog.h"
 #include "Utils/StringHelper.h"
 #include "Lib/StrHash64.h"
@@ -338,6 +340,15 @@ namespace Ship {
         }
     }
 
+    void Archive::PushGameVersion() {
+        auto t = LoadFile("version", false);
+        if (!t->bHasLoadError)
+        {
+            uint32_t gameVersion = (*((uint32_t *)t->buffer.get()));
+            gameVersions.push_back(gameVersion);
+        }
+    }
+
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
 		HANDLE mpqHandle = NULL;
         HANDLE baseMpqHandle = NULL;
@@ -361,8 +372,10 @@ namespace Ship {
             baseOtrLoaded = true;
             mpqHandles[fullBasePath] = baseMpqHandle;
             mainMPQ = baseMpqHandle;
+            PushGameVersion();
 
-            if (genCRCMap) {
+            if (genCRCMap)
+            {
                 GenerateCRCMap();
             }
         }
@@ -391,8 +404,10 @@ namespace Ship {
 
             mpqHandles[fullPath] = mpqHandle;
             mainMPQ = mpqHandle;
+            PushGameVersion();
         } else {
             if (LoadPatchMPQ(fullPath)) {
+                PushGameVersion();
                 SPDLOG_INFO("({}) Opened main MPQ as a patch onto Base", fullPath.c_str());
             }
         }

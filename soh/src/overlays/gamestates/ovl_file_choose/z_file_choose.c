@@ -32,7 +32,14 @@ static s16 sWindowContentColors[2][3] = {
 };
 
 static int FileChoose_IsSaveCompatible(const SaveFileMetaInfo* restrict meta) {
-    return meta->isMasterQuest == ResourceMgr_IsGameMasterQuest();
+    bool valid = true;
+    if (meta->requiresMasterQuest) {
+        valid = valid && ResourceMgr_GameHasMasterQuest();
+    }
+    if (meta->requiresOriginal) {
+        valid = valid && ResourceMgr_GameHasOriginal();
+    }
+    return valid;
 }
 
 void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
@@ -1118,7 +1125,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
         }
         //Draw MQ label
-        if (Save_GetSaveMetaInfo(i)->isMasterQuest && Save_GetSaveMetaInfo(i)->valid) {
+        if (Save_GetSaveMetaInfo(i)->requiresMasterQuest && !Save_GetSaveMetaInfo(i)->randoSave && Save_GetSaveMetaInfo(i)->valid) {
             if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
@@ -1150,7 +1157,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
 
-        if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->isMasterQuest) {
+        if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
             gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
         }
     }

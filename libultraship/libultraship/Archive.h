@@ -37,6 +37,7 @@ namespace Ship
 		std::vector<SFILE_FIND_DATA> ListFiles(const std::string& searchMask) const;
 		bool HasFile(const std::string& searchMask) const;
 		const std::string* HashToString(uint64_t hash) const;
+        std::vector<uint32_t> gameVersions;
 	protected:
 		bool Load(bool enableWriting, bool genCRCMap);
 		bool Unload();
@@ -53,5 +54,6 @@ namespace Ship
 		bool LoadPatchMPQs();
 		bool LoadPatchMPQ(const std::string& path);
         void GenerateCRCMap();
+        void PushGameVersion();
 	};
 }
