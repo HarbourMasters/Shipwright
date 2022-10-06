@@ -287,114 +287,52 @@ void Gameplay_Init(GameState* thisx) {
         for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
             if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
                 break;
-            } 
-
-            else if (gSaveContext.isfirstindex == 0) {
-                gSaveContext.isfirstindex = 1;
+            } else if (gSaveContext.isFirstIndex == 0) {
+                gSaveContext.isFirstIndex = 1;
                 break;
-            }
-
-            else if (gSaveContext.issunsongload == 1) {
-                gSaveContext.issunsongload = 0;
+            } else if (gSaveContext.isSunSongLoad == 1) {
+                gSaveContext.isSunSongLoad = 0;
                 break;
-            }
-
-            else if (gSaveContext.isfaroreswind == 1) {
-                gSaveContext.isfaroreswind = 0;
+            } else if (gSaveContext.isFaroresWind == 1) {
+                gSaveContext.isFaroresWind = 0;
                 break;
-            }
-
-            else if (gSaveContext.isdebugwarp == 1) {
-                gSaveContext.isdebugwarp = 0;
+            } else if (gSaveContext.isDebugWarp == 1) {
+                gSaveContext.isDebugWarp = 0;
                 break;
-            }
-
-            else if (gSaveContext.isvoidoutordie == 1) {
-                gSaveContext.isvoidoutordie = 0;
+            } else if (gSaveContext.isVoidOutOrDie == 1) {
+                gSaveContext.isVoidOutOrDie = 0;
                 break;
-            }
-
-            else if (gSaveContext.isHorseEvent == 1) {
+            } else if (gSaveContext.isHorseEvent == 1) {
                 gSaveContext.isHorseEvent = 0;
                 break;
-            }
-
-            else if (gSaveContext.entranceOverrides[i].vanillaIndex == gSaveContext.entranceIndex) {
+            } else if (gSaveContext.entranceOverrides[i].vanillaIndex == gSaveContext.entranceIndex) {
                 if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x0578) {
-                    gSaveContext.isyounglinkfountain = 1;
+                    gSaveContext.isYoungLinkFountain = 1;
                     gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
-
-                } 
-
-                else if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x04C2) {
-                    gSaveContext.isyounglinkfountain = 0;
+                } else if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x04C2) {
+                    gSaveContext.isYoungLinkFountain = 0;
                     gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
-                }
-                else if (gSaveContext.entranceIndex == 0x00340) {
-                    if (gSaveContext.isyounglinkfountain == 1) {
+                } else if (gSaveContext.entranceIndex == 0x00340) {
+                    if (gSaveContext.isYoungLinkFountain == 1) {
                         gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                         break;
-                    }
-
-                    else {
+                    } else {
                         for (i = 0; i < 250; i++) {
                             if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x03E8) {
                                 gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                                 break;
-                            }
-                            else {
+                            } else {
                                 continue;
                             }
                         }
                         break;
                     }
-
-                } 
-                else {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                }
-
-
-            } 
-
-            else if (i == 249) {
-                break;
-            }
-            else {
-                    continue;
-                }
-        }
-        if (gSaveContext.entranceIndex == 0x457) {//deku tree warp  
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0209) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
                 } else {
-                    continue;
-                }
-            }
-        }
-        else if (gSaveContext.entranceIndex == 0x47A) {//dc warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0242) {
                     gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
                 }
-            }
-        } else if (gSaveContext.entranceIndex == 0x10E) {//jabu warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0221) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
                 } else if (i == 249) {
                     break;
                 } else {
@@ -2130,7 +2068,7 @@ void Gameplay_TriggerVoidOut(GlobalContext* globalCtx) {
     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
     globalCtx->fadeTransition = 2;
     if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
-        gSaveContext.isvoidoutordie = 1;
+        gSaveContext.isVoidOutOrDie = 1;
     }
     
 }
@@ -2157,7 +2095,7 @@ void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
     Gameplay_SetupRespawnPoint(globalCtx, RESPAWN_MODE_DOWN, 0xDFF);
     Gameplay_LoadToLastEntrance(globalCtx);
     if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
-        gSaveContext.isvoidoutordie = 1;
+        gSaveContext.isVoidOutOrDie = 1;
     }
 }
 
