@@ -3675,23 +3675,36 @@ void GenerateRandomizerImgui() {
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
                                         CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
-
-    // todo: this efficently when we build out cvar array support
-    std::set<RandomizerCheck> excludedLocations;
-    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
-    std::string excludedLocationString;
-    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+    if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+        // If both OTRs are loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", 0);
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVar_GetS32("gRandomizeMqDungeonCount", 0);
+    } else if (OTRGlobals::Instance->HasMasterQuest()) {
+        // If only Master Quest is loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
+    } else {
+        // If only Original Quest is loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations);
+        // todo: this efficently when we build out cvar array support
+        std::set<RandomizerCheck> excludedLocations;
+        std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+        std::string excludedLocationString;
+        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        }
 
-    CVar_SetS32("gRandoGenerating", 0);
-    CVar_Save();
-    CVar_Load();
+        RandoMain::GenerateRando(cvarSettings, excludedLocations);
 
-    generated = 1;
-}
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_Save();
+        CVar_Load();
+
+        generated = 1;
+    }
 
 void DrawRandoEditor(bool& open) {
     if (generated) {
@@ -3701,11 +3714,6 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
-        return;
-    }
-
-    if (ResourceMgr_IsGameMasterQuest()) {
-        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
@@ -3722,6 +3730,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
     const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
+    const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3986,6 +3995,29 @@ void DrawRandoEditor(bool& open) {
                 }
 
                 UIWidgets::PaddedSeparator();
+
+                //MQ Dungeons
+                if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+                    ImGui::PushItemWidth(-FLT_MIN);
+                    ImGui::Text("Master Quest Dungeons");
+                    UIWidgets::InsertHelpHoverText(
+                        "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
+                        "\n"
+                        "None - All Dungeons will be their Vanilla versions.\n"
+                        "\n"
+                        "Set Number - Select a number of dungeons that will be their Master Quest versions"
+                        "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
+                        "\n"
+                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
+                    );
+                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, 1);
+                    ImGui::PopItemWidth();
+                    if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
+                            "gRandomizeMqDungeonCount", 1, 12, "", 12, true);
+                    }
+                }
 
                 ImGui::EndChild();
 

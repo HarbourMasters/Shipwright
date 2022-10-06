@@ -302,8 +302,10 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest;
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest;
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest
+        || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0;
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest
+        || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12;
 }
 
 void SaveManager::InitFile(bool isDebug) {
