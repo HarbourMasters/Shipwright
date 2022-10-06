@@ -183,6 +183,8 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+
     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
     SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
         uint16_t scene;
@@ -236,6 +238,8 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("price", merchantPrices[i].second);
         });
     });
+
+    SaveManager::Instance->SaveData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
 
     std::vector<uint16_t> masterQuestDungeons;
     for (const auto scene : randomizer->masterQuestDungeons) {
@@ -317,10 +321,8 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest
-        || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0;
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest
-        || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12;
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest || gSaveContext.mqDungeonCount > 0;
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest || gSaveContext.mqDungeonCount < 12;
 }
 
 void SaveManager::InitFile(bool isDebug) {

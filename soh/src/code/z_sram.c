@@ -298,7 +298,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     }
 
     if (CVar_GetS32("gRandomizer", 0) != 0 &&
-        strcmp(CVar_GetString("gSpoilerLog", ""), "") != 0) {
+        strcmp(CVar_GetString("gSpoilerLog", ""), "") != 0 && 
+        ((Randomizer_GetSettingValue(RSK_MQ_DUNGEON_COUNT) > 0 && !ResourceMgr_GameHasMasterQuest())
+            || (Randomizer_GetSettingValue(RSK_MQ_DUNGEON_COUNT) != 12 && !ResourceMgr_GameHasOriginal()))) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
@@ -539,7 +541,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.itemGetInf[3] |= 0x8000;  // Obtained Mask of Truth
             gSaveContext.eventChkInf[8] |= 0x8000; // sold all masks
         }
-    }
+        }
 
     Save_SaveFile();
 }
