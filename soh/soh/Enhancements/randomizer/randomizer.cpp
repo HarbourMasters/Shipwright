@@ -4046,19 +4046,19 @@ void DrawRandoEditor(bool& open) {
 
                 // Shuffle Dungeon Entrances
                 // RANDOTODO: Add option to shuffle Ganon's Castle
-                SohImGui::EnhancementCheckbox("Shuffle Dungeon Entrances", "gRandomizeShuffleDungeonsEntrances");
-                InsertHelpHoverText(
+                UIWidgets::EnhancementCheckbox("Shuffle Dungeon Entrances", "gRandomizeShuffleDungeonsEntrances");
+                UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds."
                     "However, Ganon's Castle is not shuffled.\n"
                     "\n"
                     "Additionally, the entrance of Deku Tree, Fire Temple and Bottom of the Well are opened for both child and adult."
                 );
 
-                PaddedSeparator();
+                UIWidgets::PaddedSeparator();
 
                 // Shuffle Overworld Entrances
-                SohImGui::EnhancementCheckbox("Shuffle Overworld Entrances", "gRandomizeShuffleOverworldEntrances");
-                InsertHelpHoverText(
+                UIWidgets::EnhancementCheckbox("Shuffle Overworld Entrances", "gRandomizeShuffleOverworldEntrances");
+                UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld areas.\n"
                     "\n"
                     "Some entrances are unshuffled to avoid issues:\n"
@@ -4067,20 +4067,20 @@ void DrawRandoEditor(bool& open) {
                     "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)."
                 );
 
-                PaddedSeparator();
+                UIWidgets::PaddedSeparator();
 
                 // Shuffle Interior Entrances
                 // RANDOTODO: Add ALL option. Below is 3DS "Simple" option
-                SohImGui::EnhancementCheckbox("Shuffle Interior Entrances", "gRandomizeShuffleInteriorsEntrances");
-                InsertHelpHoverText(
+                UIWidgets::EnhancementCheckbox("Shuffle Interior Entrances", "gRandomizeShuffleInteriorsEntrances");
+                UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of interior entrances which contains most Houses and all Great Fairies."
                 );
 
-                PaddedSeparator();
+                UIWidgets::PaddedSeparator();
 
                 // Shuffle Grotto Entrances
-                SohImGui::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances");
-                InsertHelpHoverText(
+                UIWidgets::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances");
+                UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
                 );
 
