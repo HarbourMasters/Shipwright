@@ -267,6 +267,19 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     }
 }
 
+void Entrance_Entrance_HandleEntranceOverrideForIndex(s16 vanillaIndex, s16 overrideVanillaIndex) {
+    for (s32 i = 0; i < 250; i++) {
+        if (gSaveContext.entranceOverrides[i].vanillaIndex == overrideVanillaIndex) {
+            gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
+            break;
+        } else if (i == 249) {
+            break;
+        } else {
+            continue;
+        }
+    }
+}
+
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
@@ -333,89 +346,33 @@ void Gameplay_Init(GameState* thisx) {
                     gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
                     break;
                 }
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
+            } else if (i == 249) {
+                break;
+            } else {
+                continue;
             }
+        }
+
+        if (gSaveContext.entranceIndex == 0x457) {//deku tree warp
+            Entrance_HandleEntranceOverrideForIndex(0x457, 0x0209); // outside deku tree
+        } else if (gSaveContext.entranceIndex == 0x47A) {//dc warp
+            Entrance_HandleEntranceOverrideForIndex(0x47A, 0x0242); // outside dc
+        } else if (gSaveContext.entranceIndex == 0x10E) {//jabu warp
+            Entrance_HandleEntranceOverrideForIndex(0x10E, 0x0221); // outside jabu
         } else if (gSaveContext.entranceIndex == 0x608) {//forest temple warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0215) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x608, 0x0215); // outside forest temple
         } else if (gSaveContext.entranceIndex == 0x564) {//fire temple warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x024A) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x564, 0x024A); // outside fire temple
         } else if (gSaveContext.entranceIndex == 0x60C) {//water temple warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x021D) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x60C, 0x021D); // outside water temple
         } else if (gSaveContext.entranceIndex == 0x580) {//shadow temple warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0205) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x580, 0x0205); // outside shadow temple
         } else if (gSaveContext.entranceIndex == 0x610) {//spirit temple warp
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x01E1) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x610, 0x01E1); // outside spirit temple
         } else if (gSaveContext.entranceIndex == 0x1D9) { // zora river desync from hf
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0EA) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x1D9, 0x0EA);
         } else if (gSaveContext.entranceIndex == 0x311) { // zora river desync from river
-            for (i = 0; i < 250; i++) {
-                if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x0181) {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (i == 249) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            Entrance_HandleEntranceOverrideForIndex(0x311, 0x0181);
         }
     } 
 
