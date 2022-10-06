@@ -38,6 +38,6 @@ void PauseMapMark_Draw(GlobalContext* globalCtx);
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
 // For enhancement "Item Use From Inventory"
 bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx);
-void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot);
+void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot);
 
 #endif

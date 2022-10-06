@@ -341,7 +341,7 @@ s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
 s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
 // For enhancement "Item Use From Inventory"
-void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot);
+void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot);
 void ItemUseFromInventory_RestoreCLeft();
 bool ItemUseFromInventory_BottleWasUsed();
 void ItemUseFromInventory_StopBottleFrameCount();
