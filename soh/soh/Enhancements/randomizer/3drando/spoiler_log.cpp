@@ -296,16 +296,16 @@ static void WriteLocation(
 }
 
 //Writes a shuffled entrance to the specified node
-static void WriteShuffledEntrance(
-    Entrance* entrance, const bool withPadding = false) {
-    // Entrance* entrance = Entrances(EntranceKey);
-    int16_t originalIndex = entrance->GetIndex();
-    int16_t destinationIndex = entrance->GetReverse()->GetIndex();
-    int16_t originalBlueWarp = entrance->GetBlueWarp();
-    int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
-    int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
-    std::string name = entrance->getnewregion();
-    std::string name2 = entrance->GetName();
+static void WriteShuffledEntrance(Entrance* entrance) {
+  // Entrance* entrance = Entrances(EntranceKey);
+  int16_t originalIndex = entrance->GetIndex();
+  int16_t destinationIndex = entrance->GetReverse()->GetIndex();
+  // int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+  int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+  std::string name = entrance->GetName();
+  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+
   // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
@@ -313,9 +313,8 @@ static void WriteShuffledEntrance(
         default:
             jsonData["Entrances"][std::to_string(originalIndex)] = replacementIndex;
             jsonData["Entrances"][std::to_string(replacementDestinationIndex)] = destinationIndex;
-            jsonData["EntrancesMap"][name2] = name;
+            jsonData["EntrancesMap"][name] = text;
             break;
-
     }
 }
 
@@ -534,7 +533,7 @@ static void WritePlaythrough() {
 static void WriteShuffledEntrances() {
   for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
     for (Entrance* entrance : playthroughEntrances[i]) {
-      WriteShuffledEntrance(entrance, true);
+      WriteShuffledEntrance(entrance);
     }
 }
 }
