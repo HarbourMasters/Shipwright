@@ -10467,14 +10467,14 @@ static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
 // Vars for "Item Use From Inventory" enhancement
-s32 inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
-u16 inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
-bool itemWasUsedFromInventory = false;
+ItemID        inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
+InventorySlot inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
+bool itemWasUsedFromInventory   = false;
 bool bottleWasUsedFromInventory = false;
-bool usingItemFromInventory = false;
-s16 usedBottleFrameCount = 0;
+bool usingItemFromInventory     = false;
+u8   usedBottleFrameCount       = 0;
 
-void ItemUseFromInventory_SetItemAndSlot(s32 item, u16 slot) {
+void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
     inventoryUsedItem = item;
     inventoryUsedSlot = slot;
     itemWasUsedFromInventory = true;
