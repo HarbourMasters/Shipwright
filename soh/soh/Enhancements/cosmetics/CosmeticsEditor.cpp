@@ -9,6 +9,13 @@
 
 #include "../../UIWidgets.hpp"
 
+extern "C" {
+#include <z64.h>
+#include "objects/object_link_boy/object_link_boy.h"
+void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+}
+
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
@@ -182,6 +189,54 @@ void LoadRainbowColor(bool& open) {
     }
 }
 
+void PatchCosmeticGfx() {
+    if (CVar_GetS32("gUseMirrorShieldColors", 0)) {
+        Color_RGB8 mirrorDefaultColor = {MirrorShieldMirror.DefaultColor.w, MirrorShieldMirror.DefaultColor.x, MirrorShieldMirror.DefaultColor.y};
+        Color_RGB8 mirror = CVar_GetRGB(MirrorShieldMirror.CvarName.c_str(), mirrorDefaultColor);
+        Color_RGB8 borderDefaultColor = {MirrorShieldBorder.DefaultColor.w, MirrorShieldBorder.DefaultColor.x, MirrorShieldBorder.DefaultColor.y};
+        Color_RGB8 border = CVar_GetRGB(MirrorShieldBorder.CvarName.c_str(), borderDefaultColor);
+        Color_RGB8 emblemDefaultColor = {MirrorShieldEmblem.DefaultColor.w, MirrorShieldEmblem.DefaultColor.x, MirrorShieldEmblem.DefaultColor.y};
+        Color_RGB8 emblem = CVar_GetRGB(MirrorShieldEmblem.CvarName.c_str(), emblemDefaultColor);
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Mirror",   34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Border",   56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Emblem",   330, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Mirror",    66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Border",    34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Emblem",    270, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Mirror",        34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Border",        56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Emblem",        258, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Mirror",         66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Border",         34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Emblem",         206, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Mirror", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Border", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Emblem", 324, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Mirror",  222, gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Border",  190, gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Emblem",  266, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Emblem");
+    }
+}
+
 void Table_InitHeader(bool has_header = true) {
     if (has_header) {
         ImGui::TableHeadersRow();
@@ -310,7 +365,8 @@ void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     //Disabled for now. feature not done and several fixes needed to be merged.
     //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
 }
-void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
+bool DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
+    bool changed = false;
     for (s16 i = 0; i < SectionSize; i++) {
         CosmeticsColorIndividual* ThisElement = ColorSection[i].Element;
         const std::string Tooltip = ThisElement->ToolTip;
@@ -330,10 +386,14 @@ void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
             Table_NextLine();
         }
         Draw_HelpIcon(Tooltip.c_str());
-        UIWidgets::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
+        if (UIWidgets::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine)) {
+            changed = true;
+        }
     }
+    return changed;
 }
-void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize, bool isAllCosmetics = false){
+bool DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize, bool isAllCosmetics = false){
+    bool changed = false;
     std::string TableName = Identifier+"_Table";
     std::string Col1Name = Identifier+"_Col1";
     std::string Col2Name = Identifier+"_Col2";
@@ -354,6 +414,7 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
             CVar_SetS32("gUseKeeseCol", 1);
             CVar_SetS32("gUseDogsCol", 1);
             CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseMirrorShieldColors", 1);
             CVar_SetS32("gUseGauntletsCol", 1);
             CVar_SetS32("gUseArrowsCol", 1);
             CVar_SetS32("gUseSpellsCol", 1);
@@ -361,6 +422,7 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
             CVar_SetS32("gUseTrailsCol", 1);
             CVar_SetS32("gCCparated", 1);
             GetRandomColorRGB(ColorSection, SectionSize);
+            changed = true;
         }
         UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
@@ -370,10 +432,12 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
     #endif
             GetDefaultColorRGB(ColorSection, SectionSize);
+            changed = true;
         }
         UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
         UIWidgets::Tooltip(Tooltip_RNG.c_str());
         ImGui::EndTable();
+        return changed;
     }
 }
 
@@ -411,7 +475,9 @@ void Draw_Npcs(){
     }
 }
 void Draw_ItemsSkills(){
-    DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section));
+    if (DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section))) {
+        PatchCosmeticGfx();
+    };
     UIWidgets::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
     UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0)) {
@@ -437,6 +503,27 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 2);
         Table_InitHeader();
         DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+        ImGui::EndTable();
+    }
+
+    if (UIWidgets::EnhancementCheckbox("Custom mirror shield colors", "gUseMirrorShieldColors")) {
+        PatchCosmeticGfx();
+    }
+    UIWidgets::Tooltip(
+        "Enable/Disable custom Mirror shield colors\nIf disabled you will have original colors for the Mirror shield.");
+    if (CVar_GetS32("gUseMirrorShieldColors", 0)) {
+        if (DrawRandomizeResetButton("Mirror Shield", MirrorShield_Section, SECTION_SIZE(MirrorShield_Section))) {
+            PatchCosmeticGfx();
+        }
+    };
+    if (CVar_GetS32("gUseMirrorShieldColors", 0) && ImGui::BeginTable("tableMirrorShield", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Border/Back", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Mirror", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Emblem", FlagsCell, TablesCellsWidth / 3);
+        Table_InitHeader();
+        if (DrawColorSection(MirrorShield_Section, SECTION_SIZE(MirrorShield_Section))) {
+            PatchCosmeticGfx();
+        }
         ImGui::EndTable();
     }
 
@@ -875,7 +962,9 @@ void Draw_HUDButtons(){
     }
 }
 void Draw_General(){
-    DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section), true);
+    if (DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section), true)) {
+        PatchCosmeticGfx();
+    }
     if (ImGui::BeginTable("tableScheme", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
         ImGui::TableSetupColumn("N64 Scheme", FlagsCell, TablesCellsWidth);
         ImGui::TableSetupColumn("GameCube Scheme", FlagsCell, TablesCellsWidth);
@@ -1025,4 +1114,5 @@ void InitCosmeticsEditor() {
     SohImGui::AddWindow("Enhancements", "Rainbowfunction", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
+    PatchCosmeticGfx();
 }
