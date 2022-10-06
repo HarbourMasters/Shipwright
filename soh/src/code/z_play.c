@@ -267,7 +267,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     }
 }
 
-void Entrance_Entrance_HandleEntranceOverrideForIndex(s16 vanillaIndex, s16 overrideVanillaIndex) {
+void Entrance_HandleEntranceOverrideForIndex(s16 vanillaIndex, s16 overrideVanillaIndex) {
     for (s32 i = 0; i < 250; i++) {
         if (gSaveContext.entranceOverrides[i].vanillaIndex == overrideVanillaIndex) {
             gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
