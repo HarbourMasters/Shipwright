@@ -295,6 +295,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Randomizer_LoadSettings(fileLoc);
         Randomizer_LoadHintLocations(fileLoc);
         Randomizer_LoadRequiredTrials(fileLoc);
+        Randomizer_LoadMasterQuestDungeons(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
         Randomizer_LoadMerchantMessages(fileLoc);
         fileSelectSpoilerFileLoaded = true;

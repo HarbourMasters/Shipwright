@@ -182,6 +182,13 @@ void SaveManager::LoadRandomizerVersion2() {
             randomizer->merchantPrices[rc] = price;
         });
     });
+
+    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
+    SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
+        uint16_t scene;
+        SaveManager::Instance->LoadData("", scene);
+        randomizer->masterQuestDungeons.emplace(scene);
+    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -228,6 +235,14 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("check", merchantPrices[i].first);
             SaveManager::Instance->SaveData("price", merchantPrices[i].second);
         });
+    });
+
+    std::vector<uint16_t> masterQuestDungeons;
+    for (const auto scene : randomizer->masterQuestDungeons) {
+        masterQuestDungeons.push_back(scene);
+    }
+    SaveManager::Instance->SaveArray("masterQuestDungeons", masterQuestDungeons.size(), [&](size_t i) {
+        SaveManager::Instance->SaveData("", masterQuestDungeons[i]);
     });
 }
 

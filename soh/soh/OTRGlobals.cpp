@@ -588,30 +588,24 @@ extern "C" uint32_t ResourceMgr_GetGameVersion()
 }
 
 uint32_t IsGameMasterQuest() {
-    uint32_t version = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
-
-    switch (version) {
-        case OOT_PAL_MQ:
-        case OOT_NTSC_JP_MQ:
-        case OOT_NTSC_US_MQ:
-        case OOT_PAL_GC_MQ_DBG:
-            return 1;
-        case OOT_NTSC_10:
-        case OOT_NTSC_11:
-        case OOT_NTSC_12:
-        case OOT_PAL_10:
-        case OOT_PAL_11:
-        case OOT_NTSC_JP_GC_CE:
-        case OOT_NTSC_JP_GC:
-        case OOT_NTSC_US_GC:
-        case OOT_PAL_GC:
-        case OOT_PAL_GC_DBG1:
-        case OOT_PAL_GC_DBG2:
-            return 0;
-        default:
-            SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
-            return 0;
+    uint32_t value = 0;
+    if (OTRGlobals::Instance->HasMasterQuest()) {
+        if (!OTRGlobals::Instance->HasOriginal()) {
+            value = 1;
+        } else if (gSaveContext.isMasterQuest) {
+            value = 1;
+        } else {
+            value = 0;
+            if (gSaveContext.n64ddFlag) {
+                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
+                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(gGlobalCtx->sceneNum)) {
+                        value = 1;
+                    }
+                }
+            }
+        }
     }
+    return value;
 }
 
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
@@ -1685,6 +1679,10 @@ extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
 
 extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
+extern "C" void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadMasterQuestDungeons(spoilerFileName);
 }
 
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
