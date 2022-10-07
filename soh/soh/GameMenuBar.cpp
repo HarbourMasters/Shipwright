@@ -117,8 +117,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInvertYAxis", 1);
         // Right Stick Aiming
         CVar_SetS32("gRightStickAiming", 0);
-        // Auto-Center First Person View
-        CVar_SetS32("gAutoCenterView", 0);
+        // Disable Auto-Center First Person View
+        CVar_SetS32("gDisableAutoCenterView", 0);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);
@@ -1405,6 +1405,8 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Create a new save if none", "gCreateNewSave", true, false);
                 UIWidgets::Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
             };
+            UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
+            UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));

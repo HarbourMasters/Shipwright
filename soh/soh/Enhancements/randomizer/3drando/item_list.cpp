@@ -278,6 +278,16 @@ Item& ItemTable(const uint32_t itemKey) {
     return itemTable[itemKey];
 }
 
+Item& ItemFromGIID(const int giid) {
+    uint32_t index = 0;
+    while (index < KEY_ENUM_MAX) {
+        if (itemTable[index].GetItemID() == giid) {
+            return itemTable[index];
+        }
+        index++;
+    }
+}
+
 //This function should only be used to place items containing hint text
 //at gossip stone locations.
 void NewItem(const uint32_t itemKey, const Item item) {

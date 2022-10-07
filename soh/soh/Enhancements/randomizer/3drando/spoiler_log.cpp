@@ -677,8 +677,38 @@ static void WriteAllLocations(int language) {
 
         // Eventually check for other things here like fake name
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-          jsonData["locations"][location->GetName()]["item"] = placedItemName;
-          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
+            if (location->GetPlacedItemKey() == ICE_TRAP && location->IsCategory(Category::cShop)) {
+                switch (language) {
+                    case 0:
+                    default:
+                        jsonData["locations"][location->GetName()]["model"] =
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                        jsonData["locations"][location->GetName()]["trickName"] = 
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
+                        break;
+                    case 2:
+                        jsonData["locations"][location->GetName()]["model"] =
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                        jsonData["locations"][location->GetName()]["trickName"] =
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
+                        break;
+                }
+            }
+            jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else if (location->GetPlacedItemKey() == ICE_TRAP && iceTrapModels.contains(location->GetRandomizerCheck())) {
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
+            switch (language) {
+                case 0:
+                default:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                    break;
+            }
         } else {
           jsonData["locations"][location->GetName()] = placedItemName;
         }
