@@ -334,6 +334,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gGlobalCtx->sceneLoadFlag = 0x14;
     gGlobalCtx->fadeTransition = 11;
     gSaveContext.nextTransition = 11;
+    gSaveContext.isDebugWarp = 1;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -345,6 +346,7 @@ static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
             gGlobalCtx->fadeTransition = 2;
             gSaveContext.nextTransition = 2;
+            gSaveContext.isVoidOutOrDie = 1;
     } else {
         SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
@@ -358,6 +360,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         gGlobalCtx->sceneLoadFlag = 0x14;
         gGlobalCtx->fadeTransition = 11;
         gSaveContext.nextTransition = 11;
+        gSaveContext.isVoidOutOrDie = 1;
     } else {
         SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
         return CMD_FAILED;
