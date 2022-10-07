@@ -27,16 +27,8 @@ std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
     return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(Path.c_str());
 }
 
-std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
-    std::string Path = path;
-    if (IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
-}
+// Forward Declaration of function declared in OTRGlobals.cpp
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
 
 bool Scene_CommandSpawnList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {

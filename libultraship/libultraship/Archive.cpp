@@ -350,33 +350,35 @@ namespace Ship {
     }
 
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
-		HANDLE mpqHandle = NULL;
-        HANDLE baseMpqHandle = NULL;
+        HANDLE mpqHandle = NULL;
+        bool baseOtrLoaded = false;
+        if (!BasePath.empty()) {
+            HANDLE baseMpqHandle = NULL;
 #ifdef _WIN32
-        std::wstring wfullBasePath = std::filesystem::absolute(BasePath).wstring();
+            std::wstring wfullBasePath = std::filesystem::absolute(BasePath).wstring();
 #endif
 #if defined(__SWITCH__)
-        std::string fullBasePath = BasePath;
+            std::string fullBasePath = BasePath;
 #else
-        std::string fullBasePath = std::filesystem::absolute(BasePath).string();
+            std::string fullBasePath = std::filesystem::absolute(BasePath).string();
 #endif
-        bool baseOtrLoaded = false;
 #ifdef _WIN32
-        if (SFileOpenArchive(wfullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
-        {
-#else
-        if (SFileOpenArchive(fullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
-        {
-#endif
-            SPDLOG_INFO("Opened base mpq file {}.", fullBasePath.c_str());
-            baseOtrLoaded = true;
-            mpqHandles[fullBasePath] = baseMpqHandle;
-            mainMPQ = baseMpqHandle;
-            PushGameVersion();
-
-            if (genCRCMap)
+            if (SFileOpenArchive(wfullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
             {
-                GenerateCRCMap();
+#else
+            if (SFileOpenArchive(fullBasePath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &baseMpqHandle))
+            {
+#endif
+                SPDLOG_INFO("Opened base mpq file {}.", fullBasePath.c_str());
+                baseOtrLoaded = true;
+                mpqHandles[fullBasePath] = baseMpqHandle;
+                mainMPQ = baseMpqHandle;
+                PushGameVersion();
+
+                if (genCRCMap)
+                {
+                    GenerateCRCMap();
+                }
             }
         }
 #ifdef _WIN32
