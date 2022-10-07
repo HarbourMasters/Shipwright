@@ -27,6 +27,11 @@ void BootCommands_Init()
     CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
 	CVar_RegisterS32("gInvertYAxis", 1);
     CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
+    if (ResourceMgr_IsGameMasterQuest()) {
+        CVar_SetS32("gRandomizer", 0);
+    } else {
+        CVar_RegisterS32("gRandomizer", 0);
+    }
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

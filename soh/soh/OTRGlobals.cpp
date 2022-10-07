@@ -1660,6 +1660,11 @@ extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
+extern "C" CustomMessageEntry Randomizer_GetIceTrapMessage() {
+    u16 iceTrapTextId = rand() % NUM_ICE_TRAP_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
@@ -1691,57 +1696,15 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    s16 getItemModIndex;
-    RandomizerCheck randomizerCheck = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
-    // if we got unknown check here, we don't need to do anything else, just return the ogId.
-    if (randomizerCheck == RC_UNKNOWN_CHECK) {
-        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
-    }
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromActor(actorId, sceneNum, actorParams, ogId);
-
-    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
-        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-    }
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    s16 getItemModIndex;
-
-    // if we got unknown check here, we don't need to do anything else, just return the ogId.
-    if (randomizerCheck == RC_UNKNOWN_CHECK) {
-        return ItemTable_RetrieveEntry(MOD_NONE, ogId);
-    }
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromKnownCheck(randomizerCheck, ogId);
-
-    if (OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck) != CAN_OBTAIN) {
-        return ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-    }
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
-    s16 getItemModIndex;
-    if (OTRGlobals::Instance->gRandomizer->CheckContainsVanillaItem(randomizerCheck)) {
-        getItemModIndex = MOD_NONE;
-    } else {
-        getItemModIndex = MOD_RANDOMIZER;
-    }
-    s16 itemID = OTRGlobals::Instance->gRandomizer->GetItemIdFromKnownCheck(randomizerCheck, ogId);
-
-    return ItemTable_RetrieveEntry(getItemModIndex, itemID);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
 }
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
@@ -1768,8 +1731,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            messageEntry =
-                Randomizer_GetCustomGetItemMessage(GET_PLAYER(globalCtx));
+            Player* player = GET_PLAYER(globalCtx);
+            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+                messageEntry = Randomizer_GetIceTrapMessage();
+            } else {
+                messageEntry = Randomizer_GetCustomGetItemMessage(player);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
