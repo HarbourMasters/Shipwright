@@ -719,7 +719,6 @@ void Play_Update(PlayState* play) {
 
     if ((HREG(81) == 18) && (HREG(82) < 0)) {
         HREG(82) = 0;
-        ActorOverlayTable_LogPrint();
     }
 
     if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {

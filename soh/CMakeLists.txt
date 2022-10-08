@@ -663,7 +663,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"version;"
 			"setupapi"
 		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32") 
+	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
@@ -750,7 +750,7 @@ nx_generate_nacp(Ship.nacp
    AUTHOR "${PROJECT_TEAM}"
    VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
 )
- 
+
 nx_create_nro(soh
     NACP Ship.nacp
     ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg

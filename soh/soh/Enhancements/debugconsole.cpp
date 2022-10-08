@@ -3,6 +3,7 @@
 #include <Utils.h>
 #include "savestates.h"
 #include <Console.h>
+#include "soh/ActorDB.h"
 
 #include <vector>
 #include <string>
@@ -47,7 +48,18 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
 
     Player* player = GET_PLAYER(gPlayState);
     PosRot spawnPoint;
-    const s16 actorId = std::stoi(args[1]);
+    const s16 nameId = ActorDB::Instance->RetrieveId(args[1]);
+    s16 actorId = 0;
+    if (nameId == -1) {
+        try {
+            actorId = std::stoi(args[1]);
+        } catch (std::invalid_argument const& ex) {
+            Ship::GetConsole()->SendErrorMessage("Invalid actor ID");
+            return CMD_FAILED;
+        }
+    } else {
+        actorId = nameId;
+    }
     const s16 params = std::stoi(args[2]);
 
     spawnPoint = player->actor.world;
@@ -1428,7 +1440,7 @@ void DebugConsole_Init(void) {
         { "Item ID", LUS::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", LUS::ArgumentType::NUMBER },
+    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor name/id", LUS::ArgumentType::NUMBER }, // TODO there should be an actor_id arg type
         { "data", LUS::ArgumentType::NUMBER },
         { "x", LUS::ArgumentType::PLAYER_POS, true },
         { "y", LUS::ArgumentType::PLAYER_POS, true },
