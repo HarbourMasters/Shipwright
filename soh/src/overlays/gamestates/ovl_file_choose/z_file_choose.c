@@ -1421,7 +1421,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
         }
         //Draw MQ label
-        if (Save_GetSaveMetaInfo(i)->isMasterQuest) {
+        if (Save_GetSaveMetaInfo(i)->isMasterQuest && Save_GetSaveMetaInfo(i)->valid) {
             if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
@@ -1921,8 +1921,8 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
-    Randomizer_LoadMerchantMessages("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadMerchantMessages("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

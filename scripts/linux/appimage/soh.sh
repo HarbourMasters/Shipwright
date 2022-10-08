@@ -25,6 +25,10 @@ while [[ ! -e "$SHIP_HOME"/oot.otr ]]; do
 			ROM=GC_NMQ_D;;
 		0227d7c0074f2d0ac935631990da8ec5914597b4)
 			ROM=GC_NMQ_PAL_F;;
+		50bebedad9e0f10746a52b07239e47fa6c284d03)
+			ROM=GC_MQ_D;;
+		079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+			ROM=GC_MQ_D;;	
 		*)
   			if [ -n "$ZENITY" ]; then
 				zenity --error --timeout=10 --text="ROM hash <b>$ROMHASH</b> does not match" --title="Incorrect ROM file" --width=500 --width=200
