@@ -1953,7 +1953,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		TARGET ${PROJECT_NAME}
 		PRE_BUILD
 		COMMANDS
-		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_CURRENT_SOURCE_DIR}/>src\\boot\\build.c +,,
+		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
 	)
 endif()
 ################################################################################
