@@ -6248,23 +6248,21 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     }
                 }
 
-                s32 drop = giEntry.objectId;
+                // Skip cutscenes from picking up items when they come from bushes/rocks/etc, but nowhere else.
+                uint8_t skipItemCutscene = CVar_GetS32("gFastDrops", 0) && interactedActor->id == ACTOR_EN_ITEM00 &&
+                                     interactedActor->params != 6 && interactedActor->params != 17;
 
-                if (gSaveContext.n64ddFlag || (globalCtx->sceneNum == SCENE_BOWLING) ||
-                    !(CVar_GetS32("gFastDrops", 0) &&
-                      ((drop == OBJECT_GI_BOMB_1) || (drop == OBJECT_GI_NUTS) || (drop == OBJECT_GI_STICK) ||
-                       (drop == OBJECT_GI_SEED) || (drop == OBJECT_GI_MAGICPOT) || (drop == OBJECT_GI_ARROW))) &&
-                        (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)) {
+                // Same as above but for rando. We need this specifically for rando because we need to be enable the cutscenes everywhere else in the game
+                // because the items are randomized and thus it's important to show the get item animation.
+                uint8_t skipItemCutsceneRando = gSaveContext.n64ddFlag &&
+                                                Item_CheckObtainability(giEntry.itemId) != ITEM_NONE &&
+                                                interactedActor->id == ACTOR_EN_ITEM00 &&
+                                                interactedActor->params != 6 && interactedActor->params != 17;
 
-                    if (gSaveContext.n64ddFlag &&
-                        ((interactedActor->id == ACTOR_EN_ITEM00 &&
-                          (interactedActor->params != 6 && interactedActor->params != 17)) ||
-                         (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA))) {
-                        func_8083E4C4(globalCtx, this, &giEntry);
-                        this->getItemId = GI_NONE;
-                        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                        return 0;
-                    }
+                // Show cutscene when picking up a item that the player doesn't own yet.
+                // We want to ALWAYS show "get item animations" for items when they're randomized to account for
+                // randomized freestanding items etc, but we still don't want to show it every time you pick up a consumable from a pot/bush etc.
+                if ((globalCtx->sceneNum == SCENE_BOWLING || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag) && !skipItemCutscene && !skipItemCutsceneRando) {
 
                     func_808323B4(globalCtx, this);
                     func_8083AE40(this, giEntry.objectId);
@@ -6280,6 +6278,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     return 1;
                 }
 
+                // Don't show cutscene when picking up an item
                 func_8083E4C4(globalCtx, this, &giEntry);
                 this->getItemId = GI_NONE;
                 this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
