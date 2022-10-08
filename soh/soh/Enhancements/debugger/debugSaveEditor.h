@@ -241,7 +241,7 @@ const std::vector<FlagTable> flagTables = {
         { 0xB7, "Spoke to Fado in Kokiri Forest as Child" },
         { 0xB8, "Spoke to Malon After Saving Ranch" },
         { 0xB9, "Spoke to Malon on Horseback" },
-        { 0xBC, "Spoke to Carpenter Boss by Tent" },
+        { 0xBC, "Fado requested Odd Potion" },
         { 0xC0, "Spoke to Fat Woman by Market Potion Shop" },
         { 0xC1, "Spoke to Fat Woman After Zelda's Escape" },
         { 0xC2, "Spoke to Burly Man About Talon Search" },
