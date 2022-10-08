@@ -1095,6 +1095,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB", true, false);
                 UIWidgets::Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Restore QPA glitched damage value", "gRestoreQPA", true, false);
 
                 ImGui::EndMenu();
             }
