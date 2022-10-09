@@ -129,7 +129,14 @@ void func_80A89160(EnJs* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
     } else {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && 
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
+            GiveItemEntryFromActor(&this->actor, globalCtx,
+                Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10), 90.0f, 10.0f);
+                Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+        } else {
         func_8002F434(&this->actor, globalCtx, GI_BOMBCHUS_10, 10000.0f, 50.0f);
+        }
     }
 }
 

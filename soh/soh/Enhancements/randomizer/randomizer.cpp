@@ -185,6 +185,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
+    { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -643,6 +644,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_SHUFFLE_MERCHANTS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On (No Hints)") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "On (With Hints)") {
+                            gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     // Uses Ammo Drops option for now. "Off" not yet implemented
@@ -3686,6 +3696,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
@@ -4263,6 +4274,17 @@ void DrawRandoEditor(bool& open) {
                     "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
                     "Salesman to sell a random item at a price of 60 rupees."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Merchants
+                ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Enabling this adds a Giant's Knife and a pack of Bombchus to the item pool\n"
+                    "and changes both Medigoron and the Haunted Wasteland Carpet Salesman to sell\n"
+                    "a random item once at the price of 200 rupees."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, 0);
 
                 UIWidgets::PaddedSeparator();
 
