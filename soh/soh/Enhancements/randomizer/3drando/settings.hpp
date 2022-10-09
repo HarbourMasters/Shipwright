@@ -81,8 +81,8 @@ typedef enum {
 } LACSConditionSetting;
 
 typedef enum {
-    AGE_ADULT,
     AGE_CHILD,
+    AGE_ADULT,
     AGE_RANDOM,
 } AgeSetting;
 
