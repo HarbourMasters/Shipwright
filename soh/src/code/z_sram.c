@@ -368,6 +368,18 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
+        int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+        switch (startingAge) {
+            case 1: //Adult
+                gSaveContext.linkAge = 0;
+                gSaveContext.entranceIndex = 0x5F4;
+                gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
+                break;
+            default: //Child
+                gSaveContext.linkAge = 1;
+                break;
+        }
+
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
             case 0: // open
