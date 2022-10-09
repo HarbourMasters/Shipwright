@@ -694,51 +694,60 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     return (char*)&anim->limbRotData[0];
 }
 
+extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
+{
+    auto res = std::static_pointer_cast<Ship::DisplayList>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    return (Gfx*)&res->instructions[0];
+}
+
 typedef struct {
     int index;
     Gfx instruction;
 } GfxPatch;
 
-std::map<std::string, std::map<std::string, GfxPatch>> gfxPatches;
+std::map<std::string, std::map<std::string, GfxPatch>> originalGfx;
 
-extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
-{
+// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
+// instead (When that is available). Index can be found using the commented out section below.
+extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
     auto res = std::static_pointer_cast<Ship::DisplayList>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
-    if (gfxPatches.contains(path)) {
-        // // Leaving this here for people attempting to find the correct Dlist index to patch
-        // for (int i = 0; i < res->instructions.size(); i++) {
-        //     Gfx* gfx = (Gfx*)&res->instructions[i];
-        //     // Log the command
-        //     SPDLOG_INFO("index:{} command:{}", i, gfx->words.w0 >> 24);
-        //     // Log out SetPrimColors
-        //     if (gfx->words.w0 >> 24 == 250) {
-        //         SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
-        //     }
-        // }
-
-        for (auto [patchName, patch] : gfxPatches.at(path)) {
-            Gfx* gfx = (Gfx*)&res->instructions[patch.index];
-            *gfx = patch.instruction;
+    // Leaving this here for people attempting to find the correct Dlist index to patch
+    /*if (strcmp("__OTR__objects/object_gi_longsword/gGiBiggoronSwordDL", path) == 0) {
+        for (int i = 0; i < res->instructions.size(); i++) {
+            Gfx* gfx = (Gfx*)&res->instructions[i];
+            // Log all commands
+            // SPDLOG_INFO("index:{} command:{}", i, gfx->words.w0 >> 24);
+            // Log only SetPrimColors
+            if (gfx->words.w0 >> 24 == 250) {
+                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
+            }
         }
+    }*/
+
+    Gfx* gfx = (Gfx*)&res->instructions[index];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = {
+            index,
+            *gfx
+        };
     }
 
-    return (Gfx*)&res->instructions[0];
-}
-
-// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
-// instead (When that is available). Index can be found using the commented out section above.
-extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    gfxPatches[path][patchName] = {
-        index,
-        instruction
-    };
+    *gfx = instruction;
 }
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
-    if (gfxPatches.contains(path)) {
-        gfxPatches[path].erase(patchName);
+    if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
+        auto res = std::static_pointer_cast<Ship::DisplayList>(
+            OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+
+        Gfx* gfx = (Gfx*)&res->instructions[originalGfx[path][patchName].index];
+        *gfx = originalGfx[path][patchName].instruction;
+
+        originalGfx[path].erase(patchName);
     }
 }
 
