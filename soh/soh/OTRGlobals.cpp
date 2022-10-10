@@ -706,7 +706,7 @@ typedef struct {
     Gfx instruction;
 } GfxPatch;
 
-std::map<std::string, std::map<std::string, GfxPatch>> originalGfx;
+std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
 
 // Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
 // instead (When that is available). Index can be found using the commented out section below.
