@@ -448,6 +448,8 @@ namespace Ship {
         profile->Mappings[SDL_CONTROLLER_BUTTON_START] = BTN_START;
         profile->Mappings[SDL_CONTROLLER_BUTTON_B] = BTN_B;
         profile->Mappings[SDL_CONTROLLER_BUTTON_A] = BTN_A;
+        profile->Mappings[SDL_CONTROLLER_BUTTON_LEFTSTICK] = BTN_MODIFIER1;
+        profile->Mappings[SDL_CONTROLLER_BUTTON_RIGHTSTICK] = BTN_MODIFIER2;
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
             profile->AxisDeadzones[i] = 16.0f;
