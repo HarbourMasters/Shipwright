@@ -119,6 +119,26 @@ void Globals::AddExternalFile(ZFile* file, int workerID)
 		workerData[workerID]->externalFiles.push_back(file);
 }
 
+void Globals::BuildAssetTexture(const fs::path& pngFilePath, TextureType texType, const fs::path& outPath)
+{
+	std::string name = outPath.stem().string();
+
+	ZTexture tex(nullptr);
+
+	if (name.find("u32") != std::string::npos)
+		tex.dWordAligned = false;
+
+	tex.FromPNG(pngFilePath.string(), texType);
+	std::string cfgPath = StringHelper::Split(pngFilePath.string(), ".")[0] + ".cfg";
+
+	if (File::Exists(cfgPath))
+		name = File::ReadAllText(cfgPath);
+
+	std::string src = tex.GetBodySourceCode();
+
+	File::WriteAllText(outPath.string(), src);
+}
+
 std::map<std::string, ExporterSet*>& Globals::GetExporterMap()
 {
 	static std::map<std::string, ExporterSet*> exporters;
