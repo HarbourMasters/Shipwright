@@ -1,4 +1,5 @@
 <Root>
+    <ExternalFile XmlPath="objects/object_mori_tex.xml" OutPath="objects/object_mori_tex/"/>
     <File Name="object_mori_hineri2a" Segment="6">
         <DList Name="object_mori_hineri2a_DL_002B70" Offset="0x2B70"/>
         <Collision Name="object_mori_hineri2a_Col_006078" Offset="0x6078"/>
