@@ -6,6 +6,7 @@
 #include "../../../include/z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
@@ -61,6 +62,7 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
+    RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);

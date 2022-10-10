@@ -184,7 +184,7 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[8];
+    u16 randomizerInf[9];
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
