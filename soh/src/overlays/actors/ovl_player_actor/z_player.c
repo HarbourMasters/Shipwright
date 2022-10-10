@@ -6256,7 +6256,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                                                 Item_CheckObtainability(giEntry.itemId) != ITEM_NONE &&
                                                 ((interactedActor->id == ACTOR_EN_ITEM00 &&
                                                 interactedActor->params != 6 && interactedActor->params != 17) || 
-                                                (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA));
+                                                interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA);
 
                 // Show cutscene when picking up a item that the player doesn't own yet.
                 // We want to ALWAYS show "get item animations" for items when they're randomized to account for
