@@ -6031,8 +6031,12 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             }
         }
 
-        if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVar_GetS32("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
+        } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+            maxSpeed *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+        } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+            maxSpeed *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
         }
 
         this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
@@ -7650,8 +7654,12 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
                 }
             }
 
-            if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+            if (CVar_GetS32("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
+            } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                sp2C *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+            } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                sp2C *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
             }
 
             func_8083DF68(this, sp2C, sp2A);
