@@ -2290,10 +2290,10 @@ Color_RGB8 sSandstormEnvColors[] = {
     { 50, 40, 0 },
 };
 
-u16 hasPatchedSandstormRect = 0;
+u16 previousPatchedSandstormScreenSize = 0;
 
 void Environment_PatchSandstorm(GlobalContext* globalCtx) {
-    if (hasPatchedSandstormRect == ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH))) {
+    if (previousPatchedSandstormScreenSize == ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH))) {
         return;
     }
 
@@ -2305,7 +2305,7 @@ void Environment_PatchSandstorm(GlobalContext* globalCtx) {
     ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect1", 50, gfxPatchSandstormRect[1]);
     ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect2", 52, gfxPatchSandstormRect[2]);
 
-    hasPatchedSandstormRect = ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH));
+    previousPatchedSandstormScreenSize = ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH));
 }
 
 void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
