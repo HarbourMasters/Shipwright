@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include "Resource.h"
 #include "StormLib.h"
 
@@ -21,14 +22,15 @@ namespace Ship
 	{
 	public:
 		Archive(const std::string& MainPath, bool enableWriting);
-		Archive(const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap = true);
-		~Archive();
+        Archive(const std::string &MainPath, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap = true);
+        Archive(const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap = true);
+        ~Archive();
 
 		bool IsMainMPQValid();
 
 		static std::shared_ptr<Archive> CreateArchive(const std::string& archivePath, int fileCapacity);
 		
-		std::shared_ptr<File> LoadFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr);
+		std::shared_ptr<File> LoadFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr, HANDLE mpqHandle = nullptr);
 		std::shared_ptr<File> LoadPatchFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr);
 
 		bool AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize);
@@ -43,17 +45,18 @@ namespace Ship
 		bool Unload();
 	private:
 		std::string MainPath;
-        std::string BasePath;
 		std::string PatchesPath;
-		std::map<std::string, HANDLE> mpqHandles;
+        std::vector<std::string> OTRFiles;
+        std::unordered_set<uint32_t> ValidHashes;
+        std::map<std::string, HANDLE> mpqHandles;
 		std::vector<std::string> addedFiles;
 		std::unordered_map<uint64_t, std::string> hashes;
 		HANDLE mainMPQ;
 
 		bool LoadMainMPQ(bool enableWriting, bool genCRCMap);
 		bool LoadPatchMPQs();
-		bool LoadPatchMPQ(const std::string& path);
+		bool LoadPatchMPQ(const std::string& path, bool validateVersion = false);
         void GenerateCRCMap();
-        void PushGameVersion();
+        bool PushGameVersion(HANDLE mpqHandle = nullptr);
 	};
 }

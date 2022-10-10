@@ -9,9 +9,9 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath) 
+	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t>& ValidHashes) 
         : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
-		OTR = std::make_shared<Archive>(MainPath, BasePath, PatchesPath, false);
+		OTR = std::make_shared<Archive>(MainPath, PatchesPath, ValidHashes, false);
 
 		gameVersion = OOT_UNKNOWN;
 
@@ -20,7 +20,19 @@ namespace Ship {
 		}
 	}
 
-	ResourceMgr::~ResourceMgr() {
+    ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes)
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr)
+    {
+        OTR = std::make_shared<Archive>(OTRFiles, PatchesPath, ValidHashes, false);
+
+        gameVersion = OOT_UNKNOWN;
+
+        if (OTR->IsMainMPQValid()) {
+            Start();
+        }
+    }
+
+    ResourceMgr::~ResourceMgr() {
 		SPDLOG_INFO("destruct ResourceMgr");
 		Stop();
 

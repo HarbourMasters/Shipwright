@@ -77,7 +77,33 @@ CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::Window::CreateInstance("Ship of Harkinian");
+    std::vector<std::string> OTRFiles;
+    std::string mqPath = Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr");
+    if (std::filesystem::exists(mqPath)) { 
+        OTRFiles.push_back(mqPath);
+    } 
+    std::string ootPath = Ship::Window::GetPathRelativeToAppDirectory("oot.otr");
+    if (std::filesystem::exists(ootPath)) {
+        OTRFiles.push_back(ootPath);
+    }
+    std::unordered_set<uint32_t> ValidHashes = { 
+        OOT_PAL_MQ,
+        OOT_NTSC_JP_MQ,
+        OOT_NTSC_US_MQ,
+        OOT_PAL_GC_MQ_DBG,
+        OOT_NTSC_10,
+        OOT_NTSC_11,
+        OOT_NTSC_12,
+        OOT_PAL_10,
+        OOT_PAL_11,
+        OOT_NTSC_JP_GC_CE,
+        OOT_NTSC_JP_GC,
+        OOT_NTSC_US_GC,
+        OOT_PAL_GC,
+        OOT_PAL_GC_DBG1,
+        OOT_PAL_GC_DBG2
+    };
+    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles, ValidHashes);
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
 

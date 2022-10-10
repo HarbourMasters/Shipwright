@@ -17,8 +17,9 @@ namespace Ship {
 	// It works with the original game's assets because the entire ROM is 64MB and fits into RAM of any semi-modern PC.
 	class ResourceMgr {
 	public:
-		ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& BasePath, const std::string& PatchesPath);
-		~ResourceMgr();
+		ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t> &ValidHashes);
+        ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes);
+        ~ResourceMgr();
 
 		bool IsRunning();
 		bool DidLoadSuccessfully();
