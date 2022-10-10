@@ -85,7 +85,7 @@ namespace Settings {
 
   //World Settings
   Option RandomizeWorld            = Option::Bool("Randomize Settings",     {"No","Yes"},                                                      {worldRandomize},                                                                                                OptionCategory::Toggle);
-  Option StartingAge               = Option::U8  ("Starting Age",           {"Adult", "Child", "Random"},                                      {ageDesc},                                                                                                       OptionCategory::Setting,    AGE_CHILD);
+  Option StartingAge               = Option::U8  ("Starting Age",           {"Child", "Adult", "Random"},                                      {ageDesc},                                                                                                       OptionCategory::Setting,    AGE_CHILD);
   uint8_t ResolvedStartingAge;
   Option ShuffleEntrances          = Option::Bool("Shuffle Entrances",      {"Off", "On"},                                                     {shuffleEntrancesDesc});
   Option ShuffleDungeonEntrances   = Option::U8  ("Dungeon Entrances",    {"Off", "On", "On + Ganon"},                                       {dungeonEntrancesDesc});
@@ -2517,6 +2517,7 @@ namespace Settings {
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
     ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
     OpenDoorOfTime.SetSelectedIndex(cvarSettings[RSK_DOOR_OF_TIME]);
+    StartingAge.SetSelectedIndex(cvarSettings[RSK_STARTING_AGE]);
     GerudoFortress.SetSelectedIndex(cvarSettings[RSK_GERUDO_FORTRESS]);
     Bridge.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE]);
     BridgeStoneCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT]);
