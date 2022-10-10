@@ -20,12 +20,12 @@ namespace Ship {
 		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
 	}
 
-	void InputEditor::DrawButton(const char* label, int32_t n64Btn) {
-		const std::shared_ptr<Controller> backend = GetControllerPerSlot(CurrentPort);
+	void InputEditor::DrawButton(const char* label, int32_t n64Btn, int32_t currentPort, int32_t* btnReading) {
+		const std::shared_ptr<Controller> backend = GetControllerPerSlot(currentPort);
 
 		float size = 40;
-		bool readingMode = BtnReading == n64Btn;
-		bool disabled = (BtnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
+		bool readingMode = *btnReading == n64Btn;
+		bool disabled = (*btnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
 		ImVec2 len = ImGui::CalcTextSize(label);
 		ImVec2 pos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosY(pos.y + len.y / 4);
@@ -43,24 +43,48 @@ namespace Ship {
 			const int32_t btn = backend->ReadRawPress();
 
 			if(btn != -1) {
-				backend->SetButtonMapping(CurrentPort, n64Btn, btn);
-				BtnReading = -1;
+				backend->SetButtonMapping(currentPort, n64Btn, btn);
+				*btnReading = -1;
 
 				// avoid immediately triggering another button during gamepad nav
 				ImGui::SetKeyboardFocusHere(0);
 			}
 		}
 
-		const std::string BtnName = backend->GetButtonName(CurrentPort, n64Btn);
+		const std::string BtnName = backend->GetButtonName(currentPort, n64Btn);
 
 		if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName.c_str(), n64Btn).c_str())) {
-			BtnReading = n64Btn;
+			*btnReading = n64Btn;
 			backend->ClearRawPress();
 		}
 
 		if(disabled) {
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
+		}
+	}
+
+	void InputEditor::DrawControllerSelect(int32_t currentPort) {
+		auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+		std::string ControllerName = controlDeck->GetPhysicalDeviceFromVirtualSlot(currentPort)->GetControllerName();
+
+		if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
+			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
+				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
+				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
+					DeviceName += "##" + std::to_string(i);
+				}
+				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(currentPort))) {
+					controlDeck->SetPhysicalDevice(currentPort, i);
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Refresh")) {
+			controlDeck->ScanPhysicalDevices();
 		}
 	}
 
@@ -85,38 +109,19 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawControllerSchema() {
-		auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-		auto Backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
+		auto Backend = Ship::Window::GetInstance()->GetControlDeck()->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
 		auto profile = Backend->getProfile(CurrentPort);
-		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();
-		std::string ControllerName = Backend->GetControllerName();
-
-		if (ImGui::BeginCombo("##ControllerEntries", ControllerName.c_str())) {
-			for (uint8_t i = 0; i < controlDeck->GetNumPhysicalDevices(); i++) {
-				std::string DeviceName = controlDeck->GetPhysicalDevice(i)->GetControllerName();
-				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
-					DeviceName += "##"+std::to_string(i);
-				}
-				if (ImGui::Selectable(DeviceName.c_str(), i == controlDeck->GetVirtualDevice(CurrentPort))) {
-					controlDeck->SetPhysicalDevice(CurrentPort, i);
-				}
-			}
-			ImGui::EndCombo();
-		}
-
-		ImGui::SameLine();
-
-		if(ImGui::Button("Refresh")) {
-			controlDeck->ScanPhysicalDevices();
-		}
-
+		bool IsKeyboard = Backend->GetGuid() == "Keyboard" || Backend->GetGuid() == "Auto" || !Backend->Connected();
+		
+		DrawControllerSelect(CurrentPort);
+		
 		SohImGui::BeginGroupPanel("Buttons", ImVec2(150, 20));
-			DrawButton("A", BTN_A);
-			DrawButton("B", BTN_B);
-			DrawButton("L", BTN_L);
-			DrawButton("R", BTN_R);
-			DrawButton("Z", BTN_Z);
-			DrawButton("START", BTN_START);
+			DrawButton("A", BTN_A, CurrentPort, &BtnReading);
+			DrawButton("B", BTN_B, CurrentPort, &BtnReading);
+			DrawButton("L", BTN_L, CurrentPort, &BtnReading);
+			DrawButton("R", BTN_R, CurrentPort, &BtnReading);
+			DrawButton("Z", BTN_Z, CurrentPort, &BtnReading);
+			DrawButton("START", BTN_START, CurrentPort, &BtnReading);
 			SEPARATION();
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
@@ -125,10 +130,10 @@ namespace Ship {
 	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
-			DrawButton("Up", BTN_DUP);
-			DrawButton("Down", BTN_DDOWN);
-			DrawButton("Left", BTN_DLEFT);
-			DrawButton("Right", BTN_DRIGHT);
+			DrawButton("Up", BTN_DUP, CurrentPort, &BtnReading);
+			DrawButton("Down", BTN_DDOWN, CurrentPort, &BtnReading);
+			DrawButton("Left", BTN_DLEFT, CurrentPort, &BtnReading);
+			DrawButton("Right", BTN_DRIGHT, CurrentPort, &BtnReading);
 			SEPARATION();
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
@@ -137,10 +142,10 @@ namespace Ship {
 	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
-			DrawButton("Up", BTN_STICKUP);
-			DrawButton("Down", BTN_STICKDOWN);
-			DrawButton("Left", BTN_STICKLEFT);
-			DrawButton("Right", BTN_STICKRIGHT);
+			DrawButton("Up", BTN_STICKUP, CurrentPort, &BtnReading);
+			DrawButton("Down", BTN_STICKDOWN, CurrentPort, &BtnReading);
+			DrawButton("Left", BTN_STICKLEFT, CurrentPort, &BtnReading);
+			DrawButton("Right", BTN_STICKRIGHT, CurrentPort, &BtnReading);
 
 			if (!IsKeyboard) {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
@@ -181,10 +186,10 @@ namespace Ship {
 		if (!IsKeyboard) {
 			ImGui::SameLine();
 			SohImGui::BeginGroupPanel("Right Stick", ImVec2(150, 20));
-				DrawButton("Up", BTN_VSTICKUP);
-				DrawButton("Down", BTN_VSTICKDOWN);
-				DrawButton("Left", BTN_VSTICKLEFT);
-				DrawButton("Right", BTN_VSTICKRIGHT);
+				DrawButton("Up", BTN_VSTICKUP, CurrentPort, &BtnReading);
+				DrawButton("Down", BTN_VSTICKDOWN, CurrentPort, &BtnReading);
+				DrawButton("Left", BTN_VSTICKLEFT, CurrentPort, &BtnReading);
+				DrawButton("Right", BTN_VSTICKRIGHT, CurrentPort, &BtnReading);
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 				// 2 is the SDL value for right stick X axis
@@ -282,10 +287,10 @@ namespace Ship {
 		const ImVec2 cursor = ImGui::GetCursorPos();
 
 		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
-			DrawButton("Up", BTN_CUP);
-			DrawButton("Down", BTN_CDOWN);
-			DrawButton("Left", BTN_CLEFT);
-			DrawButton("Right", BTN_CRIGHT);
+			DrawButton("Up", BTN_CUP, CurrentPort, &BtnReading);
+			DrawButton("Down", BTN_CDOWN, CurrentPort, &BtnReading);
+			DrawButton("Left", BTN_CLEFT, CurrentPort, &BtnReading);
+			DrawButton("Right", BTN_CRIGHT, CurrentPort, &BtnReading);
 			ImGui::Dummy(ImVec2(0, 5));
 		SohImGui::EndGroupPanel();
 
