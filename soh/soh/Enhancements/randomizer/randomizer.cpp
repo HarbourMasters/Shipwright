@@ -441,6 +441,88 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
 
+    //Setup for merchant text boxes
+    //Medigoron
+    //RANDOTODO: Implement obscure/ambiguous hints
+    RandomizerGet medigoronGet = this->itemLocations[RC_GC_MEDIGORON].rgID;
+    std::vector<std::string> mgItemName;
+    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) {//If merchant hints are clear... 
+        if (medigoronGet == RG_ICE_TRAP) {
+            medigoronGet = this->itemLocations[RC_GC_MEDIGORON].fakeRgID;
+            mgItemName = {
+                this->itemLocations[RC_GC_MEDIGORON].trickName, 
+                this->itemLocations[RC_GC_MEDIGORON].trickName,
+                this->itemLocations[RC_GC_MEDIGORON].trickName
+            };
+        } else {
+            mgItemName = EnumToSpoilerfileGetName[medigoronGet];
+        }
+    } else {
+        mgItemName = {
+            "something cool",
+            "geheimnisvollen Gegenstand",
+            "objet mystérieux"
+        };
+    }
+         
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_MEDIGORON, //12364 or 12367
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "How about buying %r&" + mgItemName[0] + "%w for %g200 rupees%w?\x1B&%gYes&No%w",
+            "How about buying %r&" + mgItemName[1] + "%w for %g200 rupees%w?\x1B&%gYes&No%w",
+            "How about buying %r&" + mgItemName[2] + "%w for %g200 rupees%w?\x1B&%gYes&No%w"
+        });
+    
+    //Carpet Salesman
+    //RANDOTODO: Implement obscure/ambiguous hints
+    RandomizerGet carpetGuyGet = this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].rgID;
+    std::vector<std::string> cgItemName;
+    std::string cgBoxTwoText;
+    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) {//If merchant hints are clear... 
+        if (carpetGuyGet == RG_ICE_TRAP) {
+            carpetGuyGet = this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].fakeRgID;
+            cgItemName = {
+                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
+                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
+                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName
+            };
+            cgBoxTwoText = "!%w It's real, I promise!&I even kept it %bnice and cool%w&for you!^";
+        } else {
+            cgItemName = EnumToSpoilerfileGetName[carpetGuyGet];
+            cgBoxTwoText = "!%w It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^";
+    }} else {
+        cgItemName = {
+            "A mystery",
+            "Ein Rätsel",
+            "Un mystère"
+        };
+        cgBoxTwoText = "!%w Terrifying!&I won't tell you what it is until I see&the money...^";
+    }
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1, //24695, 24696
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "Welcome!^I am selling stuff, strange and rare, &from all over the world to everybody. &Today's special is...^%r" + 
+            cgItemName[0] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+            "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. &Today's special is...^%r" + 
+            cgItemName[1] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+            "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. &Today's special is...^%r" + 
+            cgItemName[2] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&%gYes&No%w"
+        });
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2, //24695, 24696
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_TOP,
+            "Finally! Now I can go back to being &an %rarms dealer!%w",
+            "thanks lmao",
+            "thanks lmao"
+        });
+
     for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
         RandomizerGet shopItemGet = this->itemLocations[shopItemCheck].rgID;
@@ -4280,9 +4362,11 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Merchants
                 ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
-                    "Enabling this adds a Giant's Knife and a pack of Bombchus to the item pool\n"
-                    "and changes both Medigoron and the Haunted Wasteland Carpet Salesman to sell\n"
-                    "a random item once at the price of 200 rupees."
+                    "Enabling this adds a Giant's Knife and a pack of Bombchus to the item pool "
+                    "and changes both Medigoron and the Haunted Wasteland Carpet Salesman to sell "
+                    "a random item once at the price of 200 rupees.\n\n"
+                    "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, 0);
 

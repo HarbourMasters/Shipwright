@@ -1789,7 +1789,22 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = Randomizer_GetNaviMessage();
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
-        } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS)) {
+            switch(textId) {
+                case TEXT_MEDIGORON:
+                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_MEDIGORON);
+                    break;
+                case TEXT_CARPET_SALESMAN_1:
+                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, 
+                        TEXT_CARPET_SALESMAN_1);
+                    break;
+                case TEXT_CARPET_SALESMAN_2:
+                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, 
+                        TEXT_CARPET_SALESMAN_2);
+                    break;
+            }
+        }
+        else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
