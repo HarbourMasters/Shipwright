@@ -3149,9 +3149,6 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             enemyEntry newEnemy = GetRandomizedEnemy();
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
-            rotX = 0;
-            rotY = 0;
-            rotZ = 0;
         }
     }
 
@@ -3239,7 +3236,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
 
-    if (objBankIndex < 0 && !gMapLoading)
+    if ((objBankIndex < 0 && !gMapLoading) || CVar_GetS32("gRandomizedEnemies", 0))
         objBankIndex = 0;
 
     if ((objBankIndex < 0) ||
