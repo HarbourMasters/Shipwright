@@ -374,12 +374,10 @@ namespace Ship {
         if (OTRFiles.empty()) {
             if (MainPath.length() > 0) {
                 if (std::filesystem::is_directory(MainPath)) {
-                    int index = 0;
                     for (const auto &p : std::filesystem::recursive_directory_iterator(MainPath)) {
                         if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
                             SPDLOG_ERROR("Reading {} mpq", p.path().string().c_str());
-                            OTRFiles[index] = p.path().string();
-                            index++;
+                            OTRFiles.push_back(p.path().string());
                         }
                     }
                 } else {
