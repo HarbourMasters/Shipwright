@@ -642,8 +642,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]);
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
             // Magic to flip an index `flag` to a lookup for 16bit little endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + (1 - ((flag / 16) / 8) * 8); 
-            mask = 0x8000 > shift;
+            shift = 7 - (flag % 8) + (1 - ((flag % 16) / 8) * 8); 
+            mask = 0x8000 >> shift;
             return gSaveContext.eventChkInf[flag / 16] & mask;
             //return gSaveContext.eventChkInf[idx] & eventChkInfMask;
             //return gSaveContext.eventChkInf[flag / 16] & (0x8000 >> ((flag - 1) % 16));
@@ -660,8 +660,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             //return gSaveContext.infTable[scene] & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
             // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + ((flag / 16) / 8) * 8;
-            mask = 0x8000 > shift;
+            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
+            mask = 0x8000 >> shift;
             return gSaveContext.itemGetInf[flag / 16] & mask;
             //return gSaveContext.itemGetInf[idx] & itemGetInfshiftMask;
             //return gSaveContext.itemGetInf[flag / 16] & (0x8000 >> ((flag - 1) % 16));
