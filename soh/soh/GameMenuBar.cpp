@@ -312,6 +312,8 @@ namespace GameMenuBar {
 
         // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
+        // Restore save confirmation
+        CVar_SetS32("gSaveConfirmation", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
 
@@ -378,6 +380,8 @@ namespace GameMenuBar {
         CVar_SetS32("gN64WeirdFrames", 1);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 1);
+        // Restore save confirmation
+        CVar_SetS32("gSaveConfirmation", 1);
     }
 
     void applyEnhancementPresetEnhanced(void) {
@@ -1099,6 +1103,8 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB", true, false);
                 UIWidgets::Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
+                UIWidgets::EnhancementCheckbox("Restore save confirmation", "gSaveConfirmation");
+                UIWidgets::Tooltip("Restores the N64 save confirmation screen");
 
                 ImGui::EndMenu();
             }
