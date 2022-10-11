@@ -127,9 +127,9 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
 
   Logic::LogicReset();
   // //Apply the effects of all advancement items to search for entrance accessibility
-  std::vector<uint32_t> items = FilterFromPool(ItemPool, [](const auto i){ return ItemTable(i).IsAdvancement();});
+  std::vector<uint32_t> items = FilterFromPool(ItemPool, [](const auto i){ return GetItemTable(i).IsAdvancement();});
   for (uint32_t unplacedItem : items) {
-    ItemTable(unplacedItem).ApplyEffect();
+    GetItemTable(unplacedItem).ApplyEffect();
   }
   // run a search to see what's accessible
   GetAccessibleLocations({});

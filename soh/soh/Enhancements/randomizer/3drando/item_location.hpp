@@ -209,11 +209,11 @@ public:
     }
 
     const Text& GetPlacedItemName() const {
-      return ItemTable(placedItem).GetName();
+      return GetItemTable(placedItem).GetName();
     }
 
     const Item& GetPlacedItem() const {
-      return ItemTable(placedItem);
+      return GetItemTable(placedItem);
     }
 
     uint32_t GetPlacedItemKey() const {
@@ -226,7 +226,7 @@ public:
 
     void SetPlacedItem(const uint32_t item) {
       placedItem = item;
-      SetPrice(ItemTable(placedItem).GetPrice());
+      SetPrice(GetItemTable(placedItem).GetPrice());
     }
 
     //Saves an item to be set as placedItem later
@@ -240,7 +240,7 @@ public:
     }
 
     void ApplyPlacedItemEffect() {
-      ItemTable(placedItem).ApplyEffect();
+      GetItemTable(placedItem).ApplyEffect();
     }
 
     //Set placedItem as item saved in SetDelayedItem
@@ -250,8 +250,8 @@ public:
     }
 
     uint16_t GetPrice() const {
-      if (ItemTable(placedItem).GetItemType() == ITEMTYPE_SHOP) {
-        return ItemTable(placedItem).GetPrice();
+      if (GetItemTable(placedItem).GetItemType() == ITEMTYPE_SHOP) {
+        return GetItemTable(placedItem).GetPrice();
       }
       return price;
     }

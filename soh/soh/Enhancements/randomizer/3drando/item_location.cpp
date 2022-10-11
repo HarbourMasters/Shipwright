@@ -1529,7 +1529,7 @@ void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmedia
   SPDLOG_DEBUG("\n\n");
 
   if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
-    ItemTable(item).ApplyEffect();
+    GetItemTable(item).ApplyEffect();
   }
 
   itemsPlaced++;
@@ -1542,10 +1542,10 @@ void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmedia
   }
 
   //If we're placing a non-shop item in a shop location, we want to record it for custom messages
-  if (ItemTable(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
+  if (GetItemTable(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
     int index = TransformShopIndex(GetShopIndex(locKey));
-    NonShopItems[index].Name = ItemTable(item).GetName();
-    NonShopItems[index].Repurchaseable = ItemTable(item).GetItemType() == ITEMTYPE_REFILL || ItemTable(item).GetHintKey() == PROGRESSIVE_BOMBCHUS;
+    NonShopItems[index].Name = GetItemTable(item).GetName();
+    NonShopItems[index].Repurchaseable = GetItemTable(item).GetItemType() == ITEMTYPE_REFILL || GetItemTable(item).GetHintKey() == PROGRESSIVE_BOMBCHUS;
   }
 
   loc->SetPlacedItem(item);
@@ -1616,7 +1616,7 @@ void CreateItemOverrides() {
     SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
-        ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
+        ItemOverride_Value val = GetItemTable(loc->GetPlaceduint32_t()).Value();
         // If this is an ice trap, store the disguise model in iceTrapModels
         if (loc->GetPlaceduint32_t() == ICE_TRAP) {
             iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
