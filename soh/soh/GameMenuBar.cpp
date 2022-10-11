@@ -298,6 +298,8 @@ namespace GameMenuBar {
         CVar_SetS32("gCrouchStabHammerFix", 0);
         // Fix all crouch stab
         CVar_SetS32("gCrouchStabFix", 0);
+        // Fix Gerudo Warrior's clothing colors
+        CVar_SetS32("gGerudoWarriorClothingFix", 0);
 
         // Red Ganon blood
         CVar_SetS32("gRedGanonBlood", 0);
@@ -1078,6 +1080,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
+                UIWidgets::Tooltip("Fixes the colors of the Gerudo Warrior's clothes when changing Link's clothes or using bombs in front of her");
 
                 ImGui::EndMenu();
             }
