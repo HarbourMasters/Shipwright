@@ -563,8 +563,9 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Goron City Shop", 0x037C },
         { "Zora Shop", 0x0380 },
     }},
-    { "46:Great Fairies", Select_LoadGame, 5, {
-        { "Hyrule Castle", 0x04C2 },
+    { "46:Great Fairies", Select_LoadGame, 6, {
+        { "Hyrule Castle (Child)", 0x0578 },
+        { "Hyrule Castle (Adult)", 0x04C2 },
         { "Death Mountain Trail", 0x0315 },
         { "Death Mountain Crater", 0x04BE },
         { "Zoras Fountain", 0x0371 },
