@@ -89,6 +89,7 @@ void EnBoom_Init(Actor* thisx, GlobalContext* globalCtx) {
     blure.elemDuration = 8;
     blure.unkFlag = 0;
     blure.calcMode = 0;
+    blure.trailType = 2;
 
     Effect_Add(globalCtx, &this->effectIndex, EFFECT_BLURE1, 0, 0, &blure);
 

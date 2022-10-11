@@ -74,6 +74,7 @@ namespace Ship {
 			std::shared_ptr<ControlDeck> ControllerApi;
 
 			std::string gfxBackend;
+			std::string audioBackend;
 			GfxRenderingAPI* RenderingApi;
 			GfxWindowManagerAPI* WmApi;
 			bool bIsFullscreen;

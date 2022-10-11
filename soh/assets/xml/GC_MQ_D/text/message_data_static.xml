@@ -1,0 +1,14 @@
+<Root>
+  <File Name="nes_message_data_static">
+    <Text Name="nes_message_data_static" CodeOffset="0x12E4C0"/>
+  </File>
+	<File Name="ger_message_data_static">
+		<Text Name="ger_message_data_static" CodeOffset="0x12E4C0" LangOffset="0x1326E8"/>
+	</File>
+	<File Name="fra_message_data_static">
+		<Text Name="fra_message_data_static" CodeOffset="0x12E4C0" LangOffset="0x1347F8"/>
+	</File>
+	<File Name="staff_message_data_static">
+		<Text Name="staff_message_data_static" CodeOffset="0x136908"/>
+	</File>
+</Root>

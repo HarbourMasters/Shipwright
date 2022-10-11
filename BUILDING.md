@@ -31,6 +31,8 @@ cd Shipwright
 
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+# or for VS2019
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
 # Compile project
@@ -209,4 +211,3 @@ Use the `extract_assets.py` script file to run the exporter using any of the fol
 4) In a terminal run `python3 extract_assets.py <path_to_rom>`
 
 If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
-

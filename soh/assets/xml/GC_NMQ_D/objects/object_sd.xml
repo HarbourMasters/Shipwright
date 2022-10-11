@@ -47,7 +47,7 @@
         <Texture Name="gEnHeishiKingGuardTex_200" Format="ci8" Width="8" Height="8" Offset="0x0200" TlutOffset="0x0000"/><!--Mouth?-->
         <Texture Name="gEnHeishiKingGuardTex_240" Format="ci8" Width="8" Height="8" Offset="0x0240" TlutOffset="0x0000"/><!--Eyes?-->
         <Texture Name="gEnHeishiKingGuardArmorTex" OutName="king_guard_armor" Format="ci8" Width="8" Height="8" Offset="0x0280" TlutOffset="0x0000"/>
-        <Texture Name="gEnHeishiKingGuardSholderGuardTex" OutName="king_guard_sholder_guard" Format="ci8" Width="8" Height="16" Offset="0x02C0" TlutOffset="0x0000"/>
+        <Texture Name="gEnHeishiKingGuardShoulderGuardTex" OutName="king_guard_shoulder_guard" Format="ci8" Width="8" Height="16" Offset="0x02C0" TlutOffset="0x0000"/>
         <Texture Name="gEnHeishiKingGuardChestArmorTex" OutName="king_guard_chest_armor" Format="ci8" Width="32" Height="64" Offset="0x0340" TlutOffset="0x0000"/>
         <Texture Name="gEnHeishiKingGuardTex_B40" Format="ci8" Width="16" Height="16" Offset="0x0B40" TlutOffset="0x0000"/> <!--Leg Armor?-->
         <Texture Name="gEnHeishiKingGuardHandTex" OutName="king_guard_hand" Format="ci8" Width="8" Height="8" Offset="0x0C40" TlutOffset="0x0000"/>

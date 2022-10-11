@@ -168,8 +168,7 @@ void ItemOcarina_DoNothing(ItemOcarina* this, GlobalContext* globalCtx) {
 }
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, GlobalContext* globalCtx) {
-    if (Actor_TextboxIsClosing(&this->actor, globalCtx) ||
-        Randomizer_ObtainedFreestandingIceTrap(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT, &this->actor)) {
+    if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         if (!gSaveContext.n64ddFlag) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
@@ -218,7 +217,7 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
-        GetItem_Draw(globalCtx, ABS(randoGetItem.gi) - 1);
+        GetItemEntry_Draw(globalCtx, randoGetItem);
         return;
     }
 

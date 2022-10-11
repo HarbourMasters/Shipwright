@@ -77,7 +77,7 @@ bool LocationAccess::CanBuy() const {
     OtherCondition = HasBottle;
   }
   //If bombchus in logic, need to have found chus to buy; if not just need bomb bag
-  else if (placed == BUY_BOMBCHU_5 || placed == BUY_BOMBCHU_10 || placed == BUY_BOMBCHU_20) {
+  else if (placed == BUY_BOMBCHU_10 || placed == BUY_BOMBCHU_20) {
     OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
   }
 

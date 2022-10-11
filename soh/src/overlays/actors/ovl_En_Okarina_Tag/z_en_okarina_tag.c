@@ -337,7 +337,7 @@ void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
             GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
         this->actionFunc = func_80ABF708;

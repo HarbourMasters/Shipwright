@@ -189,7 +189,6 @@ namespace Logic {
   bool BombchuDrop      = false;
   bool AmmoCanDrop      = false;
 
-  bool BuyBombchus5     = false;
   bool BuyBombchus10    = false;
   bool BuyBombchus20    = false;
   bool BuySeed          = false;
@@ -685,7 +684,7 @@ namespace Logic {
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-    ScarecrowSong    = ScarecrowSong || (ChildScarecrow && AdultScarecrow);
+    ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
     Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
     DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
 
@@ -702,13 +701,13 @@ namespace Logic {
     Nuts         = DekuNutDrop || Nuts;
     Sticks       = DekuStickDrop || Sticks;
     Bugs         = HasBottle && BugsAccess;
-    BlueFire     = HasBottle && BlueFireAccess;
+    BlueFire     = (HasBottle && BlueFireAccess) || (BlueFireArrows && CanUse(ICE_ARROWS));
     Fish         = HasBottle && FishAccess;
     Fairy        = HasBottle && FairyAccess;
 
     FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
     CanPlayBowling  = (BombchusInLogic && FoundBombchus) || (!BombchusInLogic && BombBag);
-    HasBombchus     = (BuyBombchus5 || BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
+    HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
 
     HasExplosives =  Bombs || (BombchusInLogic && HasBombchus);
 
@@ -1067,7 +1066,6 @@ namespace Logic {
      FairyPond        = false;
      BombchuDrop      = false;
 
-     BuyBombchus5     = false;
      BuyBombchus10    = false;
      BuyBombchus20    = false;
      BuySeed          = false;

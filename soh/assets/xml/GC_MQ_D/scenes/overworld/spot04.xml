@@ -1,0 +1,21 @@
+<Root>
+    <File Name="spot04_scene" Segment="2">
+        <Path Name="spot04_scenePathList_00030C" Offset="0x030C" NumPaths="3"/>
+        <Path Name="spot04_scenePathList_00D728" Offset="0xD728" NumPaths="2"/>
+        <Cutscene Name="gKokiriForestDekuSproutCs" Offset="0xC9D0"/>
+        <Cutscene Name="gSpot04Cs_10E20" Offset="0x10E20"/>
+
+        <Scene Name="spot04_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot04_room_0" Segment="3">
+        <Room Name="spot04_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot04_room_1" Segment="3">
+        <Room Name="spot04_room_1" Offset="0x0"/>
+    </File>
+    <File Name="spot04_room_2" Segment="3">
+        <DList Name="gSpot04DL_002BB8" Offset="0x2BB8"/>
+        <DList Name="gSpot04DL_005058" Offset="0x5058"/>
+        <Room Name="spot04_room_2" Offset="0x0"/>
+    </File>
+</Root>

@@ -1281,7 +1281,16 @@ void Message_Decode(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &globalCtx->msgCtx.font;
 
-    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    if ((msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT) || msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
+        // TODO: Figure out what specific textures to invalidate to prevent the ocarina textboxes from flashing
+        gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    } else {
+        for (u32 i = 0; i < FONT_CHAR_TEX_SIZE * 120; i += FONT_CHAR_TEX_SIZE) {
+            if (&font->charTexBuf[i] != NULL) {
+                gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, &font->charTexBuf[i]);
+            }
+        }
+    }
 
     globalCtx->msgCtx.textDelayTimer = 0;
     globalCtx->msgCtx.textUnskippable = globalCtx->msgCtx.textDelay = globalCtx->msgCtx.textDelayTimer = 0;
@@ -1678,7 +1687,17 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     }
 
     sMessageHasSetSfx = D_8014B2F4 = sTextboxSkipped = sTextIsCredits = 0;
-    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    if ((msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT) ||
+        msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
+        // TODO: Figure out what specific textures to invalidate to prevent the ocarina textboxes from flashing
+        gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+    } else {
+        for (u32 i = 0; i < FONT_CHAR_TEX_SIZE * 120; i += FONT_CHAR_TEX_SIZE) {
+            if (&font->charTexBuf[i] != NULL) {
+                gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, &font->charTexBuf[i]);
+            }
+        }
+    }
 
     if (textId >= 0x0500 && textId < 0x0600) { // text ids 0500 to 0600 are reserved for credits
         sTextIsCredits = true;
@@ -1695,9 +1714,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2)) {
+    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
-    } else if (msgCtx->textId == 0xB4 && (gSaveContext.eventChkInf[9] & 0x40)) {
+    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xB4 && (gSaveContext.eventChkInf[9] & 0x40))) {
         textId = 0xB5; // Destroyed Gold Skulltula
     }
     // Ocarina Staff + Dialog
@@ -1717,6 +1736,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
+    // RANDOTODO: Use this for ice trap messages
     if (CustomMessage_RetrieveIfExists(globalCtx)) {
         osSyncPrintf("Found custom message");
     } else if (sTextIsCredits) {

@@ -53,6 +53,8 @@ graphs/
 !*_custom*
 .extracted-assets.json
 
+!OTRExporter/assets/**/*.png
+
 # Docs
 !docs/tutorial/
 

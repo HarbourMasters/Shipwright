@@ -373,7 +373,7 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     this->unk_209 = TEXT_STATE_NONE;
 
     if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[1])) {
+        (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE))) {
         return 0x1045;
     }
 
@@ -486,7 +486,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             // if we have beaten deku tree or have open forest turned on
             // or have already shown mido we have an equipped sword/shield
-            if (gSaveContext.dungeonsDone[1] ||
+            if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) ||
                 Randomizer_GetSettingValue(RSK_FOREST) == 1 ||
                 gSaveContext.eventChkInf[0] & 0x10) {
                 return 0;

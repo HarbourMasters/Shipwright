@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -94,7 +95,7 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
 
     switch (thisx->params & 0xF0) {
         case 0x90:
-            if (gSaveContext.bgsFlag) {
+            if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
                 return 0x305E;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
                 if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
@@ -113,7 +114,7 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
             }
         case 0x00:
             if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) {
+                (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
                 if (gSaveContext.infTable[16] & 0x8000) {
                     return 0x3042;
                 } else {
@@ -858,7 +859,7 @@ void func_80A405CC(EnGo* this, GlobalContext* globalCtx) {
 
 void EnGo_BiggoronActionFunc(EnGo* this, GlobalContext* globalCtx) {
     if (((this->actor.params & 0xF0) == 0x90) && (this->unk_1E0.unk_00 == 2)) {
-        if (gSaveContext.bgsFlag) {
+        if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
             this->unk_1E0.unk_00 = 0;
         } else {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
@@ -966,10 +967,22 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                getItemId = GI_CLAIM_CHECK;
+                if (gSaveContext.n64ddFlag) {
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    getItemId = getItemEntry.getItemId;
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                } else {
+                    getItemId = GI_CLAIM_CHECK;
+                }
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                getItemId = GI_PRESCRIPTION;
+                if (gSaveContext.n64ddFlag) {
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                    getItemId = getItemEntry.getItemId;
+                } else {
+                    getItemId = GI_PRESCRIPTION;
+                }
             }
         }
 

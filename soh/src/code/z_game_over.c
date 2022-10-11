@@ -33,19 +33,21 @@ void GameOver_Update(GlobalContext* globalCtx) {
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary
-            for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
-                if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
-                    INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
+            if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+                for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
+                    if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
+                        INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-                    // search c buttons for the found spoiling item and revert if necessary
-                    for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                        if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                            gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
-                            Interface_LoadItemIcon1(globalCtx, j);
+                        // search c buttons for the found spoiling item and revert if necessary
+                        for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
+                            if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                                gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                                Interface_LoadItemIcon1(globalCtx, j);
+                            }
                         }
                     }
                 }
-            }
+			}
 
             // restore "temporary B" to the B Button if not a sword item
             if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&

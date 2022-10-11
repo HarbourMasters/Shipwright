@@ -1,8 +1,10 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
+#include "../../OTRGlobals.h"
 #include <libultraship/ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
+#include <spdlog/fmt/fmt.h>
 #include <array>
 #include <bit>
 #include <map>
@@ -14,6 +16,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
@@ -525,6 +528,27 @@ void DrawInfoTab() {
     ImGui::PopItemWidth();
 }
 
+void DrawBGSItemFlag(uint8_t itemID) {
+    const ItemMapEntry& slotEntry = itemMapping[itemID];
+    ImGui::Image(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::SameLine();
+    int tradeIndex = itemID - ITEM_POCKET_EGG;
+    bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
+    bool shouldHaveItem = hasItem;
+    ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
+    if (hasItem != shouldHaveItem) {
+        if (shouldHaveItem) {
+            gSaveContext.adultTradeItems |= (1 << tradeIndex);
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
+                INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
+            }
+        } else {
+            gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
+            Inventory_ReplaceItem(gGlobalCtx, itemID, Randomizer_GetNextAdultTradeItem());
+        }
+    }
+}
+
 void DrawInventoryTab() {
     static bool restrictToValid = true;
 
@@ -566,6 +590,9 @@ void DrawInventoryTab() {
             if (ImGui::BeginPopup(itemPopupPicker)) {
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    if (selectedIndex == SLOT_TRADE_ADULT) {
+                        gSaveContext.adultTradeItems = 0;
+                    }
                     ImGui::CloseCurrentPopup();
                 }
                 UIWidgets::SetLastItemHoverText("None");
@@ -596,6 +623,13 @@ void DrawInventoryTab() {
                     if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
+                        if (gSaveContext.n64ddFlag &&
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                            selectedIndex == SLOT_TRADE_ADULT &&
+                            slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                        }
                         ImGui::CloseCurrentPopup();
                     }
                     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
@@ -632,6 +666,16 @@ void DrawInventoryTab() {
             ImGui::PopID();
         }
     }
+    
+    // Trade quest flags are only used when shuffling the trade sequence, so
+    // don't show this if it isn't needed.
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
+        && ImGui::TreeNode("Adult trade quest items")) {
+        for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
+            DrawBGSItemFlag(i);
+        }
+        ImGui::TreePop();
+    }
 }
 
 // Draw a flag bitfield as an grid of checkboxes
@@ -656,12 +700,14 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags) {
     ImGui::PopID();
 }
 
-void DrawFlagArray16(const std::string& name, uint16_t& flags) {
-    ImGui::PushID(name.c_str());
+void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
+    ImGui::PushID((std::to_string(row) + flagTable.name).c_str());
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
+        bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
         uint32_t bitMask = 1 << flagIndex;
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, hasDescription ? ImVec4(0.16f, 0.29f, 0.48f, 0.54f) : ImVec4(0.16f, 0.29f, 0.48f, 0.24f));
         bool flag = (flags & bitMask) != 0;
         if (ImGui::Checkbox("##check", &flag)) {
             if (flag) {
@@ -669,6 +715,12 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags) {
             } else {
                 flags &= ~bitMask;
             }
+        }
+        ImGui::PopStyleColor();
+        if (ImGui::IsItemHovered() && hasDescription) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60));
+            ImGui::EndTooltip();
         }
         ImGui::PopID();
     }
@@ -868,134 +920,53 @@ void DrawFlagsTab() {
             setMask <<= 1;
         }
 
-        static bool keepGsCountUpdated = true;
-        ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
-        UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags");
-        int32_t gsCount = 0;
-        if (keepGsCountUpdated) {
-            for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
-                gsCount += std::popcount(static_cast<uint32_t>(gSaveContext.gsFlags[gsFlagIndex]));
+        // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
+        // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
+        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS))) {
+            static bool keepGsCountUpdated = true;
+            ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
+            UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
+            int32_t gsCount = 0;
+            if (keepGsCountUpdated) {
+                for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
+                    gsCount += std::popcount(static_cast<uint32_t>(gSaveContext.gsFlags[gsFlagIndex]));
+                }
+                gSaveContext.inventory.gsTokens = gsCount;
             }
-            gSaveContext.inventory.gsTokens = gsCount;
         }
     });
 
-    if (ImGui::TreeNode("Event Check Inf Flags")) {
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("0");
-            UIWidgets::InsertHelpHoverText("Mostly Kokiri Forest related");
-            DrawFlagArray16("eci0", gSaveContext.eventChkInf[0]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("1");
-            UIWidgets::InsertHelpHoverText("Mostly Lon Lon Ranch related");
-            DrawFlagArray16("eci1", gSaveContext.eventChkInf[1]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("2");
-            UIWidgets::InsertHelpHoverText("Dodongo Related?");
-            DrawFlagArray16("eci2", gSaveContext.eventChkInf[2]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("3");
-            UIWidgets::InsertHelpHoverText("Mostly Zora related");
-            DrawFlagArray16("eci3", gSaveContext.eventChkInf[3]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("4");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci4", gSaveContext.eventChkInf[4]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("5");
-            UIWidgets::InsertHelpHoverText("Mostly song learning related");
-            DrawFlagArray16("eci5", gSaveContext.eventChkInf[5]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("6");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci6", gSaveContext.eventChkInf[6]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("7");
-            UIWidgets::InsertHelpHoverText("Boss Battle related");
-            DrawFlagArray16("eci7", gSaveContext.eventChkInf[7]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("8");
-            UIWidgets::InsertHelpHoverText("Mask related?");
-            DrawFlagArray16("eci8", gSaveContext.eventChkInf[8]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("9");
-            UIWidgets::InsertHelpHoverText("Mostly carpenter related");
-            DrawFlagArray16("eci9", gSaveContext.eventChkInf[9]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("A");
-            UIWidgets::InsertHelpHoverText("First-time overworld entrance cs related");
-            DrawFlagArray16("eci10", gSaveContext.eventChkInf[10]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("B");
-            UIWidgets::InsertHelpHoverText("First-time dungeon entrance cs/trial cs related");
-            DrawFlagArray16("eci11", gSaveContext.eventChkInf[11]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("C");
-            UIWidgets::InsertHelpHoverText("Random");
-            DrawFlagArray16("eci12", gSaveContext.eventChkInf[12]);
-        });
-
-        DrawGroupWithBorder([&]() {
-            ImGui::Text("D");
-            UIWidgets::InsertHelpHoverText("Frog songs/GS rewards");
-            DrawFlagArray16("eci13", gSaveContext.eventChkInf[13]);
-        });
-
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Inf Table Flags")) {
-        for (int i = 0; i < 30; i++) {
-            std::string it_id = "it" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%2d", i);
-                DrawFlagArray16(it_id, gSaveContext.infTable[i]);
-            });
+    for (int i = 0; i < flagTables.size(); i++) {
+        const FlagTable& flagTable = flagTables[i];
+        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag) {
+            continue;
         }
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Item Get Inf Flags")) {
-        for (int i = 0; i < 4; i++) {
-            std::string igi_id = "igi" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%d", i);
-                DrawFlagArray16(igi_id, gSaveContext.itemGetInf[i]);
-            });
+
+        if (ImGui::TreeNode(flagTable.name)) {
+            for (int j = 0; j < flagTable.size + 1; j++) {
+                DrawGroupWithBorder([&]() {
+                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    switch (flagTable.flagTableType) {
+                        case EVENT_CHECK_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.eventChkInf[j]);
+                            break;
+                        case ITEM_GET_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.itemGetInf[j]);
+                            break;
+                        case INF_TABLE:
+                            DrawFlagArray16(flagTable, j, gSaveContext.infTable[j]);
+                            break;
+                        case EVENT_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.eventInf[j]);
+                            break;
+                        case RANDOMIZER_INF:
+                            DrawFlagArray16(flagTable, j, gSaveContext.randomizerInf[j]);
+                            break;
+                    }
+                });
+            }
+            ImGui::TreePop();
         }
-        ImGui::TreePop();
-    }
-    if (ImGui::TreeNode("Event Inf Flags")) {
-        for (int i = 0; i < 4; i++) {
-            std::string ei_id = "ei" + std::to_string(i);
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("%d", i);
-                DrawFlagArray16(ei_id, gSaveContext.eventInf[i]);
-            });
-        }
-        ImGui::TreePop();
     }
 }
 
@@ -1154,11 +1125,19 @@ void DrawEquipmentTab() {
     DrawUpgradeIcon("Strength", UPG_STRENGTH, strengthValues);
 
     // There is no icon for child wallet, so default to a text list
-    const std::vector<std::string> walletNames = {
+    // this was const, but I needed to append to it depending in rando settings.
+    std::vector<std::string> walletNamesImpl = {
         "Child (99)",
         "Adult (200)",
         "Giant (500)",
     };
+    // only display Tycoon wallet if you're in a save file that would allow it.
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 1) {
+        const std::string walletName = "Tycoon (999)";
+        walletNamesImpl.push_back(walletName);
+    }
+    // copy it to const value for display in ImGui.
+    const std::vector<std::string> walletNames = walletNamesImpl;
     DrawUpgrade("Wallet", UPG_WALLET, walletNames);
 
     const std::vector<std::string> stickNames = {

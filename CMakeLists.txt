@@ -4,15 +4,12 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 #set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile with MSVC
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-set(MACOSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
-endif()
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
 
-project(Ship C CXX)
-
-set(PROJECT_VERSION_MAJOR "3")
-set(PROJECT_VERSION_MINOR "0")
-set(PROJECT_VERSION_PATCH "0")
+project(Ship LANGUAGES C CXX
+	VERSION 4.0.2)
+set(PROJECT_BUILD_NAME "ZHORA CHARLIE" CACHE STRING "")
+set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
@@ -24,7 +21,7 @@ set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng SDL2 GLEW glfw3)
+vcpkg_install_packages(zlib bzip2 libpng SDL2 SDL2-net GLEW glfw3)
 endif()
 
 ################################################################################

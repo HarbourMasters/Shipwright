@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_truth_mask" Segment="6">
+        <DList Name="gGiMaskOfTruthDL" Offset="0x13D0"/>
+        <DList Name="gGiMaskOfTruthAccentsDL" Offset="0x16B0"/>
+    </File>
+</Root>

@@ -143,13 +143,15 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
             }
         }
 
-        // Check for Bomb Bag if Rando is enabled
-        // RANDOTODO: Check for bombchu pack instead of bomb bag if bombchus are in logic
+        // In randomizer, only check for bomb bag when bombchus aren't in logic
+        // and only check for bombchus when bombchus are in logic
         if (gSaveContext.n64ddFlag) {
-            if (INV_CONTENT(ITEM_BOMB) != ITEM_NONE) {
-                this->actor.textId = 0xBF;
-            } else {
+            u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
+            if ((!bombchusInLogic && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
+                (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
                 this->actor.textId = 0x7058;
+            } else {
+                this->actor.textId = 0xBF;
             }
         }
     }
@@ -177,11 +179,17 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeMode = CHU_GIRL_EYES_AWAKE;
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
-        // Check for beaten Dodongo's Cavern if not rando'd
-        // check for bomb bag if rando'd
-        if ((!gSaveContext.n64ddFlag && 
-             !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) ||
-             (gSaveContext.n64ddFlag && (INV_CONTENT(ITEM_BOMB) == ITEM_NONE))) {
+        bool bombchuBowlingClosed;
+        if (gSaveContext.n64ddFlag) {
+            // when rando'd, check if we have bombchus if chus are in logic
+            // and check if we have a bomb bag if chus aren't in logic
+            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
+            bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
+        } else {
+            // if not rando'd, check if we have beaten Dodongo's Cavern
+            bombchuBowlingClosed = !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2));
+        }
+        if (bombchuBowlingClosed) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
         } else {
             this->actor.textId = 0x18;

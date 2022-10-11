@@ -95,6 +95,8 @@ set(PROJECT_NAME soh)
 ################################################################################
 # Source groups
 ################################################################################
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
+
 set(Header_Files
     "resource.h"
 )
@@ -110,6 +112,9 @@ set(Header_Files__include
     "include/ichain.h"
     "include/macro.inc"
     "include/macros.h"
+    "include/message_data_fmt.h"
+    "include/message_data_static.h"
+    "include/message_data_textbox_types.h"
     #"include/math_n64.h"
     "include/regs.h"
     "include/segment_symbols.h"
@@ -178,7 +183,12 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+    "soh/Enhancements/randomizer/randomizer_check_objects.h"
+    "soh/Enhancements/randomizer/draw.h"
+    "soh/Enhancements/randomizer/rando_hash.h"
 )
 source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
 
@@ -235,6 +245,13 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Header_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.h"
+)
+source_group("Header Files\\soh\\Enhancements\\crowd-control" FILES ${Header_Files__soh__Enhancements__crowd_control})
+endif()
+
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
     "soh/OTRAudio.h"
@@ -255,6 +272,7 @@ set(Source_Files__soh
     "soh/GameMenuBar.cpp"
     "soh/UIWidgets.hpp"
     "soh/UIWidgets.cpp"
+    "soh/CrashHandlerExt.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
 
@@ -287,6 +305,9 @@ source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__s
 set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.cpp"
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
+    "soh/Enhancements/randomizer/adult_trade_shuffle.c"
+    "soh/Enhancements/randomizer/randomizer_check_objects.cpp"
+    "soh/Enhancements/randomizer/draw.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
 
@@ -366,14 +387,20 @@ set(Source_Files__soh__Enhancements__item_tables
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__soh__Enhancements__crowd_control
+    "soh/Enhancements/crowd-control/CrowdControl.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\crowd-control" FILES ${Source_Files__soh__Enhancements__crowd_control})
+endif()
+
 set(Source_Files__src__boot
     "src/boot/assert.c"
     "src/boot/boot_main.c"
-    "src/boot/build.c"
+    "${CMAKE_BINARY_DIR}/build.c"
     "src/boot/idle.c"
     "src/boot/is_debug.c"
     "src/boot/logutils.c"
-    "src/boot/missing_gcc_functions.c"
     "src/boot/stackcheck.c"
     "src/boot/viconfig.c"
     "src/boot/yaz0.c"
@@ -1577,6 +1604,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__controls}
@@ -1588,6 +1616,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}
@@ -1669,6 +1698,11 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(SDL2-net)
+    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
@@ -1679,6 +1713,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
 	${SDL2-INCLUDE}
+    ${SDL2-NET-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
@@ -1689,13 +1724,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Debug>:"
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_DX11"
+				"ENABLE_DX11;"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
 			"INCLUDE_GAME_PRINTF;"
-			"_CONSOLE;"
+            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1710,11 +1745,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"ENABLE_OPENGL"
 			">"
 			"$<$<CONFIG:Release>:"
-				"INCLUDE_GAME_PRINTF;"
 				"NDEBUG;"
 			">"
+			"INCLUDE_GAME_PRINTF;"
 			"WIN32;"
-			"_CONSOLE;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -1723,7 +1757,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-				"_DEBUG"
+			"_DEBUG"
 		">"
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
@@ -1736,7 +1770,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-				"_DEBUG"
+			"_DEBUG"
 		">"
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
@@ -1799,7 +1833,7 @@ if(MSVC)
                 /INCREMENTAL:NO
             >
             /DEBUG;
-            /SUBSYSTEM:CONSOLE;
+            /SUBSYSTEM:WINDOWS;
             /FORCE:MULTIPLE
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
@@ -1814,7 +1848,7 @@ if(MSVC)
                 /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:CONSOLE
+            /SUBSYSTEM:WINDOWS
         )
     endif()
 endif()
@@ -1832,6 +1866,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-narrowing
             -Wno-c++11-narrowing
             -Wno-implicit-function-declaration
+            -Wno-missing-braces
+            -Wno-incompatible-pointer-types
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
@@ -1852,6 +1888,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-narrowing
             -Wno-c++11-narrowing
             -Wno-implicit-function-declaration
+            -Wno-missing-braces
+            -Wno-incompatible-pointer-types
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
@@ -1893,6 +1931,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-missing-field-initializers
             -Wno-parentheses
             -Wno-narrowing
+            -Wno-missing-braces
+            -Wno-incompatible-pointer-types
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
@@ -1913,7 +1953,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		TARGET ${PROJECT_NAME}
 		PRE_BUILD
 		COMMANDS
-		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_CURRENT_SOURCE_DIR}/>src\\boot\\build.c +,,
+		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
 	)
 endif()
 ################################################################################
@@ -1932,6 +1972,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
+            "SDL2::SDL2_net;"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -2000,6 +2041,7 @@ find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download fi
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
@@ -2018,8 +2060,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
 nx_generate_nacp(Ship.nacp
    NAME "Ship of Harkinian"
-   AUTHOR "Harbour Masters"
-   VERSION "4.0.0"
+   AUTHOR "${PROJECT_TEAM}"
+   VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
 )
  
 nx_create_nro(soh
@@ -2036,7 +2078,7 @@ wut_create_rpx(${PROJECT_NAME})
 wut_create_wuhb(${PROJECT_NAME}
 	NAME       "Ship of Harkinian"
 	SHORTNAME  "SoH"
-	AUTHOR     "Harbour Masters"
+	AUTHOR     "${PROJECT_TEAM}"
 	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
 )
 
