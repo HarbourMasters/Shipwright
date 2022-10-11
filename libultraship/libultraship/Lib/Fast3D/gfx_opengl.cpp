@@ -57,7 +57,6 @@ struct ShaderProgram {
     GLint attrib_locations[16];
     uint8_t attrib_sizes[16];
     uint8_t num_attribs;
-    bool used_noise;
     GLint frame_count_location;
     GLint noise_scale_location;
 };
@@ -104,10 +103,8 @@ static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram *prg) {
 }
 
 static void gfx_opengl_set_uniforms(struct ShaderProgram *prg) {
-    if (prg->used_noise) {
-        glUniform1i(prg->frame_count_location, frame_count);
-        glUniform1f(prg->noise_scale_location, current_noise_scale);
-    }
+    glUniform1i(prg->frame_count_location, frame_count);
+    glUniform1f(prg->noise_scale_location, current_noise_scale);
 }
 
 static void gfx_opengl_unload_shader(struct ShaderProgram *old_prg) {
@@ -133,6 +130,8 @@ static void append_line(char *buf, size_t *len, const char *str) {
     while (*str != '\0') buf[(*len)++] = *str++;
     buf[(*len)++] = '\n';
 }
+
+#define RAND_NOISE "((random(vec3(floor(gl_FragCoord.xy * noise_scale), float(frame_count))) + 1.0) / 2.0)"
 
 static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_alpha, bool inputs_have_alpha, bool hint_single_element) {
     if (!only_alpha) {
@@ -161,6 +160,8 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return with_alpha ? "texVal1" : "texVal1.rgb";
             case SHADER_COMBINED:
                 return with_alpha ? "texel" : "texel.rgb";
+            case SHADER_NOISE:
+                return with_alpha ? "vec4(" RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ")" : "vec3(" RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ")";
         }
     } else {
         switch (item) {
@@ -186,10 +187,14 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return "texVal1.a";
             case SHADER_COMBINED:
                 return "texel.a";
+            case SHADER_NOISE:
+                return RAND_NOISE;
         }
     }
     return "";
 }
+
+#undef RAND_NOISE
 
 static void append_formula(char *buf, size_t *len, uint8_t c[2][4], bool do_single, bool do_multiply, bool do_mix, bool with_alpha, bool only_alpha, bool opt_alpha) {
     if (do_single) {
@@ -368,15 +373,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "uniform sampler2D uTex1;");
     }
 
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(fs_buf, &fs_len, "uniform int frame_count;");
-        append_line(fs_buf, &fs_len, "uniform float noise_scale;");
+    append_line(fs_buf, &fs_len, "uniform int frame_count;");
+    append_line(fs_buf, &fs_len, "uniform float noise_scale;");
 
-        append_line(fs_buf, &fs_len, "float random(in vec3 value) {");
-        append_line(fs_buf, &fs_len, "    float random = dot(sin(value), vec3(12.9898, 78.233, 37.719));");
-        append_line(fs_buf, &fs_len, "    return fract(sin(random) * 143758.5453);");
-        append_line(fs_buf, &fs_len, "}");
-    }
+    append_line(fs_buf, &fs_len, "float random(in vec3 value) {");
+    append_line(fs_buf, &fs_len, "    float random = dot(sin(value), vec3(12.9898, 78.233, 37.719));");
+    append_line(fs_buf, &fs_len, "    return fract(sin(random) * 143758.5453);");
+    append_line(fs_buf, &fs_len, "}");
 
     if (current_filter_mode == FILTER_THREE_POINT) {
     #if __APPLE__
@@ -604,13 +607,8 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         glUniform1i(sampler_location, 1);
     }
 
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        prg->frame_count_location = glGetUniformLocation(shader_program, "frame_count");
-        prg->noise_scale_location = glGetUniformLocation(shader_program, "noise_scale");
-        prg->used_noise = true;
-    } else {
-        prg->used_noise = false;
-    }
+    prg->frame_count_location = glGetUniformLocation(shader_program, "frame_count");
+    prg->noise_scale_location = glGetUniformLocation(shader_program, "noise_scale");
 
     return prg;
 }
