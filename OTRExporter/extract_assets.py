@@ -13,11 +13,11 @@ def BuildOTR(xmlPath, rom, zapd_exe=None):
 
     if not zapd_exe:
         zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
-    otrName = "oot-mq.otr" if Z64Rom.isMqRom(rom) else "oot.otr"
 
     exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
             "-o", "placeholder", "-osf", "placeholder", "-gsf", "1",
-            "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile", otrName]
+            "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile", 
+            "oot-mq.otr" if Z64Rom.isMqRom(rom) else "oot.otr"]
 
     print(exec_cmd)
     exitValue = subprocess.call(exec_cmd)
