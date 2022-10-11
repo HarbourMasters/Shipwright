@@ -39,13 +39,13 @@ const ActorInit En_Mag_InitVars = {
 };
 
 const char* noControllerMsg[] = {
-    "NO CONTROLLER",
+    "SIN MANDO",
     "CONTROLLER FEHLT",
     "MANETTE DEBRANCHEE",
 };
 
 const char* pressStartMsg[] = {
-    "PRESS START",
+    "PULSA START",
     "DRUCKE START",
     "APPUYEZ SUR START",
 };
@@ -743,11 +743,11 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 160, 16, 0,
+        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 128, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gfx++, 312, 792, 952, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gfx++, 376, 792, 888, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
     if (gSaveContext.fileNum == 0xFEDC) {
@@ -935,11 +935,11 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 160, 16, 0,
+        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 128, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gfx++, 312, 792, 952, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gfx++, 376, 792, 888, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
     if (gSaveContext.fileNum == 0xFEDC) {
