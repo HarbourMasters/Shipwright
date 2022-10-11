@@ -946,7 +946,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
         for (auto& locationIt : areaIt.second) {
             locationIt.visibleInImgui = (
                 (locationIt.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
-                (locationIt.rcType != RCTYPE_SHOP) && // don't show shop items until we have shopsanity
+                //(locationIt.rcType != RCTYPE_SHOP) && // don't show shop items until we have shopsanity
                 (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
                 (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
                 (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them

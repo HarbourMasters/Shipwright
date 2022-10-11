@@ -42,6 +42,8 @@ class Randomizer {
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
     std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
+    std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
+
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
