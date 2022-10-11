@@ -117,8 +117,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInvertYAxis", 1);
         // Right Stick Aiming
         CVar_SetS32("gRightStickAiming", 0);
-        // Auto-Center First Person View
-        CVar_SetS32("gAutoCenterView", 0);
+        // Disable Auto-Center First Person View
+        CVar_SetS32("gDisableAutoCenterView", 0);
 
         // Text Speed (1 to 5)
         CVar_SetS32("gTextSpeed", 1);

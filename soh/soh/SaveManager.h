@@ -116,6 +116,7 @@ public:
     static void InitFileDebug();
 
     static void LoadRandomizerVersion1();
+    static void LoadRandomizerVersion2();
     static void SaveRandomizer();
 
     static void LoadBaseVersion1();

@@ -1660,6 +1660,11 @@ extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
 }
 
+extern "C" CustomMessageEntry Randomizer_GetIceTrapMessage() {
+    u16 iceTrapTextId = rand() % NUM_ICE_TRAP_MESSAGES;
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
@@ -1768,8 +1773,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            messageEntry =
-                Randomizer_GetCustomGetItemMessage(GET_PLAYER(globalCtx));
+            Player* player = GET_PLAYER(globalCtx);
+            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+                messageEntry = Randomizer_GetIceTrapMessage();
+            } else {
+                messageEntry = Randomizer_GetCustomGetItemMessage(player);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
