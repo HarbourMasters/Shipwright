@@ -1532,7 +1532,7 @@ void GenerateLocationPool() {
 void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmediately /*= false*/, bool setHidden /*= false*/) {
   auto loc = Location(locKey);
   SPDLOG_DEBUG("\n");
-  SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+  SPDLOG_DEBUG(GetItemTable(item).GetName().GetEnglish());
   SPDLOG_DEBUG(" placed at ");
   SPDLOG_DEBUG(loc->GetName());
   SPDLOG_DEBUG("\n\n");
