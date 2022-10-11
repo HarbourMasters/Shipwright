@@ -380,6 +380,8 @@ namespace Ship {
                             OTRFiles.push_back(p.path().string());
                         }
                     }
+                } else if (std::filesystem::is_regular_file(MainPath)) {
+                    OTRFiles.push_back(MainPath);
                 } else {
                     SPDLOG_ERROR("The directory {} does not exist", MainPath.c_str());
                     return false;
