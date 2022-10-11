@@ -414,6 +414,10 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     append_line(fs_buf, &fs_len, "void main() {");
 
+    // Taken from GLideN64
+    // Return wrapped value of x in interval [low, high)
+    append_line(fs_buf, &fs_len, "#define WRAP(x, low, high) mod((x)-(low), (high)-(low)) + (low)");
+
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
@@ -436,10 +440,6 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     append_line(fs_buf, &fs_len, cc_features.opt_alpha ? "vec4 texel;" : "vec3 texel;");
     for (int c = 0; c < (cc_features.opt_2cyc ? 2 : 1); c++) {
-        if (c == 1) {
-            append_str(fs_buf, &fs_len, "texel = mod((texel)-(-1.01), (1.01)-(-1.01)) + (-1.01);");
-        }
-
         append_str(fs_buf, &fs_len, "texel = ");
         if (!cc_features.color_alpha_same[c] && cc_features.opt_alpha) {
             append_str(fs_buf, &fs_len, "vec4(");
@@ -452,9 +452,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
             append_formula(fs_buf, &fs_len, cc_features.c[c], cc_features.do_single[c][0], cc_features.do_multiply[c][0], cc_features.do_mix[c][0], cc_features.opt_alpha, false, cc_features.opt_alpha);
         }
         append_line(fs_buf, &fs_len, ";");
+
+        if (c == 0) {
+            append_str(fs_buf, &fs_len, "texel = WRAP(texel, -1.01, 1.01);");
+        }
     }
 
-    append_str(fs_buf, &fs_len, "texel = mod((texel)-(-0.51), (1.51)-(-0.51)) + (-0.51);");
+    append_str(fs_buf, &fs_len, "texel = WRAP(texel, -0.51, 1.51);");
     append_str(fs_buf, &fs_len, "texel = clamp(texel, 0.0, 1.0);");
     // TODO discard if alpha is 0?
     if (cc_features.opt_fog)
