@@ -188,6 +188,6 @@ void ApplyStartingInventory() {
     if (item == PIECE_OF_HEART || item == HEART_CONTAINER || item == TREASURE_GAME_HEART)
       continue;
 
-    ItemTable(item).ApplyEffect();
+    GetItemTable(item).ApplyEffect();
   }
 }

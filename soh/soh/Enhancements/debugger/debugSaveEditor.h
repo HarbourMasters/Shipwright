@@ -180,9 +180,10 @@ const std::vector<FlagTable> flagTables = {
         { 0x11, "Obtained Bowling Bomb Bag Upgrade" },
         { 0x12, "Obtained Bowling Heart Piece" },
         { 0x13, "Obtained Deku Seeds" },
+        { 0x14, "Obtained Treasure Chest Game Heart Piece" },//Not confirmed!
         { 0x15, "Obtained Roof Guy's Heart Piece" },
-        { 0x16, "Obtained Skullkid's Heart Piece" },
-        { 0x17, "Obtained Skullkids' Heart Piece" },
+        { 0x16, "Obtained Skullkid's Heart Piece" }, //Saria's Song
+        { 0x17, "Obtained Skullkids' Heart Piece" }, //Ocarina Memory Game
         { 0x18, "Obtained Farore's Wind" },
         { 0x19, "Obtained Din's Fire" },
         { 0x1A, "Obtained Nayru's Love" },
@@ -199,6 +200,12 @@ const std::vector<FlagTable> flagTables = {
         { 0x2E, "Obtained Cojiro" },
         { 0x30, "Obtained Odd Potion" },
         { 0x31, "Obtained Poacher's Saw" },
+        { 0x32, "Obtained Adult Item X" }, //|
+        { 0x33, "Obtained Adult Item Y" }, //| TODO
+        { 0x34, "Obtained Adult Item Z" }, //| Just to help to check which ones are actually set.
+        { 0x35, "Obtained Adult Item X1" },//|   Must rename
+        { 0x36, "Obtained Adult Item X2" },//|
+        { 0x37, "Obtained Adult Item X3" },//|
         { 0x38, "Sold Keaton Mask" },
         { 0x39, "Sold Skull Mask" },
         { 0x3A, "Sold Spooky Mask" },

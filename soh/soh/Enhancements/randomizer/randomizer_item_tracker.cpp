@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <set>
 #include <libultraship/Cvar.h>
 #include <libultraship/Hooks.h>
 
@@ -18,6 +19,7 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
+#include "3drando/item_location.hpp"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
@@ -29,6 +31,9 @@ void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
 
 OSContPad* buttonsPressed;
+std::set<RandomizerCheck> checkedLocations;
+std::set<RandomizerCheck> prevCheckedLocations;
+RandomizerCheck lastLocationChecked;
 
 bool shouldUpdateVectors = true;
 
@@ -582,6 +587,286 @@ void DrawNotes(bool resizeable = false) {
     ImGui::EndGroup();
 }
 
+
+bool HasItemBeenCollected(RandomizerCheckObject obj) {
+    //TODO doesn't consider vanilla/MQ?
+
+    //return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); //TODO move all the code to a static function in item_location
+
+    ItemLocation* x = Location(obj.rc);
+    //uint8_t scene = x->GetScene();
+    //uint8_t flag = x->GetFlag();
+    //ItemLocationType type = static_cast<ItemLocationType>(x->Key().type);
+    SpoilerCollectionCheck check = x->GetCollectionCheck();
+    auto flag = check.flag;
+    auto scene = check.scene;
+    auto type = check.type;
+
+    /*
+    int idx = (flag - 1) / 16; //1 goes to 0, 16 goes to 0, 17 goes to 1, etc
+    int flag16 = ((flag - 1) % 16) + 1;
+    int shift = 8 - ((flag16 - 1) % 8) + 1; // This handles giving 7..0 7..0
+    shift += ((flag16 - 1) / 8) * 8;
+    int mask = 0x8000 >> shift;
+    */
+
+    //int idx = flag / 16;
+    //int flag16 = flag % 16;
+    //int itemGetInfShift;
+    //int eventChkInfShift;
+    //itemGetInfShift = eventChkInfShift = 7 - (flag16 % 8);
+    //
+    //itemGetInfShift += (flag16 / 8) * 8;
+    //int itemGetInfshiftMask = 0x8000 >> itemGetInfShift;
+    //
+    //eventChkInfShift += (1 - (flag16 / 8)) * 8;
+    //int eventChkInfMask = 0x8000 >> eventChkInfShift;
+
+
+    int shift;
+    int mask;
+
+    switch (type) { 
+        case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
+            return true;
+        case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
+            return gSaveContext.bgsFlag & flag;
+        case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
+            return gSaveContext.sceneFlags[scene].chest & (1 << flag);
+        case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
+            return gSaveContext.sceneFlags[scene].collect & (1 << flag);
+            //return gSaveContext.sceneFlags[scene].collect & (flag << 1); //TODO why is there an offset?
+        case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
+        case SpoilerCollectionCheckType::SPOILER_CHK_COW:
+        case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
+            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]);
+        case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
+            // Magic to flip an index `flag` to a lookup for 16bit little endian integers. Probably an easier way.....
+            shift = 7 - (flag % 8) + (1 - ((flag / 16) / 8) * 8); 
+            mask = 0x8000 > shift;
+            return gSaveContext.eventChkInf[flag / 16] & mask;
+            //return gSaveContext.eventChkInf[idx] & eventChkInfMask;
+            //return gSaveContext.eventChkInf[flag / 16] & (0x8000 >> ((flag - 1) % 16));
+            //return (gSaveContext.eventChkInf[flag / 16] >> (flag % 16)) & 1;
+            //return gSaveContext.eventChkInf[scene] & flag;
+        case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
+            return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
+            //return (gSaveContext.eventChkInf[0x09] & 0x0F) == 0x0F;
+        case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
+            return GET_GS_FLAGS(scene) & flag;
+        case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
+            //return gSaveContext.infTable[flag];
+            return gSaveContext.infTable[scene] & (0x01 << flag);
+            //return gSaveContext.infTable[scene] & flag;
+        case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
+            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
+            shift = 7 - (flag % 8) + ((flag / 16) / 8) * 8;
+            mask = 0x8000 > shift;
+            return gSaveContext.itemGetInf[flag / 16] & mask;
+            //return gSaveContext.itemGetInf[idx] & itemGetInfshiftMask;
+            //return gSaveContext.itemGetInf[flag / 16] & (0x8000 >> ((flag - 1) % 16));
+            //return (gSaveContext.itemGetInf[flag / 16] >> (flag % 16)) & 1;
+            //return gSaveContext.itemGetInf[scene] & (0x01 << flag);
+            //return gSaveContext.itemGetInf[scene] & flag;
+        case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
+            return BEANS_BOUGHT >= 10;
+        case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME: //TODO it has something to do with highscores [0x02], but what the bits mean is unknown thus far
+            if (obj.rc == RC_LH_CHILD_FISHING)
+                return HIGH_SCORE(HS_FISHING) & 0x400;
+                //return gSaveContext.highScores[0x02] & 0x0A;
+            if (obj.rc == RC_LH_ADULT_FISHING)
+                return HIGH_SCORE(HS_FISHING) & 0x800;
+                //return gSaveContext.highScores[0x02] & 0x0B;
+        case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
+            return false;
+        case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
+            return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
+        default:
+            return false;
+    }
+
+    /*
+    switch (type) { 
+        case ItemLocationType::Base:
+            //TODO
+            break;
+        case ItemLocationType::Chest:
+            return gSaveContext.sceneFlags[scene].chest & flag && obj.vOrMQ == RandomizerCheckVanillaOrMQ::RCVORMQ_VANILLA;// && obj.vOrMQ == RandomizerCheckVanillaOrMQ::RCVORMQ_VANILLA && gSaveContext.item;
+        case ItemLocationType::Collectable:
+            return gSaveContext.sceneFlags[scene].collect & flag;
+        case ItemLocationType::GSToken:
+            return gSaveContext.gsFlags[scene] & flag;
+        case ItemLocationType::GrottoScrub:
+            //return gSaveContext.sceneFlags[scene].
+            //TODO
+            break;
+        case ItemLocationType::Delayed:
+            //return gSaveContext.sceneFlags[scene].
+            //TODO
+            break;
+        case ItemLocationType::TempleReward:
+            //return gSaveContext.sceneFlags[scene].
+            //TODO
+            break;
+        case ItemLocationType::HintStone:
+            //return gSaveContext.hintLocations[flag].hintText; //TODO this isn't a check, it's just storage. Want to show hint after reading though...
+            break;
+        case ItemLocationType::OtherHint:
+            //return gSaveContext.ganonHintText?
+            break;
+        default:
+            return false;
+    }
+
+    switch (obj.rcArea) {
+        case RCAREA_KOKIRI_FOREST:
+            switch (obj.rc) {
+                case RC_KF_MIDOS_TOP_LEFT_CHEST:
+                    return gSaveContext.sceneFlags[40].chest & 0x01;
+                    break;
+                case RC_KF_MIDOS_TOP_RIGHT_CHEST:
+                    return gSaveContext.sceneFlags[40].chest & 0x02;
+                    break;
+                case RC_KF_MIDOS_BOTTOM_LEFT_CHEST:
+                    return gSaveContext.sceneFlags[40].chest & 0x04;
+                    break;
+                case RC_KF_MIDOS_BOTTOM_RIGHT_CHEST:
+                    return gSaveContext.sceneFlags[40].chest & 0x08;
+                    break;
+            }
+    }
+    */
+    return false;
+}
+
+
+void DrawLocations() {
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+
+    if (ImGui::BeginTable("tableRandoChecks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+        ImGui::TableSetupColumn("To Check", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn("Checked", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableHeadersRow();
+        ImGui::TableNextRow();
+
+        // COLUMN 1 - TO CHECK LOCATIONS
+        ImGui::TableNextColumn();
+
+        static ImGuiTextFilter locationSearch;
+        locationSearch.Draw();
+
+        bool lastItemFound = false;
+
+        ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
+        for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+            bool hasItems = false;
+            for (auto locationIt : areaIt.second) {
+                if (locationIt.visibleInImgui && !checkedLocations.count(locationIt.rc) &&
+                    locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                    hasItems = true;
+                    break;
+                }
+            }
+
+            if (hasItems) {
+                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                    for (auto locationIt : areaIt.second) {
+                        // If the location has its scene flag set
+                        if (HasItemBeenCollected(locationIt)){// && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
+                            // show it as checked
+                            checkedLocations.insert(locationIt.rc);
+
+                            if (!lastItemFound && prevCheckedLocations.find(locationIt.rc) == prevCheckedLocations.end()) {
+                                lastItemFound = true;
+                                prevCheckedLocations.insert(locationIt.rc);
+                                lastLocationChecked = locationIt.rc;
+                            }
+                        }
+
+                        //TODO remove the arrows? Or make it so they can be skipped or something
+                        if (locationIt.visibleInImgui && !checkedLocations.count(locationIt.rc) &&
+                            locationSearch.PassFilter(locationIt.rcSpoilerName.c_str())) {
+
+                            if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Right)) {
+                                checkedLocations.insert(locationIt.rc);
+                            }
+                            
+                            ImGui::SameLine();
+                            ImGui::Text(locationIt.rcShortName.c_str());
+                            // TODO if the check has been hinted, show the hint's value beside the check
+                            // TODO if the check has been rendered, show its (fake) name beside the check
+
+                            //gSaveContext.itemLocations[0].get.rgID;
+                            //Show the name of the check and the item gotten
+                            //ImGui::Text(ItemTable(gSaveContext.itemLocations[locationIt.rc].get.rgID).GetName().english.c_str()); //TODO This is hardcoded english
+                            //ImGui::Text(ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, gSaveContext.itemLocations[locationIt.rc].get.rgID).
+                            
+                            //ImGui::Text(
+                            //    OTRGlobals::Instance->gRandomizer->getItemMessageTableID(gSaveContext.itemLocations[locationIt.rc].get.rgID)
+                            //        .GetName()
+                            //        .english.c_str()); // TODO This is hardcoded english
+                            //gSaveContext.itemLocations[locationIt.rc].get).GetName().english.c_str()
+
+                            //  name of the check is locationIt.rcShortName.c_str()
+                            //ImGui::Text(locationIt.rcShortName.c_str());
+
+                            //ImGui::Text(gSaveContext.itemLocations[locationIt.rc].check);
+                                //OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(locationIt.rc));
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+            }
+        }
+        ImGui::EndChild();
+
+        // COLUMN 2 - CHECKED LOCATIONS
+        ImGui::TableNextColumn();
+        ImGui::BeginChild("ChildCheckedLocations", ImVec2(0, -8));
+        for (auto areaIt : RandomizerCheckObjects::GetAllRCObjects()) {
+            bool hasItems = false;
+            for (auto locationIt : areaIt.second) {
+                if (locationIt.visibleInImgui && checkedLocations.count(locationIt.rc)) {
+                    hasItems = true;
+                    break;
+                }
+            }
+
+            if (hasItems) {
+                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
+                    for (auto locationIt : areaIt.second) {
+                        auto elfound = checkedLocations.find(locationIt.rc);
+                        if (locationIt.visibleInImgui && elfound != checkedLocations.end()) {
+                            // If the location has its scene flag set
+                            if (!HasItemBeenCollected(locationIt)) {
+                                // show it as checked
+                                checkedLocations.erase(locationIt.rc);
+                            } else if (ImGui::ArrowButton(std::to_string(locationIt.rc).c_str(), ImGuiDir_Left)) {
+                                checkedLocations.erase(elfound);
+                            }
+                            ImGui::SameLine();
+                            std::string txt =
+                                (lastLocationChecked == locationIt.rc ? "* " : "") + //Indicate the last location checked (before app reset at least)
+                                locationIt.rcShortName +
+                                " - ";
+                            txt += OTRGlobals::Instance->gRandomizer
+                                    ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.rc].get.rgID][LANGUAGE_ENG]; //TODO Language
+                            ImGui::Text(txt.c_str());
+                            //TODO GetItemObtainabilityFromRandomizerGet(rgData.rgID).CAN_OBTAIN or something to determine if it should say blue rupee
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+            }
+        }
+        ImGui::EndChild();
+        ImGui::EndTable();
+    }
+}
+
 // Windowing stuff
 ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
 void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
@@ -745,7 +1030,7 @@ void UpdateVectors() {
     if  (!shouldUpdateVectors) {
         return;
     }
-
+    LocationTable_Init();
     dungeonRewards.clear();
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
@@ -895,6 +1180,16 @@ void DrawItemTracker(bool& open) {
             DrawNotes(true);
             EndFloatingWindows();
         }
+
+        if (CVar_GetS32("gItemTrackerLocationDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
+            if (!ImGui::Begin("Location Checklist", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+                ImGui::End();
+            }
+            ImGui::SetNextWindowSize(ImVec2(400, 1000), ImGuiCond_FirstUseEver);
+            DrawLocations();
+            ImGui::End();
+
+        }
     }
 }
 
@@ -976,6 +1271,7 @@ void DrawItemTrackerOptions(bool& open) {
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
     }
+    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
