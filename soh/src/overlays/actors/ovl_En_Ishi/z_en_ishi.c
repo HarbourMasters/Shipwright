@@ -330,6 +330,7 @@ void EnIshi_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
         return;
     }
+    // remove fire temple blocking rocks for child
     if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 0x061 && this->actor.params == (-255)) {
         Actor_Kill(&this->actor);
     }

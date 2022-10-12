@@ -62,7 +62,8 @@ void EnWeatherTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "☆☆☆☆☆ (;o;) About ☆☆☆☆☆☆"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ （;o;) くらいよー ☆☆☆☆☆ \n" VT_RST);
             EnWeatherTag_SetupAction(this, EnWeatherTag_DisabledCloudyHyruleMarket);
-            if (gSaveContext.n64ddFlag) { //TODO add enbbtrance rando specific check
+            // Remove market cloudy weather on entrance rando
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
                 Actor_Kill(&this->actor);
             }
             break;
