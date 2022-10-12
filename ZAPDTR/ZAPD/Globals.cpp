@@ -136,7 +136,7 @@ void Globals::BuildAssetTexture(const fs::path& pngFilePath, TextureType texType
 
 	std::string src = tex.GetBodySourceCode();
 
-	File::WriteAllText(outPath.string(), src);
+	File::WriteAllBytes(outPath.string(), src.c_str(), src.size());
 }
 
 std::map<std::string, ExporterSet*>& Globals::GetExporterMap()
