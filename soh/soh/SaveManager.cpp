@@ -139,10 +139,15 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.entranceOverrides); i++) {
-        SaveManager::Instance->LoadData("index" + std::to_string(i), gSaveContext.entranceOverrides[i].vanillaIndex);
-        SaveManager::Instance->LoadData("overrideindex" + std::to_string(i), gSaveContext.entranceOverrides[i].randomizedIndex);
-    }
+    SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->LoadData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->LoadData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->LoadData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->LoadData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+        });
+    });
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
@@ -179,8 +184,6 @@ void SaveManager::LoadRandomizerVersion2() {
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
-    gSaveContext.isFirstIndex = 0;
-
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     size_t merchantPricesSize = 0;
@@ -214,10 +217,15 @@ void SaveManager::SaveRandomizer() {
         });
     });
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.entranceOverrides); i++) {
-        SaveManager::Instance->SaveData("index" + std::to_string(i), gSaveContext.entranceOverrides[i].vanillaIndex);
-        SaveManager::Instance->SaveData("overrideindex" + std::to_string(i), gSaveContext.entranceOverrides[i].randomizedIndex);
-    }
+    SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->SaveData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->SaveData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->SaveData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->SaveData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+        });
+    });
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.seedIcons[i]);

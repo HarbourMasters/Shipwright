@@ -300,7 +300,8 @@ static void WriteShuffledEntrance(Entrance* entrance) {
   // Entrance* entrance = Entrances(EntranceKey);
   int16_t originalIndex = entrance->GetIndex();
   int16_t destinationIndex = entrance->GetReverse()->GetIndex();
-  // int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
   int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
   std::string name = entrance->GetName();
@@ -311,9 +312,30 @@ static void WriteShuffledEntrance(Entrance* entrance) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
         default:
-            jsonData["Entrances"][std::to_string(originalIndex)] = replacementIndex;
-            jsonData["Entrances"][std::to_string(replacementDestinationIndex)] = destinationIndex;
-            jsonData["EntrancesMap"][name] = text;
+            json entranceJson = json::object({
+              {"index", originalIndex},
+              {"destination", destinationIndex},
+              {"blueWarp", originalBlueWarp},
+              {"override", replacementIndex},
+              {"overrideDestination", replacementDestinationIndex},
+            });
+
+            jsonData["entrances"].push_back(entranceJson);
+
+             // When decoupled entrances is off, handle saving reverse entrances with blue warps
+            if (!false) { // RANDOTODO: add check for decoupled entrances
+              json reverseEntranceJson = json::object({
+                {"index", replacementDestinationIndex},
+                {"destination", replacementIndex},
+                {"blueWarp", replacementBlueWarp},
+                {"override", destinationIndex},
+                {"overrideDestination", originalIndex},
+              });
+
+              jsonData["entrances"].push_back(reverseEntranceJson);
+            }
+
+            jsonData["entrancesMap"][name] = text;
             break;
     }
 }

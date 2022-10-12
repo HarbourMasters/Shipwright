@@ -195,6 +195,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
     { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
+    { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
+    { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEONS_ENTRANCES },
+    { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
+    { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIORS_ENTRANCES },
+    { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTOS_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -493,10 +498,6 @@ void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
 void Randomizer::LoadEntranceOverrides(const char* spoilerFileName, bool silent){
     if (strcmp(spoilerFileName, "") != 0) {
         ParseEntranceDataFile(spoilerFileName, silent);
-    }
-
-    for (auto EntranceOverride : gSaveContext.entranceOverrides) {
-        this->entranceOverrides[EntranceOverride.vanillaIndex] = EntranceOverride.randomizedIndex;
     }
 }
 
@@ -808,6 +809,45 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_SHUFFLE_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_SHUFFLE_DUNGEONS_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "On + Gannon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_SHUFFLE_INTERIORS_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Simple") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "All") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_SHUFFLE_GROTTOS_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
                 }
             }
         }
@@ -1050,27 +1090,42 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
         return;
     }
 
-    // set all the entrances to be -1 since 0 is a valid index
-    EntranceIndexRando unusedIndex;
-    unusedIndex.vanillaIndex = -1;
-    unusedIndex.randomizedIndex = -1;
-    for (int i = 0; i < (ARRAY_COUNT(gSaveContext.entranceOverrides)); i++) {
-        gSaveContext.entranceOverrides[i] = unusedIndex;
+    // set all the entrances to be 0 to indicate an unshuffled entrance
+    for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+        entranceOveride.index = 0;
+        entranceOveride.destination = 0;
+        entranceOveride.blueWarp = 0;
+        entranceOveride.override = 0;
+        entranceOveride.overrideDestination = 0;
     }
 
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
-        json EntrancesJson = spoilerFileJson["Entrances"];
+        json EntrancesJson = spoilerFileJson["entrances"];
 
-        int index = 0;
-        for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it) {
-            EntranceIndexRando indexEntry;
-            indexEntry.vanillaIndex = stoi(it.key());
-            indexEntry.randomizedIndex = it.value();
-            gSaveContext.entranceOverrides[index] = indexEntry;
+        size_t i = 0;
+        for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it, i++) {
+            EntranceOverride entranceOverride;
 
-            index++;
+            json entranceJson = *it;
+
+            for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
+                if (entranceIt.key() == "index") {
+                    gSaveContext.entranceOverrides[i].index = entranceIt.value();
+                } else if (entranceIt.key() == "destination") {
+                    gSaveContext.entranceOverrides[i].destination = entranceIt.value();
+                }
+                if (entranceIt.key() == "blueWarp") {
+                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
+                }
+                if (entranceIt.key() == "override") {
+                    gSaveContext.entranceOverrides[i].override = entranceIt.value();
+                }
+                if (entranceIt.key() == "overrideDestination") {
+                    gSaveContext.entranceOverrides[i].overrideDestination = entranceIt.value();
+                }
+            }
         }
     } catch (const std::exception& e) {
         return;
