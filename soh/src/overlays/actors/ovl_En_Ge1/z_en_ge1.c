@@ -117,20 +117,17 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
 
         case GE1_TYPE_GATE_GUARD:
             this->hairstyle = GE1_HAIR_SPIKY;
-            if (!gSaveContext.n64ddFlag) { //todo make entrance specific
-                this->actionFunc = EnGe1_GetReaction_GateGuard;
-                break;
-            }
-
-            else if (gSaveContext.n64ddFlag) {
-
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
                 if (EnGe1_CheckCarpentersFreed()) {
                     this->actionFunc = EnGe1_CheckGate_GateOp;
                 } else {
                     this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
                 }
-                break;
+            } else {
+                this->actionFunc = EnGe1_GetReaction_GateGuard;
             }
+            break;
+
         case GE1_TYPE_GATE_OPERATOR:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
@@ -143,22 +140,21 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
 
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
-            if (gSaveContext.n64ddFlag) {
+
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
                 if (EnGe1_CheckCarpentersFreed()) {
                     this->actionFunc = EnGe1_CheckGate_GateOp;
                 } else {
                     this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
                 }
-                break;
             } else {
-
                 if (EnGe1_CheckCarpentersFreed()) {
                     this->actionFunc = EnGe1_SetNormalText;
                 } else {
                     this->actionFunc = EnGe1_WatchForAndSensePlayer;
                 }
-                break;
             }
+            break;
 
         case GE1_TYPE_VALLEY_FLOOR:
             if (LINK_IS_ADULT) {
@@ -194,7 +190,12 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (EnGe1_CheckCarpentersFreed()) {
-                this->actionFunc = EnGe1_CheckForCard_GTGGuard;
+                // If the gtg gate is permanently open, don't let the gaurd charge to open it
+                if (gSaveContext.n64ddFlag && gSaveContext.sceneFlags[93].swch & 0x00000004) {
+                    this->actionFunc = EnGe1_SetNormalText;
+                } else {
+                    this->actionFunc = EnGe1_CheckForCard_GTGGuard;
+                }
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
             }
@@ -206,7 +207,7 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void EnGe1_MoveForRandomizer(EnGe1* this, GlobalContext* globalCtx) {
 
-    // Move left cow in lon lon tower
+    // Move gate gaurd to haunted wasteland side
     if (globalCtx->sceneNum == 0x5D && this->actor.world.pos.x == -857 && this->actor.world.pos.z == -3123) {
         this->actor.world.pos.x = -1224.0f;
         this->actor.world.pos.z = -3160.0f;
@@ -275,7 +276,8 @@ void EnGe1_KickPlayer(EnGe1* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
+            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) { // Caught previously
             globalCtx->nextEntranceIndex = 0x5F8;
@@ -471,7 +473,7 @@ void EnGe1_WaitUntilGateOpened_GateOp(EnGe1* this, GlobalContext* globalCtx) {
 void EnGe1_OpenGate_GateOp(EnGe1* this, GlobalContext* globalCtx) {
     if (this->stateFlags & GE1_STATE_IDLE_ANIM) {
         this->actionFunc = EnGe1_WaitUntilGateOpened_GateOp;
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             Flags_SetSwitch(globalCtx, (769 >> 8) & 0x3F);
         } else {
             Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
@@ -657,6 +659,7 @@ void EnGe1_WaitDoNothing(EnGe1* this, GlobalContext* globalCtx) {
 void EnGe1_BeginGame_Archery(EnGe1* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     Actor* horse;
+
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(globalCtx)) {
         this->actor.flags &= ~ACTOR_FLAG_16;
 
