@@ -3946,10 +3946,11 @@ void DrawRandoEditor(bool& open) {
 
                 //Starting Age
                 //Disabled when Forest is set to Closed or under very specific conditions
-                bool disableRandoStartingAge = !CVar_GetS32("gRandomizeForest", 0) || //If Forest is closed...
-                    !(CVar_GetS32("gRandomizeDoorOfTime", 0)) && //or Door of Time is Intended
-                    !(CVar_GetS32("gRandomizeShuffleOcarinas", 0)) && //and ocarinas are not shuffled
-                    !(CVar_GetS32("gRandomizeLogicRules", 0)); // and logic is glitchless
+                //RANDOTODO: Replace magic number checks with enums
+                bool disableRandoStartingAge = (CVar_GetS32("gRandomizeForest", 0) == 0) || //If Forest is closed...
+                    (CVar_GetS32("gRandomizeDoorOfTime", 0) == 0) && //or Door of Time is Closed
+                    (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0) && //and ocarinas are not shuffled
+                    (CVar_GetS32("gRandomizeLogicRules", 0) == 0); // and logic is glitchless
                 const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
