@@ -820,6 +820,7 @@ void func_80AF3F20(EnRu2* this, GlobalContext* globalCtx) {
 void EnRu2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnRu2* this = (EnRu2*)thisx;
 
+    // FAST3D: This is a hack for the issue of both TEXEL0 and TEXEL1 using the same texture with different settings.
     // Ruto's earring uses both TEXEL0 and TEXEL1 to render. The issue is that it never loads anything into TEXEL1, so
     // it reuses whatever happens to be there, which is the water temple brick texture. It just so happens that the
     // earring texture loads into the same place in tmem as the brick texture, so when it comes to rendering, TEXEL1
