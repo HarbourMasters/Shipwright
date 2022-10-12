@@ -138,8 +138,7 @@ add_custom_target(
     # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
     COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f oot.otr oot-mq.otr
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive
-    COMMAND ${CMAKE_COMMAND} -E copy oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy oot.otr oot-mq.otr ${CMAKE_BINARY_DIR}/soh
+    COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
