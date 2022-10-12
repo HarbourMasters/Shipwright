@@ -1505,18 +1505,17 @@ s16 EnItem00_ConvertBombDropToBombchu(s16 dropId) {
  * Returns a new drop type ID or -1 to cancel the drop.
  */
 s16 func_8001F404(s16 dropId) {
-    if (LINK_IS_ADULT) {
-        if (dropId == ITEM00_SEEDS) {
+    if(LINK_IS_ADULT && dropId == ITEM00_STICK){
+        dropId = ITEM00_RUPEE_GREEN;
+    }
+    if(!Var_GetS32("gBowSlingshotFix", 0)){
+        if (LINK_IS_ADULT && dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if (dropId == ITEM00_STICK) {
-            dropId = ITEM00_RUPEE_GREEN;
-        }
-    } else {
-        if (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE) {
+        } else if (LINK_IS_CHILD && (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE)) {
             dropId = ITEM00_SEEDS;
         }
     }
-
+    
     if ((CVar_GetS32("gBombchuDrops", 0) || 
         (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
@@ -1692,11 +1691,11 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_MAGIC_SMALL;
-        } else if (!LINK_IS_ADULT && (AMMO(ITEM_SLINGSHOT) < 6)) {
+        } else if ((Var_GetS32("gBowSlingshotFix", 0) || LINK_IS_CHILD) && (AMMO(ITEM_SLINGSHOT) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_SEEDS;
-        } else if (LINK_IS_ADULT && (AMMO(ITEM_BOW) < 6)) {
+        } else if ((Var_GetS32("gBowSlingshotFix", 0) || LINK_IS_ADULT) && (AMMO(ITEM_BOW) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_ARROWS_MEDIUM;
