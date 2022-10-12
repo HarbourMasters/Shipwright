@@ -3144,7 +3144,9 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
-    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+
+    if (tryRandomizeEnemy) {
         if (IsEnemyFoundToRandomize(actorId)) {
             enemyEntry newEnemy = GetRandomizedEnemy();
             actorId = newEnemy.enemyId;
@@ -3234,19 +3236,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
                                      : NULL);
     }
 
-    objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
-
-    if ((objBankIndex < 0 && !gMapLoading) || CVar_GetS32("gRandomizedEnemies", 0))
-        objBankIndex = 0;
-
-    if ((objBankIndex < 0) ||
-        ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
-        // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
-        osSyncPrintf(VT_COL(RED, WHITE) "データバンク無し！！<データバンク＝%d>(profilep->bank=%d)\n" VT_RST,
-                     objBankIndex, actorInit->objectId);
-        Actor_FreeOverlay(overlayEntry);
-        return NULL;
-    }
+    objBankIndex = 0;
 
     actor = ZELDA_ARENA_MALLOC_DEBUG(actorInit->instanceSize);
 

@@ -6,7 +6,7 @@ extern "C" {
 
 uint32_t enemyFound = 0;
 
-enemyEntry enemyEntryTable[ENEMY_TABLE_SIZE] = {
+enemyEntry randomizedEnemyEntryTable[ENEMY_TABLE_SIZE] = {
 	{ACTOR_EN_FIREFLY, 2},	// Regular Keese
 	{ACTOR_EN_FIREFLY, 1},	// Fire Keese
 	{ACTOR_EN_FIREFLY, 4},	// Ice Keese
@@ -18,17 +18,15 @@ enemyEntry enemyEntryTable[ENEMY_TABLE_SIZE] = {
 };
 
 extern "C" enemyEntry GetRandomizedEnemy(void) {
-	return enemyEntryTable[rand() % ENEMY_TABLE_SIZE];
+    return randomizedEnemyEntryTable[rand() % ENEMY_TABLE_SIZE];
 }
 
 extern "C" bool IsEnemyFoundToRandomize(int actorId = 0) {
-	enemyFound = 0;
-
 	for (int i = 0; i < ENEMY_TABLE_SIZE; i++) {
-		if (actorId == enemyEntryTable[i].enemyId) {
-			enemyFound = 1;
+		if (actorId == randomizedEnemyEntryTable[i].enemyId) {
+            return 1;
 		}
 	}
 
-	return enemyFound;
+	return 0;
 }

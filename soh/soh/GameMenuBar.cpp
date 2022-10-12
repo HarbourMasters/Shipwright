@@ -1498,8 +1498,6 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-            UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
-            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
 
             UIWidgets::PaddedSeparator();
 
@@ -1545,7 +1543,10 @@ namespace GameMenuBar {
 
             UIWidgets::PaddedSeparator();
 
-            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
+            UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
+            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
+
+            UIWidgets::PaddedEnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies", true, false);
             UIWidgets::Tooltip("Replaces some normal enemies with other random normal enemies.\n\nWARNING: Unstable and likely to softlock you in certain areas!");
 
             ImGui::EndMenu();
