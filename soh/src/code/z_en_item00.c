@@ -1508,10 +1508,10 @@ s16 func_8001F404(s16 dropId) {
     if(LINK_IS_ADULT && dropId == ITEM00_STICK){
         dropId = ITEM00_RUPEE_GREEN;
     }
-    if(!Var_GetS32("gBowSlingshotFix", 0)){
+    if(!CVar_GetS32("gBowSlingshotFix", 0)){
         if (LINK_IS_ADULT && dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if (LINK_IS_CHILD && (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE)) {
+        } else if (!LINK_IS_ADULT && (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE)) {
             dropId = ITEM00_SEEDS;
         }
     }
@@ -1691,11 +1691,11 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_MAGIC_SMALL;
-        } else if ((Var_GetS32("gBowSlingshotFix", 0) || LINK_IS_CHILD) && (AMMO(ITEM_SLINGSHOT) < 6)) {
+        } else if ((CVar_GetS32("gBowSlingshotFix", 0) || !LINK_IS_ADULT) && (AMMO(ITEM_SLINGSHOT) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_SEEDS;
-        } else if ((Var_GetS32("gBowSlingshotFix", 0) || LINK_IS_ADULT) && (AMMO(ITEM_BOW) < 6)) {
+        } else if ((CVar_GetS32("gBowSlingshotFix", 0) || LINK_IS_ADULT) && (AMMO(ITEM_BOW) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_ARROWS_MEDIUM;
