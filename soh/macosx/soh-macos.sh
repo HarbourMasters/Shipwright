@@ -146,7 +146,7 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 		fi
 	done
 
-	if [ ! -e "$DATA_SHARE"/*.otr ]; then
+	if [ ! -e "$DATA_SHARE"/oot*.otr ]; then
 		osascript -e 'display notification "OTR failed to generate" with title "Ship Of Harkinian"'
 		exit 1;
 	fi
