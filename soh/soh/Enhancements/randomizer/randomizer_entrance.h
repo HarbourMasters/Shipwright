@@ -83,14 +83,6 @@ uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
 int16_t  Entrance_GetOverride(int16_t index);
 int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
-uint32_t  Entrance_IsLostWoodsBridge(void);
-void Entrance_EnteredLocation(void);
 void Entrance_SetSavewarpEntrance(void);
-uint32_t  Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
-/// Returns entrance data of the specified index
-const EntranceData* GetEntranceData(int16_t index);
-/// Returns the index that replaced the parameter index
-int16_t Entrance_GetReplacementIndex(int16_t index);
-void InitEntranceTrackingData(void);
 
 #endif //_RANDO_ENTRANCE_H_
