@@ -78,9 +78,11 @@ extern EntranceOverride destList[ENTRANCE_OVERRIDES_MAX_COUNT];
 extern EntranceTrackingData gEntranceTrackingData;
 
 void Entrance_Init(void);
+void Entrance_ResetEntranceTable(void);
 uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
 int16_t  Entrance_GetOverride(int16_t index);
 int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
+int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t  Entrance_IsLostWoodsBridge(void);
 void Entrance_EnteredLocation(void);
 void Entrance_SetSavewarpEntrance(void);

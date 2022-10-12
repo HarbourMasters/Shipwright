@@ -4165,7 +4165,7 @@ s32 func_80838FB8(GlobalContext* globalCtx, Player* this) {
 s16 D_808544F8[] = {
     0x045B, // DMT from Magic Fairy Fountain
     0x0482, // DMC from Double Defense Fairy Fountain
-    0x03E8, // Hyrule Castle from Dins Fire Fairy Fountain
+    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
     0x044B, // Kakariko from Potion Shop
     0x02A2, // Market (child day) from Potion Shop
     0x0201, // Kakariko from Bazaar
@@ -4219,11 +4219,11 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
                     globalCtx->fadeTransition = 3;
                     gSaveContext.nextTransition = 3;
                 } else if (globalCtx->nextEntranceIndex >= 0x7FF9) {
-                    globalCtx->nextEntranceIndex =
-                        D_808544F8[D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn];
-
                     if (gSaveContext.n64ddFlag) {
-                        globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
+                        globalCtx->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn);
+                    } else {
+                        globalCtx->nextEntranceIndex =
+                            D_808544F8[D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn];
                     }
 
                     func_800994A0(globalCtx);

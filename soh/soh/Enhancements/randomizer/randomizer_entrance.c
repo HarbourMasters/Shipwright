@@ -12,8 +12,9 @@ typedef void (*SetNextEntrance_proc)(struct GlobalContext* globalCtx, s16 entran
 #define SetNextEntrance_addr 0x3716F0
 #define SetNextEntrance ((SetNextEntrance_proc)SetNextEntrance_addr)
 
-#define dynamicExitList_addr 0x53C094
-#define dynamicExitList ((s16*)dynamicExitList_addr) // = { 0x045B, 0x0482, 0x0340, 0x044B, 0x02A2, 0x0201, 0x03B8, 0x04EE, 0x03C0, 0x0463, 0x01CD, 0x0394, 0x0340, 0x057C }
+//Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
+//of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
+s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8, 0x04EE, 0x03C0, 0x0463, 0x01CD, 0x0394, 0x0340, 0x057C };
 
 // Warp Song indices array : 0x53C33C = { 0x0600, 0x04F6, 0x0604, 0x01F1, 0x0568, 0x05F4 }
 
@@ -23,6 +24,8 @@ EntranceOverride rEntranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceOverride destList[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceTrackingData gEntranceTrackingData = {0};
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
+
+EntranceInfo originalEntranceTable[1556] = {0};
 
 //These variables store the new entrance indices for dungeons so that
 //savewarping and game overs respawn players at the proper entrance.
@@ -38,6 +41,9 @@ static s16 newShadowTempleEntrance          = SHADOW_TEMPLE_ENTRANCE;
 static s16 newBottomOfTheWellEntrance       = BOTTOM_OF_THE_WELL_ENTRANCE;
 static s16 newGerudoTrainingGroundsEntrance = GERUDO_TRAINING_GROUNDS_ENTRANCE;
 static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
+
+static s8 hasCopiedEntranceTable = 0;
+static s8 hasModifiedEntranceTable = 0;
 
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
@@ -72,14 +78,26 @@ static void Entrance_SeparateOGCFairyFountainExit(void) {
     for (size_t i = 0; i < 4; ++i) {
         gEntranceTable[0x3E8 + i] = gEntranceTable[0x340 + i];
     }
+}
 
-    //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
-    //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
-    // dynamicExitList[2] = 0x03E8;
+void Entrance_CopyOriginalEntranceTable(void) {
+    if (!hasCopiedEntranceTable) {
+        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * 1556);
+        hasCopiedEntranceTable = 1;
+    }
+}
+
+void Entrance_ResetEntranceTable(void) {
+    if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
+        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * 1556);
+        hasModifiedEntranceTable = 0;
+    }
 }
 
 void Entrance_Init(void) {
     s32 index;
+
+    Entrance_CopyOriginalEntranceTable();
 
     // Skip Child Stealth if given by settings
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
@@ -172,6 +190,8 @@ void Entrance_Init(void) {
             }
         }
     }
+
+    hasModifiedEntranceTable = 1;
 }
 
 s16 Entrance_GetOverride(s16 index) {
@@ -181,6 +201,12 @@ s16 Entrance_GetOverride(s16 index) {
     // naturally handles them later.
     if (index >= ENTRANCE_TABLE_SIZE) {
         return index;
+    }
+
+    // Reset the weather mode so the aduly Hyrule Field gloomy weather is not applied
+    // to the skybox of the replaced index for market entrance
+    if (index == 0x0276) { // Hyrule Field -> Market Entrance
+        gWeatherMode = 0;
     }
 
     return entranceOverrideTable[index];
@@ -196,9 +222,9 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     return Grotto_CheckSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
-void Entrance_OverrideDynamicExit(void) {
+s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
     // SaveFile_SetEntranceDiscovered(gGlobalCtx->nextEntranceIndex);
-    gGlobalCtx->nextEntranceIndex = Grotto_CheckSpecialEntrance(Entrance_GetOverride(gGlobalCtx->nextEntranceIndex));
+    Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 void Entrance_DeathInGanonBattle(void) {
