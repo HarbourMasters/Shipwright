@@ -64,7 +64,7 @@ namespace fs = std::filesystem;
 #define OOT_PAL_GC_MQ_DBG 0x917D18F6
 #define OOT_IQUE_TW 0x3D81FB3E
 #define OOT_IQUE_CN 0xB1E1E07B
-#define OOT_UNKNOWN 0xFFFFFFFF
+#define UNKNOWN 0xFFFFFFFF
 
 bool ZRom::IsMQ() {
     int crc = BitConverter::ToInt32BE(romData, 0x10);

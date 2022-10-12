@@ -13,7 +13,7 @@ namespace Ship {
         : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
 		OTR = std::make_shared<Archive>(MainPath, PatchesPath, ValidHashes, false);
 
-		gameVersion = OOT_UNKNOWN;
+		gameVersion = UNKNOWN;
 
 		if (OTR->IsMainMPQValid()) {
 			Start();
@@ -25,7 +25,7 @@ namespace Ship {
     {
         OTR = std::make_shared<Archive>(OTRFiles, ValidHashes, false);
 
-        gameVersion = OOT_UNKNOWN;
+        gameVersion = UNKNOWN;
 
         if (OTR->IsMainMPQValid()) {
             Start();
