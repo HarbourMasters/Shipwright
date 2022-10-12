@@ -12,6 +12,7 @@
 extern "C" {
 #include <z64.h>
 #include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_gi_shield_3/object_gi_shield_3.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 }
@@ -197,43 +198,52 @@ void PatchCosmeticGfx() {
         Color_RGB8 border = CVar_GetRGB(MirrorShieldBorder.CvarName.c_str(), borderDefaultColor);
         Color_RGB8 emblemDefaultColor = {MirrorShieldEmblem.DefaultColor.w, MirrorShieldEmblem.DefaultColor.x, MirrorShieldEmblem.DefaultColor.y};
         Color_RGB8 emblem = CVar_GetRGB(MirrorShieldEmblem.CvarName.c_str(), emblemDefaultColor);
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Mirror",   34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Border",   56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "gLinkAdultMirrorShieldSwordAndSheathNearDL_Emblem",   330, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Mirror",    66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Border",    34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "gLinkAdultMirrorShieldSwordAndSheathFarDL_Emblem",    270, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Mirror",        34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Border",        56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "gLinkAdultMirrorShieldAndSheathNearDL_Emblem",        258, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Mirror",         66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Border",         34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "gLinkAdultMirrorShieldAndSheathFarDL_Emblem",         206, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Mirror", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Border", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "gLinkAdultRightHandHoldingMirrorShieldNearDL_Emblem", 324, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Mirror",  222, gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Border",  190, gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "gLinkAdultRightHandHoldingMirrorShieldFarDL_Emblem",  266, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldDL,                              "CosmeticsEditor_Mirror", 94,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldDL,                              "CosmeticsEditor_mirror2",96,  gsDPSetEnvColor(       mirror.r / 3, mirror.g / 3, mirror.b / 3, 255));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldDL,                              "CosmeticsEditor_Border", 10,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldDL,                              "CosmeticsEditor_border2",12,  gsDPSetEnvColor(       border.r / 3, border.g / 3, border.b / 3, 255));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldSymbolDL,                        "CosmeticsEditor_Emblem", 10,  gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 140));
+        ResourceMgr_PatchGfxByName(gGiMirrorShieldSymbolDL,                        "CosmeticsEditor_Emblem2",12,  gsDPSetEnvColor(       emblem.r / 3, emblem.g / 3, emblem.b / 3, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Mirror", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Border", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Emblem", 330, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Mirror", 66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Border", 34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Emblem", 270, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Mirror", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Border", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Emblem", 258, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Mirror", 66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Border", 34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Emblem", 206, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Mirror", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Border", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Emblem", 324, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Mirror", 222, gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Border", 190, gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Emblem", 266, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
     } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "gLinkAdultMirrorShieldSwordAndSheathNearDL_Emblem");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "gLinkAdultMirrorShieldSwordAndSheathFarDL_Emblem");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "gLinkAdultMirrorShieldAndSheathNearDL_Emblem");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "gLinkAdultMirrorShieldAndSheathFarDL_Emblem");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "gLinkAdultRightHandHoldingMirrorShieldNearDL_Emblem");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Border");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Mirror");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "gLinkAdultRightHandHoldingMirrorShieldFarDL_Emblem");
+        ResourceMgr_UnpatchGfxByName(gGiMirrorShieldDL,                            "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gGiMirrorShieldDL,                            "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gGiMirrorShieldSymbolDL,                      "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL,   "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,    "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL,        "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathFarDL,         "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "CosmeticsEditor_Emblem");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "CosmeticsEditor_Border");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "CosmeticsEditor_Mirror");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldFarDL,  "CosmeticsEditor_Emblem");
     }
 }
 
