@@ -829,7 +829,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 0;
                         } else if (it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if (it.value() == "On + Gannon") {
+                        } else if (it.value() == "On + Ganon") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
@@ -3892,6 +3892,8 @@ void DrawRandoEditor(bool& open) {
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
+    const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
     const char* randoBombchusInLogic[2] = { "Off", "On" };
     const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
     const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
@@ -4184,14 +4186,16 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Entrances
-                // RANDOTODO: Add option to shuffle Ganon's Castle
-                UIWidgets::EnhancementCheckbox("Shuffle Dungeon Entrances", "gRandomizeShuffleDungeonsEntrances");
+                ImGui::Text("Shuffle Dungeon Entrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds."
-                    "However, Ganon's Castle is not shuffled.\n"
+                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds.\n"
+                    "\n"
+                    "Shuffling Ganon's Castle can be enabled separately.\n"
                     "\n"
                     "Additionally, the entrance of Deku Tree, Fire Temple and Bottom of the Well are opened for both child and adult."
+                    "Bottom of the Well still requires playing Song of Storms to the Windmill guy"
                 );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, 0);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4209,11 +4213,17 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Interior Entrances
-                // RANDOTODO: Add ALL option. Below is 3DS "Simple" option
-                UIWidgets::EnhancementCheckbox("Shuffle Interior Entrances", "gRandomizeShuffleInteriorsEntrances");
+                ImGui::Text("Shuffle Interior Entrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of interior entrances which contains most Houses and all Great Fairies."
+                    "Shuffle the pool of interior entrances which contains most Houses and all Great Fairies.\n"
+                    "\n"
+                    "All - An extended version of 'Simple' with some extra places:\n"
+                    "- Windmill\n"
+                    "- Link's House\n"
+                    "- Temple of Time\n"
+                    "- Kakariko Potion Shop.\n"
                 );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, 0);
 
                 UIWidgets::PaddedSeparator();
 
