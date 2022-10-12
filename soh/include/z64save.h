@@ -75,11 +75,6 @@ typedef struct {
 } HintLocationRando;
 
 typedef struct {
-    int vanillaIndex;
-    int randomizedIndex;
-} EntranceIndexRando;
-
-typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
@@ -195,13 +190,6 @@ typedef struct {
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
-    u8 isYoungLinkFountain;
-    u8 isFirstIndex;
-    u8 isVoidOutOrDie;
-    u8 isDebugWarp;
-    u8 isSunSongLoad;
-    u8 isFaroresWind;
-    u8 isHorseEvent;
 } SaveContext; // size = 0x1428
 
 typedef enum {

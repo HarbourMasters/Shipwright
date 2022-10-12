@@ -158,6 +158,10 @@ void Gameplay_Destroy(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     Player* player = GET_PLAYER(globalCtx);
 
+    if (gSaveContext.n64ddFlag) {
+        Entrance_CheckEpona();
+    }
+
     globalCtx->state.gfxCtx->callback = NULL;
     globalCtx->state.gfxCtx->callbackParam = 0;
     SREG(91) = 0;
@@ -267,19 +271,6 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     }
 }
 
-void Entrance_HandleEntranceOverrideForIndex(s16 vanillaIndex, s16 overrideVanillaIndex) {
-    for (s32 i = 0; i < 250; i++) {
-        if (gSaveContext.entranceOverrides[i].vanillaIndex == overrideVanillaIndex) {
-            gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-            break;
-        } else if (i == 249) {
-            break;
-        } else {
-            continue;
-        }
-    }
-}
-
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
@@ -295,86 +286,6 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    if (gSaveContext.n64ddFlag && true) { // TODO: Replace true with check for entrance rando setting
-        // TODO: Can we use a map here for a constant time lookup?
-        for (i = 0; i < 250; i++) { // TODO: Magic number 250, replace with actual size of vector
-            if (globalCtx->sceneNum == 0x3E || globalCtx->sceneNum == 0x3C) {
-                break;
-            } else if (gSaveContext.isFirstIndex == 0) {
-                gSaveContext.isFirstIndex = 1;
-                break;
-            } else if (gSaveContext.isSunSongLoad == 1) {
-                gSaveContext.isSunSongLoad = 0;
-                break;
-            } else if (gSaveContext.isFaroresWind == 1) {
-                gSaveContext.isFaroresWind = 0;
-                break;
-            } else if (gSaveContext.isDebugWarp == 1) {
-                gSaveContext.isDebugWarp = 0;
-                break;
-            } else if (gSaveContext.isVoidOutOrDie == 1) {
-                gSaveContext.isVoidOutOrDie = 0;
-                break;
-            } else if (gSaveContext.isHorseEvent == 1) {
-                gSaveContext.isHorseEvent = 0;
-                break;
-            } else if (gSaveContext.entranceOverrides[i].vanillaIndex == gSaveContext.entranceIndex) {
-                if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x0578) {
-                    gSaveContext.isYoungLinkFountain = 1;
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (gSaveContext.entranceOverrides[i].randomizedIndex == 0x04C2) {
-                    gSaveContext.isYoungLinkFountain = 0;
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                } else if (gSaveContext.entranceIndex == 0x00340) {
-                    if (gSaveContext.isYoungLinkFountain == 1) {
-                        gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                        break;
-                    } else {
-                        for (i = 0; i < 250; i++) {
-                            if (gSaveContext.entranceOverrides[i].vanillaIndex == 0x03E8) {
-                                gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                                break;
-                            } else {
-                                continue;
-                            }
-                        }
-                        break;
-                    }
-                } else {
-                    gSaveContext.entranceIndex = gSaveContext.entranceOverrides[i].randomizedIndex;
-                    break;
-                }
-            } else if (i == 249) {
-                break;
-            } else {
-                continue;
-            }
-        }
-
-        if (gSaveContext.entranceIndex == 0x457) {//deku tree warp
-            Entrance_HandleEntranceOverrideForIndex(0x457, 0x0209); // outside deku tree
-        } else if (gSaveContext.entranceIndex == 0x47A) {//dc warp
-            Entrance_HandleEntranceOverrideForIndex(0x47A, 0x0242); // outside dc
-        } else if (gSaveContext.entranceIndex == 0x10E) {//jabu warp
-            Entrance_HandleEntranceOverrideForIndex(0x10E, 0x0221); // outside jabu
-        } else if (gSaveContext.entranceIndex == 0x608) {//forest temple warp
-            Entrance_HandleEntranceOverrideForIndex(0x608, 0x0215); // outside forest temple
-        } else if (gSaveContext.entranceIndex == 0x564) {//fire temple warp
-            Entrance_HandleEntranceOverrideForIndex(0x564, 0x024A); // outside fire temple
-        } else if (gSaveContext.entranceIndex == 0x60C) {//water temple warp
-            Entrance_HandleEntranceOverrideForIndex(0x60C, 0x021D); // outside water temple
-        } else if (gSaveContext.entranceIndex == 0x580) {//shadow temple warp
-            Entrance_HandleEntranceOverrideForIndex(0x580, 0x0205); // outside shadow temple
-        } else if (gSaveContext.entranceIndex == 0x610) {//spirit temple warp
-            Entrance_HandleEntranceOverrideForIndex(0x610, 0x01E1); // outside spirit temple
-        } else if (gSaveContext.entranceIndex == 0x1D9) { // zora river desync from hf
-            Entrance_HandleEntranceOverrideForIndex(0x1D9, 0x0EA);
-        } else if (gSaveContext.entranceIndex == 0x311) { // zora river desync from river
-            Entrance_HandleEntranceOverrideForIndex(0x311, 0x0181);
-        }
-    } 
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
@@ -2024,10 +1935,6 @@ void Gameplay_TriggerVoidOut(GlobalContext* globalCtx) {
     globalCtx->sceneLoadFlag = 0x14;
     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
     globalCtx->fadeTransition = 2;
-    if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
-        gSaveContext.isVoidOutOrDie = 1;
-    }
-    
 }
 
 void Gameplay_LoadToLastEntrance(GlobalContext* globalCtx) {
@@ -2051,9 +1958,6 @@ void Gameplay_LoadToLastEntrance(GlobalContext* globalCtx) {
 void Gameplay_TriggerRespawn(GlobalContext* globalCtx) {
     Gameplay_SetupRespawnPoint(globalCtx, RESPAWN_MODE_DOWN, 0xDFF);
     Gameplay_LoadToLastEntrance(globalCtx);
-    if (globalCtx->sceneNum != 0x5c && globalCtx->sceneNum != 0x63) {
-        gSaveContext.isVoidOutOrDie = 1;
-    }
 }
 
 s32 func_800C0CB8(GlobalContext* globalCtx) {

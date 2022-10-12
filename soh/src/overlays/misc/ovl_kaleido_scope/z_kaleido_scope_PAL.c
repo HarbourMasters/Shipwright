@@ -4202,6 +4202,10 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     if (pauseCtx->promptChoice == 0) {
                         Gameplay_TriggerRespawn(globalCtx);
                         gSaveContext.respawnFlag = -2;
+                        // handle death warp to last entrance from grottos
+                        if (gSaveContext.n64ddFlag) {
+                            Grotto_ForceGrottoReturn();
+                        }
                         gSaveContext.nextTransition = 2;
                         gSaveContext.health = 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);

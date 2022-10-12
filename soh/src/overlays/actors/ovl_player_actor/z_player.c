@@ -4165,7 +4165,7 @@ s32 func_80838FB8(GlobalContext* globalCtx, Player* this) {
 s16 D_808544F8[] = {
     0x045B, // DMT from Magic Fairy Fountain
     0x0482, // DMC from Double Defense Fairy Fountain
-    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
+    0x03E8, // Hyrule Castle from Dins Fire Fairy Fountain
     0x044B, // Kakariko from Potion Shop
     0x02A2, // Market (child day) from Potion Shop
     0x0201, // Kakariko from Bazaar
@@ -4208,6 +4208,11 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
                 func_800994A0(globalCtx);
             } else {
                 globalCtx->nextEntranceIndex = globalCtx->setupExitList[sp3C - 1];
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
+                }
+
                 if (globalCtx->nextEntranceIndex == 0x7FFF) {
                     gSaveContext.respawnFlag = 2;
                     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
@@ -4216,6 +4221,11 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
                 } else if (globalCtx->nextEntranceIndex >= 0x7FF9) {
                     globalCtx->nextEntranceIndex =
                         D_808544F8[D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn];
+
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
+                    }
+
                     func_800994A0(globalCtx);
                 } else {
                     if (SurfaceType_GetSlope(&globalCtx->colCtx, poly, bgId) == 2) {
@@ -13306,6 +13316,10 @@ void func_8084F88C(Player* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
                 Gameplay_TriggerRespawn(globalCtx);
+                // handle DMT and other special void outs to respawn from last entrance from grotto 
+                if (gSaveContext.n64ddFlag) {
+                    Grotto_ForceRegularVoidOut();
+                }
             } else {
                 Gameplay_TriggerVoidOut(globalCtx);
             }
@@ -13641,7 +13655,6 @@ void func_8085063C(Player* this, GlobalContext* globalCtx) {
             globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
             globalCtx->fadeTransition = 5;
             func_80088AF0(globalCtx);
-            gSaveContext.isFaroresWind = 1;
             return;
         }
 

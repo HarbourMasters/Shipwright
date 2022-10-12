@@ -196,6 +196,13 @@ void Sram_OpenSave() {
         }
     }
 
+    if (gSaveContext.n64ddFlag) {
+        Entrance_Init();
+        if (!CVar_GetS32("gRememberSaveLocation", 0)) {
+            Entrance_SetSavewarpEntrance();
+        }
+    }
+
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
