@@ -3948,7 +3948,7 @@ void DrawRandoEditor(bool& open) {
                 //Disabled when Forest is set to Closed or under very specific conditions
                 bool disableRandoStartingAge = !CVar_GetS32("gRandomizeForest", 0) || //If Forest is closed...
                     !(CVar_GetS32("gRandomizeDoorOfTime", 0)) && //or Door of Time is Intended
-                    !(CVar_GetS32("gRandomizeShuffleOcarinas", 0)) && //and ocarinas are shuffled
+                    !(CVar_GetS32("gRandomizeShuffleOcarinas", 0)) && //and ocarinas are not shuffled
                     !(CVar_GetS32("gRandomizeLogicRules", 0)); // and logic is glitchless
                 const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
@@ -3966,7 +3966,7 @@ void DrawRandoEditor(bool& open) {
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
                     }
-                    CVar_SetS32("gRandomizeStartingAge", 1);
+                    CVar_SetS32("gRandomizeStartingAge", 0);
                     ImGui::PopStyleVar(1);
                     ImGui::PopItemFlag();
                 }                
