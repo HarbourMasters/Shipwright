@@ -1621,7 +1621,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadHintLocations("");
     Randomizer_LoadItemLocations("", true);
     Randomizer_LoadMerchantMessages("");
-    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
