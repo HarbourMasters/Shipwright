@@ -249,7 +249,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, GlobalContext* globalCtx) {
                             Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
                             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
                             this->actionFunc = func_80A3DF00;
-                        } else {
+                    } else {
                     func_8002F434(&this->actor, globalCtx, GI_SWORD_KNIFE, 415.0f, 10.0f);
                     this->actionFunc = func_80A3DF00;
                     }
