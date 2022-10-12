@@ -3147,7 +3147,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
     uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
 
     if (tryRandomizeEnemy) {
-        if (IsEnemyFoundToRandomize(actorId)) {
+        if (IsEnemyFoundToRandomize(actorId, params)) {
             enemyEntry newEnemy = GetRandomizedEnemy();
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
