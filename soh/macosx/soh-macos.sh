@@ -13,7 +13,7 @@ if [ ! -e "$DATA_SHARE" ]; then	mkdir "$DATA_SHARE"; fi
 if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 
 	# If no ROMs exist kick off the file selection prompts
-	while [ ! -e "$DATA_SHARE"/*.*64 ]; do
+	while [ ! -e "$DATA_SHARE"/*.*64 ] && [ ! -e "$DATA_SHARE"/oot*.otr ]; do
 
 		SHOULD_PROMPT_FOR_ROM=1
 		while [ $SHOULD_PROMPT_FOR_ROM -eq 1 ]; do
