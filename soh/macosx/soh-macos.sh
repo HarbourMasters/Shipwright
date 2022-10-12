@@ -9,8 +9,8 @@ export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
 if [ ! -e "$DATA_SHARE" ]; then	mkdir "$DATA_SHARE"; fi
 
-# If no OTRs exist kick off the OTR gen process
-if [ ! -e "$DATA_SHARE"/oot.otr ] && [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
+# If either OTR doesn't exist kick off the OTR gen process
+if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 
 	# If no ROMs exist kick off the file selection prompts
 	while [ ! -e "$DATA_SHARE"/*.*64 ]; do
