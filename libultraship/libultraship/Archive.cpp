@@ -25,8 +25,8 @@ namespace Ship {
 		Load(enableWriting, genCRCMap);
 	}
 
-    Archive::Archive(const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap)
-        : OTRFiles(OTRFiles), ValidHashes(ValidHashes), PatchesPath(PatchesPath)
+    Archive::Archive(const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap)
+        : OTRFiles(OTRFiles), ValidHashes(ValidHashes)
     {
         mainMPQ = nullptr;
         Load(enableWriting, genCRCMap);

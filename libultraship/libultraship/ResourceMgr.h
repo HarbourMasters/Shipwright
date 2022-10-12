@@ -18,7 +18,7 @@ namespace Ship {
 	class ResourceMgr {
 	public:
 		ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t> &ValidHashes);
-        ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes);
+        ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes);
         ~ResourceMgr();
 
 		bool IsRunning();

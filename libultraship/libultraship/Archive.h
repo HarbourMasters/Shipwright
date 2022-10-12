@@ -23,7 +23,7 @@ namespace Ship
 	public:
 		Archive(const std::string& MainPath, bool enableWriting);
         Archive(const std::string &MainPath, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap = true);
-        Archive(const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap = true);
+        Archive(const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap = true);
         ~Archive();
 
 		bool IsMainMPQValid();

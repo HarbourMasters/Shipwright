@@ -585,7 +585,7 @@ namespace Ship {
         if (OTRFiles.empty()) {
             ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath, ValidHashes);
         } else {
-            ResMan = std::make_shared<ResourceMgr>(GetInstance(), OTRFiles, PatchesPath, ValidHashes);
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), OTRFiles, ValidHashes);
         }
 
         if (!ResMan->DidLoadSuccessfully())

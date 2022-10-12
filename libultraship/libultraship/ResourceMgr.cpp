@@ -20,10 +20,10 @@ namespace Ship {
 		}
 	}
 
-    ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::string &PatchesPath, const std::unordered_set<uint32_t> &ValidHashes)
+    ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes)
         : Context(Context), bIsRunning(false), FileLoadThread(nullptr)
     {
-        OTR = std::make_shared<Archive>(OTRFiles, PatchesPath, ValidHashes, false);
+        OTR = std::make_shared<Archive>(OTRFiles, ValidHashes, false);
 
         gameVersion = OOT_UNKNOWN;
 
