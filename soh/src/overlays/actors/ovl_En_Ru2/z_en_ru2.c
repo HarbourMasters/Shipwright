@@ -826,7 +826,7 @@ void EnRu2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     // earring texture loads into the same place in tmem as the brick texture, so when it comes to rendering, TEXEL1
     // uses the earring texture with diffrent clamp settings, and it displays without noticeable error. However, both
     // texel samplers are not intended to be used for the same texture with different settings, so this misuse confuses
-    // our texture cache, and we load the wrong settings for the earrings texture. This patch is a hack that replaecs
+    // our texture cache, and we load the wrong settings for the earrings texture. This patch is a hack that replaces
     // TEXEL1 with TEXEL0, which is most likely the original intention, and all is well.
     Gfx* gfx = ResourceMgr_LoadGfxByName(gAdultRutoHeadDL);
     Gfx patch = gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, TEXEL0, 0,
