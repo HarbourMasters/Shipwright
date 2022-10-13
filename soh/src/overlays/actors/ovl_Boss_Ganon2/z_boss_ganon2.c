@@ -584,7 +584,7 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 // that we are at least playing an animation meant for Ganon. There is no visible change since Ganon is
                 // off-screen. There is actually 1 frame where he is visible, and in the vanilla game he is an
                 // explosion of limbs since half of them are in random positions from the junk data accessed.
-                Animation_PlayOnce(&this->skelAnime, &gGanonUncurlAndFlailAnim, 0.0f);
+                Animation_PlayOnce(&this->skelAnime, &gGanonUncurlAndFlailAnim);
             }
             // fake, tricks the compiler into using stack the way we need it to
             if (zero) {
