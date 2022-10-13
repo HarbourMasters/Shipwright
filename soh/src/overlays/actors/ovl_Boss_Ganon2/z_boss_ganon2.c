@@ -577,6 +577,14 @@ void func_808FD5F4(BossGanon2* this, GlobalContext* globalCtx) {
                 BossGanon2_SetObjectSegment(this, globalCtx, OBJECT_GANON_ANIME3, false);
                 func_8002DF54(globalCtx, &this->actor, 0x54);
                 this->unk_314 = 3;
+
+                // At this point, the actor has Ganon's skeleton but is still playing an animation for Ganondorf. This
+                // causes issues when trying to access the limb posotions as Ganon has more limbs than Ganondorf. When
+                // animating, data from past the end of the animation data is accessed. This is a hack solution so
+                // that we are at least playing an animation meant for Ganon. There is no visible change since Ganon is
+                // off-screen. There is actually 1 frame where he is visible, and in the vanilla game he is an
+                // explosion of limbs since half of them are in random positions from the junk data accessed.
+                Animation_PlayOnce(&this->skelAnime, &gGanonUncurlAndFlailAnim);
             }
             // fake, tricks the compiler into using stack the way we need it to
             if (zero) {
