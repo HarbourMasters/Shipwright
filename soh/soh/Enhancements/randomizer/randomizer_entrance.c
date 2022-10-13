@@ -4,7 +4,7 @@
 
 #include "global.h"
 
-GlobalContext* gGlobalCtx;
+extern GlobalContext* gGlobalCtx;
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 

@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 //Entrance Table Data: https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
+//Accessed June 2021, published content date at the time was 14 March 2020, at 21:47
 
 #define ENTRANCE_TABLE_SIZE 0x0614
 

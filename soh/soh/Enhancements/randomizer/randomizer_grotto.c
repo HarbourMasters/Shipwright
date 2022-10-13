@@ -2,7 +2,7 @@
 
 #include "global.h"
 
-GlobalContext* gGlobalCtx;
+extern GlobalContext* gGlobalCtx;
 
 // Information necessary for entering each grotto
 static const GrottoLoadInfo grottoLoadTable[NUM_GROTTOS] = {
