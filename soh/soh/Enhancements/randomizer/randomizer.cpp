@@ -677,6 +677,28 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
+                    case RSK_ITEM_POOL:
+                        if(it.value() == "Plentiful") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if(it.value() == "Balanced") {
+                            gSaveContext.randoSettings[index].value = 1;            
+                        } else if(it.value() == "Scarce") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Minimal") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                    case RSK_ICE_TRAPS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if(it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 1;            
+                        } else if(it.value() == "Extra") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Mayhem") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Onslaught") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        }
                     case RSK_GOSSIP_STONE_HINTS:
                         if(it.value() == "No Hints") {
                             gSaveContext.randoSettings[index].value = 0;            
