@@ -10976,11 +10976,14 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                   this);
 
     if ((overrideLimbDraw == func_80090014) && (this->currentMask != PLAYER_MASK_NONE)) {
+        // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
+        if (CVar_GetS32("gFixIceTrapWithBunnyHood", 1)) Matrix_Push();
         Mtx* sp70 = Graph_Alloc(globalCtx->state.gfxCtx, 2 * sizeof(Mtx));
 
         if (this->currentMask == PLAYER_MASK_BUNNY) {
             Vec3s sp68;
 
+            FrameInterpolation_RecordActorPosRotMatrix();
             gSPSegment(POLY_OPA_DISP++, 0x0B, sp70);
 
             sp68.x = D_80858AC8.unk_02 + 0x3E2;
@@ -10997,6 +11000,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+        if (CVar_GetS32("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) &&

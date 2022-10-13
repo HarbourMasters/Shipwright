@@ -74,7 +74,7 @@ static void ExporterProgramEnd()
 		// Write crc to version file
 		fs::path versionPath("Extract/version");
 		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
-        versionFile.write((char*)&endianness, sizeof(std::endian));
+        versionFile.write((char*)&endianness, sizeof(uint8_t));
 		versionFile.write((char*)&crc, sizeof(crc));
 		versionFile.flush();
 		versionFile.close();

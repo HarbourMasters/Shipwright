@@ -10,6 +10,7 @@ void Opening_SetupTitleScreen(OpeningContext* this) {
     gSaveContext.gameMode = 1;
     this->state.running = false;
     gSaveContext.linkAge = 0;
+    gSaveContext.fileNum = 0xFF;
     Sram_InitDebugSave();
     gSaveContext.cutsceneIndex = 0xFFF3;
     gSaveContext.sceneSetupIndex = 7;
