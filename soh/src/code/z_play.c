@@ -2006,7 +2006,7 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
 }
 
 void Gameplay_PerformSave(GlobalContext* globalCtx) {
-    if (globalCtx != NULL) {
+    if (globalCtx != NULL && gSaveContext.fileNum != 0xFF) {
         Gameplay_SaveSceneFlags(globalCtx);
         gSaveContext.savedSceneNum = globalCtx->sceneNum;
         if (gSaveContext.temporaryWeapon) {
