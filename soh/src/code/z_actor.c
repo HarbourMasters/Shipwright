@@ -3146,7 +3146,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
 
-    if (actorId == ACTOR_EN_BB) {
+    if (actorId == ACTOR_EN_VM) {
         params = params;
     }
 
