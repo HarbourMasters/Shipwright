@@ -254,9 +254,9 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     }
     append_line(buf, &len, "float4 PSMain(PSInput input, float4 screenSpace : SV_Position) : SV_TARGET {");
 
-    // Taken from GLideN64
+    // Reference approach to color wrapping as per GLideN64
     // Return wrapped value of x in interval [low, high)
-    // Function for mod taken from https://stackoverflow.com/questions/7610631/glsl-mod-vs-hlsl-fmod
+    // Mod implementation of GLSL sourced from https://registry.khronos.org/OpenGL-Refpages/gl4/html/mod.xhtml
     append_line(buf, &len, "#define MOD(x, y) ((x) - (y) * floor((x)/(y)))");
     append_line(buf, &len, "#define WRAP(x, low, high) MOD((x)-(low), (high)-(low)) + (low)");
 

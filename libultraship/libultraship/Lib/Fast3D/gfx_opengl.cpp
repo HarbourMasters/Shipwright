@@ -414,7 +414,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     append_line(fs_buf, &fs_len, "void main() {");
 
-    // Taken from GLideN64
+    // Reference approach to color wrapping as per GLideN64
     // Return wrapped value of x in interval [low, high)
     append_line(fs_buf, &fs_len, "#define WRAP(x, low, high) mod((x)-(low), (high)-(low)) + (low)");
 
