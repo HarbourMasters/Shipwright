@@ -401,7 +401,7 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
                 } else {
                     // TODO: get-item-rework Adult trade sequence
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
+                    gSaveContext.itemGetInf[2] |= 0x1000;
                 }
 
                 this->actionFunc = func_80ABAC00;
@@ -431,7 +431,14 @@ void func_80ABAB08(EnNiwLady* this, GlobalContext* globalCtx) {
             case 0:
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, GI_COJIRO, 200.0f, 100.0f);
+                if (!gSaveContext.n64ddFlag) {
+                    func_8002F434(&this->actor, globalCtx, GI_COJIRO, 200.0f, 100.0f);
+                } else {
+                    // TODO: get-item-rework Adult trade sequence
+                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_POCKET_CUCCO);
+                    gSaveContext.itemGetInf[2] |= 0x4000;
+                }
                 this->actionFunc = func_80ABAC00;
                 break;
             case 1:
@@ -455,18 +462,14 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
     } else {
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
-            getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
-
-            if (gSaveContext.n64ddFlag) {
-                if (getItemId == GI_POCKET_EGG) {
-                    // TODO: get-item-rework Adult trade sequence
-                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
-                } else {
-                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
-                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_POCKET_CUCCO);
-                    GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
-                }
+            if (!gSaveContext.n64ddFlag) {
+                getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
+            } else {
+                // TODO: get-item-rework Adult trade sequence
+                getItemId = this->getItemEntry.getItemId;
+                GiveItemEntryFromActor(&this->actor, globalCtx, this->getItemEntry, 200.0f, 100.0f);
+                // Skip setting item flags because that was done earlier
+                this->actionFunc = func_80ABA778;
             }
         }
         if (this->getItemEntry.getItemId == GI_NONE) {
