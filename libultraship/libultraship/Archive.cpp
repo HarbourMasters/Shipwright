@@ -357,7 +357,8 @@ namespace Ship {
         if (!t->bHasLoadError)
         {
             BinaryReader *reader = new BinaryReader(t->buffer.get(), t->dwBufferSize);
-
+            Ship::Endianness endianness = (Ship::Endianness)reader->ReadUByte();
+            reader->SetEndianness(endianness);
             uint32_t version = reader->ReadUInt32();
             if (ValidHashes.empty() || ValidHashes.contains(version)) {
                 gameVersions.push_back(version);

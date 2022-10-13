@@ -405,7 +405,10 @@ extern "C" void InitOTR() {
 
     if (!t->bHasLoadError)
     {
-        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
+        Ship::BinaryReader reader(t->buffer.get(), t->dwBufferSize);
+        Ship::Endianness endianness = (Ship::Endianness)reader.ReadUByte();
+        reader.SetEndianness(endianness);
+        uint32_t gameVersion = reader.ReadUInt32();
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
