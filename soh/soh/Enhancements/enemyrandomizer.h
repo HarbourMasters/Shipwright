@@ -7,7 +7,7 @@ typedef struct enemyEntry {
     int16_t enemyParam;
 } enemyEntry;
 
-enum { RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE = 31 };
+enum { RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE = 40 };
 
 #ifndef __cplusplus
 uint8_t IsEnemyFoundToRandomize(int actorId, int param);

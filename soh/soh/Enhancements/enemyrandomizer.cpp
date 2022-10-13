@@ -12,8 +12,6 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
 	{ACTOR_EN_FIREFLY, 4},		// Ice Keese
     {ACTOR_EN_TEST, 2},			// Stalfos
 	{ACTOR_EN_TITE, 0},			// Tektite
-	{ACTOR_EN_RR, 0},			// Like-Like
-	{ACTOR_EN_FZ, 0},			// Freezard
 	// Broken {ACTOR_EN_POH, 0},		// Poe (requires actor changes)
 	// Broken {ACTOR_EN_POH, 2},		// Poe (composer Sharp) (requires actor changes)
 	// Broken {ACTOR_EN_POH, 3},		// Poe (composer Flat) (requires actor changes)
@@ -39,21 +37,30 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
 	{ACTOR_EN_DEKUBABA, 0},		// Deku Baba (small)
 	{ACTOR_EN_DEKUBABA, 1},		// Deku Baba (large)
     /* Partly broken */ { ACTOR_EN_DEKUNUTS, 768 },	// Mad Scrub (triple attack) (projectiles don't work)
-	// Broken {ACTOR_EN_VALI, -1}			// Bari (big jellyfish) (problems with splitting and positioning - spawning in the air)
-	{ACTOR_EN_BB, -1},		// Bubble (flying skull enemy) (blue)
+	{ACTOR_EN_VALI, -1},		// Bari (big jellyfish) (problems with splitting and positioning - spawning in the air)
+	{ACTOR_EN_BB, -1},			// Bubble (flying skull enemy) (blue)
 	{ACTOR_EN_YUKABYUN, 0},		// Flying Floor Tile
 	{ACTOR_EN_VM, 1280},		// Beamos
 	{ACTOR_EN_FLOORMAS, 0},		// Floormaster
 	{ACTOR_EN_RD, 1},			// Redead (standing)
-	{ACTOR_EN_RD, -2}			// Gibdo (standing)
+	{ACTOR_EN_RD, 32766},		// Gibdo (standing)
+	{ACTOR_EN_SW, 0},			// Skullwalltula
+	{ACTOR_EN_FD, 0},			// Flare Dancer
+	{ACTOR_EN_KAREBABA, 0},		// Withered Deku Baba
+	{ACTOR_EN_RR, 0},			// Like-Like
+	{ACTOR_EN_NY, 0},			// Spike (rolling enemy)
+	{ACTOR_EN_IK, 2},			// Iron Knuckle (black, standing)
+	{ACTOR_EN_IK, 3},			// Iron Knuckle (white, standing)
+	{ACTOR_EN_TUBO_TRAP, 0},	// Flying pot
+	{ACTOR_EN_FZ, 0},			// Freezard
+	{ACTOR_EN_CLEAR_TAG, 0}		// Arwing
+	//{ACTOR_EN_WEIYER, 0}		// Stinger (Water)
 };
 
 static int enemiesToRandomize[] = {
 	ACTOR_EN_FIREFLY,		// Keese (including fire/ice)
     ACTOR_EN_TEST,			// Stalfos
 	ACTOR_EN_TITE,			// Tektite
-	ACTOR_EN_RR,			// Like-Like
-	ACTOR_EN_FZ,			// Freezard
 	ACTOR_EN_POH,			// Poe (normal, blue rupee, composers
     ACTOR_EN_OKUTA,			// Octorok
 	ACTOR_EN_WALLMAS,		// Wallmaster
@@ -72,17 +79,26 @@ static int enemiesToRandomize[] = {
 	ACTOR_EN_MB,			// Moblins (Club, spear)
 	ACTOR_EN_DEKUBABA,		// Deku Baba (small, large)
 	ACTOR_EN_DEKUNUTS,		// Mad Scrub (single attack, triple attack)
-    // Broken ACTOR_EN_VALI,		// Bari (big jellyfish) (enemies spawn way too high)
+    ACTOR_EN_VALI,			// Bari (big jellyfish) (spawns very high up)
 	ACTOR_EN_BB,			// Bubble (flying skull enemy) (all colors)
 	ACTOR_EN_YUKABYUN,		// Flying Floor Tile
 	ACTOR_EN_VM,			// Beamos
 	ACTOR_EN_FLOORMAS,		// Floormaster
-	ACTOR_EN_RD				// Redead, Gibdo
+	ACTOR_EN_RD,			// Redead, Gibdo
+    ACTOR_EN_SW,			// Skullwalltula
+	ACTOR_EN_FD,			// Flare Dancer
+	ACTOR_EN_KAREBABA,		// Withered Deku Baba
+	ACTOR_EN_RR,			// Like-Like
+	ACTOR_EN_NY,			// Spike (rolling enemy)
+	ACTOR_EN_IK,			// Iron Knuckle
+	ACTOR_EN_TUBO_TRAP,		// Flying pot
+	ACTOR_EN_FZ,			// Freezard
+	ACTOR_EN_WEIYER			// Stinger (Water)
 };
 
 extern "C" enemyEntry GetRandomizedEnemy(void) {
-    //return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
-    return randomizedEnemySpawnTable[28];
+    return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
+    //return randomizedEnemySpawnTable[39];
 }
 
 extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
@@ -108,6 +124,30 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
 				if (param != -256 && param != 768) {
                     return 0;
 				}
+                break;
+			// Only randomize initial floormaster actor (it can split and does some spawning on init)
+			case ACTOR_EN_FLOORMAS:
+				if (param != 0) {
+                    return 0;
+				}
+                break;
+			// Only randomize initial egg spawn, not the enemy that comes out of the egg
+            case ACTOR_EN_GOMA:
+				if (param != 0 && param != 6 && param != 8) {
+                    return 0;
+				}
+                break;
+			// Only randomize Skullwalltulas, not Golden Skulltulas
+            case ACTOR_EN_SW:
+				if (param != 0) {
+                    return 0;
+				}
+                break;
+			// Don't randomize Nabooru because it'll break cutscenes and progression
+            case ACTOR_EN_IK:
+                if (param == 1280) {
+                    return 0;
+                }
                 break;
             default:
                 break;

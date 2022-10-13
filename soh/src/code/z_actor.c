@@ -3146,16 +3146,18 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
 
-    if (actorId == ACTOR_EN_VM) {
+    if (actorId == ACTOR_EN_IK) {
         params = params;
     }
-
 
     if (tryRandomizeEnemy) {
         if (IsEnemyFoundToRandomize(actorId, params)) {
             enemyEntry newEnemy = GetRandomizedEnemy();
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
+
+            // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
+            rotX = 0;
         }
     }
 
