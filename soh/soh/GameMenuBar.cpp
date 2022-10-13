@@ -1081,7 +1081,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
-                UIWidgets::Tooltip("Fixes the colors of the Gerudo Warrior's clothes when changing Link's clothes or using bombs in front of her");
+                UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
 
                 ImGui::EndMenu();
             }
