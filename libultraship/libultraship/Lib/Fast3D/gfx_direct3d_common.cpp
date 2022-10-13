@@ -15,6 +15,8 @@ static void append_line(char *buf, size_t *len, const char *str) {
     buf[(*len)++] = '\n';
 }
 
+#define RAND_NOISE "((random(float3(floor(screenSpace.xy * noise_scale), noise_frame)) + 1.0) / 2.0)"
+
 static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_alpha, bool inputs_have_alpha, bool hint_single_element) {
     if (!only_alpha) {
         switch (item) {
@@ -41,6 +43,8 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return with_alpha ? "texVal1" : "texVal1.rgb";
             case SHADER_COMBINED:
                 return with_alpha ? "texel" : "texel.rgb";
+            case SHADER_NOISE:
+                return with_alpha ? "float4(" RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ")" : "float3(" RAND_NOISE ", " RAND_NOISE ", " RAND_NOISE ")";
         }
     } else {
         switch (item) {
@@ -67,9 +71,13 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return "texVal1.a";
             case SHADER_COMBINED:
                 return "texel.a";
+            case SHADER_NOISE:
+                return RAND_NOISE;
         }
     }
 }
+
+#undef RAND_NOISE
 
 static void append_formula(char *buf, size_t *len, const uint8_t c[2][4], bool do_single, bool do_multiply, bool do_mix, bool with_alpha, bool only_alpha, bool opt_alpha) {
     if (do_single) {
@@ -106,9 +114,7 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
 
     if (include_root_signature) {
         append_str(buf, &len, "#define RS \"RootFlags(ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT | DENY_VERTEX_SHADER_ROOT_ACCESS)");
-        if (cc_features.opt_alpha && cc_features.opt_noise) {
-            append_str(buf, &len, ",CBV(b0, visibility = SHADER_VISIBILITY_PIXEL)");
-        }
+        append_str(buf, &len, ",CBV(b0, visibility = SHADER_VISIBILITY_PIXEL)");
         if (cc_features.used_textures[0]) {
             append_str(buf, &len, ",DescriptorTable(SRV(t0), visibility = SHADER_VISIBILITY_PIXEL)");
             append_str(buf, &len, ",DescriptorTable(Sampler(s0), visibility = SHADER_VISIBILITY_PIXEL)");
@@ -161,17 +167,15 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
 
     // Constant buffer and random function
 
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len, "cbuffer PerFrameCB : register(b0) {");
-        append_line(buf, &len, "    uint noise_frame;");
-        append_line(buf, &len, "    float noise_scale;");
-        append_line(buf, &len, "}");
+    append_line(buf, &len, "cbuffer PerFrameCB : register(b0) {");
+    append_line(buf, &len, "    uint noise_frame;");
+    append_line(buf, &len, "    float noise_scale;");
+    append_line(buf, &len, "}");
 
-        append_line(buf, &len, "float random(in float3 value) {");
-        append_line(buf, &len, "    float random = dot(value, float3(12.9898, 78.233, 37.719));");
-        append_line(buf, &len, "    return frac(sin(random) * 143758.5453);");
-        append_line(buf, &len, "}");
-    }
+    append_line(buf, &len, "float random(in float3 value) {");
+    append_line(buf, &len, "    float random = dot(value, float3(12.9898, 78.233, 37.719));");
+    append_line(buf, &len, "    return frac(sin(random) * 143758.5453);");
+    append_line(buf, &len, "}");
 
     // 3 point texture filtering
     // Original author: ArthurCarvalho
@@ -248,11 +252,7 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     if (include_root_signature) {
         append_line(buf, &len, "[RootSignature(RS)]");
     }
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len, "float4 PSMain(PSInput input, float4 screenSpace : SV_Position) : SV_TARGET {");
-    } else {
-        append_line(buf, &len, "float4 PSMain(PSInput input) : SV_TARGET {");
-    }
+    append_line(buf, &len, "float4 PSMain(PSInput input, float4 screenSpace : SV_Position) : SV_TARGET {");
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             len += sprintf(buf + len, "    float2 tc%d = input.uv%d;\r\n", i, i);

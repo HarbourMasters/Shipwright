@@ -1349,6 +1349,11 @@ void EnGo2_RollingAnimation(EnGo2* this, GlobalContext* globalCtx) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
+    if (CVar_GetS32("gUnfixGoronSpin", 0)) {
+        // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
+        // making the goron do a spin
+        this->skelAnime.animation = NULL;
+    }
     if (this->skelAnime.playSpeed == 0.0f) {
         if ((this->actor.params & 0x1F) != GORON_DMT_BIGGORON) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_WAKE_UP);
