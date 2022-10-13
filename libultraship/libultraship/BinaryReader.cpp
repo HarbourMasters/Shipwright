@@ -1,4 +1,5 @@
 #include "BinaryReader.h"
+#include <cmath>
 #include "Lib/BinaryTools/BinaryTools/BinaryReader.h"
 
 Ship::BinaryReader::BinaryReader(char* buffer, uint32_t size) 

@@ -4,6 +4,7 @@
 #include <string>
 #include <span>
 #include <vector>
+#include <istream>
 
 struct MemoryBuffer;
 

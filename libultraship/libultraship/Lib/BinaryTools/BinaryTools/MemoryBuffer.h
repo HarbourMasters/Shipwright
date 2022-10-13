@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <numeric>
 #include <limits>
+#include <cstring>
 
 //Simple wrapper around std::streambuf representing a memory buffer.
 //Used by BinaryReader and BinaryWriter

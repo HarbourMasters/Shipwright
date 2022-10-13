@@ -16,11 +16,11 @@ BinaryWriter::BinaryWriter(std::string_view inputPath, bool truncate)
     if (!truncate && !std::filesystem::exists(inputPath))
     {
         std::fstream f;
-        f.open(inputPath, std::fstream::out);
+        f.open(std::string(inputPath), std::fstream::out);
         f.close();
     }
 
-    stream_ = new std::ofstream(std::string(inputPath), flags);
+    stream_ = new std::ofstream(std::string(inputPath), (std::ios_base::openmode)flags);
 }
 
 BinaryWriter::BinaryWriter(char* buffer, uint32_t sizeInBytes)
