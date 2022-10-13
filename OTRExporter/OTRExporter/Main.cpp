@@ -21,6 +21,7 @@
 #include <Utils/Directory.h>
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
+#include <bit>
 
 std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
