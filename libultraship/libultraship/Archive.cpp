@@ -5,9 +5,9 @@
 #include "ResourceMgr.h"
 #include "spdlog/spdlog.h"
 #include "Utils/StringHelper.h"
-#include "Utils/MemoryStream.h"
 #include "Lib/StrHash64.h"
 #include <filesystem>
+#include "Lib/BinaryTools/BinaryTools/BinaryReader.h"
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
@@ -356,10 +356,8 @@ namespace Ship {
         auto t = LoadFile("version", false, nullptr, mpqHandle);
         if (!t->bHasLoadError)
         {
-            auto memStream = std::make_shared<MemoryStream>(t->buffer.get(), t->dwBufferSize);
-            auto reader = std::make_shared<BinaryReader>(memStream);
+            BinaryReader *reader = new BinaryReader(t->buffer.get(), t->dwBufferSize);
 
-            reader->SetEndianness(Endianness::Native);
             uint32_t version = reader->ReadUInt32();
             if (ValidHashes.empty() || ValidHashes.contains(version)) {
                 gameVersions.push_back(version);
