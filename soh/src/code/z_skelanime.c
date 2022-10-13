@@ -1242,8 +1242,12 @@ void LinkAnimation_Change(GlobalContext* globalCtx, SkelAnime* skelAnime, LinkAn
     if (ResourceMgr_OTRSigCheck(animation) != 0)
         animation = ResourceMgr_LoadAnimByName(animation);
 
+    AnimationHeader* currentAnimation = (AnimationHeader*)skelAnime->animation;
+    if (ResourceMgr_OTRSigCheck(currentAnimation) != 0)
+        currentAnimation = ResourceMgr_LoadAnimByName(currentAnimation);
+
     skelAnime->mode = mode;
-    if ((morphFrames != 0.0f) && ((animation != skelAnime->animation) || (startFrame != skelAnime->curFrame))) {
+    if ((morphFrames != 0.0f) && ((animation != currentAnimation) || (startFrame != skelAnime->curFrame))) {
         if (morphFrames < 0) {
             LinkAnimation_SetUpdateFunction(skelAnime);
             SkelAnime_CopyFrameTable(skelAnime, skelAnime->morphTable, skelAnime->jointTable);
@@ -1687,8 +1691,17 @@ s32 SkelAnime_Once(SkelAnime* skelAnime) {
  */
 void Animation_ChangeImpl(SkelAnime* skelAnime, AnimationHeader* animation, f32 playSpeed, f32 startFrame, f32 endFrame,
                           u8 mode, f32 morphFrames, s8 taper) {
+    LinkAnimationHeader* ogAnim = animation;
+
+    if (ResourceMgr_OTRSigCheck(animation) != 0)
+        animation = ResourceMgr_LoadAnimByName(animation);
+
+    AnimationHeader* currentAnimation = (AnimationHeader*)skelAnime->animation;
+    if (ResourceMgr_OTRSigCheck(currentAnimation) != 0)
+        currentAnimation = ResourceMgr_LoadAnimByName(currentAnimation);
+
     skelAnime->mode = mode;
-    if ((morphFrames != 0.0f) && ((animation != skelAnime->animation) || (startFrame != skelAnime->curFrame))) {
+    if ((morphFrames != 0.0f) && ((animation != currentAnimation) || (startFrame != skelAnime->curFrame))) {
         if (morphFrames < 0) {
             SkelAnime_SetUpdate(skelAnime);
             SkelAnime_CopyFrameTable(skelAnime, skelAnime->morphTable, skelAnime->jointTable);
@@ -1710,7 +1723,7 @@ void Animation_ChangeImpl(SkelAnime* skelAnime, AnimationHeader* animation, f32 
         skelAnime->morphWeight = 0.0f;
     }
 
-    skelAnime->animation = animation;
+    skelAnime->animation = ogAnim;
     skelAnime->startFrame = startFrame;
     skelAnime->endFrame = endFrame;
     skelAnime->animLength = Animation_GetLength(animation);

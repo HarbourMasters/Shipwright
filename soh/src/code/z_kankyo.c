@@ -2290,27 +2290,22 @@ Color_RGB8 sSandstormEnvColors[] = {
     { 50, 40, 0 },
 };
 
-Gfx* gFieldSandstormDL_Custom = NULL;
+u16 previousPatchedSandstormScreenSize = 0;
 
 void Environment_PatchSandstorm(GlobalContext* globalCtx) {
-    if (gFieldSandstormDL_Custom) return;
-
-    gFieldSandstormDL_Custom = ResourceMgr_PatchGfxByName(gFieldSandstormDL, -3);
-
-    const Gfx gFSPatchDL[2] = { gsSPEndDisplayList() };
-    bool patched = false;
-    Gfx* cmd = gFieldSandstormDL_Custom;
-    int id = 0;
-
-    while (!patched) {
-        const uint32_t opcode = cmd->words.w0 >> 24;
-        if (opcode == G_TEXRECT) {
-            gFieldSandstormDL_Custom[id] = gFSPatchDL[0];
-            patched = true;
-        }
-        ++cmd;
-        id++;
+    if (previousPatchedSandstormScreenSize == ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH))) {
+        return;
     }
+
+    Gfx gfxPatchSandstormRect[] = {
+        gsSPWideTextureRectangle(OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
+            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C, -0x008C),
+    };
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect0", 48, gfxPatchSandstormRect[0]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect1", 50, gfxPatchSandstormRect[1]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect2", 52, gfxPatchSandstormRect[2]);
+
+    previousPatchedSandstormScreenSize = ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH));
 }
 
 void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
@@ -2435,10 +2430,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
                                 0xFFF - ((u32)sp92 % 0x1000), 0x100, 0x40));
     gDPSetTextureLUT(POLY_XLU_DISP++, G_TT_NONE);
 
-    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL_Custom);
-    gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
-                            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
-                            -0x008C);
+    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL);
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     D_8015FDB0 += (s32)sp98;
