@@ -193,7 +193,7 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
-    Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
+    return Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 //Properly respawn the player after a game over, accounding for dungeon entrance
