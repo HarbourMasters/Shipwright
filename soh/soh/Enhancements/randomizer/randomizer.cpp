@@ -198,6 +198,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
+    { "Misc Settings:Chest Size and Texture", RSK_CHEST_SIZE_AND_TEXTURE },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
@@ -3734,6 +3735,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    cvarSettings[RSK_CHEST_SIZE_AND_TEXTURE] = CVar_GetS32("gRandomizerChestSizeAndTexture", 1);
     cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVar_GetS32("gRandomizeBlueFireArrows", 0);
     cvarSettings[RSK_SUNLIGHT_ARROWS] = CVar_GetS32("gRandomizeSunlightArrows", 0);
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
@@ -3849,7 +3851,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
     const char* randoStartingTime[2] = { "Day", "Night" };
-    const char* randoChestSizeAndColor[2] = { "Vanilla", "Match contents" };
+    const char* randoChestSizeAndTexture[2] = { "Vanilla", "Match Contents" };
     const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
@@ -4621,6 +4623,22 @@ void DrawRandoEditor(bool& open) {
                     UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                     ImGui::Unindent();
                 }
+
+                UIWidgets::PaddedSeparator();
+
+                ImGui::Text(Settings::ChestSize.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Vanilla - Chest sizes and texture are unaffected by the contents inside. They will match the vanilla chest size and texture at that location\n"
+                    "\n"
+                    "Matches Contents - Chest sizes and textures are changed to help identify the item inside.\n"
+                    " - Major items: Large gold chests\n"
+                    " - Lesser items: Large brown chests\n"
+                    " - Junk items: Small brown chests\n"
+                    " - Small keys: Small silver chest\n"
+                    " - Boss keys: Vanilla size and texture\n"
+                    " - Skulltula Tokens: Small skulltula chest\n"
+                );
+                UIWidgets::EnhancementCombobox("gRandomizerChestSizeAndTexture", randoChestSizeAndTexture, 2, 1);
 
                 UIWidgets::PaddedSeparator();
 
