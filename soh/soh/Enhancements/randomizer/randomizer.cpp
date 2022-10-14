@@ -460,68 +460,96 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     } else {
         mgItemName = {
             "something cool",
-            "geheimnisvollen Gegenstand",
-            "objet mystérieux"
+            "etwas cooles",
+            "un truc cool"
         };
     }
          
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_MEDIGORON, //12364 or 12367
+        Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
             "How about buying %r&" + mgItemName[0] + "%w for %g200 rupees%w?\x1B&%gYes&No%w",
-            "How about buying %r&" + mgItemName[1] + "%w for %g200 rupees%w?\x1B&%gYes&No%w",
-            "How about buying %r&" + mgItemName[2] + "%w for %g200 rupees%w?\x1B&%gYes&No%w"
+            "Wie wäre es mit %r&" + mgItemName[1] + "%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "Qu'est-ce que tu dirais de l'acheter pour%g200 Rubis?%w\x1B&%gOui&Non"
         });
     
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
     RandomizerGet carpetGuyGet = this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].rgID;
     std::vector<std::string> cgItemName;
-    std::string cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) {//If merchant hints are clear... 
-        if (carpetGuyGet == RG_ICE_TRAP) {
-            carpetGuyGet = this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].fakeRgID;
-            cgItemName = {
-                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
-                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
-                this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName
-            };
-            cgBoxTwoText = "!%w It's real, I promise!&I even kept it %bnice and cool%w&for you!^";
+    std::vector<std::string> cgBoxTwoText;
+    if (!Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
+        if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) { //If merchant hints are clear... 
+            if (carpetGuyGet == RG_ICE_TRAP) {
+                carpetGuyGet = this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].fakeRgID;
+                cgItemName = {
+                    this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
+                    this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName,
+                    this->itemLocations[RC_WASTELAND_BOMBCHU_SALESMAN].trickName
+                };
+                cgBoxTwoText = {
+                    "!%w&It's real, I promise!&I even kept it %bnice and cool%w&for you!^",
+                    "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot! Ich hoffe es&lässt dich nicht %bkalt%w!",
+                    "!%w&C'est vrai! J'te jure!&Je l'avais laissé %bau frais exprès%w pour toi!"
+                };
+            } else {
+                cgItemName = EnumToSpoilerfileGetName[carpetGuyGet];
+                cgBoxTwoText = {
+                    "!%wIt's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
+                    "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
+                    "!%w&C'est vrai! J'te jure!&Un gars comme moi ne te %rmentirai%w pas&tu ne crois pas?^"
+                };
+            }
         } else {
-            cgItemName = EnumToSpoilerfileGetName[carpetGuyGet];
-            cgBoxTwoText = "!%w It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^";
-    }} else {
+            cgItemName = {
+                "A mystery",
+                "Ein Geheimnis",
+                "Un secret"
+            };
+            cgBoxTwoText = {
+                "!%w&I won't tell you what it is until I see&the money...^",
+                "!%w&Erst kommt das Geld, dann die Ware...^",
+                "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
+            };
+        }
+    } else {
         cgItemName = {
-            "A mystery",
-            "Ein Rätsel",
-            "Un mystère"
+            "A dangerous, running object",
+            "Ein bombiges, ferngesteuertes&Objeckt", //Pulled from original game text
+            "Une arme qu'elle est tirrible" //Pulled from original game text
         };
-        cgBoxTwoText = "!%w Terrifying!&I won't tell you what it is until I see&the money...^";
+        cgBoxTwoText = {
+            "!%w&Terrifying!&I won't tell you what it is until&I see the money...^",
+            "!%w&Erst kommt das Geld, dann die Ware...^",
+            "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
+        };
     }
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1, //24695, 24696
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
-            "Welcome!^I am selling stuff, strange and rare, &from all over the world to everybody. &Today's special is...^%r" + 
-            cgItemName[0] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
-            "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. &Today's special is...^%r" + 
-            cgItemName[1] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
-            "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. &Today's special is...^%r" + 
-            cgItemName[2] + cgBoxTwoText + "How about %g200 Rupees?%w\x1B&%gYes&No%w"
-        });
+            "Welcome!^I am selling stuff, strange and rare, &from all over the world to everybody.&Today's special is...^%r" + 
+            cgItemName[0] + cgBoxTwoText[0] + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+            "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus aller Welt für jedermann.&Das heutige Angebot bleibt...^%r" + 
+            cgItemName[1] + cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
+            "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout le&monde! L'objet du jour est...^%r" + 
+            cgItemName[2] + cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"
+        }
+    );
 
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2, //24695, 24696
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_TOP,
             "Finally! Now I can go back to being &an %rarms dealer!%w",
-            "thanks lmao",
-            "thanks lmao"
-        });
+            "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
+            "Squalala! Je vais enfin pouvoir &%rprendre des vacances!%w"
+        }
+    );
 
     for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
         RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
