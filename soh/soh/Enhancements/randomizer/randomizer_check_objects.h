@@ -4,10 +4,8 @@
 #include <map>
 
 // Forward Declarations to avoid duplicate definition issues
-#if !defined(Z64SCENE_H) && !defined(Z64ACTOR_H)
 enum ActorID : int;
 enum SceneID : int;
-#endif
 
 // Check types based on main settings
 typedef enum {
