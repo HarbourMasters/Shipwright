@@ -6252,21 +6252,27 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     }
                 }
 
-                // Skip cutscenes from picking up items when they come from bushes/rocks/etc, but nowhere else.
-                uint8_t skipItemCutscene = CVar_GetS32("gFastDrops", 0) && interactedActor->id == ACTOR_EN_ITEM00 &&
-                                     interactedActor->params != 6 && interactedActor->params != 17;
+                // Show the cutscene for picking up an item. In vanilla, this happens in bombchu bowling alley (because getting bombchus need to show the cutscene)
+                // and whenever the player doesn't have the item yet. In rando, we're overruling this because we need to keep showing the cutscene
+                // because those items can be randomized and thus it's important to keep showing the cutscene.
+                uint8_t showItemCutscene = globalCtx->sceneNum == SCENE_BOWLING || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
 
-                // Same as above but for rando. We need this specifically for rando because we need to be enable the cutscenes everywhere else in the game
-                // because the items are randomized and thus it's important to show the get item animation.
-                uint8_t skipItemCutsceneRando = gSaveContext.n64ddFlag &&
-                                                Item_CheckObtainability(giEntry.itemId) != ITEM_NONE &&
-                                                interactedActor->id == ACTOR_EN_ITEM00 &&
-                                                interactedActor->params != 6 && interactedActor->params != 17;
+                // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
+                uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
+                                        interactedActor->id == ACTOR_EN_KAREBABA || 
+                                        interactedActor->id == ACTOR_EN_DEKUBABA;
 
-                // Show cutscene when picking up a item that the player doesn't own yet.
-                // We want to ALWAYS show "get item animations" for items when they're randomized to account for
-                // randomized freestanding items etc, but we still don't want to show it every time you pick up a consumable from a pot/bush etc.
-                if ((globalCtx->sceneNum == SCENE_BOWLING || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag) && !skipItemCutscene && !skipItemCutsceneRando) {
+                // Skip cutscenes from picking up consumables with "Fast Pickup Text" enabled, even when the player never picked it up before.
+                // But only for bushes/rocks/enemies because otherwise it can lead to softlocks in deku mask theatre and potentially other places.
+                uint8_t skipItemCutscene = CVar_GetS32("gFastDrops", 0) && isDropToSkip;
+
+                // Same as above but for rando. Rando is different because we want to enable cutscenes for items that the player already has because
+                // those items could be a randomized item coming from scrubs, freestanding PoH's and keys. So we need to once again overrule
+                // this specifically for items coming from bushes/rocks/enemies when the player has already picked that item up.
+                uint8_t skipItemCutsceneRando = gSaveContext.n64ddFlag && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
+
+                // Show cutscene when picking up a item.
+                if (showItemCutscene && !skipItemCutscene && !skipItemCutsceneRando) {
 
                     func_808323B4(globalCtx, this);
                     func_8083AE40(this, giEntry.objectId);
@@ -6282,7 +6288,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     return 1;
                 }
 
-                // Don't show cutscene when picking up an item
+                // Don't show cutscene when picking up an item.
                 func_8083E4C4(globalCtx, this, &giEntry);
                 this->getItemId = GI_NONE;
                 this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
@@ -10976,11 +10982,14 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                   this);
 
     if ((overrideLimbDraw == func_80090014) && (this->currentMask != PLAYER_MASK_NONE)) {
+        // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
+        if (CVar_GetS32("gFixIceTrapWithBunnyHood", 1)) Matrix_Push();
         Mtx* sp70 = Graph_Alloc(globalCtx->state.gfxCtx, 2 * sizeof(Mtx));
 
         if (this->currentMask == PLAYER_MASK_BUNNY) {
             Vec3s sp68;
 
+            FrameInterpolation_RecordActorPosRotMatrix();
             gSPSegment(POLY_OPA_DISP++, 0x0B, sp70);
 
             sp68.x = D_80858AC8.unk_02 + 0x3E2;
@@ -10997,6 +11006,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+        if (CVar_GetS32("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) &&
