@@ -1,8 +1,11 @@
 #pragma once
 #include "randomizerTypes.h"
-#include "z64.h"
 #include <string>
 #include <map>
+
+// Forward Declarations to avoid duplicate definition issues
+enum ActorID : int;
+enum SceneID : int;
 
 // Check types based on main settings
 typedef enum {

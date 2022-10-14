@@ -48,19 +48,12 @@ namespace GameControlEditor {
         }
     }
 
-    void DrawHelpIcon(const std::string& helptext, bool sameline = true, int Pos = 0) {
+    void DrawHelpIcon(const std::string& helptext) {
         // place the ? button to the most of the right side of the cell it is using.
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
         ImGui::SmallButton("?");
-
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("%s", helptext.c_str());
-        }
-
-        if (sameline) {
-            //I do not use ImGui::SameLine(); because it make some element vanish.
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
-        }
+        UIWidgets::Tooltip(helptext.c_str());
     }
 
     typedef uint32_t N64ButtonMask;
@@ -222,27 +215,36 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
+    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditor
+    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
+    void DrawCustomButtons() {
+        SohImGui::GetInputEditor()->DrawControllerSelect(CurrentPort - 1);
+        
+        SohImGui::GetInputEditor()->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
+        SohImGui::GetInputEditor()->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
+    }
+
     void DrawCameraControlPanel() {
-		if (!ImGui::CollapsingHeader("Camera Controls")) {
+        if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
         }
         
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-		UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        UIWidgets::Tooltip("Allows for aiming with the rights stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        DrawHelpIcon("Allows for aiming with the right stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gDisableAutoCenterView");
-        UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-	}
-	
-	void DrawUI(bool& open) {
+        DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+    }
+
+    void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
             return;
@@ -250,8 +252,27 @@ namespace GameControlEditor {
 
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &open)) {
-            DrawOcarinaControlPanel();
-			DrawCameraControlPanel();
+            ImGui::BeginTabBar("##CustomControllers");
+            if (ImGui::BeginTabItem("Generic")) {
+                CurrentPort = 0;
+                ImGui::EndTabItem();
+            }
+
+            for (int i = 1; i <= 4; i++) {
+                if (ImGui::BeginTabItem(StringHelper::Sprintf("Port %d", i).c_str())) {
+                    CurrentPort = i;
+                    ImGui::EndTabItem();
+                }
+            }
+
+            ImGui::EndTabBar();
+
+            if (CurrentPort == 0) {
+                DrawOcarinaControlPanel();
+                DrawCameraControlPanel();
+            } else {
+                DrawCustomButtons();
+            }
         }
         ImGui::End();
     }

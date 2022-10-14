@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <libultraship/Cvar.h>
+#include "z64.h"
 
 /*
 typedef struct {

@@ -303,7 +303,7 @@ typedef union {
     SCmdAltHeaders        altHeaders;
 } SceneCmd; // size = 0x8
 
-typedef enum {
+typedef enum SceneID {
     /* 0x00 */ SCENE_YDAN,
     /* 0x01 */ SCENE_DDAN,
     /* 0x02 */ SCENE_BDAN,
