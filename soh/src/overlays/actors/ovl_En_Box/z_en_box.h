@@ -45,6 +45,8 @@ typedef struct EnBox {
     /* 0x01F9 */ u8 type;
     /* 0x01FA */ u8 iceSmokeTimer;
     /* 0x01FB */ u8 unk_1FB;
+    /*        */ Gfx* boxLidDL;
+    /*        */ Gfx* boxBodyDL;
 } EnBox; // size = 0x01FC
 
 #endif

@@ -1729,6 +1729,12 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
     return hintText;
 }
 
+extern "C" RandomizerChestType Randomizer_GetChestTypeFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
+    // TODO: Add chest types to a table somewhere
+    // Potential reference https://github.com/Roman971/OoT-Randomizer/blob/Dev-R/ASM/c/item_table.c
+    return RAND_CHEST_TYPE_SMALL_VANILLA;
+}
+
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
