@@ -74,7 +74,6 @@ namespace Ship {
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 
-
 	void KeyboardController::CreateDefaultBinding(int32_t virtualSlot) {
 		auto profile = getProfile(virtualSlot);
 		profile->Mappings[0x14D] = BTN_CRIGHT;
@@ -95,6 +94,8 @@ namespace Ship {
 		profile->Mappings[0x01E] = BTN_STICKLEFT;
 		profile->Mappings[0x01F] = BTN_STICKDOWN;
 		profile->Mappings[0x011] = BTN_STICKUP;
+		profile->Mappings[0x02A] = BTN_MODIFIER1;
+		profile->Mappings[0x036] = BTN_MODIFIER2;
 	}
 
 	const std::string KeyboardController::GetControllerName() {

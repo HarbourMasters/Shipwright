@@ -1493,6 +1493,24 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
+        } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_STARTING_AGE)) {
+            /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
+            will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
+            (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
+            When becoming child, set swordless flag if player doesn't have kokiri sword
+            Only in rando to keep swordless link bugs in vanilla*/
+            if (1 << 0 & gSaveContext.inventory.equipment == 0) {
+                gSaveContext.infTable[29] |= 1;
+            }
+
+            //zero out items
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
+                }
+            }
+            gSaveContext.equips.equipment = 0x1111;
         }
     }
 
@@ -2484,13 +2502,6 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
-    } else if ( gSaveContext.n64ddFlag &&
-        ((item >= RG_GERUDO_FORTRESS_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= RG_FOREST_TEMPLE_BOSS_KEY) && (item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP) ||
-        (item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS))
-    ) {
-        return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
