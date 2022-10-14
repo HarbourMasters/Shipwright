@@ -3691,9 +3691,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
-    //Starting Age is forced to child if forest setting is set to closed. (0 = Child, 1 = Adult)
-    cvarSettings[RSK_STARTING_AGE] = ((CVar_GetS32("gRandomizeForest", 0)) && 
-                                        (CVar_GetS32("gRandomizeStartingAge", 0)));
+    cvarSettings[RSK_STARTING_AGE] = CVar_GetS32("gRandomizeStartingAge", 0);
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
@@ -3981,14 +3979,18 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 //Starting Age
-                //Disabled when Forest is set to Closed
-                bool disableRandoStartingAge = !CVar_GetS32("gRandomizeForest", 0);
-                const char* disableRandoStartingAgeText = "This option is disabled because \"Forest\" is set to \"Closed\".";
+                //Disabled when Forest is set to Closed or under very specific conditions
+                //RANDOTODO: Replace magic number checks with enums
+                bool disableRandoStartingAge = (CVar_GetS32("gRandomizeForest", 0) == 0) || //If Forest is closed...
+                    (CVar_GetS32("gRandomizeDoorOfTime", 0) == 0) && //or Door of Time is Closed
+                    (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0) && //and ocarinas are not shuffled
+                    (CVar_GetS32("gRandomizeLogicRules", 0) == 0); // and logic is glitchless
+                const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
                     "Starting as adult means you start with the Master Sword in your inventory.\n"
-                    "Only the child option is compatible with Closed Forest."    
+                    "The child option is forcefully set if it would conflict with other options."    
                 );
                if (disableRandoStartingAge) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);

@@ -1860,6 +1860,16 @@ namespace Settings {
         StartingAge.Unlock();
       }
 
+      //Adult is also not compatible with the following combination:
+      //DoT:Intended, ShuffleOcarinas:false, Logic:Glitchless
+      if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED) && !ShuffleOcarinas &&
+        Logic.Is(LOGIC_GLITCHLESS)) {
+          StartingAge.SetSelectedIndex(AGE_CHILD);
+          StartingAge.Lock();
+        } else {
+          StartingAge.Unlock();
+        }
+
       //Only show stone count option if Stones is selected
       if (Bridge.Is(RAINBOWBRIDGE_STONES)) {
         BridgeStoneCount.Unhide();
@@ -2730,9 +2740,11 @@ namespace Settings {
       int choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
         ResolvedStartingAge = AGE_CHILD;
+        StartingAge.SetSelectedIndex(AGE_CHILD);
       }
       else {
         ResolvedStartingAge = AGE_ADULT;
+        StartingAge.SetSelectedIndex(AGE_ADULT);
       }
     }
     else {
