@@ -300,7 +300,7 @@ namespace Settings {
   Option DamageMultiplier    = Option::U8  ("Damage Multiplier",      {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"},                        {damageMultiDesc},                                                                                                OptionCategory::Setting,    DAMAGEMULTIPLIER_DEFAULT);
   Option StartingTime        = Option::U8  ("Starting Time",          {"Day", "Night"},                                                       {startingTimeDesc});
   Option ChestAnimations     = Option::Bool("Chest Animations",       {"Always Fast", "Match Contents"},                                      {chestAnimDesc});
-  Option ChestSize           = Option::Bool("Chest Size and Color",   {"Vanilla", "Match Contents"},                                          {chestSizeDesc});
+  Option ChestSize           = Option::Bool("Chest Size and Texture", {"Vanilla", "Match Contents"},                                          {chestSizeDesc});
   Option GenerateSpoilerLog  = Option::Bool("Generate Spoiler Log",   {"No", "Yes"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1); // On
   Option IngameSpoilers      = Option::Bool("Ingame Spoilers",        {"Hide", "Show"},                                                       {ingameSpoilersHideDesc, ingameSpoilersShowDesc });
   Option MenuOpeningButton   = Option::U8  ("Open Info Menu with",    {"Select","Start","D-Pad Up","D-Pad Down","D-Pad Right","D-Pad Left",}, {menuButtonDesc});
@@ -2581,6 +2581,7 @@ namespace Settings {
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
+    ChestSize.SetSelectedIndex(cvarSettings[RSK_CHEST_SIZE_AND_TEXTURE]);
     BlueFireArrows.SetSelectedIndex(cvarSettings[RSK_BLUE_FIRE_ARROWS]);
     SunlightArrows.SetSelectedIndex(cvarSettings[RSK_SUNLIGHT_ARROWS]);
 

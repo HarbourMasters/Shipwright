@@ -48,6 +48,7 @@ void EnBox_AppearInit(EnBox*, GlobalContext*);
 void EnBox_AppearAnimation(EnBox*, GlobalContext*);
 void EnBox_WaitOpen(EnBox*, GlobalContext*);
 void EnBox_Open(EnBox*, GlobalContext*);
+void EnBox_CreateRandoChestTextures();
 
 const ActorInit En_Box_InitVars = {
     ACTOR_EN_BOX,
@@ -71,6 +72,14 @@ static InitChainEntry sInitChain[] = {
 
 static UNK_TYPE sUnused;
 GetItemEntry sItem;
+
+Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
+Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
+Gfx gKeyTreasureChestChestSideAndLidDL[116] = {0};
+Gfx gSkullTreasureChestChestFrontDL[128] = {0};
+Gfx gGoldTreasureChestChestFrontDL[128] = {0};
+Gfx gKeyTreasureChestChestFrontDL[128] = {0};
+u8 hasCreatedRandoChestTextures = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -174,17 +183,68 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_Init(globalCtx, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
-    switch (this->type) {
-        case ENBOX_TYPE_SMALL:
-        case ENBOX_TYPE_6:
-        case ENBOX_TYPE_ROOM_CLEAR_SMALL:
-        case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
-            Actor_SetScale(&this->dyna.actor, 0.005f);
-            Actor_SetFocus(&this->dyna.actor, 20.0f);
-            break;
-        default:
-            Actor_SetScale(&this->dyna.actor, 0.01f);
-            Actor_SetFocus(&this->dyna.actor, 40.0f);
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_CHEST_SIZE_AND_TEXTURE)) {
+        EnBox_CreateRandoChestTextures();
+        RandomizerChestType boxRandomizerType = Randomizer_GetChestTypeFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+
+        switch (boxRandomizerType) {
+            case RAND_CHEST_TYPE_SMALL_VANILLA:
+            case RAND_CHEST_TYPE_SMALL_KEY:
+            case RAND_CHEST_TYPE_SMALL_SKULL:
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                Actor_SetFocus(&this->dyna.actor, 20.0f);
+                break;
+            default:
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                Actor_SetFocus(&this->dyna.actor, 40.0f);
+                break;
+        }
+
+        switch (boxRandomizerType) {
+            case RAND_CHEST_TYPE_LARGE_GOLD:
+                this->boxBodyDL = gGoldTreasureChestChestFrontDL;
+                this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
+                break;
+            case RAND_CHEST_TYPE_SMALL_SKULL:
+                this->boxBodyDL = gSkullTreasureChestChestFrontDL;
+                this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
+                break;
+            case RAND_CHEST_TYPE_SMALL_KEY:
+                this->boxBodyDL = gKeyTreasureChestChestFrontDL;
+                this->boxLidDL = gKeyTreasureChestChestSideAndLidDL;
+                break;
+            case RAND_CHEST_TYPE_LARGE_BOSS:
+                this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
+                this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+                break;
+            case RAND_CHEST_TYPE_LARGE_VANILLA:
+            case RAND_CHEST_TYPE_SMALL_VANILLA:
+            default:
+                this->boxBodyDL = gTreasureChestChestFrontDL;
+                this->boxLidDL = gTreasureChestChestSideAndLidDL;
+                break;
+        }
+    } else {
+        switch (this->type) {
+            case ENBOX_TYPE_SMALL:
+            case ENBOX_TYPE_6:
+            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
+            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                Actor_SetFocus(&this->dyna.actor, 20.0f);
+                break;
+            default:
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                Actor_SetFocus(&this->dyna.actor, 40.0f);
+        }
+
+        if (this->type != ENBOX_TYPE_DECORATED_BIG) {
+            this->boxBodyDL = gTreasureChestChestFrontDL;
+            this->boxLidDL = gTreasureChestChestSideAndLidDL;
+        } else {
+            this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
+            this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+        }
     }
 }
 
@@ -604,6 +664,69 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }
 
+void EnBox_CreateRandoChestTextures() {
+    if (hasCreatedRandoChestTextures) return;
+    Gfx gTreasureChestChestTextures[] = {
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gSkullTreasureChestFrontTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gSkullTreasureChestSideAndTopTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gGoldTreasureChestFrontTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gGoldTreasureChestSideAndTopTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gKeyTreasureChestFrontTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gKeyTreasureChestSideAndTopTex")),
+    };
+
+    Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
+    int frontIndex = 0;
+    while (frontCmd->words.w0 >> 24 != G_ENDDL) {
+        gSkullTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+        gGoldTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+        gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+        frontIndex++;
+        ++frontCmd;
+    }
+    gSkullTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+    gGoldTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+    gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+
+    gSkullTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[0];
+    gSkullTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[1];
+    gSkullTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[0];
+    gSkullTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[1];
+    gGoldTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[2];
+    gGoldTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[3];
+    gGoldTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[2];
+    gGoldTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[3];
+    gKeyTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[4];
+    gKeyTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[5];
+    gKeyTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[4];
+    gKeyTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[5];
+
+    Gfx* sideCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestSideAndLidDL);
+    int sideIndex = 0;
+    while (sideCmd->words.w0 >> 24 != G_ENDDL) {
+        gSkullTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+        gGoldTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+        gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+        sideIndex++;
+        ++sideCmd;
+    }
+    gSkullTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+    gGoldTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+    gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+
+    gSkullTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[0];
+    gSkullTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[1];
+    gSkullTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[0];
+    gGoldTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[2];
+    gGoldTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[3];
+    gGoldTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[2];
+    gKeyTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[4];
+    gKeyTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[5];
+    gKeyTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[4];
+
+    hasCreatedRandoChestTextures = 1;
+}
+
 void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnBox* this = (EnBox*)thisx;
     s32 pad;
@@ -611,19 +734,11 @@ void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     if (limbIndex == 1) {
         gSPMatrix((*gfx)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (this->type != ENBOX_TYPE_DECORATED_BIG) {
-            gSPDisplayList((*gfx)++, gTreasureChestChestFrontDL);
-        } else {
-            gSPDisplayList((*gfx)++, gTreasureChestBossKeyChestFrontDL);
-        }
+        gSPDisplayList((*gfx)++, this->boxBodyDL);
     } else if (limbIndex == 3) {
         gSPMatrix((*gfx)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (this->type != ENBOX_TYPE_DECORATED_BIG) {
-            gSPDisplayList((*gfx)++, gTreasureChestChestSideAndLidDL);
-        } else {
-            gSPDisplayList((*gfx)++, gTreasureChestBossKeyChestSideAndTopDL);
-        }
+        gSPDisplayList((*gfx)++, this->boxLidDL);
     }
 }
 
