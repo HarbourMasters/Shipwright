@@ -253,6 +253,13 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
         append_line(buf, &len, "[RootSignature(RS)]");
     }
     append_line(buf, &len, "float4 PSMain(PSInput input, float4 screenSpace : SV_Position) : SV_TARGET {");
+
+    // Reference approach to color wrapping as per GLideN64
+    // Return wrapped value of x in interval [low, high)
+    // Mod implementation of GLSL sourced from https://registry.khronos.org/OpenGL-Refpages/gl4/html/mod.xhtml
+    append_line(buf, &len, "#define MOD(x, y) ((x) - (y) * floor((x)/(y)))");
+    append_line(buf, &len, "#define WRAP(x, low, high) MOD((x)-(low), (high)-(low)) + (low)");
+
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             len += sprintf(buf + len, "    float2 tc%d = input.uv%d;\r\n", i, i);
@@ -294,11 +301,18 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
             append_formula(buf, &len, cc_features.c[c], cc_features.do_single[c][0], cc_features.do_multiply[c][0], cc_features.do_mix[c][0], cc_features.opt_alpha, false, cc_features.opt_alpha);
         }
         append_line(buf, &len, ";");
+
+        if (c == 0) {
+            append_str(buf, &len, "texel = WRAP(texel, -1.01, 1.01);");
+        }
     }
 
     if (cc_features.opt_texture_edge && cc_features.opt_alpha) {
         append_line(buf, &len, "    if (texel.a > 0.19) texel.a = 1.0; else discard;");
     }
+
+    append_str(buf, &len, "texel = WRAP(texel, -0.51, 1.51);");
+    append_str(buf, &len, "texel = clamp(texel, 0.0, 1.0);");
     // TODO discard if alpha is 0?
     if (cc_features.opt_fog) {
         if (cc_features.opt_alpha) {
