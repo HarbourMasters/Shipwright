@@ -7,19 +7,14 @@ extern "C" {
 uint32_t enemyFound = 0;
 
 static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
-    { ACTOR_EN_FIREFLY, 2 }, // Regular Keese
-    { ACTOR_EN_FIREFLY, 1 }, // Fire Keese
-    { ACTOR_EN_FIREFLY, 4 }, // Ice Keese
-    { ACTOR_EN_TEST, 2 },    // Stalfos
-    { ACTOR_EN_TITE, 0 },    // Tektite
-    // Broken {ACTOR_EN_POH, 0},		// Poe (requires actor changes)
-    // Broken {ACTOR_EN_POH, 2},		// Poe (composer Sharp) (requires actor changes)
-    // Broken {ACTOR_EN_POH, 3},		// Poe (composer Flat) (requires actor changes)
-    // Broken {ACTOR_EN_OKUTA, 0},		// Octorok (requires actor changes)
-    { ACTOR_EN_WALLMAS, 1 }, // Wallmaster
-    // Broken {ACTOR_EN_REEBA, 0},		// Leever (requires actor changes)
-    // Broken {ACTOR_EN_PEEHAT, 0},		// Flying Peahat, spawns larva (requires more testing)
-    // Broken {ACTOR_EN_PEEHAT, 1},		// Flying Peahat Larva (requires actor changes)
+    { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
+    { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
+    { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
+    { ACTOR_EN_TEST, 2 },       // Stalfos
+    { ACTOR_EN_TITE, 0 },       // Tektite
+    { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
+    { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
+    { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva (requires actor changes)
     { ACTOR_EN_ZF, -1 },        // Lizalfos
     { ACTOR_EN_ZF, -2 },        // Dinolfos
     { ACTOR_EN_GOMA, 7 },       // Gohma larva (non-gohma rooms)
@@ -37,7 +32,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_DEKUBABA, 0 },   // Deku Baba (small)
     { ACTOR_EN_DEKUBABA, 1 },   // Deku Baba (large)
     { ACTOR_EN_DEKUNUTS, 768 }, // Mad Scrub (triple attack) (projectiles don't work)
-    { ACTOR_EN_VALI, -1 },      // Bari (big jellyfish) (problems with splitting and positioning - spawning in the air)
+    { ACTOR_EN_VALI, -1 },      // Bari (big jellyfish)
     { ACTOR_EN_BB, -1 },        // Bubble (flying skull enemy) (blue)
     { ACTOR_EN_YUKABYUN, 0 },   // Flying Floor Tile
     { ACTOR_EN_VM, 1280 },      // Beamos
@@ -56,9 +51,15 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_CLEAR_TAG, 1 },  // Arwing
     { ACTOR_EN_WF, 0 },         // Wolfos (normal)
     { ACTOR_EN_WF, 1 },         // Wolfos (white)
-    { ACTOR_EN_SKB, 1 },        // Stalchild (small) (despawns at daytime)
-    { ACTOR_EN_SKB, 30 },       // Stalchild (big) (despawns at daytime)
+    { ACTOR_EN_SKB, 1 },        // Stalchild (small)
+    { ACTOR_EN_SKB, 20 },       // Stalchild (big)
     { ACTOR_EN_CROW, 0 }        // Guay
+
+    // Doesn't work {ACTOR_EN_POH, 0}, // Poe (Seems to rely on other objects?)
+    // Doesn't work {ACTOR_EN_POH, 2}, // Poe (composer Sharp) (Seems to rely on other objects?)
+    // Doesn't work {ACTOR_EN_POH, 3}, // Poe (composer Flat) (Seems to rely on other objects?)
+    // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping up)
+    // Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a leever spawner, kills itself too quickly otherwise)
 };
 
 static int enemiesToRandomize[] = {
@@ -98,14 +99,14 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_TUBO_TRAP, // Flying pot
     ACTOR_EN_FZ,        // Freezard
     ACTOR_EN_WEIYER,    // Stinger (Water)
+    ACTOR_EN_HINTNUTS,  // Hint deku scrubs
     ACTOR_EN_WF,        // Wolfos
     ACTOR_EN_SKB,       // Stalchild
     ACTOR_EN_CROW       // Guay
 };
 
 extern "C" enemyEntry GetRandomizedEnemy(void) {
-    // return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
-    return randomizedEnemySpawnTable[44];
+    return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
 extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
@@ -153,6 +154,12 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
             // Don't randomize Nabooru because it'll break cutscenes and progression
             case ACTOR_EN_IK:
                 if (param == 1280) {
+                    return 0;
+                }
+                break;
+            // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
+            case ACTOR_EN_VALI:
+                if (param != -1) {
                     return 0;
                 }
                 break;
