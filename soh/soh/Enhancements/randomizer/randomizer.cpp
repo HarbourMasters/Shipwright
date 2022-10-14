@@ -2172,7 +2172,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
 
     if (checkFromActorMultimap.size() == 0) {
         for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
-            checkFromActorMultimap.insert(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams, true), rcObject);
+            checkFromActorMultimap.emplace(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams, true), rcObject);
         }
     }
 
