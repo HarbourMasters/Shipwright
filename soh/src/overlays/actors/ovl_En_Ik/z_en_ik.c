@@ -1463,6 +1463,16 @@ void EnIk_Init(Actor* thisx, GlobalContext* globalCtx) {
         func_80A74398(&this->actor, globalCtx);
         func_80A780D0(this, globalCtx);
     }
+
+    // Immediately trigger Iron Knuckle for enemy randomizer
+    if (CVar_GetS32("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
+        Vec3f sp24;
+        sp24 = this->actor.world.pos;
+        sp24.y += 30.0f;
+        func_8003424C(globalCtx, &sp24);
+        this->skelAnime.playSpeed = 1.0f;
+        func_800F5ACC(NA_BGM_MINI_BOSS);
+    }
 }
 
 const ActorInit En_Ik_InitVars = {
