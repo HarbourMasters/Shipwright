@@ -807,6 +807,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_CHEST_SIZE_AND_TEXTURE:
+                        if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Match Contents") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
                 }
             }
         }
