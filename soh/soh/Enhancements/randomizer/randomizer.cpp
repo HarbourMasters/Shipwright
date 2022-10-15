@@ -2164,6 +2164,13 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     specialRc = RC_FAIRY_GOSSIP_STONE;
             }
             break;
+        case SCENE_BDAN_BOSS:
+            // If Ruto is in Barinade's blue warp, the actor params are 5 rather than
+            // 0. The multimap has 0, which is accurate if Ruto is not in the blue warp.
+            // Change the actorParams value used for the lookup to 0.
+            if (!(gSaveContext.eventChkInf[3] & 0x80) && actorId == ACTOR_DOOR_WARP1) {
+                actorParams = 0;
+            }
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -2194,7 +2201,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     scrubIdentity.itemPrice = -1;
     scrubIdentity.isShuffled = false;
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, TWO_ACTOR_PARAMS(actorParams == 0x06 ? 0x03 : actorParams, respawnData));
+    if (sceneNum == SCENE_KAKUSIANA) {
+        actorParams = TWO_ACTOR_PARAMS((actorParams == 0x06 ? 0x03 : actorParams), respawnData);
+    }
+
+    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         scrubIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
