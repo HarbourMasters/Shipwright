@@ -1549,7 +1549,10 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
 
             UIWidgets::PaddedEnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies", true, false);
-            UIWidgets::Tooltip("Replaces some normal enemies with other random normal enemies.\n\nWARNING: Unstable and likely to softlock you in certain areas!");
+            UIWidgets::Tooltip(
+                "Randomizes regular enemy spawns everytime they're spawned.\n\n"
+                "WARNING: Potential to softlock rooms because you don't have the equipment to kill them. You can reload the room to get a new set of enemies to spawn."
+            );
 
             ImGui::EndMenu();
         }
