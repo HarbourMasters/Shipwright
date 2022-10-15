@@ -4,8 +4,6 @@ extern "C" {
 #include <z64.h>
 }
 
-uint32_t enemyFound = 0;
-
 static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
