@@ -1073,8 +1073,8 @@ typedef enum RandoOption {
   RO_GF_OPEN,
 
   //Rainbow Bridge settings (always open, vanilla, stones, medallions, dungeon rewards, dungeons, tokens)
-  RO_BRIDGE_ALWAYS_OPEN = 0,
-  RO_BRIDGE_VANILLA,
+  RO_BRIDGE_VANILLA = 0,
+  RO_BRIDGE_ALWAYS_OPEN,
   RO_BRIDGE_STONES,
   RO_BRIDGE_MEDALLIONS,
   RO_BRIDGE_DUNGEON_REWARDS,
@@ -1115,6 +1115,17 @@ typedef enum RandoOption {
   RO_DUNGEON_ITEM_LOC_OVERWORLD,
   RO_DUNGEON_ITEM_LOC_ANYWHERE,
 
+  //Dungeon reward settings
+
+  //Ganon Boss Key Settins (vanilla, own dungeon, start with,
+  //overworld, anywhere)
+  RO_GANON_BOSS_KEY_VANILLA = 0,
+  RO_GANON_BOSS_KEY_OWN_DUNGEON,
+  RO_GANON_BOSS_KEY_STARTWITH,
+  RO_GANON_BOSS_KEY_ANY_DUNGEON,
+  RO_GANON_BOSS_KEY_OVERWORLD,
+  RO_GANON_BOSS_KEY_ANYWHERE,
+
   //Starting Ocarina Settings (off, fairy)
   RO_STARTING_OCARINA_OFF = 0,
   RO_STARTING_OCARINA_FAIRY,
@@ -1143,6 +1154,12 @@ typedef enum RandoOption {
   RO_HINT_CLARITY_OBSCURE = 0,
   RO_HINT_CLARITY_AMBIGUOUS,
   RO_HINT_CLARITY_CLEAR,
+
+  //Hint Distribution Settings (useless, balanced, strong, very strong)
+  RO_HINT_DIST_USELESS = 0,
+  RO_HINT_DIST_BALANCED,
+  RO_HINT_DIST_STRONG,
+  RO_HINT_DIST_VERY_STRONG,
 
   //Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
   //anywhere)
