@@ -1743,6 +1743,8 @@ extern "C" RandomizerChestType Randomizer_GetChestTypeFromActor(s16 actorId, s16
     if ((gid >= GID_SONG_MINUET && gid <= GID_SONG_PRELUDE) ||
         (gid >= GID_SONG_GENERIC && gid <= GID_SONG_STORM) ||
         (gid >= GID_KOKIRI_EMERALD && gid <= GID_ZORA_SAPPHIRE) ||
+        (gid >= GID_BLUE_FIRE && gid <= GID_FAIRY) ||
+        (gid == GID_BIG_POE) ||
         (gid >= GID_MEDALLION_FOREST && gid <= GID_MEDALLION_LIGHT)){
             return RAND_CHEST_TYPE_LARGE_GOLD;
     }
