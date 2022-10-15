@@ -449,6 +449,8 @@ namespace GameMenuBar {
         CVar_SetS32("gDayGravePull", 1);
         // Pull out Ocarina to Summon Scarecrow
         CVar_SetS32("gSkipScarecrow", 1);
+        // Chest size & texture matches contents
+        CVar_SetS32("gChestSizeAndTextureMatchesContents", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
