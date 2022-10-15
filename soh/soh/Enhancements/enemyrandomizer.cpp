@@ -114,56 +114,32 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
         if (actorId == enemiesToRandomize[i]) {
+
             switch (actorId) {
                 // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn
                 case ACTOR_EN_TP:
-                    if (param != -1) {
-                        return 0;
-                    }
-                    break;
+                    return (param == -1);
                 // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
                 case ACTOR_EN_DEKUNUTS:
-                    if (param != -256 && param != 768) {
-                        return 0;
-                    }
-                    break;
+                    return (param == -256 || param == 768);
                 // Only randomize initial floormaster actor (it can split and does some spawning on init)
                 case ACTOR_EN_FLOORMAS:
-                    if (param != 0) {
-                        return 0;
-                    }
-                    break;
+                    return (param == 0);
                 // Only randomize initial egg spawn, not the enemy that comes out of the egg
                 case ACTOR_EN_GOMA:
-                    if (param != 0 && param != 6 && param != 8) {
-                        return 0;
-                    }
-                    break;
+                    return (param == 0 || param == 6 || param == 8);
                 // Only randomize Skullwalltulas, not Golden Skulltulas
                 case ACTOR_EN_SW:
-                    if (param != 0) {
-                        return 0;
-                    }
-                    break;
+                    return (param == 0);
                 // Don't randomize Nabooru because it'll break cutscenes and progression
                 case ACTOR_EN_IK:
-                    if (param == 1280) {
-                        return 0;
-                    }
-                    break;
+                    return (param != 1280);
                 // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
-                    if (param != -1) {
-                        return 0;
-                    }
-                    break;
-                // Enemy found.
+                    return (param == -1);
                 default:
                     return 1;
             }
-
-            // Enemy found with the correct parameter.
-            return 1;
         }
     }
 

@@ -3259,7 +3259,20 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
                                      : NULL);
     }
 
-    objBankIndex = 0;
+    objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
+
+    if (objBankIndex < 0 && (!gMapLoading || CVar_GetS32("gRandomizedEnemies", 0))) {
+        objBankIndex = 0;
+    }
+
+    if ((objBankIndex < 0) ||
+        ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
+        // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
+        osSyncPrintf(VT_COL(RED, WHITE) "データバンク無し！！<データバンク＝%d>(profilep->bank=%d)\n" VT_RST,
+                     objBankIndex, actorInit->objectId);
+        Actor_FreeOverlay(overlayEntry);
+        return NULL;
+    }
 
     actor = ZELDA_ARENA_MALLOC_DEBUG(actorInit->instanceSize);
 
