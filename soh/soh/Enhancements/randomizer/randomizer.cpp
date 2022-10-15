@@ -2194,7 +2194,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     scrubIdentity.itemPrice = -1;
     scrubIdentity.isShuffled = false;
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, TWO_ACTOR_PARAMS(actorParams == 0x06 ? 0x03 : actorParams, respawnData));
+    if (sceneNum == SCENE_KAKUSIANA) {
+        actorParams = TWO_ACTOR_PARAMS(actorParams == 0x06 ? 0x03 : actorParams, respawnData);
+    }
+
+    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         scrubIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
