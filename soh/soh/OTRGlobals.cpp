@@ -15,6 +15,7 @@
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
+#include "z64item.h"
 #include <ultra64/gbi.h>
 #include <libultraship/Animation.h>
 #ifdef _WIN32
@@ -1736,8 +1737,69 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" RandomizerChestType Randomizer_GetChestTypeFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    // TODO: Add chest types to a table somewhere
     // Potential reference https://github.com/Roman971/OoT-Randomizer/blob/Dev-R/ASM/c/item_table.c
+
+    GetItemEntry g = OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
+    s16 gid = g.gid;
+    s16 getItemId = g.getItemId;
+
+    if (gid == GID_KEY_SMALL){
+        return RAND_CHEST_TYPE_SMALL_KEY;
+    }
+    if ((gid >= GID_SONG_MINUET && gid <= GID_SONG_PRELUDE) ||
+        (gid >= GID_SONG_GENERIC && gid <= GID_SONG_STORM) ||
+        (gid >= GID_KOKIRI_EMERALD && gid <= GID_ZORA_SAPPHIRE) ||
+        (gid >= GID_MEDALLION_FOREST && gid <= GID_MEDALLION_LIGHT)){
+            return RAND_CHEST_TYPE_LARGE_GOLD;
+    }
+    if (gid == GID_KEY_BOSS){
+        return RAND_CHEST_TYPE_LARGE_BOSS;
+    }
+
+    switch (getItemId){
+        case 0x04: case 0x05: case 0x06: case 0x08: case 0x09:
+        case 0x0A: case 0x0B: case 0x0C: case 0x0D: case 0x0E:
+        case 0x0F: case 0x10: case 0x11: case 0x12: case 0x13:
+        case 0x14: case 0x15: case 0x17: case 0x18: case 0x19:
+        case 0x1A: case 0x1B: case 0x1C: case 0x1D: case 0x1E:
+        case 0x1F: case 0x20: case 0x21: case 0x22: case 0x23:
+        case 0x24: case 0x25: case 0x26: case 0x27: case 0x28:
+        case 0x2B: case 0x2C: case 0x2D: case 0x2E: case 0x2F:
+        case 0x30: case 0x31: case 0x32: case 0x33: case 0x34:
+        case 0x35: case 0x36: case 0x37: case 0x38: case 0x39:
+        case 0x3A: case 0x3B: case 0x45: case 0x46: case 0x47:
+        case 0x50: case 0x51: case 0x52: case 0x53: case 0x54:
+        case 0x57: case 0x58: case 0x59: case 0x5A: case 0x5C:
+        case 0x5D: case 0x5E: case 0x5F: case 0x60: case 0x6C:
+        case 0x6D: case 0x6E: case 0x6F: case 0x70: case 0x7B:
+        case 0x7C: case 0x80: case 0x81: case 0x82: case 0x83:
+        case 0x84: case 0x85: case 0x86: case 0x89: case 0x8A:
+        case 0x8B: case 0x8C: case 0x8D: case 0x8E: case 0x8F:
+        case 0x90: case 0x91: case 0x92: case 0x93: case 0x94:
+        case 0xB8: case 0xB9: case 0xBA: case 0xBB: case 0xBC:
+        case 0xBD: case 0xBE: case 0xBF: case 0xC0: case 0xC1:
+        case 0xC2: case 0xC3: case 0xC4: case 0xC5: case 0xC6:
+        case 0xC7: case 0xC8: case 0xC9: case 0xCA:
+            return RAND_CHEST_TYPE_LARGE_GOLD;
+        case 0x29: case 0x2A: case 0x3D: case 0x3E: case 0x76:
+        case 0x77: case 0x78: case 0x79: case 0x7A: case 0x9B:
+        case 0x9C: case 0x9D: case 0x9E: case 0x9F: case 0xA0:
+        case 0xA1: case 0xA2: case 0xA3: case 0xA4: case 0xA5:
+        case 0xA6: case 0xA7: case 0xA8: case 0xA9: case 0xAA:
+        case 0xAB: case 0xAC: case 0xAD: case 0xAE:
+        //considering capacity upgrades, deku/hylian shields, maps and compasses,
+        //heart containers and pieces as minor items
+            return RAND_CHEST_TYPE_LARGE_VANILLA;
+        case 0x3F: case 0x95: case 0x96: case 0x97: case 0x98:
+        case 0x99: case 0x9A:
+            return RAND_CHEST_TYPE_LARGE_BOSS;
+        case 0x5B:
+            return RAND_CHEST_TYPE_SMALL_SKULL;
+        case 0x42:
+            return RAND_CHEST_TYPE_SMALL_KEY;
+    }
+
+
     return RAND_CHEST_TYPE_SMALL_VANILLA;
 }
 
