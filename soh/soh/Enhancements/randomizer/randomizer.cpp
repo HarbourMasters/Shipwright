@@ -2195,7 +2195,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     scrubIdentity.isShuffled = false;
 
     if (sceneNum == SCENE_KAKUSIANA) {
-        actorParams = TWO_ACTOR_PARAMS(actorParams == 0x06 ? 0x03 : actorParams, respawnData);
+        actorParams = TWO_ACTOR_PARAMS((actorParams == 0x06 ? 0x03 : actorParams), respawnData);
     }
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
