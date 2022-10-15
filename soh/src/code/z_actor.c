@@ -3145,7 +3145,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
     // Hack to remove bats and skulltulas that spawn in graveyard because of removing object dependency.
-    if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == 83) {
+    if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
         return NULL;
     }
 

@@ -4,6 +4,8 @@ extern "C" {
 #include <z64.h>
 }
 
+#include "macros.h"
+
 static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
@@ -12,7 +14,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_TITE, 0 },       // Tektite
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
     { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
-    { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva (requires actor changes)
+    { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva
     { ACTOR_EN_ZF, -1 },        // Lizalfos
     { ACTOR_EN_ZF, -2 },        // Dinolfos
     { ACTOR_EN_GOMA, 7 },       // Gohma larva (non-gohma rooms)
@@ -109,64 +111,60 @@ extern "C" enemyEntry GetRandomizedEnemy(void) {
 
 extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
 
-    uint8_t isEnemyFound = 0;
+    for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
-    for (int i = 0; i < sizeof(enemiesToRandomize) / sizeof(enemiesToRandomize[0]); i++) {
         if (actorId == enemiesToRandomize[i]) {
-            isEnemyFound = 1;
-        }
-    }
+            switch (actorId) {
+                // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn
+                case ACTOR_EN_TP:
+                    if (param != -1) {
+                        return 0;
+                    }
+                    break;
+                // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
+                case ACTOR_EN_DEKUNUTS:
+                    if (param != -256 && param != 768) {
+                        return 0;
+                    }
+                    break;
+                // Only randomize initial floormaster actor (it can split and does some spawning on init)
+                case ACTOR_EN_FLOORMAS:
+                    if (param != 0) {
+                        return 0;
+                    }
+                    break;
+                // Only randomize initial egg spawn, not the enemy that comes out of the egg
+                case ACTOR_EN_GOMA:
+                    if (param != 0 && param != 6 && param != 8) {
+                        return 0;
+                    }
+                    break;
+                // Only randomize Skullwalltulas, not Golden Skulltulas
+                case ACTOR_EN_SW:
+                    if (param != 0) {
+                        return 0;
+                    }
+                    break;
+                // Don't randomize Nabooru because it'll break cutscenes and progression
+                case ACTOR_EN_IK:
+                    if (param == 1280) {
+                        return 0;
+                    }
+                    break;
+                // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
+                case ACTOR_EN_VALI:
+                    if (param != -1) {
+                        return 0;
+                    }
+                    break;
+                // Enemy found.
+                default:
+                    return 1;
+            }
 
-    if (isEnemyFound) {
-        switch (actorId) {
-            // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn
-            case ACTOR_EN_TP:
-                if (param != -1) {
-                    return 0;
-                }
-                break;
-            // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
-            case ACTOR_EN_DEKUNUTS:
-                if (param != -256 && param != 768) {
-                    return 0;
-                }
-                break;
-            // Only randomize initial floormaster actor (it can split and does some spawning on init)
-            case ACTOR_EN_FLOORMAS:
-                if (param != 0) {
-                    return 0;
-                }
-                break;
-            // Only randomize initial egg spawn, not the enemy that comes out of the egg
-            case ACTOR_EN_GOMA:
-                if (param != 0 && param != 6 && param != 8) {
-                    return 0;
-                }
-                break;
-            // Only randomize Skullwalltulas, not Golden Skulltulas
-            case ACTOR_EN_SW:
-                if (param != 0) {
-                    return 0;
-                }
-                break;
-            // Don't randomize Nabooru because it'll break cutscenes and progression
-            case ACTOR_EN_IK:
-                if (param == 1280) {
-                    return 0;
-                }
-                break;
-            // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
-            case ACTOR_EN_VALI:
-                if (param != -1) {
-                    return 0;
-                }
-                break;
-            default:
-                break;
+            // Enemy found with the correct parameter.
+            return 1;
         }
-
-        // Enemy found.
-        return 1;
     }
 
     // If no enemy is found, don't randomize the actor.
