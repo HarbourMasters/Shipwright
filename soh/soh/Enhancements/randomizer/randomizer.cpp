@@ -2164,6 +2164,13 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     specialRc = RC_FAIRY_GOSSIP_STONE;
             }
             break;
+        case SCENE_BDAN_BOSS:
+            // If Ruto is in Barinade's blue warp, the actor params are 5 rather than
+            // 0. The multimap has 0, which is accurate if Ruto is not in the blue warp.
+            // Change the actorParams value used for the lookup to 0.
+            if (!(gSaveContext.eventChkInf[3] & 0x80) && actorId == ACTOR_DOOR_WARP1) {
+                actorParams = 0;
+            }
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
