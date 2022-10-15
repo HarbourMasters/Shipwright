@@ -106,6 +106,7 @@ void SaveManager::LoadRandomizerVersion1() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
+    randomizer->LoadRandomizerSettings("");
     size_t merchantPricesSize = 0;
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
         merchantPricesSize += NUM_SCRUBS;

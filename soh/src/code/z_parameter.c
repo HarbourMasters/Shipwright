@@ -2502,13 +2502,6 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
-    } else if ( gSaveContext.n64ddFlag &&
-        ((item >= RG_GERUDO_FORTRESS_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= RG_FOREST_TEMPLE_BOSS_KEY) && (item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP) ||
-        (item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS))
-    ) {
-        return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {

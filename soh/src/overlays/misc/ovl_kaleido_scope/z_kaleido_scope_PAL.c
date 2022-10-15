@@ -1134,6 +1134,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     static s16 D_8082AD48 = 0;
     static s16 D_8082AD4C = 0;
     static s16 D_8082AD50 = 0;
+    const Color_RGB8 A_cursor = CVar_GetRGB("gCCABtnPrim", A_BTN_ori);
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     Input* input = &globalCtx->state.input[0];
     s16 stepR;
@@ -1508,7 +1509,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61)); 
             } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).r, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).g, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).b, VREG(61)); //Save prompt cursor colour
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_cursor.r, A_cursor.g, A_cursor.b, VREG(61)); //Save prompt cursor colour
             }
 
             if (pauseCtx->promptChoice == 0) {
@@ -1533,7 +1534,13 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
                 gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                   TEXEL0, 0, PRIMITIVE, 0);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61));
+                if (CVar_GetS32("gHudColors", 1) == 0) { //Continue prompt cursor colour
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 255, VREG(61));
+                } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61));
+                } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_cursor.r, A_cursor.g, A_cursor.b, VREG(61)); //Continue prompt cursor colour
+                }
 
                 if (pauseCtx->promptChoice == 0) {
                     gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);

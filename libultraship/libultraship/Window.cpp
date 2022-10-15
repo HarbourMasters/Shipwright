@@ -480,7 +480,7 @@ namespace Ship {
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef ENABLE_DX11
-    	RenderingApi = &gfx_direct3d11_api;
+        RenderingApi = &gfx_direct3d11_api;
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef __WIIU__

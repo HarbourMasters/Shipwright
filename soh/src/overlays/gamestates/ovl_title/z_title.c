@@ -307,6 +307,7 @@ void Title_Init(GameState* thisx) {
                 Randomizer_LoadSettings("");
                 Randomizer_LoadHintLocations("");
                 Randomizer_LoadItemLocations("", true);
+                Randomizer_LoadMerchantMessages("");
                 gSaveContext.gameMode = 0;
                 gSaveContext.magic = gSaveContext.magic;
                 SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
