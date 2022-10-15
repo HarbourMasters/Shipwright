@@ -185,12 +185,17 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_CHEST_SIZE_AND_TEXTURE)) {
         EnBox_CreateRandoChestTextures();
-        RandomizerChestType boxRandomizerType = Randomizer_GetChestTypeFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+        GetItemEntry getItemEntry = Randomizer_GetItemFromActorWithoutObtainabilityCheck(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+        GetItemCategory getItemCategory = getItemEntry.getItemCategory;
+        // If they don't have bombchu's yet consider the bombchu item major
+        if (getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
+            getItemCategory = ITEM_CATEGORY_MAJOR;
+        }
 
-        switch (boxRandomizerType) {
-            case RAND_CHEST_TYPE_SMALL_VANILLA:
-            case RAND_CHEST_TYPE_SMALL_KEY:
-            case RAND_CHEST_TYPE_SMALL_SKULL:
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_JUNK:
+            case ITEM_CATEGORY_SMALL_KEY:
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
                 Actor_SetScale(&this->dyna.actor, 0.005f);
                 Actor_SetFocus(&this->dyna.actor, 20.0f);
                 break;
@@ -200,25 +205,25 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
                 break;
         }
 
-        switch (boxRandomizerType) {
-            case RAND_CHEST_TYPE_LARGE_GOLD:
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
                 this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
                 break;
-            case RAND_CHEST_TYPE_SMALL_SKULL:
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
                 this->boxBodyDL = gSkullTreasureChestChestFrontDL;
                 this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
                 break;
-            case RAND_CHEST_TYPE_SMALL_KEY:
+            case ITEM_CATEGORY_SMALL_KEY:
                 this->boxBodyDL = gKeyTreasureChestChestFrontDL;
                 this->boxLidDL = gKeyTreasureChestChestSideAndLidDL;
                 break;
-            case RAND_CHEST_TYPE_LARGE_BOSS:
+            case ITEM_CATEGORY_BOSS_KEY:
                 this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
                 this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
                 break;
-            case RAND_CHEST_TYPE_LARGE_VANILLA:
-            case RAND_CHEST_TYPE_SMALL_VANILLA:
+            case ITEM_CATEGORY_LESSER:
+            case ITEM_CATEGORY_JUNK:
             default:
                 this->boxBodyDL = gTreasureChestChestFrontDL;
                 this->boxLidDL = gTreasureChestChestSideAndLidDL;
