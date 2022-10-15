@@ -183,7 +183,7 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_Init(globalCtx, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_CHEST_SIZE_AND_TEXTURE)) {
+    if (false) {
         EnBox_CreateRandoChestTextures();
         GetItemEntry getItemEntry = Randomizer_GetItemFromActorWithoutObtainabilityCheck(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
         GetItemCategory getItemCategory = getItemEntry.getItemCategory;
