@@ -1731,7 +1731,6 @@ extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check)
 }
 
 extern "C" RandomizerChestType Randomizer_GetChestTypeFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    // TODO: Add chest types to a table somewhere
     // Potential reference https://github.com/Roman971/OoT-Randomizer/blob/Dev-R/ASM/c/item_table.c
 
     GetItemEntry g = OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
