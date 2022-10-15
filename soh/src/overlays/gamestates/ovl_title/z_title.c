@@ -173,7 +173,7 @@ void Title_SetupView(TitleContext* this, f32 x, f32 y, f32 z) {
 
 void Title_Draw(TitleContext* this) {
     static s16 sTitleRotY = 0;
-    static Lights1 sTitleLights = gdSPDefLights1(0x64, 0x64, 0x64, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
+    static Lights1 sTitleLights = gdSPDefLights1(0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
 
     u16 y;
     u16 idx;
