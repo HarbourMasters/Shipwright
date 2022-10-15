@@ -370,7 +370,7 @@ void GameState_Update(GameState* gameState) {
         }
 
         // Bombchus (max: 50, no upgrades)
-        if (AMMO(ITEM_BOMBCHU) < 50) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU && AMMO(ITEM_BOMBCHU) < 50) {
             AMMO(ITEM_BOMBCHU) = 50;
         }
     }

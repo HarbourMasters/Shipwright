@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_soul" Segment="6">
+        <DList Name="gGiFairyContainerBaseCapDL" Offset="0x0BD0"/>
+        <DList Name="gGiFairyContainerGlassDL" Offset="0x0DB8"/>
+        <DList Name="gGiFairyContainerContentsDL" Offset="0x0EF0"/>
+    </File>
+</Root>

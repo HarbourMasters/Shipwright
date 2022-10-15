@@ -1,0 +1,54 @@
+<Root>
+    <File Name="bdan_scene" Segment="2">
+        <Cutscene Name="gJabuJabuIntroCs" Offset="0x15600"/>
+        <Scene Name="bdan_scene" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_0" Segment="3">
+        <Room Name="bdan_room_0" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_1" Segment="3">
+        <Room Name="bdan_room_1" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_2" Segment="3">
+        <Room Name="bdan_room_2" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_3" Segment="3">
+        <Room Name="bdan_room_3" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_4" Segment="3">
+        <Room Name="bdan_room_4" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_5" Segment="3">
+        <Room Name="bdan_room_5" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_6" Segment="3">
+        <Room Name="bdan_room_6" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_7" Segment="3">
+        <Room Name="bdan_room_7" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_8" Segment="3">
+        <Room Name="bdan_room_8" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_9" Segment="3">
+        <Room Name="bdan_room_9" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_10" Segment="3">
+        <Room Name="bdan_room_10" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_11" Segment="3">
+        <Room Name="bdan_room_11" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_12" Segment="3">
+        <Room Name="bdan_room_12" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_13" Segment="3">
+        <Room Name="bdan_room_13" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_14" Segment="3">
+        <Room Name="bdan_room_14" Offset="0x0"/>
+    </File>
+    <File Name="bdan_room_15" Segment="3">
+        <Room Name="bdan_room_15" Offset="0x0"/>
+    </File>
+</Root>

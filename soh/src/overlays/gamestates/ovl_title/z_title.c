@@ -13,6 +13,8 @@
 #include <libultraship/GameVersions.h>
 #include <soh/SaveManager.h>
 
+#include "time.h"
+
 const char* GetGameVersionString();
 char* quote;
 
@@ -70,7 +72,7 @@ const char* quotes[11] = {
     "Waaaahahahohohahahahahahaha"
 };
 
-char* SetQuote() {
+const char* SetQuote() {
     srand(time(NULL));
     int randomQuote = rand() % 11;
     return quotes[randomQuote];
@@ -94,8 +96,9 @@ const char* GetGameVersionString() {
         case OOT_PAL_MQ:
             return "GC PAL MQ";
         case OOT_PAL_GC_DBG1:
-            return "GC PAL DEBUG";
         case OOT_PAL_GC_DBG2:
+            return "GC PAL DEBUG";
+        case OOT_PAL_GC_MQ_DBG:
             return "GC PAL DEBUG MQ";
         case OOT_IQUE_CN:
             return "IQUE CN";
@@ -304,6 +307,7 @@ void Title_Init(GameState* thisx) {
                 Randomizer_LoadSettings("");
                 Randomizer_LoadHintLocations("");
                 Randomizer_LoadItemLocations("", true);
+                Randomizer_LoadMerchantMessages("");
                 gSaveContext.gameMode = 0;
                 gSaveContext.magic = gSaveContext.magic;
                 SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);

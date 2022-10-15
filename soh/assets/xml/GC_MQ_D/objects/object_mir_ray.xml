@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_mir_ray" Segment="6">
+
+        <!-- Shield beam displaylists -->
+        <DList Name="gShieldBeamImageDL" Offset="0xB0"/>
+        <DList Name="gShieldBeamGlowDL" Offset="0xC50"/>
+
+        <!-- Shield beam textures -->
+        <Texture Name="gShieldBeamImageCircleTex" OutName="shield_beam_image_circle" Format="ia16" Width="16" Height="16" Offset="0x188"/>
+        <Texture Name="gShieldBeamImageGerudoSymbolNewTex" OutName="shield_beam_image_gerudo_symbol_new" Format="ia16" Width="32" Height="32" Offset="0x388"/>
+        <Texture Name="gShieldBeamGlowRayTex" OutName="shield_beam_glow_ray" Format="ia16" Width="8" Height="256" Offset="0xCF8"/>
+    </File>
+</Root>

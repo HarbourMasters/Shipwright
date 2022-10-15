@@ -1,0 +1,90 @@
+<Root>
+    <File Name="object_ru2" Segment="6">
+        <!-- Adult Ruto Skeleton -->
+        <Skeleton Name="gAdultRutoSkel" Type="Flex" LimbType="Standard" Offset="0xC700"/>
+
+        <!-- Adult Ruto Limbs -->
+        <Limb Name="gAdultRutoRootLimb" LimbType="Standard" Offset="0xC5A0"/>
+        <Limb Name="gAdultRutoLeftThighLimb" LimbType="Standard" Offset="0xC5AC"/>
+        <Limb Name="gAdultRutoLeftLegLimb" LimbType="Standard" Offset="0xC5B8"/>
+        <Limb Name="gAdultRutoLeftFootLimb" LimbType="Standard" Offset="0xC5C4"/>
+        <Limb Name="gAdultRutoLeftTailLimb" LimbType="Standard" Offset="0xC5D0"/>
+        <Limb Name="gAdultRutoRightThighLimb" LimbType="Standard" Offset="0xC5DC"/>
+        <Limb Name="gAdultRutoRightLegLimb" LimbType="Standard" Offset="0xC5E8"/>
+        <Limb Name="gAdultRutoRightFootLimb" LimbType="Standard" Offset="0xC5F4"/>
+        <Limb Name="gAdultRutoRightTailLimb" LimbType="Standard" Offset="0xC600"/>
+        <Limb Name="gAdultRutoTorsoLimb" LimbType="Standard" Offset="0xC60C"/>
+        <Limb Name="gAdultRutoLeftUpperArmLimb" LimbType="Standard" Offset="0xC618"/>
+        <Limb Name="gAdultRutoLeftUpperWingLimb" LimbType="Standard" Offset="0xC624"/>
+        <Limb Name="gAdultRutoLeftLowerWingLimb" LimbType="Standard" Offset="0xC630"/>
+        <Limb Name="gAdultRutoLeftForearmLimb" LimbType="Standard" Offset="0xC63C"/>
+        <Limb Name="gAdultRutoLeftHandLimb" LimbType="Standard" Offset="0xC648"/>
+        <Limb Name="gAdultRutoRightUpperArmLimb" LimbType="Standard" Offset="0xC654"/>
+        <Limb Name="gAdultRutoRightUpperWingLimb" LimbType="Standard" Offset="0xC660"/>
+        <Limb Name="gAdultRutoRightLowerWingLimb" LimbType="Standard" Offset="0xC66C"/>
+        <Limb Name="gAdultRutoRightForearmLimb" LimbType="Standard" Offset="0xC678"/>
+        <Limb Name="gAdultRutoRightHandLimb" LimbType="Standard" Offset="0xC684"/>
+        <Limb Name="gAdultRutoHeadLimb" LimbType="Standard" Offset="0xC690"/>
+        <Limb Name="gAdultRutoWaistLimb" LimbType="Standard" Offset="0xC69C"/>
+
+        <!-- Adult Ruto Limb DisplayLists -->
+        <DList Name="gAdultRutoLeftThighDL" Offset="0xB8E0"/>
+        <DList Name="gAdultRutoLeftLegDL" Offset="0xBE38"/>
+        <DList Name="gAdultRutoLeftFootDL" Offset="0xC228"/>
+        <DList Name="gAdultRutoLeftTailDL" Offset="0xBD08"/>
+        <DList Name="gAdultRutoRightThighDL" Offset="0xAC20"/>
+        <DList Name="gAdultRutoRightLegDL" Offset="0xB178"/>
+        <DList Name="gAdultRutoRightFootDL" Offset="0xB568"/>
+        <DList Name="gAdultRutoRightTailDL" Offset="0xB048"/>
+        <DList Name="gAdultRutoTorsoDL" Offset="0x8D30"/>
+        <DList Name="gAdultRutoLeftUpperArmDL" Offset="0xA150"/>
+        <DList Name="gAdultRutoLeftUpperWingDL" Offset="0xAA20"/>
+        <DList Name="gAdultRutoLeftLowerWingDL" Offset="0xAB00"/>
+        <DList Name="gAdultRutoLeftForearmDL" Offset="0xA468"/>
+        <DList Name="gAdultRutoLeftHandDL" Offset="0xA650"/>
+        <DList Name="gAdultRutoRightUpperArmDL" Offset="0x9680"/>
+        <DList Name="gAdultRutoRightUpperWingDL" Offset="0x9F50"/>
+        <DList Name="gAdultRutoRightLowerWingDL" Offset="0xA030"/>
+        <DList Name="gAdultRutoRightForearmDL" Offset="0x9998"/>
+        <DList Name="gAdultRutoRightHandDL" Offset="0x9B80"/>
+        <DList Name="gAdultRutoHeadDL" Offset="0x3EB0"/>
+        <DList Name="gAdultRutoWaistDL" Offset="0x88F0"/>
+
+        <!-- Adult Ruto Palettes -->
+        <Texture Name="gAdultRutoTLUT1" OutName="adult_ruto_tlut_1" Format="rgba16" Width="144" Height="1" Offset="0xE00"/>
+        <Texture Name="gAdultRutoTLUT2" OutName="adult_ruto_tlut_2" Format="rgba16" Width="16" Height="16" Offset="0x43C0"/>
+
+        <!-- Adult Ruto Eye Textures -->
+        <Texture Name="gAdultRutoEyeOpenTex" OutName="adult_ruto_eye_open" Format="rgba16" Width="32" Height="32" Offset="0xF20"/>
+        <Texture Name="gAdultRutoEyeHalfTex" OutName="adult_ruto_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x22E0"/>
+        <Texture Name="gAdultRutoEyeClosedTex" OutName="adult_ruto_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x2AE0"/>
+
+        <!-- Adult Ruto Textures -->
+        <Texture Name="gAdultRutoSkinGradient" OutName="adult_ruto_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x1720" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoEar1Tex" OutName="adult_ruto_ear_1" Format="ci8" Width="16" Height="16" Offset="0x1760" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoHeadGradientTex" OutName="adult_ruto_head_gradient" Format="ci8" Width="16" Height="16" Offset="0x1860" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoHeadHoleTex" OutName="adult_ruto_head_hole" Format="ci8" Width="8" Height="8" Offset="0x1960" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoMouthTex" OutName="adult_ruto_mouth" Format="rgba16" Width="32" Height="32" Offset="0x19A0"/>
+        <Texture Name="gAdultRutoTex_21A0" OutName="adult_ruto_tex_21A0" Format="ci8" Width="8" Height="8" Offset="0x21A0" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoEar2Tex" OutName="adult_ruto_ear_2" Format="ci8" Width="16" Height="16" Offset="0x21E0" TlutOffset="0xE00"/>
+        <Texture Name="gAdultRutoEarringTex" OutName="adult_ruto_earring" Format="rgba16" Width="8" Height="16" Offset="0x32E0"/>
+        <Texture Name="gAdultRutoTailGradientTex" OutName="adult_ruto_tail_gradient" Format="ci8" Width="8" Height="8" Offset="0x45C0" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoTex_4600" OutName="adult_ruto_tex_4600" Format="ci8" Width="8" Height="8" Offset="0x4600" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoBackOfHandTex" OutName="adult_ruto_back_of_hand" Format="ci8" Width="16" Height="16" Offset="0x4640" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoTex_4740" OutName="adult_ruto_tex_4740" Format="ci8" Width="16" Height="16" Offset="0x4740" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoSkinPattern1Tex" OutName="adult_ruto_skin_pattern_1" Format="ci8" Width="32" Height="64" Offset="0x4840" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoSkinPattern2Tex" OutName="adult_ruto_skin_pattern_2" Format="ci8" Width="32" Height="32" Offset="0x5040" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoTex_5440" OutName="adult_ruto_tex_5440" Format="ci8" Width="8" Height="8" Offset="0x5440" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoTex_5480" OutName="adult_ruto_tex_5480" Format="ci8" Width="16" Height="16" Offset="0x5480" TlutOffset="0x43C0"/>
+        <Texture Name="gAdultRutoTex_5580" OutName="adult_ruto_tex_5580" Format="ci8" Width="8" Height="8" Offset="0x5580" TlutOffset="0x43C0"/>
+
+        <!-- Adult Ruto Animations -->
+        <Animation Name="gAdultRutoCrossingArmsAnim" Offset="0x04CC"/>
+        <Animation Name="gAdultRutoIdleAnim" Offset="0xDE8"/>
+        <Animation Name="gAdultRutoRaisingArmsUpAnim" Offset="0xD3DC"/>
+        <Animation Name="gAdultRutoHeadTurnDownLeftAnim" Offset="0xDCAC"/>
+        <Animation Name="gAdultRutoIdleHandsOnHipsAnim" Offset="0xE630"/>
+        <Animation Name="gAdultRutoLookingDownLeftAnim" Offset="0xF03C"/>
+        <Animation Name="gAdultRutoSwimmingUpAnim" Offset="0xF8B8"/>
+    </File>
+</Root>

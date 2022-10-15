@@ -1,0 +1,26 @@
+<Root>
+    <File Name="gerudoway_scene" Segment="2">
+        <Texture Name="gThievesHideoutNightEntranceTex" OutName="night_entrance" Format="ia16" Width="128" Height="4" Offset="0xB920"/>
+        <Texture Name="gThievesHideoutDayEntranceTex" OutName="day_entrance" Format="ia16" Width="128" Height="4" Offset="0xBD20"/>
+        <Path Name="gerudoway_scenePathList_0002AC" Offset="0x02AC" NumPaths="4"/>
+        <Scene Name="gerudoway_scene" Offset="0x0"/>
+    </File>
+    <File Name="gerudoway_room_0" Segment="3">
+        <Room Name="gerudoway_room_0" Offset="0x0"/>
+    </File>
+     <File Name="gerudoway_room_1" Segment="3">
+        <Room Name="gerudoway_room_1" Offset="0x0"/>
+    </File>
+     <File Name="gerudoway_room_2" Segment="3">
+        <Room Name="gerudoway_room_2" Offset="0x0"/>
+    </File>
+     <File Name="gerudoway_room_3" Segment="3">
+        <Room Name="gerudoway_room_3" Offset="0x0"/>
+    </File>
+     <File Name="gerudoway_room_4" Segment="3">
+        <Room Name="gerudoway_room_4" Offset="0x0"/>
+    </File>
+     <File Name="gerudoway_room_5" Segment="3">
+        <Room Name="gerudoway_room_5" Offset="0x0"/>
+    </File>
+</Root>

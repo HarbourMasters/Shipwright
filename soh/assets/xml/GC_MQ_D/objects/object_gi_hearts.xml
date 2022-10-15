@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_hearts" Segment="6">
+        <DList Name="gGiHeartBorderDL" Offset="0x1290"/>
+        <DList Name="gGiHeartContainerDL" Offset="0x1470"/>
+        <DList Name="gGiHeartPieceDL" Offset="0x1590"/>
+    </File>
+</Root>

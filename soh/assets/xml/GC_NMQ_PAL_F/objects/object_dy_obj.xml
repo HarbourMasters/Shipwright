@@ -65,8 +65,8 @@
         <!-- Other DisplayLists -->
         <DList Name="gGreatFairyBetaDL" Offset="0xD1B0"/>
         <DList Name="gGreatFairyFlowerDL" Offset="0xDC68"/>
-        <DList Name="gGreatFairyParticleAppearDL" Offset="0x5860"/>
-        <DList Name="gGreatFairyParticleAliveDL" Offset="0x58D8"/>
+        <DList Name="gGreatFairyParticleMaterialDL" Offset="0x5860"/>
+        <DList Name="gGreatFairyParticleModelDL" Offset="0x58D8"/>
         <DList Name="gGreatFairySpiralBeamDL" Offset="0x1C160"/>
 
         <!-- Great Fairy Palettes -->

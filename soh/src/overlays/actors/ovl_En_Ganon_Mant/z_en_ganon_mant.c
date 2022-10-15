@@ -365,6 +365,9 @@ void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
+    // Invalidate cape texture as it may have been torn
+    gSPInvalidateTexCache(POLY_OPA_DISP++, gMantTex);
+
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),

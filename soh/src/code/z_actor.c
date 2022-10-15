@@ -335,8 +335,10 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, GlobalContext* g
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, GlobalContext* globalCtx) {
     NaviColor* naviColor = &sNaviColorList[actorCategory];
+    Color_RGB8 customInnerNaviColor;
+    Color_RGB8 customOuterNaviColor;
 
-    if (CVar_GetS32("gUseNaviCol",0) != 1 ) {
+    if (!CVar_GetS32("gUseNaviCol",0)) {
         if (actorCategory == ACTORCAT_PLAYER) {
             naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
             naviColor->outer.r = 0; naviColor->outer.g = 0; naviColor->outer.b = 255;
@@ -355,21 +357,27 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         }
     } else {
         if (actorCategory == ACTORCAT_PLAYER) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Idle_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Idle_Outer", naviColor->outer);
+            customInnerNaviColor = CVar_GetRGB("gNavi_Idle_Inner", (Color_RGB8){ 0, 0, 0 });
+            customOuterNaviColor = CVar_GetRGB("gNavi_Idle_Outer", (Color_RGB8){ 0, 0, 0 });
         }
         if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner = CVar_GetRGBA("gNavi_NPC_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_NPC_Outer", naviColor->outer);
+            customInnerNaviColor = CVar_GetRGB("gNavi_NPC_Inner", (Color_RGB8){ 0, 0, 0 });
+            customOuterNaviColor = CVar_GetRGB("gNavi_NPC_Outer", (Color_RGB8){ 0, 0, 0 });
         }
         if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Enemy_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Enemy_Outer", naviColor->outer);
+            customInnerNaviColor = CVar_GetRGB("gNavi_Enemy_Inner", (Color_RGB8){ 0, 0, 0 });
+            customOuterNaviColor = CVar_GetRGB("gNavi_Enemy_Outer", (Color_RGB8){ 0, 0, 0 });
         }
         if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner = CVar_GetRGBA("gNavi_Prop_Inner", naviColor->inner);
-            naviColor->outer = CVar_GetRGBA("gNavi_Prop_Outer", naviColor->outer);
+            customInnerNaviColor = CVar_GetRGB("gNavi_Prop_Inner", (Color_RGB8){ 0, 0, 0 });
+            customOuterNaviColor = CVar_GetRGB("gNavi_Prop_Outer", (Color_RGB8){ 0, 0, 0 });
         }
+        naviColor->inner.r = customInnerNaviColor.r;
+        naviColor->inner.g = customInnerNaviColor.g;
+        naviColor->inner.b = customInnerNaviColor.b;
+        naviColor->outer.r = customOuterNaviColor.r;
+        naviColor->outer.g = customOuterNaviColor.g;
+        naviColor->outer.b = customOuterNaviColor.b;
     }
     
     targetCtx->naviRefPos.x = actor->focus.pos.x;
@@ -885,7 +893,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
             texture = gFairysFountainTitleCardENGTex;
             break;
         case SCENE_HAKAANA_OUKE:
-            texture = gRoyalFamilysTumbTitleCardENGTex;
+            texture = gRoyalFamilysTombTitleCardENGTex;
             break;
         case SCENE_SYATEKIJYOU:
             texture = gShootingGalleryTitleCardENGTex;
@@ -4701,6 +4709,20 @@ void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
 }
 
+/**
+ * Tests if "randomizerInf" flag is set.
+ */
+s32 Flags_GetRandomizerInf(RandomizerInf flag) {
+    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "randomizerInf" flag.
+ */
+void Flags_SetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
 u32 func_80035BFC(GlobalContext* globalCtx, s16 arg1) {
     u16 retTextId = 0;
 
@@ -6108,7 +6130,7 @@ GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* glob
 s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
     GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, globalCtx);
 
-    if (randoGetItem.itemId != RG_NONE) {
+    if (randoGetItem.itemId != ITEM_NONE) {
         return randoGetItem.gid;
     }
 
