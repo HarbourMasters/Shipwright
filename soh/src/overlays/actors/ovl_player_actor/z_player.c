@@ -2898,7 +2898,8 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
          (!(this->stateFlags1 & PLAYER_STATE1_22) || (Player_ActionToSword(actionParam) != 0) ||
           (actionParam == PLAYER_AP_NONE))) ||
         ((this->itemActionParam < 0) &&
-         ((Player_ActionToSword(actionParam) != 0) || (actionParam == PLAYER_AP_NONE)))) {
+         ((Player_ActionToSword(actionParam) != 0) || (actionParam == PLAYER_AP_NONE) ||
+          (actionParam >= PLAYER_AP_SHIELD_DEKU && actionParam <= PLAYER_AP_BOOTS_HOVER)))) {
 
         if ((actionParam == PLAYER_AP_NONE) || !(this->stateFlags1 & PLAYER_STATE1_27) ||
             ((this->actor.bgCheckFlags & 1) &&
