@@ -48,7 +48,8 @@ void EnBox_AppearInit(EnBox*, GlobalContext*);
 void EnBox_AppearAnimation(EnBox*, GlobalContext*);
 void EnBox_WaitOpen(EnBox*, GlobalContext*);
 void EnBox_Open(EnBox*, GlobalContext*);
-void EnBox_CreateRandoChestTextures();
+void EnBox_CreateExtraChestTextures();
+void EnBox_UpdateSizeAndTexture(EnBox*, GlobalContext*);
 
 const ActorInit En_Box_InitVars = {
     ACTOR_EN_BOX,
@@ -183,69 +184,7 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_Init(globalCtx, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_CHEST_SIZE_AND_TEXTURE)) {
-        EnBox_CreateRandoChestTextures();
-        RandomizerChestType boxRandomizerType = Randomizer_GetChestTypeFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-
-        switch (boxRandomizerType) {
-            case RAND_CHEST_TYPE_SMALL_VANILLA:
-            case RAND_CHEST_TYPE_SMALL_KEY:
-            case RAND_CHEST_TYPE_SMALL_SKULL:
-                Actor_SetScale(&this->dyna.actor, 0.005f);
-                Actor_SetFocus(&this->dyna.actor, 20.0f);
-                break;
-            default:
-                Actor_SetScale(&this->dyna.actor, 0.01f);
-                Actor_SetFocus(&this->dyna.actor, 40.0f);
-                break;
-        }
-
-        switch (boxRandomizerType) {
-            case RAND_CHEST_TYPE_LARGE_GOLD:
-                this->boxBodyDL = gGoldTreasureChestChestFrontDL;
-                this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
-                break;
-            case RAND_CHEST_TYPE_SMALL_SKULL:
-                this->boxBodyDL = gSkullTreasureChestChestFrontDL;
-                this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
-                break;
-            case RAND_CHEST_TYPE_SMALL_KEY:
-                this->boxBodyDL = gKeyTreasureChestChestFrontDL;
-                this->boxLidDL = gKeyTreasureChestChestSideAndLidDL;
-                break;
-            case RAND_CHEST_TYPE_LARGE_BOSS:
-                this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
-                this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
-                break;
-            case RAND_CHEST_TYPE_LARGE_VANILLA:
-            case RAND_CHEST_TYPE_SMALL_VANILLA:
-            default:
-                this->boxBodyDL = gTreasureChestChestFrontDL;
-                this->boxLidDL = gTreasureChestChestSideAndLidDL;
-                break;
-        }
-    } else {
-        switch (this->type) {
-            case ENBOX_TYPE_SMALL:
-            case ENBOX_TYPE_6:
-            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
-            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
-                Actor_SetScale(&this->dyna.actor, 0.005f);
-                Actor_SetFocus(&this->dyna.actor, 20.0f);
-                break;
-            default:
-                Actor_SetScale(&this->dyna.actor, 0.01f);
-                Actor_SetFocus(&this->dyna.actor, 40.0f);
-        }
-
-        if (this->type != ENBOX_TYPE_DECORATED_BIG) {
-            this->boxBodyDL = gTreasureChestChestFrontDL;
-            this->boxLidDL = gTreasureChestChestSideAndLidDL;
-        } else {
-            this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
-            this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
-        }
-    }
+    EnBox_UpdateSizeAndTexture(this, globalCtx);
 }
 
 void EnBox_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -635,6 +574,8 @@ void EnBox_SpawnIceSmoke(EnBox* this, GlobalContext* globalCtx) {
 void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnBox* this = (EnBox*)thisx;
 
+    EnBox_UpdateSizeAndTexture(this, globalCtx);
+
     if (this->movementFlags & ENBOX_MOVE_STICK_TO_GROUND) {
         this->movementFlags &= ~ENBOX_MOVE_STICK_TO_GROUND;
         EnBox_ClipToGround(this, globalCtx);
@@ -664,7 +605,85 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }
 
-void EnBox_CreateRandoChestTextures() {
+void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
+    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0)) {
+        EnBox_CreateExtraChestTextures();
+        GetItemEntry getItemEntry = GET_ITEM_NONE;
+
+        if (gSaveContext.n64ddFlag) {
+            getItemEntry = Randomizer_GetItemFromActorWithoutObtainabilityCheck(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+        } else {
+            getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
+        }
+
+        GetItemCategory getItemCategory = getItemEntry.getItemCategory;
+        // If they don't have bombchu's yet consider the bombchu item major
+        if (getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
+            getItemCategory = ITEM_CATEGORY_MAJOR;
+        }
+
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_JUNK:
+            case ITEM_CATEGORY_SMALL_KEY:
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                Actor_SetFocus(&this->dyna.actor, 20.0f);
+                break;
+            default:
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                Actor_SetFocus(&this->dyna.actor, 40.0f);
+                break;
+        }
+
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_MAJOR:
+                this->boxBodyDL = gGoldTreasureChestChestFrontDL;
+                this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
+                break;
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                this->boxBodyDL = gSkullTreasureChestChestFrontDL;
+                this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
+                break;
+            case ITEM_CATEGORY_SMALL_KEY:
+                this->boxBodyDL = gKeyTreasureChestChestFrontDL;
+                this->boxLidDL = gKeyTreasureChestChestSideAndLidDL;
+                break;
+            case ITEM_CATEGORY_BOSS_KEY:
+                this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
+                this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+                break;
+            case ITEM_CATEGORY_LESSER:
+            case ITEM_CATEGORY_JUNK:
+            default:
+                this->boxBodyDL = gTreasureChestChestFrontDL;
+                this->boxLidDL = gTreasureChestChestSideAndLidDL;
+                break;
+        }
+    } else {
+        switch (this->type) {
+            case ENBOX_TYPE_SMALL:
+            case ENBOX_TYPE_6:
+            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
+            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                Actor_SetFocus(&this->dyna.actor, 20.0f);
+                break;
+            default:
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                Actor_SetFocus(&this->dyna.actor, 40.0f);
+        }
+
+        if (this->type != ENBOX_TYPE_DECORATED_BIG) {
+            this->boxBodyDL = gTreasureChestChestFrontDL;
+            this->boxLidDL = gTreasureChestChestSideAndLidDL;
+        } else {
+            this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
+            this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+        }
+    }
+}
+
+void EnBox_CreateExtraChestTextures() {
     if (hasCreatedRandoChestTextures) return;
     Gfx gTreasureChestChestTextures[] = {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gSkullTreasureChestFrontTex")),

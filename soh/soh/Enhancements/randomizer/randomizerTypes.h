@@ -1009,7 +1009,6 @@ typedef enum {
     RSK_GOSSIP_STONE_HINTS,
     RSK_HINT_CLARITY,
     RSK_HINT_DISTRIBUTION,
-    RSK_CHEST_SIZE_AND_TEXTURE,
     RSK_KEYSANITY,
     RSK_GERUDO_KEYS,
     RSK_BOSS_KEYSANITY,
@@ -1061,12 +1060,3 @@ typedef struct ShopItemIdentity {
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
-
-typedef enum {
-    /* 0x00 */ RAND_CHEST_TYPE_SMALL_VANILLA,
-    /* 0x01 */ RAND_CHEST_TYPE_LARGE_VANILLA,
-    /* 0x02 */ RAND_CHEST_TYPE_LARGE_BOSS,
-    /* 0x03 */ RAND_CHEST_TYPE_SMALL_KEY,
-    /* 0x04 */ RAND_CHEST_TYPE_SMALL_SKULL,
-    /* 0x05 */ RAND_CHEST_TYPE_LARGE_GOLD,
-} RandomizerChestType;
