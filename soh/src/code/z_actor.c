@@ -7,6 +7,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/enemyrandomizer.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
@@ -3145,6 +3146,40 @@ int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+
+    // Hack to remove bats and skulltulas that spawn in graveyard because of removing object dependency.
+    if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
+        return NULL;
+    }
+
+    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+
+    if (tryRandomizeEnemy) {
+        if (IsEnemyFoundToRandomize(actorId, params)) {
+
+            // Big jellyfish spawn too high up, this fixes that.
+            if (actorId == ACTOR_EN_VALI) {
+                posY = -330;
+            }
+
+            enemyEntry newEnemy = GetRandomizedEnemy();
+            actorId = newEnemy.enemyId;
+            params = newEnemy.enemyParam;
+
+            // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
+            rotX = 0;
+
+            // When spawning big jellyfish, spawn it up high.
+            if (actorId == ACTOR_EN_VALI) {
+                posY = posY + 300;
+            // Spawn Peahat Larva slightly higher because they kill themselves instantly when they touch the ground while spawning
+            } else if (actorId == ACTOR_EN_PEEHAT && params == 1) {
+                posY = posY + 50;
+            }
+
+        }
+    }
+
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;
@@ -3229,8 +3264,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
 
-    if (objBankIndex < 0 && !gMapLoading)
+    if (objBankIndex < 0 && (!gMapLoading || CVar_GetS32("gRandomizedEnemies", 0))) {
         objBankIndex = 0;
+    }
 
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
