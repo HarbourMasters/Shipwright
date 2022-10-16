@@ -55,7 +55,7 @@ char Ship::BinaryReader::ReadChar()
     return reader->ReadChar();
 }
 
-int8_t Ship::BinaryReader::ReadByte()
+int8_t Ship::BinaryReader::ReadInt8()
 {
     return reader->ReadInt8();
 }
@@ -123,7 +123,7 @@ uint64_t Ship::BinaryReader::ReadUInt64()
     return result;
 }
 
-float Ship::BinaryReader::ReadSingle()
+float Ship::BinaryReader::ReadFloat()
 {
     float result = NAN;
 
@@ -208,4 +208,9 @@ std::string Ship::BinaryReader::ReadString()
         res += reader->ReadChar();
     }
     return res;
+}
+
+std::string Ship::BinaryReader::ReadNullTerminatedString()
+{
+    return reader->ReadNullTerminatedString();
 }
