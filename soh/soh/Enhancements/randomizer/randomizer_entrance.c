@@ -284,6 +284,16 @@ void Entrance_SetSavewarpEntrance(void) {
     }
 }
 
+void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
+    switch (cutsceneCmd) {
+        case 24: // Dropping a fish for Jabu Jabu
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 2;
+            break;
+    }
+}
+
 void EnableFW(void) {
     Player* player = GET_PLAYER(gGlobalCtx);
     // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,

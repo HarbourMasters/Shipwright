@@ -1236,6 +1236,10 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
                 globalCtx->fadeTransition = 3;
                 break;
         }
+
+        if (randoCsSkip) {
+            Entrance_OverrideCutsceneEntrance(cmd->base);
+        }
     }
 }
 
