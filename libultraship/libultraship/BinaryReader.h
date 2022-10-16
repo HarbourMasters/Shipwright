@@ -48,7 +48,7 @@ public:
     Vec2f ReadVec2f();
     Color3b ReadColor3b();
     std::string ReadString();
-    std::string ReadNullTerminatedString();
+    std::string ReadCString();
 
 protected:
     Endianness endianness = Endianness::Native;

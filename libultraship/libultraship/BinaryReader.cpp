@@ -210,7 +210,7 @@ std::string Ship::BinaryReader::ReadString()
     return res;
 }
 
-std::string Ship::BinaryReader::ReadNullTerminatedString()
+std::string Ship::BinaryReader::ReadCString()
 {
     return reader->ReadNullTerminatedString();
 }
