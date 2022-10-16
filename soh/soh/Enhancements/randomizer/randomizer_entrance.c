@@ -6,8 +6,6 @@
 
 extern GlobalContext* gGlobalCtx;
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
 //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
 s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8, 0x04EE, 0x03C0, 0x0463, 0x01CD, 0x0394, 0x0340, 0x057C };
@@ -355,7 +353,7 @@ void Entrance_CheckEpona(void) {
             0x239,
             0x2BA,
         };
-        for (size_t i = 0; i < ARRAY_SIZE(validEponaEntrances); i++) {
+        for (size_t i = 0; i < ARRAY_COUNT(validEponaEntrances); i++) {
             // If the entrance is equal to any of the valid ones, return and
             // don't change anything
             if (entrance == validEponaEntrances[i]) {
