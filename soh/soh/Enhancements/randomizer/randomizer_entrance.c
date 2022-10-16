@@ -196,6 +196,11 @@ s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
     return Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
+u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
+    EntranceInfo currentEntrance = gEntranceTable[gSaveContext.entranceIndex];
+    return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
+}
+
 //Properly respawn the player after a game over, accounding for dungeon entrance
 //randomizer. It's easier to rewrite this entirely compared to performing an ASM
 //dance for just the boss rooms. Entrance Indexes can be found here:
