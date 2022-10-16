@@ -30,7 +30,7 @@ namespace Ship
 
 		static std::shared_ptr<Archive> CreateArchive(const std::string& archivePath, int fileCapacity);
 		
-		std::shared_ptr<File> LoadFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr, HANDLE mpqHandle = nullptr);
+		std::shared_ptr<File> LoadFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr);
 		std::shared_ptr<File> LoadPatchFile(const std::string& filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr);
 
 		bool AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize);
@@ -58,5 +58,6 @@ namespace Ship
 		bool LoadPatchMPQ(const std::string& path, bool validateVersion = false);
         void GenerateCRCMap();
         bool PushGameVersion(HANDLE mpqHandle = nullptr);
-	};
+        std::shared_ptr<File> LoadFileFromHandle(const std::string &filePath, bool includeParent = true, std::shared_ptr<File> FileToLoad = nullptr, HANDLE mpqHandle = nullptr);
+    };
 }

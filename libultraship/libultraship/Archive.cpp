@@ -66,52 +66,63 @@ namespace Ship {
 		}
 	}
 
-	std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad, HANDLE mpqHandle) {
-		HANDLE fileHandle = NULL;
+    std::shared_ptr<File> Archive::LoadFileFromHandle(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad, HANDLE mpqHandle)
+    {
+        HANDLE fileHandle = NULL;
 
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
-		}
+        if (FileToLoad == nullptr)
+        {
+            FileToLoad = std::make_shared<File>();
+            FileToLoad->path = filePath;
+        }
 
-        if (mpqHandle == nullptr) {
+        if (mpqHandle == nullptr)
+        {
             mpqHandle = mainMPQ;
         }
 
-		bool attempt = SFileOpenFileEx(mpqHandle, filePath.c_str(), 0, &fileHandle);
+        bool attempt = SFileOpenFileEx(mpqHandle, filePath.c_str(), 0, &fileHandle);
 
-		if (!attempt) {
-			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
-			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-			FileToLoad->bHasLoadError = true;
-			return FileToLoad;
-		}
+        if (!attempt)
+        {
+            SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
+            std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+            FileToLoad->bHasLoadError = true;
+            return FileToLoad;
+        }
 
-		DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
-		std::shared_ptr<char[]> fileData(new char[dwFileSize]);
-		DWORD dwBytes;
+        DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
+        std::shared_ptr<char[]> fileData(new char[dwFileSize]);
+        DWORD dwBytes;
 
-		if (!SFileReadFile(fileHandle, fileData.get(), dwFileSize, &dwBytes, NULL)) {
-			SPDLOG_ERROR("({}) Failed to read file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-			if (!SFileCloseFile(fileHandle)) {
-				SPDLOG_ERROR("({}) Failed to close file {} from mpq after read failure in archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-			}
-			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-			FileToLoad->bHasLoadError = true;
-			return FileToLoad;
-		}
+        if (!SFileReadFile(fileHandle, fileData.get(), dwFileSize, &dwBytes, NULL))
+        {
+            SPDLOG_ERROR("({}) Failed to read file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+            if (!SFileCloseFile(fileHandle))
+            {
+                SPDLOG_ERROR("({}) Failed to close file {} from mpq after read failure in archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+            }
+            std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+            FileToLoad->bHasLoadError = true;
+            return FileToLoad;
+        }
 
-		if (!SFileCloseFile(fileHandle)) {
-			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
+        if (!SFileCloseFile(fileHandle))
+        {
+            SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+        }
 
-		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-		FileToLoad->parent = includeParent ? shared_from_this() : nullptr;
-		FileToLoad->buffer = fileData;
-		FileToLoad->dwBufferSize = dwFileSize;
-		FileToLoad->bIsLoaded = true;
+        std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+        FileToLoad->parent = includeParent ? shared_from_this() : nullptr;
+        FileToLoad->buffer = fileData;
+        FileToLoad->dwBufferSize = dwFileSize;
+        FileToLoad->bIsLoaded = true;
 
-		return FileToLoad;
+        return FileToLoad;
+    }
+
+	std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
+		return LoadFileFromHandle(filePath, includeParent, FileToLoad, nullptr);
 	}
 
 	std::shared_ptr<File> Archive::LoadPatchFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
@@ -353,7 +364,7 @@ namespace Ship {
     }
 
     bool Archive::PushGameVersion(HANDLE mpqHandle) {
-        auto t = LoadFile("version", false, nullptr, mpqHandle);
+        auto t = LoadFileFromHandle("version", false, nullptr, mpqHandle);
         if (!t->bHasLoadError)
         {
             BinaryReader *reader = new BinaryReader(t->buffer.get(), t->dwBufferSize);
