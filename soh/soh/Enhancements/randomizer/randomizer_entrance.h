@@ -84,6 +84,7 @@ uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
 int16_t  Entrance_GetOverride(int16_t index);
 int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
+uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
 void Entrance_SetSavewarpEntrance(void);
 
 #endif //_RANDO_ENTRANCE_H_
