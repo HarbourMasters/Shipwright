@@ -86,6 +86,16 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
+    std::string patchesPath = Ship::Window::GetPathRelativeToAppDirectory("mods");
+    if (patchesPath.length() > 0) {
+        if (std::filesystem::is_directory(patchesPath)) {
+            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
+                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                    OTRFiles.push_back(p.path().string());
+                }
+            }
+        }
+    }
     std::unordered_set<uint32_t> ValidHashes = { 
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,
@@ -103,7 +113,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles, ValidHashes);
+    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -112,6 +122,18 @@ OTRGlobals::OTRGlobals() {
     auto versions = context->GetResourceManager()->GetGameVersions();
 
     for (uint32_t version : versions) {
+        if (!ValidHashes.contains(version)) {
+#if defined(__SWITCH__)
+            printf("Invalid OTR File!\n");
+#elif defined(__WIIU__)
+            Ship::WiiU::ThrowInvalidOTR();
+#else
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Invalid OTR File",
+                                     "Attempted to load an invalid OTR file. Try regenerating.", nullptr);
+            SPDLOG_ERROR("Invalid OTR File!");
+#endif
+            exit(1);
+        }
         switch (version) {
             case OOT_PAL_MQ:
             case OOT_NTSC_JP_MQ:
