@@ -113,8 +113,6 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
     */
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
-    // OTRTODO: This is a workaround. The proper solution to fix the textures is to manage
-    // object loading / unloading the same as N64.
     switch (globalCtx->sceneNum) {
         case SCENE_HIDAN:
             this->textureEntryIndex = 0;
