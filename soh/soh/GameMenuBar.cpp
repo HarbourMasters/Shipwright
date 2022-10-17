@@ -170,6 +170,8 @@ namespace GameMenuBar {
         CVar_SetS32("gMMBunnyHood", 0);
         // Fast Chests
         CVar_SetS32("gFastChests", 0);
+        // Chest size & texture matches contents
+        CVar_SetS32("gChestSizeAndTextureMatchesContents", 0);
         // Fast Drops
         CVar_SetS32("gFastDrops", 0);
         // Better Owl
@@ -788,7 +790,9 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
                     UIWidgets::Tooltip("Kick open every chest");
-                    UIWidgets::PaddedEnhancementCheckbox("Chest size & texture matches contents", "gChestSizeAndTextureMatchesContents", true, false);
+                    UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
+                    const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
+                    UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0);
                     UIWidgets::Tooltip(
                         "Chest sizes and textures are changed to help identify the item inside.\n"
                         " - Major items: Large gold chests\n"
