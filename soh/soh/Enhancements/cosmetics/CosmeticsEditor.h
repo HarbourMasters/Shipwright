@@ -8,6 +8,13 @@
 #define CATEGORY_HUD 3
 #define CATEGORY_MISC 4
 
+#define PATCH_GFX(path, name, cvar, index, instruction) \
+    if (CVar_GetS32(cvar, 0)) { \
+        ResourceMgr_PatchGfxByName(path, name, index, instruction); \
+    } else { \
+        ResourceMgr_UnpatchGfxByName(path, name); \
+    }
+
 typedef struct {
     const std::string Name;
     const std::string ToolTip;
