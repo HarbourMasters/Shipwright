@@ -121,47 +121,61 @@ std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
     { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
 };
 
-std::unordered_map<s16, s16> getItemIdToItemId = {
-    { GI_BOW, ITEM_BOW },
-    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
-    { GI_DINS_FIRE, ITEM_DINS_FIRE },
-    { GI_SLINGSHOT, ITEM_SLINGSHOT },
-    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
-    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
-    { GI_HOOKSHOT, ITEM_HOOKSHOT },
-    { GI_LONGSHOT, ITEM_LONGSHOT },
-    { GI_ARROW_ICE, ITEM_ARROW_ICE },
-    { GI_FARORES_WIND, ITEM_FARORES_WIND },
-    { GI_BOOMERANG, ITEM_BOOMERANG },
-    { GI_LENS, ITEM_LENS },
-    { GI_HAMMER, ITEM_HAMMER },
-    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
-    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
-    { GI_BOTTLE, ITEM_BOTTLE },
-    { GI_POTION_RED, ITEM_POTION_RED },
-    { GI_POTION_GREEN, ITEM_POTION_GREEN },
-    { GI_POTION_BLUE, ITEM_POTION_BLUE },
-    { GI_FAIRY, ITEM_FAIRY },
-    { GI_FISH, ITEM_FISH },
-    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
-    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
-    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
-    { GI_BUGS, ITEM_BUG },
-    { GI_BIG_POE, ITEM_BIG_POE },
-    { GI_POE, ITEM_POE },
-    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
-    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
-    { GI_POCKET_EGG, ITEM_POCKET_EGG },
-    { GI_COJIRO, ITEM_COJIRO },
-    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
-    { GI_ODD_POTION, ITEM_ODD_POTION },
-    { GI_SAW, ITEM_SAW },
-    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
-    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
-    { GI_FROG, ITEM_FROG },
-    { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
+std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
+    { "Deku Tree", SCENE_YDAN },
+    { "Dodongo's Cavern", SCENE_DDAN },
+    { "Jabu Jabu's Belly", SCENE_BDAN },
+    { "Forest Temple", SCENE_BMORI1 },
+    { "Fire Temple", SCENE_HIDAN },
+    { "Water Temple", SCENE_MIZUSIN },
+    { "Spirit Temple", SCENE_JYASINZOU },
+    { "Shadow Temple", SCENE_HAKADAN },
+    { "Bottom of the Well", SCENE_HAKADANCH },
+    { "Ice Cavern", SCENE_ICE_DOUKUTO },
+    { "Gerudo Training Grounds", SCENE_MEN },
+    { "Ganon's Castle", SCENE_GANONTIKA }
 };
+
+std::unordered_map<s16, s16>
+    getItemIdToItemId = { { GI_BOW, ITEM_BOW },
+                          { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
+                          { GI_DINS_FIRE, ITEM_DINS_FIRE },
+                          { GI_SLINGSHOT, ITEM_SLINGSHOT },
+                          { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
+                          { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+                          { GI_HOOKSHOT, ITEM_HOOKSHOT },
+                          { GI_LONGSHOT, ITEM_LONGSHOT },
+                          { GI_ARROW_ICE, ITEM_ARROW_ICE },
+                          { GI_FARORES_WIND, ITEM_FARORES_WIND },
+                          { GI_BOOMERANG, ITEM_BOOMERANG },
+                          { GI_LENS, ITEM_LENS },
+                          { GI_HAMMER, ITEM_HAMMER },
+                          { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
+                          { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
+                          { GI_BOTTLE, ITEM_BOTTLE },
+                          { GI_POTION_RED, ITEM_POTION_RED },
+                          { GI_POTION_GREEN, ITEM_POTION_GREEN },
+                          { GI_POTION_BLUE, ITEM_POTION_BLUE },
+                          { GI_FAIRY, ITEM_FAIRY },
+                          { GI_FISH, ITEM_FISH },
+                          { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
+                          { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
+                          { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
+                          { GI_BUGS, ITEM_BUG },
+                          { GI_BIG_POE, ITEM_BIG_POE },
+                          { GI_POE, ITEM_POE },
+                          { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
+                          { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+                          { GI_POCKET_EGG, ITEM_POCKET_EGG },
+                          { GI_COJIRO, ITEM_COJIRO },
+                          { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
+                          { GI_ODD_POTION, ITEM_ODD_POTION },
+                          { GI_SAW, ITEM_SAW },
+                          { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+                          { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
+                          { GI_FROG, ITEM_FROG },
+                          { GI_EYEDROPS, ITEM_EYEDROPS },
+                          { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } };
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
     { "Open Settings:Forest", RSK_FOREST },
@@ -212,6 +226,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
+    { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT }
 };
 
 std::string sanitize(std::string stringValue) {
@@ -491,6 +506,13 @@ void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
     }
 }
 
+void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseMasterQuestDungeonsFile(spoilerFileName);
+    }
+    gSaveContext.mqDungeonCount = this->masterQuestDungeons.size();
+}
+
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -631,6 +653,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_RANDOM_TRIALS:
+                    case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_COMPLETE_MASK_QUEST:
@@ -805,6 +828,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if (it.value() == "Nothing") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
+                        break;
+                    case RSK_MQ_DUNGEON_COUNT:
+                        if (it.value() == "Random") {
+                            gSaveContext.randoSettings[index].value = 13;
+                        }
+                        numericValueString = it.value();
+                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
                 }
             }
@@ -981,6 +1011,27 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
 
         for (auto it = trialsJson.begin(); it != trialsJson.end(); it++) {
             this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
+        }
+    } catch (const std::exception& e) {
+        return;
+    }
+}
+
+void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream) {
+        return;
+    }
+
+    this->masterQuestDungeons.clear();
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
+
+        for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); it++) {
+            this->masterQuestDungeons.emplace(spoilerFileDungeonToScene[it.value()]);
         }
     } catch (const std::exception& e) {
         return;
@@ -3733,23 +3784,36 @@ void GenerateRandomizerImgui() {
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
                                         CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
-
-    // todo: this efficently when we build out cvar array support
-    std::set<RandomizerCheck> excludedLocations;
-    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
-    std::string excludedLocationString;
-    while(getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+    if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+        // If both OTRs are loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", 0);
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVar_GetS32("gRandomizeMqDungeonCount", 0);
+    } else if (OTRGlobals::Instance->HasMasterQuest()) {
+        // If only Master Quest is loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
+    } else {
+        // If only Original Quest is loaded.
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations);
+        // todo: this efficently when we build out cvar array support
+        std::set<RandomizerCheck> excludedLocations;
+        std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+        std::string excludedLocationString;
+        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        }
 
-    CVar_SetS32("gRandoGenerating", 0);
-    CVar_Save();
-    CVar_Load();
+        RandoMain::GenerateRando(cvarSettings, excludedLocations);
 
-    generated = 1;
-}
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_Save();
+        CVar_Load();
+
+        generated = 1;
+    }
 
 void DrawRandoEditor(bool& open) {
     if (generated) {
@@ -3759,11 +3823,6 @@ void DrawRandoEditor(bool& open) {
 
     if (!open) {
         CVar_SetS32("gRandomizerSettingsEnabled", 0);
-        return;
-    }
-
-    if (ResourceMgr_IsGameMasterQuest()) {
-        ImGui::Text("Master Quest Randomizer is not currently supported.");
         return;
     }
 
@@ -3780,6 +3839,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
     const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
+    const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3826,6 +3886,14 @@ void DrawRandoEditor(bool& open) {
 
     ImGui::SetNextWindowSize(ImVec2(920, 563), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
+        ImGui::Text("Coming Soon! Randomizer is currently not compatible with Master Quest Dungeons.\nFor now, please "
+                    "generate an "
+                    "OTR using a non-Master Quest rom to play the Randomizer");
         ImGui::End();
         return;
     }
@@ -4070,6 +4138,29 @@ void DrawRandoEditor(bool& open) {
                 }
 
                 UIWidgets::PaddedSeparator();
+
+                //MQ Dungeons - Commented out until Logic can be updated to account for MQ Dungeons
+                // if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+                //     ImGui::PushItemWidth(-FLT_MIN);
+                //     ImGui::Text("Master Quest Dungeons");
+                //     UIWidgets::InsertHelpHoverText(
+                //         "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
+                //         "\n"
+                //         "None - All Dungeons will be their Vanilla versions.\n"
+                //         "\n"
+                //         "Set Number - Select a number of dungeons that will be their Master Quest versions"
+                //         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
+                //         "\n"
+                //         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
+                //     );
+                //     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, 1);
+                //     ImGui::PopItemWidth();
+                //     if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
+                //         ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                //         UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
+                //             "gRandomizeMqDungeonCount", 1, 12, "", 12, true);
+                //     }
+                // }
 
                 ImGui::EndChild();
 

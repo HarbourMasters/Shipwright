@@ -8,13 +8,13 @@ namespace Ship
         
         ResourceFile::ParseFileBinary(reader, skel);
 
-        skel->type = (SkeletonType)reader->ReadByte();
-        skel->limbType = (LimbType)reader->ReadByte();
+        skel->type = (SkeletonType)reader->ReadInt8();
+        skel->limbType = (LimbType)reader->ReadInt8();
 
         skel->limbCount = reader->ReadUInt32();
         skel->dListCount = reader->ReadUInt32();
 
-        skel->limbTableType = (LimbType)reader->ReadByte();
+        skel->limbTableType = (LimbType)reader->ReadInt8();
 
         uint32_t limbTblCnt = reader->ReadUInt32();
         skel->limbTable.reserve(limbTblCnt);

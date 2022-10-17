@@ -77,6 +77,21 @@ endif ()
 
 source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
 
+set (Source_Files__BinaryTools
+    "BinaryReader.cpp"
+    "BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/Binary.h"
+    "Lib/BinaryTools/BinaryTools/Binary.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.h"
+    "Lib/BinaryTools/BinaryTools/MemoryBuffer.h"
+    "Lib/BinaryTools/BinaryTools/Span.h"
+)
+
+source_group("Source Files\\BinaryTools" FILES ${Source_Files__BinaryTools})
+
 set(Source_Files__Controller
     "ControlDeck.cpp"
     "ControlDeck.h"
@@ -376,6 +391,7 @@ set(ALL_FILES
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
     ${Source_Files__Audio__extra}
+    ${Source_Files__BinaryTools}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
     ${Source_Files__CustomImpl}

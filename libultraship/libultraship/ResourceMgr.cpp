@@ -9,17 +9,30 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
-		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
+	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t>& ValidHashes) 
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
+		OTR = std::make_shared<Archive>(MainPath, PatchesPath, ValidHashes, false);
 
-		gameVersion = OOT_UNKNOWN;
+		gameVersion = UNKNOWN;
 
 		if (OTR->IsMainMPQValid()) {
 			Start();
 		}
 	}
 
-	ResourceMgr::~ResourceMgr() {
+    ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes)
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr)
+    {
+        OTR = std::make_shared<Archive>(OTRFiles, ValidHashes, false);
+
+        gameVersion = UNKNOWN;
+
+        if (OTR->IsMainMPQValid()) {
+            Start();
+        }
+    }
+
+    ResourceMgr::~ResourceMgr() {
 		SPDLOG_INFO("destruct ResourceMgr");
 		Stop();
 
@@ -167,6 +180,14 @@ namespace Ship {
 	void ResourceMgr::SetGameVersion(uint32_t newGameVersion) {
 		gameVersion = newGameVersion;
 	}
+
+    std::vector<uint32_t> ResourceMgr::GetGameVersions() {
+        return OTR->gameVersions;
+    }
+
+    void ResourceMgr::PushGameVersion(uint32_t newGameVersion) {
+        OTR->gameVersions.push_back(newGameVersion);
+    }
 
 	std::shared_ptr<File> ResourceMgr::LoadFileAsync(const std::string& FilePath) {
 		const std::lock_guard<std::mutex> Lock(FileLoadMutex);
