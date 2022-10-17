@@ -185,6 +185,11 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
     EnBox_UpdateSizeAndTexture(this, globalCtx);
+    // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
+    // key chest, and it's up on the wall so disable gravity for it.
+    if (globalCtx->sceneNum == SCENE_BMORI1 && this->dyna.actor.params == 10222) {
+        this->movementFlags = ENBOX_MOVE_IMMOBILE;
+    }
 }
 
 void EnBox_Destroy(Actor* thisx, GlobalContext* globalCtx) {
