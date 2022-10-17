@@ -730,6 +730,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
                 UIWidgets::Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, click Customize Game Controls");
                 if (CVar_GetS32("gEnableWalkModify", 0)) {
+                    UIWidgets::PaddedEnhancementCheckbox("Toggle modifier button instead of holding it", "gSpeedToggle", true, false);
                     UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
                     UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
                 }
