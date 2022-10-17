@@ -70,15 +70,20 @@ static void ExporterProgramEnd()
 		std::string romPath = Globals::Instance->baseRomPath.string();
 		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
 		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
-        uint8_t endianness = (uint8_t)std::endian::native;
+        uint8_t endianness = (uint8_t)Endianness::Big;
 
 		// Write crc to version file
 		fs::path versionPath("Extract/version");
+        MemoryStream* versionStream = new MemoryStream();
+        BinaryWriter writer(versionStream);
+        writer.SetEndianness(Endianness::Big);
+        writer.Write(endianness);
+        writer.Write(crc);
 		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
-        versionFile.write((char*)&endianness, sizeof(uint8_t));
-		versionFile.write((char*)&crc, sizeof(crc));
+        versionFile.write(versionStream->ToVector().data(), versionStream->GetLength());
 		versionFile.flush();
 		versionFile.close();
+        writer.Close();
 
 		printf("Created version file.\n");
 
