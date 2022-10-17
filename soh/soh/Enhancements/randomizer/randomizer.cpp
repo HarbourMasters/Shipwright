@@ -33,6 +33,7 @@ using namespace std::literals::string_literals;
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
+std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
 
 u8 generated;
@@ -79,6 +80,7 @@ static const char* frenchRupeeNames[36] = {
 Randomizer::Randomizer() {
     for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
         SpoilerfileCheckNameToEnum[rcObject.rcSpoilerName] = rcObject.rc;
+        checkFromActorMultimap.emplace(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams), rcObject);
     }
     SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
@@ -2151,8 +2153,6 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
 };
 
-std::multimap<std::tuple<s16, s16, s32, bool>, RandomizerCheckObject> checkFromActorMultimap;
-
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
@@ -2222,16 +2222,16 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
         return RandomizerCheckObjects::GetAllRCObjects()[specialRc];
     }
 
-    if (checkFromActorMultimap.size() == 0) {
-        for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
-            checkFromActorMultimap.emplace(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams, true), rcObject);
+    auto range = checkFromActorMultimap.equal_range(std::make_tuple(actorId, sceneNum, actorParams));
+
+    for (auto it = range.first; it != range.second; ++it) {
+        if (
+            it->second.vOrMQ == RCVORMQ_BOTH ||
+            (it->second.vOrMQ == RCVORMQ_VANILLA && !ResourceMgr_IsGameMasterQuest()) ||
+            (it->second.vOrMQ == RCVORMQ_MQ && ResourceMgr_IsGameMasterQuest())
+        ) {
+            return it->second;
         }
-    }
-
-    std::multimap<std::tuple<s16, s16, s32, bool>, RandomizerCheckObject>::iterator it = checkFromActorMultimap.find(std::make_tuple(actorId, sceneNum, actorParams, true));
-
-    if (it != checkFromActorMultimap.end()) {
-        return it->second;
     }
 
     return RandomizerCheckObjects::GetAllRCObjects()[RC_UNKNOWN_CHECK];
@@ -2246,8 +2246,11 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     scrubIdentity.itemPrice = -1;
     scrubIdentity.isShuffled = false;
 
+    // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
+    if (actorParams == 0x06) actorParams = 0x03;
+
     if (sceneNum == SCENE_KAKUSIANA) {
-        actorParams = TWO_ACTOR_PARAMS((actorParams == 0x06 ? 0x03 : actorParams), respawnData);
+        actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
     }
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
