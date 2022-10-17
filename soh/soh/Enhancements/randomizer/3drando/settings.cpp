@@ -2535,6 +2535,13 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+        MQDungeonCount.SetSelectedIndex(13);
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+        MQDungeonCount.SetSelectedIndex(0);
+    } else {
+        MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
+    }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);

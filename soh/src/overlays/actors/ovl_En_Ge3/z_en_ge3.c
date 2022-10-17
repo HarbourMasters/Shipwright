@@ -249,28 +249,30 @@ s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
         case GELDB_LIMB_HEAD:
             rot->x += this->headRot.y;
 
-        // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
         default:
-            OPEN_DISPS(globalCtx->state.gfxCtx);
-            switch (limbIndex) {
-                case GELDB_LIMB_NECK:
-                    break;
-                case GELDB_LIMB_HEAD:
-                    gDPPipeSync(POLY_OPA_DISP++);
-                    gDPSetEnvColor(POLY_OPA_DISP++, 80, 60, 10, 255);
-                    break;
-                case GELDB_LIMB_R_SWORD:
-                case GELDB_LIMB_L_SWORD:
-                    gDPPipeSync(POLY_OPA_DISP++);
-                    gDPSetEnvColor(POLY_OPA_DISP++, 140, 170, 230, 255);
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
-                    break;
-                default:
-                    gDPPipeSync(POLY_OPA_DISP++);
-                    gDPSetEnvColor(POLY_OPA_DISP++, 140, 0, 0, 255);
-                    break;
+            if (CVar_GetS32("gGerudoWarriorClothingFix", 0)) {
+                // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
+                OPEN_DISPS(globalCtx->state.gfxCtx);
+                switch (limbIndex) {
+                    case GELDB_LIMB_NECK:
+                        break;
+                    case GELDB_LIMB_HEAD:
+                        gDPPipeSync(POLY_OPA_DISP++);
+                        gDPSetEnvColor(POLY_OPA_DISP++, 80, 60, 10, 255);
+                        break;
+                    case GELDB_LIMB_R_SWORD:
+                    case GELDB_LIMB_L_SWORD:
+                        gDPPipeSync(POLY_OPA_DISP++);
+                        gDPSetEnvColor(POLY_OPA_DISP++, 140, 170, 230, 255);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+                        break;
+                    default:
+                        gDPPipeSync(POLY_OPA_DISP++);
+                        gDPSetEnvColor(POLY_OPA_DISP++, 140, 0, 0, 255);
+                        break;
+                }
+                CLOSE_DISPS(globalCtx->state.gfxCtx);
             }
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
             break;
     }
     return false;

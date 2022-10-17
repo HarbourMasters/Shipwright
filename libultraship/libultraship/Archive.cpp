@@ -1,27 +1,38 @@
 #include "Archive.h"
 #include "Resource.h"
 #include "File.h"
+#include "Window.h"
+#include "ResourceMgr.h"
 #include "spdlog/spdlog.h"
 #include "Utils/StringHelper.h"
 #include "Lib/StrHash64.h"
 #include <filesystem>
+#include "Lib/BinaryTools/BinaryTools/BinaryReader.h"
 
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
 #endif
 
 namespace Ship {
-	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting)
+	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", std::unordered_set<uint32_t>(), enableWriting)
 	{
 		mainMPQ = nullptr;
 	}
 
-	Archive::Archive(const std::string& MainPath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap) : MainPath(MainPath), PatchesPath(PatchesPath) {
+	Archive::Archive(const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t>& ValidHashes, bool enableWriting, bool genCRCMap)
+        : MainPath(MainPath), PatchesPath(PatchesPath), OTRFiles({}), ValidHashes(ValidHashes) {
 		mainMPQ = nullptr;
 		Load(enableWriting, genCRCMap);
 	}
 
-	Archive::~Archive() {
+    Archive::Archive(const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes, bool enableWriting, bool genCRCMap)
+        : OTRFiles(OTRFiles), ValidHashes(ValidHashes)
+    {
+        mainMPQ = nullptr;
+        Load(enableWriting, genCRCMap);
+    }
+
+    Archive::~Archive() {
 		Unload();
 	}
 
@@ -55,48 +66,63 @@ namespace Ship {
 		}
 	}
 
+    std::shared_ptr<File> Archive::LoadFileFromHandle(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad, HANDLE mpqHandle)
+    {
+        HANDLE fileHandle = NULL;
+
+        if (FileToLoad == nullptr)
+        {
+            FileToLoad = std::make_shared<File>();
+            FileToLoad->path = filePath;
+        }
+
+        if (mpqHandle == nullptr)
+        {
+            mpqHandle = mainMPQ;
+        }
+
+        bool attempt = SFileOpenFileEx(mpqHandle, filePath.c_str(), 0, &fileHandle);
+
+        if (!attempt)
+        {
+            SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
+            std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+            FileToLoad->bHasLoadError = true;
+            return FileToLoad;
+        }
+
+        DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
+        std::shared_ptr<char[]> fileData(new char[dwFileSize]);
+        DWORD dwBytes;
+
+        if (!SFileReadFile(fileHandle, fileData.get(), dwFileSize, &dwBytes, NULL))
+        {
+            SPDLOG_ERROR("({}) Failed to read file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+            if (!SFileCloseFile(fileHandle))
+            {
+                SPDLOG_ERROR("({}) Failed to close file {} from mpq after read failure in archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+            }
+            std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+            FileToLoad->bHasLoadError = true;
+            return FileToLoad;
+        }
+
+        if (!SFileCloseFile(fileHandle))
+        {
+            SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+        }
+
+        std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
+        FileToLoad->parent = includeParent ? shared_from_this() : nullptr;
+        FileToLoad->buffer = fileData;
+        FileToLoad->dwBufferSize = dwFileSize;
+        FileToLoad->bIsLoaded = true;
+
+        return FileToLoad;
+    }
+
 	std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
-		HANDLE fileHandle = NULL;
-
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
-		}
-
-		bool attempt = SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle);
-
-		if (!attempt) {
-			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
-			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-			FileToLoad->bHasLoadError = true;
-			return FileToLoad;
-		}
-
-		DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
-		std::shared_ptr<char[]> fileData(new char[dwFileSize]);
-		DWORD dwBytes;
-
-		if (!SFileReadFile(fileHandle, fileData.get(), dwFileSize, &dwBytes, NULL)) {
-			SPDLOG_ERROR("({}) Failed to read file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-			if (!SFileCloseFile(fileHandle)) {
-				SPDLOG_ERROR("({}) Failed to close file {} from mpq after read failure in archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-			}
-			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-			FileToLoad->bHasLoadError = true;
-			return FileToLoad;
-		}
-
-		if (!SFileCloseFile(fileHandle)) {
-			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
-
-		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
-		FileToLoad->parent = includeParent ? shared_from_this() : nullptr;
-		FileToLoad->buffer = fileData;
-		FileToLoad->dwBufferSize = dwFileSize;
-		FileToLoad->bIsLoaded = true;
-
-		return FileToLoad;
+		return LoadFileFromHandle(filePath, includeParent, FileToLoad, nullptr);
 	}
 
 	std::shared_ptr<File> Archive::LoadPatchFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
@@ -320,53 +346,129 @@ namespace Ship {
 		return true;
 	}
 
+    void Archive::GenerateCRCMap() {
+        auto listFile = LoadFile("(listfile)", false);
+
+        std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
+
+        for (size_t i = 0; i < lines.size(); i++)
+        {
+            std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
+            std::string line2 = StringHelper::Replace(line, "\\", "/");
+
+            uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
+            uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
+            hashes[hash] = line;
+            hashes[hash2] = line2;
+        }
+    }
+
+    bool Archive::PushGameVersion(HANDLE mpqHandle) {
+        auto t = LoadFileFromHandle("version", false, nullptr, mpqHandle);
+        if (!t->bHasLoadError)
+        {
+            BinaryReader *reader = new BinaryReader(t->buffer.get(), t->dwBufferSize);
+            Ship::Endianness endianness = (Ship::Endianness)reader->ReadUByte();
+            reader->SetEndianness(endianness);
+            uint32_t version = reader->ReadUInt32();
+            if (ValidHashes.empty() || ValidHashes.contains(version)) {
+                gameVersions.push_back(version);
+                return true;
+            }
+        }
+        return false;
+    }
+
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
-		HANDLE mpqHandle = NULL;
+        HANDLE mpqHandle = NULL;
+        if (OTRFiles.empty()) {
+            if (MainPath.length() > 0) {
+                if (std::filesystem::is_directory(MainPath)) {
+                    for (const auto &p : std::filesystem::recursive_directory_iterator(MainPath)) {
+                        if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                            SPDLOG_ERROR("Reading {} mpq", p.path().string().c_str());
+                            OTRFiles.push_back(p.path().string());
+                        }
+                    }
+                } else if (std::filesystem::is_regular_file(MainPath)) {
+                    OTRFiles.push_back(MainPath);
+                } else {
+                    SPDLOG_ERROR("The directory {} does not exist", MainPath.c_str());
+                    return false;
+                }
+            } else {
+                SPDLOG_ERROR("No OTR file list or Main Path provided.");
+                return false;
+            }
+            if (OTRFiles.empty()) {
+                SPDLOG_ERROR("No OTR files present in {}", MainPath.c_str());
+                return false;
+            }
+        }
+        bool baseLoaded = false;
+        int i = 0;
+        while (!baseLoaded && i < OTRFiles.size()) {
 #ifdef _WIN32
-		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
+            std::wstring wfullPath = std::filesystem::absolute(OTRFiles[i]).wstring();
 #endif
 #if defined(__SWITCH__)
-		std::string fullPath = MainPath;
-#else
-		std::string fullPath = std::filesystem::absolute(MainPath).string();
+            std::string fullPath = OTRFiles[0];
+#else  
+            std::string fullPath = std::filesystem::absolute(OTRFiles[i]).string();
 #endif
-
 #ifdef _WIN32
-		if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+            if (SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle))
+            {
 #else
-		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+            if (SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle))
+            {
 #endif
-
-	#ifdef __SWITCH__
-			Switch::ThrowMissingOTR(fullPath);
-	#endif
-			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
-			return false;
-		}
-
-		mpqHandles[fullPath] = mpqHandle;
-		mainMPQ = mpqHandle;
-
-		if (genCRCMap) {
-			auto listFile = LoadFile("(listfile)", false);
-
-			std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
-
-			for (size_t i = 0; i < lines.size(); i++) {
-				std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
-				std::string line2 = StringHelper::Replace(line, "\\", "/");
-
-				uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
-				uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
-				hashes[hash] = line;
-				hashes[hash2] = line2;
-			}
-		}
-
+                SPDLOG_INFO("Opened mpq file {}.", fullPath.c_str());
+                mainMPQ = mpqHandle;
+                if (!PushGameVersion()) {
+                    SPDLOG_WARN("Attempted to load invalid OTR file {}", OTRFiles[i].c_str());
+                    SFileCloseArchive(mpqHandle);
+                    mainMPQ = nullptr;
+                } else {
+                    mpqHandles[fullPath] = mpqHandle;
+                    if (genCRCMap)
+                    {
+                        GenerateCRCMap();
+                    }
+                    baseLoaded = true;
+                }
+            }
+            i++;
+        }
+        // If we exited the above loop without setting baseLoaded to true, then we've
+        // attemtped to load all the OTRs available to us.
+        if (!baseLoaded) {
+            SPDLOG_ERROR("No valid OTR file was provided.");
+            return false;
+        }
+        for (int j = i; j < OTRFiles.size(); j++) {
+#ifdef _WIN32
+            std::wstring wfullPath = std::filesystem::absolute(OTRFiles[i]).wstring();
+#endif
+#if defined(__SWITCH__)
+            std::string fullPath = OTRFiles[i];
+#else
+            std::string fullPath = std::filesystem::absolute(OTRFiles[i]).string();
+#endif
+            if (LoadPatchMPQ(fullPath, true))
+            {
+                SPDLOG_INFO("({}) Patched in mpq file.", fullPath.c_str());
+            }
+            if (genCRCMap)
+            {
+                GenerateCRCMap();
+            }
+        }
+        
 		return true;
 	}
 
-	bool Archive::LoadPatchMPQ(const std::string& path) {
+	bool Archive::LoadPatchMPQ(const std::string& path, bool validateVersion) {
 		HANDLE patchHandle = NULL;
 #if defined(__SWITCH__)
 		std::string fullPath = path;
@@ -386,7 +488,16 @@ namespace Ship {
 #endif
 			SPDLOG_ERROR("({}) Failed to open patch mpq file {} while applying to {}.", GetLastError(), path.c_str(), MainPath.c_str());
 			return false;
-		}
+		} else {
+            // We don't always want to validate the "version" file, only when we're loading standalone OTRs as patches
+            // i.e. Ocarina of Time along with Master Quest.
+            if (validateVersion) {
+                if (!PushGameVersion(patchHandle)) {
+                    SPDLOG_WARN("({}) Invalid MQP file.", path.c_str());
+                    return false;
+                }
+            }
+        }
 #ifdef _WIN32
 		if (!SFileOpenPatchArchive(mainMPQ, wPath.c_str(), "", 0)) {
 #else

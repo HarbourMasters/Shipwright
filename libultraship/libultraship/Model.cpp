@@ -24,7 +24,7 @@ namespace Ship
 
         uint32_t headerStart = reader->GetBaseAddress();
 
-        modelType = (ModelType)reader->ReadByte();
+        modelType = (ModelType)reader->ReadInt8();
 
         numVerts = reader->ReadUInt32();
         numPolys = reader->ReadUInt32();
