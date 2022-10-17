@@ -132,6 +132,8 @@ Breaking changes:
    semantic, but the additional indirection and copy added complexity and got in the way of other
    incoming work. User's code (other than backends) should not be affected, unless you have custom
    widgets intercepting navigation events via the named enums (in which case you can upgrade your code).
+ - Removed runtime patching of invalid "%f"/"%.0f" types of format strings for DragInt()/SliderInt().
+   This was obsoleted in 1.61 (May 2018). See 1.61 changelog for details.
  - Changed signature of ImageButton() function: (#5533, #4471, #2464, #1390)
    - Added 'const char* str_id' parameter + removed 'int frame_padding = -1' parameter.
    - Old signature: bool ImageButton(ImTextureID tex_id, ImVec2 size, ImVec2 uv0 = ImVec2(0,0), ImVec2 uv1 = ImVec2(1,1), int frame_padding = -1, ImVec4 bg_col = ImVec4(0,0,0,0), ImVec4 tint_col = ImVec4(1,1,1,1));
@@ -161,6 +163,8 @@ Breaking changes:
    Without '#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS' this will silently be fixed until we obsolete it.
    (This incorrect pattern has been mentioned or suggested in: #4510, #3355, #1760, #1490, #4152, #150,
     threads have been amended to refer to this issue).
+ - Removed support for 1.42-era IMGUI_DISABLE_INCLUDE_IMCONFIG_H / IMGUI_INCLUDE_IMCONFIG_H. (#255)
+   They only made sense before we could use IMGUI_USER_CONFIG.
 
 
 Other Changes:
@@ -168,6 +172,10 @@ Other Changes:
 - Popups & Modals: fixed nested Begin() being erroneously input-inhibited. While it is
   unusual, you can nest a Begin() inside a popup or modal, it is occasionally useful to
   achieve certains things (e.g. some ways to implement suggestion popup #718, #4461).
+- Scrolling: Tweak mouse-wheel locked window timer so it is shorter but also gets reset
+  whenever scrolling again (#2604).
+- Scrolling: Mitigated issue where multi-axis mouse-wheel inputs (usually from touch pad
+  events) are incorrectly locking scrolling in a parent window. (#4559, #3795, #2604)
 - InputText: added experimental io.ConfigInputTextEnterKeepActive feature to make pressing
   Enter keep the input active and select all text.
 - InputText: numerical fields automatically accept full-width characters (U+FF01..U+FF5E)
@@ -177,11 +185,14 @@ Other Changes:
 - InputText: added support for shift+click style selection. (#5619) [@procedural]
 - InputText: clarified that callbacks cannot modify buffer when using the ReadOnly flag.
 - InputText: fixed minor one-frame selection glitch when reverting with Escape.
+- ColorEdit3: fixed id collision leading to an assertion. (#5707)
 - IsItemHovered: Added ImGuiHoveredFlags_DelayNormal and ImGuiHoveredFlags_DelayShort flags,
   allowing to introduce a shared delay for tooltip idioms. The delays are respectively
   io.HoverDelayNormal (default to 0.30f) and io.HoverDelayFast (default to 0.10f). (#1485)
 - IsItemHovered: Added ImGuiHoveredFlags_NoSharedDelay to disable sharing delays between itemm,
   so moving from one item to a nearby one will requires delay to elapse again. (#1485)
+- Tables: activating an ID (e.g. clicking button inside) column doesn't prevent columns
+  output flags from having ImGuiTableColumnFlags_IsHovered set. (#2957)
 - Tables,Columns: fixed a layout issue where SameLine() prior to a row change would set the
   next row in such state where subsequent SameLine() would move back to previous row.
 - Tabs: Fixed a crash when closing multiple windows (possible with docking only) with an
@@ -194,14 +205,29 @@ Other Changes:
 - IO: Added ImGuiMod_Shortcut which is ImGuiMod_Super on Mac and ImGuiMod_Ctrl otherwise. (#456)
 - IO: Added ImGuiKey_MouseXXX aliases for mouse buttons/wheel so all operations done on ImGuiKey
   can apply to mouse data as well. (#4921)
+- IO: Filter duplicate input events during the AddXXX() calls. (#5599, #4921)
 - Menus: Fixed incorrect sub-menu parent association when opening a menu by closing another.
   Among other things, it would accidentally break part of the closing heuristic logic when moving
   towards a sub-menu. (#2517, #5614). [@rokups]
 - Menus: Fixed gaps in closing logic which would make child-menu erroneously close when crossing
   the gap between a menu item inside a window and a child-menu in a secondary viewport. (#5614)
+- Menus: Fixed using IsItemHovered()/IsItemClicked() on BeginMenu(). (#5775)
+- Menus, Popups: Experimental fix for issue where clicking on an open BeginMenu() item called from
+  a window which is neither a popup neither a menu used to incorrectly close and reopen the menu.
+  (the fix may have side-effect so labelld as experimental as we may need to revert) (#5775)
+- Menus, Nav: Fixed keyboard/gamepad navigation occasionally erroneously landing on menu-item
+  in parent window when the parent is not a popup. (#5730)
+- Menus, Nav: Fixed not being able to close a menu with Left arrow when parent is not a popup. (#5730)
+- Menus, Nav: Fixed using left/right navigation when appending to an existing menu (multiple
+  BeginMenu() call with same names). (#1207)
 - Nav: Fixed moving/resizing window with gamepad or keyboard when running at very high framerate.
 - Nav: Pressing Space/GamepadFaceDown on a repeating button uses the same repeating rate as a mouse hold.
 - Nav: Fixed an issue opening a menu with Right key from a non-menu window.
+- Text: Fixed wrapped-text not doing a fast-forward on lines above the clipping region,
+  which would result in an abnormal number of vertices created (was slower and more likely to
+  asserts with 16-bits ImDrawVtx). (#5720)
+- Fonts: Added GetGlyphRangesGreek() helper for Greek & Coptic glyph range. (#5676, #5727) [@azonenberg]
+- ImDrawList: Not using alloca() anymore, lift single polygon size limits. (#5704, #1811)
 - Platform IME: [Windows] Removed call to ImmAssociateContextEx() leading to freeze on some setups.
   (#2589, #5535, #5264, #4972)
 - Misc: ImGuiKey is now a typed enum, allowing ImGuiKey_XXX symbols to be named in debuggers. (#4921)
@@ -213,13 +239,19 @@ Other Changes:
 - Docs: Fixed various typos in comments and documentations. (#5649, #5675, #5679) [@tocic, @lessigsx]
 - Demo: Improved "Constrained-resizing window" example, more clearly showcase aspect-ratio. (#5627)
 - Demo: Added more explicit "Center window" mode to "Overlay example". (#5618)
+- Demo: Fixed Log & Console from losing scrolling position with Auto-Scroll when child is clipped. (#5721)
 - Examples: Added all SDL examples to default VS solution.
+- Examples: Win32: Always use RegisterClassW() to ensure windows are Unicode. (#5725)
 - Backends: GLFW: Honor GLFW_CURSOR_DISABLED by not setting mouse position. (#5625) [@scorpion-26]
 - Backends: SDL: Disable SDL 2.0.22 new "auto capture" which prevents drag and drop across windows
   (e.g. for multi-viewport support) and don't capture mouse when drag and dropping. (#5710)
+- Backends: Win32: Convert WM_CHAR values with MultiByteToWideChar() when window class was
+  registered as MBCS (not Unicode). (#5725, #1807, #471, #2815, #1060) [@or75, @ocornut]
 - Backends: Metal: Use __bridge for ARC based systems. (#5403) [@stack]
 - Backends: Metal: Add dispatch synchronization. (#5447) [@luigifcruz]
 - Backends: Metal: Update deprecated property 'sampleCount'->'rasterSampleCount'. (#5603) [@dcvz]
+- Backends: Vulkan: Added experimental ImGui_ImplVulkan_RemoveTexture() for api symetry. (#914, #5738).
+- Backends: OSX: Fixed mouse inputs on flipped views. (#5756) [@Nemirtingas]
 - Backends: OSX: Fixes to support full app creation in C++. (#5403) [@stack]
 
 Docking+Viewports Branch:
@@ -935,6 +967,8 @@ Docking+Viewports Branch:
   (#4292, #3834, #3633, #3521, #3492, #3335, #2999, #2648)
 - Docking: (Internal/Experimental) Removed DockNodeFlagsOverrideClear flags from ImGuiWindowClass as
   it is ambiguous how to apply them and we haven't got a use out of them yet.
+- Docking: Fixed ImGuiWindowFlags_UnsavedDocument clipping label in docked windows when there are
+  no close button. (#5745)
 - Viewports: Fix popup/tooltip created without a parent window from being given a ParentViewportId value
   from the implicit/fallback window. (#4236, #2409)
 - Backends: Vulkan: Fix the use of the incorrect fence for secondary viewports. (#4208) [@FunMiles]
