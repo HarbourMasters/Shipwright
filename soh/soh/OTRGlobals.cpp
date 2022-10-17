@@ -87,11 +87,11 @@ OTRGlobals::OTRGlobals() {
         OTRFiles.push_back(ootPath);
     }
     std::string patchesPath = Ship::Window::GetPathRelativeToAppDirectory("mods");
-    if (patchesPath.length() > 0) {
+    if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
                 if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-                    OTRFiles.push_back(p.path().string());
+                    OTRFiles.push_back(p.path().generic_string());
                 }
             }
         }
