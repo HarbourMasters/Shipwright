@@ -188,6 +188,7 @@ typedef struct {
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
+    u8 mqDungeonCount;
 } SaveContext; // size = 0x1428
 
 typedef enum {

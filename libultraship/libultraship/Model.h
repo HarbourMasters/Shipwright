@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "Vec2f.h"
 #include "Vec3f.h"
+#include "Vec3s.h"
 #include "Color3b.h"
 
 namespace Ship
