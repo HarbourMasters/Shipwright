@@ -77,12 +77,76 @@ CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-    context = Ship::Window::CreateInstance("Ship of Harkinian");
+    std::vector<std::string> OTRFiles;
+    std::string mqPath = Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr");
+    if (std::filesystem::exists(mqPath)) { 
+        OTRFiles.push_back(mqPath);
+    } 
+    std::string ootPath = Ship::Window::GetPathRelativeToAppDirectory("oot.otr");
+    if (std::filesystem::exists(ootPath)) {
+        OTRFiles.push_back(ootPath);
+    }
+    std::unordered_set<uint32_t> ValidHashes = { 
+        OOT_PAL_MQ,
+        OOT_NTSC_JP_MQ,
+        OOT_NTSC_US_MQ,
+        OOT_PAL_GC_MQ_DBG,
+        OOT_NTSC_10,
+        OOT_NTSC_11,
+        OOT_NTSC_12,
+        OOT_PAL_10,
+        OOT_PAL_11,
+        OOT_NTSC_JP_GC_CE,
+        OOT_NTSC_JP_GC,
+        OOT_NTSC_US_GC,
+        OOT_PAL_GC,
+        OOT_PAL_GC_DBG1,
+        OOT_PAL_GC_DBG2
+    };
+    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles, ValidHashes);
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
+
+    hasMasterQuest = hasOriginal = false;
+
+    auto versions = context->GetResourceManager()->GetGameVersions();
+
+    for (uint32_t version : versions) {
+        switch (version) {
+            case OOT_PAL_MQ:
+            case OOT_NTSC_JP_MQ:
+            case OOT_NTSC_US_MQ:
+            case OOT_PAL_GC_MQ_DBG:
+                hasMasterQuest = true;
+                break;
+            case OOT_NTSC_10:
+            case OOT_NTSC_11:
+            case OOT_NTSC_12:
+            case OOT_PAL_10:
+            case OOT_PAL_11:
+            case OOT_NTSC_JP_GC_CE:
+            case OOT_NTSC_JP_GC:
+            case OOT_NTSC_US_GC:
+            case OOT_PAL_GC:
+            case OOT_PAL_GC_DBG1:
+            case OOT_PAL_GC_DBG2:
+                hasOriginal = true;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 OTRGlobals::~OTRGlobals() {
+}
+
+bool OTRGlobals::HasMasterQuest() {
+    return hasMasterQuest;
+}
+
+bool OTRGlobals::HasOriginal() {
+    return hasOriginal;
 }
 
 struct ExtensionEntry {
@@ -341,7 +405,10 @@ extern "C" void InitOTR() {
 
     if (!t->bHasLoadError)
     {
-        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
+        Ship::BinaryReader reader(t->buffer.get(), t->dwBufferSize);
+        Ship::Endianness endianness = (Ship::Endianness)reader.ReadUByte();
+        reader.SetEndianness(endianness);
+        uint32_t gameVersion = reader.ReadUInt32();
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -549,32 +616,37 @@ extern "C" uint32_t ResourceMgr_GetGameVersion()
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
-    uint32_t version = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
-
-    switch (version) {
-        case OOT_PAL_MQ:
-        case OOT_NTSC_JP_MQ:
-        case OOT_NTSC_US_MQ:
-        case OOT_PAL_GC_MQ_DBG:
-            return 1;
-        case OOT_NTSC_10:
-        case OOT_NTSC_11:
-        case OOT_NTSC_12:
-        case OOT_PAL_10:
-        case OOT_PAL_11:
-        case OOT_NTSC_JP_GC_CE:
-        case OOT_NTSC_JP_GC:
-        case OOT_NTSC_US_GC:
-        case OOT_PAL_GC:
-        case OOT_PAL_GC_DBG1:
-        case OOT_PAL_GC_DBG2:
-            return 0;
-        default:
-            SPDLOG_WARN("Unknown rom detected. Defaulting to Non-mq {:x}", version);
-            return 0;
-
+uint32_t IsGameMasterQuest() {
+    uint32_t value = 0;
+    if (OTRGlobals::Instance->HasMasterQuest()) {
+        if (!OTRGlobals::Instance->HasOriginal()) {
+            value = 1;
+        } else if (gSaveContext.isMasterQuest) {
+            value = 1;
+        } else {
+            value = 0;
+            if (gSaveContext.n64ddFlag) {
+                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
+                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(gGlobalCtx->sceneNum)) {
+                        value = 1;
+                    }
+                }
+            }
+        }
     }
+    return value;
+}
+
+extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
+    return OTRGlobals::Instance->HasMasterQuest();
+}
+
+extern "C" uint32_t ResourceMgr_GameHasOriginal() {
+    return OTRGlobals::Instance->HasOriginal();
+}
+
+extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
+    return IsGameMasterQuest();
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
@@ -606,6 +678,17 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
+}
+
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
+    std::string Path = path;
+    if (ResourceMgr_IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
@@ -673,14 +756,22 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
+    auto res = ResourceMgr_LoadResource(filePath);
 
     if (res->resType == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->instructions[0]);
     else if (res->resType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
-    else
-        return ResourceMgr_LoadTexByName(filePath);
+    else {
+        std::string Path = filePath;
+        if (ResourceMgr_IsGameMasterQuest()) {
+            size_t pos = 0;
+            if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+                Path.replace(pos, 7, "/mq/");
+            }
+        }
+        return ResourceMgr_LoadTexByName(Path.c_str());
+    }
 }
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
@@ -688,16 +779,14 @@ extern "C" Sprite* GetSeedTexture(uint8_t index) {
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
-    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
+    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(ResourceMgr_LoadResource(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::DisplayList>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
     return (Gfx*)&res->instructions[0];
 }
 
@@ -753,14 +842,13 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
 
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
     return (char*)res->scalars.data();
 }
 
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
-    auto res =
-        std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (char*)res->cachedGameAsset;
@@ -782,7 +870,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 {
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(path));
 
     if (colRes->cachedGameAsset != nullptr)
         return (CollisionHeader*)colRes->cachedGameAsset;
@@ -876,8 +964,8 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 {
-	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
-	return (Vtx*)res->vertices.data();
+    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
+    return (Vtx*)res->vertices.data();
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
@@ -971,8 +1059,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     if (cSample != nullptr)
         return cSample;
 
-    auto sample = std::static_pointer_cast<Ship::AudioSample>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto sample = std::static_pointer_cast<Ship::AudioSample>(ResourceMgr_LoadResource(path));
 
     if (sample == nullptr)
         return NULL;
@@ -1018,8 +1105,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    auto soundFont =
-        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto soundFont = std::static_pointer_cast<Ship::AudioSoundFont>(ResourceMgr_LoadResource(path));
 
     if (soundFont == nullptr)
         return NULL;
@@ -1162,8 +1248,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Animation>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Animation>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (AnimationHeaderCommon*)res->cachedGameAsset;
@@ -1231,7 +1316,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Skeleton>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Skeleton>(ResourceMgr_LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
         return (SkeletonHeader*)res->cachedGameAsset;
@@ -1264,8 +1349,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 
     for (size_t i = 0; i < res->limbTable.size(); i++) {
         std::string limbStr = res->limbTable[i];
-        auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(
-            OTRGlobals::Instance->context->GetResourceManager()->LoadResource(limbStr.c_str()));
+        auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(ResourceMgr_LoadResource(limbStr.c_str()));
 
         if (limb->limbType == Ship::LimbType::LOD) {
             LodLimb* limbC = (LodLimb*)malloc(sizeof(LodLimb));
@@ -1419,7 +1503,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Cutscene>(ResourceMgr_LoadResource(path));
     return (s32*)res->commands.data();
 }
 
@@ -1668,6 +1752,10 @@ extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
 
 extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
+}
+
+extern "C" void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadMasterQuestDungeons(spoilerFileName);
 }
 
 extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {

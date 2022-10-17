@@ -31,10 +31,10 @@ namespace Ship
 
 		ResourceFile::ParseFileBinary(reader, res);
 
-		entry->codec = reader->ReadByte();
-		entry->medium = reader->ReadByte();
-		entry->unk_bit26 = reader->ReadByte();
-		entry->unk_bit25 = reader->ReadByte();
+		entry->codec = reader->ReadInt8();
+		entry->medium = reader->ReadInt8();
+		entry->unk_bit26 = reader->ReadInt8();
+		entry->unk_bit25 = reader->ReadInt8();
 
 		uint32_t dataSize = reader->ReadInt32();
 
@@ -66,8 +66,8 @@ namespace Ship
 		ResourceFile::ParseFileBinary(reader, res);
 
 		soundFont->id = reader->ReadInt32();
-		soundFont->medium = reader->ReadByte();
-		soundFont->cachePolicy = reader->ReadByte();
+		soundFont->medium = reader->ReadInt8();
+		soundFont->cachePolicy = reader->ReadInt8();
 		soundFont->data1 = reader->ReadInt16();
 		soundFont->data2 = reader->ReadInt16();
 		soundFont->data3 = reader->ReadInt16();
@@ -85,9 +85,9 @@ namespace Ship
 
 			drum.env = ReadEnvelopeData(reader);
 
-			bool hasSample = reader->ReadByte();
+			bool hasSample = reader->ReadInt8();
 			drum.sampleFileName = reader->ReadString();
-			drum.tuning = reader->ReadSingle();
+			drum.tuning = reader->ReadFloat();
 
 			soundFont->drums.push_back(drum);
 		}
@@ -105,38 +105,38 @@ namespace Ship
 			entry.env = ReadEnvelopeData(reader);
 
 			{
-				bool hasSFEntry = reader->ReadByte();
+				bool hasSFEntry = reader->ReadInt8();
 
 				if (hasSFEntry)
 				{
 					entry.lowNotesSound = new SoundFontEntry();
-					bool hasSampleRef = reader->ReadByte();
+					bool hasSampleRef = reader->ReadInt8();
 					entry.lowNotesSound->sampleFileName = reader->ReadString();
-					entry.lowNotesSound->tuning = reader->ReadSingle();
+					entry.lowNotesSound->tuning = reader->ReadFloat();
 				}
 			}
 
 			{
-				bool hasSFEntry = reader->ReadByte();
+				bool hasSFEntry = reader->ReadInt8();
 
 				if (hasSFEntry)
 				{
 					entry.normalNotesSound = new SoundFontEntry();
-					bool hasSampleRef = reader->ReadByte();
+					bool hasSampleRef = reader->ReadInt8();
 					entry.normalNotesSound->sampleFileName = reader->ReadString();
-					entry.normalNotesSound->tuning = reader->ReadSingle();
+					entry.normalNotesSound->tuning = reader->ReadFloat();
 				}
 			}
 
 			{
-				bool hasSFEntry = reader->ReadByte();
+				bool hasSFEntry = reader->ReadInt8();
 
 				if (hasSFEntry)
 				{
 					entry.highNotesSound = new SoundFontEntry();
-					bool hasSampleRef = reader->ReadByte();
+					bool hasSampleRef = reader->ReadInt8();
 					entry.highNotesSound->sampleFileName = reader->ReadString();
-					entry.highNotesSound->tuning = reader->ReadSingle();
+					entry.highNotesSound->tuning = reader->ReadFloat();
 				}
 			}
 
@@ -147,13 +147,13 @@ namespace Ship
 		{
 			SoundFontEntry* entry = new SoundFontEntry();
 
-			bool hasSFEntry = reader->ReadByte();
+			bool hasSFEntry = reader->ReadInt8();
 
 			if (hasSFEntry)
 			{
-				bool hasSampleRef = reader->ReadByte();
+				bool hasSampleRef = reader->ReadInt8();
 				entry->sampleFileName = reader->ReadString();
-				entry->tuning = reader->ReadSingle();
+				entry->tuning = reader->ReadFloat();
 			}
 
 			soundFont->soundEffects.push_back(entry);
