@@ -606,7 +606,7 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
-    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0)) {
+    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) && globalCtx->sceneNum != SCENE_TAKARAYA) {
         EnBox_CreateExtraChestTextures();
         GetItemEntry getItemEntry = GET_ITEM_NONE;
 
