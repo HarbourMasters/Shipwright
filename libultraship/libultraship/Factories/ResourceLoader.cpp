@@ -22,13 +22,12 @@ namespace Ship
 {
     Resource* ResourceLoader::LoadResource(std::shared_ptr<File> FileToLoad)
     {
-        auto memStream = std::make_shared<MemoryStream>(FileToLoad->buffer.get(), FileToLoad->dwBufferSize);
-        auto reader = std::make_shared<BinaryReader>(memStream);
+        auto reader = std::make_shared<BinaryReader>(FileToLoad->buffer.get(), FileToLoad->dwBufferSize);
 
-        Endianness endianness = (Endianness)reader->ReadByte();
+        Endianness endianness = (Endianness)reader->ReadInt8();
 
         for (int i = 0; i < 3; i++)
-            reader->ReadByte();
+            reader->ReadInt8();
 
         reader->SetEndianness(endianness);
 

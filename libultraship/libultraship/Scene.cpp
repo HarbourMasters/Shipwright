@@ -69,10 +69,10 @@ namespace Ship
 
 	SetWind::SetWind(BinaryReader* reader) : SceneCommand(reader)
 	{
-		windWest = reader->ReadByte();
-		windVertical = reader->ReadByte();
-		windSouth = reader->ReadByte();
-		clothFlappingStrength = reader->ReadByte();
+		windWest = reader->ReadInt8();
+		windVertical = reader->ReadInt8();
+		windSouth = reader->ReadInt8();
+		clothFlappingStrength = reader->ReadInt8();
 	}
 
 	ExitList::ExitList(BinaryReader* reader) : SceneCommand(reader)
@@ -86,46 +86,46 @@ namespace Ship
 
 	SetTimeSettings::SetTimeSettings(BinaryReader* reader) : SceneCommand(reader)
 	{
-		hour = reader->ReadByte();
-		min = reader->ReadByte();
-		unk = reader->ReadByte();
+		hour = reader->ReadInt8();
+		min = reader->ReadInt8();
+		unk = reader->ReadInt8();
 	}
 
 	SetSkyboxModifier::SetSkyboxModifier(BinaryReader* reader) : SceneCommand(reader)
 	{
-		disableSky = reader->ReadByte();
-		disableSunMoon = reader->ReadByte();
+		disableSky = reader->ReadInt8();
+		disableSunMoon = reader->ReadInt8();
 	}
 
 	SetEchoSettings::SetEchoSettings(BinaryReader* reader) : SceneCommand(reader)
 	{
-		echo = reader->ReadByte();
+		echo = reader->ReadInt8();
 	}
 
 	SetSoundSettings::SetSoundSettings(BinaryReader* reader) : SceneCommand(reader)
 	{
-		reverb = reader->ReadByte();
-		nightTimeSFX = reader->ReadByte();
-		musicSequence = reader->ReadByte();
+		reverb = reader->ReadInt8();
+		nightTimeSFX = reader->ReadInt8();
+		musicSequence = reader->ReadInt8();
 	}
 
 	SetSkyboxSettings::SetSkyboxSettings(BinaryReader* reader) : SceneCommand(reader)
 	{
-		unk1 = reader->ReadByte();
-		skyboxNumber = reader->ReadByte();
-		cloudsType = reader->ReadByte();
-		isIndoors = reader->ReadByte();
+		unk1 = reader->ReadInt8();
+		skyboxNumber = reader->ReadInt8();
+		cloudsType = reader->ReadInt8();
+		isIndoors = reader->ReadInt8();
 	}
 
 	SetRoomBehavior::SetRoomBehavior(BinaryReader* reader) : SceneCommand(reader)
 	{
-		gameplayFlags = reader->ReadByte();
+		gameplayFlags = reader->ReadInt8();
 		gameplayFlags2 = reader->ReadInt32();
 	}
 
 	SetCsCamera::SetCsCamera(BinaryReader* reader) : SceneCommand(reader)
 	{
-		reader->ReadByte(); // camSize
+		reader->ReadInt8(); // camSize
 		reader->ReadInt32(); // segOffset
 
 		// OTRTODO: FINISH!
@@ -143,13 +143,13 @@ namespace Ship
 
 	SetMesh::SetMesh(BinaryReader* reader) : SceneCommand(reader)
 	{
-		data = reader->ReadByte();
-		meshHeaderType = reader->ReadByte();
+		data = reader->ReadInt8();
+		meshHeaderType = reader->ReadInt8();
 
 		uint32_t numPoly = 1;
 
 		if (meshHeaderType != 1)
-			numPoly = reader->ReadByte();
+			numPoly = reader->ReadInt8();
 
 		meshes.reserve(numPoly);
 		for (uint32_t i = 0; i < numPoly; i++)
@@ -158,7 +158,7 @@ namespace Ship
 
 			if (meshHeaderType == 0)
 			{
-				int polyType = reader->ReadByte();
+				int polyType = reader->ReadInt8();
 				mesh.x = 0;
 				mesh.y = 0;
 				mesh.z = 0;
@@ -166,7 +166,7 @@ namespace Ship
 			}
 			else if (meshHeaderType == 2)
 			{
-				int polyType = reader->ReadByte();
+				int polyType = reader->ReadInt8();
 				mesh.x = reader->ReadInt16();
 				mesh.y = reader->ReadInt16();
 				mesh.z = reader->ReadInt16();
@@ -201,7 +201,7 @@ namespace Ship
 					mesh.images.push_back(img);
 				}
 
-				int polyType = reader->ReadByte();
+				int polyType = reader->ReadInt8();
 
 				int bp = 0;
 			}
@@ -216,7 +216,7 @@ namespace Ship
 
 	SetCameraSettings::SetCameraSettings(BinaryReader* reader) : SceneCommand(reader)
 	{
-		cameraMovement = reader->ReadByte();
+		cameraMovement = reader->ReadInt8();
 		mapHighlights = reader->ReadInt32();
 	}
 
@@ -229,29 +229,29 @@ namespace Ship
 		{
 			LightingSettings entry = LightingSettings();
 
-			entry.ambientClrR = reader->ReadByte();
-			entry.ambientClrG = reader->ReadByte();
-			entry.ambientClrB = reader->ReadByte();
+			entry.ambientClrR = reader->ReadInt8();
+			entry.ambientClrG = reader->ReadInt8();
+			entry.ambientClrB = reader->ReadInt8();
 
-			entry.diffuseDirA_X = reader->ReadByte();
-			entry.diffuseDirA_Y = reader->ReadByte();
-			entry.diffuseDirA_Z = reader->ReadByte();
+			entry.diffuseDirA_X = reader->ReadInt8();
+			entry.diffuseDirA_Y = reader->ReadInt8();
+			entry.diffuseDirA_Z = reader->ReadInt8();
 
-			entry.diffuseClrA_R = reader->ReadByte();
-			entry.diffuseClrA_G = reader->ReadByte();
-			entry.diffuseClrA_B = reader->ReadByte();
+			entry.diffuseClrA_R = reader->ReadInt8();
+			entry.diffuseClrA_G = reader->ReadInt8();
+			entry.diffuseClrA_B = reader->ReadInt8();
 
-			entry.diffuseDirB_X = reader->ReadByte();
-			entry.diffuseDirB_Y = reader->ReadByte();
-			entry.diffuseDirB_Z = reader->ReadByte();
+			entry.diffuseDirB_X = reader->ReadInt8();
+			entry.diffuseDirB_Y = reader->ReadInt8();
+			entry.diffuseDirB_Z = reader->ReadInt8();
 
-			entry.diffuseClrB_R = reader->ReadByte();
-			entry.diffuseClrB_G = reader->ReadByte();
-			entry.diffuseClrB_B = reader->ReadByte();
+			entry.diffuseClrB_R = reader->ReadInt8();
+			entry.diffuseClrB_G = reader->ReadInt8();
+			entry.diffuseClrB_B = reader->ReadInt8();
 
-			entry.fogClrR = reader->ReadByte();
-			entry.fogClrG = reader->ReadByte();
-			entry.fogClrB = reader->ReadByte();
+			entry.fogClrR = reader->ReadInt8();
+			entry.fogClrG = reader->ReadInt8();
+			entry.fogClrB = reader->ReadInt8();
 
 			entry.fogNear = reader->ReadInt16();
 			entry.fogFar = reader->ReadUInt16();
@@ -290,8 +290,8 @@ namespace Ship
 		for (uint32_t i = 0; i < cnt; i++)
 		{
 			EntranceEntry entry = EntranceEntry();
-			entry.startPositionIndex = reader->ReadByte();
-			entry.roomToLoad = reader->ReadByte();
+			entry.startPositionIndex = reader->ReadInt8();
+			entry.roomToLoad = reader->ReadInt8();
 
 			entrances.push_back(entry);
 		}
@@ -299,7 +299,7 @@ namespace Ship
 
 	SetSpecialObjects::SetSpecialObjects(BinaryReader* reader) : SceneCommand(reader)
 	{
-		elfMessage = reader->ReadByte();
+		elfMessage = reader->ReadInt8();
 		globalObject = reader->ReadInt16();
 	}
 

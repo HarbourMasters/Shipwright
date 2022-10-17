@@ -25,13 +25,20 @@ public:
     OTRGlobals();
     ~OTRGlobals();
 
+    bool HasMasterQuest();
+    bool HasOriginal();
+
 private:
 	void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
 };
+
+uint32_t IsGameMasterQuest();
 #endif
 
 #ifndef __cplusplus
-void InitOTR(void);
+    void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
@@ -43,8 +50,10 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-uint32_t ResourceMgr_GetGameVersion();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_GameHasMasterQuest();
+uint32_t ResourceMgr_GameHasOriginal();
+uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
@@ -106,6 +115,7 @@ ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
+void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);

@@ -73,6 +73,11 @@ class Z64Rom:
         if self.checksum == Checksums.OOT_UNKNOWN:
             self.is_valid = False
             return
+        
+        if self.checksum in [Checksums.OOT_NTSC_JP_MQ, Checksums.OOT_NTSC_US_MQ, Checksums.OOT_PAL_GC_MQ_DBG, Checksums.OOT_PAL_MQ]:
+            self.isMq = True
+        else:
+            self.isMq = False
 
         # get rom version
         self.version = ROM_INFO_TABLE[self.checksum]
@@ -86,3 +91,7 @@ class Z64Rom:
     @staticmethod
     def isValidRom(rom_path):
         return Z64Rom(rom_path).is_valid
+    
+    @staticmethod
+    def isMqRom(rom_path):
+        return Z64Rom(rom_path).isMq
