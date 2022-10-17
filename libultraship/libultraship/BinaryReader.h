@@ -2,7 +2,8 @@
 
 #include <string>
 #include <memory>
-#include "BitConverter.h"
+#include <vector>
+#include "endianness.h"
 #include "Vec2f.h"
 #include "Vec3f.h"
 #include "Vec3s.h"

@@ -80,7 +80,6 @@ source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__
 set (Source_Files__BinaryTools
     "BinaryReader.cpp"
     "BinaryReader.h"
-    "BitConverter.h"
     "Lib/BinaryTools/BinaryTools/Binary.h"
     "Lib/BinaryTools/BinaryTools/Binary.cpp"
     "Lib/BinaryTools/BinaryTools/BinaryReader.cpp"
