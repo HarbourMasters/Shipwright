@@ -493,8 +493,7 @@ namespace Ship {
             // i.e. Ocarina of Time along with Master Quest.
             if (validateVersion) {
                 if (!PushGameVersion(patchHandle)) {
-                    SPDLOG_WARN("({}) Invalid MQP file.", path.c_str());
-                    return false;
+                    SPDLOG_INFO("({}) Missing version file. Attempting to apply patch anyway.", path.c_str());
                 }
             }
         }
