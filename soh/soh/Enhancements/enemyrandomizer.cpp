@@ -116,27 +116,30 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
         if (actorId == enemiesToRandomize[i]) {
 
             switch (actorId) {
-                // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn
+                // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
                 case ACTOR_EN_TP:
                     return (param == -1);
                 // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
                 case ACTOR_EN_DEKUNUTS:
                     return (param == -256 || param == 768);
-                // Only randomize initial floormaster actor (it can split and does some spawning on init)
+                // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (param == 0);
-                // Only randomize initial egg spawn, not the enemy that comes out of the egg
+                // Only randomize initial egg spawn, not the enemy that comes out of the egg.
                 case ACTOR_EN_GOMA:
                     return (param == 0 || param == 6 || param == 8);
-                // Only randomize Skullwalltulas, not Golden Skulltulas
+                // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
                     return (param == 0);
-                // Don't randomize Nabooru because it'll break cutscenes and progression
+                // Don't randomize Nabooru because it'll break the cutscene and the door.
                 case ACTOR_EN_IK:
                     return (param != 1280);
                 // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
                     return (param == -1);
+                // Don't randomize lizalfos in Doodong's Cavern because the gates won't work correctly otherwise.
+                case ACTOR_EN_ZF:
+                    return (param != 1280 && param != 1281 && param != 1536 && param != 1537);
                 default:
                     return 1;
             }
