@@ -1188,6 +1188,13 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0));
             }
+            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVar_GetS32("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gSfxEditor", 0);
+                CVar_SetS32("gSfxEditor", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("SFX Editor", CVar_GetS32("gSfxEditor", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
 

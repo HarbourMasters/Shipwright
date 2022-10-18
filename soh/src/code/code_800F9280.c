@@ -368,6 +368,20 @@ extern f32 D_80130F28;
 
 void Audio_QueueSeqCmd(u32 cmd) 
 {
+    u32 seqMask = ((1 << 16) - 1);
+    u16 oldSeqId = (cmd & seqMask);
+    u16 newSeqId = getReplacementSeq(oldSeqId);
+    if (newSeqId != oldSeqId) {
+        if (oldSeqId == 0x2) {
+            if (cmd == 2) {
+                cmd = newSeqId;
+            }
+        }
+        else {
+            cmd = (cmd & ~seqMask) | newSeqId;
+        }
+    } 
+
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }
 
