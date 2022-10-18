@@ -2304,7 +2304,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     return shopItemIdentity;
 }
 
-CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s16 posX, s16 posZ) {
+CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     struct CowIdentity cowIdentity;
 
     cowIdentity.randomizerInf = RAND_INF_MAX;

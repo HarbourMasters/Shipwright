@@ -67,7 +67,7 @@ typedef enum {
     RCAREA_INVALID
 } RandomizerCheckArea;
 
-#define TWO_ACTOR_PARAMS(a, b) _SHIFTL(a, 16, 16) | _SHIFTL(b, 0, 16)
+#define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
 #define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
     { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
