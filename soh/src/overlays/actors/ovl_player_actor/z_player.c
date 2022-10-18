@@ -1053,8 +1053,8 @@ static s8 sItemActionParams[] = {
 };
 
 static u8 sMaskMemory;
-u8 sSpeedToggle1;
-u8 sSpeedToggle2;
+u8 gSpeedToggle1;
+u8 gSpeedToggle2;
 
 // Used to map action params to update functions
 static s32 (*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
@@ -6039,9 +6039,9 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
         
         if (CVar_GetS32("gEnableWalkModify", 0)) {
             if (CVar_GetS32("gSpeedToggle", 0)) {
-                if (sSpeedToggle1) {
+                if (gSpeedToggle1) {
                     maxSpeed *= CVar_GetFloat("gWalkModifierOne", 1.0f);
-                } else if (sSpeedToggle2) {
+                } else if (gSpeedToggle2) {
                     maxSpeed *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
                 }
             } else {
@@ -7680,9 +7680,9 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
             
             if (CVar_GetS32("gEnableWalkModify", 0)) {
                 if (CVar_GetS32("gSpeedToggle", 0)) {
-                    if (sSpeedToggle1) {
+                    if (gSpeedToggle1) {
                         sp2C *= CVar_GetFloat("gWalkModifierOne", 1.0f);
-                    } else if (sSpeedToggle2) {
+                    } else if (gSpeedToggle2) {
                         sp2C *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
                     }
                 } else {
@@ -9545,8 +9545,6 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     s32 sp50;
     s32 sp4C;
 
-    sSpeedToggle1 = 0;
-    sSpeedToggle2 = 0;
     globalCtx->shootingGalleryStatus = globalCtx->bombchuBowlingStatus = 0;
 
     globalCtx->playerInit = Player_InitCommon;
@@ -10985,11 +10983,13 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->actor.gravity = -0.3f;
     }
 
-    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
-        sSpeedToggle1 = !sSpeedToggle1;
-    }
-    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
-        sSpeedToggle2 = !sSpeedToggle2;
+    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gSpeedToggle", 0)) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+            gSpeedToggle1 = !gSpeedToggle1;
+        }
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+            gSpeedToggle2 = !gSpeedToggle2;
+        }
     }
 }
 

@@ -166,8 +166,8 @@ extern "C"
 	extern s32 gSystemArenaLogSeverity;
 	extern u8 __osPfsInodeCacheBank;
 	extern s32 __osPfsLastChannel;
-	extern u8 sSpeedToggle1;
-	extern u8 sSpeedToggle2;
+	extern u8 gSpeedToggle1;
+	extern u8 gSpeedToggle2;
 
 	extern const s16 D_8014A6C0[];
 #define gTatumsPerBeat (D_8014A6C0[1])
