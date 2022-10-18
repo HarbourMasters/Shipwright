@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
@@ -24,6 +25,7 @@ class Randomizer {
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseRequiredTrialsFile(const char* spoilerFileName);
+    void ParseMasterQuestDungeonsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
@@ -42,6 +44,7 @@ class Randomizer {
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
     std::unordered_map<RandomizerInf, bool> trialsRequired;
+    std::unordered_set<uint16_t> masterQuestDungeons;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
 
     static Sprite* GetSeedTexture(uint8_t index);
@@ -53,6 +56,7 @@ class Randomizer {
     void LoadMerchantMessages(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     void LoadRequiredTrials(const char* spoilerFileName);
+    void LoadMasterQuestDungeons(const char* spoilerFileName);
     bool IsTrialRequired(RandomizerInf trial);
     void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
