@@ -33,6 +33,7 @@
 #include <libultraship/AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
+#include "Enhancements/sfx-editor/SfxEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -439,6 +440,7 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
