@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include "Utils/BinaryReader.h"
+#include "BinaryReader.h"
 #include "Utils/BinaryWriter.h"
 #include "File.h"
 #include "Lib/tinyxml2/tinyxml2.h"
