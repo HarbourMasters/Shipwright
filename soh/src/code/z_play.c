@@ -716,7 +716,9 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                             }
 
                             // Don't autosave in grottos or cutscenes
-                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
+                            // Also don't save when you first load a file
+                            if (CVar_GetS32("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (globalCtx->gameplayFrames > 60) &&
+                                (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA)) {
                                 Gameplay_PerformSave(globalCtx);
                             }
                         }
@@ -929,7 +931,11 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                     LOG_NUM("1", 1);
                 }
 
-                globalCtx->gameplayFrames++;
+                if (gSaveContext.fileNum == 0xFF) {
+                    globalCtx->gameplayFrames = 0;
+                } else {
+                    globalCtx->gameplayFrames++;
+                }
 
                 func_800AA178(1);
 
