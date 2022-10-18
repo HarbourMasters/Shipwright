@@ -8,6 +8,13 @@
 #define CATEGORY_HUD 3
 #define CATEGORY_MISC 4
 
+#define PATCH_GFX(path, name, cvar, index, instruction) \
+    if (CVar_GetS32(cvar, 0)) { \
+        ResourceMgr_PatchGfxByName(path, name, index, instruction); \
+    } else { \
+        ResourceMgr_UnpatchGfxByName(path, name); \
+    }
+
 typedef struct {
     const std::string Name;
     const std::string ToolTip;
@@ -28,38 +35,39 @@ typedef struct {
 static float TablesCellsWidth = 300.0f;
 static ImGuiTableColumnFlags FlagsTable = ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV;
 static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
-static ImVec4 hearts_colors;       static ImVec4 hearts_dd_colors;        static ImVec4 hearts_ddi_colors;
-static ImVec4 a_btn_colors;        static ImVec4 b_btn_colors;            static ImVec4 c_btn_colors;        static ImVec4 start_btn_colors;
-static ImVec4 c_btn_u_colors;      static ImVec4 c_btn_l_colors;          static ImVec4 c_btn_d_colors;      static ImVec4 c_btn_r_colors;
-static ImVec4 magic_border_colors; static ImVec4 magic_remaining_colors;  static ImVec4 magic_use_colors;
-static ImVec4 minimap_colors;      static ImVec4 dgn_minimap_colors;
-static ImVec4 cp_minimap_colors;   static ImVec4 le_minimap_colors;
-static ImVec4 rupee_colors;        static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
-static ImVec4 fileselect_colors;   static ImVec4 fileselect_text_colors;
-static ImVec4 kokiri_col;          static ImVec4 goron_col;               static ImVec4 zora_col;
-static ImVec4 silvergaunts_col;    static ImVec4 goldengaunts_col;
-static ImVec4 navi_idle_i_col;     static ImVec4 navi_idle_o_col;
-static ImVec4 navi_npc_i_col;      static ImVec4 navi_npc_o_col;
-static ImVec4 navi_enemy_i_col;    static ImVec4 navi_enemy_o_col;
-static ImVec4 navi_prop_i_col;     static ImVec4 navi_prop_o_col;
-static ImVec4 swordtrailtop_col;   static ImVec4 swordtrailbottom_col;
-static ImVec4 boomtrailstart_col;  static ImVec4 boomtrailend_col;
+static ImVec4 hearts_colors;          static ImVec4 hearts_dd_colors;        static ImVec4 hearts_ddi_colors;
+static ImVec4 a_btn_colors;           static ImVec4 b_btn_colors;            static ImVec4 c_btn_colors;        static ImVec4 start_btn_colors;
+static ImVec4 c_btn_u_colors;         static ImVec4 c_btn_l_colors;          static ImVec4 c_btn_d_colors;      static ImVec4 c_btn_r_colors;
+static ImVec4 magic_border_colors;    static ImVec4 magic_remaining_colors;  static ImVec4 magic_use_colors;
+static ImVec4 minimap_colors;         static ImVec4 dgn_minimap_colors;
+static ImVec4 cp_minimap_colors;      static ImVec4 le_minimap_colors;
+static ImVec4 rupee_colors;           static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
+static ImVec4 fileselect_colors;      static ImVec4 fileselect_text_colors;
+static ImVec4 kokiri_col;             static ImVec4 goron_col;               static ImVec4 zora_col;
+static ImVec4 silvergaunts_col;       static ImVec4 goldengaunts_col;
+static ImVec4 mirrorshield_border_col;static ImVec4 mirrorshield_mirror_col; static ImVec4 mirrorshield_emblem_col;
+static ImVec4 navi_idle_i_col;        static ImVec4 navi_idle_o_col;
+static ImVec4 navi_npc_i_col;         static ImVec4 navi_npc_o_col;
+static ImVec4 navi_enemy_i_col;       static ImVec4 navi_enemy_o_col;
+static ImVec4 navi_prop_i_col;        static ImVec4 navi_prop_o_col;
+static ImVec4 swordtrailtop_col;      static ImVec4 swordtrailbottom_col;
+static ImVec4 boomtrailstart_col;     static ImVec4 boomtrailend_col;
 static ImVec4 bombtrail_col;           
 static ImVec4 crtfilter;
-static ImVec4 normalarrow_col;     static ImVec4 firearrow_col;           static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
-static ImVec4 normalarrow_colenv;  static ImVec4 firearrow_colenv;        static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
-static ImVec4 charged1_col;        static ImVec4 charged2_col;
-static ImVec4 charged1_colenv;     static ImVec4 charged2_colenv;
-static ImVec4 Keese1_primcol;      static ImVec4 Keese2_primcol;
-static ImVec4 Keese1_envcol;       static ImVec4 Keese2_envcol;
-static ImVec4 doggo1col;           static ImVec4 doggo2col;
-static ImVec4 df_col;              static ImVec4 df_colenv;
-static ImVec4 nl_diam_col;         static ImVec4 nl_diam_colenv;
-static ImVec4 nl_orb_col;          static ImVec4 nl_orb_colenv;
-static ImVec4 tc_ou_colors;        static ImVec4 tc_bu_colors;
+static ImVec4 normalarrow_col;        static ImVec4 firearrow_col;           static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
+static ImVec4 normalarrow_colenv;     static ImVec4 firearrow_colenv;        static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
+static ImVec4 charged1_col;           static ImVec4 charged2_col;
+static ImVec4 charged1_colenv;        static ImVec4 charged2_colenv;
+static ImVec4 Keese1_primcol;         static ImVec4 Keese2_primcol;
+static ImVec4 Keese1_envcol;          static ImVec4 Keese2_envcol;
+static ImVec4 doggo1col;              static ImVec4 doggo2col;
+static ImVec4 df_col;                 static ImVec4 df_colenv;
+static ImVec4 nl_diam_col;            static ImVec4 nl_diam_colenv;
+static ImVec4 nl_orb_col;             static ImVec4 nl_orb_colenv;
+static ImVec4 tc_ou_colors;           static ImVec4 tc_bu_colors;
 static ImVec4 dpad_colors;
 static ImVec4 visualagony_colors;
-static ImVec4 tc_fire_colors;      static ImVec4 tc_fire_colors_env; 
+static ImVec4 tc_fire_colors;         static ImVec4 tc_fire_colors_env; 
 /*ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
@@ -95,6 +103,11 @@ static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic 
 //Gauntlet colors
 static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
 static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
+
+//Mirror Shield colors
+static CosmeticsColorIndividual MirrorShieldBorder = { "Mirror Shield Border", "Affects Mirror Shield Border color", "gMirrorShield_Border", mirrorshield_border_col, ImVec4(215,   0,   0, 255), false, false, true };
+static CosmeticsColorIndividual MirrorShieldMirror = { "Mirror Shield Mirror", "Affects Mirror Shield Mirror color", "gMirrorShield_Mirror", mirrorshield_mirror_col, ImVec4(255, 255, 255, 255), false, false, true };
+static CosmeticsColorIndividual MirrorShieldEmblem = { "Mirror Shield Emblem", "Affects Mirror Shield Emblem color", "gMirrorShield_Emblem", mirrorshield_emblem_col, ImVec4(205, 225, 255, 255), false, false, true };
 
 //Arrows (Fire -> Ice -> Light)
 static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };
@@ -216,6 +229,11 @@ static CosmeticsColorSection Tunics_Section[] = {
 static CosmeticsColorSection Gauntlets_Section[] = {
     { &SilverGauntlets, false, false },
     { &GoldenGauntlets, true, false },
+};
+static CosmeticsColorSection MirrorShield_Section[] = {
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
 };
 static CosmeticsColorSection Arrows_section[] = {
     { &Normal_Arrow_Prim, false, false },
@@ -354,6 +372,9 @@ static CosmeticsColorSection Everything_Section[] = {
     { &ZoraTunic, true, false },
     { &SilverGauntlets, true, false },
     { &GoldenGauntlets, true, false },
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
     { &Normal_Arrow_Prim, false, false },
     { &Normal_Arrow_Env, true, false },
     { &Fire_Arrow_Prim, false, true },
@@ -466,6 +487,11 @@ static CosmeticsColorSection AllItemsSkills_section[]{
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
+    { &SilverGauntlets, true, false },
+    { &GoldenGauntlets, true, false },
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
     { &Normal_Arrow_Prim, false, false },
     { &Normal_Arrow_Env, true, false },
     { &Fire_Arrow_Prim, false, true },

@@ -8,8 +8,8 @@ namespace Ship
 
         ResourceFile::ParseFileBinary(reader, limb);
 
-        limb->limbType = (LimbType)reader->ReadByte();
-        limb->skinSegmentType = (ZLimbSkinType)reader->ReadByte();
+        limb->limbType = (LimbType)reader->ReadInt8();
+        limb->skinSegmentType = (ZLimbSkinType)reader->ReadInt8();
         limb->skinDList = reader->ReadString();
 
         limb->skinVtxCnt = reader->ReadUInt16();
@@ -30,9 +30,9 @@ namespace Ship
                 struc2.unk_0 = reader->ReadInt16();
                 struc2.unk_2 = reader->ReadInt16();
                 struc2.unk_4 = reader->ReadInt16();
-                struc2.unk_6 = reader->ReadByte();
-                struc2.unk_7 = reader->ReadByte();
-                struc2.unk_8 = reader->ReadByte();
+                struc2.unk_6 = reader->ReadInt8();
+                struc2.unk_7 = reader->ReadInt8();
+                struc2.unk_8 = reader->ReadInt8();
                 struc2.unk_9 = reader->ReadUByte();
 
                 struc.unk_8_arr.push_back(struc2);
@@ -58,9 +58,9 @@ namespace Ship
 
         limb->skinDList2 = reader->ReadString();
 
-        limb->legTransX = reader->ReadSingle();
-        limb->legTransY = reader->ReadSingle();
-        limb->legTransZ = reader->ReadSingle();
+        limb->legTransX = reader->ReadFloat();
+        limb->legTransY = reader->ReadFloat();
+        limb->legTransZ = reader->ReadFloat();
         
         limb->rotX = reader->ReadUInt16();
         limb->rotY = reader->ReadUInt16();

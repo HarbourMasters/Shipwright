@@ -55,7 +55,7 @@ static const char* GetGameVersionString() {
                 return "IQUE_TW";
             case OOT_IQUE_CN:
                 return "IQUE_CN";
-            case OOT_UNKNOWN:
+            case UNKNOWN:
                 return "UNKNOWN";
         }
 
