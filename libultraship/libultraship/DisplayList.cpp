@@ -10,7 +10,7 @@ namespace Ship
 		ResourceFile::ParseFileBinary(reader, res);
 
 		while (reader->GetBaseAddress() % 8 != 0)
-			reader->ReadByte();
+			reader->ReadInt8();
 
 		while (true)
 		{

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <vector>
 #include "../../../include/ultra64.h"
@@ -25,6 +26,7 @@ class Randomizer {
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseRequiredTrialsFile(const char* spoilerFileName);
+    void ParseMasterQuestDungeonsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
     GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
@@ -42,6 +44,7 @@ class Randomizer {
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
     std::unordered_map<RandomizerInf, bool> trialsRequired;
+    std::unordered_set<uint16_t> masterQuestDungeons;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
     std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
 
@@ -55,6 +58,7 @@ class Randomizer {
     void LoadMerchantMessages(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     void LoadRequiredTrials(const char* spoilerFileName);
+    void LoadMasterQuestDungeons(const char* spoilerFileName);
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
