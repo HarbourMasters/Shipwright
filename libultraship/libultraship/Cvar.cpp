@@ -189,46 +189,54 @@ void CVar_LoadLegacy() {
     }
 }
 
-
-extern "C" void CVar_Load() {
-    std::shared_ptr<Mercury> pConf = Ship::Window::GetInstance()->GetConfig();
-    pConf->reload();
-
-    for (const auto& item : pConf->rjson["CVars"].items()) {
+extern "C" void CVar_LoadFromPath(std::string path, nlohmann::detail::iteration_proxy<nlohmann::detail::iter_impl<nlohmann::json>> items) {
+    if (!path.empty()) path += ".";
+    for (const auto& item : items) {
+        std::string itemPath = path + item.key();
         auto value = item.value();
         switch (value.type()) {
         case nlohmann::detail::value_t::array:
             break;
         case nlohmann::detail::value_t::object:
-            if (value["Type"].get<std::string>() == mercuryRGBAObjectType) {
+            if (value.contains("Type") && value["Type"].get<std::string>() == mercuryRGBAObjectType) {
                 Color_RGBA8 clr;
                 clr.r = value["R"].get<uint8_t>();
                 clr.g = value["G"].get<uint8_t>();
                 clr.b = value["B"].get<uint8_t>();
                 clr.a = value["A"].get<uint8_t>();
-                CVar_SetRGBA(item.key().c_str(), clr);
+                CVar_SetRGBA(itemPath.c_str(), clr);
             }
+
+            CVar_LoadFromPath(itemPath, value.items());
 
             break;
         case nlohmann::detail::value_t::string:
-            CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
+            CVar_SetString(itemPath.c_str(), value.get<std::string>().c_str());
             break;
         case nlohmann::detail::value_t::boolean:
-            CVar_SetS32(item.key().c_str(), value.get<bool>());
+            CVar_SetS32(itemPath.c_str(), value.get<bool>());
             break;
         case nlohmann::detail::value_t::number_unsigned:
         case nlohmann::detail::value_t::number_integer:
-            CVar_SetS32(item.key().c_str(), value.get<int>());
+            CVar_SetS32(itemPath.c_str(), value.get<int>());
             break;
         case nlohmann::detail::value_t::number_float:
-            CVar_SetFloat(item.key().c_str(), value.get<float>());
+            CVar_SetFloat(itemPath.c_str(), value.get<float>());
             break;
         default:;
         }
-        if (item.key() == "gOpenMenuBar") {
+        if (itemPath == "gOpenMenuBar") {
             int bp = 0;
         }
     }
+}
+
+
+extern "C" void CVar_Load() {
+    std::shared_ptr<Mercury> pConf = Ship::Window::GetInstance()->GetConfig();
+    pConf->reload();
+
+    CVar_LoadFromPath("", pConf->rjson["CVars"].items());
 
     CVar_LoadLegacy();
 }

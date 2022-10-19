@@ -747,28 +747,16 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #endif
 
     Color_RGB8 sTemp;
-    Color_RGB8 sOriginalTunicColors[] = {
-        { 30, 105, 27 },
-        { 100, 20, 0 },
-        { 0, 60, 100 },
-    };
-    color = &sTemp;
-    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Kokiri", sTunicColors[PLAYER_TUNIC_KOKIRI]);
-    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Goron", sTunicColors[PLAYER_TUNIC_GORON]);
-    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Zora", sTunicColors[PLAYER_TUNIC_ZORA]);
-    } else if (!CVar_GetS32("gUseTunicsCol",0)){
-        if (tunic >= 3) {
-            color->r = sOriginalTunicColors[0].r;
-            color->g = sOriginalTunicColors[0].g;
-            color->b = sOriginalTunicColors[0].b;
-        } else {
-            color->r = sOriginalTunicColors[tunic].r;
-            color->g = sOriginalTunicColors[tunic].g;
-            color->b = sOriginalTunicColors[tunic].b;   
-        }
+    color = &sTunicColors[tunic];
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gCosmetics.Link_KokiriTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_KokiriTunic", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gCosmetics.Link_GoronTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_GoronTunic", sTunicColors[PLAYER_TUNIC_GORON]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gCosmetics.Link_ZoraTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_ZoraTunic", sTunicColors[PLAYER_TUNIC_ZORA]);
+        color = &sTemp;
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
@@ -784,14 +772,14 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
             if (strengthUpgrade >= 2) { // silver or gold gauntlets
                 gDPPipeSync(POLY_OPA_DISP++);
 
-                if (!CVar_GetS32("gUseGauntletsCol", 0)) {
-                    color = &sGauntletColors[strengthUpgrade - 2];
-                } else if (strengthUpgrade == PLAYER_STR_SILVER_G) {
-                    *color = CVar_GetRGB("gGauntlets_Silver", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
-                } else if (strengthUpgrade == PLAYER_STR_GOLD_G) {
-                    *color = CVar_GetRGB("gGauntlets_Golden", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                color = &sGauntletColors[strengthUpgrade - 2];
+                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVar_GetS32("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_SilverGauntlets", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                    color = &sTemp;
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVar_GetS32("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_GoldenGauntlets", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                    color = &sTemp;
                 }
-                
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
@@ -959,6 +947,15 @@ s32 func_8008FCC8(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
 
         if (limbIndex == PLAYER_LIMB_HEAD) {
+            if (CVar_GetS32("gCosmetics.Link_HeadScale.Changed", 0)) {
+                f32 scale = CVar_GetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                if (scale > 1.2f) {
+                    Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+                } else if (scale < 1.0f) {
+                    Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+                }
+            }
             rot->x += this->unk_6BA;
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
