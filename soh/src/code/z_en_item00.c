@@ -1337,21 +1337,19 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, GetI
     Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
     Vec3f pos;
 
-    // velocity.x = Rand_CenteredFloat(3.0f);
-    // velocity.z = Rand_CenteredFloat(3.0f);
-    velocity.y = -0.05f;
-    accel.y = -0.025f;
-    pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
+    velocity.y = -0.00f;
+    accel.y = -0.0f;
+    pos.x = Rand_CenteredFloat(15.0f) + Parent->world.pos.x;
     // Shop items are rendered at a different height than the rest, so a different y offset is required
     if (Parent->id == ACTOR_EN_GIRLA) {
-        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 5;
+        pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 3;
     } else {
-        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+        pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 25;
     }
-    pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+    pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
 
 
-    EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
+    EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
 }
 
 /**

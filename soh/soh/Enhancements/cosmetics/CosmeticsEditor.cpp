@@ -12,7 +12,12 @@
 extern "C" {
 #include <z64.h>
 #include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_link_child/object_link_child.h"
 #include "objects/object_gi_shield_3/object_gi_shield_3.h"
+#include "objects/object_gi_heart/object_gi_heart.h"
+#include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_sword_1/object_gi_sword_1.h"
+#include "objects/object_gi_longsword/object_gi_longsword.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 }
@@ -222,6 +227,114 @@ void ApplyOrResetCustomGfxPatches() {
     PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 222, gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
     PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 190, gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
     PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 266, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    // Sword Blades
+    Color_RGB8 kokiriSwordDefaultColor = {KokiriSwordBlade.DefaultColor.w, KokiriSwordBlade.DefaultColor.x, KokiriSwordBlade.DefaultColor.y};
+    Color_RGB8 kokiriSword = CVar_GetRGB(KokiriSwordBlade.CvarName.c_str(), kokiriSwordDefaultColor);
+    Color_RGB8 masterSwordDefaultColor = {MasterSwordBlade.DefaultColor.w, MasterSwordBlade.DefaultColor.x, MasterSwordBlade.DefaultColor.y};
+    Color_RGB8 masterSword = CVar_GetRGB(MasterSwordBlade.CvarName.c_str(), masterSwordDefaultColor);
+    Color_RGB8 biggoronSwordDefaultColor = {BiggoronSwordBlade.DefaultColor.w, BiggoronSwordBlade.DefaultColor.x, BiggoronSwordBlade.DefaultColor.y};
+    Color_RGB8 biggoronSword = CVar_GetRGB(BiggoronSwordBlade.CvarName.c_str(), biggoronSwordDefaultColor);
+    PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "CosmeticsEditor_kokiri1", "gUseSwordBladeColors",   158, gsDPSetPrimColor(0, 0, kokiriSword.r, kokiriSword.g, kokiriSword.b, 255));
+    PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "CosmeticsEditor_kokiri2", "gUseSwordBladeColors",   150, gsDPSetPrimColor(0, 0, kokiriSword.r, kokiriSword.g, kokiriSword.b, 255));
+    PATCH_GFX(gGiKokiriSwordDL,                               "CosmeticsEditor_kokiri3", "gUseSwordBladeColors",   10,  gsDPSetPrimColor(0, 0, kokiriSword.r, kokiriSword.g, kokiriSword.b, 255));
+    PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "CosmeticsEditor_master1", "gUseSwordBladeColors",   120, gsDPSetPrimColor(0, 0, masterSword.r, masterSword.g, masterSword.b, 255));
+    PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "CosmeticsEditor_master2", "gUseSwordBladeColors",   34,  gsDPSetPrimColor(0, 0, masterSword.r, masterSword.g, masterSword.b, 255));
+    PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "CosmeticsEditor_biggoron1","gUseSwordBladeColors",  126, gsDPSetPrimColor(0, 0, biggoronSword.r, biggoronSword.g, biggoronSword.b, 255));
+    PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "CosmeticsEditor_biggoron2","gUseSwordBladeColors",  216, gsDPSetPrimColor(0, 0, biggoronSword.r, biggoronSword.g, biggoronSword.b, 255));
+    PATCH_GFX(gGiBiggoronSwordDL,                             "CosmeticsEditor_biggoron3","gUseSwordBladeColors",  10,  gsDPSetPrimColor(0, 0, biggoronSword.r, biggoronSword.g, biggoronSword.b, 255));
+    // Hearts and DD
+    Color_RGB8 heartsDefaultColor = {Hearts_NInner.DefaultColor.w, Hearts_NInner.DefaultColor.x, Hearts_NInner.DefaultColor.y};
+    Color_RGB8 hearts = CVar_GetRGB(Hearts_NInner.CvarName.c_str(), heartsDefaultColor);
+    PATCH_GFX(gGiRecoveryHeartDL,                             "CosmeticsEditor_Heart",   "gUseLinkColors",         10,  gsDPSetPrimColor(0, 0, hearts.r, hearts.g, hearts.b, 255));
+    PATCH_GFX(gGiRecoveryHeartDL,                             "CosmeticsEditor_Heart2",  "gUseLinkColors",         4,   gsDPSetEnvColor(hearts.r, hearts.g, hearts.b, 255));
+    PATCH_GFX(gGiHeartContainerDL,                            "CosmeticsEditor_Heart",   "gUseLinkColors",         4,   gsDPSetPrimColor(0, 0, hearts.r, hearts.g, hearts.b, 255));
+    PATCH_GFX(gGiHeartContainerDL,                            "CosmeticsEditor_Heart2",  "gUseLinkColors",         12,  gsDPSetEnvColor(hearts.r, hearts.g, hearts.b, 255));
+    PATCH_GFX(gGiHeartPieceDL,                                "CosmeticsEditor_Heart",   "gUseLinkColors",         4,   gsDPSetPrimColor(0, 0, hearts.r, hearts.g, hearts.b, 255));
+    PATCH_GFX(gGiHeartPieceDL,                                "CosmeticsEditor_Heart2",  "gUseLinkColors",         12,  gsDPSetEnvColor(hearts.r, hearts.g, hearts.b, 255));
+    // Hair
+    Color_RGB8 hairDefaultColor = {Hair.DefaultColor.w, Hair.DefaultColor.x, Hair.DefaultColor.y};
+    Color_RGB8 hair = CVar_GetRGB(Hair.CvarName.c_str(), hairDefaultColor);
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Hair1",   "gUseLinkColors",         20,  gDPSetGrayscaleColor(hair.r, hair.g, hair.b, 255));
+    PATCH_GFX(gLinkChildHeadFarDL,                            "CosmeticsEditor_Hair2",   "gUseLinkColors",         20,  gDPSetGrayscaleColor(hair.r, hair.g, hair.b, 255));
+    PATCH_GFX(gLinkAdultHeadNearDL,                           "CosmeticsEditor_Hair1",   "gUseLinkColors",         20,  gDPSetGrayscaleColor(hair.r, hair.g, hair.b, 255));
+    PATCH_GFX(gLinkAdultHeadFarDL,                            "CosmeticsEditor_Hair2",   "gUseLinkColors",         20,  gDPSetGrayscaleColor(hair.r, hair.g, hair.b, 255));
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Hair3",   "gUseLinkColors",         92,  gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Hair4",   "gUseLinkColors",         108, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Hair5",   "gUseLinkColors",         272, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Hair6",   "gUseLinkColors",         324, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildHeadFarDL,                            "CosmeticsEditor_Hair7",   "gUseLinkColors",         202, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildHeadFarDL,                            "CosmeticsEditor_Hair8",   "gUseLinkColors",         236, gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultHeadNearDL,                           "CosmeticsEditor_Hair3",   "gUseLinkColors",         250, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultHeadNearDL,                           "CosmeticsEditor_Hair4",   "gUseLinkColors",         318, gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultHeadFarDL,                            "CosmeticsEditor_Hair3",   "gUseLinkColors",         204, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultHeadFarDL,                            "CosmeticsEditor_Hair4",   "gUseLinkColors",         244, gsDPGrayscale(false));
+    // Boots
+    Color_RGB8 bootsDefaultColor = {Boots.DefaultColor.w, Boots.DefaultColor.x, Boots.DefaultColor.y};
+    Color_RGB8 boots = CVar_GetRGB(Boots.CvarName.c_str(), bootsDefaultColor);
+    PATCH_GFX(gLinkChildRightShinNearDL,                      "CosmeticsEditor_Boots1",  "gUseLinkColors",         20,  gDPSetGrayscaleColor(boots.r, boots.g, boots.b, 255));
+    PATCH_GFX(gLinkChildRightShinFarDL,                       "CosmeticsEditor_Boots2",  "gUseLinkColors",         20,  gDPSetGrayscaleColor(boots.r, boots.g, boots.b, 255));
+    PATCH_GFX(gLinkAdultRightLegNearDL,                       "CosmeticsEditor_Boots1",  "gUseLinkColors",         20,  gDPSetGrayscaleColor(boots.r, boots.g, boots.b, 255));
+    PATCH_GFX(gLinkAdultRightLegFarDL,                        "CosmeticsEditor_Boots2",  "gUseLinkColors",         20,  gDPSetGrayscaleColor(boots.r, boots.g, boots.b, 255));
+    PATCH_GFX(gLinkChildRightShinNearDL,                      "CosmeticsEditor_Boots3",  "gUseLinkColors",         106, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildRightShinNearDL,                      "CosmeticsEditor_Boots4",  "gUseLinkColors",         138, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildRightShinFarDL,                       "CosmeticsEditor_Boots5",  "gUseLinkColors",         104, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildRightShinFarDL,                       "CosmeticsEditor_Boots6",  "gUseLinkColors",         122, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildLeftShinNearDL,                       "CosmeticsEditor_Boots7",  "gUseLinkColors",         106, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildLeftShinNearDL,                       "CosmeticsEditor_Boots8",  "gUseLinkColors",         138, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildLeftShinFarDL,                        "CosmeticsEditor_Boots9",  "gUseLinkColors",         104, gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildLeftShinFarDL,                        "CosmeticsEditor_Boots10", "gUseLinkColors",         122, gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildRightFootNearDL,                      "CosmeticsEditor_Boots11", "gUseLinkColors",         60,  gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildRightFootFarDL,                       "CosmeticsEditor_Boots12", "gUseLinkColors",         60,  gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildLeftFootNearDL,                       "CosmeticsEditor_Boots13", "gUseLinkColors",         60,  gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildLeftFootFarDL,                        "CosmeticsEditor_Boots14", "gUseLinkColors",         60,  gsDPGrayscale(true));
+    PATCH_GFX(gLinkChildLeftThighNearDL,                      "CosmeticsEditor_Boots15", "gUseLinkColors",         20,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildLeftThighFarDL,                       "CosmeticsEditor_Boots16", "gUseLinkColors",         20,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildHeadNearDL,                           "CosmeticsEditor_Boots17", "gUseLinkColors",         40,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkChildHeadFarDL,                            "CosmeticsEditor_Boots18", "gUseLinkColors",         40,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultRightLegNearDL,                       "CosmeticsEditor_Boots11", "gUseLinkColors",         114, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultRightLegFarDL,                        "CosmeticsEditor_Boots12", "gUseLinkColors",         104, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultLeftLegNearDL,                        "CosmeticsEditor_Boots13", "gUseLinkColors",         114, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultLeftLegFarDL,                         "CosmeticsEditor_Boots14", "gUseLinkColors",         104, gsDPGrayscale(true));
+    PATCH_GFX(gLinkAdultLeftThighNearDL,                      "CosmeticsEditor_Boots15", "gUseLinkColors",         20,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultLeftThighFarDL,                       "CosmeticsEditor_Boots16", "gUseLinkColors",         20,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultHeadNearDL,                           "CosmeticsEditor_Boots17", "gUseLinkColors",         40,  gsDPGrayscale(false));
+    PATCH_GFX(gLinkAdultHeadFarDL,                            "CosmeticsEditor_Boots18", "gUseLinkColors",         40,  gsDPGrayscale(false));
+    // Linens
+    Color_RGB8 linensDefaultColor = {Linens.DefaultColor.w, Linens.DefaultColor.x, Linens.DefaultColor.y};
+    Color_RGB8 linens = CVar_GetRGB(Linens.CvarName.c_str(), linensDefaultColor);
+    PATCH_GFX(gLinkAdultLeftArmNearDL,                        "CosmeticsEditor_linens1", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftArmNearDL,                        "CosmeticsEditor_linens2", "gUseLinkColors",         80,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftArmNearDL,                        "CosmeticsEditor_linens3", "gUseLinkColors",         166, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "CosmeticsEditor_linens3", "gUseLinkColors",         50,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "CosmeticsEditor_linens2", "gUseLinkColors",         90,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftArmFarDL,                         "CosmeticsEditor_linens3", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftArmFarDL,                         "CosmeticsEditor_linens2", "gUseLinkColors",         70,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftArmFarDL,                         "CosmeticsEditor_linens3", "gUseLinkColors",         140, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftArmFarDL,                         "CosmeticsEditor_linens2", "gUseLinkColors",         154, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultRightArmFarDL,                        "CosmeticsEditor_linens3", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightArmFarDL,                        "CosmeticsEditor_linens2", "gUseLinkColors",         70,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultRightArmFarDL,                        "CosmeticsEditor_linens3", "gUseLinkColors",         140, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightArmFarDL,                        "CosmeticsEditor_linens2", "gUseLinkColors",         154, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultRightArmNearDL,                       "CosmeticsEditor_linens4", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightArmNearDL,                       "CosmeticsEditor_linens5", "gUseLinkColors",         84,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftShoulderFarDL,                    "CosmeticsEditor_linens6", "gUseLinkColors",         110, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftShoulderNearDL,                   "CosmeticsEditor_linens6", "gUseLinkColors",         114, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightShoulderNearDL,                  "CosmeticsEditor_linens7", "gUseLinkColors",         114, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightShoulderFarDL,                   "CosmeticsEditor_linens7", "gUseLinkColors",         110, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultTorsoNearDL,                          "CosmeticsEditor_linens8", "gUseLinkColors",         132, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultTorsoFarDL,                           "CosmeticsEditor_linens8", "gUseLinkColors",         114, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightThighNearDL,                     "CosmeticsEditor_linens8", "gUseLinkColors",         106, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftThighNearDL,                      "CosmeticsEditor_linens8", "gUseLinkColors",         106, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightThighFarDL,                      "CosmeticsEditor_linens8", "gUseLinkColors",         108, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftThighFarDL,                       "CosmeticsEditor_linens8", "gUseLinkColors",         108, gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightLegNearDL,                       "CosmeticsEditor_linens8", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightLegNearDL,                       "CosmeticsEditor_linens8", "gUseLinkColors",         86,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftLegNearDL,                        "CosmeticsEditor_linens8", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftLegNearDL,                        "CosmeticsEditor_linens8", "gUseLinkColors",         86,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultRightLegFarDL,                        "CosmeticsEditor_linens8", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultRightLegFarDL,                        "CosmeticsEditor_linens8", "gUseLinkColors",         76,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+    PATCH_GFX(gLinkAdultLeftLegFarDL,                         "CosmeticsEditor_linens8", "gUseLinkColors",         60,  gsDPSetPrimColor(0, 0, linens.r, linens.g, linens.b, 255));
+    PATCH_GFX(gLinkAdultLeftLegFarDL,                         "CosmeticsEditor_linens8", "gUseLinkColors",         76,  gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
 }
 
 void Table_InitHeader(bool has_header = true) {
@@ -401,6 +514,8 @@ bool DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
             CVar_SetS32("gUseKeeseCol", 1);
             CVar_SetS32("gUseDogsCol", 1);
             CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseLinkColors", 1);
+            CVar_SetS32("gUseSwordBladeColors", 1);
             CVar_SetS32("gUseMirrorShieldColors", 1);
             CVar_SetS32("gUseGauntletsCol", 1);
             CVar_SetS32("gUseArrowsCol", 1);
@@ -465,6 +580,25 @@ void Draw_ItemsSkills(){
     if (DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section))) {
         ApplyOrResetCustomGfxPatches();
     };
+    if (UIWidgets::EnhancementCheckbox("Custom link colors", "gUseLinkColors")) {
+        ApplyOrResetCustomGfxPatches();
+    }
+    UIWidgets::Tooltip("Enable/Disable custom Link's related colors\nIf disabled you will have original colors for Link.");
+    if (CVar_GetS32("gUseLinkColors",0)) {
+        if (DrawRandomizeResetButton("Link's colors", Link_Section, SECTION_SIZE(Link_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
+    };
+    if (CVar_GetS32("gUseLinkColors",0) && ImGui::BeginTable("tableLinkColors", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Hair", FlagsCell, TablesCellsWidth/3);
+        ImGui::TableSetupColumn("Boots", FlagsCell, TablesCellsWidth/3);
+        ImGui::TableSetupColumn("Linens", FlagsCell, TablesCellsWidth/3);
+        Table_InitHeader();
+        if (DrawColorSection(Link_Section, SECTION_SIZE(Link_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
+        ImGui::EndTable();
+    }
     UIWidgets::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
     UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0)) {
@@ -479,17 +613,45 @@ void Draw_ItemsSkills(){
         ImGui::EndTable();
     }
 
-    UIWidgets::EnhancementCheckbox("Custom gauntlets color", "gUseGauntletsCol");
+    if (UIWidgets::EnhancementCheckbox("Custom gauntlets color", "gUseGauntletsCol")) {
+        ApplyOrResetCustomGfxPatches();
+    }
     UIWidgets::Tooltip(
         "Enable/Disable custom Link's gauntlets colors\nIf disabled you will have original colors for Link's gauntlets.");
     if (CVar_GetS32("gUseGauntletsCol", 0)) {
-        DrawRandomizeResetButton("Link's gauntlets", Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+        if (DrawRandomizeResetButton("Link's gauntlets", Gauntlets_Section, SECTION_SIZE(Gauntlets_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
     };
-    if (CVar_GetS32("gUseGauntletsCol", 0) && ImGui::BeginTable("tableGauntlets", 2, FlagsTable)) {
-        ImGui::TableSetupColumn("Silver Gauntlets", FlagsCell, TablesCellsWidth / 2);
-        ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 2);
+    if (CVar_GetS32("gUseGauntletsCol", 0) && ImGui::BeginTable("tableGauntlets", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Goron Bracelet", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Silver Gauntlets", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 3);
         Table_InitHeader();
-        DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+        if (DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
+        ImGui::EndTable();
+    }
+
+    if (UIWidgets::EnhancementCheckbox("Custom sword blade colors", "gUseSwordBladeColors")) {
+        ApplyOrResetCustomGfxPatches();
+    }
+    UIWidgets::Tooltip(
+        "Enable/Disable custom sword blade colors\nIf disabled you will have original colors for sword blades.");
+    if (CVar_GetS32("gUseSwordBladeColors", 0)) {
+        if (DrawRandomizeResetButton("Sword Blades", SwordBlade_Section, SECTION_SIZE(SwordBlade_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
+    };
+    if (CVar_GetS32("gUseSwordBladeColors", 0) && ImGui::BeginTable("tableSwordBlades", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 3);
+        Table_InitHeader();
+        if (DrawColorSection(SwordBlade_Section, SECTION_SIZE(SwordBlade_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
         ImGui::EndTable();
     }
 

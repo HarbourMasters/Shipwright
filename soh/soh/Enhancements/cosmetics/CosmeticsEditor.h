@@ -43,8 +43,10 @@ static ImVec4 minimap_colors;         static ImVec4 dgn_minimap_colors;
 static ImVec4 cp_minimap_colors;      static ImVec4 le_minimap_colors;
 static ImVec4 rupee_colors;           static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
 static ImVec4 fileselect_colors;      static ImVec4 fileselect_text_colors;
+static ImVec4 hair_col;               static ImVec4 boots_col;               static ImVec4 linens_col;
 static ImVec4 kokiri_col;             static ImVec4 goron_col;               static ImVec4 zora_col;
-static ImVec4 silvergaunts_col;       static ImVec4 goldengaunts_col;
+static ImVec4 goronbracelet_col;      static ImVec4 silvergaunts_col;        static ImVec4 goldengaunts_col;
+static ImVec4 kokiriswordblade_col;   static ImVec4 masterswordblade_col;    static ImVec4 biggoronswordblade_col;
 static ImVec4 mirrorshield_border_col;static ImVec4 mirrorshield_mirror_col; static ImVec4 mirrorshield_emblem_col;
 static ImVec4 navi_idle_i_col;        static ImVec4 navi_idle_o_col;
 static ImVec4 navi_npc_i_col;         static ImVec4 navi_npc_o_col;
@@ -95,14 +97,25 @@ static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects t
 static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
+//Link colors
+static CosmeticsColorIndividual Hair = { "Hair", "Affects Link's hair color", "gCCHairColor", hair_col, ImVec4(255,255,255,0), false, false, false };
+static CosmeticsColorIndividual Boots = { "Boots", "Affects Link's boot color", "gCCBootColor", boots_col, ImVec4(255,255,255,0), false, false, false };
+static CosmeticsColorIndividual Linens = { "Linens", "Affects Link's linen color", "gCCLinensColor", linens_col, ImVec4(255,255,255,0), false, false, false };
+
 //Tunic colors
 static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
 static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
 static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
 
 //Gauntlet colors
+static CosmeticsColorIndividual GoronBracelet = { "Goron Bracelet", "Affects Goron Bracelet color", "gGorons_Bracelet", goronbracelet_col, ImVec4(254, 207, 15, 255), false, false, true };
 static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
 static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
+
+//Blade colors
+static CosmeticsColorIndividual KokiriSwordBlade = { "KokiriSwordBlade", "Affects KokiriSwordBlade color", "gKokiriSwordBlade", kokiriswordblade_col, ImVec4(254, 207, 15, 255), false, false, true };
+static CosmeticsColorIndividual MasterSwordBlade = { "MasterSwordBlade", "Affects MasterSwordBlade color", "gMasterSwordBlade", masterswordblade_col, ImVec4(254, 207, 15, 255), false, false, true };
+static CosmeticsColorIndividual BiggoronSwordBlade = { "BiggoronSwordBlade", "Affects BiggoronSwordBlade color", "gBiggoronSwordBlade", biggoronswordblade_col, ImVec4(254, 207, 15, 255), false, false, true };
 
 //Mirror Shield colors
 static CosmeticsColorIndividual MirrorShieldBorder = { "Mirror Shield Border", "Affects Mirror Shield Border color", "gMirrorShield_Border", mirrorshield_border_col, ImVec4(215,   0,   0, 255), false, false, true };
@@ -221,14 +234,25 @@ static CosmeticsColorSection Dogs_Section[] = {
     { &DogN1, false, false },
     { &DogN2, true, false }
 };
+static CosmeticsColorSection Link_Section[] = {
+    { &Hair, false, false },
+    { &Boots, true, false },
+    { &Linens, true, false },
+};
 static CosmeticsColorSection Tunics_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false }
 };
 static CosmeticsColorSection Gauntlets_Section[] = {
-    { &SilverGauntlets, false, false },
+    { &GoronBracelet, false, false },
+    { &SilverGauntlets, true, false },
     { &GoldenGauntlets, true, false },
+};
+static CosmeticsColorSection SwordBlade_Section[] = {
+    { &KokiriSwordBlade, false, false },
+    { &MasterSwordBlade, true, false },
+    { &BiggoronSwordBlade, true, false },
 };
 static CosmeticsColorSection MirrorShield_Section[] = {
     { &MirrorShieldBorder, false, false },
@@ -367,11 +391,18 @@ static CosmeticsColorSection Everything_Section[] = {
     { &Keese2_env, true, false },
     { &DogN1, false, false },
     { &DogN2, true, false },
+    { &Hair, false, false },
+    { &Boots, false, false },
+    { &Linens, false, false },
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
+    { &GoronBracelet, true, false },
     { &SilverGauntlets, true, false },
     { &GoldenGauntlets, true, false },
+    { &KokiriSwordBlade, false, false },
+    { &MasterSwordBlade, true, false },
+    { &BiggoronSwordBlade, true, false },
     { &MirrorShieldBorder, false, false },
     { &MirrorShieldMirror, true, false },
     { &MirrorShieldEmblem, true, false },
@@ -484,11 +515,18 @@ static CosmeticsColorSection NPCs_section[]{
     { &DogN2, true, false }
 };
 static CosmeticsColorSection AllItemsSkills_section[]{
+    { &Hair, false, false },
+    { &Boots, false, false },
+    { &Linens, false, false },
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
+    { &GoronBracelet, true, false },
     { &SilverGauntlets, true, false },
     { &GoldenGauntlets, true, false },
+    { &KokiriSwordBlade, false, false },
+    { &MasterSwordBlade, true, false },
+    { &BiggoronSwordBlade, true, false },
     { &MirrorShieldBorder, false, false },
     { &MirrorShieldMirror, true, false },
     { &MirrorShieldEmblem, true, false },
