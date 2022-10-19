@@ -2178,12 +2178,16 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
             switch (actorParams) {
                 case 14342:
                     specialRc = RC_TOT_LEFT_GOSSIP_STONE;
+                    break;
                 case 14599:
                     specialRc = RC_TOT_LEFT_CENTER_GOSSIP_STONE;
+                    break;
                 case 14862:
                     specialRc = RC_TOT_RIGHT_CENTER_GOSSIP_STONE;
+                    break;
                 case 15120:
                     specialRc = RC_TOT_RIGHT_GOSSIP_STONE;
+                    break;
             }
             break;
         case SCENE_SPOT01:
@@ -2214,6 +2218,12 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 case 14849:
                 case 14337:
                     specialRc = RC_FAIRY_GOSSIP_STONE;
+            }
+            break;
+        case SCENE_DDAN:
+            // special case for MQ DC Gossip Stone
+            if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
+                specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
     }
