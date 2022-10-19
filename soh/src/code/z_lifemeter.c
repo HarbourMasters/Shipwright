@@ -125,14 +125,20 @@ s16 sHeartsDDEnv[2][3];
 
 void HealthMeter_Init(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
-    if (CVar_GetS32("gHudColors", 1) == 2) {
-        HeartInner = CVar_GetRGB("gCCHeartsPrim", HeartInner_ori);
-        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
-        HeartDDOutline = CVar_GetRGB("gDDCCHeartsPrim", HeartDDOutline_ori);
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartInner_ori);
     } else {
         HeartInner = HeartInner_ori;
-        HeartDDInner = HeartDDInner_ori;
-        HeartDDOutline = HeartDDOutline_ori;
+    }
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts", HeartInner_ori);
+    } else {
+        HeartDDInner = HeartInner_ori;
+    }
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder", HeartInner_ori);
+    } else {
+        HeartDDOutline = HeartInner_ori;
     }
 
     interfaceCtx->unk_228 = 0x140;
@@ -184,14 +190,20 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     Right_LM_Margin = CVar_GetS32("gHUDMargin_R", 0);
     Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
-    if (CVar_GetS32("gHudColors", 1) == 2) {
-        HeartInner = CVar_GetRGB("gCCHeartsPrim", HeartInner_ori);
-        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
-        HeartDDOutline = CVar_GetRGB("gDDCCHeartsPrim", HeartDDOutline_ori);
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartInner_ori);
     } else {
         HeartInner = HeartInner_ori;
-        HeartDDInner = HeartDDInner_ori;
-        HeartDDOutline = HeartDDOutline_ori;
+    }
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts", HeartInner_ori);
+    } else {
+        HeartDDInner = HeartInner_ori;
+    }
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder", HeartInner_ori);
+    } else {
+        HeartDDOutline = HeartInner_ori;
     }
 
     if (interfaceCtx->unk_200 != 0) {
@@ -218,7 +230,7 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     interfaceCtx->heartsEnvG[0] = HEARTS_ENV_G;
     interfaceCtx->heartsEnvB[0] = HEARTS_ENV_B;
 
-    if (CVar_GetS32("gHudColors", 1) == 2) {
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
         interfaceCtx->heartsPrimR[1] = HeartInner.r;
         interfaceCtx->heartsPrimG[1] = HeartInner.g;
         interfaceCtx->heartsPrimB[1] = HeartInner.b;
@@ -258,7 +270,7 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     sHeartsDDEnv[0][1] = HeartDDInner.g;
     sHeartsDDEnv[0][2] = HeartDDInner.b;
 
-    if (CVar_GetS32("gHudColors", 1) == 2) {
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
         sHeartsDDPrim[2][0] = HeartDDInner.r;
         sHeartsDDPrim[2][1] = HeartDDInner.g;
         sHeartsDDPrim[2][2] = HeartDDInner.b;
@@ -271,7 +283,7 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         sHeartsDDEnv[1][1] = HeartDDInner.g;
         sHeartsDDEnv[1][2] = HeartDDInner.b;
 
-        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartDDInner_ori);
 
         sHeartsDDEnv[0][0] = HeartDDInner.r;
         sHeartsDDEnv[0][1] = HeartDDInner.g;
