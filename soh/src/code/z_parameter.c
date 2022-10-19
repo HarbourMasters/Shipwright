@@ -3175,22 +3175,22 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
     Color_RGB8 MagicBorder_2 = { 255, 255, 150 };
     Color_RGB8 MagicBorder_3 = { 255, 255, 50 };
 
-    if (CVar_GetS32("gHudColors", 1) == 2) { //This will make custom color based on users selected colors.
-        sMagicBorderColors[0][0] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_0).r;
-        sMagicBorderColors[0][1] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_0).g;
-        sMagicBorderColors[0][2] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_0).b;
+    if (CVar_GetS32("gCosmetics.Consumable_MagicBorderActive.Changed", 0)) { //This will make custom color based on users selected colors.
+        sMagicBorderColors[0][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).r;
+        sMagicBorderColors[0][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).g;
+        sMagicBorderColors[0][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).b;
 
-        sMagicBorderColors[1][0] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_1).r/2;
-        sMagicBorderColors[1][1] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_1).g/2;
-        sMagicBorderColors[1][2] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_1).b/2;
+        sMagicBorderColors[1][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).r/2;
+        sMagicBorderColors[1][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).g/2;
+        sMagicBorderColors[1][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).b/2;
 
-        sMagicBorderColors[2][0] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_2).r/2.5;
-        sMagicBorderColors[2][1] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_2).g/2.5;
-        sMagicBorderColors[2][2] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_2).b/2.5;
+        sMagicBorderColors[2][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).r/2.5;
+        sMagicBorderColors[2][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).g/2.5;
+        sMagicBorderColors[2][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).b/2.5;
 
-        sMagicBorderColors[3][0] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_3).r/3;
-        sMagicBorderColors[3][1] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_3).g/3;
-        sMagicBorderColors[3][2] = CVar_GetRGB("gCCMagicBorderPrim", MagicBorder_3).b/3;
+        sMagicBorderColors[3][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).r/3;
+        sMagicBorderColors[3][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).g/3;
+        sMagicBorderColors[3][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).b/3;
     }
 
     static s16 sMagicBorderIndexes[] = { 0, 1, 1, 0 };
@@ -3250,15 +3250,15 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
             if (gSaveContext.magic <= 0) {
                 gSaveContext.magic = 0;
                 gSaveContext.unk_13F0 = 3;
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    sMagicBorder = CVar_GetRGB("gCCMagicBorderNormPrim", sMagicBorder_ori);
+                if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
             } else if (gSaveContext.magic == gSaveContext.unk_13F8) {
                 gSaveContext.unk_13F0 = 3;
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    sMagicBorder = CVar_GetRGB("gCCMagicBorderNormPrim", sMagicBorder_ori);
+                if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
@@ -3303,8 +3303,8 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
             break;
 
         case 5:
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                sMagicBorder = CVar_GetRGB("gCCMagicBorderNormPrim", sMagicBorder_ori);
+            if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
             } else {
                 sMagicBorder = sMagicBorder_ori;
             }
@@ -3329,8 +3329,8 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     gSaveContext.unk_13F0 = 0;
-                    if (CVar_GetS32("gHudColors", 1) == 2) {
-                        sMagicBorder = CVar_GetRGB("gCCMagicBorderNormPrim", sMagicBorder_ori);
+                    if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                        sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
                     } else {
                         sMagicBorder = sMagicBorder_ori;
                     }
@@ -3402,6 +3402,13 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
+
+    if (CVar_GetS32("gCosmetics.Consumable_MagicActive.Changed", 0)) {
+        magicbar_yellow = CVar_GetRGB("gCosmetics.Consumable_MagicActive", magicbar_yellow);
+    }
+    if (CVar_GetS32("gCosmetics.Consumable_Magic.Changed", 0)) {
+        magicbar_green = CVar_GetRGB("gCosmetics.Consumable_Magic", magicbar_green);
+    }
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -3501,11 +3508,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
 
         if (gSaveContext.unk_13F0 == 4) {
             // Yellow part of the bar indicating the amount of magic to be subtracted
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCMagicUsePrim", magicbar_yellow).r, CVar_GetRGB("gCCMagicUsePrim", magicbar_yellow).g, CVar_GetRGB("gCCMagicUsePrim", magicbar_yellow).b, interfaceCtx->magicAlpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_yellow.r, magicbar_yellow.g, magicbar_yellow.b, interfaceCtx->magicAlpha);
-            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_yellow.r, magicbar_yellow.g, magicbar_yellow.b, interfaceCtx->magicAlpha);
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -3517,22 +3520,14 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCMagicPrim", magicbar_green).r, CVar_GetRGB("gCCMagicPrim", magicbar_green).g, CVar_GetRGB("gCCMagicPrim", magicbar_green).b, interfaceCtx->magicAlpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
-            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.unk_13F8) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE,
                                 0, 0, 1 << 10, 1 << 10);
         } else {
             // Fill the whole bar with the normal magic color
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCMagicPrim", magicbar_green).r, CVar_GetRGB("gCCMagicPrim", magicbar_green).g, CVar_GetRGB("gCCMagicPrim", magicbar_green).b, interfaceCtx->magicAlpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
-            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -4763,13 +4758,12 @@ void Interface_Draw(GlobalContext* globalCtx) {
     static s16 rupeeDigitsCount[] = { 2, 3, 3, 3 };
 
     // courtesy of https://github.com/TestRunnerSRL/OoT-Randomizer/blob/Dev/ASM/c/hud_colors.c
-    static s16 rupeeWalletColors[4][3] = {
+    static Color_RGB8 rupeeWalletColors[4] = {
         { 0xC8, 0xFF, 0x64 }, // Base Wallet (Green)
         { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
         { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
         { 0xFF, 0x5A, 0xFF }, // Tycoon's Wallet (Purple). Only used in rando shopsanity.
     };
-    Color_RGB8 rColor_ori = { 200, 255, 100 };
     Color_RGB8 rColor;
     Color_RGB8 keyColor_ori = { 200, 230, 255 };
     Color_RGB8 keyColor;
@@ -4821,33 +4815,45 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             // Rupee Icon
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                //Custom Color is on but check if Dynamic Wallet is on.
-                if (CVar_GetS32("gDynamicWalletIcon", 0) != 0) {
-                    //if on let's use Dynamic Colors
-                    rColor.r = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][0];
-                    rColor.g = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][1];
-                    rColor.b = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][2];
-                } else {
-                    //else use our custom color
-                    rColor = CVar_GetRGB("gCCRupeePrim", rColor_ori);
+            if (CVar_GetS32("gDynamicWalletIcon", 0)) {
+                switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                    case 0:
+                        if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", rupeeWalletColors[0]);
+                        } else {
+                            rColor = rupeeWalletColors[0];
+                        }
+                        break;
+                    case 1:
+                        if (CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", rupeeWalletColors)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee", rupeeWalletColors[1]);
+                        } else {
+                            rColor = rupeeWalletColors[1];
+                        }
+                        break;
+                    case 2:
+                        if (CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", rupeeWalletColors)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee", rupeeWalletColors[1]);
+                        } else {
+                            rColor = rupeeWalletColors[2];
+                        }
+                        break;
+                    case 3:
+                        if (CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", rupeeWalletColors)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee", rupeeWalletColors[1]);
+                        } else {
+                            rColor = rupeeWalletColors[3];
+                        }
+                        break;
                 }
             } else {
-                //Custom colors is off so check if Dynamic Wallet is on.
-                if (CVar_GetS32("gDynamicWalletIcon", 0) != 0) {
-                    rColor.r = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][0];
-                    rColor.g = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][1];
-                    rColor.b = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][2];
+                if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
+                     rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", rupeeWalletColors[0]);
                 } else {
-                    rColor.r = rupeeWalletColors[0][0];
-                    rColor.g = rupeeWalletColors[0][1];
-                    rColor.b = rupeeWalletColors[0][2];
+                     rColor = rupeeWalletColors[0];
                 }
             }
-            if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gDynamicWalletIcon", 0) != 1) {
-                //We reset this here so it match user color only if both HUD is on and Dynamic is off.
-                gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255); 
-            }
+
             //Rupee icon & counter
             s16 X_Margins_RC;
             s16 Y_Margins_RC;

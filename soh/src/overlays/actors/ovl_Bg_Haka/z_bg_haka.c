@@ -102,9 +102,30 @@ void func_8087B938(BgHaka* this, GlobalContext* globalCtx) {
         Math_CosS(this->dyna.actor.world.rot.y) * this->dyna.actor.minVelocityY + this->dyna.actor.home.pos.z;
     if (sp38 != 0) {
         this->dyna.unk_150 = 0.0f;
+        this->state = 1;
+        u8 allPulled = 1;
+        Actor* actor = globalCtx->actorCtx.actorLists[ACTORCAT_BG].head;
+
+        while (actor != NULL) {
+            if (actor->id == ACTOR_BG_HAKA && ((BgHaka*)actor)->state == 0) {
+                allPulled = 0;
+            }
+            actor = actor->next;
+        }
         player->stateFlags2 &= ~0x10;
         if (this->dyna.actor.params == 1) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
+        } else if (globalCtx->sceneNum == SCENE_SPOT02 && allPulled) {
+            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            func_800F5ACC(NA_BGM_STAFF_2);
+            Actor* actor2 = globalCtx->actorCtx.actorLists[ACTORCAT_BG].head;
+
+            while (actor2 != NULL) {
+                if (actor2->id == ACTOR_BG_HAKA) {
+                    ((BgHaka*)actor2)->state = 2;
+                }
+                actor2 = actor2->next;
+            }
         } else if (!IS_DAY && globalCtx->sceneNum == SCENE_SPOT02) {
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
                         this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
@@ -147,8 +168,32 @@ void BgHaka_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc(this, globalCtx);
 }
 
+u16 graveHue = 0;
+
 void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    u16 index = thisx->world.pos.x + thisx->world.pos.z;
+    float frequency = 0.03f;
+    Color_RGB8 newColor;
+    newColor.r = sin(frequency * ((graveHue + index) % 360) + 0) * 127 + 128;
+    newColor.g = sin(frequency * ((graveHue + index) % 360) + 2) * 127 + 128;
+    newColor.b = sin(frequency * ((graveHue + index) % 360) + 4) * 127 + 128;
+
+    graveHue++;
+    if (graveHue >= 360) graveHue = 0;
+
+
     OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    if (((BgHaka*)thisx)->state == 2) {
+        globalCtx->envCtx.adjAmbientColor[0] = newColor.r;
+        globalCtx->envCtx.adjAmbientColor[1] = newColor.g;
+        globalCtx->envCtx.adjAmbientColor[2] = newColor.b;
+        globalCtx->envCtx.adjLight1Color[0] = newColor.r;
+        globalCtx->envCtx.adjLight1Color[1] = newColor.g;
+        globalCtx->envCtx.adjLight1Color[2] = newColor.b;
+        gsDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
+        gsSPGrayscale(POLY_OPA_DISP++, true);
+    }
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -156,6 +201,9 @@ void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGravestoneStoneDL);
+    if (((BgHaka*)thisx)->state == 2) {
+        gsSPGrayscale(POLY_OPA_DISP++, false);
+    }
     Matrix_Translate(0.0f, 0.0f, thisx->minVelocityY * 10.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
