@@ -174,6 +174,7 @@ set(Header_Files__soh__Enhancements__cosmetics
 source_group("Header Files\\soh\\Enhancements\\cosmetics" FILES ${Header_Files__soh__Enhancements__cosmetics})
 
 set(Header_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.h"
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
@@ -295,6 +296,7 @@ set(Source_Files__soh__Enhancements__cosmetics
 source_group("Source Files\\soh\\Enhancements\\cosmetics" FILES ${Source_Files__soh__Enhancements__cosmetics})
 
 set(Source_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.cpp"
     "soh/Enhancements/debugger/actorViewer.cpp"
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
