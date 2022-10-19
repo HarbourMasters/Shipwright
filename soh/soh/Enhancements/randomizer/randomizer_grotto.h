@@ -27,5 +27,6 @@ void Grotto_SetLoadOverride(s16 originalIndex, s16 overrideIndex);
 s16  Grotto_CheckSpecialEntrance(s16 nextEntranceIndex);
 void Grotto_ForceGrottoReturn(void);
 void Grotto_ForceRegularVoidOut(void);
+s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
 
 #endif //_RANDO_GROTTO_H_

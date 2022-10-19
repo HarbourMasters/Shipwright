@@ -105,17 +105,25 @@ void Grotto_SetLoadOverride(s16 originalIndex, s16 overrideIndex) {
     grottoLoadList[id] = overrideIndex;
 }
 
-static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto) {
+static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto, RespawnMode respawnMode) {
   // Set necessary grotto return data to the Entrance Point, so that voiding out and setting FW work correctly
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = grotto.entranceIndex;
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex = grotto.room;
-  //TODO If Mixed Entrance Pool or decoupled entrances are active, reenable the line below:
-  //gSaveContext.respawn[respawnMode].playerParams = 0x04FF; // exiting grotto with no initial camera focus
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = grotto.angle;
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = grotto.pos;
-  //TODO If Mixed Entrance Pool or decoupled entrances are active, set these flags to 0 instead of restoring them
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags;
-  gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gSaveContext.respawn[RESPAWN_MODE_RETURN].tempCollectFlags;
+  gSaveContext.respawn[respawnMode].entranceIndex = grotto.entranceIndex;
+  gSaveContext.respawn[respawnMode].roomIndex = grotto.room;
+
+  if (false /*mixGrottos == ON*/ || false /*decoupledEntrances == ON*/) {
+    gSaveContext.respawn[respawnMode].playerParams = 0x04FF; // exiting grotto with no initial camera focus
+  }
+
+  gSaveContext.respawn[respawnMode].yaw = grotto.angle;
+  gSaveContext.respawn[respawnMode].pos = grotto.pos;
+  //TODO If Mixed Entrance Pools or decoupled entrances are active, set these flags to 0 instead of restoring them
+  if (false /*mixGrottos == ON*/ || false /*decoupledEntrances == ON*/) {
+    gSaveContext.respawn[respawnMode].tempSwchFlags = 0;
+    gSaveContext.respawn[respawnMode].tempCollectFlags = 0;
+  } else {
+    gSaveContext.respawn[respawnMode].tempSwchFlags = gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags;
+    gSaveContext.respawn[respawnMode].tempCollectFlags = gSaveContext.respawn[RESPAWN_MODE_RETURN].tempCollectFlags;
+  }
 }
 
 // Translates and overrides the passed in entrance index if it corresponds to a
@@ -141,18 +149,22 @@ s16 Grotto_CheckSpecialEntrance(s16 nextEntranceIndex) {
     if (nextEntranceIndex >= 0x0800 && nextEntranceIndex < 0x0800 + NUM_GROTTOS) {
 
         GrottoReturnInfo grotto = grottoReturnTable[grottoId];
-        Grotto_SetupReturnInfo(grotto);
-        gGlobalCtx->fadeTransition = 3;
-        gSaveContext.nextTransition = 3;
+        Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_RETURN);
+        Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_DOWN);
 
-        // If this entrance is triggered by Link falling into a grotto actor
-        // and then spawning at a grotto return point, we want to return the
-        // regular entrance index so that it works properly. Otherwise, we
-        // want to return 0x7FFF to make the lighting of the area transition
-        // look correct.
-        nextEntranceIndex = (lastEntranceType == GROTTO_LOAD) ? grotto.entranceIndex : 0x7FFF;
+        // When the nextEntranceIndex is determined by a dynamic exit, we have
+        // to set the respawn information and nextEntranceIndex manually
+        if (gGlobalCtx->nextEntranceIndex != -1) {
+            gSaveContext.respawnFlag = 2;
+            nextEntranceIndex = grotto.entranceIndex;
+            gGlobalCtx->fadeTransition = 3;
+            gSaveContext.nextTransition = 3;
+        // Otherwise return 0x7FFF and let the game handle it
+        } else {
+            nextEntranceIndex = 0x7FFF;
+        }
+
         lastEntranceType = GROTTO_RETURN;
-
     // Grotto Loads
     } else if (nextEntranceIndex >= 0x0700 && nextEntranceIndex < 0x0800) {
 
@@ -230,4 +242,15 @@ void Grotto_SetupReturnInfoOnFWReturn(void) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         lastEntranceType = GROTTO_RETURN;
     }
+}
+
+// Get the renamed entrance index based on the grotto contents and exit scene number
+s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene) {
+    for (s16 index = 0; index < NUM_GROTTOS; index++) {
+        if (content == grottoLoadTable[index].content && scene == grottoLoadTable[index].scene) {
+            return 0x0700 | index;
+        }
+    }
+
+    return 0x0700;
 }
