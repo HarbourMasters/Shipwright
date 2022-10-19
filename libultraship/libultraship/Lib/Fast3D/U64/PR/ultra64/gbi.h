@@ -2839,6 +2839,12 @@ _DW({                                   \
     _g->words.w1 = state;                           \
 }
 
+#define gsDPGrayscale(state) \
+{ \
+    (_SHIFTL(G_SETGRAYSCALE, 24, 8)), \
+    (state) \
+}
+
 #ifdef  F3DEX_GBI_2
     /*
      *  One gSPGeometryMode(pkt,c,s) GBI is equal to these two GBIs.
@@ -3181,6 +3187,8 @@ _DW({                                   \
 
 #define gsDPSetGrayscaleColor(pkt, r, g, b, lerp)        \
             DPRGBColor(pkt, G_SETINTENSITY, r, g, b, lerp)
+#define gDPSetGrayscaleColor(r, g, b, a)                 \
+            sDPRGBColor(G_SETINTENSITY, r,g,b,a)
 #define gDPSetEnvColor(pkt, r, g, b, a)                 \
             DPRGBColor(pkt, G_SETENVCOLOR, r,g,b,a)
 #define gsDPSetEnvColor(r, g, b, a)                 \

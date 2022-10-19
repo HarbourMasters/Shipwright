@@ -306,7 +306,8 @@ namespace UIWidgets {
         }
     }
 
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
+    bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
+        bool changed = false;
         float val = CVar_GetFloat(cvarName, defaultValue);
 
         if (!isPercentage) {
@@ -328,6 +329,7 @@ namespace UIWidgets {
                 }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -348,6 +350,7 @@ namespace UIWidgets {
                 CVar_SetFloat(cvarName, val);
             }
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         if (PlusMinusButton) {
             ImGui::PopItemWidth();
@@ -365,6 +368,7 @@ namespace UIWidgets {
                 }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
 
@@ -372,13 +376,17 @@ namespace UIWidgets {
             val = min;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
 
         if (val > max) {
             val = max;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
+
+        return changed;
     }
 
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom) {
