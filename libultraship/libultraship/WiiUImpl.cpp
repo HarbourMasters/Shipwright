@@ -77,6 +77,10 @@ void ThrowMissingOTR(const char* otrPath) {
     OSFatal("Main OTR file not found!");
 }
 
+void ThrowInvalidOTR() {
+    OSFatal("Invalid OTR files! Try regenerating them!");
+}
+
 void Update() {
     bool rescan = false;
 
