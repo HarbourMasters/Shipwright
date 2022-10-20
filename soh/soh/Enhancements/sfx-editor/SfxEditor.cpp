@@ -43,7 +43,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_OCA_SERENADE,          {"Serenade of Water",                   "NA_BGM_OCA_SERENADE",          SEQ_OCARINA}},
     {NA_BGM_OCA_REQUIEM,           {"Requiem of Spirit",                   "NA_BGM_OCA_REQUIEM",           SEQ_OCARINA}},
     {NA_BGM_OCA_NOCTURNE,          {"Nocturne of Shadow",                  "NA_BGM_OCA_NOCTURNE",          SEQ_OCARINA}},
-    {NA_BGM_MINI_BOSS,             {"Mini-Boss Battle",                    "NA_BGM_MINI_BOSS",             SEQ_BGM_ERROR}},
+    {NA_BGM_MINI_BOSS,             {"Mini-Boss Battle",                    "NA_BGM_MINI_BOSS",             SEQ_BGM_BATTLE}},
     {NA_BGM_SMALL_ITEM_GET,        {"Obtain Small Item",                   "NA_BGM_SMALL_ITEM_GET",        SEQ_FANFARE}},
     {NA_BGM_TEMPLE_OF_TIME,        {"Temple of Time",                      "NA_BGM_TEMPLE_OF_TIME",        SEQ_BGM_WORLD}},
     {NA_BGM_EVENT_CLEAR,           {"Escape from Lon Lon Ranch",           "NA_BGM_EVENT_CLEAR",           SEQ_FANFARE}},
