@@ -1565,6 +1565,14 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Actor Viewer", CVar_GetS32("gActorViewerEnabled", 0));
             }
+            UIWidgets::Spacer(0);
+            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVar_GetS32("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gDLViewerEnabled", 0);
+                CVar_SetS32("gDLViewerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Display List Viewer", CVar_GetS32("gDLViewerEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
 
