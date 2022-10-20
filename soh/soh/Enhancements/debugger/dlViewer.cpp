@@ -26,7 +26,7 @@ char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 char searchString[64] = "";
 int displayListsSearchResultsCount;
 char** displayListsSearchResults;
-char* activeDisplayList = "";
+char* activeDisplayList = nullptr;
 
 std::map<int, std::string> cmdMap = {
     { G_SETPRIMCOLOR, "gsDPSetPrimColor" },
@@ -61,7 +61,7 @@ void DrawDLViewer(bool& open) {
         }
         ImGui::EndCombo();
     }
-    if (activeDisplayList != "") {
+    if (activeDisplayList != nullptr) {
         auto res = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
