@@ -1113,7 +1113,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // draw rando label
         if (Save_GetSaveMetaInfo(i)->randoSave) {
-            if (CVar_GetS32("gHudColors", 1) == 2) {
+            if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(1))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
