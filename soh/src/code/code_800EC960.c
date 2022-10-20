@@ -4602,7 +4602,7 @@ void func_800F5B58(void) {
         if (sPrevMainBgmSeqId == NA_BGM_DISABLED) {
             Audio_SeqCmd1(SEQ_PLAYER_BGM_MAIN, 0);
         } else {
-            Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, sPrevMainBgmSeqId);
+            Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, getReverseReplacementSeq(sPrevMainBgmSeqId));
         }
 
         sPrevMainBgmSeqId = NA_BGM_DISABLED;
