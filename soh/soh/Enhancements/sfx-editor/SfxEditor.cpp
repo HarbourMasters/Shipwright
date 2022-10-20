@@ -14,7 +14,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC",           SEQ_BGM_WORLD}},
     {NA_BGM_DUNGEON,               {"Dodongo's Cavern",                    "NA_BGM_DUNGEON",               SEQ_BGM_WORLD}},
     {NA_BGM_KAKARIKO_ADULT,        {"Kakariko Village (Adult)",            "NA_BGM_KAKARIKO_ADULT",        SEQ_BGM_WORLD}},
-    {NA_BGM_ENEMY,                 {"Battle",                              "NA_BGM_ENEMY",                 SEQ_BGM_BATTLE}},
+    {NA_BGM_ENEMY,                 {"Battle",                              "NA_BGM_ENEMY",                 SEQ_NOSHUFFLE}},
     {NA_BGM_BOSS,                  {"Boss Battle",                         "NA_BGM_BOSS",                  SEQ_BGM_BATTLE}},
     {NA_BGM_INSIDE_DEKU_TREE,      {"Inside the Deku Tree",                "NA_BGM_INSIDE_DEKU_TREE",      SEQ_BGM_WORLD}},
     {NA_BGM_MARKET,                {"Market",                              "NA_BGM_MARKET",                SEQ_BGM_WORLD}},
@@ -74,7 +74,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_INTRO_GANON,           {"Ganon Intro",                         "NA_BGM_INTRO_GANON",           SEQ_BGM_EVENT}},
     {NA_BGM_SHOP,                  {"Shop",                                "NA_BGM_SHOP",                  SEQ_BGM_WORLD}},
     {NA_BGM_CHAMBER_OF_SAGES,      {"Chamber of the Sages",                "NA_BGM_CHAMBER_OF_SAGES",      SEQ_BGM_EVENT}},
-    {NA_BGM_FILE_SELECT,           {"File Select",                         "NA_BGM_FILE_SELECT",           SEQ_BGM_WORLD}},
+    {NA_BGM_FILE_SELECT,           {"File Select",                         "NA_BGM_FILE_SELECT",           SEQ_NOSHUFFLE}}, //Doesn't work
     {NA_BGM_ICE_CAVERN,            {"Ice Cavern",                          "NA_BGM_ICE_CAVERN",            SEQ_BGM_WORLD}},
     {NA_BGM_DOOR_OF_TIME,          {"Open Door of Temple of Time",         "NA_BGM_DOOR_OF_TIME",          SEQ_BGM_EVENT}},
     {NA_BGM_OWL,                   {"Kaepora Gaebora's Theme",             "NA_BGM_OWL",                   SEQ_BGM_EVENT}},
@@ -256,10 +256,10 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
                     SohImGui::RequestCvarSaveOnNextTick();
                 } else {
                     if (sfx) {
-                        Audio_PlaySoundGeneral(currentValue, &pos, 4, &freqScale, &freqScale, &reverbAdd);
+                        Audio_PlaySoundGeneral(defaultValue, &pos, 4, &freqScale, &freqScale, &reverbAdd);
                     } else {
                         // TODO: Cant do both here, so have to click preview button twice
-                        func_800F5ACC(currentValue);
+                        func_800F5ACC(defaultValue);
                         CVar_SetS32("gSfxEditor_playing", currentValue);
                     }
                     SohImGui::RequestCvarSaveOnNextTick();
@@ -286,6 +286,18 @@ extern "C" u16 getReplacementSeq(u16 seqId) {
     const int replacementSeq = CVar_GetS32(storageKey.c_str(), seqId);
 
     return static_cast<u16>(replacementSeq);
+}
+
+extern "C" u16 getReverseReplacementSeq(u16 seqId) {
+    for (const auto& [id, nameAndStorageKeySuffix] : sequenceMap) {
+        const auto& [name, storageKeySuffix, seqType] = sequenceMap.at(id);
+        const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
+        if (CVar_GetS32(storageKey.c_str(), id) == seqId){
+            return static_cast<u16>(id);
+        }
+    }
+
+    return static_cast<u16>(seqId);
 }
 
 void DrawSfxEditor(bool& open) {
