@@ -726,7 +726,12 @@ const char* gfx_dxgi_get_key_name(int scancode) {
 }
 
 void gfx_dxgi_move_cursor(int x, int y) {
-    //TODO (RR): do the thing
+    RECT rect = { 0 };
+    GetWindowRect(dxgi.h_wnd, &rect);
+    SetForegroundWindow(dxgi.h_wnd);
+    SetActiveWindow(dxgi.h_wnd);
+    SetFocus(dxgi.h_wnd);
+    SetCursorPos(rect.left + x, rect.top + y);
 }
 
 extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
