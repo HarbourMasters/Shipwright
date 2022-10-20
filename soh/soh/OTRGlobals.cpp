@@ -441,6 +441,7 @@ extern "C" void InitOTR() {
     InitCosmeticsEditor();
     InitSfxEditor();
     GameControlEditor::Init();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
