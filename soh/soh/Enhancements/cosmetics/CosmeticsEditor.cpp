@@ -472,7 +472,7 @@ void Draw_ItemsSkills(){
         ResetTrailLength("gTrailDuration", 4);
         UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
         if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
-            if (ImGui::BeginTable("tabletrailswords", 2, FlagsTable)) {
+            if (ImGui::BeginTable("tabletrailswords", 5, FlagsTable)) {
                 ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
                 ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
                 ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
