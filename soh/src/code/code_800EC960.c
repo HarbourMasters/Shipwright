@@ -4627,7 +4627,7 @@ void func_800F5BF0(u8 natureAmbienceId) {
  */
 void func_800F5C2C(void) {
     if (sPrevMainBgmSeqId != NA_BGM_DISABLED) {
-        Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, sPrevMainBgmSeqId);
+        Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, getReverseReplacementSeq(sPrevMainBgmSeqId));
     }
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
