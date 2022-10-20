@@ -154,6 +154,15 @@ void EnSyatekiMan_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
+    if (gSaveContext.n64ddFlag) {
+        //If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting gallery man
+        if ((LINK_IS_CHILD && Entrance_SceneAndSpawnAre(0x42, 0x00)) || //Kakariko Village -> Adult Shooting Gallery, index 003B in the entrance table
+            (LINK_IS_ADULT && Entrance_SceneAndSpawnAre(0x42, 0x01))) { //Market -> Child Shooting Gallery,           index 016D in the entrance table
+            Actor_Kill(thisx);
+            return;
+        }
+    }
+
     osSyncPrintf("\n\n");
     // "Old man appeared!! Muhohohohohohohon"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 親父登場！！むほほほほほほほーん ☆☆☆☆☆ \n" VT_RST);

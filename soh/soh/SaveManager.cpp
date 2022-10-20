@@ -139,6 +139,16 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
+    SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->LoadData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->LoadData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->LoadData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->LoadData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+        });
+    });
+
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
     });
@@ -225,6 +235,16 @@ void SaveManager::SaveRandomizer() {
 =======*/
     });
 //>>>>>>> mouse
+
+    SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->SaveData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->SaveData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->SaveData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->SaveData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+        });
+    });
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.seedIcons[i]);

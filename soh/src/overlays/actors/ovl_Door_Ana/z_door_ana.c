@@ -139,6 +139,11 @@ void DoorAna_WaitOpen(DoorAna* this, GlobalContext* globalCtx) {
                 destinationIdx = this->actor.home.rot.z + 1;
             }
             globalCtx->nextEntranceIndex = entrances[destinationIdx];
+
+            if (gSaveContext.n64ddFlag) {
+                Grotto_OverrideActorEntrance(&this->actor);
+            }
+
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
             if (!Player_InCsMode(globalCtx) && !(player->stateFlags1 & 0x8800000) &&

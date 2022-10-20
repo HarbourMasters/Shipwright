@@ -58,6 +58,12 @@ void func_808B3420(BgSpot12Saku* this, GlobalContext* globalCtx, CollisionHeader
 void BgSpot12Saku_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot12Saku* this = (BgSpot12Saku*)thisx;
 
+    // If ER is on, force the gate to always use its permanent flag
+    // (which it only uses in Child Gerudo Fortress in the vanilla game)
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES)) {
+        thisx->params = 0x0002;
+    }
+
     func_808B3420(this, globalCtx, &gGerudoFortressGTGShutterCol, DPM_UNK);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     if (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) {
@@ -124,6 +130,12 @@ void func_808B37AC(BgSpot12Saku* this, GlobalContext* globalCtx) {
 
 void BgSpot12Saku_Update(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot12Saku* this = (BgSpot12Saku*)thisx;
+
+    // If ER is on, when the guard opens the GtG gate its permanent flag will be set.
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES) &&
+        globalCtx->actorCtx.flags.tempSwch & 0x04000000) {
+        globalCtx->actorCtx.flags.swch |= 0x00000004;
+    }
 
     if (this->timer > 0) {
         this->timer--;

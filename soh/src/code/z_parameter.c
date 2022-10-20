@@ -6301,6 +6301,12 @@ void Interface_Update(GlobalContext* globalCtx) {
 
             gSaveContext.respawnFlag = -2;
             globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+
+            if (gSaveContext.n64ddFlag) {
+                // Handle sun song respawn from last entrance from grottos
+                Grotto_ForceGrottoReturn();
+            }
+
             globalCtx->sceneLoadFlag = 0x14;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);

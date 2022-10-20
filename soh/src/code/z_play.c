@@ -158,6 +158,10 @@ void Gameplay_Destroy(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     Player* player = GET_PLAYER(globalCtx);
 
+    if (gSaveContext.n64ddFlag) {
+        Entrance_CheckEpona();
+    }
+
     globalCtx->state.gfxCtx->callback = NULL;
     globalCtx->state.gfxCtx->callbackParam = 0;
     SREG(91) = 0;
@@ -512,6 +516,7 @@ void Gameplay_Init(GameState* thisx) {
         globalCtx,
         gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
         gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
     Cutscene_HandleEntranceTriggers(globalCtx);

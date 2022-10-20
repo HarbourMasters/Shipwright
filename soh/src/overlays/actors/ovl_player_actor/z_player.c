@@ -4260,14 +4260,24 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
                 func_800994A0(globalCtx);
             } else {
                 globalCtx->nextEntranceIndex = globalCtx->setupExitList[sp3C - 1];
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
+                }
+
                 if (globalCtx->nextEntranceIndex == 0x7FFF) {
                     gSaveContext.respawnFlag = 2;
                     globalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
                     globalCtx->fadeTransition = 3;
                     gSaveContext.nextTransition = 3;
                 } else if (globalCtx->nextEntranceIndex >= 0x7FF9) {
-                    globalCtx->nextEntranceIndex =
-                        D_808544F8[D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn];
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn);
+                    } else {
+                        globalCtx->nextEntranceIndex =
+                            D_808544F8[D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn];
+                    }
+
                     func_800994A0(globalCtx);
                 } else {
                     if (SurfaceType_GetSlope(&globalCtx->colCtx, poly, bgId) == 2) {
@@ -13465,6 +13475,10 @@ void func_8084F88C(Player* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
                 Gameplay_TriggerRespawn(globalCtx);
+                // handle DMT and other special void outs to respawn from last entrance from grotto 
+                if (gSaveContext.n64ddFlag) {
+                    Grotto_ForceRegularVoidOut();
+                }
             } else {
                 Gameplay_TriggerVoidOut(globalCtx);
             }

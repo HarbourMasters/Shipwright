@@ -245,7 +245,8 @@ void EnGe2_CaptureClose(EnGe2* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
+            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) {
             globalCtx->nextEntranceIndex = 0x5F8;
@@ -271,7 +272,8 @@ void EnGe2_CaptureCharge(EnGe2* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
+            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) {
             globalCtx->nextEntranceIndex = 0x5F8;
