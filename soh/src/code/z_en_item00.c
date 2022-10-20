@@ -432,7 +432,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
     RandomizerCheck randoCheck =
-        Randomizer_GetCheckFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
+        Randomizer_GetCheckFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams);
 
     if (gSaveContext.n64ddFlag && randoCheck != RC_UNKNOWN_CHECK) {
         this->randoGiEntry =
