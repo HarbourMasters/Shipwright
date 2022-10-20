@@ -95,7 +95,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_STAFF_3,               {"End Credits III",                     "NA_BGM_STAFF_3",               SEQ_NOSHUFFLE}},
     {NA_BGM_STAFF_4,               {"End Credits IV",                      "NA_BGM_STAFF_4",               SEQ_NOSHUFFLE}},
     {NA_BGM_FIRE_BOSS,             {"King Dodongo & Volvagia Boss Battle", "NA_BGM_FIRE_BOSS",             SEQ_BGM_BATTLE}},
-    {NA_BGM_TIMED_MINI_GAME,       {"Mini-Game",                           "NA_BGM_TIMED_MINI_GAME",       SEQ_BGM_ERROR}},
+    {NA_BGM_TIMED_MINI_GAME,       {"Mini-Game",                           "NA_BGM_TIMED_MINI_GAME",       SEQ_BGM_EVENT}},
     {NA_SE_EV_SMALL_DOG_BARK,      {"Bark",                                "NA_SE_EV_SMALL_DOG_BARK",      SEQ_SFX}},
     {NA_SE_EN_AWA_BOUND,           {"Bomb Bounce",                         "NA_SE_EN_AWA_BOUND",           SEQ_SFX}},
     {NA_SE_EN_SHADEST_TAIKO_LOW,   {"Bongo Bongo Low",                     "NA_SE_EN_SHADEST_TAIKO_LOW",   SEQ_SFX}},
