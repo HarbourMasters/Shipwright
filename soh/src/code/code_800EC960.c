@@ -4581,7 +4581,7 @@ s32 func_800F5A58(u8 arg0) {
 void func_800F5ACC(u16 seqId) {
     u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
 
-    if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
+    if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != getReplacementSeq(seqId)) {
         Audio_SetSequenceMode(SEQ_MODE_IGNORE);
         if (curSeqId != NA_BGM_DISABLED) {
             sPrevMainBgmSeqId = curSeqId;
@@ -4598,7 +4598,7 @@ void func_800F5ACC(u16 seqId) {
  */
 void func_800F5B58(void) {
     if ((func_800FA0B4(SEQ_PLAYER_BGM_MAIN) != NA_BGM_DISABLED) && (sPrevMainBgmSeqId != NA_BGM_DISABLED) &&
-        (sSeqFlags[func_800FA0B4(SEQ_PLAYER_BGM_MAIN) & 0xFF] & 8)) {
+        ((sSeqFlags[getReverseReplacementSeq(func_800FA0B4(SEQ_PLAYER_BGM_MAIN)) & 0xFF] & 8))) {
         if (sPrevMainBgmSeqId == NA_BGM_DISABLED) {
             Audio_SeqCmd1(SEQ_PLAYER_BGM_MAIN, 0);
         } else {
