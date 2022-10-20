@@ -1046,7 +1046,7 @@ typedef enum {
     RSK_SHUFFLE_OVERWORLD_ENTRANCES,
     RSK_SHUFFLE_INTERIORS_ENTRANCES,
     RSK_SHUFFLE_GROTTOS_ENTRANCES,
-    RSK_AX
+    RSK_MAX
 } RandomizerSettingKey;
 
 typedef enum {
