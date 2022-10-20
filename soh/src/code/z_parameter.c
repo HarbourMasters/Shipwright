@@ -2356,10 +2356,12 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+                (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
                 (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
                 (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
                 (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
         int mapIndex = gSaveContext.mapIndex;
+        int maxKeys = 0;
         switch (item) {
             case RG_DEKU_TREE_MAP:
             case RG_DEKU_TREE_COMPASS:
@@ -2376,37 +2378,49 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             case RG_FOREST_TEMPLE_MAP:
             case RG_FOREST_TEMPLE_COMPASS:
             case RG_FOREST_TEMPLE_SMALL_KEY:
+            case RG_FOREST_TEMPLE_KEY_RING:
             case RG_FOREST_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_BMORI1;
+                maxKeys = FOREST_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_FIRE_TEMPLE_MAP:
             case RG_FIRE_TEMPLE_COMPASS:
             case RG_FIRE_TEMPLE_SMALL_KEY:
+            case RG_FIRE_TEMPLE_KEY_RING:
             case RG_FIRE_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_HIDAN;
+                maxKeys = FIRE_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_WATER_TEMPLE_MAP:
             case RG_WATER_TEMPLE_COMPASS:
             case RG_WATER_TEMPLE_SMALL_KEY:
+            case RG_WATER_TEMPLE_KEY_RING:
             case RG_WATER_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_MIZUSIN;
+                maxKeys = WATER_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SPIRIT_TEMPLE_MAP:
             case RG_SPIRIT_TEMPLE_COMPASS:
             case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            case RG_SPIRIT_TEMPLE_KEY_RING:
             case RG_SPIRIT_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_JYASINZOU;
+                maxKeys = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SHADOW_TEMPLE_MAP:
             case RG_SHADOW_TEMPLE_COMPASS:
             case RG_SHADOW_TEMPLE_SMALL_KEY:
+            case RG_SHADOW_TEMPLE_KEY_RING:
             case RG_SHADOW_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_HAKADAN;
+                maxKeys = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_BOTTOM_OF_THE_WELL_MAP:
             case RG_BOTTOM_OF_THE_WELL_COMPASS:
             case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
                 mapIndex = SCENE_HAKADANCH;
+                maxKeys = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
             case RG_ICE_CAVERN_MAP:
             case RG_ICE_CAVERN_COMPASS:
@@ -2416,13 +2430,19 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 mapIndex = SCENE_GANON;
                 break;
             case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
                 mapIndex = SCENE_MEN;
+                maxKeys = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                 break;
             case RG_GERUDO_FORTRESS_SMALL_KEY:
+            case RG_GERUDO_FORTRESS_KEY_RING:
                 mapIndex = SCENE_GERUDOWAY;
+                maxKeys = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
             case RG_GANONS_CASTLE_SMALL_KEY:
+            case RG_GANONS_CASTLE_KEY_RING:
                 mapIndex = SCENE_GANONTIKA;
+                maxKeys = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
         }
 
@@ -2434,6 +2454,9 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 gSaveContext.inventory.dungeonKeys[mapIndex]++;
                 return RG_NONE;
             }
+        } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
+            gSaveContext.inventory.dungeonKeys[mapIndex] = maxKeys;
+            return RG_NONE;
         } else {
             int bitmask;
             if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {

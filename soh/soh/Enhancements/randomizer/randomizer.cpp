@@ -1125,16 +1125,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_HINT:
         case RG_MAX:
         case RG_SOLD_OUT:
-        // TODO: Implement key rings
-        case RG_FOREST_TEMPLE_KEY_RING:
-        case RG_FIRE_TEMPLE_KEY_RING:
-        case RG_WATER_TEMPLE_KEY_RING:
-        case RG_SPIRIT_TEMPLE_KEY_RING:
-        case RG_SHADOW_TEMPLE_KEY_RING:
-        case RG_BOTTOM_OF_THE_WELL_KEY_RING:
-        case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
-        case RG_GERUDO_FORTRESS_KEY_RING:
-        case RG_GANONS_CASTLE_KEY_RING:
             return CANT_OBTAIN_MISC;
 
         // Equipment
@@ -2442,6 +2432,16 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SUNLIGHT_ARROWS] = CVar_GetS32("gRandomizeSunlightArrows", 0);
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
+    cvarSettings[RSK_KEYRINGS] = CVar_GetS32("gRandomizeShuffleKeyRings", 0);
+    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 0);
+    cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsForestTemple", 0);
+    cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsFireTemple", 0);
+    cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsWaterTemple", 0);
+    cvarSettings[RSK_KEYRINGS_SPIRIT_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsSpiritTemple", 0);
+    cvarSettings[RSK_KEYRINGS_SHADOW_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsShadowTemple", 0);
+    cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = CVar_GetS32("gRandomizeShuffleKeyRingsBottomOfTheWell", 0);
+    cvarSettings[RSK_KEYRINGS_GTG] = CVar_GetS32("gRandomizeShuffleKeyRingsGTG", 0);
+    cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVar_GetS32("gRandomizeShuffleKeyRingsGanonsCastle", 0);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 1);
     cvarSettings[RSK_LACS_STONE_COUNT] = CVar_GetS32("gRandomizeLacsStoneCount", 3);
@@ -2563,6 +2563,7 @@ void DrawRandoEditor(bool& open) {
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
+    const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
     const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
@@ -2575,7 +2576,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
-    ImGui::SetNextWindowSize(ImVec2(920, 563), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -3143,6 +3144,44 @@ void DrawRandoEditor(bool& open) {
                     "Anywhere - Small Keys can appear anywhere in the world."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, 2);
+
+                UIWidgets::PaddedSeparator();
+
+                 // Key Rings
+                ImGui::Text(Settings::KeyRings.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Keyrings will replace all small keys from a particular dungeon with a single keyring that awards all keys for it's associated dungeon\n"
+                    "\n"
+                    "Off - No dungeons will have their keys replaced with keyrings.\n"
+                    "\n"
+                    "Random - A random amount of dungeons(0-8) will have their keys replaced with keyrings.\n"
+                    "\n"
+                    "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
+                    "\n"
+                    "Selection - Hand select which dungeons will have their keys replaced with keyrings."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, 4, 0);
+                ImGui::PopItemWidth();
+                switch (CVar_GetS32("gRandomizeShuffleKeyRings", 0)) {
+                    case 2:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
+                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 8, "", 8, true);
+                        break;
+                    case 3:
+                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
+                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
+                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
+                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
+                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
+                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
+                        UIWidgets::EnhancementCheckbox("GTG##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
+                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
+                        break;
+                    default:
+                        break;
+                }
+                ImGui::PushItemWidth(-FLT_MIN);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4058,6 +4097,16 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!",
                             "Vous obtenez une %rPetite Clé %w&du %Château de Ganon%w!"),
 
+        GIMESSAGE_UNTRANSLATED(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %gForest Temple &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %rFire Temple &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %bWater Temple &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL, "You found a %yGerudo Training &Grounds %wKeyring!"),
+        GIMESSAGE_UNTRANSLATED(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wKeyring!"),
+
         GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!",
                             "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
         GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!",
@@ -4193,6 +4242,15 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
         GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
         GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_FORTRESS_KEY_RING,          OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_KEY_RING),
+        GET_ITEM(RG_FOREST_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_KEY_RING),
+        GET_ITEM(RG_FIRE_TEMPLE_KEY_RING,              OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_KEY_RING),
+        GET_ITEM(RG_WATER_TEMPLE_KEY_RING,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_KEY_RING),
+        GET_ITEM(RG_SPIRIT_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_KEY_RING),
+        GET_ITEM(RG_SHADOW_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_KEY_RING),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_KEY_RING,       OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_KEY_RING),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_KEY_RING),
+        GET_ITEM(RG_GANONS_CASTLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_KEY_RING),
         GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
         GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
         GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
@@ -4230,6 +4288,8 @@ void InitRandoItemTable() {
         if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_SMALL_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_SMALL_KEY
             && randoGetItemTable[i].itemId != RG_GERUDO_FORTRESS_SMALL_KEY) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawSmallKey;
+        } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_KEY_RING && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_KEY_RING) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawKeyRing;
         } else if (randoGetItemTable[i].itemId >= RG_FOREST_TEMPLE_BOSS_KEY && randoGetItemTable[i].itemId <= RG_GANONS_CASTLE_BOSS_KEY) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
