@@ -143,6 +143,9 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
                 // Don't randomize the Wolfos in SFM because it's needed to open the gate.
                 case ACTOR_EN_WF:
                     return (param != 7936);
+                // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't trigger the platform.
+                case ACTOR_EN_TEST:
+                    return (param != 1);
                 default:
                     return 1;
             }
