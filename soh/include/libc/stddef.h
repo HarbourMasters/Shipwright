@@ -1,11 +1,13 @@
 #ifndef STDDEF_H
 #define STDDEF_H
 
-#ifndef __cplusplus
-#define NULL ((void*)0)
-#else
-#define NULL nullptr
-#endif
+#include <stddef.h>
+
+//#ifndef __cplusplus
+//#define NULL ((void*)0)
+//#else
+//#define NULL nullptr
+//#endif
 
 #if 0
 #define size_t unsigned long

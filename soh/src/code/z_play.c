@@ -4,8 +4,10 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/debugconsole.h"
+#include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
 #include <time.h>
 
@@ -200,7 +202,7 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     Player* player = GET_PLAYER(globalCtx);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -218,7 +220,8 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-        Flags_SetEventChkInf(0xAA);
+        player->pendingFlag.flagID = 0xAA;
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
     }
 }
 
@@ -230,20 +233,142 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
             !Player_InBlockingCsMode(globalCtx, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xAC);
+            player->pendingFlag.flagID = 0xAC;
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
     }
+}
+
+u8 CheckStoneCount() {
+    u8 stoneCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+        stoneCount++;
+    }
+
+    return stoneCount;
+}
+
+u8 CheckMedallionCount() {
+    u8 medallionCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
+        medallionCount++;
+    }
+
+    return medallionCount;
+}
+
+u8 CheckDungeonCount() {
+    u8 dungeonCount = 0;
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    return dungeonCount;
 }
 
 void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
+    u8 meetsRequirements = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
+        case 7:
+            if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 8:
+            if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 9:
+            if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 10:
+            if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 11:
+            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        default:
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+                meetsRequirements = true;
+            }
+            break;
+    }
+
+    if (meetsRequirements && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (player->pendingFlag.flagType == FLAG_NONE && GiveItemEntryWithoutActor(globalCtx, getItem)) {
+        if (GiveItemEntryWithoutActor(globalCtx, getItem)) {
             player->pendingFlag.flagID = 0x1E;
             player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
         }
@@ -255,10 +380,10 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemEntry.getItemId && getItemEntry.getItemId != GI_ICE_TRAP)) &&
-            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
             GiveItemEntryWithoutActor(globalCtx, getItemEntry);
-            Flags_SetEventChkInf(0xC1);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0xC1;
         }
     }
 }
@@ -399,7 +524,7 @@ void Gameplay_Init(GameState* thisx) {
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
             if (Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) {
+                Inventory_HatchPocketCucco(globalCtx)) {
                 Message_StartTextbox(globalCtx, 0x3066, NULL);
             }
             gSaveContext.nextDayTime = 0xFFFE;
@@ -1479,6 +1604,13 @@ time_t Gameplay_GetRealTime() {
 void Gameplay_Main(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
 
+    if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
+        CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    }
+    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    }
+
     D_8012D1F8 = &globalCtx->state.input[0];
 
     DebugDisplay_Init();
@@ -1533,6 +1665,10 @@ void Gameplay_Main(GameState* thisx) {
 
     }
 
+}
+
+u8 PlayerGrounded(Player* player) {
+    return player->actor.bgCheckFlags & 1;
 }
 
 // original name: "Game_play_demo_mode_check"
@@ -1991,17 +2127,22 @@ s32 func_800C0DB4(GlobalContext* globalCtx, Vec3f* pos) {
 }
 
 void Gameplay_PerformSave(GlobalContext* globalCtx) {
-    Gameplay_SaveSceneFlags(globalCtx);
-    gSaveContext.savedSceneNum = globalCtx->sceneNum;
-    if (gSaveContext.temporaryWeapon) {
-        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-        Save_SaveFile();
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-    } else {
-        Save_SaveFile();
+    if (globalCtx != NULL && gSaveContext.fileNum != 0xFF) {
+        Gameplay_SaveSceneFlags(globalCtx);
+        gSaveContext.savedSceneNum = globalCtx->sceneNum;
+        if (gSaveContext.temporaryWeapon) {
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_NONE;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+            Save_SaveFile();
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            GET_PLAYER(globalCtx)->currentSwordItem = ITEM_SWORD_KOKIRI;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        } else {
+            Save_SaveFile();
+        }
+        if (CVar_GetS32("gAutosave", 0)) {
+            Overlay_DisplayText(3.0f, "Game Saved");
+        }
     }
 }

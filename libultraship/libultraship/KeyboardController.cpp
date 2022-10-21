@@ -74,7 +74,6 @@ namespace Ship {
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 
-
 	void KeyboardController::CreateDefaultBinding(int32_t virtualSlot) {
 		auto profile = getProfile(virtualSlot);
 		profile->Mappings[0x14D] = BTN_CRIGHT;
@@ -95,9 +94,35 @@ namespace Ship {
 		profile->Mappings[0x01E] = BTN_STICKLEFT;
 		profile->Mappings[0x01F] = BTN_STICKDOWN;
 		profile->Mappings[0x011] = BTN_STICKUP;
+		profile->Mappings[0x02A] = BTN_MODIFIER1;
+		profile->Mappings[0x036] = BTN_MODIFIER2;
 	}
 
 	const std::string KeyboardController::GetControllerName() {
 		return "Keyboard";
+	}
+
+	bool KeyboardController::Connected() const {
+		return true;
+	}
+
+	bool KeyboardController::CanRumble() const {
+		return false;
+	}
+
+	bool KeyboardController::CanGyro() const {
+		return false;
+	}
+
+	void KeyboardController::ClearRawPress() {
+		lastKey = -1;
+	}
+
+	void KeyboardController::SetLastScancode(int32_t key) {
+		lastScancode = key;
+	}
+
+	int32_t KeyboardController::GetLastScancode() {
+		return lastScancode;
 	}
 }

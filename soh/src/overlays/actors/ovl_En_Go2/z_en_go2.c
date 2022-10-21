@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -141,6 +142,7 @@ typedef enum {
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
+    /* 13 */ ENGO2_ANIM_13, // Added to fix spinning goron issue for biggoron
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -150,7 +152,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01,  0.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -415,10 +417,10 @@ s16 EnGo2_GetStateGoronDmtRollingSmall(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.eventChkInf[2] & 0x8 ? 0x3021 : gSaveContext.infTable[14] & 0x1 ? 0x302A : 0x3008;
@@ -438,10 +440,10 @@ s16 EnGo2_GetStateGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x1 ? 0x3015 : 0x3014;
@@ -461,10 +463,10 @@ s16 EnGo2_GetStateGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x10 ? 0x3017 : 0x3016;
@@ -484,10 +486,10 @@ s16 EnGo2_GetStateGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
 
 u16 EnGo2_GetTextIdGoronCityLowestFloor(GlobalContext* globalCtx, EnGo2* this) {
     if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+         (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
         return 0x3043;
     } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+               (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
         return 0x3027;
     } else {
         return CUR_UPG_VALUE(UPG_STRENGTH) != 0    ? 0x302C
@@ -594,7 +596,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
 u16 EnGo2_GetTextIdGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (gSaveContext.bgsFlag) {
+    if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
         player->exchangeItemId = EXCH_ITEM_CLAIM_CHECK;
         return 0x305E;
     } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
@@ -621,10 +623,6 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
                 }
                 
                 if(gSaveContext.n64ddFlag) {
-                    if (INV_CONTENT(ITEM_CLAIM_CHECK) != ITEM_CLAIM_CHECK) {
-                        return 0;
-                    }
-
                     EnGo2_GetItemEntry(this, globalCtx, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
                     Flags_SetTreasure(globalCtx, 0x1F);
                 } else {
@@ -656,7 +654,14 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
             if (Message_ShouldAdvance(globalCtx)) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (globalCtx->msgCtx.choiceIndex == 0) {
-                        EnGo2_GetItem(this, globalCtx, GI_PRESCRIPTION);
+                        if (gSaveContext.n64ddFlag) {
+                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                            Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SWORD_BROKEN);
+                            EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                        } else {
+                            u32 getItemId = GI_PRESCRIPTION;
+                            EnGo2_GetItem(this, globalCtx, getItemId);
+                        }
                         this->actionFunc = EnGo2_SetupGetItem;
                         return 2;
                     }
@@ -1055,7 +1060,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, GlobalContext* globalCtx, Player* play
     u16 textId;
 
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
-        if (gSaveContext.bgsFlag) {
+        if ((!gSaveContext.n64ddFlag && gSaveContext.bgsFlag)) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_CLAIM_CHECK) {
                 this->actor.textId = 0x3003;
             } else {
@@ -1063,16 +1068,20 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, GlobalContext* globalCtx, Player* play
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (!gSaveContext.bgsFlag && (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)) {
+        } else if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_CLAIM_CHECK) {
-                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                if (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F)) {
+                    textId = 0x3003;
+                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
                 }
                 this->actor.textId = textId;
             } else {
-                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                if (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F)) {
+                    textId = 0x305E;
+                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;
@@ -1340,6 +1349,11 @@ void EnGo2_RollingAnimation(EnGo2* this, GlobalContext* globalCtx) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
+    if (CVar_GetS32("gUnfixGoronSpin", 0)) {
+        // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
+        // making the goron do a spin
+        this->skelAnime.animation = NULL;
+    }
     if (this->skelAnime.playSpeed == 0.0f) {
         if ((this->actor.params & 0x1F) != GORON_DMT_BIGGORON) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_WAKE_UP);
@@ -1349,10 +1363,25 @@ void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(globalCtx, 4200, -99, &this->actor, MAIN_CAM);
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
+        // There is an issue interpolating between ENGO2_ANIM_0 and ENGO2_ANIM_1/10, the goron
+        // is technically in the same position at the end of ANIM_0 and beginning of ANIM_1/10
+        // but something isn't getting translated correctly causing the 360 degree spin before
+        // then continuing the wake up animation like normal. One solution is to use ANIM_0
+        // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
+        // current animation frame is at 0, meaning no morphing is necessary anyway.
+        // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
+        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
+        }
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
+        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
+        }
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;
@@ -1581,7 +1610,7 @@ void EnGo2_Init(Actor* thisx, GlobalContext* globalCtx) {
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
             if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                 (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
+                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;
@@ -1844,6 +1873,13 @@ void EnGo2_SetGetItem(EnGo2* this, GlobalContext* globalCtx) {
                 this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
                 return;
         }
+
+        if (gSaveContext.n64ddFlag) {
+            // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron 
+            // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for 
+            // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
+            gSaveContext.unk_13EE = 0x32;
+        }
         this->actionFunc = func_80A46B40;
     }
 }
@@ -1855,12 +1891,14 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, GlobalContext* globalCtx) {
             this->actor.flags &= ~ACTOR_FLAG_0;
             this->actor.shape.rot.y += 0x5B0;
             this->unk_26E = 1;
-            this->animTimer = this->skelAnime.endFrame + 60.0f + 60.0f; // eyeDrops animation timer
+            this->animTimer = gSaveContext.n64ddFlag ? 0 : (this->skelAnime.endFrame + 60.0f + 60.0f); // eyeDrops animation timer
             this->eyeMouthTexState = 2;
             this->unk_20C = 0;
             this->goronState++;
             func_800F483C(0x28, 5);
-            OnePointCutscene_Init(globalCtx, 4190, -99, &this->actor, MAIN_CAM);
+            if (!gSaveContext.n64ddFlag) {
+                OnePointCutscene_Init(globalCtx, 4190, -99, &this->actor, MAIN_CAM);
+            }
             break;
         case 1:
             if (DECR(this->animTimer)) {
@@ -1887,7 +1925,14 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, GlobalContext* globalCtx) {
                 this->unk_26E = 2;
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
-                EnGo2_GetItem(this, globalCtx, GI_CLAIM_CHECK);
+                if (gSaveContext.n64ddFlag) {
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_EYEDROPS);
+                    EnGo2_GetItemEntry(this, globalCtx, getItemEntry);
+                } else {
+                    u32 getItemId = GI_CLAIM_CHECK;
+                    EnGo2_GetItem(this, globalCtx, getItemId);
+                }
                 this->actionFunc = EnGo2_SetupGetItem;
                 this->goronState = 0;
             }

@@ -9,6 +9,7 @@ __pycache__/
 .idea/
 cmake-build-debug
 venv/
+.cache/
 
 # Project-specific ignores
 build/
@@ -51,6 +52,8 @@ graphs/
 *.fbx
 !*_custom*
 .extracted-assets.json
+
+!OTRExporter/assets/**/*.png
 
 # Docs
 !docs/tutorial/
@@ -407,9 +410,11 @@ ReleaseObj/*
 .tags
 tags
 oot.otr
+oot-mq.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
+imgui.ini
 
 # Switch Stuff
 

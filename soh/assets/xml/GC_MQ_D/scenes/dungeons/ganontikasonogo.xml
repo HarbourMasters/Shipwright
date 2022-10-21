@@ -1,0 +1,12 @@
+<Root>
+    <File Name="ganontikasonogo_scene" Segment="2">
+        <Path Name="ganontikasonogo_scenePathList_000184" Offset="0x0184" NumPaths="2"/>
+        <Scene Name="ganontikasonogo_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganontikasonogo_room_0" Segment="3">
+        <Room Name="ganontikasonogo_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ganontikasonogo_room_1" Segment="3">
+        <Room Name="ganontikasonogo_room_1" Offset="0x0"/>
+    </File>
+</Root>

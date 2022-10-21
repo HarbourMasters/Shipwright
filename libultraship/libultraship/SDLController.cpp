@@ -12,6 +12,10 @@ extern "C" uint8_t __osMaxControllers;
 
 namespace Ship {
 
+    SDLController::SDLController(int32_t physicalSlot) : Controller(), Cont(nullptr), physicalSlot(physicalSlot) {
+
+    }
+
     bool SDLController::Open() {
         const auto NewCont = SDL_GameControllerOpen(physicalSlot);
 
@@ -166,6 +170,10 @@ namespace Ship {
 
             getGyroX(virtualSlot) *= gyro_sensitivity;
             getGyroY(virtualSlot) *= gyro_sensitivity;
+        }
+        else {
+            getGyroX(virtualSlot) = 0;
+            getGyroY(virtualSlot) = 0;
         }
 
         getPressedButtons(virtualSlot) = 0;
@@ -440,6 +448,8 @@ namespace Ship {
         profile->Mappings[SDL_CONTROLLER_BUTTON_START] = BTN_START;
         profile->Mappings[SDL_CONTROLLER_BUTTON_B] = BTN_B;
         profile->Mappings[SDL_CONTROLLER_BUTTON_A] = BTN_A;
+        profile->Mappings[SDL_CONTROLLER_BUTTON_LEFTSTICK] = BTN_MODIFIER1;
+        profile->Mappings[SDL_CONTROLLER_BUTTON_RIGHTSTICK] = BTN_MODIFIER2;
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
             profile->AxisDeadzones[i] = 16.0f;
@@ -449,5 +459,24 @@ namespace Ship {
         profile->GyroData[DRIFT_X] = 0.0f;
         profile->GyroData[DRIFT_Y] = 0.0f;
         profile->GyroData[GYRO_SENSITIVITY] = 1.0f;
+    }
+
+    bool SDLController::Connected() const {
+	    return Cont != nullptr;
+    }
+
+    bool SDLController::CanGyro() const {
+	    return supportsGyro;
+    }
+
+    bool SDLController::CanRumble() const {
+#if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
+        return SDL_GameControllerHasRumble(Cont);
+#endif
+        return false;
+    }
+
+    void SDLController::ClearRawPress() {
+	    
     }
 }

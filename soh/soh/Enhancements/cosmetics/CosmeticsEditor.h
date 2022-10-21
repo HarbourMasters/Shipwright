@@ -1,5 +1,5 @@
 #pragma once
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 #define SECTION_SIZE(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 #define RANDOMIZE_32(Max) GetRandomValue(Max);
 #define CATEGORY_NPC 0
@@ -7,6 +7,13 @@
 #define CATEGORY_MENU 2
 #define CATEGORY_HUD 3
 #define CATEGORY_MISC 4
+
+#define PATCH_GFX(path, name, cvar, index, instruction) \
+    if (CVar_GetS32(cvar, 0)) { \
+        ResourceMgr_PatchGfxByName(path, name, index, instruction); \
+    } else { \
+        ResourceMgr_UnpatchGfxByName(path, name); \
+    }
 
 typedef struct {
     const std::string Name;
@@ -28,35 +35,39 @@ typedef struct {
 static float TablesCellsWidth = 300.0f;
 static ImGuiTableColumnFlags FlagsTable = ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV;
 static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
-static ImVec4 hearts_colors;       static ImVec4 hearts_dd_colors;        static ImVec4 hearts_ddi_colors;
-static ImVec4 a_btn_colors;        static ImVec4 b_btn_colors;            static ImVec4 c_btn_colors;        static ImVec4 start_btn_colors;
-static ImVec4 c_btn_u_colors;      static ImVec4 c_btn_l_colors;          static ImVec4 c_btn_d_colors;      static ImVec4 c_btn_r_colors;
-static ImVec4 magic_border_colors; static ImVec4 magic_remaining_colors;  static ImVec4 magic_use_colors;
-static ImVec4 minimap_colors;      static ImVec4 dgn_minimap_colors;
-static ImVec4 cp_minimap_colors;   static ImVec4 le_minimap_colors;
-static ImVec4 rupee_colors;        static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
-static ImVec4 fileselect_colors;   static ImVec4 fileselect_text_colors;
-static ImVec4 kokiri_col;          static ImVec4 goron_col;               static ImVec4 zora_col;
-static ImVec4 navi_idle_i_col;     static ImVec4 navi_idle_o_col;
-static ImVec4 navi_npc_i_col;      static ImVec4 navi_npc_o_col;
-static ImVec4 navi_enemy_i_col;    static ImVec4 navi_enemy_o_col;
-static ImVec4 navi_prop_i_col;     static ImVec4 navi_prop_o_col;
-static ImVec4 trailscol;
+static ImVec4 hearts_colors;          static ImVec4 hearts_dd_colors;        static ImVec4 hearts_ddi_colors;
+static ImVec4 a_btn_colors;           static ImVec4 b_btn_colors;            static ImVec4 c_btn_colors;        static ImVec4 start_btn_colors;
+static ImVec4 c_btn_u_colors;         static ImVec4 c_btn_l_colors;          static ImVec4 c_btn_d_colors;      static ImVec4 c_btn_r_colors;
+static ImVec4 magic_border_colors;    static ImVec4 magic_remaining_colors;  static ImVec4 magic_use_colors;
+static ImVec4 minimap_colors;         static ImVec4 dgn_minimap_colors;
+static ImVec4 cp_minimap_colors;      static ImVec4 le_minimap_colors;
+static ImVec4 rupee_colors;           static ImVec4 smolekey_colors;         static ImVec4 magic_bordern_colors;
+static ImVec4 fileselect_colors;      static ImVec4 fileselect_text_colors;
+static ImVec4 kokiri_col;             static ImVec4 goron_col;               static ImVec4 zora_col;
+static ImVec4 silvergaunts_col;       static ImVec4 goldengaunts_col;
+static ImVec4 mirrorshield_border_col;static ImVec4 mirrorshield_mirror_col; static ImVec4 mirrorshield_emblem_col;
+static ImVec4 navi_idle_i_col;        static ImVec4 navi_idle_o_col;
+static ImVec4 navi_npc_i_col;         static ImVec4 navi_npc_o_col;
+static ImVec4 navi_enemy_i_col;       static ImVec4 navi_enemy_o_col;
+static ImVec4 navi_prop_i_col;        static ImVec4 navi_prop_o_col;
+static ImVec4 swordtrailtop_col;      static ImVec4 swordtrailbottom_col;
+static ImVec4 boomtrailstart_col;     static ImVec4 boomtrailend_col;
+static ImVec4 bombtrail_col;           
 static ImVec4 crtfilter;
-static ImVec4 firearrow_col;       static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
-static ImVec4 firearrow_colenv;    static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
-static ImVec4 charged1_col;        static ImVec4 charged2_col;
-static ImVec4 charged1_colenv;     static ImVec4 charged2_colenv;
-static ImVec4 Keese1_primcol;      static ImVec4 Keese2_primcol;
-static ImVec4 Keese1_envcol;       static ImVec4 Keese2_envcol;
-static ImVec4 doggo1col;           static ImVec4 doggo2col;
-static ImVec4 df_col;              static ImVec4 df_colenv;
-static ImVec4 nl_diam_col;         static ImVec4 nl_diam_colenv;
-static ImVec4 nl_orb_col;          static ImVec4 nl_orb_colenv;
-static ImVec4 tc_ou_colors;        static ImVec4 tc_bu_colors;
+static ImVec4 normalarrow_col;        static ImVec4 firearrow_col;           static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
+static ImVec4 normalarrow_colenv;     static ImVec4 firearrow_colenv;        static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
+static ImVec4 charged1_col;           static ImVec4 charged2_col;
+static ImVec4 charged1_colenv;        static ImVec4 charged2_colenv;
+static ImVec4 Keese1_primcol;         static ImVec4 Keese2_primcol;
+static ImVec4 Keese1_envcol;          static ImVec4 Keese2_envcol;
+static ImVec4 doggo1col;              static ImVec4 doggo2col;
+static ImVec4 df_col;                 static ImVec4 df_colenv;
+static ImVec4 nl_diam_col;            static ImVec4 nl_diam_colenv;
+static ImVec4 nl_orb_col;             static ImVec4 nl_orb_colenv;
+static ImVec4 tc_ou_colors;           static ImVec4 tc_bu_colors;
 static ImVec4 dpad_colors;
 static ImVec4 visualagony_colors;
-static ImVec4 tc_fire_colors;      static ImVec4 tc_fire_colors_env; 
+static ImVec4 tc_fire_colors;         static ImVec4 tc_fire_colors_env; 
 /*ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
@@ -65,14 +76,14 @@ ImVec4 menu_save_colors;
 ImVec4 menu_gameover_colors;*/
 
 //Navi
-static CosmeticsColorIndividual Navi_Idle_Inner = { "Navi Idle (Primary)", "Inner color for Navi (idle flying around)", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Idle_Outer = { "Navi Idle (Secondary)", "Outer color for Navi (idle flying around)", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Npc_Inner = { "Navi NPC (Primary)", "Inner color for Navi (when Navi fly around NPCs)", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Npc_Outer = { "Navi NPC (Secondary)", "Outer color for Navi (when Navi fly around NPCs)", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Enemy_Inner = { "Navi Enemy (Primary)", "Inner color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Enemy_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Prop_Inner = { "Navi Enemy (Primary)", "Inner color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false, false, false };
-static CosmeticsColorIndividual Navi_Prop_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Idle_Inner = { "Navi Idle (Primary)", "Inner color for Navi (idle flying around)", "gNavi_Idle_Inner", navi_idle_i_col, ImVec4(255, 255, 255, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Idle_Outer = { "Navi Idle (Secondary)", "Outer color for Navi (idle flying around)", "gNavi_Idle_Outer", navi_idle_o_col, ImVec4(0, 0, 255, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Npc_Inner = { "Navi NPC (Primary)", "Inner color for Navi (when Navi fly around NPCs)", "gNavi_NPC_Inner", navi_npc_i_col, ImVec4(150, 150, 255, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Npc_Outer = { "Navi NPC (Secondary)", "Outer color for Navi (when Navi fly around NPCs)", "gNavi_NPC_Outer", navi_npc_o_col, ImVec4(150, 150, 255, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Enemy_Inner = { "Navi Enemy (Primary)", "Inner color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Inner", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Enemy_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Outer", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Prop_Inner = { "Navi Props (Primary)", "Inner color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false, false, false };
+static CosmeticsColorIndividual Navi_Prop_Outer = { "Navi Props (Secondary)", "Outer color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false, false, false };
 
 //Keese
 static CosmeticsColorIndividual Keese1_prim = { "Fire Primary color", "Affects the primary color of the Fire itself of the Keese", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255), true, false, false };
@@ -84,12 +95,23 @@ static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects t
 static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
-//Tunics colors
+//Tunic colors
 static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
 static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
 static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
 
+//Gauntlet colors
+static CosmeticsColorIndividual SilverGauntlets = { "Silver Gauntlets", "Affects Silver Gauntlets color", "gGauntlets_Silver", silvergaunts_col, ImVec4(255, 255, 255, 255), true, false, true };
+static CosmeticsColorIndividual GoldenGauntlets = { "Golden Gauntlets", "Affects Golden Gauntlets color", "gGauntlets_Golden", goldengaunts_col, ImVec4(254, 207, 15, 255), true, false, true };
+
+//Mirror Shield colors
+static CosmeticsColorIndividual MirrorShieldBorder = { "Mirror Shield Border", "Affects Mirror Shield Border color", "gMirrorShield_Border", mirrorshield_border_col, ImVec4(215,   0,   0, 255), false, false, true };
+static CosmeticsColorIndividual MirrorShieldMirror = { "Mirror Shield Mirror", "Affects Mirror Shield Mirror color", "gMirrorShield_Mirror", mirrorshield_mirror_col, ImVec4(255, 255, 255, 255), false, false, true };
+static CosmeticsColorIndividual MirrorShieldEmblem = { "Mirror Shield Emblem", "Affects Mirror Shield Emblem color", "gMirrorShield_Emblem", mirrorshield_emblem_col, ImVec4(205, 225, 255, 255), false, false, true };
+
 //Arrows (Fire -> Ice -> Light)
+static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };
+static CosmeticsColorIndividual Normal_Arrow_Env = { "Normal Arrows (Secondary)", "Affects Secondary color", "gNormalArrowColEnv", normalarrow_colenv, ImVec4(0, 150, 0, 0), true, false, false };
 static CosmeticsColorIndividual Fire_Arrow_Prim = { "Fire Arrows (primary)", "Affects Primary color", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255), true, false, false };
 static CosmeticsColorIndividual Fire_Arrow_Env = { "Fire Arrows (Secondary)", "Affects Secondary color", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255), true, false, false };
 static CosmeticsColorIndividual Ice_Arrow_Prim = { "Ice Arrows (Primary)", "Affects Primary color", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255), true, false, false };
@@ -112,7 +134,23 @@ static CosmeticsColorIndividual Spin_Lv2_Prim = { "Level 2 (primary)", "Affects 
 static CosmeticsColorIndividual Spin_Lv2_Env = { "Level 2 (Secondary)", "Affects Secondary color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255), true, false, false };
 
 //Trails
-static CosmeticsColorIndividual Trails_col = { "Trails color", "Affects Swords slash, boomerang and Bombchu trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Sword_Trails_Top_col = { "Sword Trail Top Color", "Affects top of sword slash", "gSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Sword_Trails_Bottom_col = { "Sword Trail End Color", "Affects bottom of sword slash", "gSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Boom_Trails_Start_col = { "Boomerang Trail Start Color", "Affects start of boomerang trail", "gBoomTrailStartCol", boomtrailstart_col, ImVec4(255,255,100,255), true, false, false };
+static CosmeticsColorIndividual Boom_Trails_End_col = { "Boomerang Trail End Color", "Affects end of boomerang trail", "gBoomTrailEndCol", boomtrailend_col, ImVec4(255,255,100,255), true, false, false };
+static CosmeticsColorIndividual Bomb_Trails_col = { "Bombchu Trail Color", "Affects Bomchus", "gBombTrailCol", bombtrail_col, ImVec4(250,0,0,255), true, false, false };
+
+
+static CosmeticsColorIndividual KSword_Trails_Top_col = { "Kokiri Sword Top Color", "Affects top of sword slash", "gKSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual KSword_Trails_Bottom_col = { "Kokiri Sword End Color", "Affects bottom of sword slash", "gKSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual MSword_Trails_Top_col = { "Master Sword Top Color", "Affects top of sword slash", "gMSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual MSword_Trails_Bottom_col = { "Master Sword End Color", "Affects bottom of sword slash", "gMSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual BSword_Trails_Top_col = { "BG Sword Top Color", "Affects top of sword slash", "gBSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual BSword_Trails_Bottom_col = { "BG Sword End Color", "Affects bottom of sword slash", "gBSwordTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Stick_Trails_Top_col = { "Stick Top Color", "Affects top of stick swing", "gStickTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Stick_Trails_Bottom_col = { "Stick End Color", "Affects bottom of stick swing", "gStickTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Hammer_Trails_Top_col = { "Hammer Top Color", "Affects top of hammer swing", "gHammerTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
+static CosmeticsColorIndividual Hammer_Trails_Bottom_col = { "Hammer End Color", "Affects bottom of hammer swing", "gHammerTrailBottomCol", swordtrailbottom_col, ImVec4(255,255,255,255), true, false, false };
 
 //Menus - File Choose
 static CosmeticsColorIndividual FileChoose_Background = { "Main menu color", "Affects the File Select menu background.", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, false };
@@ -131,7 +169,7 @@ static CosmeticsColorIndividual DPad_Items = { "DPad background", "DPad backgrou
 
 //Hearts colors
 static CosmeticsColorIndividual Hearts_NInner = { "Inner (Normal)", "Affects the inner color", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, false };
-static CosmeticsColorIndividual Hearts_DDInner = { "Inner (Double defense)", "Affects the inner color", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, false };
+static CosmeticsColorIndividual Hearts_DDInner = { "Inner (Double defense)", "Affects the inner color", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(200,00,00,255), true, false, false };
 static CosmeticsColorIndividual Hearts_DDOutline = { "Outline (Double defense)", "Affects the outline color of hearts when you have Double Defense\nWhite is the default value", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, false };
 
 //Magic Meter colors
@@ -188,8 +226,19 @@ static CosmeticsColorSection Tunics_Section[] = {
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false }
 };
+static CosmeticsColorSection Gauntlets_Section[] = {
+    { &SilverGauntlets, false, false },
+    { &GoldenGauntlets, true, false },
+};
+static CosmeticsColorSection MirrorShield_Section[] = {
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
+};
 static CosmeticsColorSection Arrows_section[] = {
-    { &Fire_Arrow_Prim, false, false },
+    { &Normal_Arrow_Prim, false, false },
+    { &Normal_Arrow_Env, true, false },
+    { &Fire_Arrow_Prim, false, true },
     { &Fire_Arrow_Env, true, false },
     { &Ice_Arrow_Prim, false, true },
     { &Ice_Arrow_Env, true, false },
@@ -208,10 +257,43 @@ static CosmeticsColorSection SpinAtk_section[] = {
     { &Spin_Lv1_Prim, false, false },
     { &Spin_Lv1_Env, true, false },
     { &Spin_Lv2_Prim, false, true },
-    { &Spin_Lv2_Env, true, false }
+    { &Spin_Lv2_Env, true, false } };
+
+static CosmeticsColorSection Trail_section[] = {
+    { &Sword_Trails_Top_col, false, false },
+    { &Sword_Trails_Bottom_col, false, false },
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_End_col, false, false },
+    { &Bomb_Trails_col, true, false }
 };
-static CosmeticsColorSection Trails_section[] = {
-    { &Trails_col, false, false }
+static CosmeticsColorSection SwordTrail_section[] = {
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
+};
+static CosmeticsColorSection AllTrail_section[] = {
+    { &Sword_Trails_Top_col, false, false },
+    { &Sword_Trails_Bottom_col, false, false },
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_End_col, false, false },
+    { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
 };
 static CosmeticsColorSection FileChoose_section[] = {
     { &FileChoose_Background, false, false },
@@ -288,7 +370,14 @@ static CosmeticsColorSection Everything_Section[] = {
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
-    { &Fire_Arrow_Prim, false, false },
+    { &SilverGauntlets, true, false },
+    { &GoldenGauntlets, true, false },
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
+    { &Normal_Arrow_Prim, false, false },
+    { &Normal_Arrow_Env, true, false },
+    { &Fire_Arrow_Prim, false, true },
     { &Fire_Arrow_Env, true, false },
     { &Ice_Arrow_Prim, false, true },
     { &Ice_Arrow_Env, true, false },
@@ -304,7 +393,21 @@ static CosmeticsColorSection Everything_Section[] = {
     { &Spin_Lv1_Env, true, false },
     { &Spin_Lv2_Prim, false, true },
     { &Spin_Lv2_Env, true, false },
-    { &Trails_col, false, false },
+    { &Sword_Trails_Top_col, false, false },
+    { &Sword_Trails_Bottom_col, false, false },
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_End_col, false, false },
+    { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false },
     { &FileChoose_Background, false, false },
     { &FileChoose_BottomText, true, false },
     { &A_Btn, false, false },
@@ -384,7 +487,14 @@ static CosmeticsColorSection AllItemsSkills_section[]{
     { &KokiriTunic, false, false },
     { &GoronTunic, true, false },
     { &ZoraTunic, true, false },
-    { &Fire_Arrow_Prim, false, false },
+    { &SilverGauntlets, true, false },
+    { &GoldenGauntlets, true, false },
+    { &MirrorShieldBorder, false, false },
+    { &MirrorShieldMirror, true, false },
+    { &MirrorShieldEmblem, true, false },
+    { &Normal_Arrow_Prim, false, false },
+    { &Normal_Arrow_Env, true, false },
+    { &Fire_Arrow_Prim, false, true },
     { &Fire_Arrow_Env, true, false },
     { &Ice_Arrow_Prim, false, true },
     { &Ice_Arrow_Env, true, false },
@@ -400,9 +510,25 @@ static CosmeticsColorSection AllItemsSkills_section[]{
     { &Spin_Lv1_Env, true, false },
     { &Spin_Lv2_Prim, false, true },
     { &Spin_Lv2_Env, true, false },
-    { &Trails_col, false, false }
+    { &Sword_Trails_Top_col, false, false},
+    { &Sword_Trails_Bottom_col, false, false},
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_Start_col, true, false },
+    { &Boom_Trails_End_col, false, false },
+    { &Bomb_Trails_col, true, false },
+    { &KSword_Trails_Top_col, false, false },
+    { &KSword_Trails_Bottom_col, false, false },
+    { &MSword_Trails_Top_col, true, false },
+    { &MSword_Trails_Bottom_col, false, false },
+    { &BSword_Trails_Top_col, true, false },
+    { &BSword_Trails_Bottom_col, false, false },
+    { &Stick_Trails_Top_col, true, false },
+    { &Stick_Trails_Bottom_col, false, false },
+    { &Hammer_Trails_Top_col, true, false },
+    { &Hammer_Trails_Bottom_col, false, false }
 };
 
 void InitCosmeticsEditor();//Init the menu itself
 void LoadRainbowColor();
 void NewSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0);
+ImVec4 GetRandomValue(int MaximumPossible);

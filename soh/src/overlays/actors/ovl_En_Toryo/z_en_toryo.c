@@ -6,6 +6,7 @@
 
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -313,7 +314,14 @@ void func_80B20768(EnToryo* this, GlobalContext* globalCtx) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
         } else {
-            func_8002F434(&this->actor, globalCtx, GI_SWORD_BROKEN, 100.0f, 10.0f);
+            if (gSaveContext.n64ddFlag) {
+                GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
+                Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_SAW);
+                GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 100.0f, 10.0f);
+            } else {
+                s32 itemId = GI_SWORD_BROKEN;
+                func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 10.0f);
+            }
         }
         return;
     }

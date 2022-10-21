@@ -13,6 +13,7 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "Hooks.h"
+#include <string>
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_dxgi.h"
@@ -85,8 +86,8 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
-
-	    if (SohImGui::controller->IsOpened()) return;
+        
+        if (SohImGui::GetInputEditor()->IsOpened()) return;
 
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
@@ -198,8 +199,8 @@ extern "C" {
 
         if (res != nullptr)
         {
-            if (index < res->imageDataSize)
-                res->imageData[index] = value;
+            if ((index * 2) < res->imageDataSize)
+                ((s16*)res->imageData)[index] = value;
             else
             {
                 // Dangit Morita
@@ -231,11 +232,11 @@ namespace Ship {
         return Context.lock();
     }
 
-    std::shared_ptr<Window> Window::CreateInstance(const std::string Name) {
+    std::shared_ptr<Window> Window::CreateInstance(const std::string Name, const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         if (Context.expired()) {
             auto Shared = std::make_shared<Window>(Name);
             Context = Shared;
-            Shared->Initialize();
+            Shared->Initialize(OTRFiles, ValidHashes);
             return Shared;
         }
 
@@ -262,6 +263,7 @@ namespace Ship {
             GetConfig()->setInt("Window.Height", 480);
             GetConfig()->setBool("Window.Options", false);
             GetConfig()->setString("Window.GfxBackend", "");
+            GetConfig()->setString("Window.AudioBackend", "");
 
             GetConfig()->setBool("Window.Fullscreen.Enabled", false);
             GetConfig()->setInt("Window.Fullscreen.Width", 1920);
@@ -277,12 +279,11 @@ namespace Ship {
         }
     }
 
-    void Window::Initialize() {
+    void Window::Initialize(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         InitializeLogging();
         InitializeConfiguration();
-        InitializeResourceManager();
+        InitializeResourceManager(OTRFiles, ValidHashes);
         CreateDefaults();
-        InitializeAudioPlayer();
         InitializeControlDeck();
 
         bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false);
@@ -296,8 +297,12 @@ namespace Ship {
         }
 
         dwMenubar = GetConfig()->getBool("Window.Options", false);
-        const std::string& gfx_backend = GetConfig()->getString("Window.GfxBackend");
+
+        gfxBackend = GetConfig()->getString("Window.GfxBackend");
         InitializeWindowManager();
+
+        audioBackend = GetConfig()->getString("Window.AudioBackend");
+        InitializeAudioPlayer();
 
         gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
@@ -441,6 +446,21 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
+
+        // Config can override
+#ifdef _WIN32
+        if (audioBackend == "wasapi") {
+            APlayer = std::make_shared<WasapiAudioPlayer>();
+        }
+#endif
+#if defined(__linux)
+        if (audioBackend == "pulse") {
+            APlayer = std::make_shared<PulseAudioPlayer>();
+        }
+#endif
+        if (audioBackend == "sdl") {
+            APlayer = std::make_shared<SDLAudioPlayer>();
+        }
     }
 
     void Window::InitializeWindowManager() {
@@ -460,7 +480,7 @@ namespace Ship {
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef ENABLE_DX11
-    	RenderingApi = &gfx_direct3d11_api;
+        RenderingApi = &gfx_direct3d11_api;
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef __WIIU__
@@ -500,12 +520,38 @@ namespace Ship {
             std::vector<spdlog::sink_ptr> Sinks;
 
             auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
-            SohConsoleSink->set_level(spdlog::level::trace);
+            //SohConsoleSink->set_level(spdlog::level::trace);
             Sinks.push_back(SohConsoleSink);
 
 #if (!defined(_WIN32) && !defined(__WIIU__)) || defined(_DEBUG)
+#if defined(_DEBUG) && defined(_WIN32)
+            if (AllocConsole() == 0) {
+                throw std::system_error(GetLastError(), std::generic_category(), "Failed to create debug console");
+            }
+
+            SetConsoleOutputCP(CP_UTF8);
+
+            FILE* fDummy;
+            freopen_s(&fDummy, "CONOUT$", "w", stdout);
+            freopen_s(&fDummy, "CONOUT$", "w", stderr);
+            freopen_s(&fDummy, "CONIN$", "r", stdin);
+            std::cout.clear();
+            std::clog.clear();
+            std::cerr.clear();
+            std::cin.clear();
+
+            HANDLE hConOut = CreateFile(_T("CONOUT$"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            HANDLE hConIn = CreateFile(_T("CONIN$"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            SetStdHandle(STD_OUTPUT_HANDLE, hConOut);
+            SetStdHandle(STD_ERROR_HANDLE, hConOut);
+            SetStdHandle(STD_INPUT_HANDLE, hConIn);
+            std::wcout.clear();
+            std::wclog.clear();
+            std::wcerr.clear();
+            std::wcin.clear();
+#endif
             auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            ConsoleSink->set_level(spdlog::level::trace);
+            //ConsoleSink->set_level(spdlog::level::trace);
             Sinks.push_back(ConsoleSink);
 #endif
 
@@ -533,20 +579,23 @@ namespace Ship {
         }
     }
 
-    void Window::InitializeResourceManager() {
-        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+    void Window::InitializeResourceManager(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
+        MainPath = Config->getString("Game.Main Archive", GetAppDirectoryPath());
         PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
-        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        if (OTRFiles.empty()) {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath, ValidHashes);
+        } else {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), OTRFiles, ValidHashes);
+        }
 
         if (!ResMan->DidLoadSuccessfully())
         {
-#ifdef _WIN32
-            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
-#elif defined(__SWITCH__)
+#if defined(__SWITCH__)
             printf("Main OTR file not found!\n");
 #elif defined(__WIIU__)
             Ship::WiiU::ThrowMissingOTR(MainPath.c_str());
 #else
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OTR file not found", "Main OTR file not found. Please generate one", nullptr);
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
             exit(1);
@@ -580,5 +629,53 @@ namespace Ship {
         }
 
         saveFile.close();
+    }
+
+    bool Window::IsFullscreen() {
+	    return bIsFullscreen;
+    }
+
+    uint32_t Window::GetMenuBar() {
+	    return dwMenubar;
+    }
+
+    void Window::SetMenuBar(uint32_t dwMenuBar) {
+	    this->dwMenubar = dwMenuBar;
+    }
+
+    std::string Window::GetName() {
+	    return Name;
+    }
+
+    std::shared_ptr<ControlDeck> Window::GetControlDeck() {
+	    return ControllerApi;
+    }
+
+    std::shared_ptr<AudioPlayer> Window::GetAudioPlayer() {
+	    return APlayer;
+    }
+
+    std::shared_ptr<ResourceMgr> Window::GetResourceManager() {
+	    return ResMan;
+    }
+
+    std::shared_ptr<Mercury> Window::GetConfig() {
+	    return Config;
+    }
+
+    std::shared_ptr<spdlog::logger> Window::GetLogger() {
+	    return Logger;
+    }
+
+    const char* Window::GetKeyName(int32_t scancode) {
+	    return WmApi->get_key_name(scancode);
+    }
+
+    int32_t Window::GetLastScancode() {
+	    return lastScancode;
+    }
+
+    void Window::SetLastScancode(int32_t scanCode) {
+	    lastScancode = scanCode;
     }
 }

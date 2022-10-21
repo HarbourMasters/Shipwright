@@ -37,7 +37,7 @@ enum class CutsceneCommands
 	Error = 0xFEAF,
 };
 
-static inline uint32_t read_CMD_BBBB(BinaryReader* reader)
+static inline uint32_t read_CMD_BBBB(Ship::BinaryReader* reader)
 {
 	uint32_t v;
 	reader->Read((char*)&v, sizeof(uint32_t));
@@ -45,13 +45,13 @@ static inline uint32_t read_CMD_BBBB(BinaryReader* reader)
 	return v;
 }
 
-static inline uint32_t read_CMD_BBH(BinaryReader* reader)
+static inline uint32_t read_CMD_BBH(Ship::BinaryReader* reader)
 {
 	uint32_t v;
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half word to match endianness
-	if (reader->GetEndianness() != Endianness::Native)
+	if (reader->GetEndianness() != Ship::Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[2];
@@ -62,13 +62,13 @@ static inline uint32_t read_CMD_BBH(BinaryReader* reader)
 	return v;
 }
 
-static inline uint32_t read_CMD_HBB(BinaryReader* reader)
+static inline uint32_t read_CMD_HBB(Ship::BinaryReader* reader)
 {
 	uint32_t v;
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half word to match endianness
-	if (reader->GetEndianness() != Endianness::Native)
+	if (reader->GetEndianness() != Ship::Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[0];
@@ -79,13 +79,13 @@ static inline uint32_t read_CMD_HBB(BinaryReader* reader)
 	return v;
 }
 
-static inline uint32_t read_CMD_HH(BinaryReader* reader)
+static inline uint32_t read_CMD_HH(Ship::BinaryReader* reader)
 {
 	uint32_t v;
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half words to match endianness
-	if (reader->GetEndianness() != Endianness::Native)
+	if (reader->GetEndianness() != Ship::Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[0];
@@ -99,7 +99,7 @@ static inline uint32_t read_CMD_HH(BinaryReader* reader)
 	return v;
 }
 
-void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+void Ship::CutsceneV0::ParseFileBinary(Ship::BinaryReader* reader, Resource* res)
 {
 	Cutscene* cs = (Cutscene*)res;
 

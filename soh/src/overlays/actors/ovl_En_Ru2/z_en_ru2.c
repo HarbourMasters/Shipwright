@@ -634,13 +634,13 @@ s32 func_80AF383C(EnRu2* this, GlobalContext* globalCtx) {
 void func_80AF3878(EnRu2* this, GlobalContext* globalCtx) {
     if (func_80AF383C(this, globalCtx) && !Gameplay_InCsMode(globalCtx)) {
         this->action = 16;
-        OnePointCutscene_Init(globalCtx, 3130, -99, &this->actor, MAIN_CAM);
+        this->subCamId = OnePointCutscene_Init(globalCtx, 3130, -99, &this->actor, MAIN_CAM);
     }
 }
 
 void func_80AF38D0(EnRu2* this, GlobalContext* globalCtx) {
     this->action = 16;
-    OnePointCutscene_Init(globalCtx, 3130, -99, &this->actor, MAIN_CAM);
+    this->subCamId = OnePointCutscene_Init(globalCtx, 3130, -99, &this->actor, MAIN_CAM);
 }
 
 void func_80AF390C(EnRu2* this, GlobalContext* globalCtx) {
@@ -703,6 +703,7 @@ void func_80AF3ADC(EnRu2* this, GlobalContext* globalCtx) {
 void func_80AF3B74(EnRu2* this, GlobalContext* globalCtx) {
     if (this->unk_2C0 > ((((u16)(kREG(3) + 0x28)) + ((u16)(kREG(2) + 0x96))) & 0xFFFF)) {
         Actor_Kill(&this->actor);
+        OnePointCutscene_EndCutscene(globalCtx, this->subCamId);
     }
 }
 
@@ -789,6 +790,7 @@ void EnRu2_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     this->unk_2C2 = 0;
     this->unk_2C3 = TEXT_STATE_DONE_FADING;
+    this->subCamId = 0;
 }
 
 void func_80AF3F14(EnRu2* this, GlobalContext* globalCtx) {
@@ -817,6 +819,19 @@ void func_80AF3F20(EnRu2* this, GlobalContext* globalCtx) {
 
 void EnRu2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnRu2* this = (EnRu2*)thisx;
+
+    // FAST3D: This is a hack for the issue of both TEXEL0 and TEXEL1 using the same texture with different settings.
+    // Ruto's earring uses both TEXEL0 and TEXEL1 to render. The issue is that it never loads anything into TEXEL1, so
+    // it reuses whatever happens to be there, which is the water temple brick texture. It just so happens that the
+    // earring texture loads into the same place in tmem as the brick texture, so when it comes to rendering, TEXEL1
+    // uses the earring texture with diffrent clamp settings, and it displays without noticeable error. However, both
+    // texel samplers are not intended to be used for the same texture with different settings, so this misuse confuses
+    // our texture cache, and we load the wrong settings for the earrings texture. This patch is a hack that replaces
+    // TEXEL1 with TEXEL0, which is most likely the original intention, and all is well.
+    Gfx* gfx = ResourceMgr_LoadGfxByName(gAdultRutoHeadDL);
+    Gfx patch = gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, TEXEL0, 0,
+                                  PRIM_LOD_FRAC, COMBINED);
+    gfx[0xA2] = patch;
 
     if ((this->drawConfig < 0) || (this->drawConfig >= ARRAY_COUNT(sDrawFuncs)) ||
         (sDrawFuncs[this->drawConfig] == 0)) {

@@ -256,6 +256,10 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->forceUnaccountedStatic = true;
 		}
+		else if (arg == "-brt" || arg == "--build-raw-texture")
+		{
+			Globals::Instance->buildRawTexture = true;
+		}
 	}
 
 	// Parse File Mode
@@ -590,22 +594,7 @@ bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path
 
 void BuildAssetTexture(const fs::path& pngFilePath, TextureType texType, const fs::path& outPath)
 {
-	std::string name = outPath.stem().string();
-
-	ZTexture tex(nullptr);
-
-	if (name.find("u32") != std::string::npos)
-		tex.dWordAligned = false;
-
-	tex.FromPNG(pngFilePath.string(), texType);
-	std::string cfgPath = StringHelper::Split(pngFilePath.string(), ".")[0] + ".cfg";
-
-	if (File::Exists(cfgPath))
-		name = File::ReadAllText(cfgPath);
-
-	std::string src = tex.GetBodySourceCode();
-
-	File::WriteAllText(outPath.string(), src);
+	return Globals::Instance->BuildAssetTexture(pngFilePath, texType, outPath);
 }
 
 void BuildAssetBackground(const fs::path& imageFilePath, const fs::path& outPath)

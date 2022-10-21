@@ -14,6 +14,9 @@ void func_808911BC(BgIceShelter* this);
 void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx);
 void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx);
 
+// For "Blue Fire Arrows" enhancement
+void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, GlobalContext* globalCtx);
+
 const ActorInit Bg_Ice_Shelter_InitVars = {
     ACTOR_BG_ICE_SHELTER,
     ACTORCAT_BG,
@@ -32,7 +35,7 @@ static f32 sScales[] = { 0.1f, 0.06f, 0.1f, 0.1f, 0.25f };
 static Color_RGBA8 sDustPrimColor = { 250, 250, 250, 255 };
 static Color_RGBA8 sDustEnvColor = { 180, 180, 180, 255 };
 
-static ColliderCylinderInit D_8089170C = {
+static ColliderCylinderInit sCylinder1Init = {
     {
         COLTYPE_NONE,
         AT_NONE,
@@ -52,7 +55,7 @@ static ColliderCylinderInit D_8089170C = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
-static ColliderCylinderInit D_80891738 = {
+static ColliderCylinderInit sCylinder2Init = {
     {
         COLTYPE_HARD,
         AT_NONE,
@@ -72,14 +75,45 @@ static ColliderCylinderInit D_80891738 = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
+// This cylinder only used for "Blue Fire Arrows" enhancement
+static ColliderCylinderInit sIceArrowCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON | AC_TYPE_OTHER | AC_TYPE_PLAYER,
+        OC1_ON | OC1_TYPE_ALL,
+        OC2_TYPE_2,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK0,
+        { 0x00000000, 0x00, 0x00 },
+        { 0xFFCFFFFF, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_ON,
+        OCELEM_ON,
+    },
+    { 0, 0, 0, { 0, 0, 0 } },
+};
+
+bool blueFireArrowsEnabledOnRedIceLoad = false;
+
 void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
     static s16 cylinderRadii[] = { 47, 33, 44, 41, 100 };
     static s16 cylinderHeights[] = { 80, 54, 90, 60, 200 };
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
+    // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
+    blueFireArrowsEnabledOnRedIceLoad = CVar_GetS32("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+
     Collider_InitCylinder(globalCtx, &this->cylinder1);
-    Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &D_8089170C);
+    // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
+    if (blueFireArrowsEnabledOnRedIceLoad) {
+        Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &sIceArrowCylinderInit);
+    } else {
+        Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &sCylinder1Init);
+    }
     Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder1);
 
     this->cylinder1.dim.radius = cylinderRadii[type];
@@ -87,7 +121,7 @@ void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
 
     if (type == 0 || type == 1 || type == 4) {
         Collider_InitCylinder(globalCtx, &this->cylinder2);
-        Collider_SetCylinder(globalCtx, &this->cylinder2, &this->dyna.actor, &D_80891738);
+        Collider_SetCylinder(globalCtx, &this->cylinder2, &this->dyna.actor, &sCylinder2Init);
         Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder2);
         this->cylinder2.dim.radius = cylinderRadii[type];
         this->cylinder2.dim.height = cylinderHeights[type];
@@ -292,7 +326,12 @@ void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
             this->dyna.actor.parent->freezeTimer = 10000;
         }
     }
-
+    // If we have "Blue Fire Arrows" enabled, check both cylinders for a hit
+    if (blueFireArrowsEnabledOnRedIceLoad) {
+        MeltOnIceArrowHit(this, this->cylinder1, type, globalCtx);
+        MeltOnIceArrowHit(this, this->cylinder2, type, globalCtx);
+    }
+    // Default blue fire check
     if (this->cylinder1.base.acFlags & AC_HIT) {
         this->cylinder1.base.acFlags &= ~AC_HIT;
 
@@ -318,6 +357,24 @@ void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
     }
 
     CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->cylinder1.base);
+}
+
+// For "Blue Fire Arrows" enhancement: If hit by an Ice Arrow, melt the red ice (copied from the default blue fire function above).
+void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, GlobalContext* globalCtx) {
+    if (cylinder.base.acFlags & AC_HIT) {
+        cylinder.base.acFlags &= ~AC_HIT;
+        if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_EN_ARROW)) {
+            if (cylinder.base.ac->child != NULL && cylinder.base.ac->child->id == ACTOR_ARROW_ICE) {
+                if (type == 4) {
+                    if (this->dyna.actor.parent != NULL) {
+                        this->dyna.actor.parent->freezeTimer = 50;
+                    }
+                }
+                func_808911BC(this);
+                Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
+            }
+        }
+    }
 }
 
 void func_808911BC(BgIceShelter* this) {

@@ -764,6 +764,12 @@ void func_80AB70A0(EnNiw* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80AB70F8;
 }
 
+void func_80AB70A0_nocutscene(EnNiw* this, GlobalContext* globalCtx) {
+    this->timer5 = 10;
+    this->unk_2A2 = 1;
+    this->actionFunc = func_80AB70F8;
+}
+
 void func_80AB70F8(EnNiw* this, GlobalContext* globalCtx) {
     this->sfxTimer1 = 100;
 
@@ -1206,7 +1212,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
         if (feather->type == 1) {
             FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             if (!flag) {
-                gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
+                gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherMaterialDL);
                 flag++;
             }
             Matrix_Translate(feather->pos.x, feather->pos.y, feather->pos.z, MTXMODE_NEW);
@@ -1216,7 +1222,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }
     }

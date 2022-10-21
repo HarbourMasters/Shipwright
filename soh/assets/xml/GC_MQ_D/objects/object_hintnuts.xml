@@ -1,0 +1,23 @@
+<Root>
+    <File Name="object_hintnuts" Segment="6">
+        <!-- Deku scrub skeleton -->
+        <Skeleton Name="gHintNutsSkel" Type="Normal" LimbType="Standard" Offset="0x23B8"/>
+
+        <!-- Deku Scrub animations -->
+        <Animation Name="gHintNutsSpitAnim" Offset="0x168"/>
+        <Animation Name="gHintNutsBurrowAnim" Offset="0x24CC"/>
+        <Animation Name="gHintNutsUnburrowAnim" Offset="0x26C4"/>
+        <Animation Name="gHintNutsUpAnim" Offset="0x2B90"/>
+        <Animation Name="gHintNutsLookAroundAnim" Offset="0x2894"/>
+        <Animation Name="gHintNutsFreezeAnim" Offset="0x29BC"/>
+        <Animation Name="gHintNutsTalkAnim" Offset="0x2E84"/>
+        <Animation Name="gHintNutsStandAnim" Offset="0x2F7C"/>
+        <Animation Name="gHintNutsRunAnim" Offset="0x3128"/>
+
+        <!-- Deku Scrub flower -->
+        <DList Name="gHintNutsFlowerDL" Offset="0x14E0"/>
+
+        <!-- Deku Scrub Deku Nut (used by Nutsball) -->
+        <DList Name="gHintNutsNutDL" Offset="0x12F0"/>
+    </File>
+</Root>
