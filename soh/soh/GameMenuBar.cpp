@@ -170,6 +170,8 @@ namespace GameMenuBar {
         CVar_SetS32("gMMBunnyHood", 0);
         // Fast Chests
         CVar_SetS32("gFastChests", 0);
+        // Chest size & texture matches contents
+        CVar_SetS32("gChestSizeAndTextureMatchesContents", 0);
         // Fast Drops
         CVar_SetS32("gFastDrops", 0);
         // Better Owl
@@ -479,6 +481,8 @@ namespace GameMenuBar {
         CVar_SetS32("gDayGravePull", 1);
         // Pull out Ocarina to Summon Scarecrow
         CVar_SetS32("gSkipScarecrow", 1);
+        // Chest size & texture matches contents
+        CVar_SetS32("gChestSizeAndTextureMatchesContents", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 16);
@@ -760,6 +764,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
                 UIWidgets::Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, click Customize Game Controls");
                 if (CVar_GetS32("gEnableWalkModify", 0)) {
+                    UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
                     UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
                     UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
                 }
@@ -786,6 +791,18 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
                     UIWidgets::Tooltip("Kick open every chest");
+                    UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
+                    const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
+                    UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0);
+                    UIWidgets::Tooltip(
+                        "Chest sizes and textures are changed to help identify the item inside.\n"
+                        " - Major items: Large gold chests\n"
+                        " - Lesser items: Large brown chests\n"
+                        " - Junk items: Small brown chests\n"
+                        " - Small keys: Small silver chest\n"
+                        " - Boss keys: Vanilla size and texture\n"
+                        " - Skulltula Tokens: Small skulltula chest\n"
+                    );
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
@@ -1335,6 +1352,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
             UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
             UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
+            UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
             UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
             UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
             UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);

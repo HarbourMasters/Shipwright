@@ -71,7 +71,7 @@ class Randomizer {
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
-    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId);
+    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);

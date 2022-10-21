@@ -20,6 +20,7 @@ extern GlobalContext* gGlobalCtx;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
+extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);
@@ -300,31 +301,31 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
             switch (item.data) {
                 case SCENE_BMORI1:
-                    result.maxCapacity = result.currentCapacity = 5;
+                    result.maxCapacity = result.currentCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HIDAN:
-                    result.maxCapacity = result.currentCapacity = 8;
+                    result.maxCapacity = result.currentCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_MIZUSIN:
-                    result.maxCapacity = result.currentCapacity = 6;
+                    result.maxCapacity = result.currentCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_JYASINZOU:
-                    result.maxCapacity = result.currentCapacity = 5;
+                    result.maxCapacity = result.currentCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HAKADAN:
-                    result.maxCapacity = result.currentCapacity = 5;
+                    result.maxCapacity = result.currentCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HAKADANCH:
-                    result.maxCapacity = result.currentCapacity = 3;
-                    break;
-                case SCENE_GANONTIKA:
-                    result.maxCapacity = result.currentCapacity = 2;
+                    result.maxCapacity = result.currentCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
                 case SCENE_MEN:
-                    result.maxCapacity = result.currentCapacity = 9;
+                    result.maxCapacity = result.currentCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                     break;
                 case SCENE_GERUDOWAY:
-                    result.maxCapacity = result.currentCapacity = 4;
+                    result.maxCapacity = result.currentCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                    break;
+                case SCENE_GANONTIKA:
+                    result.maxCapacity = result.currentCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
                     break;
             }
             break;

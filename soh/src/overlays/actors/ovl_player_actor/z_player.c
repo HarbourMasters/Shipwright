@@ -1053,6 +1053,8 @@ static s8 sItemActionParams[] = {
 };
 
 static u8 sMaskMemory;
+u8 gWalkSpeedToggle1;
+u8 gWalkSpeedToggle2;
 
 // Used to map action params to update functions
 static s32 (*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
@@ -6033,10 +6035,22 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
         if (CVar_GetS32("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
-        } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-            maxSpeed *= CVar_GetFloat("gWalkModifierOne", 1.0f);
-        } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-            maxSpeed *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+        } 
+        
+        if (CVar_GetS32("gEnableWalkModify", 0)) {
+            if (CVar_GetS32("gWalkSpeedToggle", 0)) {
+                if (gWalkSpeedToggle1) {
+                    maxSpeed *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+                } else if (gWalkSpeedToggle2) {
+                    maxSpeed *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+                }
+            } else {
+                if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                    maxSpeed *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+                } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                    maxSpeed *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+                }
+            }
         }
 
         this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
@@ -7662,10 +7676,22 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
 
             if (CVar_GetS32("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
-            } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-                sp2C *= CVar_GetFloat("gWalkModifierOne", 1.0f);
-            } else if (CVar_GetS32("gEnableWalkModify", 0) && CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-                sp2C *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+            } 
+            
+            if (CVar_GetS32("gEnableWalkModify", 0)) {
+                if (CVar_GetS32("gWalkSpeedToggle", 0)) {
+                    if (gWalkSpeedToggle1) {
+                        sp2C *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+                    } else if (gWalkSpeedToggle2) {
+                        sp2C *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+                    }
+                } else {
+                    if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                        sp2C *= CVar_GetFloat("gWalkModifierOne", 1.0f);
+                    } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                        sp2C *= CVar_GetFloat("gWalkModifierTwo", 1.0f);
+                    }
+                }
             }
 
             func_8083DF68(this, sp2C, sp2A);
@@ -10956,6 +10982,15 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
     }
+
+    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+            gWalkSpeedToggle1 = !gWalkSpeedToggle1;
+        }
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+            gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+        }
+    }
 }
 
 static struct_80858AC8 D_80858AC8;
@@ -11195,17 +11230,17 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
         if (!CVar_GetS32("gDisableAutoCenterView", 0)) {
-            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1);
+            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
             Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-            temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
+            temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             temp2 = CLAMP(temp2, -3000, 3000);
             this->actor.focus.rot.y += temp2;
         } else {
             temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
             temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
-                          (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1));
+                          (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             this->actor.focus.rot.x += temp3;
 
             if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -11214,7 +11249,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
             if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
                 this->actor.focus.rot.x -=
-                    (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
+                    (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             }
 
             this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
@@ -11223,7 +11258,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
             temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
             temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                          (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+                          (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             temp2 += temp3;
 
             this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
@@ -11234,14 +11269,14 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
             if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
                 this->actor.focus.rot.y +=
-                    (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+                    (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             }
         }
     } else {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
         temp3 =
             ((sControlInput->rel.stick_y >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) *
-                                                                 1500.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1));
+                                                                 1500.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
         this->actor.focus.rot.x += temp3;
 
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -11250,7 +11285,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.x -=
-                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1);
+                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
         }
 
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
@@ -11259,7 +11294,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 =
             ((sControlInput->rel.stick_x >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) *
-                                                                 -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+                                                                 -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
         temp2 += temp3;
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
@@ -11270,7 +11305,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+                (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
         }
     }
 

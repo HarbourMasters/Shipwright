@@ -949,15 +949,7 @@ void func_80083108(GlobalContext* globalCtx) {
                 gSaveContext.buttonStatus[0] = BTN_DISABLED;
 
                 for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
-                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
-                        // Equipment on c-buttons is always enabled
-                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
-                            sp28 = 1;
-                        }
-
-                        gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
-                    } else if (func_8008F2F8(globalCtx) == 2) {
+                    if (func_8008F2F8(globalCtx) == 2) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
@@ -1097,6 +1089,18 @@ void func_80083108(GlobalContext* globalCtx) {
                         }
 
                         gSaveContext.buttonStatus[0] = BTN_DISABLED;
+                    }
+                }
+
+                for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
+                        // Equipment on c-buttons is always enabled
+                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
+                            sp28 = 1;
+                        }
+
+                        gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
                     }
                 }
 
@@ -1253,6 +1257,8 @@ void func_80083108(GlobalContext* globalCtx) {
                             (gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_TIME) &&
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) &&
+                            !((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&  // Never disable equipment
+                              (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) && // (tunics/boots) on C-buttons
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
                             if ((globalCtx->sceneNum != SCENE_TAKARAYA) ||
