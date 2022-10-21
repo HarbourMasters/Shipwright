@@ -214,7 +214,10 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, GlobalContext* globalC
 }
 
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, GlobalContext* globalCtx) {
-    if ((this->dyna.actor.home.rot.z == 0) && !Player_InCsMode(globalCtx)) {
+    if ((this->dyna.actor.home.rot.z == 0 || 
+        // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer is on.
+        (Flags_GetTempClear(globalCtx, this->dyna.actor.room) && CVar_GetS32("gRandomizedEnemies", 0))) && 
+        !Player_InCsMode(globalCtx)) {
         Flags_SetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, globalCtx);
     }

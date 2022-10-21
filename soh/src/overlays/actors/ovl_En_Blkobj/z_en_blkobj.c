@@ -100,7 +100,13 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, GlobalContext* globalCtx) {
     s32 alphaMod;
 
     if (this->timer == 0) {
-        if (Actor_Find(&globalCtx->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) {
+        // Dark Link room completed.
+        // Check for if Dark Link is defeated in authentic gameplay.
+        // Check for if all enemies are defeated with enemy randomizer on.
+        uint8_t roomCleared = 
+            (!CVar_GetS32("gRandomizedEnemies", 0) && Actor_Find(&globalCtx->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
+            (CVar_GetS32("gRandomizedEnemies", 0) && Flags_GetTempClear(globalCtx, this->dyna.actor.room));
+        if (roomCleared) {
             Flags_SetClear(globalCtx, this->dyna.actor.room);
             this->timer++;
         }
