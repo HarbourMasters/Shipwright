@@ -24,6 +24,7 @@
 #include "rando_hash.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
+extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -1396,27 +1397,26 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_BOSS_KEY:
             return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        // TODO: Handle MQ key counts
         case RG_FOREST_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] < 8 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] < FIRE_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] < 6 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] < WATER_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] < 5 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MEN] < 9 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_MEN] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDOWAY] < 4 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDOWAY] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_TREASURE_GAME_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_TAKARAYA] < 6 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_TAKARAYA] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
