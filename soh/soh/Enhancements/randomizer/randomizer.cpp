@@ -2853,28 +2853,27 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                //MQ Dungeons - Commented out until Logic can be updated to account for MQ Dungeons
-                // if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
-                //     ImGui::PushItemWidth(-FLT_MIN);
-                //     ImGui::Text("Master Quest Dungeons");
-                //     UIWidgets::InsertHelpHoverText(
-                //         "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
-                //         "\n"
-                //         "None - All Dungeons will be their Vanilla versions.\n"
-                //         "\n"
-                //         "Set Number - Select a number of dungeons that will be their Master Quest versions"
-                //         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
-                //         "\n"
-                //         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
-                //     );
-                //     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, 1);
-                //     ImGui::PopItemWidth();
-                //     if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
-                //         ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                //         UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
-                //             "gRandomizeMqDungeonCount", 1, 12, "", 12, true);
-                //     }
-                // }
+                if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+                    ImGui::PushItemWidth(-FLT_MIN);
+                    ImGui::Text("Master Quest Dungeons");
+                    UIWidgets::InsertHelpHoverText(
+                        "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
+                        "\n"
+                        "None - All Dungeons will be their Vanilla versions.\n"
+                        "\n"
+                        "Set Number - Select a number of dungeons that will be their Master Quest versions"
+                        "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
+                        "\n"
+                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
+                    );
+                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, 1);
+                    ImGui::PopItemWidth();
+                    if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
+                            "gRandomizeMqDungeonCount", 1, 12, "", 12, true);
+                    }
+                }
 
                 ImGui::EndChild();
 
