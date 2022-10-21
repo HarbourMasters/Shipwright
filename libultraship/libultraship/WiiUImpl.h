@@ -12,6 +12,8 @@ void Exit();
 
 void ThrowMissingOTR(const char* otrPath);
 
+void ThrowInvalidOTR();
+
 void Update();
 
 VPADStatus *GetVPADStatus(VPADReadError *error);

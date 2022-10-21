@@ -336,7 +336,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
-    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
+    this->randoGiEntry = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
@@ -431,6 +431,14 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.shape.shadowAlpha = 180;
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
+    RandomizerCheck randoCheck =
+        Randomizer_GetCheckFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams);
+
+    if (gSaveContext.n64ddFlag && randoCheck != RC_UNKNOWN_CHECK) {
+        this->randoGiEntry =
+            Randomizer_GetItemFromKnownCheck(randoCheck, getItemId);
+        this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+    }
 
     if (!spawnParam8000) {
         EnItem00_SetupAction(this, func_8001DFC8);
@@ -516,12 +524,10 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if (!Actor_HasParent(&this->actor, globalCtx)) {
         if (getItemId != GI_NONE) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag || this->randoGiEntry.getItemId == GI_NONE) {
                 func_8002F554(&this->actor, globalCtx, getItemId);
             } else {
-                getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
-                getItem.getItemFrom = ITEM_FROM_FREESTANDING;
-                GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
+                GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, this->randoGiEntry);
             }
         }
     }
@@ -686,10 +692,7 @@ void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 func_8002F434(&this->actor, globalCtx, this->getItemId, 50.0f, 80.0f);
             } else {
-                GetItemEntry getItemEntry =
-                    Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, this->getItemId);
-                getItemEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-                GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 50.0f, 80.0f);
+                GiveItemEntryFromActor(&this->actor, globalCtx, this->randoGiEntry, 50.0f, 80.0f);
             }
             this->unk_15A++;
         } else {
@@ -724,7 +727,6 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s16* params;
     Actor* dynaActor;
     s32 getItemId = GI_NONE;
-    GetItemEntry getItem = (GetItemEntry)GET_ITEM_NONE;
     s16 sp3A = 0;
     s16 i;
     u32* temp;
@@ -910,13 +912,11 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag || this->randoGiEntry.getItemId == GI_NONE) {
             func_8002F554(&this->actor, globalCtx, getItemId);
         } else {
-            getItem = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, getItemId);
-            getItemId = getItem.getItemId;
-            getItem.getItemFrom = ITEM_FROM_FREESTANDING;
-            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, getItem);
+            getItemId = this->randoGiEntry.getItemId;
+            GiveItemEntryFromActorWithFixedRange(&this->actor, globalCtx, this->randoGiEntry);
         }
     }
 
@@ -1389,10 +1389,8 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        GetItemEntry randoGetItemEntry =
-            Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, this->getItemId);
-        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
-        GetItemEntry_Draw(globalCtx, randoGetItemEntry);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, this->randoGiEntry);
+        GetItemEntry_Draw(globalCtx, this->randoGiEntry);
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1451,10 +1449,8 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        GetItemEntry randoGetItemEntry =
-            Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->ogParams, GI_HEART_PIECE);
-        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemEntry);
-        GetItemEntry_Draw(globalCtx, randoGetItemEntry);
+        EnItem00_CustomItemsParticles(&this->actor, globalCtx, this->randoGiEntry);
+        GetItemEntry_Draw(globalCtx, this->randoGiEntry);
     } else {
         s32 pad;
 

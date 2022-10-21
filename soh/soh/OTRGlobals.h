@@ -25,13 +25,20 @@ public:
     OTRGlobals();
     ~OTRGlobals();
 
+    bool HasMasterQuest();
+    bool HasOriginal();
+
 private:
 	void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
 };
+
+uint32_t IsGameMasterQuest();
 #endif
 
 #ifndef __cplusplus
-void InitOTR(void);
+    void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
@@ -43,8 +50,10 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-uint32_t ResourceMgr_GetGameVersion();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_GameHasMasterQuest();
+uint32_t ResourceMgr_GameHasOriginal();
+uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
@@ -60,7 +69,8 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
-Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
+void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 
@@ -105,9 +115,11 @@ ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
+void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);

@@ -50,7 +50,8 @@ SaveManager::SaveManager() {
         }
 
         info.randoSave = 0;
-        info.isMasterQuest = 0;
+        info.requiresMasterQuest = 0;
+        info.requiresOriginal = 0;
     }
 }
 
@@ -106,6 +107,7 @@ void SaveManager::LoadRandomizerVersion1() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
+    randomizer->LoadRandomizerSettings("");
     size_t merchantPricesSize = 0;
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
         merchantPricesSize += NUM_SCRUBS;
@@ -126,8 +128,6 @@ void SaveManager::LoadRandomizerVersion1() {
 }
 
 void SaveManager::LoadRandomizerVersion2() {
-    if(!CVar_GetS32("gRandomizer", 0)) return;
-
     SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
         gSaveContext.itemLocations[i].check = RandomizerCheck(i);
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -193,6 +193,15 @@ void SaveManager::LoadRandomizerVersion2() {
             randomizer->merchantPrices[rc] = price;
         });
     });
+
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+
+    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
+    SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
+        uint16_t scene;
+        SaveManager::Instance->LoadData("", scene);
+        randomizer->masterQuestDungeons.emplace(scene);
+    });
 }
 
 void SaveManager::SaveRandomizer() {
@@ -243,6 +252,16 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("check", merchantPrices[i].first);
             SaveManager::Instance->SaveData("price", merchantPrices[i].second);
         });
+    });
+
+    SaveManager::Instance->SaveData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+
+    std::vector<uint16_t> masterQuestDungeons;
+    for (const auto scene : randomizer->masterQuestDungeons) {
+        masterQuestDungeons.push_back(scene);
+    }
+    SaveManager::Instance->SaveArray("masterQuestDungeons", masterQuestDungeons.size(), [&](size_t i) {
+        SaveManager::Instance->SaveData("", masterQuestDungeons[i]);
     });
 }
 
@@ -317,7 +336,11 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    fileMetaInfo[fileNum].isMasterQuest = gSaveContext.isMasterQuest;
+    // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
+    // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
+    // we don't actually require a vanilla OTR.
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -464,7 +487,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 
-    gSaveContext.isMasterQuest = ResourceMgr_IsGameMasterQuest();
+    gSaveContext.isMasterQuest = CVar_GetS32("gMasterQuest", 0) && !CVar_GetS32("gRandomizer", 0);
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -1296,7 +1319,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
-    fileMetaInfo[to].isMasterQuest = fileMetaInfo[from].isMasterQuest;
+    fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
+    fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
