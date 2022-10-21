@@ -330,8 +330,9 @@ void EnIshi_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
         return;
     }
-    // remove fire temple blocking rocks for child
-    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 0x061 && this->actor.params == (-255)) {
+    // If dungeon entrance randomizer is on, remove the grey boulders that normally
+    // block child Link from reaching the Fire Temple entrance.
+    if (type == ROCK_LARGE && gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES) && globalCtx->sceneNum == 0x061) { // Death Mountain Creater
         Actor_Kill(&this->actor);
     }
     EnIshi_SetupWait(this);
