@@ -852,6 +852,7 @@ std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_ICE_CAVERN, "Ice Cavern"},
     { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds"},
     { RCAREA_GANONS_CASTLE, "Ganon's Castle"},
+    { RCAREA_INVALID, "Invalid"},
  };
 
 std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> rcObjectsByArea = {};
