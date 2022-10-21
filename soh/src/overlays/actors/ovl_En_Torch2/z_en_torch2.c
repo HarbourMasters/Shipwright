@@ -125,6 +125,12 @@ void EnTorch2_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     Player* this = (Player*)thisx;
 
+    // Change Dark Link to regular enemy instead of boss with enemy randomizer.
+    // This way Dark Link will be considered for "clear enemy" rooms properly.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, thisx, ACTORCAT_ENEMY);
+    }
+
     sInput.cur.button = sInput.press.button = sInput.rel.button = 0;
     sInput.cur.stick_x = sInput.cur.stick_y = 0;
     this->currentShield = PLAYER_SHIELD_HYLIAN;
