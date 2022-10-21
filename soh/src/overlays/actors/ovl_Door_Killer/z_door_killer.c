@@ -103,12 +103,32 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
     s32 bankIndex;
     s32 i;
 
+    /*
     // Look in the object bank for one of the four objects containing door textures
     bankIndex = -1;
     for (i = 0; bankIndex < 0; i++) {
         bankIndex = Object_GetIndex(&globalCtx->objectCtx, sDoorTextures[i].objectId);
         this->textureEntryIndex = i;
     }
+    */
+
+    // For SoH where all objects are loaded, hardcode the index to match the current map.
+    switch (globalCtx->sceneNum) {
+        case SCENE_HIDAN:
+            this->textureEntryIndex = 0;
+            break;
+        case SCENE_MIZUSIN:
+            this->textureEntryIndex = 1;
+            break;
+        case SCENE_HAKADAN:
+        case SCENE_HAKADANCH:
+            this->textureEntryIndex = 2;
+            break;
+        default:
+            this->textureEntryIndex = 3;
+    }
+    bankIndex = Object_GetIndex(&globalCtx->objectCtx, sDoorTextures[this->textureEntryIndex].objectId);
+
     osSyncPrintf("bank_ID = %d\n", bankIndex);
     osSyncPrintf("status = %d\n", this->textureEntryIndex);
     this->doorObjBankIndex = bankIndex;

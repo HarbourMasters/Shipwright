@@ -389,8 +389,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 gSaveContext.entranceIndex = 0x5F4;
                 gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
-            default: //Child
+            case 0: //Child
                 gSaveContext.linkAge = 1;
+                break;
+            default:
                 break;
         }
 

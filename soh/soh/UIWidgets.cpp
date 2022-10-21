@@ -474,6 +474,15 @@ namespace UIWidgets {
         return changed;
     }
 
+    void DrawLockColorCheckbox(const char* cvarName) {
+        std::string Cvar_Lock = cvarName;
+        Cvar_Lock += "Lock";
+        s32 lock = CVar_GetS32(Cvar_Lock.c_str(), 0);
+        std::string FullName = "Lock##" + Cvar_Lock;
+        EnhancementCheckbox(FullName.c_str(), Cvar_Lock.c_str());
+        Tooltip("Prevents this color from being changed upon selecting \"Randomize all\"");
+    }
+
     void RainbowColor(const char* cvarName, ImVec4* colors) {
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
@@ -546,6 +555,7 @@ namespace UIWidgets {
             }
             RainbowColor(cvarName, &ColorRGBA);
         }
+        DrawLockColorCheckbox(cvarName);
         ImGui::NewLine();
         ImGui::PopItemWidth();
 
