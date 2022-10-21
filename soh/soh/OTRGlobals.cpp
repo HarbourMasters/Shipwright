@@ -638,7 +638,7 @@ extern "C" uint32_t ResourceMgr_GetGameVersion()
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
-uint32_t IsGameMasterQuest() {
+uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
     if (OTRGlobals::Instance->HasMasterQuest()) {
         if (!OTRGlobals::Instance->HasOriginal()) {
@@ -649,7 +649,7 @@ uint32_t IsGameMasterQuest() {
             value = 0;
             if (gSaveContext.n64ddFlag) {
                 if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(gGlobalCtx->sceneNum)) {
+                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                         value = 1;
                     }
                 }
@@ -659,12 +659,20 @@ uint32_t IsGameMasterQuest() {
     return value;
 }
 
+uint32_t IsGameMasterQuest() {
+    return gGlobalCtx != NULL ? IsSceneMasterQuest(gGlobalCtx->sceneNum) : 0;
+}
+
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
     return OTRGlobals::Instance->HasMasterQuest();
 }
 
 extern "C" uint32_t ResourceMgr_GameHasOriginal() {
     return OTRGlobals::Instance->HasOriginal();
+}
+
+extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum) {
+    return IsSceneMasterQuest(sceneNum);
 }
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
