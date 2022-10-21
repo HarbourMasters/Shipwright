@@ -239,10 +239,131 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
     }
 }
 
+u8 CheckStoneCount() {
+    u8 stoneCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+        stoneCount++;
+    }
+
+    return stoneCount;
+}
+
+u8 CheckMedallionCount() {
+    u8 medallionCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
+        medallionCount++;
+    }
+
+    return medallionCount;
+}
+
+u8 CheckDungeonCount() {
+    u8 dungeonCount = 0;
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
+        dungeonCount++;
+    }
+
+    return dungeonCount;
+}
+
 void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
+    u8 meetsRequirements = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
+        case 7:
+            if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 8:
+            if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 9:
+            if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 10:
+            if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case 11:
+            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        default:
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+                meetsRequirements = true;
+            }
+            break;
+    }
+
+    if (meetsRequirements && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0) {

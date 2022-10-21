@@ -208,6 +208,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+    { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
+    { "Shuffle Dungeon Items:Stone Count", RSK_LACS_STONE_COUNT },
+    { "Shuffle Dungeon Items:Reward Count", RSK_LACS_REWARD_COUNT },
+    { "Shuffle Dungeon Items:Dungeon Count", RSK_LACS_DUNGEON_COUNT },
+    { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
     { "World Settings:Starting Age", RSK_STARTING_AGE },
     { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
@@ -615,6 +620,11 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
+                    case RSK_LACS_STONE_COUNT:
+                    case RSK_LACS_MEDALLION_COUNT:
+                    case RSK_LACS_REWARD_COUNT:
+                    case RSK_LACS_DUNGEON_COUNT:
+                    case RSK_LACS_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
@@ -786,6 +796,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 4;
                         } else if(it.value() == "Anywhere") {
                             gSaveContext.randoSettings[index].value = 5;
+                        } else if(it.value() == "LACS-Vanilla") {
+                            gSaveContext.randoSettings[index].value = 6;
+                        } else if(it.value() == "LACS-Medallions") {
+                            gSaveContext.randoSettings[index].value = 7;
+                        } else if(it.value() == "LACS-Stones") {
+                            gSaveContext.randoSettings[index].value = 8;
+                        } else if(it.value() == "LACS-Rewards") {
+                            gSaveContext.randoSettings[index].value = 9;
+                        } else if(it.value() == "LACS-Dungeons") {
+                            gSaveContext.randoSettings[index].value = 10;
+                        } else if(it.value() == "LACS-Tokens") {
+                            gSaveContext.randoSettings[index].value = 11;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -3759,6 +3781,11 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 1);
+    cvarSettings[RSK_LACS_STONE_COUNT] = CVar_GetS32("gRandomizeLacsStoneCount", 3);
+    cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVar_GetS32("gRandomizeLacsMedallionCount", 6);
+    cvarSettings[RSK_LACS_REWARD_COUNT] = CVar_GetS32("gRandomizeLacsRewardCount", 9);
+    cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVar_GetS32("gRandomizeLacsDungeonCount", 8);
+    cvarSettings[RSK_LACS_TOKEN_COUNT] = CVar_GetS32("gRandomizeLacsTokenCount", 100);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
@@ -3869,8 +3896,10 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[6] = { "Vanilla",     "Own dungeon", "Start with",
-                                                 "Any Dungeon", "Overworld",   "Anywhere" };
+    const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+                                                "Any Dungeon", "Overworld", "Anywhere", 
+                                                "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
+                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
 
     // Misc Settings
     const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
@@ -4496,9 +4525,48 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
                     "\n"
-                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
+                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
+                    "\n"
+                    "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as adult, with differing requirements:\n"
+                    "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
+                    "- Medallions: Obtain the specified amount of medallions.\n"
+                    "- Stones: Obtain the specified amount of spiritual stones.\n"
+                    "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
+                    "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
+                    "- Tokens: Obtain the specified amount of Skulltula tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 6, 1);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 1);
+                ImGui::PopItemWidth();
+                switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1)) {
+                    case 7:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
+                                                        "gRandomizeLacsMedallionCount", 1, 6, "", 6, true);
+                        break;
+                    case 8:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
+                                                        "gRandomizeLacsStoneCount", 1, 3, "", 3, true);
+                        break;
+                    case 9:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
+                                                        "gRandomizeLacsRewardCount", 1, 9, "", 9, true);
+                        break;
+                    case 10:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
+                                                        "gRandomizeLacsDungeonCount", 1, 8, "", 8, true);
+                        break;
+                    case 11:
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                        UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
+                                                        "gRandomizeLacsTokenCount", 1, 100, "", 100, true);
+                        break;
+                    default:
+                        break;
+                }
+                ImGui::PushItemWidth(-FLT_MIN);
 
                 UIWidgets::PaddedSeparator();
 
