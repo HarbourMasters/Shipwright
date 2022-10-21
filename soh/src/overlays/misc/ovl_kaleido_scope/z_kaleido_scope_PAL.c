@@ -3879,7 +3879,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                             Gameplay_PerformSave(globalCtx);
                             pauseCtx->unk_1EC = 4;
                             if (CVar_GetS32("gSaveConfirmation", 0)) {
-                                D_8082B25C = 80; // 3 secs
+                                D_8082B25C = 90; // 3 secs
                             } else {
                                 D_8082B25C = 3;
                             }
@@ -4127,7 +4127,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     Save_SaveFile();
                     pauseCtx->state = 0xF;
                     if (CVar_GetS32("gSaveConfirmation", 0)) {
-                        D_8082B25C = 80; // 3 secs
+                        D_8082B25C = 90; // 3 secs
                     } else {
                         D_8082B25C = 3;
                     }
