@@ -806,7 +806,7 @@ void DrawFlagsTab() {
                 act->flags.collect = 0;
                 act->flags.chest = 0;
             }
-            UIWIdgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
+            UIWidgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
 
 
             ImGui::EndGroup();
