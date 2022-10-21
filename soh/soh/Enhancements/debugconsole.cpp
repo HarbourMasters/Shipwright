@@ -318,23 +318,19 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 
 static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
     if (args.size() != 3) {
-        SohImGui::console->SendErrorMessage("[SOH] Unexpected arguments passed");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-    uint16_t modId;
+    GetItemEntry getItemEntry = GET_ITEM_NONE;
 
-    SohImGui::console->SendInfoMessage("Yea %s", args[1].c_str());
-
-    if (args[1].compare("vanilla")) {
-        modId = MOD_NONE;
-    } else if (args[1].compare("randomizer")) {
-        modId = MOD_RANDOMIZER;
+    if (args[1].compare("vanilla") == 0) {
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
+    } else if (args[1].compare("randomizer") == 0) {
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
     } else {
-        SohImGui::console->SendErrorMessage("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
         return CMD_FAILED;
     }
-
-    GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
 
     GiveItemEntryWithoutActor(gGlobalCtx, getItemEntry);
 
