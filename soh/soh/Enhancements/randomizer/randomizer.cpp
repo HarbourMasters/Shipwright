@@ -4526,7 +4526,15 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
                     "\n"
-                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world."
+                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
+                    "\n"
+                    "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as adult, with differing requirements:\n"
+                    "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
+                    "- Medallions: Obtain the specified amount of medallions.\n"
+                    "- Stones: Obtain the specified amount of spiritual stones.\n"
+                    "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
+                    "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
+                    "- Tokens: Obtain the specified amount of Skulltula tokens."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 1);
                 ImGui::PopItemWidth();
