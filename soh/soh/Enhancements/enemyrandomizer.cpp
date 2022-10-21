@@ -140,6 +140,9 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
                 // Don't randomize lizalfos in Doodong's Cavern because the gates won't work correctly otherwise.
                 case ACTOR_EN_ZF:
                     return (param != 1280 && param != 1281 && param != 1536 && param != 1537);
+                // Don't randomize the Wolfos in SFM because it's needed to open the gate.
+                case ACTOR_EN_WF:
+                    return (param != 7936);
                 default:
                     return 1;
             }
