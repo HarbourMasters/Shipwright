@@ -14,6 +14,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_TITE, -1 },      // Tektite (red)
     { ACTOR_EN_TITE, -2 },      // Tektite (blue)
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
+    { ACTOR_EN_DODONGO, -1 },   // Dodongo
     { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
     { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva
     { ACTOR_EN_ZF, -1 },        // Lizalfos
@@ -32,6 +33,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_MB, 0 },         // Moblins (Club)
     { ACTOR_EN_DEKUBABA, 0 },   // Deku Baba (small)
     { ACTOR_EN_DEKUBABA, 1 },   // Deku Baba (large)
+    { ACTOR_EN_AM, -1 },        // Armos (enemy variant)
     { ACTOR_EN_DEKUNUTS, 768 }, // Mad Scrub (triple attack) (projectiles don't work)
     { ACTOR_EN_VALI, -1 },      // Bari (big jellyfish)
     { ACTOR_EN_BB, -1 },        // Bubble (flying skull enemy) (blue)
@@ -40,7 +42,6 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_FLOORMAS, 0 },   // Floormaster
     { ACTOR_EN_RD, 1 },         // Redead (standing)
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
-    { ACTOR_EN_SW, 0 },         // Skullwalltula
     { ACTOR_EN_FD, 0 },         // Flare Dancer
     { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
     { ACTOR_EN_RR, 0 },         // Like-Like
@@ -70,6 +71,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_POH,       // Poe (normal, blue rupee, composers
     ACTOR_EN_OKUTA,     // Octorok
     ACTOR_EN_WALLMAS,   // Wallmaster
+    ACTOR_EN_DODONGO,   // Dodongo
     ACTOR_EN_REEBA,     // Leever
     ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
     ACTOR_EN_ZF,        // Lizalfos, dinolfos
@@ -84,6 +86,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_EIYER,     // Stinger (land)
     ACTOR_EN_MB,        // Moblins (Club, spear)
     ACTOR_EN_DEKUBABA,  // Deku Baba (small, large)
+    ACTOR_EN_AM,        // Armos (enemy variant)
     ACTOR_EN_DEKUNUTS,  // Mad Scrub (single attack, triple attack)
     ACTOR_EN_VALI,      // Bari (big jellyfish) (spawns very high up)
     ACTOR_EN_BB,        // Bubble (flying skull enemy) (all colors)
@@ -110,7 +113,7 @@ extern "C" enemyEntry GetRandomizedEnemy(void) {
     return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
+extern "C" uint8_t IsEnemyFoundToRandomize(int actorId, int param) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -148,6 +151,9 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
                 // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't trigger the platform.
                 case ACTOR_EN_TEST:
                     return (param != 1);
+                // Only randomize the enemy variant of Armos Statue.
+                case ACTOR_EN_AM:
+                    return (param == -1);
                 default:
                     return 1;
             }

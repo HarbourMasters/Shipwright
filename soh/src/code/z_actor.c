@@ -3149,10 +3149,18 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
-    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    uint8_t excludedEnemiesToRandomize = 
+        // Always leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
+        actorId == ACTOR_EN_AM && globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141;
+    
+    uint8_t tryRandomizeEnemy = 
+        CVar_GetS32("gRandomizedEnemies", 0) && 
+        gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 &&
+        !excludedEnemiesToRandomize;
 
     if (tryRandomizeEnemy) {
-        if (IsEnemyFoundToRandomize(actorId, params)) {
+
+        if (IsEnemyFoundToRandomize(actorId, params, globalCtx)) {
 
             // Do a raycast from the original position of the actor to find the ground below it, then try to place
             // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control

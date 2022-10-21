@@ -7,7 +7,7 @@ typedef struct enemyEntry {
     int16_t enemyParam;
 } enemyEntry;
 
-#define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 47
+#define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 49
 
 #ifndef __cplusplus
 uint8_t IsEnemyFoundToRandomize(int actorId, int param);
