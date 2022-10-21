@@ -11,7 +11,8 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
     { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
     { ACTOR_EN_TEST, 2 },       // Stalfos
-    { ACTOR_EN_TITE, 0 },       // Tektite
+    { ACTOR_EN_TITE, -1 },      // Tektite (red)
+    { ACTOR_EN_TITE, -2 },      // Tektite (blue)
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
     { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
     { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva
