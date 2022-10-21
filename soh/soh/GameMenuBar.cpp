@@ -1352,6 +1352,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
             UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
             UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
+            UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
             UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
             UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
             UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
