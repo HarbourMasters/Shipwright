@@ -358,7 +358,11 @@ void EnCrow_Die(EnCrow* this, GlobalContext* globalCtx) {
         } else {
             Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_RUPEE_RED);
         }
-        EnCrow_SetupRespawn(this);
+        if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+            EnCrow_SetupRespawn(this);
+        } else {
+            Actor_Kill(this);
+        }
     }
 
     this->actor.scale.z = this->actor.scale.y = this->actor.scale.x;
