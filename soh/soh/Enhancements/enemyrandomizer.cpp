@@ -113,7 +113,7 @@ extern "C" enemyEntry GetRandomizedEnemy(void) {
     return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-extern "C" uint8_t IsEnemyFoundToRandomize(int actorId, int param) {
+extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
