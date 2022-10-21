@@ -100,18 +100,18 @@ extern "C" void OTRMessage_Init()
         customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-            "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!\x0E\x3C",
-            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!\x0E\x3C",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!\x0E\x3C"
+            "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
+            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!\x0E\x3C",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}\%w symboles en tout!\x0E\x3C"
         }
     );
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-          "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!",
-          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!",
-          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!"
+          "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
+          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!",
+          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}\%w symboles en tout!"
         }
     );
     CustomMessageManager::Instance->CreateMessage(
