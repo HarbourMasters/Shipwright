@@ -3160,7 +3160,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     if (tryRandomizeEnemy) {
 
-        if (IsEnemyFoundToRandomize(actorId, params, globalCtx)) {
+        if (IsEnemyFoundToRandomize(actorId, params)) {
 
             // Do a raycast from the original position of the actor to find the ground below it, then try to place
             // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
