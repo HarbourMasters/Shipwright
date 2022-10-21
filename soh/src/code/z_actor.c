@@ -3154,11 +3154,24 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
     if (tryRandomizeEnemy) {
         if (IsEnemyFoundToRandomize(actorId, params)) {
 
-            // Big jellyfish spawn too high up, this fixes that.
-            if (actorId == ACTOR_EN_VALI) {
-                posY = -330;
+            // Do a raycast from the original position of the actor to find the ground below it, then try to place
+            // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
+            // over height offsets per enemy from a proven grounded position.
+            CollisionPoly poly;
+            Vec3f pos;
+            f32 raycastResult;
+
+            pos.x = posX;
+            pos.y = posY + 50;
+            pos.z = posZ;
+            raycastResult = BgCheck_AnyRaycastFloor1(&globalCtx->colCtx, &poly, &pos);
+
+            // If ground is found below actor, move actor to that height.
+            if (raycastResult > BGCHECK_Y_MIN) {
+                posY = raycastResult;
             }
 
+            // Get randomized enemy ID.
             enemyEntry newEnemy = GetRandomizedEnemy();
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
