@@ -266,7 +266,7 @@ extern GraphicsContext* __gfxCtx;
 
 #define NUM_TRIALS 6
 #define NUM_SHOP_ITEMS 64
-#define NUM_SCRUBS 35
+#define NUM_SCRUBS 46
 #define FOREST_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BMORI1) ? 6 : 5)
 #define FIRE_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) ? 5 : 8)
 #define WATER_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN) ? 2 : 6)

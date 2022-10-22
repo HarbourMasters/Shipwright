@@ -1067,3 +1067,8 @@ typedef struct ShopItemIdentity {
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
+
+typedef struct CowIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowIdentity;
