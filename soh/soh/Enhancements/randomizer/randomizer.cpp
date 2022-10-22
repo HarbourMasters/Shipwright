@@ -2847,7 +2847,8 @@ void DrawRandoEditor(bool& open) {
                 if (CVar_GetS32("gRandomizeGanonTrial", 1) == 1) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true);
+                                                    "gRandomizeGanonTrialCount", 1, 6, "", 
+                                                    CVar_GetS32("gRandomizeGanonTrialCount", 0), true);
                     UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                 }
 
@@ -2871,7 +2872,7 @@ void DrawRandoEditor(bool& open) {
                     if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
-                            "gRandomizeMqDungeonCount", 1, 12, "", 12, true);
+                            "gRandomizeMqDungeonCount", 1, 12, "", CVar_GetS32("gRandomizeMqDungeonCount", 0), true);
                     }
                 }
 
