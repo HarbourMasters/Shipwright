@@ -106,6 +106,7 @@ void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
 void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
+u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);

@@ -423,10 +423,6 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
 };
 
 void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
-    if (strcmp(spoilerFileName, "") != 0) {
-        ParseHintLocationsFile(spoilerFileName);
-    }
-
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
@@ -857,6 +853,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_MQ_DUNGEON_COUNT:
                         if (it.value() == "Random") {
                             gSaveContext.randoSettings[index].value = 13;
+                            break;
                         }
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);

@@ -124,7 +124,7 @@ OTRGlobals::OTRGlobals() {
     for (uint32_t version : versions) {
         if (!ValidHashes.contains(version)) {
 #if defined(__SWITCH__)
-            printf("Invalid OTR File!\n");
+            SPDLOG_ERROR("Invalid OTR File!");
 #elif defined(__WIIU__)
             Ship::WiiU::ThrowInvalidOTR();
 #else
@@ -805,7 +805,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 }
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
-    return Randomizer::GetSeedTexture(index);
+    return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
@@ -1796,7 +1796,7 @@ extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
-extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
 
