@@ -138,6 +138,7 @@ namespace Ship
             pa_mainloop_free(m_MainLoop);
             m_MainLoop = NULL;
         }
+        SPDLOG_ERROR("Failed to initialize PulseAudio stream!");
         return false;
     }
 
@@ -167,18 +168,20 @@ namespace Ship
 
     void PulseAudioPlayer::Play(const uint8_t* buff, uint32_t len)
     {
-        size_t ws = m_Attr.maxlength - Buffered() * 4;
-        if (ws < len) {
-            len = ws;
+        if (m_Stream != NULL && m_Context != NULL && m_MainLoop != NULL) {
+            size_t ws = m_Attr.maxlength - Buffered() * 4;
+            if (ws < len) {
+                len = ws;
+            }
+            if (pa_stream_write_ext_free(m_Stream, buff, len, pas_write_complete, &m_WriteComplete, 0LL, PA_SEEK_RELATIVE) < 0) {
+                SPDLOG_ERROR("pa_stream_write failed");
+                return;
+            }
+            while (!m_WriteComplete) {
+                pa_mainloop_iterate(m_MainLoop, true, NULL);
+            }
+            m_WriteComplete = false;
         }
-        if (pa_stream_write_ext_free(m_Stream, buff, len, pas_write_complete, &m_WriteComplete, 0LL, PA_SEEK_RELATIVE) < 0) {
-            SPDLOG_ERROR("pa_stream_write failed");
-            return;
-        }
-        while (!m_WriteComplete) {
-            pa_mainloop_iterate(m_MainLoop, true, NULL);
-        }
-        m_WriteComplete = false;
     }
 }
 
