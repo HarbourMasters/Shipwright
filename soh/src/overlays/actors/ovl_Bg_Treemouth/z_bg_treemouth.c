@@ -74,7 +74,7 @@ void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx) {
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
     // Keep Deku tree mouth open for adult when dungeon entrance randomizer is on
-    } else if ((LINK_IS_ADULT && (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES))) ||
+    } else if ((LINK_IS_ADULT && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES))) ||
         (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;
         BgTreemouth_SetupAction(this, BgTreemouth_DoNothing);

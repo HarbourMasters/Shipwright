@@ -172,18 +172,21 @@ s16 Entrance_GetOverride(s16 index) {
         return index;
     }
 
-    // Reset the weather mode so the aduly Hyrule Field gloomy weather is not applied
-    // to the skybox of the replaced index for market entrance
-    if (index == 0x0276) { // Hyrule Field -> Market Entrance
+    s16 override = entranceOverrideTable[index];
+
+    // Reset the weather mode so the adult Hyrule Field gloomy weather is not applied
+    // to the skybox of the replaced index for market entrance and vice versa
+    if (override != index && (index == 0x0276 || index == 0x01FD)) { // Hyrule Field <-> Market Entrance
         gWeatherMode = 0;
     }
 
-    return entranceOverrideTable[index];
+    return override;
 }
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == 0x0082 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex) {
+    if (nextEntranceIndex == 0x0082 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
+        gGlobalCtx != NULL) {
         gGlobalCtx->actorCtx.flags.tempSwch = 0;
         gGlobalCtx->actorCtx.flags.tempCollect = 0;
     }
