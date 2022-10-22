@@ -1820,6 +1820,10 @@ extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotInd
     return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
 }
 
+extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
+}
+
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {
     u16 naviTextId = rand() % NUM_NAVI_MESSAGES;
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
