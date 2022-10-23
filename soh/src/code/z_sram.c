@@ -376,8 +376,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 gSaveContext.entranceIndex = 0x5F4;
                 gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
-            default: //Child
+            case 0: //Child
                 gSaveContext.linkAge = 1;
+                break;
+            default:
                 break;
         }
 
@@ -458,14 +460,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // "Start with" == 0 for Keysanity
         if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
             // TODO: If master quest there are different key counts
-            gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = 5; // Forest
-            gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = 8; // Fire
-            gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = 6; // Water
-            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 5; // Spirit
-            gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = 5; // Shadow
-            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = 3; // BotW
-            gSaveContext.inventory.dungeonKeys[SCENE_MEN] = 9; // GTG
-            gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = 2; // Ganon
+            gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
+            gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
+            gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = WATER_TEMPLE_SMALL_KEY_MAX; // Water
+            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = SPIRIT_TEMPLE_SMALL_KEY_MAX; // Spirit
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = SHADOW_TEMPLE_SMALL_KEY_MAX; // Shadow
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
+            gSaveContext.inventory.dungeonKeys[SCENE_MEN] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
+            gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
         // "Start with" == 0 for Boss Kesanity

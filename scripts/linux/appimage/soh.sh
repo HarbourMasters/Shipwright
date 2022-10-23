@@ -18,7 +18,7 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract
-                ln -s $romfile "$ASSETDIR"/tmp/rom.z64
+                ln -s "$romfile" "$ASSETDIR"/tmp/rom.z64
                 cd "$ASSETDIR"
                 ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
                 case "$ROMHASH" in

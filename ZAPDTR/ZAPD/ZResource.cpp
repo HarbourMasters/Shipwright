@@ -362,6 +362,28 @@ static const char %s[] __attribute__((aligned (2))) = d%s;
 			}
 		}
 
+		if (name == "gTitleZeldaShieldLogoMQTex")
+		{
+			std::string addName = "gTitleZeldaShieldLogoTex";
+			nameStr = StringHelper::Strip(StringHelper::Strip(addName, "\n"), "\r");
+			str += StringHelper::Sprintf("\n#define d%s \"__OTR__%s/%s/%s\"", addName.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			if (nameSet && nameSet->find(addName) == nameSet->end())
+			{
+				str += StringHelper::Sprintf(R"(
+#ifdef _WIN32
+static const __declspec(align(2)) char %s[] = d%s;
+#else
+static const char %s[] __attribute__((aligned (2))) = d%s;
+#endif
+			)", addName.c_str(), addName.c_str(), addName.c_str(), addName.c_str());
+
+				if (nameSet)
+				{
+					nameSet->insert(addName);
+				}
+			}
+		}
+
 		return str;
 	}
 	else

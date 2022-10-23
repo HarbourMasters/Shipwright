@@ -29,7 +29,6 @@ void BootCommands_Init()
     CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
     if (ResourceMgr_GameHasMasterQuest() && !ResourceMgr_GameHasOriginal()) {
         CVar_SetS32("gMasterQuest", 1);
-        CVar_SetS32("gRandomizer", 0);
     } else if (!ResourceMgr_GameHasMasterQuest()) {
         CVar_SetS32("gMasterQuest", 0);
     }

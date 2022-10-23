@@ -72,6 +72,10 @@ void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
         ImVec4 colors = Element->ModifiedColor;
         Color_RGBA8 NewColors = { 0, 0, 0, 255 };
         std::string cvarName = Element->CvarName;
+        std::string cvarLock = cvarName + "Lock";
+        if(CVar_GetS32(cvarLock.c_str(), 0)) {
+            continue;
+        }
         std::string Cvar_RBM = cvarName + "RBM";
         colors = RANDOMIZE_32(255);
         NewColors.r = fmin(fmax(colors.x * 255, 0), 255);
@@ -563,7 +567,7 @@ void Draw_ItemsSkills(){
         ResetTrailLength("gTrailDuration", 4);
         UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
         if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
-            if (ImGui::BeginTable("tabletrailswords", 2, FlagsTable)) {
+            if (ImGui::BeginTable("tabletrailswords", 5, FlagsTable)) {
                 ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
                 ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
                 ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
@@ -893,7 +897,7 @@ void Draw_Placements(){
     }
 }
 void Draw_HUDButtons(){
-    if (CVar_GetS32("gHudColors",0) ==2 ){
+    if (CVar_GetS32("gHudColors",0) == 2){
         DrawRandomizeResetButton("every buttons", Buttons_section, SECTION_SIZE(Buttons_section));
         if (ImGui::CollapsingHeader("A Button colors & A Cursors")) {
             if (ImGui::BeginTable("tableBTN_A", 1, FlagsTable)) {
