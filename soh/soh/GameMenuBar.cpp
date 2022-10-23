@@ -346,6 +346,8 @@ namespace GameMenuBar {
 
         // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
 
@@ -412,6 +414,8 @@ namespace GameMenuBar {
         CVar_SetS32("gN64WeirdFrames", 1);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 1);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 1);
     }
 
     void applyEnhancementPresetEnhanced(void) {
@@ -821,6 +825,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
+                    UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                     ImGui::EndMenu();
                 }
 
