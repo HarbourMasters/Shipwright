@@ -26,8 +26,6 @@ void func_80A2FC0C(EnGb* this, GlobalContext* globalCtx);
 
 void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx);
 void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx);
-// For enhancement "Item Use From Inventory"
-void ItemUseFromInventory_StopBottleFrameCount();
 
 const ActorInit En_Gb_InitVars = {
     ACTOR_EN_GB,
