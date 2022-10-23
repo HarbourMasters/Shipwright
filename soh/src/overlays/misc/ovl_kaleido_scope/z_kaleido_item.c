@@ -445,8 +445,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     // For enhancement "Item Use From Inventory"
-                    if (CVar_GetS32("gItemUseFromInventory", 0)){
-                        if (CHECK_BTN_ALL(input->press.button, BTN_A) && ItemUseFromInventory_IsValidItemForUse(globalCtx)) {
+                    if (CVar_GetS32("gItemUseFromInventory", 0) && ItemUseFromInventory_IsValidItemForUse(globalCtx)) {
+                        pauseCtx->cursorColorSet = 8;
+                        if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                             ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot); // In z_player.c
                             // Unpause
                             Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
