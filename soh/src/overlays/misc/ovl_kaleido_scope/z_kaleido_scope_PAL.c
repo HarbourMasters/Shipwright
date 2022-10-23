@@ -1128,7 +1128,6 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         D_8082ACF4[11][1] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).g;
         D_8082ACF4[11][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
     }
-
     static s16 D_8082AD3C = 20;
     static s16 D_8082AD40 = 0;
     static s16 D_8082AD44 = 0;
