@@ -2842,7 +2842,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, 1);
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, CVar_GetS32("gRandomizeGanonTrial", 0));
                 ImGui::PopItemWidth();
                 if (CVar_GetS32("gRandomizeGanonTrial", 1) == 1) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -2867,7 +2867,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, 1);
+                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, CVar_GetS32("gRandomizeMqDungeons", 0));
                     ImGui::PopItemWidth();
                     if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
