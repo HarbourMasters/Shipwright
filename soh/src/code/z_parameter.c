@@ -4,6 +4,7 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/item_use_from_inventory.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>

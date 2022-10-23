@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "global.h"
+#include "soh/Enhancements/item_use_from_inventory.h"
 
 extern u8 gAmmoItems[];
 extern s16 D_8082AAEC[];
@@ -36,8 +37,5 @@ void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx);
 void PauseMapMark_Draw(GlobalContext* globalCtx);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
-// For enhancement "Item Use From Inventory"
-bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx);
-void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot);
 
 #endif

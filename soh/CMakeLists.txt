@@ -159,6 +159,7 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/gameconsole.h"
     "soh/Enhancements/savestates.h"
     "soh/Enhancements/savestates_extern.inc"
+    "soh/Enhancements/item_use_from_inventory.h"
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 

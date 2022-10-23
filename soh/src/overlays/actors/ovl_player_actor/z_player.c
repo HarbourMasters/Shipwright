@@ -23,6 +23,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/item_use_from_inventory.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -340,10 +341,6 @@ void func_80853080(Player* this, GlobalContext* globalCtx);
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
 s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
-// For enhancement "Item Use From Inventory"
-void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot);
-void ItemUseFromInventory_UpdateBottleSlot(ItemID item);
-bool ItemUseFromInventory_BottleWasUsed();
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -10503,14 +10500,6 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
-
-// Vars for "Item Use From Inventory" enhancement
-ItemID        inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
-InventorySlot inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
-bool itemWasUsedFromInventory    = false;
-bool usingItemFromInventory      = false;
-bool bottleWasUsedFromInventory  = false;
-bool swingingBottleFromInventory = false;
 
 void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
     inventoryUsedItem = item;
