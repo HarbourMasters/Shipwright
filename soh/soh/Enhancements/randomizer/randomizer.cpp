@@ -2422,7 +2422,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 1);
+    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
     cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
@@ -2495,7 +2495,7 @@ void GenerateRandomizerImgui() {
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", 0);
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVar_GetS32("gRandomizeMqDungeonCount", 0);
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVar_GetS32("gRandomizeMqDungeonCount", 12);
     } else if (OTRGlobals::Instance->HasMasterQuest()) {
         // If only Master Quest is loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
@@ -2844,7 +2844,7 @@ void DrawRandoEditor(bool& open) {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, CVar_GetS32("gRandomizeGanonTrial", 0));
                 ImGui::PopItemWidth();
-                if (CVar_GetS32("gRandomizeGanonTrial", 1) == 1) {
+                if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                     "gRandomizeGanonTrialCount", 1, 6, "", 
@@ -2869,7 +2869,7 @@ void DrawRandoEditor(bool& open) {
                     );
                     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, CVar_GetS32("gRandomizeMqDungeons", 0));
                     ImGui::PopItemWidth();
-                    if (CVar_GetS32("gRandomizeMqDungeons", 1) == 1) {
+                    if (CVar_GetS32("gRandomizeMqDungeons", 0) == 1) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
                             "gRandomizeMqDungeonCount", 1, 12, "", CVar_GetS32("gRandomizeMqDungeonCount", 12), true);
