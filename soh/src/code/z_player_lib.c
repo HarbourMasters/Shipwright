@@ -279,10 +279,6 @@ Gfx gCullFrontDList[] = {
     gsSPEndDisplayList(),
 };
 
-// For enhancement "Item Use From Inventory"
-bool ItemUseFromInventory_BottleWasUsed();
-void ItemUseFromInventory_RestoreCLeft();
-
 Vec3f* D_80160000;
 s32 sDListsLodOffset;
 Vec3f sGetItemRefPos;
@@ -437,12 +433,6 @@ void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* this, s32 item, s
     }
 
     this->itemActionParam = actionParam;
-
-    // For enhancement "Item Use From Inventory": If our bottle content is updated, 
-    // restore the original C-Left button item.
-    if (ItemUseFromInventory_BottleWasUsed() && CVar_GetS32("gItemUseFromInventory", 0)) {
-        ItemUseFromInventory_RestoreCLeft();
-    }
 }
 
 void func_8008EDF0(Player* this) {

@@ -342,9 +342,8 @@ s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modifi
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
 // For enhancement "Item Use From Inventory"
 void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot);
-void ItemUseFromInventory_RestoreCLeft();
+void ItemUseFromInventory_UpdateBottleSlot(ItemID item);
 bool ItemUseFromInventory_BottleWasUsed();
-void ItemUseFromInventory_StopBottleFrameCount();
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -10508,11 +10507,10 @@ static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 // Vars for "Item Use From Inventory" enhancement
 ItemID        inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
 InventorySlot inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
-bool itemWasUsedFromInventory   = false;
-bool bottleWasUsedFromInventory = false;
-bool usingItemFromInventory     = false;
+bool itemWasUsedFromInventory    = false;
+bool usingItemFromInventory      = false;
+bool bottleWasUsedFromInventory  = false;
 bool swingingBottleFromInventory = false;
-u8   usedBottleFrameCount       = 0;
 
 void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
     inventoryUsedItem = item;
@@ -10520,11 +10518,21 @@ void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
     itemWasUsedFromInventory = true;
 }
 
-void ItemUseFromInventory_RestoreCLeft() {
-    gSaveContext.equips.buttonItems[1] = inventoryPrevCLeftItem;
-    gSaveContext.equips.cButtonSlots[0] = inventoryPrevCLeftSlot;
+void ItemUseFromInventory_UpdateBottleSlot(ItemID item) {
     bottleWasUsedFromInventory = false;
     swingingBottleFromInventory = false;
+
+    // Special case for going from fill milk to half milk
+    if (inventoryUsedItem == ITEM_MILK_BOTTLE) {
+        item = ITEM_MILK_HALF;
+    }
+    gSaveContext.inventory.items[inventoryUsedSlot] = item;
+
+    // If an empty bottle was being used, restore the previous C-Left equip
+    if (inventoryUsedItem == ITEM_BOTTLE) {
+        gSaveContext.equips.buttonItems[1] = inventoryPrevCLeftItem;
+        gSaveContext.equips.cButtonSlots[0] = inventoryPrevCLeftSlot;
+    }
 }
 
 bool ItemUseFromInventory_BottleWasUsed() {
@@ -10574,40 +10582,42 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     // Item use from inventory: If an item is being used from the inventory screen, perform its action
     if (usingItemFromInventory) {
         usingItemFromInventory = false;
-
-        if (inventoryUsedSlot >= SLOT_BOTTLE_1 && inventoryUsedSlot <= SLOT_BOTTLE_4) {
+        
+        if (inventoryUsedItem >= ITEM_BOTTLE && inventoryUsedSlot <= ITEM_POE) {
             bottleWasUsedFromInventory = true;
-            // Borrow C-Left when using bottles to prevent bottle duping or overwriting other items
-            this->heldItemButton = 1; // C-Left
-            inventoryPrevCLeftItem = gSaveContext.equips.buttonItems[1];
-            inventoryPrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
-            gSaveContext.equips.buttonItems[1] = inventoryUsedItem;
-            gSaveContext.equips.cButtonSlots[0] = inventoryUsedSlot;
+            
+            // Borrow C-Left when using an empty bottle
+            if (inventoryUsedItem == ITEM_BOTTLE) {
+                this->heldItemButton = 1; // C-Left
+                inventoryPrevCLeftItem = gSaveContext.equips.buttonItems[1];
+                inventoryPrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
+                gSaveContext.equips.buttonItems[1] = inventoryUsedItem;
+                gSaveContext.equips.cButtonSlots[0] = inventoryUsedSlot;
+            }
         }
         func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
     }
 
     // Item use from inventory: If an item was used from inventory, update these bools so that
-    // the item's action is performed on the next call of "Player_UpdateCommon".
+    // the item's action is performed on the NEXT call of "Player_UpdateCommon()".
     // This one cycle delay is needed for showing items to NPCs (i.e. bottles/trade items)
     if (itemWasUsedFromInventory && CVar_GetS32("gItemUseFromInventory", 0)) {
        usingItemFromInventory = true;
        itemWasUsedFromInventory = false;
     }
-
-    if (bottleWasUsedFromInventory) {
-        if (this->stateFlags1 & PLAYER_STATE1_1) {
-            swingingBottleFromInventory = true;
-        }
-        if (this->stateFlags1 & PLAYER_STATE1_28 && !(this->stateFlags1 & PLAYER_STATE1_16)) {
-            if ((inventoryUsedItem == ITEM_BIG_POE || inventoryUsedItem == ITEM_LETTER_RUTO)){
-                ItemUseFromInventory_RestoreCLeft();
-            }
-
-        }
+    // If we used a bottle from inventory AND Link is in the "swinging a bottle" state
+    if (bottleWasUsedFromInventory && (this->stateFlags1 & PLAYER_STATE1_1)) {
+       swingingBottleFromInventory = true; 
+       // If we interrupt the bottle swing by equipping over C-Left while it was in use, then stop everything here
+       if (gSaveContext.equips.buttonItems[1] != inventoryUsedItem) {
+           bottleWasUsedFromInventory = false;
+           swingingBottleFromInventory = false;
+       }
     }
+    // If we used a bottle from inventory AND Link is no longer swinging it,
+    // then update the inventory and restore the previous C-Left equip
     if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_1)) {
-        ItemUseFromInventory_RestoreCLeft();
+        ItemUseFromInventory_UpdateBottleSlot(ITEM_BOTTLE);
         func_80835F44(globalCtx, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
     }
 

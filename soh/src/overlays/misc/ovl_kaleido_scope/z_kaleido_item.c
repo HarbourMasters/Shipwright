@@ -133,7 +133,19 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
     // Check that we have the item and that it passes age restrictions
     if (((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
         (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
-        // If we're on a valid item and it isn't restricted by scene or by ammo/magic
+
+        // For bottles, make sure this bottle is not already equipped (to prevent accidental bottle duping)
+        if (interfaceCtx->restrictions.bottles == 0 && cursorItem >= ITEM_BOTTLE && cursorItem <= ITEM_POE) {
+            for (int i = 0; i <= 7; i++) {
+                if (gSaveContext.equips.cButtonSlots[i] == cursorSlot) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // For regular inventory items, make sure it isn't restricted by scene, ammo, or magic
+        // Items that have to be taken out and held or aimed are not supported
         if (interfaceCtx->restrictions.ocarina    == 0 && cursorSlot == SLOT_OCARINA ||
             interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_NUT          && AMMO(ITEM_NUT)     > 0 ||
             interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BOMB         && AMMO(ITEM_BOMB)    > 0 ||
@@ -146,18 +158,9 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
 
             return true;
         }
-        // For bottles, also make sure this bottle is not already equipped (to prevent accidental bottle duping)
-        if (interfaceCtx->restrictions.bottles == 0 && cursorSlot >= SLOT_BOTTLE_1 && cursorSlot <= SLOT_BOTTLE_4) {
-            for (int i = 0; i <= 7; i++) {
-                if (gSaveContext.equips.cButtonSlots[i] == cursorSlot) {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         // For trade items, make sure we are not conflicting with selectable masks or adult trade items
-        // and make sure we aren't on a mask (Link can't wear a mask without it being equipped to a C button)
+        // Also make sure we aren't on any mask at all (Link can't wear a mask without it being equipped to a C button)
         if (interfaceCtx->restrictions.tradeItems == 0 && 
             (cursorSlot == SLOT_TRADE_ADULT && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) || 
             (cursorSlot == SLOT_TRADE_CHILD && !(cursorItem >= ITEM_MASK_KEATON && cursorItem <= ITEM_MASK_TRUTH)

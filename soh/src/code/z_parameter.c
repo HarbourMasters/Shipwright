@@ -2743,11 +2743,15 @@ void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 button) {
         (item == ITEM_BOTTLE)) {
         item = ITEM_MILK_HALF;
     }
+    if (ItemUseFromInventory_BottleWasUsed() && CVar_GetS32("gItemUseFromInventory", 0)) {
+        // If the bottle was used from the inventory screen, only update the inventory slot (not any C-buttons)
+        ItemUseFromInventory_UpdateBottleSlot(item);
+    } else {
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+        gSaveContext.equips.buttonItems[button] = item;
 
-    gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
-    gSaveContext.equips.buttonItems[button] = item;
-
-    Interface_LoadItemIcon1(globalCtx, button);
+        Interface_LoadItemIcon1(globalCtx, button);
+    }
 
     globalCtx->pauseCtx.cursorItem[PAUSE_ITEM] = item;
     gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(button)] = BTN_ENABLED;
