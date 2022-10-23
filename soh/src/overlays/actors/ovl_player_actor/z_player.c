@@ -10569,13 +10569,14 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
         }
         func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
     }
-    
+        
     // Bottle use from inventory: Restore the original C-Left equip after 14 frames
     // If something is caught in the bottle, this counter will be reset to 0
     if (usedBottleFrameCount > 0) {
         usedBottleFrameCount++;
         if (usedBottleFrameCount >= 14) {
             ItemUseFromInventory_RestoreCLeft();
+            func_80835F44(globalCtx, this, ITEM_NONE); // Make sure the bottle gets put away
         }
     }
 

@@ -88,6 +88,7 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
 bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    Player* this = GET_PLAYER(globalCtx);
 
     u16 cursorItem;
     u16 cursorSlot;
@@ -95,6 +96,34 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
     // If we aren't paused or we aren't on the inventory subscreen, return false
     if (!(CVar_GetS32("gItemUseFromInventory", 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) &&
           (pauseCtx->pageIndex == PAUSE_ITEM))) {
+        return false;
+    }
+
+    // To use an item from within inventory, Link must not be in any of the following states
+    if (this->swordState != 0 ||                // Swinging sword
+        this->stateFlags1 & PLAYER_STATE1_0  || // Transitioning scenes
+        this->stateFlags1 & PLAYER_STATE1_1  || // Swinging a bottle
+        this->stateFlags1 & PLAYER_STATE1_6  || // Talking to NPC/reading a sign
+        this->stateFlags1 & PLAYER_STATE1_10 || // Getting an item/opening a chest
+        this->stateFlags1 & PLAYER_STATE1_11 || // Carrying an object (i.e. rock/bomb)
+        this->stateFlags1 & PLAYER_STATE1_12 || // Charging spin attack
+        this->stateFlags1 & PLAYER_STATE1_13 || // Hanging onto a ledge
+        this->stateFlags1 & PLAYER_STATE1_14 || // Climbing onto a ledge
+        this->stateFlags1 & PLAYER_STATE1_18 || // Airborne/jumping
+        this->stateFlags1 & PLAYER_STATE1_19 || // Falling into a grave? / Using moonjump?
+        this->stateFlags1 & PLAYER_STATE1_20 || // In first person or aiming
+        this->stateFlags1 & PLAYER_STATE1_21 || // On a ladder or climbable surface
+        this->stateFlags1 & PLAYER_STATE1_22 || // Shielding
+        this->stateFlags1 & PLAYER_STATE1_23 || // On Epona
+        this->stateFlags1 & PLAYER_STATE1_26 || // Taking damage/in invincibility frames
+        this->stateFlags1 & PLAYER_STATE1_27 || // In water/swimming
+        this->stateFlags1 & PLAYER_STATE1_28 || // Holding out a cutscene item or ocarina
+        this->stateFlags1 & PLAYER_STATE1_29 || // Busy in various other ways
+        
+        this->stateFlags2 & PLAYER_STATE2_6  || // Pushing a block?
+        this->stateFlags2 & PLAYER_STATE2_18 || // In a crawlspace
+        
+        this->stateFlags3 & PLAYER_STATE3_1  ){
         return false;
     }
 
