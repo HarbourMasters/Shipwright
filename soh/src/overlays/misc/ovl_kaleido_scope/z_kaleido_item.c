@@ -123,7 +123,7 @@ bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
         this->stateFlags2 & PLAYER_STATE2_6  || // Pushing a block?
         this->stateFlags2 & PLAYER_STATE2_18 || // In a crawlspace
         
-        this->stateFlags3 & PLAYER_STATE3_1  ){
+        this->stateFlags3 & PLAYER_STATE3_1  ){ // Jumpslashing
         return false;
     }
 

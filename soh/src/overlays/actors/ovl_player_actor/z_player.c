@@ -10511,6 +10511,7 @@ InventorySlot inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
 bool itemWasUsedFromInventory   = false;
 bool bottleWasUsedFromInventory = false;
 bool usingItemFromInventory     = false;
+bool swingingBottleFromInventory = false;
 u8   usedBottleFrameCount       = 0;
 
 void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
@@ -10523,11 +10524,7 @@ void ItemUseFromInventory_RestoreCLeft() {
     gSaveContext.equips.buttonItems[1] = inventoryPrevCLeftItem;
     gSaveContext.equips.cButtonSlots[0] = inventoryPrevCLeftSlot;
     bottleWasUsedFromInventory = false;
-    ItemUseFromInventory_StopBottleFrameCount();
-}
-
-void ItemUseFromInventory_StopBottleFrameCount() {
-    usedBottleFrameCount = 0;
+    swingingBottleFromInventory = false;
 }
 
 bool ItemUseFromInventory_BottleWasUsed() {
@@ -10586,24 +10583,8 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
             inventoryPrevCLeftSlot = gSaveContext.equips.cButtonSlots[0];
             gSaveContext.equips.buttonItems[1] = inventoryUsedItem;
             gSaveContext.equips.cButtonSlots[0] = inventoryUsedSlot;
-            // If Link swings an empty bottle or holds out a Big Poe Bottle or Ruto's Letter,
-            // start counting frames to prevent the original C-Left equip from being restored too soon
-            if (inventoryUsedItem == ITEM_BOTTLE || inventoryUsedItem == ITEM_BIG_POE || 
-                inventoryUsedItem == ITEM_LETTER_RUTO) {
-                usedBottleFrameCount = 1;
-            }
         }
         func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
-    }
-        
-    // Bottle use from inventory: Restore the original C-Left equip after 14 frames
-    // If something is caught in the bottle, this counter will be reset to 0
-    if (usedBottleFrameCount > 0) {
-        usedBottleFrameCount++;
-        if (usedBottleFrameCount >= 14) {
-            ItemUseFromInventory_RestoreCLeft();
-            func_80835F44(globalCtx, this, ITEM_NONE); // Make sure the bottle gets put away
-        }
     }
 
     // Item use from inventory: If an item was used from inventory, update these bools so that
@@ -10612,6 +10593,22 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     if (itemWasUsedFromInventory && CVar_GetS32("gItemUseFromInventory", 0)) {
        usingItemFromInventory = true;
        itemWasUsedFromInventory = false;
+    }
+
+    if (bottleWasUsedFromInventory) {
+        if (this->stateFlags1 & PLAYER_STATE1_1) {
+            swingingBottleFromInventory = true;
+        }
+        if (this->stateFlags1 & PLAYER_STATE1_28 && !(this->stateFlags1 & PLAYER_STATE1_16)) {
+            if ((inventoryUsedItem == ITEM_BIG_POE || inventoryUsedItem == ITEM_LETTER_RUTO)){
+                ItemUseFromInventory_RestoreCLeft();
+            }
+
+        }
+    }
+    if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_1)) {
+        ItemUseFromInventory_RestoreCLeft();
+        func_80835F44(globalCtx, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
     }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
