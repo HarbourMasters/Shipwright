@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 
 
 #define Path _Path
@@ -311,6 +312,27 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     }
 
     gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]);
+
+    return CMD_SUCCESS;
+}
+
+static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
+    if (args.size() != 3) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+    GetItemEntry getItemEntry = GET_ITEM_NONE;
+
+    if (args[1].compare("vanilla") == 0) {
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
+    } else if (args[1].compare("randomizer") == 0) {
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
+    } else {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
+        return CMD_FAILED;
+    }
+
+    GiveItemEntryWithoutActor(gGlobalCtx, getItemEntry);
 
     return CMD_SUCCESS;
 }
@@ -1039,6 +1061,11 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("bottle", { BottleHandler, "Changes item in a bottle slot.", {
         { "item", Ship::ArgumentType::TEXT },
         { "slot", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("give_item", { GiveItemHandler,  "Gives an item to the player as if it was given from an actor", {
+        { "vanilla|randomizer", Ship::ArgumentType::TEXT },
+        { "giveItemID", Ship::ArgumentType::NUMBER }
     }});
 
     CMD_REGISTER("item", { ItemHandler,  "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {

@@ -36,7 +36,7 @@ const ActorInit Obj_Lift_InitVars = {
     NULL,
 };
 
-static s16 sFallTimerDurations[] = { 0, 10, 20, 30, 40, 50, 60 };
+static s16 sFallTimerDurations[] = { 0, 10, 20, 30, 40, 50, 60, 0 };
 
 typedef struct {
     /* 0x00 */ s16 x;

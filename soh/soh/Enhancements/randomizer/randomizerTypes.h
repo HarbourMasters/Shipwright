@@ -1036,6 +1036,11 @@ typedef enum {
     RSK_LINKS_POCKET,
     RSK_RANDOM_MQ_DUNGEONS,
     RSK_MQ_DUNGEON_COUNT,
+    RSK_LACS_MEDALLION_COUNT,
+    RSK_LACS_STONE_COUNT,
+    RSK_LACS_REWARD_COUNT,
+    RSK_LACS_DUNGEON_COUNT,
+    RSK_LACS_TOKEN_COUNT,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1062,3 +1067,8 @@ typedef struct ShopItemIdentity {
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
+
+typedef struct CowIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowIdentity;

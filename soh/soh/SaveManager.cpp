@@ -128,8 +128,6 @@ void SaveManager::LoadRandomizerVersion1() {
 }
 
 void SaveManager::LoadRandomizerVersion2() {
-    if(!CVar_GetS32("gRandomizer", 0)) return;
-
     SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
         gSaveContext.itemLocations[i].check = RandomizerCheck(i);
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -196,7 +194,7 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
     SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
@@ -338,8 +336,11 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest || gSaveContext.mqDungeonCount > 0;
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest || gSaveContext.mqDungeonCount < 12;
+    // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
+    // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
+    // we don't actually require a vanilla OTR.
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
 }
 
 void SaveManager::InitFile(bool isDebug) {
