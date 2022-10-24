@@ -1,13 +1,13 @@
 #include "actorViewer.h"
 #include "../../util.h"
-#include "../libultraship/ImGuiImpl.h"
-#include "ImGuiHelpers.h"
+#include "../../UIWidgets.hpp"
+#include <libultraship/ImGuiImpl.h>
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -632,7 +632,7 @@ void DrawActorViewer(bool& open) {
 
             if (display.category == ACTORCAT_BOSS || display.category == ACTORCAT_ENEMY) {
                 ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display.colChkInfo.health);
-                InsertHelpHoverText("Some actors might not use this!");
+                UIWidgets::InsertHelpHoverText("Some actors might not use this!");
             }
 
             if (ImGui::Button("Refresh")) {
@@ -667,7 +667,7 @@ void DrawActorViewer(bool& open) {
                     rm = TARGET;
                 }
             }
-            InsertHelpHoverText("Grabs actor with target arrow above it. You might need C-Up for enemies");
+            UIWidgets::InsertHelpHoverText("Grabs actor with target arrow above it. You might need C-Up for enemies");
             if (ImGui::Button("Fetch from Held")) {
                 Player* player = GET_PLAYER(gGlobalCtx);
                 fetch = player->heldActor;
@@ -678,7 +678,7 @@ void DrawActorViewer(bool& open) {
                     rm = HELD;
                 }
             }
-            InsertHelpHoverText("Grabs actor that Link is holding");
+            UIWidgets::InsertHelpHoverText("Grabs actor that Link is holding");
             if (ImGui::Button("Fetch from Interaction")) {
                 Player* player = GET_PLAYER(gGlobalCtx);
                 fetch = player->interactRangeActor;
@@ -689,7 +689,7 @@ void DrawActorViewer(bool& open) {
                     rm = INTERACT;
                 }
             }
-            InsertHelpHoverText("Grabs actor from \"interaction range\"");
+            UIWidgets::InsertHelpHoverText("Grabs actor from \"interaction range\"");
 
             ImGui::TreePop();
         }

@@ -5,6 +5,7 @@
 #include "DummyController.h"
 #include <Utils/StringHelper.h>
 #include "Cvar.h"
+#include "Lib/ImGui/imgui.h"
 
 #ifndef __WIIU__
 #include "KeyboardController.h"
@@ -73,22 +74,28 @@ namespace Ship {
     }
 
 	void ControlDeck::WriteToPad(OSContPad* pad) const {
-		bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
-
 		for (size_t i = 0; i < virtualDevices.size(); i++) {
 			const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+
+			// If the controller backend is "Auto" we need to get the real device
+			// we search for the real device to read input from it
 			if (backend->GetGuid() == "Auto") {
 				for (const auto& device : physicalDevices) {
-					if(shouldBlockGameInput && device->GetGuid() != "Keyboard") {
+					if(ShouldBlockGameInput(device->GetGuid())) {
+						device->Read(nullptr, i);
 						continue;
 					}
+
 					device->Read(&pad[i], i);
 				}
 				continue;
 			}
-			if(shouldBlockGameInput && backend->GetGuid() != "Keyboard") {
+
+			if(ShouldBlockGameInput(backend->GetGuid())) {
+				backend->Read(nullptr, i);
 				continue;
 			}
+
 			backend->Read(&pad[i], i);
 		}
 	}
@@ -256,4 +263,25 @@ namespace Ship {
         return controllerBits;
     }
 
+    void ControlDeck::BlockGameInput() {
+        shouldBlockGameInput = true;
+    }
+
+    void ControlDeck::UnblockGameInput() {
+        shouldBlockGameInput = false;
+    }
+
+    bool ControlDeck::ShouldBlockGameInput(std::string inputDeviceGuid) const {
+        // We block controller input if F1 menu is open and control navigation is on.
+        // This is because we don't want controller inputs to affect the game
+        bool shouldBlockControllerInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+
+        // We block keyboard input if you're currently typing into a textfield.
+        // This is because we don't want your keyboard typing to affect the game.
+        ImGuiIO io = ImGui::GetIO();
+        bool shouldBlockKeyboardInput = io.WantCaptureKeyboard;
+
+        bool inputDeviceIsKeyboard = inputDeviceGuid == "Keyboard";
+        return shouldBlockGameInput || (inputDeviceIsKeyboard ? shouldBlockKeyboardInput : shouldBlockControllerInput);
+    }
 }

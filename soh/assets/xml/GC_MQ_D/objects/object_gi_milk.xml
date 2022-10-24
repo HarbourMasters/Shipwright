@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_milk" Segment="6">
+        <DList Name="gGiMilkBottleContentsDL" Offset="0x1060"/>
+        <DList Name="gGiMilkBottleDL" Offset="0x1288"/>
+    </File>
+</Root>

@@ -413,6 +413,9 @@ static void gfx_generate_cc(struct ColorCombiner *comb, uint64_t cc_id) {
                     val = SHADER_TEXEL1A;
                     used_textures[1] = true;
                     break;
+                case G_CCMUX_NOISE:
+                    val = SHADER_NOISE;
+                    break;
                 case G_CCMUX_PRIMITIVE:
                 case G_CCMUX_PRIMITIVE_ALPHA:
                 case G_CCMUX_PRIM_LOD_FRAC:
@@ -2110,11 +2113,6 @@ unsigned int dListBP;
 int matrixBP;
 uintptr_t clearMtx;
 
-extern "C"
-{
-    uintptr_t jsjutanShadowTex = 0;
-};
-
 static void gfx_run_dl(Gfx* cmd) {
     //puts("dl");
     int dummy = 0;
@@ -2134,6 +2132,10 @@ static void gfx_run_dl(Gfx* cmd) {
 
         switch (opcode) {
             // RSP commands:
+        case G_LOAD_UCODE:
+            rsp.fog_mul = 0;
+            rsp.fog_offset = 0;
+            break;
         case G_MARKER:
         {
             cmd++;

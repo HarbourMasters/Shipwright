@@ -18,6 +18,7 @@ void func_809E0070(Actor* thisx, GlobalContext* globalCtx);
 
 void func_809DF494(EnCow* this, GlobalContext* globalCtx);
 void func_809DF6BC(EnCow* this, GlobalContext* globalCtx);
+void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx);
 void func_809DF778(EnCow* this, GlobalContext* globalCtx);
 void func_809DF7D8(EnCow* this, GlobalContext* globalCtx);
 void func_809DF870(EnCow* this, GlobalContext* globalCtx);
@@ -105,6 +106,10 @@ void func_809DEF94(EnCow* this) {
 void EnCow_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
+        EnCow_MoveForRandomizer(thisx, globalCtx);
+    }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 72.0f);
     switch (this->actor.params) {
@@ -209,6 +214,30 @@ void func_809DF730(EnCow* this, GlobalContext* globalCtx) {
     }
 }
 
+void EnCow_MoveForRandomizer(EnCow* this, GlobalContext* globalCtx) {
+    // Only move the cow body (the tail will be moved with the body)
+    if (this->actor.params != 0) {
+        return;
+    }
+
+    // Move left cow in lon lon tower
+    if (globalCtx->sceneNum == SCENE_SOUKO && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
+        this->actor.world.pos.x = -229.0f;
+        this->actor.world.pos.z = 157.0f;
+        this->actor.shape.rot.y = 15783.0f;
+    // Move right cow in lon lon stable
+    } else if (globalCtx->sceneNum == SCENE_MALON_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
+        this->actor.world.pos.x += 119.0f;
+    }
+}
+
+void EnCow_SetCowMilked(EnCow* this, GlobalContext* globalCtx) {
+    CowIdentity cowIdentity = Randomizer_IdentifyCow(globalCtx->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
+    Player* player = GET_PLAYER(globalCtx);
+    player->pendingFlag.flagID = cowIdentity.randomizerInf;
+    player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+}
+
 void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actor.parent = NULL;
@@ -250,6 +279,23 @@ void func_809DF8FC(EnCow* this, GlobalContext* globalCtx) {
     func_809DF494(this, globalCtx);
 }
 
+bool EnCow_HasBeenMilked(EnCow* this, GlobalContext* globalCtx) {
+    CowIdentity cowIdentity = Randomizer_IdentifyCow(globalCtx->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
+    return Flags_GetRandomizerInf(cowIdentity.randomizerInf);
+}
+
+void EnCow_GivePlayerRandomizedItem(EnCow* this, GlobalContext* globalCtx) {
+    if (!EnCow_HasBeenMilked(this, globalCtx)) {
+        CowIdentity cowIdentity = Randomizer_IdentifyCow(globalCtx->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
+        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
+        GiveItemEntryFromActor(&this->actor, globalCtx, itemEntry, 10000.0f, 100.0f);
+    } else {
+        // once we've gotten the rando reward from the cow,
+        // return them to the their default action function
+        this->actionFunc = func_809DF96C;
+    }
+}
+
 void func_809DF96C(EnCow* this, GlobalContext* globalCtx) {
     if ((globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_00) || (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
         if (DREG(53) != 0) {
@@ -260,6 +306,19 @@ void func_809DF96C(EnCow* this, GlobalContext* globalCtx) {
                 if ((this->actor.xzDistToPlayer < 150.0f) &&
                     (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
                     DREG(53) = 0;
+                    // when randomized with cowsanity, if we haven't gotten the
+                    // reward from this cow yet, give that, otherwise use the
+                    // vanilla cow behavior
+                    if (gSaveContext.n64ddFlag &&
+                        Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
+                        !EnCow_HasBeenMilked(this, globalCtx)) {
+                        EnCow_SetCowMilked(this, globalCtx);
+                        // setting the ocarina mode here prevents intermittent issues
+                        // with the item get not triggering until walking away
+                        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
+                        this->actionFunc = EnCow_GivePlayerRandomizedItem;
+                        return;
+                    }
                     this->actionFunc = func_809DF8FC;
                     this->actor.flags |= ACTOR_FLAG_16;
                     func_8002F2CC(&this->actor, globalCtx, 170.0f);

@@ -181,7 +181,6 @@ extern bool FreeFairies;
 extern bool FairyPond;
 extern bool BombchuDrop;
 
-extern bool BuyBombchus5;
 extern bool BuyBombchus10;
 extern bool BuyBombchus20;
 extern bool BuyArrow;

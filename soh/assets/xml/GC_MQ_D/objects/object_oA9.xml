@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_oA9" Segment="6">
+        <DList Name="object_oA9_DL_00000250" Offset="0x250"/>
+        <Texture Name="object_oA9_Tex_000003A0" OutName="tex_000003A0" Format="rgba16" Width="8" Height="16" Offset="0x3A0"/>
+        <Texture Name="object_oA9_Tex_000004A0" OutName="tex_000004A0" Format="rgba16" Width="8" Height="8" Offset="0x4A0"/>
+    </File>
+</Root>

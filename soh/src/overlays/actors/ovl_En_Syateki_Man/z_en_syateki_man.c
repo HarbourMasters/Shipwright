@@ -349,6 +349,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                                 this->getItemId = GI_BULLET_BAG_50;
                             }
                         } else {
+                            this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     } else {
@@ -371,6 +372,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                                     break;
                             }
                         } else {
+                            this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_bow" Segment="6">
+        <DList Name="gGiBowDL" Offset="0x0990"/>
+    </File>
+</Root>

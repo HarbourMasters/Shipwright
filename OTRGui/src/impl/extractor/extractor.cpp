@@ -29,7 +29,7 @@ std::string GetXMLVersion(RomVersion version)
 	switch (version.crc)
 	{
 	case OOT_PAL_GC_DBG1: return "GC_NMQ_D";
-	case OOT_PAL_GC_DBG2: return "GC_MQ_D";
+	case OOT_PAL_GC_MQ_DBG: return "GC_MQ_D";
 	case OOT_PAL_GC:	  return "GC_NMQ_PAL_F";
 	}
 
@@ -81,7 +81,7 @@ void startWorker(RomVersion version) {
 
 	path += GetXMLVersion(version);
 
-	Util::write("tmp/baserom/version", (char*)&version.crc, sizeof(version.crc));
+	// Util::write("tmp/baserom/version", (char*)&version.crc, sizeof(version.crc));
 
 	if (oldExtractMode)
 	{
@@ -111,7 +111,7 @@ void startWorker(RomVersion version) {
 	else
 	{
 		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
-		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), path + "../", path + "../", GetXMLVersion(version).c_str(), "");
+		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), (path + "/../").c_str(), (path + "/../").c_str(), GetXMLVersion(version).c_str(), "");
 		ProcessResult result = NativeFS->LaunchProcess(execStr + args);
 
 		if (result.exitCode != 0) {

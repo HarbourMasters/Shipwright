@@ -6,6 +6,7 @@
 
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -72,7 +73,7 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if ((gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[2]) ||
+    if ((gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
         (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         return 0x402B;
     } else if (gSaveContext.eventChkInf[3] & 8) {
@@ -467,6 +468,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
             if (this->isTrading) {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
                 getItemId = getItemEntry.getItemId;
+                Randomizer_ConsumeAdultTradeItem(globalCtx, ITEM_PRESCRIPTION);
                 Flags_SetTreasure(globalCtx, 0x1F);
             } else {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
@@ -487,7 +489,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
 
 void EnKz_StartTimer(EnKz* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG) {
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !gSaveContext.n64ddFlag) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }

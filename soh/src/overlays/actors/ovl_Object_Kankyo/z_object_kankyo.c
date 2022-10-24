@@ -135,6 +135,27 @@ void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
                 this->effects[5].size = 0.0f;
             }
 
+            if (gSaveContext.n64ddFlag) {
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
+                    this->effects[0].size = 0.0f;
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL)) {
+                    this->effects[1].size = 0.0f;
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL)) {
+                    this->effects[2].size = 0.0f;
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL)) {
+                    this->effects[3].size = 0.0f;
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL)) {
+                    this->effects[4].size = 0.0f;
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL)) {
+                    this->effects[5].size = 0.0f;
+                }
+            }
+
             if (gSaveContext.cutsceneTrigger != 0) {
                 if (gSaveContext.entranceIndex == 0x0538) {
                     this->effects[0].size = 0.1f;

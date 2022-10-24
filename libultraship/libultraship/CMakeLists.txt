@@ -66,7 +66,9 @@ set(Source_Files__Audio__extra
     "WasapiAudioPlayer.cpp"
     "WasapiAudioPlayer.h"
 )
-else()
+endif ()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__Audio__extra
     "PulseAudioPlayer.cpp"
     "PulseAudioPlayer.h"
@@ -74,6 +76,21 @@ set(Source_Files__Audio__extra
 endif ()
 
 source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
+
+set (Source_Files__BinaryTools
+    "BinaryReader.cpp"
+    "BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/Binary.h"
+    "Lib/BinaryTools/BinaryTools/Binary.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.h"
+    "Lib/BinaryTools/BinaryTools/MemoryBuffer.h"
+    "Lib/BinaryTools/BinaryTools/Span.h"
+)
+
+source_group("Source Files\\BinaryTools" FILES ${Source_Files__BinaryTools})
 
 set(Source_Files__Controller
     "ControlDeck.cpp"
@@ -121,6 +138,7 @@ set(Source_Files__CustomImpl
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
 set(Source_Files__CustomImpl__Hooks
+    "Hooks.cpp"
     "Hooks.h"
 )
 source_group("Source Files\\CustomImpl\\Hooks" FILES ${Source_Files__CustomImpl__Hooks})
@@ -334,6 +352,12 @@ set(Source_Files__Resources__mpq
 )
 source_group("Source Files\\Resources\\mpq" FILES ${Source_Files__Resources__mpq})
 
+set(Source_Files__Crash_Handler
+    "CrashHandler.cpp"
+    "CrashHandler.h"
+)
+source_group("Source Files\\Crash Handler" FILES ${Source_Files__Crash_Handler})
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 set(Source_Files__Darwin
     "OSXFolderManager.mm"
@@ -367,6 +391,7 @@ set(ALL_FILES
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
     ${Source_Files__Audio__extra}
+    ${Source_Files__BinaryTools}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
     ${Source_Files__CustomImpl}
@@ -388,6 +413,7 @@ set(ALL_FILES
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
+    ${Source_Files__Crash_Handler}
     ${Source_Files__Darwin}
     ${Source_Files__NintendoSwitch}
     ${Source_Files__CafeOS}
@@ -520,27 +546,25 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(SDL2)
     find_package(GLEW)
     find_package(X11)
     if (NOT GLEW_FOUND)
-        if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-            include (FetchContent)
-            FetchContent_Declare(
-                glew
-                GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-                SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
-            )
-            FetchContent_MakeAvailable(glew)
-            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
-        endif()
+        include (FetchContent)
+        FetchContent_Declare(
+            glew
+            GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
+        )
+        FetchContent_MakeAvailable(glew)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
     endif()
 
     if (NOT GLEW_FOUND)
        set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/include)
     else()
-        set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+        set(GLEW-INCLUDE ${GLEW_INCLUDE_DIRS})
     endif()
     set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")

@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_efc_tw" Segment="6">
+
+        <Skeleton Name="gTimeWarpSkel" Type="Curve" LimbType="Curve" Offset="0x12E8"/>
+        <CurveAnimation Name="gTimeWarpAnim" SkelOffset="0x12E8" Offset="0x0050"/>
+
+        <Array Name="gTimeWarpVtx" Count="21" Offset="0x0060">
+            <Vtx/>
+        </Array>
+        <DList Name="gTimeWarpDL" Offset="0x01B0"/>
+        <Texture Name="gTimeWarpTex" OutName="time_warp" Format="i8" Width="64" Height="64" Offset="0x02C8"/>
+    </File>
+</Root>

@@ -1,0 +1,18 @@
+<Root>
+    
+    <File Name="object_po_composer" Segment="6">
+        <Animation Name="gPoeComposerAttackAnim" Offset="0x020C"/>
+        <Animation Name="gPoeComposerDamagedAnim" Offset="0x0570"/>
+        <Animation Name="gPoeComposerFleeAnim" Offset="0x0708"/>
+        <Animation Name="gPoeComposerFloatAnim" Offset="0x09DC"/>
+        <Animation Name="gPoeComposerAppearAnim" Offset="0x0FE4"/>
+        <Animation Name="gPoeComposerDisappearAnim" Offset="0x1440"/>
+        <DList Name="gPoeComposerSoulDL" Offset="0x1C90"/>
+        <DList Name="gPoeComposerLanternBottomDL" Offset="0x4498"/>
+        <DList Name="gPoeComposerLanternTopDL" Offset="0x4530"/>
+        <DList Name="gPoeComposerLanternDL" Offset="0x45A0"/>
+        <DList Name="gPoeComposerFlatHeadDL" Offset="0x4638"/>
+        <DList Name="gPoeComposerBurnDL" Offset="0x5220"/>
+        <Skeleton Name="gPoeComposerSkel" Type="Flex" LimbType="Standard" Offset="0x6F90"/>
+    </File>
+</Root>

@@ -3,6 +3,9 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
+#include <libultraship/CrashHandler.h>
+#include "soh/CrashHandlerExp.h"
+
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -36,11 +39,18 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
+#ifdef _WIN32
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) 
+#else
 int main(int argc, char** argv)
+#endif
 {
+    CrashHandler_Init(CrashHandler_PrintSohData);
+    
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
+
     Main(0);
     DeinitOTR();
     return 0;
@@ -64,14 +74,14 @@ void Main(void* arg) {
     Fault_Init();
     SysCfb_Init(0);
     Heaps_Alloc();
-    sysHeap = gSystemHeap;
+    sysHeap = (uintptr_t)gSystemHeap;
     fb = SysCfb_GetFbPtr(0);
     gSystemHeapSize = 1024 * 1024 * 4;
     // "System heap initalization"
     osSyncPrintf("システムヒープ初期化 %08x-%08x %08x\n", sysHeap, fb, gSystemHeapSize);
-    SystemHeap_Init(sysHeap, gSystemHeapSize); // initializes the system heap
+    SystemHeap_Init((void*)sysHeap, gSystemHeapSize); // initializes the system heap
     if (osMemSize >= 0x800000) {
-        debugHeap = SysCfb_GetFbEnd();
+        debugHeap = (void*)SysCfb_GetFbEnd();
         debugHeapSize = (0x80600000 - (uintptr_t)debugHeap);
     } else {
         debugHeapSize = 0x400;
