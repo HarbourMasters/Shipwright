@@ -1,5 +1,4 @@
-#ifndef ITEM_USE_FROM_INVENTORY_H
-#define ITEM_USE_FROM_INVENTORY_H
+#pragma once
 
 #include "z64item.h"
 
@@ -16,5 +15,3 @@ bool itemWasUsedFromInventory    = false;
 bool usingItemFromInventory      = false;
 bool bottleWasUsedFromInventory  = false;
 bool swingingBottleFromInventory = false;
-
-#endif
