@@ -182,6 +182,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 0);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 0);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 0);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
@@ -443,6 +445,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 1);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 1);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
         // Always Win Goron Pot
@@ -811,6 +815,8 @@ namespace GameMenuBar {
                     );
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
+                    UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
+                    UIWidgets::Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                     UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
