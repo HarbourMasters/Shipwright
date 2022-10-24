@@ -3,7 +3,6 @@
 
 #include "ultra64.h"
 #include "global.h"
-#include "soh/Enhancements/item_use_from_inventory.h"
 
 extern u8 gAmmoItems[];
 extern s16 D_8082AAEC[];
