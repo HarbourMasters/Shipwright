@@ -10501,6 +10501,15 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
+// Variables for enhancement "Item Use From Inventory"
+ItemID inventoryUsedItem = ITEM_NONE, inventoryPrevCLeftItem = ITEM_NONE;
+InventorySlot inventoryUsedSlot = SLOT_NONE, inventoryPrevCLeftSlot = SLOT_NONE;
+
+bool itemWasUsedFromInventory = false;
+bool usingItemFromInventory = false;
+bool bottleWasUsedFromInventory = false;
+bool swingingBottleFromInventory = false;
+
 void ItemUseFromInventory_SetItemAndSlot(ItemID item, InventorySlot slot) {
     inventoryUsedItem = item;
     inventoryUsedSlot = slot;
