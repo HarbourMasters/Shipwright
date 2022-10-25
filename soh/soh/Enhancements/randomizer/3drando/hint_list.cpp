@@ -2767,7 +2767,7 @@ void HintTable_Init() {
 
     hintTable[LACS_REWARDS_HINT] = HintText::LACS({
         // obscure text                                                     singular                         plural
-        Text{ "And the %revil oneRw's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
               "is|Spiritual Stones and Medallions%w&are| retrieved.",
               /*french*/
               "Aussi, Zelda crééra la clé du&%rMalin%w avec %r%d |Pierre Ancestrale&et des médaillon|Pierres "
