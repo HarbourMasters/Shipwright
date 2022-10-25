@@ -2632,8 +2632,7 @@ void HintTable_Init() {
         // obscure text
         Text{ "The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
               /*french*/
-              "Les êtres de sagesse attendront&le héros muni des #Médaillons de&l'Ombre et l'Esprit# et des&#Flèches "
-              "de Lumière#.",
+              "Les êtres de sagesse attendront&le héros muni des %rMédaillons de&l'Ombre et l'Esprit%w et des&%yFlèches de Lumière%w.",
               /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto "
               "a la #flecha de luz#." },
@@ -2643,14 +2642,14 @@ void HintTable_Init() {
         // obscure text                                                  singular        plural
         Text{
             "The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
-            /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale|Pierres&Ancestrales|#.",
+            /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale|Pierres&Ancestrales|%w.",
             /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#." },
     });
 
     hintTable[BRIDGE_MEDALLIONS_HINT] = HintText::Bridge({
         // obscure text                                                  singular  plural
         Text{ "The awakened ones will await&for the Hero to collect&%d |Medallion|Medallions|.",
-              /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |médaillon|médaillons|#.",
+              /*french*/ "Les êtres de sagesse attendront&le héros muni de %r#%d |Médaillon|Médaillons|%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |medallón|medallones|#." },
     });
 
@@ -2659,8 +2658,7 @@ void HintTable_Init() {
         Text{ "The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones "
               "and Medallions|.",
               /*french*/
-              "Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale ou "
-              "Médaillon|Pierres&Ancestrales ou Médaillons|#.",
+              "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale ou Médaillon|Pierres&Ancestrales ou Médaillons|%w.",
               /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y "
               "medallones|#." },
@@ -2669,14 +2667,14 @@ void HintTable_Init() {
     hintTable[BRIDGE_DUNGEONS_HINT] = HintText::Bridge({
         // obscure text                                                  singular plural
         Text{ "The awakened ones will await&for the Hero to conquer&%d |Dungeon|Dungeons|.",
-              /*french*/ "Les êtres de sagesse attendront&la conquête de #%d |Donjon|Donjons|#.",
+              /*french*/ "Les êtres de sagesse attendront&la conquête de %r%d |Donjon|Donjons|%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe& complete #%d |mazmorra|mazmorras|#." },
     });
 
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
         // obscure text
         Text{ "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
-              /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |Symbole|Symboles| &de Skulltula d'or#.",
+              /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
     });
 
@@ -2741,7 +2739,7 @@ void HintTable_Init() {
         // obscure text
         Text{
             "And the %revil one%w's key will be&provided by Zelda once the&%rShadow and Spirit Medallions%w&are retrieved.",
-            /*french*/ "Aussi, Zelda crééra la clé du&%rMalin%w avec les %rmédaillons de&l'ombre et de l'esprit%w.",
+            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois que &les %rMédaillons de l'Ombre et de&l'Esprit%w seront récupérés.",
             /*spanish*/
             "Y Zelda entregará la llave&del #señor del mal# tras obtener&#el medallón de las sombras y del "
             "espíritu#." },
@@ -2750,7 +2748,7 @@ void HintTable_Init() {
     hintTable[LACS_MEDALLIONS_HINT] = HintText::LACS({
         // obscure text                                                     singular      plural
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Medallion%w is|Medallions%w are| retrieved.",
-              /*french*/ "Aussi, Zelda crééra la clé du&%rMalin%w avec %r%d |médaillon|médaillons|%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Médaillon%w aura été&récupéré|que&%r%d Médaillons%w auront été&récupérés|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |medallón|medallones|#." },
     });
 
@@ -2759,7 +2757,7 @@ void HintTable_Init() {
         Text{
             "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone%w is|Spiritual Stones%w are| "
             "retrieved.",
-            /*french*/ "Aussi, Zelda crééra la clé du&%rMalin%w avec %r%d des |pierre&spirituelle|pierres&spirituelles|%w.",
+            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale%w aura été&récupérée|que&%r%d Pierres Ancestrales%w auront été&récupérées|.",
             /*spanish*/
             "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual|piedras "
             "espirituales|#." },
@@ -2770,8 +2768,7 @@ void HintTable_Init() {
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
               "is|Spiritual Stones and Medallions%w&are| retrieved.",
               /*french*/
-              "Aussi, Zelda crééra la clé du&%rMalin%w avec %r%d |Pierre Ancestrale&et des médaillon|Pierres "
-              "Ancestrales&et des médaillons|%w.",
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou %d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales&et&Médaillons%w seront récupérés|.",
               /*spanish*/
               "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras "
               "espirituales o medallones|#." },
@@ -2780,7 +2777,7 @@ void HintTable_Init() {
     hintTable[LACS_DUNGEONS_HINT] = HintText::LACS({
         // obscure text                                                     singular    plural
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Dungeon%w is|Dungeons%w are| conquered.",
-              /*french*/ "Aussi, Zelda crééra la clé du&%rMalin%w une fois %r%d |donjon&conquéri|donjons&conquéris|%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d donjon %wsera conquis|que&%r%d donjons%w seront conquis|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras completar&#%d |mazmorra|mazmorras|#." },
     });
 
@@ -2788,7 +2785,7 @@ void HintTable_Init() {
         // obscure text                                                     singular                 plural
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d |Gold&Skulltula Token%w is|Gold&Skulltula "
               "Tokens%w are| retrieved.",
-              /*french*/ "Aussi, Zelda crééra la clé du&%rMalin%w avec %r%d |symbole|symboles| de&Skulltula d'or%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d symbole de Skulltula d'or&%wsera récupuéré|que &%r%d symboles de Skulltula d'or&%wseront recupérés|.",
               /*spanish*/
               "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |símbolo|símbolos| de&skulltula "
               "dorada#." },
