@@ -36,8 +36,8 @@ typedef struct {
 } LightningBolt; // size = 0x20
 
 typedef struct {
-    /* 0x00 */ s32 unk0;
-    /* 0x04 */ s32 unk1;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
 } Struct_8011FAF0; // size = 0x8
 
 Struct_8011FAF0 D_8011FAF0[] = {
@@ -215,7 +215,7 @@ u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
 s32 func_8006F0A0(s32 a0) {
-    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk0) + D_8011FAF0[a0 >> 15 & 7].unk1;
+    s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 
     return ret;
 }
@@ -1459,8 +1459,6 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_RING,    LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
-    static s32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1517,7 +1515,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
-            FrameInterpolation_RecordOpenChild("Lens Flare", epoch + i * 25);
+            FrameInterpolation_RecordOpenChild("Lens Flare", i);
 
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
@@ -1642,8 +1640,6 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Vec3f unused = { 0.0f, 0.0f, 0.0f };
     Vec3f windDirection = { 0.0f, 0.0f, 0.0f };
     Player* player = GET_PLAYER(globalCtx);
-    static s32 epoch = 0;
-    epoch++;
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
         OPEN_DISPS(gfxCtx);
@@ -1673,7 +1669,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-            FrameInterpolation_RecordOpenChild("Rain Drop", epoch + i * 25);
+            FrameInterpolation_RecordOpenChild("Rain Drop", i);
 
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
@@ -1709,7 +1705,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-                FrameInterpolation_RecordOpenChild("Droplet Ring", epoch + i * 25);
+                FrameInterpolation_RecordOpenChild("Droplet Ring", i);
                 
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
@@ -1925,13 +1921,11 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     s32 pad[2];
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
-    static s32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
-        FrameInterpolation_RecordOpenChild("Lightning Bolt", epoch + i * 25);
+        FrameInterpolation_RecordOpenChild("Lightning Bolt", i);
 
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:
@@ -2101,7 +2095,7 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_ReplaceItem(globalCtx, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO)) &&
+                     Inventory_HatchPocketCucco(globalCtx)) &&
                     globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }
@@ -2296,27 +2290,22 @@ Color_RGB8 sSandstormEnvColors[] = {
     { 50, 40, 0 },
 };
 
-Gfx* gFieldSandstormDL_Custom = NULL;
+u16 previousPatchedSandstormScreenSize = 0;
 
 void Environment_PatchSandstorm(GlobalContext* globalCtx) {
-    if (gFieldSandstormDL_Custom) return;
-
-    gFieldSandstormDL_Custom = ResourceMgr_PatchGfxByName(gFieldSandstormDL, -3);
-
-    const Gfx gFSPatchDL[2] = { gsSPEndDisplayList() };
-    bool patched = false;
-    Gfx* cmd = gFieldSandstormDL_Custom;
-    int id = 0;
-
-    while (!patched) {
-        const uint32_t opcode = cmd->words.w0 >> 24;
-        if (opcode == G_TEXRECT) {
-            gFieldSandstormDL_Custom[id] = gFSPatchDL[0];
-            patched = true;
-        }
-        ++cmd;
-        id++;
+    if (previousPatchedSandstormScreenSize == ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH))) {
+        return;
     }
+
+    Gfx gfxPatchSandstormRect[] = {
+        gsSPWideTextureRectangle(OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
+            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C, -0x008C),
+    };
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect0", 48, gfxPatchSandstormRect[0]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect1", 50, gfxPatchSandstormRect[1]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect2", 52, gfxPatchSandstormRect[2]);
+
+    previousPatchedSandstormScreenSize = ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH));
 }
 
 void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
@@ -2441,10 +2430,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
                                 0xFFF - ((u32)sp92 % 0x1000), 0x100, 0x40));
     gDPSetTextureLUT(POLY_XLU_DISP++, G_TT_NONE);
 
-    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL_Custom);
-    gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
-                            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
-                            -0x008C);
+    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL);
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     D_8015FDB0 += (s32)sp98;
@@ -2454,7 +2440,7 @@ void Environment_AdjustLights(GlobalContext* globalCtx, f32 arg1, f32 arg2, f32 
     f32 temp;
     s32 i;
 
-    if (globalCtx->roomCtx.curRoom.unk_03 != 5 && func_800C0CB8(globalCtx)) {
+    if (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_5 && func_800C0CB8(globalCtx)) {
         arg1 = CLAMP_MIN(arg1, 0.0f);
         arg1 = CLAMP_MAX(arg1, 1.0f);
 

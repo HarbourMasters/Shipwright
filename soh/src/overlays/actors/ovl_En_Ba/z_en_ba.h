@@ -17,22 +17,22 @@ typedef enum {
 
 typedef struct EnBa {
     /* 0x0000 */ Actor actor;
-    /* 0x014C */ s32 unk14C; 
-    /* 0x0150 */ EnBaActionFunc actionFunc; 
-    /* 0x0154 */ s16 upperParams; 
-    /* 0x0156 */ s16 unk156;
-    /* 0x0158 */ Vec3f unk158[14];
-    /* 0x0200 */ Vec3f unk200[14];
-    /* 0x02A8 */ Vec3s unk2A8[14];
-    /* 0x02FC */ Vec3f unk2FC;
-    /* 0x0308 */ Vec3f unk308;
-    /* 0x0314 */ f32 unk314;
-    /* 0x0318 */ s16 unk318;
-    /* 0x031A */ s16 unk31A;
-    /* 0x031C */ s16 unk31C;
+    /* 0x014C */ s32 unk_14C;
+    /* 0x0150 */ EnBaActionFunc actionFunc;
+    /* 0x0154 */ s16 upperParams;
+    /* 0x0156 */ s16 unk_156;
+    /* 0x0158 */ Vec3f unk_158[14];
+    /* 0x0200 */ Vec3f unk_200[14];
+    /* 0x02A8 */ Vec3s unk_2A8[14];
+    /* 0x02FC */ Vec3f unk_2FC;
+    /* 0x0308 */ Vec3f unk_308;
+    /* 0x0314 */ f32 unk_314;
+    /* 0x0318 */ s16 unk_318;
+    /* 0x031A */ s16 unk_31A;
+    /* 0x031C */ s16 unk_31C;
     /* 0x0320 */ ColliderJntSph collider;
     /* 0x0340 */ ColliderJntSphElement colliderItems[2];
-    /* 0x03C0 */ s32 epoch;
+    /* 0x03C0 */ u32 epoch;
 } EnBa; // size = 0x03C4
 
 #endif

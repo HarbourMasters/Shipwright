@@ -2,8 +2,11 @@
 #define Z64PLAYER_H
 
 #include "z64actor.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 struct Player;
+
+extern GetItemEntry sGetItemTable[195];
 
 typedef enum {
     /* 0 */ PLAYER_SWORD_NONE,
@@ -356,7 +359,7 @@ typedef struct {
     /* 0x00 */ s32 active;
     /* 0x04 */ Vec3f tip;
     /* 0x10 */ Vec3f base;
-} WeaponInfo; // size = 0x1C\
+} WeaponInfo; // size = 0x1C
 
 typedef enum {
     FLAG_NONE,
@@ -364,6 +367,8 @@ typedef enum {
     FLAG_SCENE_TREASURE,
     FLAG_SCENE_CLEAR,
     FLAG_SCENE_COLLECTIBLE,
+    FLAG_EVENT_CHECK_INF,
+    FLAG_RANDOMIZER_INF
 } FlagType;
 
 typedef struct {
@@ -625,7 +630,9 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-    /* 0x0A94 */ PendingFlag pendingFlag;
-} Player; // size = 0xAA0
+    /* 0x0A95 */ PendingFlag pendingFlag;
+    /* 0x0AA1 */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
+    /* 0x0AA2 */ GetItemEntry getItemEntry;
+} Player; // size = 0xAAA
 
 #endif

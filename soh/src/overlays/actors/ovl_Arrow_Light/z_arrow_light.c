@@ -193,6 +193,10 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 stateFrames = globalCtx->state.frames;
     EnArrow* arrow = (EnArrow*)this->actor.parent;
     Actor* tranform;
+    Color_RGB8 Arrow_env_ori = {255, 255, 0};
+    Color_RGB8 Arrow_col_ori = {255, 255, 170};
+    Color_RGB8 Arrow_env = CVar_GetRGB("gLightArrowColEnv", Arrow_env_ori);
+    Color_RGB8 Arrow_col = CVar_GetRGB("gLightArrowCol", Arrow_col_ori);
 
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {
         tranform = (arrow->hitFlags & 2) ? &this->actor : &arrow->actor;
@@ -210,9 +214,9 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
             if (CVar_GetS32("gUseArrowsCol", 0)) {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
-                (s32)(CVar_GetS32("gLightArrowColEnvR", 30) * this->unk_164) & 0xFF,
-                (s32)(CVar_GetS32("gLightArrowColEnvG", 40) * this->unk_164) & 0xFF, 
-                (s32)(CVar_GetS32("gLightArrowColEnvB", 0) * this->unk_164) & 0xFF, 
+                (s32)(Arrow_env.r * this->unk_164) & 0xFF,
+                (s32)(Arrow_env.g * this->unk_164) & 0xFF, 
+                (s32)(Arrow_env.b * this->unk_164) & 0xFF, 
                 (s32)(30.0f * this->unk_164) & 0xFF); //Intentionnally made Alpha lower.
             } else {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (s32)(30.0f * this->unk_164) & 0xFF,
@@ -226,11 +230,11 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // Draw light on the arrow
         func_80093D84(globalCtx->state.gfxCtx);
         if (CVar_GetS32("gUseArrowsCol", 0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, CVar_GetS32("gLightArrowColR", 255), CVar_GetS32("gLightArrowColG", 255), CVar_GetS32("gLightArrowColB", 170), this->alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gLightArrowColEnvR", 255), CVar_GetS32("gLightArrowColEnvG", 255), CVar_GetS32("gLightArrowColEnvB", 0), 128);
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, Arrow_col.r, Arrow_col.g, Arrow_col.b, this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, Arrow_env.r, Arrow_env.g, Arrow_env.b, 128);
         } else {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 170, this->alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 128);
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, Arrow_col_ori.r, Arrow_col_ori.g, Arrow_col_ori.b, this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, Arrow_env_ori.r, Arrow_env_ori.g, Arrow_env_ori.b, 128);
         }
         Matrix_RotateZYX(0x4000, 0x0, 0x0, MTXMODE_APPLY);
         if (this->timer != 0) {

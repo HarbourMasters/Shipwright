@@ -111,6 +111,7 @@ void Mercury::reload() {
         return;
     }
     std::ifstream ifs(this->path_);
+
     try {
         this->rjson = json::parse(ifs);
         this->vjson = this->rjson.flatten();

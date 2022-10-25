@@ -631,8 +631,8 @@ typedef struct _TMPQHash
 
 #else
 
-    BYTE   Platform;
     BYTE   Reserved;
+    BYTE   Platform;
     USHORT lcLocale;
 
 #endif

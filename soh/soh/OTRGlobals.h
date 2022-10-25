@@ -3,31 +3,44 @@
 
 #pragma once
 
-#include "GlobalCtx2.h"
 #include "SaveManager.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
+#include <libultraship/Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+
+const std::string customMessageTableID = "BaseGameOverrides";
 
 class OTRGlobals
 {
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
     ~OTRGlobals();
 
+    bool HasMasterQuest();
+    bool HasOriginal();
+
 private:
 	void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
 };
+
+uint32_t IsGameMasterQuest();
 #endif
 
 #ifndef __cplusplus
+    void InitOTR(void);
+void DeinitOTR(void);
+void VanillaItemTable_Init();
 void OTRAudio_Init();
 void InitAudio();
 void Graph_StartFrame();
@@ -37,6 +50,9 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
+uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_GameHasMasterQuest();
+uint32_t ResourceMgr_GameHasOriginal();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
@@ -53,7 +69,8 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
-Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
+void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 
@@ -85,24 +102,34 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void Controller_BlockGameInput();
+void Controller_UnblockGameInput();
 void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
+int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
+u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
-int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
-int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
+RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
+CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
+void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
+void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
+void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
-s16 Randomizer_GetItemModelFromId(s16 itemId);
-s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
-s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
-bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
-bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
+bool Randomizer_IsTrialRequired(RandomizerInf trial);
+GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
+int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx);
+void Overlay_DisplayText(float duration, const char* text);
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 #endif
 
 #endif

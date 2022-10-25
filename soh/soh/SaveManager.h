@@ -10,6 +10,8 @@ typedef struct {
     u32 questItems;
     s8 defense;
     u16 health;
+    u32 requiresMasterQuest;
+    u32 requiresOriginal;
     u8 seedHash[5];
     u8 randoSave;
 } SaveFileMetaInfo;
@@ -23,7 +25,7 @@ typedef struct {
 #include <vector>
 #include <filesystem>
 
-#include "Lib/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 class SaveManager {
 public:
@@ -57,6 +59,7 @@ public:
 
     void CopyZeldaFile(int from, int to);
     void DeleteZeldaFile(int fileNum);
+    bool IsRandoFile();
 
     // Use a name of "" to save to an array. You must be in a SaveArray callback.
     template<typename T>
@@ -114,6 +117,7 @@ public:
     static void InitFileDebug();
 
     static void LoadRandomizerVersion1();
+    static void LoadRandomizerVersion2();
     static void SaveRandomizer();
 
     static void LoadBaseVersion1();

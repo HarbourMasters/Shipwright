@@ -2443,8 +2443,6 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     f32 phi_f20;
     f32 phi_f22;
     Vec3f sp110;
-    static s32 epoch = 0;
-    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2465,7 +2463,7 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     BossMo_InitRand(1, 29100, 9786);
 
     for (i = 0; i < 41; i++, matrix++) {
-        FrameInterpolation_RecordOpenChild("Morpha Tentacle", epoch + i * 25);
+        FrameInterpolation_RecordOpenChild("Morpha Tentacle", i);
 
         s32 pad;
         s32 pad2;

@@ -70,14 +70,14 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
 
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
-    GetItemID getItemId = Randomizer_GetRandomizedItemId(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->fountainType + 1, GI_NONE);
 
     if (this->actor.parent == GET_PLAYER(globalCtx) && !Flags_GetTreasure(globalCtx, this->fountainType + 1) &&
         !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         Flags_SetTreasure(globalCtx, this->fountainType + 1);
         Actor_Kill(&this->actor);
     } else if (!Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
-        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
     }
 }
 
@@ -1045,7 +1045,7 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
         
         if (particle->alive == 1) {
             if (phi_s3 == 0) {
-                gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAppearDL));
+                gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleMaterialDL));
                 gDPPipeSync(POLY_XLU_DISP++);
 
                 phi_s3++;
@@ -1062,7 +1062,7 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAliveDL));
+            gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleModelDL));
         }
         
         FrameInterpolation_RecordCloseChild();

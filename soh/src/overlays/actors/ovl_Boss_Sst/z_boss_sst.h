@@ -17,7 +17,7 @@ typedef struct {
     /* 0x0020 */ s16 move;
     /* 0x0022 */ s16 status;
     /* 0x0024 */ u8 alpha;
-    /* 0x0028 */ s32 epoch;
+    /* 0x0028 */ u32 epoch;
 } BossSstEffect; // size = 0x2C
 
 typedef struct {

@@ -89,6 +89,8 @@
 #define BTN_CUP         0x00008
 #define BTN_R           0x00010
 #define BTN_L           0x00020
+#define BTN_MODIFIER1   0x00040
+#define BTN_MODIFIER2   0x00080
 #define BTN_DRIGHT      0x00100
 #define BTN_DLEFT       0x00200
 #define BTN_DDOWN       0x00400
@@ -124,8 +126,8 @@ typedef struct {
     /* 0x04 */ uint8_t err_no;
     /* 0x05 */ float gyro_x;
     /* 0x09 */ float gyro_y;
-    /* 0x1C */ float cam_x;
-    /* 0x20 */ float cam_y;
+    /* 0x1C */ int8_t right_stick_x;
+    /* 0x20 */ int8_t right_stick_y;
 } OSContPad; // size = 0x24
 
 typedef struct {

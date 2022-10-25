@@ -18,7 +18,7 @@ typedef struct {
     /* 0x002C */ f32 scale;
     /* 0x0030 */ f32 unk_30;
     /* 0x0034 */ u8 timer;
-    s32 epoch;
+    u32 epoch;
 } EnNiwFeather; // size = 0x0038
 
 typedef struct EnNiw {
@@ -76,5 +76,18 @@ typedef struct EnNiw {
     /* 0x030C */ ColliderCylinder collider;
     /* 0x0358 */ EnNiwFeather feathers[20];
 } EnNiw; // size = 0x07B8
+
+#ifdef __cplusplus
+#define this thisx
+extern "C"
+{
+#endif
+    void func_80AB70A0(EnNiw* this, GlobalContext* globalCtx);
+    void func_80AB70A0_nocutscene(EnNiw* this, GlobalContext* globalCtx);
+#ifdef __cplusplus
+#undef this
+};
+#undef this
+#endif
 
 #endif

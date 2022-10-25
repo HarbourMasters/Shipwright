@@ -1,85 +1,28 @@
 #include "CosmeticsEditor.h"
-#include "../libultraship/ImGuiImpl.h"
+#include <libultraship/ImGuiImpl.h>
 
 #include <string>
-#include <Cvar.h>
-#include <PR/ultra64/types.h>
+#include <libultraship/Cvar.h>
+#include <random>
+#include <algorithm>
+#include <ultra64/types.h>
 
-/**
- * Colors variables
- */
-float TablesCellsWidth = 300.0f; //1 Col
-ImVec4 hearts_colors;
-ImVec4 hearts_dd_colors;
-ImVec4 hearts_ddi_colors; //DD inner colors
-ImVec4 a_btn_colors;
-ImVec4 b_btn_colors;
-ImVec4 c_btn_colors;
-ImVec4 start_btn_colors;
-ImVec4 magic_border_colors;
-ImVec4 magic_remaining_colors;
-ImVec4 magic_use_colors;
-ImVec4 minimap_colors;
-ImVec4 rupee_colors;
-ImVec4 smolekey_colors;
-ImVec4 fileselect_colors;
-ImVec4 fileselect_text_colors;
-ImVec4 kokiri_col;
-ImVec4 goron_col;
-ImVec4 zora_col;
-ImVec4 navi_idle_i_col;
-ImVec4 navi_idle_o_col;
-ImVec4 navi_npc_i_col;
-ImVec4 navi_npc_o_col;
-ImVec4 navi_enemy_i_col;
-ImVec4 navi_enemy_o_col;
-ImVec4 navi_prop_i_col;
-ImVec4 navi_prop_o_col;
-ImVec4 trailscol;
-ImVec4 c_btn_u_colors;
-ImVec4 c_btn_l_colors;
-ImVec4 c_btn_d_colors;
-ImVec4 c_btn_r_colors;
-ImVec4 magic_bordern_colors;
-ImVec4 firearrow_col;
-ImVec4 icearrow_col;
-ImVec4 lightarrow_col;
-ImVec4 firearrow_colenv;
-ImVec4 icearrow_colenv;
-ImVec4 lightarrow_colenv;
-ImVec4 charged1_col;
-ImVec4 charged2_col;
-ImVec4 charged1_colenv;
-ImVec4 charged2_colenv;
-ImVec4 Keese1_primcol;
-ImVec4 Keese2_primcol;
-ImVec4 Keese1_envcol;
-ImVec4 Keese2_envcol;
-ImVec4 doggo1col;
-ImVec4 doggo2col;
-ImVec4 df_col;
-ImVec4 df_colenv;
-ImVec4 nl_diam_col;
-ImVec4 nl_diam_colenv;
-ImVec4 nl_orb_col;
-ImVec4 nl_orb_colenv;
-ImVec4 dgn_minimap_colors;
-ImVec4 cp_minimap_colors;
-ImVec4 le_minimap_colors;
-ImVec4 tc_ou_colors;
-ImVec4 tc_bu_colors;
-ImVec4 dpad_colors;
-ImVec4 visualagony_colors;
-/*ImVec4 menu_equips_colors;
-ImVec4 menu_items_colors;
-ImVec4 menu_map_colors;
-ImVec4 menu_quest_colors;
-ImVec4 menu_save_colors;
-ImVec4 menu_gameover_colors;*/
+#include "../../UIWidgets.hpp"
+
+extern "C" {
+#include <z64.h>
+#include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_gi_shield_3/object_gi_shield_3.h"
+void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+}
+
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
-    "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-    "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
+    "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
+    "gGauntlets_Silver", "gGauntlets_Golden",
+    "gFireArrowCol", "gIceArrowCol",
+    "gNormalArrowCol", "gNormalArrowColEnv",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
     "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
     "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
@@ -88,18 +31,83 @@ const char* RainbowColorCvarList[] = {
     "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
     "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
-    "gDF_Col", "gDF_Env",
+    "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
-    "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+    "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gKSwordTrailTopCol", "gKSwordTrailBottomCol","gMSwordTrailTopCol", "gMSwordTrailBottomCol","gBSwordTrailTopCol", "gBSwordTrailBottomCol",
+    "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
+    "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
+    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
 const char* MarginCvarList[] {
-    "gHearts", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
+    "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
     "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
 
+ImVec4 GetRandomValue(int MaximumPossible){
+    ImVec4 NewColor;
+    unsigned long range = 255 - 0;
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    std::random_device rd;
+    std::mt19937 rng(rd());
+#else
+    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
+    std::mt19937_64 rng(seed);
+#endif
+    std::uniform_int_distribution<int> dist(0, 255 - 1);
+    
+    NewColor.x = (float)(dist(rng)) / 255;
+    NewColor.y = (float)(dist(rng)) / 255;
+    NewColor.z = (float)(dist(rng)) / 255;
+    return NewColor;
+}
+void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+#if defined(__SWITCH__) || defined(__WIIU__)
+    srand(time(NULL));
+#endif
+    for (int i = 0; i < SectionSize; i++){
+        CosmeticsColorIndividual* Element = ColorSection[i].Element;
+        ImVec4 colors = Element->ModifiedColor;
+        Color_RGBA8 NewColors = { 0, 0, 0, 255 };
+        std::string cvarName = Element->CvarName;
+        std::string cvarLock = cvarName + "Lock";
+        if(CVar_GetS32(cvarLock.c_str(), 0)) {
+            continue;
+        }
+        std::string Cvar_RBM = cvarName + "RBM";
+        colors = RANDOMIZE_32(255);
+        NewColors.r = fmin(fmax(colors.x * 255, 0), 255);
+        NewColors.g = fmin(fmax(colors.y * 255, 0), 255);
+        NewColors.b = fmin(fmax(colors.z * 255, 0), 255);
+        Element->ModifiedColor = colors;
+        CVar_SetRGBA(cvarName.c_str(), NewColors);
+        CVar_SetS32(Cvar_RBM.c_str(), 0);
+    }
+}
+void GetDefaultColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+    for (int i = 0; i < SectionSize; i++){
+        CosmeticsColorIndividual* Element = ColorSection[i].Element;
+        ImVec4 colors = Element->ModifiedColor;
+        ImVec4 defaultcolors = Element->DefaultColor;
+        std::string cvarName = Element->CvarName;
+        std::string Cvar_RBM = cvarName + "RBM";
+        colors.x = defaultcolors.x;
+        colors.y = defaultcolors.y;
+        colors.z = defaultcolors.z;
+        if (Element->hasAlpha) { colors.w = defaultcolors.w; };
+        Element->ModifiedColor = colors;
+        Color_RGBA8 colorsRGBA;
+        colorsRGBA.r = defaultcolors.x;
+        colorsRGBA.g = defaultcolors.y;
+        colorsRGBA.b = defaultcolors.z;
+        if (Element->hasAlpha) { colorsRGBA.a = defaultcolors.w; };
+        CVar_SetRGBA(cvarName.c_str(), colorsRGBA);
+        CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+
+    }
+}
 void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
@@ -138,16 +146,17 @@ void ResetPositionAll() {
         }
     }
 }
+
+void ResetTrailLength(const char* variable, int value) {
+    if (ImGui::Button("Reset")) {
+        CVar_SetS32(variable, value);
+        }
+    }
+
 void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
         std::string cvarName = RainbowColorCvarList[s];
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string RBM_HUE = cvarName;
@@ -173,13 +182,50 @@ void LoadRainbowColor(bool& open) {
         case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
         case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
         }
-
+        Color_RGBA8 NewColorRGB = {
+            fmin(fmax(NewColor.x, 0), 255),
+            fmin(fmax(NewColor.y, 0), 255),
+            fmin(fmax(NewColor.z, 0), 255),
+            255
+        };
         if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-            CVar_SetS32(Cvar_Red.c_str(), SohImGui::ClampFloatToInt(NewColor.x, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), SohImGui::ClampFloatToInt(NewColor.y, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), SohImGui::ClampFloatToInt(NewColor.z, 0, 255));
+            CVar_SetRGBA(cvarName.c_str(), NewColorRGB);
         }
     }
+}
+
+void ApplyOrResetCustomGfxPatches() {
+    // Mirror Shield
+    Color_RGB8 mirrorDefaultColor = {MirrorShieldMirror.DefaultColor.w, MirrorShieldMirror.DefaultColor.x, MirrorShieldMirror.DefaultColor.y};
+    Color_RGB8 mirror = CVar_GetRGB(MirrorShieldMirror.CvarName.c_str(), mirrorDefaultColor);
+    Color_RGB8 borderDefaultColor = {MirrorShieldBorder.DefaultColor.w, MirrorShieldBorder.DefaultColor.x, MirrorShieldBorder.DefaultColor.y};
+    Color_RGB8 border = CVar_GetRGB(MirrorShieldBorder.CvarName.c_str(), borderDefaultColor);
+    Color_RGB8 emblemDefaultColor = {MirrorShieldEmblem.DefaultColor.w, MirrorShieldEmblem.DefaultColor.x, MirrorShieldEmblem.DefaultColor.y};
+    Color_RGB8 emblem = CVar_GetRGB(MirrorShieldEmblem.CvarName.c_str(), emblemDefaultColor);
+    PATCH_GFX(gGiMirrorShieldDL,                              "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 94,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gGiMirrorShieldDL,                              "CosmeticsEditor_mirror2", "gUseMirrorShieldColors", 96,  gsDPSetEnvColor(mirror.r / 3, mirror.g / 3, mirror.b / 3, 255));
+    PATCH_GFX(gGiMirrorShieldDL,                              "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 10,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gGiMirrorShieldDL,                              "CosmeticsEditor_border2", "gUseMirrorShieldColors", 12,  gsDPSetEnvColor(border.r / 3, border.g / 3, border.b / 3, 255));
+    PATCH_GFX(gGiMirrorShieldSymbolDL,                        "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 10,  gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 140));
+    PATCH_GFX(gGiMirrorShieldSymbolDL,                        "CosmeticsEditor_Emblem2", "gUseMirrorShieldColors", 12,  gsDPSetEnvColor(emblem.r / 3, emblem.g / 3, emblem.b / 3, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 330, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 270, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 258, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 66,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 34,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 206, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 34,  gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 56,  gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 324, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Mirror",  "gUseMirrorShieldColors", 222, gsDPSetPrimColor(0, 0, mirror.r, mirror.g, mirror.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Border",  "gUseMirrorShieldColors", 190, gsDPSetPrimColor(0, 0, border.r, border.g, border.b, 255));
+    PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "CosmeticsEditor_Emblem",  "gUseMirrorShieldColors", 266, gsDPSetPrimColor(0, 0, emblem.r, emblem.g, emblem.b, 255));
 }
 
 void Table_InitHeader(bool has_header = true) {
@@ -190,7 +236,7 @@ void Table_InitHeader(bool has_header = true) {
     ImGui::TableNextColumn();
     ImGui::AlignTextToFramePadding(); //This is to adjust Vertical pos of item in a cell to be normlized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
 }
 void Table_NextCol() {
     ImGui::TableNextColumn();
@@ -209,403 +255,453 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
     ImGui::SmallButton("?");
-    SohImGui::Tooltip(helptext.c_str());
+    UIWidgets::Tooltip(helptext.c_str());
     if (sameline) {
         //I do not use ImGui::SameLine(); because it make some element vanish.
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
     }
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
-void Draw_Npcs(){
-    SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
-    SohImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
-    if (CVar_GetS32("gUseNaviCol",0) && ImGui::BeginTable("tableNavi", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Inner colors##Navi", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Outer colors##Navi", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        Table_InitHeader();
-        Draw_HelpIcon("Inner color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Primary)", "gNavi_Idle_Inner", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
-        Table_NextCol();
-        Draw_HelpIcon("Outer color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Secondary)", "gNavi_Idle_Outer", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
-        Table_NextLine();
-        Draw_HelpIcon("Inner color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Primary)", "gNavi_NPC_Inner", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
-        Table_NextCol();
-        Draw_HelpIcon("Outer color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Secondary)", "gNavi_NPC_Outer", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
-        Table_NextLine();
-        Draw_HelpIcon("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy", "gNavi_Enemy_Inner", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
-        Table_NextCol();
-        Draw_HelpIcon("Outer color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy (Secondary)", "gNavi_Enemy_Outer", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
-        Table_NextLine();
-        Draw_HelpIcon("Inner color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Primary)", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
-        Table_NextCol();
-        Draw_HelpIcon("Outer color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Secondary)", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
-        ImGui::EndTable();
+void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarName){
+    std::string CvarLabel = CvarName + "UseMargins";
+    std::string Label = ElementName + " use margins";
+    UIWidgets::EnhancementCheckbox(Label.c_str(), CvarLabel.c_str());
+    UIWidgets::Tooltip("Using this allow you move the element with General margins sliders");
+}
+void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = true){
+    std::string CvarLabel = CvarName + "PosType";
+    UIWidgets::EnhancementRadioButton("Original position", CvarLabel.c_str(), 0);
+    UIWidgets::Tooltip("This will use original intended elements position");
+    UIWidgets::EnhancementRadioButton("Anchor to the left", CvarLabel.c_str(), 1);
+    UIWidgets::Tooltip("This will make your elements follow the left side of your game window");
+    UIWidgets::EnhancementRadioButton("Anchor to the right", CvarLabel.c_str(), 2);
+    UIWidgets::Tooltip("This will make your elements follow the right side of your game window");
+    if (NoAnchorEnabled) {
+        UIWidgets::EnhancementRadioButton("No anchors", CvarLabel.c_str(), 3);
+        UIWidgets::Tooltip("This will make your elements to not follow any side\nBetter used for center elements");
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
-    SohImGui::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
-    if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Fire colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Ice colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+    UIWidgets::EnhancementRadioButton("Hidden", CvarLabel.c_str(), 4);
+    UIWidgets::Tooltip("This will make your elements hidden");
+}
+void DrawTransitions(const std::string CvarName){
+    UIWidgets::EnhancementRadioButton("Really slow fade (white)", CvarName.c_str(), 8);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Really slow fade (black)", CvarName.c_str(), 7);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Slow fade (white)", CvarName.c_str(), 10);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Slow fade (black)", CvarName.c_str(), 9);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Normal fade (white)", CvarName.c_str(), 3);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Normal fade (black)", CvarName.c_str(), 2);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Fast fade (white)", CvarName.c_str(), 5);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Fast fade (black)", CvarName.c_str(), 4);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Fast circle (white)", CvarName.c_str(), 40);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Normal circle (black)", CvarName.c_str(), 32);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Slow circle (white)", CvarName.c_str(), 41);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Slow circle (black)", CvarName.c_str(), 33);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Fast noise circle (white)", CvarName.c_str(), 42);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Fast noise circle (black)", CvarName.c_str(), 34);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Slow noise circle (white)", CvarName.c_str(), 43);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Slow noise circle (black)", CvarName.c_str(), 35);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Normal waves circle (white)", CvarName.c_str(), 44);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Normal waves circle (black)", CvarName.c_str(), 36);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Slow waves circle (white)", CvarName.c_str(), 45);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Slow waves circle (black)", CvarName.c_str(), 37);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Normal close circle (white)", CvarName.c_str(), 46);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Normal close circle (black)", CvarName.c_str(), 38);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Slow close circle (white)", CvarName.c_str(), 47);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Slow close circle (black)", CvarName.c_str(), 39);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Super fast circle (white)", CvarName.c_str(), 56);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Super fast circle (black)", CvarName.c_str(), 58);
+    Table_NextLine();
+    UIWidgets::EnhancementRadioButton("Super fast noise circle (white)", CvarName.c_str(), 57);
+    Table_NextCol();
+    UIWidgets::EnhancementRadioButton("Super fast noise circle (black)", CvarName.c_str(), 59);
+}
+void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX, int MaxX){
+    std::string PosXCvar = CvarName+"PosX";
+    std::string PosYCvar = CvarName+"PosY";
+    std::string InvisibleLabelX = "##"+PosXCvar;
+    std::string InvisibleLabelY = "##"+PosYCvar;
+    UIWidgets::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0, true);
+    UIWidgets::Tooltip("This slider is used to move Up and Down your elements.");
+    UIWidgets::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0, true);
+    UIWidgets::Tooltip("This slider is used to move Left and Right your elements.");
+}
+void DrawScaleSlider(const std::string CvarName,float DefaultValue){
+    std::string InvisibleLabel = "##"+CvarName;
+    std::string CvarLabel = CvarName+"Scale";
+    //Disabled for now. feature not done and several fixes needed to be merged.
+    //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
+}
+bool DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
+    bool changed = false;
+    for (s16 i = 0; i < SectionSize; i++) {
+        CosmeticsColorIndividual* ThisElement = ColorSection[i].Element;
+        const std::string Tooltip = ThisElement->ToolTip;
+        const std::string Name = ThisElement->Name;
+        const std::string Cvar = ThisElement->CvarName;
+        ImVec4 ModifiedColor = ThisElement->ModifiedColor;
+        ImVec4 DefaultColor = ThisElement->DefaultColor;
+        bool canRainbow = ThisElement->canRainbow;
+        bool hasAlpha = ThisElement->hasAlpha;
+        bool sameLine = ThisElement->sameLine;
+        bool Nextcol = ColorSection[i].Nextcol;
+        bool NextLine = ColorSection[i].NextLine;
+        if (Nextcol){
+            Table_NextCol();
+        }
+        if (NextLine){
+            Table_NextLine();
+        }
+        Draw_HelpIcon(Tooltip.c_str());
+        if (UIWidgets::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine)) {
+            changed = true;
+        }
+    }
+    return changed;
+}
+bool DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize, bool isAllCosmetics = false){
+    bool changed = false;
+    std::string TableName = Identifier+"_Table";
+    std::string Col1Name = Identifier+"_Col1";
+    std::string Col2Name = Identifier+"_Col2";
+    std::string Tooltip_RNG = "Affect "+Identifier+" colors";
+    std::string RNG_BtnText = "Randomize : "+Identifier;
+    std::string Reset_BtnText = "Reset : "+Identifier;
+    if (ImGui::BeginTable(TableName.c_str(), 2, FlagsTable)) {
+        ImGui::TableSetupColumn(Col1Name.c_str(), FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
         Table_InitHeader(false);
-        Draw_HelpIcon("Affects the primary color of the Fire itself of the Keese");
-        SohImGui::EnhancementColor("Fire Primary color", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255));
+    #ifdef __WIIU__
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
+            CVar_SetS32("gHudColors", 2);
+            CVar_SetS32("gUseNaviCol", 1);
+            CVar_SetS32("gUseKeeseCol", 1);
+            CVar_SetS32("gUseDogsCol", 1);
+            CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseMirrorShieldColors", 1);
+            CVar_SetS32("gUseGauntletsCol", 1);
+            CVar_SetS32("gUseArrowsCol", 1);
+            CVar_SetS32("gUseSpellsCol", 1);
+            CVar_SetS32("gUseChargedCol", 1);
+            CVar_SetS32("gUseTrailsCol", 1);
+            CVar_SetS32("gCCparated", 1);
+            GetRandomColorRGB(ColorSection, SectionSize);
+            changed = true;
+        }
+        UIWidgets::Tooltip(Tooltip_RNG.c_str());
         Table_NextCol();
-        Draw_HelpIcon("Affects the primary color of the Ice itself of the Keese");
-        SohImGui::EnhancementColor("Ice Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects the secondary color of the Fire itself of the Keese");
-        SohImGui::EnhancementColor("Fire Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects the secondary color of the Ice itself of the Keese");
-        SohImGui::EnhancementColor("Ice Secondary color", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255));
+    #ifdef __WIIU__
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f * 2.0f))){
+    #else
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+    #endif
+            GetDefaultColorRGB(ColorSection, SectionSize);
+            changed = true;
+        }
+        UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+        UIWidgets::Tooltip(Tooltip_RNG.c_str());
+        ImGui::EndTable();
+        return changed;
+    }
+}
+
+void Draw_Npcs(){
+    DrawRandomizeResetButton("all NPCs", NPCs_section, SECTION_SIZE(NPCs_section));
+    UIWidgets::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
+    UIWidgets::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
+    if (CVar_GetS32("gUseNaviCol",0)) { 
+        DrawRandomizeResetButton("Navi's", Navi_Section, SECTION_SIZE(Navi_Section)); 
+    };
+    if (CVar_GetS32("gUseNaviCol",0) && ImGui::BeginTable("tableNavi", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Inner colors##Navi", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Outer colors##Navi", FlagsCell, TablesCellsWidth/2);
+        Table_InitHeader();
+        DrawColorSection(Navi_Section, SECTION_SIZE(Navi_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
-    SohImGui::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
-    if (CVar_GetS32("gUseDogsCol",0) && ImGui::BeginTable("tableDogs", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Dog N.1 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Dog N.2 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+    UIWidgets::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
+    UIWidgets::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
+    if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Fire colors##Keese", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Ice colors##Keese", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects the colors of the white dog");
-        SohImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true);
-        Table_NextCol();
-        Draw_HelpIcon("Affects the colors of the brown dog");
-        SohImGui::EnhancementColor("Dog brown", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true);
+        DrawColorSection(Keese_Section, SECTION_SIZE(Keese_Section));
+        ImGui::EndTable();
+    }
+    UIWidgets::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
+    UIWidgets::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
+    if (CVar_GetS32("gUseDogsCol",0) && ImGui::BeginTable("tableDogs", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("White Dog color", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Brown Dog color", FlagsCell, TablesCellsWidth/2);
+        Table_InitHeader();
+        DrawColorSection(Dogs_Section, SECTION_SIZE(Dogs_Section));
         ImGui::EndTable();
     }
 }
 void Draw_ItemsSkills(){
-    SohImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
-    SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
-    if (CVar_GetS32("gUseTunicsCol",0) && ImGui::BeginTable("tableTunics", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Kokiri Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
-        ImGui::TableSetupColumn("Goron Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
-        ImGui::TableSetupColumn("Zora Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
+    if (DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section))) {
+        ApplyOrResetCustomGfxPatches();
+    };
+    UIWidgets::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
+    UIWidgets::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+    if (CVar_GetS32("gUseTunicsCol",0)) {
+        DrawRandomizeResetButton("Link's tunics", Tunics_Section, SECTION_SIZE(Tunics_Section));
+    };
+    if (CVar_GetS32("gUseTunicsCol",0) && ImGui::BeginTable("tableTunics", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Kokiri Tunic", FlagsCell, TablesCellsWidth/3);
+        ImGui::TableSetupColumn("Goron Tunic", FlagsCell, TablesCellsWidth/3);
+        ImGui::TableSetupColumn("Zora Tunic", FlagsCell, TablesCellsWidth/3);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Kokiri Tunic color", false);
-        SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
-        Table_NextCol();
-        Draw_HelpIcon("Affects Goron Tunic color", false);
-        SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
-        Table_NextCol();
-        Draw_HelpIcon("Affects Zora Tunic color", false);
-        SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
+        DrawColorSection(Tunics_Section, SECTION_SIZE(Tunics_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
-    if (CVar_GetS32("gUseArrowsCol",0) && ImGui::BeginTable("tableArrows", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Primary colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Env colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+
+    UIWidgets::EnhancementCheckbox("Custom gauntlets color", "gUseGauntletsCol");
+    UIWidgets::Tooltip(
+        "Enable/Disable custom Link's gauntlets colors\nIf disabled you will have original colors for Link's gauntlets.");
+    if (CVar_GetS32("gUseGauntletsCol", 0)) {
+        DrawRandomizeResetButton("Link's gauntlets", Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
+    };
+    if (CVar_GetS32("gUseGauntletsCol", 0) && ImGui::BeginTable("tableGauntlets", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Silver Gauntlets", FlagsCell, TablesCellsWidth / 2);
+        ImGui::TableSetupColumn("Gold Gauntlets", FlagsCell, TablesCellsWidth / 2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Fire Arrows (primary)", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Fire Arrows", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Ice Arrows (primary)", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Ice Arrows", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Light Arrows (primary)", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Light Arrows", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255));
+        DrawColorSection(Gauntlets_Section, SECTION_SIZE(Gauntlets_Section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
-    if (CVar_GetS32("gUseSpellsCol",0) && ImGui::BeginTable("tableSpells", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Inner colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Outer colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+
+    if (UIWidgets::EnhancementCheckbox("Custom mirror shield colors", "gUseMirrorShieldColors")) {
+        ApplyOrResetCustomGfxPatches();
+    }
+    UIWidgets::Tooltip(
+        "Enable/Disable custom Mirror shield colors\nIf disabled you will have original colors for the Mirror shield.");
+    if (CVar_GetS32("gUseMirrorShieldColors", 0)) {
+        if (DrawRandomizeResetButton("Mirror Shield", MirrorShield_Section, SECTION_SIZE(MirrorShield_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
+    };
+    if (CVar_GetS32("gUseMirrorShieldColors", 0) && ImGui::BeginTable("tableMirrorShield", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Border/Back", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Mirror", FlagsCell, TablesCellsWidth / 3);
+        ImGui::TableSetupColumn("Emblem", FlagsCell, TablesCellsWidth / 3);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Din's Fire (primary)", "gDF_Col", df_col, ImVec4(255,200,0,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Din's Fire", "gDF_Env", df_colenv, ImVec4(255,0,0,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond (primary)", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb (primary)", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255));
+        if (DrawColorSection(MirrorShield_Section, SECTION_SIZE(MirrorShield_Section))) {
+            ApplyOrResetCustomGfxPatches();
+        }
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
-    if (CVar_GetS32("gUseChargedCol",0) && ImGui::BeginTable("tableChargeAtk", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Primary colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Env colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+
+    UIWidgets::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
+    if (CVar_GetS32("gUseArrowsCol",0)) {
+        DrawRandomizeResetButton("elemental arrows", Arrows_section, SECTION_SIZE(Arrows_section));
+    }
+    if (CVar_GetS32("gUseArrowsCol",0) && ImGui::BeginTable("tableArrows", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Primary colors##Arrows", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Env colors##Arrows", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 1 color (primary)", "gCharged1Col", charged1_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 1 color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 2 color (primary)", "gCharged2Col", charged2_col, ImVec4(255,255,170,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
+        DrawColorSection(Arrows_section, SECTION_SIZE(Arrows_section));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
-    if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Custom Trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+    UIWidgets::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
+    if (CVar_GetS32("gUseSpellsCol",0)) {
+        DrawRandomizeResetButton("spells", Spells_section, SECTION_SIZE(Spells_section));
+    }
+    if (CVar_GetS32("gUseSpellsCol",0) && ImGui::BeginTable("tableSpells", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Inner colors##Spells", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Outer colors##Spells", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Swords slash, boomerang and Bombchu trails color");
-        SohImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
-        SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        SohImGui::Tooltip("The longer the trails the weirder it become");
+        DrawColorSection(Spells_section, SECTION_SIZE(Spells_section));
+        ImGui::EndTable();
+    }
+    UIWidgets::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
+    if (CVar_GetS32("gUseChargedCol",0)) {
+        DrawRandomizeResetButton("spins attack", SpinAtk_section, SECTION_SIZE(SpinAtk_section));
+    }
+    if (CVar_GetS32("gUseChargedCol",0) && ImGui::BeginTable("tableChargeAtk", 2, FlagsTable)) {
+        ImGui::TableSetupColumn("Primary colors##Charge", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Env colors##Charge", FlagsCell, TablesCellsWidth/2);
+        Table_InitHeader();
+        DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
+        ImGui::EndTable();
+    }
+    UIWidgets::EnhancementCheckbox("Custom trails", "gUseTrailsCol");
+    if (CVar_GetS32("gUseTrailsCol", 0)) {
+        DrawRandomizeResetButton("trails", AllTrail_section, SECTION_SIZE(AllTrail_section));
+    }
+    if (CVar_GetS32("gUseTrailsCol", 0) && ImGui::BeginTable("tabletrails", 3, FlagsTable)) {
+        ImGui::TableSetupColumn("Sword Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Boomerang Trails", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Bomb Trails", FlagsCell, TablesCellsWidth);
+        Table_InitHeader();
+        DrawColorSection(Trail_section, SECTION_SIZE(Trail_section));
+        ImGui::EndTable();
+        UIWidgets::EnhancementSliderInt("Sword Trail Duration: %d", "##TrailsMul", "gTrailDuration", 1, 16, "", 4, true);
+        UIWidgets::Tooltip("Determines the duration of Link's sword trails.");
+        ResetTrailLength("gTrailDuration", 4);
+        UIWidgets::EnhancementCheckbox("Swords use separate colors", "gSeperateSwords");
+        if (CVar_GetS32("gSeperateSwords", 0) && ImGui::CollapsingHeader("Individual Sword Colors")) {
+            if (ImGui::BeginTable("tabletrailswords", 5, FlagsTable)) {
+                ImGui::TableSetupColumn("Kokiri Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Master Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Biggoron Sword", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Deku Stick", FlagsCell, TablesCellsWidth / 2);
+                ImGui::TableSetupColumn("Megaton Hammer", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(SwordTrail_section, SECTION_SIZE(SwordTrail_section));
+                ImGui::EndTable();
+            }
+        }
         ImGui::NewLine();
-        ImGui::EndTable();
     }
 }
 void Draw_Menus(){
     if (CVar_GetS32("gHudColors",0) ==2 ){
-        if (ImGui::BeginTable("tableFileChoose", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("File Choose color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-            ImGui::TableSetupColumn("Bottom text color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+        if (ImGui::BeginTable("tableFileChoose", 2, FlagsTable)) {
+            ImGui::TableSetupColumn("File Choose color", FlagsCell, TablesCellsWidth/2);
+            ImGui::TableSetupColumn("Bottom text color", FlagsCell, TablesCellsWidth/2);
             Table_InitHeader();
-            Draw_HelpIcon("Affects the File Select menu background.");
-            SohImGui::EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, true);
-            Table_NextCol();
-            Draw_HelpIcon("Affects the File Select texts.");
-            SohImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, true);
+            DrawColorSection(FileChoose_section, SECTION_SIZE(FileChoose_section));
             ImGui::EndTable();
         }
-        /*
-        if (ImGui::BeginTable("tablePauseMenu", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Kaleido pages (Non working atm)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
-            Table_InitHeader();
-            Draw_HelpIcon("Affect the Equipments menu background.");
-            SohImGui::EnhancementColor("Equipments", "gCCEquipmentsPrim", menu_equips_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Select items menu background.");
-            SohImGui::EnhancementColor("Items", "gCCItemsPrim", menu_items_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Map menu background.");
-            SohImGui::EnhancementColor("Maps", "gCCMapsPrim", menu_map_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Quests statut menu background.");
-            SohImGui::EnhancementColor("Quests", "gCCQuestsPrim", menu_quest_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Save menu background.");
-            SohImGui::EnhancementColor("Save", "gCCSavePrim", menu_save_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Gameover screen background.");
-            SohImGui::EnhancementColor("Gameover", "gCCGameoverPrim", menu_gameover_colors, ImVec4(0, 100, 255, 255), true, true);
-            ImGui::EndTable();
-        }
-        */
     } else {
         ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
     }
 }
 void Draw_Placements(){
-    if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("General margins settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+    if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
+        ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
         SetMarginAll("All margins on",true);
-        SohImGui::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        UIWidgets::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
         ImGui::SameLine();
         SetMarginAll("All margins off",false);
-        SohImGui::Tooltip("Set all of the element to not use margin");
+        UIWidgets::Tooltip("Set all of the element to not use margin");
         ImGui::SameLine();
         ResetPositionAll();
-        SohImGui::Tooltip("Revert every element to use their original position and no margins");
+        UIWidgets::Tooltip("Revert every element to use their original position and no margins");
         ImGui::NewLine();
         ImGui::EndTable();
     }
     if (ImGui::CollapsingHeader("Hearts count position")) {
-        if (ImGui::BeginTable("tableHeartsCounts", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Hearts counts settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tableHeartsCounts", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Hearts counts settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Hearts count use margins", "gHeartsUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gHeartsCountPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gHeartsCountPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gHeartsCountPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gHeartsCountPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gHeartsCountPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##HeartCountPosY", "gHeartsPosY", -22, ImGui::GetWindowViewport()->Size.y, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Hearts counts", "gHearts");
+            DrawPositionsRadioBoxes("gHeartsCount");
+            DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
+            DrawScaleSlider("gHeartsCount",0.7f);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10, true);
+            UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Magic Meter position")) {
-        if (ImGui::BeginTable("tablemmpos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Magic meter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablemmpos", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Magic meter settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Magic meter use margins", "gMagicBarUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gMagicBarPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gMagicBarPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gMagicBarPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gMagicBarPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gMagicBarPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Magic meter", "gMagicBar");
+            DrawPositionsRadioBoxes("gMagicBar");
+            UIWidgets::EnhancementRadioButton("Anchor to life bar", "gMagicBarPosType", 5);
+            UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
+            DrawPositionSlider("gMagicBar", 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
+            DrawScaleSlider("gMagicBar",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (CVar_GetS32("gVisualAgony",0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
-        if (ImGui::BeginTable("tabledvisualstoneofagony", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Visual stone of agony settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tabledvisualstoneofagony", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Visual stone of agony settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Visual stone of agony use margins", "gVSOAUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gVSOAPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gVSOAPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gVSOAPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gVSOAPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gVSOAPosType", 4); //in case you want only SFX
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            s16 Min_X_Dpad = 0;
-            s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
+            DrawUseMarginsSlider("Visual stone of agony", "gVSOA");
+            DrawPositionsRadioBoxes("gVSOA");
+            s16 Min_X_VSOA = 0;
+            s16 Max_X_VSOA = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gVSOAPosType",0) == 2){
-                Max_X_Dpad = 290;
+                Max_X_VSOA = 290;
             } else if(CVar_GetS32("gVSOAPosType",0) == 4){
-                Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+                Min_X_VSOA = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gVSOA", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
+            DrawScaleSlider("gVSOA",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("B Button position")) {
-        if (ImGui::BeginTable("tablebbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("B Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablebbtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("B Button settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("B Button use margins", "gBBtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gBBtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gBBtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gBBtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gBBtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gBBtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##BBtnPosY", "gBBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##BBtnPosX", "gBBtnPosX", -1, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("B Button", "gBBtn");
+            DrawPositionsRadioBoxes("gBBtn");
+            DrawPositionSlider("gBBtn", 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50);
+            DrawScaleSlider("gBBtn",0.95f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("A Button position")) {
-        if (ImGui::BeginTable("tableabtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("A Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tableabtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("A Button settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("A Button use margins", "gABtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gABtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gABtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gABtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gABtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gABtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ABtnPosY", "gABtnPosY", -10, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ABtnPosX", "gABtnPosX", -20, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("A Button", "gABtn");
+            DrawPositionsRadioBoxes("gABtn");
+            DrawPositionSlider("gABtn", -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50);
+            DrawScaleSlider("gABtn",0.95f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Start Button position")) {
-        if (ImGui::BeginTable("tablestartbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Start Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablestartbtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Start Button settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Start Button use margins", "gStartBtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gStartBtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gStartBtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gStartBtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gStartBtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gStartBtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##StartBtnPosY", "gStartBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##StartBtnPosX", "gStartBtnPosX", 0, ImGui::GetWindowViewport()->Size.x/2+70, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Start Button", "gStartBtn");
+            DrawPositionsRadioBoxes("gStartBtn");
+            DrawPositionSlider("gStartBtn", 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70);
+            DrawScaleSlider("gStartBtn",0.75f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("C Button Up position")) {
-        if (ImGui::BeginTable("tablecubtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Up settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablecubtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("C Button Up settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Up use margins", "gCBtnUUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnUPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnUPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnUPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnUPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnUPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnUPosY", "gCBtnUPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            DrawUseMarginsSlider("C Button Up", "gCBtnU");
+            DrawPositionsRadioBoxes("gCBtnU");
             s16 Min_X_CU = 0;
             s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnUPosType",0) == 2){
@@ -615,30 +711,18 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnUPosType",0) == 4){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", Min_X_CU, Max_X_CU, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gCBtnU", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
+            DrawScaleSlider("gCBtnU",0.5f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("C Button Down position")) {
-        if (ImGui::BeginTable("tablecdbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Down settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablecdbtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("C Button Down settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Down use margins", "gCBtnDUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnDPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnDPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnDPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnDPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnDPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnDPosY", "gCBtnDPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            DrawUseMarginsSlider("C Button Down", "gCBtnD");
+            DrawPositionsRadioBoxes("gCBtnD");
             s16 Min_X_CD = 0;
             s16 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnDPosType",0) == 2){
@@ -648,63 +732,39 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
                 Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnDPosX", "gCBtnDPosX", Min_X_CD, Max_X_CD, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gCBtnD", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CD, Max_X_CD);
+            DrawScaleSlider("gCBtnD",0.87f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("C Button Left position")) {
-        if (ImGui::BeginTable("tableclbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Left settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tableclbtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("C Button Left settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Left use margins", "gCBtnLUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnLPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnLPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnLPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnLPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnLPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnLPosY", "gCBtnLPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            DrawUseMarginsSlider("C Button Left", "gCBtnL");
+            DrawPositionsRadioBoxes("gCBtnL");
             s16 Min_X_CL = 0;
             s16 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gCBtnDPosType",0) == 2){
+            if(CVar_GetS32("gCBtnLPosType",0) == 2){
                 Max_X_CL = 294;
-            } else if(CVar_GetS32("gCBtnDPosType",0) == 3){
+            } else if(CVar_GetS32("gCBtnLPosType",0) == 3){
                 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
+            } else if(CVar_GetS32("gCBtnLPosType",0) == 4){
                 Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnLPosX", "gCBtnLPosX", Min_X_CL, Max_X_CL, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gCBtnL", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CL, Max_X_CL);
+            DrawScaleSlider("gCBtnL",0.87f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("C Button Right position")) {
-        if (ImGui::BeginTable("tablecrnbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Right settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablecrnbtn", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("C Button Right settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Right use margins", "gCBtnRUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnRPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnRPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnRPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnRPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnRPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            DrawUseMarginsSlider("C Button Right", "gCBtnR");
+            DrawPositionsRadioBoxes("gCBtnR");
             s16 Min_X_CR = 0;
             s16 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnRPosType",0) == 2){
@@ -714,30 +774,18 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnRPosType",0) == 4){
                 Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", Min_X_CR, Max_X_CR, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gCBtnR", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CR, Max_X_CR);
+            DrawScaleSlider("gCBtnR",0.87f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (CVar_GetS32("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
-        if (ImGui::BeginTable("tabledpaditems", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("DPad items settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gDPadPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gDPadPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gDPadPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gDPadPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            DrawUseMarginsSlider("DPad items", "gDPad");
+            DrawPositionsRadioBoxes("gDPad");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gDPadPosType",0) == 2){
@@ -745,268 +793,158 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gDPadPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawPositionSlider("gDPad", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);
+            DrawScaleSlider("gDPad",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Minimaps position")) {
-        if (ImGui::BeginTable("tableminimapspos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("minimaps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tableminimapspos", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("minimaps settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Minimap Button use margins", "gMinimapUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gMinimapPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gMinimapPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gMinimapPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            //SohImGui::EnhancementRadioButton("No anchors", "gMinimapPosType", 3); //currently bugged
-            //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gMinimapPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MinimapPosY", "gMinimapPosY", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MinimapPosX", "gMinimapPosX", ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Minimap", "gMinimap");
+            DrawPositionsRadioBoxes("gMinimap", false);
+            DrawPositionSlider("gMinimap", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2);
+            DrawScaleSlider("gMinimap",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Small Keys counter position")) {
-        if (ImGui::BeginTable("tablesmolekeys", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Small Keys counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablesmolekeys", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Small Keys counter settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Small Keys counter use margins", "gSKCUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gSKCPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gSKCPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gSKCPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gSKCPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gSKCPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##SKCPosY", "gSKCPosY", 0, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##SKCPosX", "gSKCPosX", -1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Small Keys counter", "gSKC");
+            DrawPositionsRadioBoxes("gSKC");
+            DrawPositionSlider("gSKC", 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2);
+            DrawScaleSlider("gSKC",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Rupee counter position")) {
-        if (ImGui::BeginTable("tablerupeecount", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Rupee counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablerupeecount", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Rupee counter settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Rupee counter use margins", "gRCUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gRCPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gRCPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gRCPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gRCPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gRCPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##RCPosY", "gRCPosY", -2, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##RCPosX", "gRCPosX", -3, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Rupee counter", "gRC");
+            DrawPositionsRadioBoxes("gRC");
+            DrawPositionSlider("gRC", -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2);
+            DrawScaleSlider("gRC",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Carrots position")) {
-        if (ImGui::BeginTable("tableCarrots", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Carrots settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tableCarrots", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Carrots settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Carrots use margins", "gCarrotsUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCarrotsPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCarrotsPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCarrotsPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCarrotsPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCarrotsPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CarrotsPosY", "gCarrotsPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CarrotsPosX", "gCarrotsPosX", -50, ImGui::GetWindowViewport()->Size.x/2+25, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Carrots", "gCarrots");
+            DrawPositionsRadioBoxes("gCarrots");
+            DrawPositionSlider("gCarrots", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25);
+            DrawScaleSlider("gCarrots",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Timers position")) {
-        if (ImGui::BeginTable("tabletimers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Timers settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tabletimers", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Timers settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Timers use margins", "gTimersUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTimersPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTimersPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTimersPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTimersPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTimersPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TimersPosY", "gTimersPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TimersPosX", "gTimersPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Timers", "gTimers");
+            DrawPositionsRadioBoxes("gTimers");
+            DrawPositionSlider("gTimers", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50);
+            DrawScaleSlider("gTimers",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Archery Scores position")) {
-        if (ImGui::BeginTable("tablearchery", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Archery Scores settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tablearchery", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Archery Scores settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Archery Scores use margins", "gASUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gASPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gASPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gASPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            //SohImGui::EnhancementRadioButton("No anchors", "gASPosType", 3); //currently bugged
-            //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gASPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ASPosX", "gASPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Archery scores", "gAS");
+            DrawPositionsRadioBoxes("gAS", false);
+            DrawPositionSlider("gAS", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50);
+            DrawScaleSlider("gAS",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Title cards (Maps) position")) {
-        if (ImGui::BeginTable("tabletcmaps", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Titlecard maps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tabletcmaps", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Titlecard maps settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Title cards (Maps) use margins", "gTCMUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTCMPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTCMPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTCMPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTCMPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTCMPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCMPosY", "gTCMPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCMPosX", "gTCMPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, ""), true;
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Title cards (overworld)", "gTCM");
+            DrawPositionsRadioBoxes("gTCM");
+            DrawPositionSlider("gTCM", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10);
+            DrawScaleSlider("gTCM",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
     if (ImGui::CollapsingHeader("Title cards (Bosses) position")) {
-        if (ImGui::BeginTable("tabletcbosses", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Title cards (Bosses) settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        if (ImGui::BeginTable("tabletcbosses", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Title cards (Bosses) settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Title cards (Bosses) use margins", "gTCBUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTCBPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTCBPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTCBPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTCBPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTCBPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCBPosY", "gTCBPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCBPosX", "gTCBPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            DrawUseMarginsSlider("Title cards (Bosses)", "gTCB");
+            DrawPositionsRadioBoxes("gTCB");
+            DrawPositionSlider("gTCB", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10);
+            DrawScaleSlider("gTCB",1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
 }
 void Draw_HUDButtons(){
-    if (CVar_GetS32("gHudColors",0) ==2 ){
+    if (CVar_GetS32("gHudColors",0) == 2){
+        DrawRandomizeResetButton("every buttons", Buttons_section, SECTION_SIZE(Buttons_section));
         if (ImGui::CollapsingHeader("A Button colors & A Cursors")) {
-            if (ImGui::BeginTable("tableBTN_A", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("A Button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableBTN_A", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("A Button colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the A button colors (and various cursors that use the same theme)", false);
-                SohImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
+                DrawColorSection(A_Btn_section, SECTION_SIZE(A_Btn_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("B Button color")) {
-            if (ImGui::BeginTable("tableBTN_B", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("B button color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableBTN_B", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("B button color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the B button color", false);
-                SohImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
+                DrawColorSection(B_Btn_section, SECTION_SIZE(B_Btn_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("C-Buttons & C Cursor")) {
-            if (ImGui::BeginTable("tableBTN_C", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Button C colors & C Cursor colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableBTN_C", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("Button C colors & C Cursor colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the C Buttons' color (if not using separate colors)\nAnd various cursor that use C-Buttons colors", false);
-                SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
+                DrawColorSection(C_Btn_Unified_section, SECTION_SIZE(C_Btn_Unified_section));
                 ImGui::EndTable();
             }
-            SohImGui::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
+            UIWidgets::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
             if (CVar_GetS32("gCCparated",0) && ImGui::CollapsingHeader("C Button individual colors")) {
-                if (ImGui::BeginTable("tableBTN_CSep", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("C-Buttons individual colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+                if (ImGui::BeginTable("tableBTN_CSep", 1, FlagsTable)) {
+                    ImGui::TableSetupColumn("C-Buttons individual colors", FlagsCell, TablesCellsWidth);
                     Table_InitHeader(false);
-                    Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
+                    DrawColorSection(C_Btn_Separated_section, SECTION_SIZE(C_Btn_Separated_section));
                     ImGui::EndTable();
                 }
             }
         }
         if (ImGui::CollapsingHeader("Start button colors")) {
-            if (ImGui::BeginTable("tableBTN_Start", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Start button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableBTN_Start", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("Start button colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the Start button color", false);
-                SohImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
+                DrawColorSection(Start_Btn_section, SECTION_SIZE(Start_Btn_section));
                 ImGui::EndTable();
             }
         }
         if (CVar_GetS32("gDpadEquips",0) && ImGui::CollapsingHeader("DPad colors")) {
-            if (ImGui::BeginTable("tableDpadHud", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("DPad color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableDpadHud", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("DPad color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("DPad background color, White is the default value");
-                SohImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
+                DrawColorSection(DPad_section, SECTION_SIZE(DPad_section));
                 ImGui::EndTable();
             }
         }
@@ -1015,102 +953,102 @@ void Draw_HUDButtons(){
     }
 }
 void Draw_General(){
-    if (ImGui::BeginTable("tableScheme", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-        ImGui::TableSetupColumn("N64 Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
-        ImGui::TableSetupColumn("GameCube Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
-        ImGui::TableSetupColumn("Custom Schemes", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+    if (DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section), true)) {
+        ApplyOrResetCustomGfxPatches();
+    }
+    if (ImGui::BeginTable("tableScheme", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
+        ImGui::TableSetupColumn("N64 Scheme", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("GameCube Scheme", FlagsCell, TablesCellsWidth);
+        ImGui::TableSetupColumn("Custom Schemes", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
         Draw_HelpIcon("Change interface color to N64 style");
-        SohImGui::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
+        UIWidgets::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
         Table_NextCol();
         Draw_HelpIcon("Change interface color to GameCube style");
-        SohImGui::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
+        UIWidgets::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
         Table_NextCol();
         Draw_HelpIcon("Lets you change every interface color to your liking");
-        SohImGui::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
+        UIWidgets::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
         ImGui::EndTable();
     }
     if (CVar_GetS32("gHudColors",0) ==2 ){
+        DrawRandomizeResetButton("interface (excluding buttons)", Misc_Interface_section, SECTION_SIZE(Misc_Interface_section));
         if (ImGui::CollapsingHeader("Hearts colors")) {
-            SohImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
-            if (ImGui::BeginTable("tableHearts", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
+            UIWidgets::Tooltip("Hearts colors in general\nDD stand for Double Defense");
+            if (ImGui::BeginTable("tableHearts", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("Hearts (normal)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts Outline (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner normal", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, true);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner DD", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, true);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the outline color of hearts when you have Double Defense\nWhite is the default value", false);
-                SohImGui::EnhancementColor("Outline DD", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, true);
+                DrawColorSection(Hearts_section, SECTION_SIZE(Hearts_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("Magic Meter colors")) {
-            if (ImGui::BeginTable("tableMagicmeter", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-                ImGui::TableSetupColumn("Magic meter", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-                ImGui::TableSetupColumn("Magic meter in use", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+            if (ImGui::BeginTable("tableMagicmeter", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("Magic meter", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("Magic meter in use", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the border of the magic meter\nWhite is the default value, color change only when used one time");
-                SohImGui::EnhancementColor("Borders", "gCCMagicBorderNormPrim", magic_bordern_colors, ImVec4(255,255,255,255), false);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the border of the magic meter when being used\nWhite is the default value");
-                SohImGui::EnhancementColor("Borders in use", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255), false);
-                Table_NextLine();
-                Draw_HelpIcon("Affects the magic meter color\nGreen is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255));
-                Table_NextCol();
-                Draw_HelpIcon("Affects the magic meter when being used\nYellow is the default value");
-                SohImGui::EnhancementColor("Main color in use", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255));
+                DrawColorSection(Magic_Meter_section, SECTION_SIZE(Magic_Meter_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("Minimap and compass colors")) {
-            if (ImGui::BeginTable("tableMinimapCol", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Minimap color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableMinimapCol", 1, FlagsTable)) {
+                ImGui::TableSetupColumn("Minimap color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the Overworld minimaps");
-                SohImGui::EnhancementColor("Overworlds", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the Dungeon minimaps");
-                SohImGui::EnhancementColor("Dungeons", "gCCMinimapDGNPrim", dgn_minimap_colors, ImVec4(100, 255, 255, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the current position arrow on the minimap\nYellow is the default value");
-                SohImGui::EnhancementColor("Current position arrow", "gCCMinimapCPPrim", cp_minimap_colors, ImVec4(200, 255, 0, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the last entrance position arrow on the minimap\nRed is the default value");
-                SohImGui::EnhancementColor("Last entrance arrow", "gCCMinimapLEPrim", le_minimap_colors, ImVec4(200, 0, 0, 255));
+                DrawColorSection(Minimap_section, SECTION_SIZE(Minimap_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("Title cards colors")) {
-            if (ImGui::BeginTable("tableTitleCards", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-                ImGui::TableSetupColumn("Title cards Overworld", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-                ImGui::TableSetupColumn("Title cards Bosses", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+            if (ImGui::BeginTable("tableTitleCards", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("Title cards Overworld", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("Title cards Bosses", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects all the overworld title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
-                Table_NextCol();
-                Draw_HelpIcon("Affects all the bosses title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
+                DrawColorSection(TitleCards_section, SECTION_SIZE(TitleCards_section));
                 ImGui::EndTable();
             }
         }
         if (ImGui::CollapsingHeader("Misc. interface colors")) {
-            if (ImGui::BeginTable("tableMiscHudCol", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-                ImGui::TableSetupColumn("Misc HUD colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            if (ImGui::BeginTable("tableMiscHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("Misc HUD colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the Rupee icon on interface\nGreen is the default value");
-                SohImGui::EnhancementColor("Rupee icon", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255));
+                DrawColorSection(Misc_section, SECTION_SIZE(Misc_section));
+                ImGui::EndTable();
+            }
+        }
+        if (ImGui::CollapsingHeader("Scenes transitions")) {
+            if (ImGui::BeginTable("tabletransitionotherCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("transitionother1", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("transitionother2", FlagsCell, TablesCellsWidth/2);
+                Table_InitHeader(false);
+                UIWidgets::EnhancementRadioButton("Originals", "gSceneTransitions", 255);
+                UIWidgets::Tooltip("This will make the game use original scenes transitions");
+                Table_NextCol();
+                UIWidgets::EnhancementRadioButton("None", "gSceneTransitions", 11);
+                UIWidgets::Tooltip("This will make the game use no any scenes transitions");
                 Table_NextLine();
-                Draw_HelpIcon("Affects the Small keys icon on interface\nGray is the default value");
-                SohImGui::EnhancementColor("Small Keys icon", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
+                UIWidgets::EnhancementRadioButton("Desert mode (persistant)", "gSceneTransitions", 14);
+                UIWidgets::Tooltip("This will make the game use the sand storm scenes transitions that will persist in map");
+                Table_NextCol();
+                UIWidgets::EnhancementRadioButton("Desert mode (non persistant)", "gSceneTransitions", 15);
+                UIWidgets::Tooltip("This will make the game use the sand storm scenes transitions");
                 Table_NextLine();
-                Draw_HelpIcon("Affects the Stone of Agony icon on interface\nWhite is the default value");
-                SohImGui::EnhancementColor("Stone of agony icon", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255));
+                UIWidgets::EnhancementRadioButton("Normal fade (green)", "gSceneTransitions", 18);
+                UIWidgets::Tooltip("This will make the game use a greenish fade in/out scenes transitions");
+                Table_NextCol();
+                UIWidgets::EnhancementRadioButton("Normal fade (blue)", "gSceneTransitions", 19);
+                UIWidgets::Tooltip("This will make the game use a blue fade in/out scenes transitions");
+                Table_NextLine();
+                UIWidgets::EnhancementRadioButton("Triforce", "gSceneTransitions", 1);
+                ImGui::EndTable();
+            }
+            if (ImGui::BeginTable("tabletransitionCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("White color", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("Black color", FlagsCell, TablesCellsWidth/2);
+                Table_InitHeader();
+                DrawTransitions("gSceneTransitions");
                 ImGui::EndTable();
             }
         }
@@ -1123,8 +1061,9 @@ void DrawCosmeticsEditor(bool& open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+
+    ImGui::SetNextWindowSize(ImVec2(620, 430), ImGuiCond_FirstUseEver);
+    if (!ImGui::Begin("Cosmetics Editor", &open)) {
         ImGui::End();
         return;
     }
@@ -1150,7 +1089,7 @@ void DrawCosmeticsEditor(bool& open) {
             Draw_Menus();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Placements")) {
+        if (ImGui::BeginTabItem("Placements & Scale")) {
             Draw_Placements();
             ImGui::EndTabItem();
         }
@@ -1158,11 +1097,13 @@ void DrawCosmeticsEditor(bool& open) {
     }
     ImGui::End();
 }
+
 void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
     //LoadRainbowColor() will this way run in background once it's window is activated
     //ImGui::SetNextItemWidth(0.0f);
-    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", LoadRainbowColor, true, true);
+    SohImGui::AddWindow("Enhancements", "Rainbowfunction", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", DrawCosmeticsEditor);
+    SohImGui::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
+    ApplyOrResetCustomGfxPatches();
 }

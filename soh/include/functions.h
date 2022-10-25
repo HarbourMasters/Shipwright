@@ -10,19 +10,21 @@ extern "C"
 #endif
 
 #include "../../libultraship/libultraship/luslog.h"
+#include <soh/Enhancements/item-tables/ItemTableTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
+#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
 
 f32 fabsf(f32 f);
-#pragma intrinsic(fabsf)
+//#pragma intrinsic(fabsf)
 f32 sqrtf(f32 f);
-#pragma intrinsic(sqrtf)
+//#pragma intrinsic(sqrtf)
 f64 sqrt(f64 d);
-#pragma intrinsic(sqrt)
+//#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
@@ -60,7 +62,11 @@ void Locale_ResetRegion(void);
 u32 func_80001F48(void);
 u32 func_80001F8C(void);
 u32 Locale_IsRegionNative(void);
-#if !defined(__APPLE__) && !defined(__SWITCH__)
+#ifdef __WIIU__
+void _assert(const char* exp, const char* file, s32 line);
+#elif defined(__linux__)
+void __assert(const char* exp, const char* file, s32 line) __THROW;
+#elif !defined(__APPLE__) && !defined(__SWITCH__)
 void __assert(const char* exp, const char* file, s32 line);
 #endif
 #if defined(__APPLE__) && defined(NDEBUG)
@@ -76,7 +82,7 @@ OSPiHandle* osDriveRomInit(void);
 void StackCheck_Init(StackEntry* entry, void* stackTop, void* stackBottom, u32 initValue, s32 minSpace,
                      const char* name);
 void StackCheck_Cleanup(StackEntry* entry);
-StackStatus StackCheck_GetState(StackEntry* entry);
+s32 StackCheck_GetState(StackEntry* entry);
 u32 StackCheck_CheckAll(void);
 u32 StackCheck_Check(StackEntry* entry);
 f32 LogUtils_CheckFloatRange(const char* exp, s32 line, const char* valueName, f32 value, const char* minName, f32 min,
@@ -182,6 +188,7 @@ void __osSetWatchLo(u32);
 EnItem00* Item_DropCollectible(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(GlobalContext* globalCtx, Vec3f* spawnPos, s16 params);
 void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3f* spawnPos, s16 params);
+void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
 void EffectBlure_AddSpace(EffectBlure* this);
 void EffectBlure_Init1(void* thisx, void* initParamsx);
@@ -451,7 +458,10 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
-s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId);
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
+s32 GiveItemEntryWithoutActor(GlobalContext* globalCtx, GetItemEntry getItemEntry);
+s32 GiveItemEntryFromActor(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
+void GiveItemEntryFromActorWithFixedRange(Actor* actor, GlobalContext* globalCtx, GetItemEntry getItemEntry);
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId);
 void func_8002F580(Actor* actor, GlobalContext* globalCtx);
@@ -475,7 +485,7 @@ void func_8002F948(Actor* actor, u16 sfxId);
 void func_8002F974(Actor* actor, u16 sfxId);
 void func_8002F994(Actor* actor, s32 arg1);
 s32 func_8002F9EC(GlobalContext* globalCtx, Actor* actor, CollisionPoly* poly, s32 bgId, Vec3f* pos);
-void func_800304B0(GlobalContext* globalCtx);
+void Actor_DisableLens(GlobalContext* globalCtx);
 void func_800304DC(GlobalContext* globalCtx, ActorContext* actorCtx, ActorEntry* actorEntry);
 void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx);
 s32 func_800314D4(GlobalContext* globalCtx, Actor* actorB, Vec3f* arg2, f32 arg3);
@@ -552,6 +562,8 @@ s32 Flags_GetEventChkInf(s32 flag);
 void Flags_SetEventChkInf(s32 flag);
 s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
+s32 Flags_GetRandomizerInf(RandomizerInf flag);
+void Flags_SetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(GlobalContext* globalCtx, s16 arg1);
 s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(GlobalContext* globalCtx, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
@@ -853,6 +865,7 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx);
 void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx);
 void Cutscene_SetSegment(GlobalContext* globalCtx, void* segment);
 void GetItem_Draw(GlobalContext* globalCtx, s16 drawId);
+void GetItemEntry_Draw(GlobalContext* globalCtx, GetItemEntry getItemEntry);
 void SoundSource_InitAll(GlobalContext* globalCtx);
 void SoundSource_UpdateAll(GlobalContext* globalCtx);
 void SoundSource_PlaySfxAtFixedWorldPos(GlobalContext* globalCtx, Vec3f* pos, s32 duration, u16 sfxId);
@@ -963,6 +976,8 @@ void Color_RGBA8_Copy(Color_RGBA8* dst, Color_RGBA8* src);
 void func_80078884(u16 sfxId);
 void func_800788CC(u16 sfxId);
 void func_80078914(Vec3f* arg0, u16 sfxId);
+s16 getHealthMeterXOffset();
+s16 getHealthMeterYOffset();
 void HealthMeter_Init(GlobalContext* globalCtx);
 void HealthMeter_Update(GlobalContext* globalCtx);
 void HealthMeter_Draw(GlobalContext* globalCtx);
@@ -1048,17 +1063,23 @@ void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button);
 void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button);
 void func_80084BF4(GlobalContext* globalCtx, u16 flag);
 u8 Item_Give(GlobalContext* globalCtx, u8 item);
+u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
+void PerformAutosave(GlobalContext* globalCtx, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(GlobalContext* globalCtx, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);
+bool Inventory_HasEmptyBottleSlot(void);
 s32 Inventory_HasSpecificBottle(u8 bottleItem);
 void Inventory_UpdateBottleItem(GlobalContext* globalCtx, u8 item, u8 cButton);
 s32 Inventory_ConsumeFairy(GlobalContext* globalCtx);
+bool Inventory_HatchPocketCucco(GlobalContext* globalCtx);
 void Interface_SetDoAction(GlobalContext* globalCtx, u16 action);
 void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState);
 void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action);
 s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange);
+void Health_GiveHearts(s16 hearts);
+void Health_RemoveHearts(s16 hearts);
 void Rupees_ChangeBy(s16 rupeeChange);
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(GlobalContext* globalCtx);
@@ -1074,6 +1095,7 @@ f32 Path_OrientAndGetDistSq(Actor* actor, Path* path, s16 waypoint, s16* yaw);
 void Path_CopyLastPoint(Path* path, Vec3f* dest);
 void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx);
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
+u8 PlayerGrounded(Player* player);
 void Player_SetBootData(GlobalContext* globalCtx, Player* player);
 s32 Player_InBlockingCsMode(GlobalContext* globalCtx, Player* player);
 s32 Player_InCsMode(GlobalContext* globalCtx);
@@ -1086,6 +1108,7 @@ void Player_SetModelGroup(Player* player, s32 modelGroup);
 void func_8008EC70(Player* player);
 void Player_SetEquipmentData(GlobalContext* globalCtx, Player* player);
 void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* player, s32 item, s32 actionParam);
+void func_80837C0C(GlobalContext* globalCtx, Player* this, s32 arg2, f32 arg3, f32 arg4, s16 arg5, s32 arg6);
 void func_8008EDF0(Player* player);
 void func_8008EE08(Player* player);
 void func_8008EEAC(GlobalContext* globalCtx, Actor* actor);
@@ -1355,13 +1378,13 @@ void func_800AA4A8(View* view, f32 fovy, f32 near, f32 far);
 void func_800AA4E0(View* view, f32* fovy, f32* near, f32* far);
 void View_SetViewport(View* view, Viewport* viewport);
 void View_GetViewport(View* view, Viewport* viewport);
-void func_800AA76C(View* view, f32 arg1, f32 arg2, f32 arg3);
-void func_800AA78C(View* view, f32 arg1, f32 arg2, f32 arg3);
-s32 func_800AA7AC(View* view, f32 arg1);
-void func_800AA7B8(View* view);
-void func_800AA814(View* view);
-void func_800AA840(View* view, Vec3f vec1, Vec3f vec2, f32 arg3);
-s32 func_800AA890(View* view, Mtx* mtx);
+void View_SetDistortionOrientation(View* view, f32 rotX, f32 rotY, f32 rotZ);
+void View_SetDistortionScale(View* view, f32 scaleX, f32 scaleY, f32 scaleZ);
+s32 View_SetDistortionSpeed(View* view, f32 speed);
+void View_InitDistortion(View* view);
+void View_ClearDistortion(View* view);
+void View_SetDistortion(View* view, Vec3f orientation, Vec3f scale, f32 speed);
+s32 View_StepDistortion(View* view, Mtx* projectionMtx);
 void func_800AAA50(View* view, s32 arg1);
 s32 func_800AAA9C(View* view);
 s32 func_800AB0A8(View* view);
@@ -1504,6 +1527,9 @@ Gfx* Gameplay_SetFog(GlobalContext* globalCtx, Gfx* gfx);
 void Gameplay_Destroy(GameState* thisx);
 void Gameplay_Init(GameState* thisx);
 void Gameplay_Main(GameState* thisx);
+u8 CheckStoneCount();
+u8 CheckMedallionCount();
+u8 CheckDungeonCount();
 s32 Gameplay_InCsMode(GlobalContext* globalCtx);
 f32 func_800BFCB8(GlobalContext* globalCtx, MtxF* mf, Vec3f* vec);
 void* Gameplay_LoadFile(GlobalContext* globalCtx, RomFile* file);
@@ -1649,7 +1675,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padmgr);
 void PadMgr_HandlePreNMI(PadMgr* padmgr);
 // This function must remain commented out, because it is called incorrectly in
 // fault.c (actual bug in game), and the compiler notices and won't compile it
-// void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
+void PadMgr_RequestPadData(PadMgr* padmgr, Input* inputs, s32 mode);
 void PadMgr_Init(PadMgr* padmgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id, OSPri priority, void* stack);
 void Sched_SwapFrameBuffer(CfbInfo* cfbInfo);
 void func_800C84E4(SchedContext* sc, CfbInfo* cfbInfo);
@@ -2397,8 +2423,6 @@ void Opening_Init(GameState* thisx);
 void Opening_Destroy(GameState* thisx);
 void FileChoose_Init(GameState* thisx);
 void FileChoose_Destroy(GameState* thisx);
-
-char* SetQuote();
 
 void Heaps_Alloc(void);
 void Heaps_Free(void);

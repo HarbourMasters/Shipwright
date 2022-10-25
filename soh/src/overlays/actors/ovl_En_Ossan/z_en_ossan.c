@@ -427,6 +427,16 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
             this->shelfSlots[i] = NULL;
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, i);
+                if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                    itemParams = shopItemIdentity.enGirlAShopItem;
+
+                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                        itemParams = SI_SOLD_OUT;
+                    }
+                }
+            }
 
             if (itemParams < 0) {
                 this->shelfSlots[i] = NULL;
@@ -437,6 +447,9 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, GlobalContext* globalCtx, ShopIt
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams);
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                    this->shelfSlots[i]->randoSlotIndex = i;
+                }
             }
         }
     }
@@ -518,7 +531,7 @@ void EnOssan_TalkGoronShopkeeper(GlobalContext* globalCtx) {
             Message_ContinueTextbox(globalCtx, 0x300F);
         }
     } else if ((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-               (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[4])) {
+               (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
         Message_ContinueTextbox(globalCtx, 0x3057);
     } else {
         Message_ContinueTextbox(globalCtx, 0x305B);
@@ -601,8 +614,9 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    // Completed Dodongo's Cavern
-    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !(gSaveContext.eventChkInf[2] & 0x20)) {
+    // Don't kill bombchu shop actor in rando, making it so the shop is immediately open
+    // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
+    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !(gSaveContext.eventChkInf[2] & 0x20) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -950,7 +964,7 @@ s32 EnOssan_FacingShopkeeperDialogResult(EnOssan* this, GlobalContext* globalCtx
 void EnOssan_State_FacingShopkeeper(EnOssan* this, GlobalContext* globalCtx, Player* player) {
     Input* input = &globalCtx->state.input[0];
     u8 nextIndex;
-    bool dpad = CVar_GetS32("gDpadShop", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) &&
         !EnOssan_TestEndInteraction(this, globalCtx, &globalCtx->state.input[0])) {
@@ -1029,7 +1043,7 @@ void EnOssan_CursorUpDown(EnOssan* this, GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
     u8 curTemp = this->cursorIndex;
     u8 curScanTemp;
-    bool dpad = CVar_GetS32("gDpadShop", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     if ((this->stickAccumY < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         curTemp &= 0xFE;
@@ -1182,7 +1196,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, GlobalContext* globalCtx, Play
     u8 prevIndex = this->cursorIndex;
     s32 c;
     s32 d;
-    bool dpad = CVar_GetS32("gDpadShop", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     if (!EnOssan_ReturnItemToShelf(this)) {
         osSyncPrintf("%s[%d]:" VT_FGCOL(GREEN) "ズーム中！！" VT_RST "\n", __FILE__, __LINE__);
@@ -1242,7 +1256,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, GlobalContext* globalCtx, Pla
     s32 pad[2];
     u8 prevIndex;
     u8 nextIndex;
-    bool dpad = CVar_GetS32("gDpadShop", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     prevIndex = this->cursorIndex;
     if (!EnOssan_ReturnItemToShelf(this)) {
@@ -1329,7 +1343,19 @@ void EnOssan_GiveItemWithFanfare(GlobalContext* globalCtx, EnOssan* this) {
     Player* player = GET_PLAYER(globalCtx);
 
     osSyncPrintf("\n" VT_FGCOL(YELLOW) "初めて手にいれた！！" VT_RST "\n\n");
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
+        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
+        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
     globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     globalCtx->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~0x20000000;
@@ -1469,7 +1495,10 @@ void EnOssan_HandleCanBuyBombs(GlobalContext* globalCtx, EnOssan* this) {
 
 void EnOssan_BuyGoronCityBombs(GlobalContext* globalCtx, EnOssan* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        if (!(gSaveContext.eventChkInf[2] & 0x20)) {
+        // Let players buy the right side of the goron shop in rando regardless of DC completion
+        // Players will still need a bomb bag to buy bombs (handled by vanilla behaviour)
+        // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
+        if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[2] & 0x20)) {
             if (gSaveContext.infTable[15] & 0x1000) {
                 EnOssan_SetStateCantGetItem(globalCtx, this, 0x302E);
             } else {
@@ -1661,12 +1690,33 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, GlobalContext* globalCtx, 
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    if (!gSaveContext.n64ddFlag) {
+        func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+    } else {
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
+        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
+        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            GetItemEntry getItemEntry =
+                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 120.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
+        }
+    }
 }
 
 void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->cursorIndex);
+    GetItemEntry getItemEntry;
+    if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+        getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    } else {
+        getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
+    }
+    
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
@@ -1688,6 +1738,12 @@ void EnOssan_State_ItemPurchased(EnOssan* this, GlobalContext* globalCtx, Player
         }
         item = this->shelfSlots[this->cursorIndex];
         item->buyEventFunc(globalCtx, item);
+        if (getItemEntry.getItemId == RG_ICE_TRAP && getItemEntry.modIndex == MOD_RANDOMIZER) {
+            EnOssan_ResetItemPosition(this);
+            item->updateStockedItemFunc(globalCtx, item);
+            EnOssan_EndInteraction(globalCtx, this);
+            return;
+        }
         this->stateFlag = OSSAN_STATE_CONTINUE_SHOPPING_PROMPT;
         Message_ContinueTextbox(globalCtx, 0x6B);
     }
@@ -1871,6 +1927,8 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 }
 
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
+    Color_RGB8 A_button_ori = {0,255,80};
+    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
     f32 t;
 
     t = this->cursorAnimTween;
@@ -1892,13 +1950,13 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
         this->cursorColorG = ColChanMix(80, 80.0f, t);
         this->cursorColorB = ColChanMix(255, 0.0f, t);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-        this->cursorColorR = ColChanMix(0, 0.0f, t);
-        this->cursorColorG = ColChanMix(255, 80.0f, t);
-        this->cursorColorB = ColChanMix(80, 0.0f, t);
+        this->cursorColorR = ColChanMix(A_button_ori.r, 0.0f, t);
+        this->cursorColorG = ColChanMix(A_button_ori.b, 80.0f, t);
+        this->cursorColorB = ColChanMix(A_button_ori.r, 0.0f, t);
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        this->cursorColorR = ColChanMix(CVar_GetS32("gCCABtnPrimR", 90), ((CVar_GetS32("gCCABtnPrimR", 90)/255)*100), t);
-        this->cursorColorG = ColChanMix(CVar_GetS32("gCCABtnPrimG", 90), ((CVar_GetS32("gCCABtnPrimG", 90)/255)*100), t);
-        this->cursorColorB = ColChanMix(CVar_GetS32("gCCABtnPrimB", 90), ((CVar_GetS32("gCCABtnPrimB", 90)/255)*100), t);
+        this->cursorColorR = ColChanMix(A_button.r, ((A_button.r/255)*100), t);
+        this->cursorColorG = ColChanMix(A_button.g, ((A_button.g/255)*100), t);
+        this->cursorColorB = ColChanMix(A_button.b, ((A_button.b/255)*100), t);
     }
     this->cursorColorA = ColChanMix(255, 0.0f, t);
     this->cursorAnimTween = t;

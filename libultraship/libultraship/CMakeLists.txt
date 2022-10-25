@@ -66,7 +66,9 @@ set(Source_Files__Audio__extra
     "WasapiAudioPlayer.cpp"
     "WasapiAudioPlayer.h"
 )
-else()
+endif ()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__Audio__extra
     "PulseAudioPlayer.cpp"
     "PulseAudioPlayer.h"
@@ -74,6 +76,21 @@ set(Source_Files__Audio__extra
 endif ()
 
 source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
+
+set (Source_Files__BinaryTools
+    "BinaryReader.cpp"
+    "BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/Binary.h"
+    "Lib/BinaryTools/BinaryTools/Binary.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryReader.h"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.cpp"
+    "Lib/BinaryTools/BinaryTools/BinaryWriter.h"
+    "Lib/BinaryTools/BinaryTools/MemoryBuffer.h"
+    "Lib/BinaryTools/BinaryTools/Span.h"
+)
+
+source_group("Source Files\\BinaryTools" FILES ${Source_Files__BinaryTools})
 
 set(Source_Files__Controller
     "ControlDeck.cpp"
@@ -86,11 +103,18 @@ set(Source_Files__Controller
     "InputEditor.h"
     "KeyboardController.cpp"
     "KeyboardController.h"
+    "UltraController.h"
+    "DummyController.cpp"
+    "DummyController.h"
+)
+
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+list(APPEND Source_Files__Controller
     "SDLController.cpp"
     "SDLController.h"
-    "UltraController.h"
-    "VirtualController.h"
 )
+endif()
+
 source_group("Source Files\\Controller" FILES ${Source_Files__Controller})
 
 set(Source_Files__Controller__Attachment
@@ -114,6 +138,7 @@ set(Source_Files__CustomImpl
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
 set(Source_Files__CustomImpl__Hooks
+    "Hooks.cpp"
     "Hooks.h"
 )
 source_group("Source Files\\CustomImpl\\Hooks" FILES ${Source_Files__CustomImpl__Hooks})
@@ -127,13 +152,9 @@ source_group("Source Files\\CustomImpl\\Utils" FILES ${Source_Files__CustomImpl_
 set(Source_Files__Globals
     "Cvar.cpp"
     "Cvar.h"
-    "GlobalCtx2.cpp"
-    "GlobalCtx2.h"
     "LUSMacros.h"
     "Window.cpp"
     "Window.h"
-    "WindowShim.cpp"
-    "WindowShim.h"
 )
 source_group("Source Files\\Globals" FILES ${Source_Files__Globals})
 
@@ -150,16 +171,21 @@ source_group("Source Files\\Lib" FILES ${Source_Files__Lib})
 set(Source_Files__Lib__Fast3D
     "Lib/Fast3D/gfx_cc.cpp"
     "Lib/Fast3D/gfx_cc.h"
-    "Lib/Fast3D/gfx_opengl.cpp"
-    "Lib/Fast3D/gfx_opengl.h"
     "Lib/Fast3D/gfx_pc.cpp"
     "Lib/Fast3D/gfx_pc.h"
     "Lib/Fast3D/gfx_rendering_api.h"
     "Lib/Fast3D/gfx_screen_config.h"
-    "Lib/Fast3D/gfx_sdl.h"
-    "Lib/Fast3D/gfx_sdl2.cpp"
     "Lib/Fast3D/gfx_window_manager_api.h"
 )
+
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+list(APPEND Source_Files__Lib__Fast3D
+    "Lib/Fast3D/gfx_opengl.cpp"
+    "Lib/Fast3D/gfx_opengl.h"
+    "Lib/Fast3D/gfx_sdl.h"
+    "Lib/Fast3D/gfx_sdl2.cpp"
+)
+endif()
 source_group("Source Files\\Lib\\Fast3D" FILES ${Source_Files__Lib__Fast3D})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -179,14 +205,19 @@ set(Source_Files__Lib__Fast3D__extra
     "Lib/Fast3D/gfx_glx.cpp"
     "Lib/Fast3D/gfx_glx.h"
 )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+set(Source_Files__Lib__Fast3D__extra
+    "Lib/Fast3D/gfx_wiiu.cpp"
+    "Lib/Fast3D/gfx_wiiu.h"
+    "Lib/Fast3D/gfx_gx2.cpp"
+    "Lib/Fast3D/gfx_gx2.h"
+    "Lib/Fast3D/gx2_shader_gen.c"
+    "Lib/Fast3D/gx2_shader_gen.h"
+)
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
 
 set(Source_Files__Lib__ImGui
-    "Lib/ImGui/backends/imgui_impl_opengl3.cpp"
-    "Lib/ImGui/backends/imgui_impl_opengl3.h"
-    "Lib/ImGui/backends/imgui_impl_sdl.cpp"
-    "Lib/ImGui/backends/imgui_impl_sdl.h"
     "Lib/ImGui/imconfig.h"
     "Lib/ImGui/imgui.cpp"
     "Lib/ImGui/imgui.h"
@@ -199,6 +230,16 @@ set(Source_Files__Lib__ImGui
     "Lib/ImGui/imstb_textedit.h"
     "Lib/ImGui/imstb_truetype.h"
 )
+
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+list(APPEND Source_Files__Lib__ImGui
+    "Lib/ImGui/backends/imgui_impl_opengl3.cpp"
+    "Lib/ImGui/backends/imgui_impl_opengl3.h"
+    "Lib/ImGui/backends/imgui_impl_sdl.cpp"
+    "Lib/ImGui/backends/imgui_impl_sdl.h"
+)
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set(Source_Files__Lib__ImGui__Windows
     "Lib/ImGui/backends/imgui_impl_dx11.cpp"
@@ -206,8 +247,19 @@ set(Source_Files__Lib__ImGui__Windows
     "Lib/ImGui/backends/imgui_impl_win32.cpp"
     "Lib/ImGui/backends/imgui_impl_win32.h"
 )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+set(Source_Files__Lib__ImGui__WiiU
+    "Lib/ImGui/backends/wiiu/imgui_impl_wiiu.cpp"
+    "Lib/ImGui/backends/wiiu/imgui_impl_wiiu.h"
+    "Lib/ImGui/backends/wiiu/imgui_impl_gx2.cpp"
+    "Lib/ImGui/backends/wiiu/imgui_impl_gx2.h"
+)
 endif ()
-source_group("Source Files\\Lib\\ImGui" FILES ${Source_Files__Lib__ImGui} ${Source_Files__Lib__ImGui__Windows})
+source_group("Source Files\\Lib\\ImGui" FILES
+    ${Source_Files__Lib__ImGui}
+    ${Source_Files__Lib__ImGui__Windows}
+    ${Source_Files__Lib__ImGui__WiiU}
+)
 
 set(Source_Files__Lib__Mercury
     "Lib/Mercury/Mercury.cpp"
@@ -300,6 +352,12 @@ set(Source_Files__Resources__mpq
 )
 source_group("Source Files\\Resources\\mpq" FILES ${Source_Files__Resources__mpq})
 
+set(Source_Files__Crash_Handler
+    "CrashHandler.cpp"
+    "CrashHandler.h"
+)
+source_group("Source Files\\Crash Handler" FILES ${Source_Files__Crash_Handler})
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 set(Source_Files__Darwin
     "OSXFolderManager.mm"
@@ -316,11 +374,24 @@ set(Source_Files__NintendoSwitch
 source_group("Source Files\\NintendoSwitch" FILES ${Source_Files__NintendoSwitch})
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+set(Source_Files__CafeOS
+    "WiiUController.cpp"
+    "WiiUController.h"
+    "WiiUGamepad.cpp"
+    "WiiUGamepad.h"
+    "WiiUImpl.cpp"
+    "WiiUImpl.h"
+)
+source_group("Source Files\\CafeOS" FILES ${Source_Files__CafeOS})
+endif()
+
 set(ALL_FILES
     ${Header_Files__Resources__Factories}
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
     ${Source_Files__Audio__extra}
+    ${Source_Files__BinaryTools}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
     ${Source_Files__CustomImpl}
@@ -332,6 +403,7 @@ set(ALL_FILES
     ${Source_Files__Lib__Fast3D__extra}
     ${Source_Files__Lib__ImGui}
     ${Source_Files__Lib__ImGui__Windows}
+    ${Source_Files__Lib__ImGui__WiiU}
     ${Source_Files__Lib__Mercury}
     ${Source_Files__Lib__stb}
     ${Source_Files__Lib__dr_libs}
@@ -341,8 +413,10 @@ set(ALL_FILES
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
+    ${Source_Files__Crash_Handler}
     ${Source_Files__Darwin}
     ${Source_Files__NintendoSwitch}
+    ${Source_Files__CafeOS}
 )
 
 ################################################################################
@@ -420,7 +494,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"ENABLE_DX11;"
 			"ENABLE_OPENGL;"
-			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -439,15 +512,26 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"ENABLE_OPENGL;"
 			"ENABLE_DX11;"
-			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
-endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+	target_compile_definitions(${PROJECT_NAME} PRIVATE
+            "$<$<CONFIG:Debug>:"
+                "_DEBUG"
+            ">"
+            "$<$<CONFIG:Release>:"
+                "NDEBUG"
+            ">"
+            "SPDLOG_ACTIVE_LEVEL=3;"
+            "SPDLOG_NO_THREAD_ID;"
+            "SPDLOG_NO_TLS;"
+            "STBI_NO_THREAD_LOCALS;"
+	)
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
 				"_DEBUG"
@@ -462,34 +546,34 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch")
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(SDL2)
     find_package(GLEW)
     find_package(X11)
     if (NOT GLEW_FOUND)
-        if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-            include (FetchContent)
-            FetchContent_Declare(
-                glew
-                GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-                SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
-            )
-            FetchContent_MakeAvailable(glew)
-            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
-        endif()
+        include (FetchContent)
+        FetchContent_Declare(
+            glew
+            GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
+        )
+        FetchContent_MakeAvailable(glew)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
     endif()
 
     if (NOT GLEW_FOUND)
        set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/include)
     else()
-        set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+        set(GLEW-INCLUDE ${GLEW_INCLUDE_DIRS})
     endif()
     set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
-elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
+elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     find_package(SDL2)
 else()
-    set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/)
-    set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL/)
+    find_package(SDL2)
+    find_package(GLEW)
+    set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -508,6 +592,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 if(MSVC)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_compile_options(${PROJECT_NAME} PRIVATE
+            $<$<CONFIG:Debug>:
+                /Od;
+                /Oi-
+            >
             $<$<CONFIG:Release>:
                 /std:c++latest;
                 /Oi;
@@ -592,13 +680,13 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_link_libraries(${PROJECT_NAME}
-            "glew32s;"
+            "GLEW::GLEW;"
             "opengl32;"
             "storm;"
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_libraries(${PROJECT_NAME}
-            "glew32s;"
+            "GLEW::GLEW;"
             "opengl32;"
             "storm;"
         )
@@ -627,6 +715,15 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
         SDL2::SDL2
         Threads::Threads
     )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+    find_package(SDL2 REQUIRED)
+    target_link_libraries(${PROJECT_NAME}
+        storm
+        SDL2::SDL2-static
+    )
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${DEVKITPRO}/portlibs/wiiu/include/
+    )
 else()
     target_link_libraries(${PROJECT_NAME}
         SDL2::SDL2
@@ -637,20 +734,4 @@ else()
         ${X11_LIBRARIES}
         storm
     )
-endif()
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-        add_library(glew32s STATIC IMPORTED )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib  )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib)
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-        add_library(glew32s STATIC IMPORTED )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib  )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib)
-    endif()
 endif()

@@ -21,6 +21,7 @@
 #include <Utils/Directory.h>
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
+#include <bit>
 
 std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
@@ -63,13 +64,45 @@ static void ExporterProgramEnd()
 {
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
+		printf("Creating version file...\n");
+
+		// Get crc from rom
+		std::string romPath = Globals::Instance->baseRomPath.string();
+		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
+		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
+        uint8_t endianness = (uint8_t)Endianness::Big;
+
+		// Write crc to version file
+		fs::path versionPath("Extract/version");
+        MemoryStream* versionStream = new MemoryStream();
+        BinaryWriter writer(versionStream);
+        writer.SetEndianness(Endianness::Big);
+        writer.Write(endianness);
+        writer.Write(crc);
+		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
+        versionFile.write(versionStream->ToVector().data(), versionStream->GetLength());
+		versionFile.flush();
+		versionFile.close();
+        writer.Close();
+
+		printf("Created version file.\n");
+
 		printf("Generating OTR Archive...\n");
 		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
 
-		for (auto item : files)
-		{
+		for (auto item : files) {
+			std::string fName = item.first;
+			if (fName.find("gTitleZeldaShieldLogoMQTex") != std::string::npos && !ZRom(romPath).IsMQ())
+			{
+				size_t pos = 0;
+				if ((pos = fName.find("gTitleZeldaShieldLogoMQTex", 0)) != std::string::npos)
+				{
+					fName.replace(pos, 27, "gTitleZeldaShieldLogoTex");
+				}
+			}
 			auto fileData = item.second;
-			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(), fileData.size());
+			otrArchive->AddFile(fName, (uintptr_t)fileData.data(),
+		                      fileData.size());
 		}
 
 		// Add any additional files that need to be manually copied...
@@ -77,7 +110,27 @@ static void ExporterProgramEnd()
 
 		for (auto item : lst)
 		{
+			std::vector<std::string> splitPath = StringHelper::Split(item, ".");
+
+			if (splitPath.size() >= 3) {
+				std::string extension = splitPath.at(splitPath.size() - 1);
+				std::string format = splitPath.at(splitPath.size() - 2);
+				splitPath.pop_back();
+				splitPath.pop_back();
+				std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
+				if (extension == "png" && (format == "rgba32" || format == "rgb5a1" || format == "i4" || format == "i8" || format == "ia4" || format == "ia8" || format == "ia16" || format == "ci4" || format == "ci8")) {
+					Globals::Instance->buildRawTexture = true;
+					Globals::Instance->BuildAssetTexture(item, ZTexture::GetTextureTypeFromString(format), afterPath);
+					Globals::Instance->buildRawTexture = false;
+
+					auto fileData = File::ReadAllBytes(afterPath);
+					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
+					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+				}
+			}
+
 			auto fileData = File::ReadAllBytes(item);
+			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 

@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "Vec2f.h"
 #include "Vec3f.h"
+#include "Vec3s.h"
 #include "Color3b.h"
 
 namespace Ship
@@ -43,15 +44,15 @@ namespace Ship
         void ParseFileBinary(BinaryReader* reader, Resource* res) override;
     };
 
-    struct Vertex
+    struct ModelVertex
     {
         Vec3f pos;
         Vec3f normal;
         Color3b color;
         Vec2f uv;
 
-        Vertex();
-        Vertex(BinaryReader* reader);
+        ModelVertex();
+        ModelVertex(BinaryReader* reader);
     };
 
     class Model : public Resource
@@ -62,7 +63,7 @@ namespace Ship
         uint32_t numVerts;
         uint32_t numPolys;
 
-        Vertex* vertices;
+        ModelVertex* vertices;
         Vec2f* boneWeights;
         uint32_t* indices;
     };

@@ -1,22 +1,36 @@
-﻿#include "OTRGlobals.h"
-#include "ResourceMgr.h"
-#include "Scene.h"
-#include "Utils/StringHelper.h"
+#include "OTRGlobals.h"
+#include <libultraship/ResourceMgr.h>
+#include <libultraship/Scene.h>
+#include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <CollisionHeader.h>
-#include <DisplayList.h>
-#include <Cutscene.h>
-#include <Path.h>
-#include <Text.h>
-#include <Blob.h>
+#include <libultraship/CollisionHeader.h>
+#include <libultraship/DisplayList.h>
+#include <libultraship/Cutscene.h>
+#include <libultraship/Path.h>
+#include <libultraship/Text.h>
+#include <libultraship/Blob.h>
 
 extern Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(GlobalContext* globalCtx, Ship::Scene* scene);
 
-bool func_80098508(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
+    std::string Path = path;
+    if (IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(Path.c_str());
+}
+
+// Forward Declaration of function declared in OTRGlobals.cpp
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
+
+bool Scene_CommandSpawnList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetStartPositionList* cmdStartPos = (Ship::SetStartPositionList*)cmd;
 
@@ -61,8 +75,7 @@ bool func_80098508(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x01: Actor List
-bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
+bool Scene_CommandActorList(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
 
     globalCtx->numSetupActors = cmdActor->entries.size();
@@ -92,8 +105,7 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     return false;
 }
 
-// Scene Command 0x02: Unused 02
-bool func_80098630(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandUnused2(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     // Do we need to implement this?
     //globalCtx->unk_11DFC = SEGMENTED_TO_VIRTUAL(cmd->unused02.segment);
@@ -101,12 +113,11 @@ bool func_80098630(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x03: Collision Header
-bool func_80098674(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandCollisionHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetCollisionHeader* cmdCol = (Ship::SetCollisionHeader*)cmd;
 
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdCol->filePath));
+    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(cmdCol->filePath.c_str()));
 
     CollisionHeader* colHeader = nullptr;
 
@@ -208,8 +219,7 @@ bool func_80098674(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x04: Room List
-bool func_800987A4(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandRoomList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetRoomList* cmdRoomList = (Ship::SetRoomList*)cmd;
 
@@ -226,8 +236,7 @@ bool func_800987A4(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x06: Entrance List
-bool func_800987F8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandEntranceList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetEntranceList* otrEntrance = (Ship::SetEntranceList*)cmd;
 
@@ -249,8 +258,7 @@ bool func_800987F8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x07: Special Files
-bool func_8009883C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandSpecialFiles(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetSpecialObjects* otrSpecial = (Ship::SetSpecialObjects*)cmd;
 
@@ -266,47 +274,46 @@ bool func_8009883C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x08: Room Behavior
-bool func_80098904(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandRoomBehavior(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetRoomBehavior* cmdRoom = (Ship::SetRoomBehavior*)cmd;
 
-    globalCtx->roomCtx.curRoom.unk_03 = cmdRoom->gameplayFlags;
-    globalCtx->roomCtx.curRoom.unk_02 = cmdRoom->gameplayFlags2 & 0xFF;
-    globalCtx->roomCtx.curRoom.showInvisActors = (cmdRoom->gameplayFlags2 >> 8) & 1;
+    globalCtx->roomCtx.curRoom.behaviorType1 = cmdRoom->gameplayFlags;
+    globalCtx->roomCtx.curRoom.behaviorType2 = cmdRoom->gameplayFlags2 & 0xFF;
+    globalCtx->roomCtx.curRoom.lensMode = (cmdRoom->gameplayFlags2 >> 8) & 1;
     globalCtx->msgCtx.disableWarpSongs = (cmdRoom->gameplayFlags2 >> 0xA) & 1;
 
     return false;
 }
 
-// Scene Command 0x0A: Mesh Header
-bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetMesh* otrMesh = (Ship::SetMesh*)cmd;
-
+    
     if (otrMesh->cachedGameData != nullptr)
-        globalCtx->roomCtx.curRoom.mesh = (Mesh*)otrMesh->cachedGameData;
+        globalCtx->roomCtx.curRoom.meshHeader = (MeshHeader*)otrMesh->cachedGameData;
     else
     {
-        globalCtx->roomCtx.curRoom.mesh = (Mesh*)malloc(sizeof(Mesh));
-        globalCtx->roomCtx.curRoom.mesh->polygon.type = otrMesh->meshHeaderType;
-        globalCtx->roomCtx.curRoom.mesh->polygon.num = otrMesh->meshes.size();
+        globalCtx->roomCtx.curRoom.meshHeader = (MeshHeader*)malloc(sizeof(MeshHeader));
+        globalCtx->roomCtx.curRoom.meshHeader->base.type = otrMesh->meshHeaderType;
+        globalCtx->roomCtx.curRoom.meshHeader->polygon0.num = otrMesh->meshes.size();
 
         if (otrMesh->meshHeaderType == 2)
-            globalCtx->roomCtx.curRoom.mesh->polygon.start = malloc(sizeof(PolygonDlist2) * globalCtx->roomCtx.curRoom.mesh->polygon.num);
+            globalCtx->roomCtx.curRoom.meshHeader->polygon0.start = malloc(sizeof(PolygonDlist2) * globalCtx->roomCtx.curRoom.meshHeader->polygon0.num);
         else
-            globalCtx->roomCtx.curRoom.mesh->polygon.start = malloc(sizeof(PolygonDlist) * globalCtx->roomCtx.curRoom.mesh->polygon.num);
+            globalCtx->roomCtx.curRoom.meshHeader->polygon0.start = malloc(sizeof(PolygonDlist) * globalCtx->roomCtx.curRoom.meshHeader->polygon0.num);
 
-        for (int i = 0; i < globalCtx->roomCtx.curRoom.mesh->polygon.num; i++)
+        for (int i = 0; i < globalCtx->roomCtx.curRoom.meshHeader->polygon0.num; i++)
         {
             if (otrMesh->meshHeaderType == 2)
             {
-                PolygonDlist2* arr = (PolygonDlist2*)globalCtx->roomCtx.curRoom.mesh->polygon.start;
+                PolygonDlist2* arr = (PolygonDlist2*)globalCtx->roomCtx.curRoom.meshHeader->polygon0.start;
                 PolygonDlist2* dlist = &arr[i];
 
                 if (otrMesh->meshes[i].opa != "")
                 {
-                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].opa));
+                    auto opaFile =
+                        std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].opa.c_str()));
 
                     dlist->opaDL = opaFile.get();
                     dlist->opa = (Gfx*)&dlist->opaDL->instructions[0];
@@ -318,7 +325,8 @@ bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].xlu != "")
                 {
-                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].xlu));
+                    auto xluFile =
+                        std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].xlu.c_str()));
 
                     dlist->xluDL = xluFile.get();
                     dlist->xlu = (Gfx*)&dlist->xluDL->instructions[0];
@@ -331,79 +339,77 @@ bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                 dlist->pos.z = otrMesh->meshes[i].z;
                 dlist->unk_06 = otrMesh->meshes[i].unk_06;
 
-                //globalCtx->roomCtx.curRoom.mesh->polygon.start = dlist;
+                //globalCtx->roomCtx.curRoom.meshHeader->base.start = dlist;
             }
             else if (otrMesh->meshHeaderType == 1)
             {
                 PolygonDlist* pType = (PolygonDlist*)malloc(sizeof(PolygonDlist));
 
                 if (otrMesh->meshes[0].imgOpa != "")
-                    pType->opa = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[0].imgOpa))->instructions[0];
+                    pType->opa = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[0].imgOpa.c_str()))->instructions[0];
                 else
                     pType->opa = 0;
 
                 if (otrMesh->meshes[0].imgXlu != "")
-                    pType->xlu = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[0].imgXlu))->instructions[0];
+                    pType->xlu = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[0].imgXlu.c_str()))->instructions[0];
                 else
                     pType->xlu = 0;
 
-                globalCtx->roomCtx.curRoom.mesh->polygon1.dlist = (Gfx*)pType;
+                globalCtx->roomCtx.curRoom.meshHeader->polygon1.dlist = (Gfx*)pType;
 
-                globalCtx->roomCtx.curRoom.mesh->polygon1.format = otrMesh->meshes[0].imgFmt;
+                globalCtx->roomCtx.curRoom.meshHeader->polygon1.format = otrMesh->meshes[0].imgFmt;
 
                 if (otrMesh->meshes[0].imgFmt == 1)
                 {
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.fmt = otrMesh->meshes[0].images[0].fmt;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.source =
-                        (void*)(OTRGlobals::Instance->context->GetResourceManager()->LoadFile(
-                            otrMesh->meshes[0].images[0].sourceBackground))
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.fmt = otrMesh->meshes[0].images[0].fmt;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.source =
+                        (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[0].sourceBackground.c_str()))
                         .get()
                         ->buffer.get();
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.siz = otrMesh->meshes[0].images[0].siz;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.width = otrMesh->meshes[0].images[0].width;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.height = otrMesh->meshes[0].images[0].height;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.fmt = otrMesh->meshes[0].images[0].fmt;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.mode0 = otrMesh->meshes[0].images[0].mode0;
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.single.tlutCount = otrMesh->meshes[0].images[0].tlutCount;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.siz = otrMesh->meshes[0].images[0].siz;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.width = otrMesh->meshes[0].images[0].width;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.height = otrMesh->meshes[0].images[0].height;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.fmt = otrMesh->meshes[0].images[0].fmt;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.mode0 = otrMesh->meshes[0].images[0].mode0;
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.tlutCount = otrMesh->meshes[0].images[0].tlutCount;
                 }
                 else
                 {
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.multi.count = otrMesh->meshes[0].images.size();
-                    globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list =
-                        (BgImage*)calloc(sizeof(BgImage), globalCtx->roomCtx.curRoom.mesh->polygon1.multi.count);
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.count = otrMesh->meshes[0].images.size();
+                    globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list =
+                        (BgImage*)calloc(sizeof(BgImage), globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.count);
 
                     for (size_t i = 0; i < otrMesh->meshes[0].images.size(); i++)
                     {
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].fmt = otrMesh->meshes[0].images[i].fmt;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].source =
-                            (void*)(OTRGlobals::Instance->context->GetResourceManager()->LoadFile(
-                                otrMesh->meshes[0].images[i].sourceBackground))
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].fmt = otrMesh->meshes[0].images[i].fmt;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].source =
+                            (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[i].sourceBackground.c_str()))
                             .get()
                             ->buffer.get();
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].siz = otrMesh->meshes[0].images[i].siz;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].width = otrMesh->meshes[0].images[i].width;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].height =
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].siz = otrMesh->meshes[0].images[i].siz;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].width = otrMesh->meshes[0].images[i].width;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].height =
                             otrMesh->meshes[0].images[i].height;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].fmt = otrMesh->meshes[0].images[i].fmt;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].mode0 = otrMesh->meshes[0].images[i].mode0;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].tlutCount =
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].fmt = otrMesh->meshes[0].images[i].fmt;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].mode0 = otrMesh->meshes[0].images[i].mode0;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].tlutCount =
                             otrMesh->meshes[0].images[i].tlutCount;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].unk_00 =
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].unk_00 =
                             otrMesh->meshes[0].images[i].unk_00;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].unk_0C =
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].unk_0C =
                             otrMesh->meshes[0].images[i].unk_0C;
-                        globalCtx->roomCtx.curRoom.mesh->polygon1.multi.list[i].id = otrMesh->meshes[0].images[i].id;
+                        globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].id = otrMesh->meshes[0].images[i].id;
                     }
                 }
             }
             else
             {
-                PolygonDlist* arr = (PolygonDlist*)globalCtx->roomCtx.curRoom.mesh->polygon.start;
+                PolygonDlist* arr = (PolygonDlist*)globalCtx->roomCtx.curRoom.meshHeader->polygon0.start;
                 PolygonDlist* dlist = &arr[i];
 
                 if (otrMesh->meshes[i].opa != "")
                 {
-                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].opa));
+                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].opa.c_str()));
 
                     dlist->opaDL = opaFile.get();
                     dlist->opa = (Gfx*)&dlist->opaDL->instructions[0];
@@ -413,7 +419,7 @@ bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].xlu != "")
                 {
-                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].xlu));
+                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].xlu.c_str()));
 
                     dlist->xluDL = xluFile.get();
                     dlist->xlu = (Gfx*)&dlist->xluDL->instructions[0];
@@ -421,11 +427,11 @@ bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                 else
                     dlist->xlu = 0;
 
-                //globalCtx->roomCtx.curRoom.mesh->polygon.start = dlist;
+                //globalCtx->roomCtx.curRoom.meshHeader->base.start = dlist;
             }
         }
 
-        otrMesh->cachedGameData = globalCtx->roomCtx.curRoom.mesh;
+        otrMesh->cachedGameData = globalCtx->roomCtx.curRoom.meshHeader;
     }
 
     return false;
@@ -433,8 +439,7 @@ bool func_80098958(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
 extern "C" void* func_800982FC(ObjectContext * objectCtx, s32 bankIndex, s16 objectId);
 
-// Scene Command 0x0B: Object List
-bool func_8009899C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandObjectList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetObjectList* cmdObj = (Ship::SetObjectList*)cmd;
 
@@ -496,8 +501,7 @@ bool func_8009899C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x0C: Light List
-bool func_80098B74(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandLightList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetLightList* cmdLight = (Ship::SetLightList*)cmd;
 
@@ -521,12 +525,11 @@ bool func_80098B74(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x0D: Path
-bool func_80098C24(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandPathList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetPathways* cmdPath = (Ship::SetPathways*)cmd;
 
-    Ship::Path* path = (Ship::Path*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdPath->paths[0]).get();
+    Ship::Path* path = (Ship::Path*)ResourceMgr_LoadResource(cmdPath->paths[0].c_str()).get();
     globalCtx->setupPathList = (Path*)malloc(path->paths.size() * sizeof(Path));
 
     //for (int i = 0; i < cmdPath->paths.size(); i++)
@@ -548,8 +551,7 @@ bool func_80098C24(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x0E: Transition Actor List
-bool func_80098C68(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
+bool Scene_CommandTransitionActorList(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetTransitionActorList* cmdActor = (Ship::SetTransitionActorList*)cmd;
 
     globalCtx->transiActorCtx.numActors = cmdActor->entries.size();
@@ -576,8 +578,7 @@ bool func_80098C68(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
 //    transiActorCtx->numActors = 0;
 //}
 
-// Scene Command 0x0F: Light Setting List
-bool func_80098CC8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandLightSettingsList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetLightingSettings* otrLight = (Ship::SetLightingSettings*)cmd;
 
@@ -618,7 +619,7 @@ bool func_80098CC8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 }
 
 // Scene Command 0x11: Skybox Settings
-bool func_80098D1C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandSkyboxSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetSkyboxSettings* cmdSky = (Ship::SetSkyboxSettings*)cmd;
 
@@ -629,8 +630,7 @@ bool func_80098D1C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x12: Skybox Disables
-bool func_80098D5C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandSkyboxDisables(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetSkyboxModifier* cmdSky = (Ship::SetSkyboxModifier*)cmd;
 
@@ -640,8 +640,7 @@ bool func_80098D5C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x10: Time Settings
-bool func_80098D80(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandTimeSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetTimeSettings* cmdTime = (Ship::SetTimeSettings*)cmd;
 
@@ -685,8 +684,7 @@ bool func_80098D80(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x05: Wind Settings
-bool func_80099090(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
+bool Scene_CommandWindSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetWind* cmdWind = (Ship::SetWind*)cmd;
 
     s8 x = cmdWind->windWest;
@@ -702,8 +700,7 @@ bool func_80099090(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     return false;
 }
 
-// Scene Command 0x13: Exit List
-bool func_800990F0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandExitList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::ExitList* cmdExit = (Ship::ExitList*)cmd;
 
@@ -715,13 +712,11 @@ bool func_800990F0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x09: Undefined
-bool func_80099134(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
+bool Scene_CommandUndefined9(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     return false;
 }
 
-// Scene Command 0x15: Sound Settings
-bool func_80099140(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
+bool Scene_CommandSoundSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     Ship::SetSoundSettings* cmdSnd = (Ship::SetSoundSettings*)cmd;
 
     globalCtx->sequenceCtx.seqId = cmdSnd->musicSequence;
@@ -734,8 +729,7 @@ bool func_80099140(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     return false;
 }
 
-// Scene Command 0x16: Echo Setting
-bool func_8009918C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandEchoSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetEchoSettings* cmdEcho = (Ship::SetEchoSettings*)cmd;
 
@@ -744,8 +738,7 @@ bool func_8009918C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x18: Alternate Headers
-bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetAlternateHeaders* cmdHeaders = (Ship::SetAlternateHeaders*)cmd;
 
@@ -761,8 +754,7 @@ bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
         std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1];
         Ship::Scene* headerData = nullptr;
         if (desiredHeader != "") {
-            headerData =
-                (Ship::Scene*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(desiredHeader).get();
+            headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
         }
 
         if (headerData != nullptr)
@@ -780,9 +772,7 @@ bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                 std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2];
                 Ship::Scene* headerData = nullptr;
                 if (desiredHeader != "") {
-                    headerData = (Ship::Scene*)OTRGlobals::Instance->context->GetResourceManager()
-                                     ->LoadResource(desiredHeader)
-                                     .get();
+                    headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
                 }
 
                 // "Using adult day data there!"
@@ -799,20 +789,19 @@ bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     return false;
 }
 
-// Scene Command 0x17: Cutscene Data
-bool func_8009934C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+bool Scene_CommandCutsceneData(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetCutscenes* cmdCS = (Ship::SetCutscenes*)cmd;
 
-    Ship::Cutscene* csData = (Ship::Cutscene*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdCS->cutscenePath).get();
+    Ship::Cutscene* csData = (Ship::Cutscene*)ResourceMgr_LoadResource(cmdCS->cutscenePath.c_str()).get();
     globalCtx->csCtx.segment = csData->commands.data();
 
     //osSyncPrintf("\ngame_play->demo_play.data=[%x]", globalCtx->csCtx.segment);
     return false;
 }
 
-// Scene Command 0x19: Misc. Settings (Camera & World Map Area)
-bool func_800993C0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
+// Camera & World Map Area
+bool Scene_CommandMiscSettings(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetCameraSettings* cmdCam = (Ship::SetCameraSettings*)cmd;
 
@@ -838,10 +827,32 @@ bool func_800993C0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
 bool (*sceneCommands[])(GlobalContext*, Ship::SceneCommand*) =
 {
-    func_80098508, func_800985DC, func_80098630, func_80098674, func_800987A4, func_80099090, func_800987F8,
-    func_8009883C, func_80098904, func_80099134, func_80098958, func_8009899C, func_80098B74, func_80098C24,
-    func_80098C68, func_80098CC8, func_80098D80, func_80098D1C, func_80098D5C, func_800990F0, 0,
-    func_80099140, func_8009918C, func_8009934C, func_800991A0, func_800993C0,
+    Scene_CommandSpawnList,           // SCENE_CMD_ID_SPAWN_LIST
+    Scene_CommandActorList,           // SCENE_CMD_ID_ACTOR_LIST
+    Scene_CommandUnused2,             // SCENE_CMD_ID_UNUSED_2
+    Scene_CommandCollisionHeader,     // SCENE_CMD_ID_COLLISION_HEADER
+    Scene_CommandRoomList,            // SCENE_CMD_ID_ROOM_LIST
+    Scene_CommandWindSettings,        // SCENE_CMD_ID_WIND_SETTINGS
+    Scene_CommandEntranceList,        // SCENE_CMD_ID_ENTRANCE_LIST
+    Scene_CommandSpecialFiles,        // SCENE_CMD_ID_SPECIAL_FILES
+    Scene_CommandRoomBehavior,        // SCENE_CMD_ID_ROOM_BEHAVIOR
+    Scene_CommandUndefined9,          // SCENE_CMD_ID_UNDEFINED_9
+    Scene_CommandMeshHeader,          // SCENE_CMD_ID_MESH_HEADER
+    Scene_CommandObjectList,          // SCENE_CMD_ID_OBJECT_LIST
+    Scene_CommandLightList,           // SCENE_CMD_ID_LIGHT_LIST
+    Scene_CommandPathList,            // SCENE_CMD_ID_PATH_LIST
+    Scene_CommandTransitionActorList, // SCENE_CMD_ID_TRANSITION_ACTOR_LIST
+    Scene_CommandLightSettingsList,   // SCENE_CMD_ID_LIGHT_SETTINGS_LIST
+    Scene_CommandTimeSettings,        // SCENE_CMD_ID_TIME_SETTINGS
+    Scene_CommandSkyboxSettings,      // SCENE_CMD_ID_SKYBOX_SETTINGS
+    Scene_CommandSkyboxDisables,      // SCENE_CMD_ID_SKYBOX_DISABLES
+    Scene_CommandExitList,            // SCENE_CMD_ID_EXIT_LIST
+    NULL,                             // SCENE_CMD_ID_END
+    Scene_CommandSoundSettings,       // SCENE_CMD_ID_SOUND_SETTINGS
+    Scene_CommandEchoSettings,        // SCENE_CMD_ID_ECHO_SETTINGS
+    Scene_CommandCutsceneData,        // SCENE_CMD_ID_CUTSCENE_DATA
+    Scene_CommandAlternateHeaderList, // SCENE_CMD_ID_ALTERNATE_HEADER_LIST
+    Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
 s32 OTRScene_ExecuteCommands(GlobalContext* globalCtx, Ship::Scene* scene)
@@ -921,7 +932,7 @@ extern "C" s32 OTRfunc_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, 
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, globalCtx->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(globalCtx->roomList[roomNum].fileName);
+        auto roomData = ResourceMgr_LoadResource(globalCtx->roomList[roomNum].fileName);
         roomCtx->status = 1;
         roomCtx->roomToLoad = (Ship::Scene*)roomData.get();
 

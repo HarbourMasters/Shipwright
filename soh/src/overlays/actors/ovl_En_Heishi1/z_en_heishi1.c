@@ -14,6 +14,7 @@ void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnHeishi1_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHeishi1_Reset(void);
 
 void EnHeishi1_SetupWait(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_SetupWalk(EnHeishi1* this, GlobalContext* globalCtx);
@@ -41,7 +42,7 @@ const ActorInit En_Heishi1_InitVars = {
     (ActorFunc)EnHeishi1_Destroy,
     (ActorFunc)EnHeishi1_Update,
     (ActorFunc)EnHeishi1_Draw,
-    NULL,
+    (ActorResetFunc)EnHeishi1_Reset,
 };
 
 static f32 sAnimParamsInit[][8] = {
@@ -63,6 +64,10 @@ static s32 sCamDataIdxs[] = {
 };
 
 static s16 sWaypoints[] = { 0, 4, 1, 5, 2, 6, 3, 7 };
+
+void EnHeishi1_Reset(void) {
+    sHeishi1PlayerIsCaught = false;
+}
 
 void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
@@ -112,14 +117,23 @@ void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
+    // eventChkInf[4] & 1 = Got Zelda's Letter
+    // eventChkInf[5] & 0x200 = Got item from impa
+    // eventChkInf[8] & 1 = Ocarina thrown in moat
+    bool metZelda = (gSaveContext.eventChkInf[4] & 1) && (gSaveContext.eventChkInf[5] & 0x200);
+
     if (this->type != 5) {
-        if (((gSaveContext.dayTime < 0xB888) || IS_DAY) && (gSaveContext.n64ddFlag || !(gSaveContext.eventChkInf[8] & 1))) {
+        if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
+            ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[8] & 1)) ||
+             (gSaveContext.n64ddFlag && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
-        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY || (!gSaveContext.n64ddFlag && (gSaveContext.eventChkInf[8] & 1))) {
+        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
+            (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[8] & 1) || 
+            (gSaveContext.n64ddFlag && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);

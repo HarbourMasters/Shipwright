@@ -87,7 +87,7 @@ typedef struct BossFd2 {
     /* 0x1394 */ BossFd2Cam camData;
     /* 0x141C */ ColliderJntSph collider;
     /* 0x143C */ ColliderJntSphElement elements[9];
-    /* 0x167C */ s32 epoch;
+    /* 0x167C */ u32 epoch;
 } BossFd2; // size = 0x1680
 
 #endif

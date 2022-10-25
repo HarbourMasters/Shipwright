@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ganon_final_scene" Segment="2">
+        <Path Name="ganon_final_scenePathList_0001F4" Offset="0x01F4" NumPaths="4"/>
+        <Scene Name="ganon_final_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganon_final_room_0" Segment="3">
+        <Room Name="ganon_final_room_0" Offset="0x0"/>
+    </File>
+</Root>

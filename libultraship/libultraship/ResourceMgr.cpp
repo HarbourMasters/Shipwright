@@ -9,16 +9,30 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, const std::string& MainPath, const std::string& PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
-		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
+	ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t>& ValidHashes) 
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
+		OTR = std::make_shared<Archive>(MainPath, PatchesPath, ValidHashes, false);
 
-		gameVersion = OOT_UNKNOWN;
+		gameVersion = UNKNOWN;
 
-		if (OTR->IsMainMPQValid())
+		if (OTR->IsMainMPQValid()) {
 			Start();
+		}
 	}
 
-	ResourceMgr::~ResourceMgr() {
+    ResourceMgr::ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes)
+        : Context(Context), bIsRunning(false), FileLoadThread(nullptr)
+    {
+        OTR = std::make_shared<Archive>(OTRFiles, ValidHashes, false);
+
+        gameVersion = UNKNOWN;
+
+        if (OTR->IsMainMPQValid()) {
+            Start();
+        }
+    }
+
+    ResourceMgr::~ResourceMgr() {
 		SPDLOG_INFO("destruct ResourceMgr");
 		Stop();
 
@@ -82,20 +96,16 @@ namespace Ship {
 				break;
 			}
 
-			//Lock.lock();
 			std::shared_ptr<File> ToLoad = FileLoadQueue.front();
 			FileLoadQueue.pop();
-			//Lock.unlock();
 
 			OTR->LoadFile(ToLoad->path, true, ToLoad);
-			//Lock.lock();
 
-			if (!ToLoad->bHasLoadError)
+			if (!ToLoad->bHasLoadError) {
 				FileCache[ToLoad->path] = ToLoad->bIsLoaded && !ToLoad->bHasLoadError ? ToLoad : nullptr;
+			}
 
-			//Lock.unlock();
-
-			SPDLOG_DEBUG("Loaded File {} on ResourceMgr thread", ToLoad->path);
+			SPDLOG_TRACE("Loaded File {} on ResourceMgr thread", ToLoad->path);
 
 			ToLoad->FileLoadNotifier.notify_all();
 		}
@@ -117,10 +127,8 @@ namespace Ship {
 			}
 
 			std::shared_ptr<ResourcePromise> ToLoad = nullptr;
-			//ResLock.lock();
 			ToLoad = ResourceLoadQueue.front();
 			ResourceLoadQueue.pop();
-			//ResLock.unlock();
 
 			// Wait for the underlying File to complete loading
 			{
@@ -130,12 +138,10 @@ namespace Ship {
 				}
 			}
 
-			if (!ToLoad->file->bHasLoadError)
-			{
+			if (!ToLoad->file->bHasLoadError) {
 				auto UnmanagedRes = ResourceLoader::LoadResource(ToLoad->file);
 
-				if (UnmanagedRes != nullptr)
-				{
+				if (UnmanagedRes != nullptr) {
 					UnmanagedRes->resMgr = this;
 					auto Res = std::shared_ptr<Resource>(UnmanagedRes);
 
@@ -146,26 +152,17 @@ namespace Ship {
 						ToLoad->resource = Res;
 						ResourceCache[Res->file->path] = Res;
 
-						SPDLOG_DEBUG("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
+						SPDLOG_TRACE("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
 
-						// Disabled for now because it can cause random crashes
-						//FileCache[Res->File->path] = nullptr;
-						//FileCache.erase(FileCache.find(Res->File->path));
 						Res->file = nullptr;
-					}
-					else {
+					} else {
 						ToLoad->bHasResourceLoaded = false;
 						ToLoad->resource = nullptr;
 
 						SPDLOG_ERROR("Resource load FAILED {} on ResourceMgr thread", ToLoad->file->path);
 					}
-
-					//ResLock.lock();
-					//ResLock.unlock();
 				}
-			}
-			else
-			{
+			} else {
 				ToLoad->bHasResourceLoaded = false;
 				ToLoad->resource = nullptr;
 			}
@@ -176,15 +173,21 @@ namespace Ship {
 		SPDLOG_INFO("Resource Manager LoadResourceThread ended");
 	}
 
-	uint32_t ResourceMgr::GetGameVersion()
-	{
+	uint32_t ResourceMgr::GetGameVersion() {
 		return gameVersion;
 	}
 
-	void ResourceMgr::SetGameVersion(uint32_t newGameVersion)
-	{
+	void ResourceMgr::SetGameVersion(uint32_t newGameVersion) {
 		gameVersion = newGameVersion;
 	}
+
+    std::vector<uint32_t> ResourceMgr::GetGameVersions() {
+        return OTR->gameVersions;
+    }
+
+    void ResourceMgr::PushGameVersion(uint32_t newGameVersion) {
+        OTR->gameVersions.push_back(newGameVersion);
+    }
 
 	std::shared_ptr<File> ResourceMgr::LoadFileAsync(const std::string& FilePath) {
 		const std::lock_guard<std::mutex> Lock(FileLoadMutex);
@@ -219,24 +222,23 @@ namespace Ship {
 		auto resCacheFind = ResourceCache.find(FilePath);
 
 		if (resCacheFind != ResourceCache.end() &&
-			resCacheFind->second.use_count() > 0)
-		{
+			resCacheFind->second.use_count() > 0) {
 			return resCacheFind->second;
-		}
-		else
+		} else {
 			return nullptr;
+		}
 	}
 
 	std::shared_ptr<Resource> ResourceMgr::LoadResource(const char* FilePath) {
 		auto Res = LoadResourceAsync(FilePath);
 
-		if (std::holds_alternative<std::shared_ptr<Resource>>(Res))
+		if (std::holds_alternative<std::shared_ptr<Resource>>(Res)) {
 			return std::get<std::shared_ptr<Resource>>(Res);
+		}
 
 		auto& Promise = std::get<std::shared_ptr<ResourcePromise>>(Res);
 
-		if (!Promise->bHasResourceLoaded)
-		{
+		if (!Promise->bHasResourceLoaded) {
 			std::unique_lock<std::mutex> Lock(Promise->resourceLoadMutex);
 			while (!Promise->bHasResourceLoaded) {
 				Promise->resourceLoadNotifier.wait(Lock);
@@ -247,8 +249,9 @@ namespace Ship {
 	}
 
 	std::variant<std::shared_ptr<Resource>, std::shared_ptr<ResourcePromise>> ResourceMgr::LoadResourceAsync(const char* FilePath) {
-		if (FilePath[0] == '_' && FilePath[1] == '_' && FilePath[2] == 'O' && FilePath[3] == 'T' && FilePath[4] == 'R' && FilePath[5] == '_' && FilePath[6] == '_')
+		if (FilePath[0] == '_' && FilePath[1] == '_' && FilePath[2] == 'O' && FilePath[3] == 'T' && FilePath[4] == 'R' && FilePath[5] == '_' && FilePath[6] == '_') {
 			FilePath += 7;
+		}
 
 		const std::lock_guard<std::mutex> ResLock(ResourceLoadMutex);
 		auto resCacheFind = ResourceCache.find(FilePath);
@@ -261,21 +264,16 @@ namespace Ship {
 			std::shared_ptr<File> FileData = LoadFile(FilePath);
 			Promise->file = FileData;
 
-			if (Promise->file->bHasLoadError)
-			{
+			if (Promise->file->bHasLoadError) {
 				Promise->bHasResourceLoaded = true;
-			}
-			else
-			{
+			} else {
 				Promise->bHasResourceLoaded = false;
 				ResourceLoadQueue.push(Promise);
 				ResourceLoadNotifier.notify_all();
 			}
 
 			return Promise;
-		}
-		else
-		{
+		} else {
 			return resCacheFind->second;
 		}
 	}
@@ -286,8 +284,7 @@ namespace Ship {
 
 		for (DWORD i = 0; i < fileList.size(); i++) {
 			auto resource = LoadResourceAsync(fileList.operator[](i).cFileName);
-			if (std::holds_alternative<std::shared_ptr<Resource>>(resource))
-			{
+			if (std::holds_alternative<std::shared_ptr<Resource>>(resource)) {
 				auto promise = std::make_shared<ResourcePromise>();
 				promise->bHasResourceLoaded = true;
 				promise->resource = std::get<std::shared_ptr<Resource>>(resource);
@@ -317,8 +314,7 @@ namespace Ship {
 		return LoadedList;
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::DirtyDirectory(std::string SearchMask)
-	{
+	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::DirtyDirectory(const std::string& SearchMask) {
 		auto PromiseList = CacheDirectoryAsync(SearchMask);
 		auto LoadedList = std::make_shared<std::vector<std::shared_ptr<Resource>>>();
 
@@ -330,8 +326,9 @@ namespace Ship {
 				Promise->resourceLoadNotifier.wait(Lock);
 			}
 
-			if (Promise->resource != nullptr)
+			if (Promise->resource != nullptr) {
 				Promise->resource->isDirty = true;
+			}
 
 			LoadedList->push_back(Promise->resource);
 		}
@@ -339,8 +336,7 @@ namespace Ship {
 		return LoadedList;
 	}
 
-	std::shared_ptr<std::vector<std::string>> ResourceMgr::ListFiles(std::string SearchMask)
-	{
+	std::shared_ptr<std::vector<std::string>> ResourceMgr::ListFiles(std::string SearchMask) {
 		auto result = std::make_shared<std::vector<std::string>>();
 		auto fileList = OTR->ListFiles(SearchMask);
 
@@ -358,4 +354,17 @@ namespace Ship {
 	const std::string* ResourceMgr::HashToString(uint64_t Hash) const {
 		return OTR->HashToString(Hash);
 	}
+
+	std::shared_ptr<Archive> ResourceMgr::GetArchive() {
+		return OTR;
+	}
+
+	std::shared_ptr<Window> ResourceMgr::GetContext() {
+		return Context;
+	}
+
+	std::shared_ptr<Resource> ResourceMgr::LoadResource(const std::string& FilePath) {
+		return LoadResource(FilePath.c_str());
+	}
+
 }

@@ -333,6 +333,9 @@ s32 func_80B0C9F0(EnSw* this, GlobalContext* globalCtx) {
             }
             Enemy_StartFinishingBlow(globalCtx, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
+                if (CVar_GetS32("gGsCutscene", 0)) {
+                    OnePointCutscene_Init(globalCtx, 2200, 90, &this->actor, MAIN_CAM);
+                }
                 this->skelAnime.playSpeed = 8.0f;
                 if ((globalCtx->state.frames & 1) == 0) {
                     this->unk_420 = 0.1f;
@@ -613,9 +616,9 @@ void func_80B0D878(EnSw* this, GlobalContext* globalCtx) {
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
-        temp_v0 =
-            Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI, this->actor.world.pos.x + x,
-                               this->actor.world.pos.y + y, this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
+        temp_v0 = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI,
+                                        this->actor.world.pos.x + x, this->actor.world.pos.y + y,
+                                        this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
         if (temp_v0 != NULL) {
             temp_v0->parent = NULL;
         }
@@ -655,7 +658,7 @@ void func_80B0DB00(EnSw* this, GlobalContext* globalCtx) {
         }
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 16.0f, 0xC, 2.0f, 0x78, 0xA, 0);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, 16.0f, 12, 2.0f, 120, 10, false);
     }
 }
 

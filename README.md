@@ -4,7 +4,7 @@ A PC port of OoT allowing you to enjoy the game with modern controls, widescreen
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
-## Quick Start
+## Quick Start (Windows)
 
 1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
 2) Requires a supported copy of the game (See supported games below).
@@ -24,6 +24,13 @@ sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
 sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
+#### Ocarina of Time Debug PAL GC MQ (Dungeons will be Master Quest)
+```
+Build team: `zelda@srd022j`
+Build date: `03-02-21 00:16:31` (year-month-day)
+sha1: 079b855b943d6ad8bd1eb026c0ed169ecbdac7da (Produced by decomp)
+sha1: 50bebedad9e0f10746a52b07239e47fa6c284d03 (Alternate)
+```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
@@ -31,16 +38,47 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
 The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film character followed by a phonetic alphabet code word. The film character represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, `DECKARD ALFA`.
 
-### The Extraction Tool
+### Windows Rom Extraction
 
-* Open a rom to initiate generating the `oot.otr` archive file.
-* If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
+* Open OTRGui.exe, and select one of the supported roms listed above, to generate the `oot.otr` archive file.
+* If a second button already exits then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
 This packaging process can take up to **5 minutes**.
 
 Close the OTRGui when the `Done!` message appears.
 If you get another message, then you might have selected the wrong rom. Make sure to use a rom consistent with the above checksum.
+
+### Linux Rom Extraction
+
+* Place one of the supported roms in the same folder as the appimage.
+* When you run the soh appimage, it should begin generating the `oot.otr` archive file.
+* When the process completes, place `oot.otr` in the same folder as the appimage, if it is not already, then run the appimage.
+
+The packaging process can take up to **5 minutes**.
+
+If you get any errors, then you might have selected the wrong rom. Make sure to use a rom consistent with the above checksum.
+
+### MacOS Rom Extraction
+
+* Run `soh.app`, and when prompted, select one of the supported roms listed above.
+* You should see a notification saying `Processing OTR`, then, once the process is complete, you should get a notification saying `OTR Successfully Generated`, then the game should start.
+
+The packing process can take up to **5 minutes**.
+
+If you get an error saying `Incompatible ROM hash`, you have selected the wrong rom, make sure the checksum matches one of the ones listed above.
+
+### Nintendo Switch Rom Extraction
+
+* Download the latest PC release of the Ship of Harkinian, and follow the instructions above for generating the `oot.otr` archive on that platform.
+* Place the `.nro` and the `oot.otr` archive into a folder called `soh` in your Switch folder on your Switch
+
+### Nintendo Wii U Rom Extraction
+
+* Download the latest PC release of the Ship of Harkinian, and follow the instructions above for generating the `oot.otr` archive on that platform.
+* Copy the `.rpx` and the `oot.otr` archive to `wiiu/apps/soh`
+
+---
 
 If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
 
@@ -123,7 +161,8 @@ Nightly builds of Ship of Harkinian are available [here](https://builds.shipofha
 	
 ## Video Credits
     Kenix | Producer / Writer
-	rainbow_fash | Executive Producer
+    briaguya | Writer
+    rainbow_fash | Executive Producer
     ReveriePass | Editor
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link

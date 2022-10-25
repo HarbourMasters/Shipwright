@@ -1,0 +1,20 @@
+<Root>
+    
+    <File Name="object_ps" Segment="6">
+        <Animation Name="gPoeSellerIdleAnim" Offset="0x049C"/>
+        <Texture Name="gPoeSellerMetalFrameTex" OutName="poe_seller_metal_frame" Format="rgba16" Width="8" Height="8" Offset="0x5A80"/>
+        <Texture Name="gPoeSellerMattressTex" OutName="poe_seller_mattress" Format="rgba16" Width="8" Height="8" Offset="0x5B00"/>
+        <Texture Name="gPoeSellerClothTex" OutName="poe_seller_cloth" Format="rgba16" Width="32" Height="32" Offset="0x5B80"/>
+        <Texture Name="gPoeSellerCarpetTex" OutName="poe_seller_carpet" Format="rgba16" Width="16" Height="16" Offset="0x6380"/>
+        <Texture Name="gPoeSellerBottleLabelTex" OutName="poe_seller_bottle_label" Format="rgba16" Width="16" Height="16" Offset="0x6580"/>
+        <Texture Name="gPoeSellerWoodenPanelTex" OutName="poe_seller_wooden_panel" Format="rgba16" Width="32" Height="32" Offset="0x6780"/>
+        <Texture Name="gPoeSellerLanternTex" OutName="poe_seller_lantern" Format="rgba16" Width="16" Height="16" Offset="0x6F80"/>
+        <Texture Name="gPoeSellerAngrySoulTex" OutName="poe_seller_angry_soul" Format="i8" Width="32" Height="64" Offset="0xA870"/>
+        <Texture Name="gPoeSellerHappySoulTex" OutName="poe_seller_happy_soul" Format="i8" Width="32" Height="64" Offset="0xB070"/>
+        <Texture Name="gPoeSellerSadSoulTex" OutName="poe_seller_sad_soul" Format="i8" Width="32" Height="64" Offset="0xB870"/>
+        <DList Name="gPoeSellerCagedSoulDL" Offset="0xC0B0"/>
+        <Skeleton Name="gPoeSellerSkel" Type="Flex" LimbType="Standard" Offset="0xC220"/>
+        <Collision Name="gPoeSellerCol" Offset="0xC2D0"/>
+        <Animation Name="gPoeSellerSwingStickAnim" Offset="0xC8EC"/>
+    </File>
+</Root>

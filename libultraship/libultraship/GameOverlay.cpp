@@ -4,15 +4,48 @@
 #include "File.h"
 #include "Archive.h"
 #include "ResourceMgr.h"
-#include "Console.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "Utils/StringHelper.h"
 
 namespace Ship {
+	bool GameOverlay::OverlayCommand(std::shared_ptr<Console> Console, const std::vector<std::string>& args) {
+		if (args.size() < 3) {
+			return CMD_FAILED;
+		}
+
+		if (CVar_Get(args[2].c_str()) != nullptr) {
+			const char* key = args[2].c_str();
+			GameOverlay* overlay = SohImGui::GetGameOverlay();
+			if (args[1] == "add") {
+				if (!overlay->RegisteredOverlays.contains(key)) {
+					overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
+                    SohImGui::GetConsole()->SendInfoMessage("Added overlay: %s", key);
+				}
+				else {
+                    SohImGui::GetConsole()->SendErrorMessage("Overlay already exists: %s", key);
+				}
+			}
+			else if (args[1] == "remove") {
+				if (overlay->RegisteredOverlays.contains(key)) {
+					overlay->RegisteredOverlays.erase(key);
+                    SohImGui::GetConsole()->SendInfoMessage("Removed overlay: %s", key);
+				}
+				else {
+                    SohImGui::GetConsole()->SendErrorMessage("Overlay not found: %s", key);
+				}
+			}
+		}
+		else {
+            SohImGui::GetConsole()->SendErrorMessage("CVar {} does not exist", args[2].c_str());
+		}
+
+		return CMD_SUCCESS;
+	}
+
 	void GameOverlay::LoadFont(const std::string& name, const std::string& path, float fontSize) {
 		ImGuiIO& io = ImGui::GetIO();
-		std::shared_ptr<Archive> base = GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive();
+		std::shared_ptr<Archive> base = Window::GetInstance()->GetResourceManager()->GetArchive();
 		std::shared_ptr<File> font = std::make_shared<File>();
 		base->LoadFile(path, false, font);
 		if (font->bIsLoaded) {
@@ -91,7 +124,7 @@ namespace Ship {
 		else
 			text_display_end = text_end;
 
-		GameOverlay* overlay = SohImGui::overlay;
+		GameOverlay* overlay = SohImGui::GetGameOverlay();
 
 		ImFont* font = overlay->CurrentFont == "Default" ? g.Font : overlay->Fonts[overlay->CurrentFont];
 		const float font_size = font->FontSize;
@@ -123,7 +156,8 @@ namespace Ship {
 				this->CurrentFont = DefaultFont;
 			}
 		}
-		SohImGui::console->Commands["overlay"] = { OverlayCommand, "Draw an overlay using a cvar value" };
+
+		SohImGui::GetConsole()->AddCommand("overlay", { OverlayCommand, "Draw an overlay using a cvar value" });
 	}
 
 	void GameOverlay::DrawSettings() {
@@ -133,7 +167,7 @@ namespace Ship {
 				if (ImGui::Selectable(name.c_str(), name == this->CurrentFont)) {
 					this->CurrentFont = name;
 					CVar_SetString("gOverlayFont", ImStrdup(name.c_str()));
-					SohImGui::needs_save = true;
+                    SohImGui::RequestCvarSaveOnNextTick();
 				}
 
 			}
@@ -186,49 +220,20 @@ namespace Ship {
 				const float duration = overlay->duration / overlay->fadeTime;
 
 				const ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, duration);
+			#ifdef __WIIU__
+				const float textWidth = this->GetStringWidth(overlay->value) * 2.0f;
+				const float textOffset = 40.0f * 2.0f;
+			#else
 				const float textWidth = this->GetStringWidth(overlay->value);
+				const float textOffset = 40.0f;
+			#endif
 
-				this->TextDraw(GetScreenWidth() - textWidth - 40, GetScreenHeight() - 40 - notY, true, color, text);
+				this->TextDraw(GetScreenWidth() - textWidth - textOffset, GetScreenHeight() - textOffset - notY, true, color, text);
 				notY += 30;
 				overlay->duration -= .05f;
 			}
 		}
 
 		ImGui::End();
-	}
-
-
-	bool OverlayCommand(const std::vector<std::string>& args) {
-		if (args.size() < 3) {
-			return CMD_FAILED;
-		}
-
-		if (CVar_Get(args[2].c_str()) != nullptr) {
-			const char* key = args[2].c_str();
-			GameOverlay* overlay = SohImGui::overlay;
-			if (args[1] == "add") {
-				if (!overlay->RegisteredOverlays.contains(key)) {
-					overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
-					INFO("Added overlay: %s ", key);
-				}
-				else {
-					ERROR("Overlay already exists: %s", key);
-				}
-			}
-			else if (args[1] == "remove") {
-				if (overlay->RegisteredOverlays.contains(key)) {
-					overlay->RegisteredOverlays.erase(key);
-					INFO("Removed overlay: %s ", key);
-				}
-				else {
-					ERROR("Overlay not found: %s ", key);
-				}
-			}
-		}
-		else {
-			ERROR("CVar %s does not exist", args[2].c_str());
-		}
-
-		return CMD_SUCCESS;
 	}
 }

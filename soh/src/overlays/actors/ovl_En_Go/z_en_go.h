@@ -34,7 +34,7 @@ typedef struct {
     /* 0x0014 */ Vec3f pos;
     /* 0x0020 */ Vec3f velocity;
     /* 0x002C */ Vec3f accel;
-    s32 epoch;
+    u32 epoch;
 } EnGoEffect; // size = 0x38
 
 typedef struct EnGo {

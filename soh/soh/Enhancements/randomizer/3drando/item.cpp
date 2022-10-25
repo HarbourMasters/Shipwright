@@ -9,9 +9,10 @@
 #include "settings.hpp"
 #include "z64item.h"
 
-Item::Item(Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_, uint32_t hintKey_,
            uint16_t price_)
-    : name(std::move(name_)),
+    : randomizerGet(randomizerGet_),
+      name(std::move(name_)),
       type(type_),
       getItemId(getItemId_),
       advancement(advancement_),
@@ -19,9 +20,10 @@ Item::Item(Text name_, ItemType type_, int getItemId_, bool advancement_, bool* 
       hintKey(hintKey_),
       price(price_) {}
 
-Item::Item(Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, uint8_t* logicVar_, uint32_t hintKey_,
            uint16_t price_)
-    : name(std::move(name_)),
+    : randomizerGet(randomizerGet_),
+      name(std::move(name_)),
       type(type_),
       getItemId(getItemId_),
       advancement(advancement_),

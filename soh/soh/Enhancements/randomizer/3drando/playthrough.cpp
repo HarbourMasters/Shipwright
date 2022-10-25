@@ -10,7 +10,7 @@
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
+int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
@@ -21,7 +21,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     HintReset();
     Areas::AccessReset();
 
-    Settings::UpdateSettings(cvarSettings);
+    Settings::UpdateSettings(cvarSettings, excludedLocations);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
     for (Menu* menu : Settings::GetAllOptionMenus()) {
@@ -39,6 +39,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     }
     unsigned int finalHash = std::hash<std::string>{}(Settings::seed + settingsStr);
     Random_Init(finalHash);
+    Settings::hash = std::to_string(finalHash);
 
     Logic::UpdateHelpers();
 

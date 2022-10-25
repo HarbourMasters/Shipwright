@@ -5,6 +5,7 @@
 #include "z64animation.h"
 #include "z64math.h"
 #include "z64collision_check.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define ACTOR_NUMBER_MAX 2000
 #define INVISIBLE_ACTOR_MAX 20
@@ -79,7 +80,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ DamageTable* damageTable;
-    /* 0x04 */ Vec3f displacement; // Amount to correct velocity (0x5C) by when colliding into a body
+    /* 0x04 */ Vec3f displacement; // Amount to correct actor velocity by when colliding into a body
     /* 0x10 */ s16 cylRadius; // Used for various purposes
     /* 0x12 */ s16 cylHeight; // Used for various purposes
     /* 0x14 */ s16 cylYShift; // Unused. Purpose inferred from Cylinder16 and CollisionCheck_CylSideVsLineSeg
@@ -158,7 +159,7 @@ typedef struct Actor {
     /* 0x084 */ f32 yDistToWater; // Distance to the surface of active waterbox. Negative value means above water
     /* 0x088 */ u16 bgCheckFlags; // See comments below actor struct for wip docs. TODO: macros for these flags
     /* 0x08A */ s16 yawTowardsPlayer; // Y rotation difference between the actor and the player
-    /* 0x08C */ f32 xyzDistToPlayerSq; // Squared distance between the actor and the player in the x,y,z axis
+    /* 0x08C */ f32 xyzDistToPlayerSq; // Squared distance between the actor and the player
     /* 0x090 */ f32 xzDistToPlayer; // Distance between the actor and the player in the XZ plane
     /* 0x094 */ f32 yDistToPlayer; // Dist is negative if the actor is above the player
     /* 0x098 */ CollisionCheckInfo colChkInfo; // Variables related to the Collision Check system
@@ -271,7 +272,8 @@ typedef enum {
     /* 0x16 */ ITEM00_SHIELD_HYLIAN,
     /* 0x17 */ ITEM00_TUNIC_ZORA,
     /* 0x18 */ ITEM00_TUNIC_GORON,
-    /* 0x19 */ ITEM00_BOMBS_SPECIAL
+    /* 0x19 */ ITEM00_BOMBS_SPECIAL,
+    /* 0x20 */ ITEM00_BOMBCHU,
 } Item00Type;
 
 struct EnItem00;
@@ -290,6 +292,7 @@ typedef struct EnItem00 {
     /* 0x15C */ f32 scale;
     /* 0x160 */ ColliderCylinder collider;
     s16 ogParams;
+    GetItemEntry randoGiEntry;
 } EnItem00; // size = 0x1AC
 
 // Only A_OBJ_SIGNPOST_OBLONG and A_OBJ_SIGNPOST_ARROW are used in room files.
@@ -338,7 +341,8 @@ typedef enum {
     /* 0x08 */ ACTORCAT_MISC,
     /* 0x09 */ ACTORCAT_BOSS,
     /* 0x0A */ ACTORCAT_DOOR,
-    /* 0x0B */ ACTORCAT_CHEST
+    /* 0x0B */ ACTORCAT_CHEST,
+    /* 0x0C */ ACTORCAT_MAX
 } ActorCategory;
 
 //#define DEFINE_ACTOR(_0, enum, _2) enum,
@@ -346,10 +350,14 @@ typedef enum {
 #define DEFINE_ACTOR_UNSET(enum) enum,
 #define DEFINE_ACTOR(_0, enum, _2) DEFINE_ACTOR_INTERNAL(_0, enum, _2)
 
-typedef enum {
+#ifdef __cplusplus
+enum ActorID : int {
+#else
+enum ActorID {
+#endif
     #include "tables/actor_table.h"
     /* 0x0192 */ ACTOR_ID_MAX // originally "ACTOR_DLF_MAX"
-} ActorID;
+};
 
 #undef DEFINE_ACTOR
 #undef DEFINE_ACTOR_INTERNAL

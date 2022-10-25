@@ -472,6 +472,10 @@ void EnDog_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 void EnDog_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDog* this = (EnDog*)thisx;
     Color_RGBA8 colors[] = { { 255, 255, 200, 0 }, { 150, 100, 50, 0 } };
+    Color_RGB8 Dog1_ori = {colors[0].r, colors[0].g, colors[0].b};
+    Color_RGB8 Dog2_ori = {colors[1].r, colors[1].g, colors[1].b};
+    Color_RGB8 Dog1 = CVar_GetRGB("gDog1Col", Dog1_ori);
+    Color_RGB8 Dog2 = CVar_GetRGB("gDog2Col", Dog2_ori);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -479,19 +483,19 @@ void EnDog_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     if (CVar_GetS32("gUseDogsCol",0)) {
-        colors[0].r = CVar_GetS32("gDog1ColR", 255);
-        colors[0].g = CVar_GetS32("gDog1ColG", 255);
-        colors[0].b = CVar_GetS32("gDog1ColB", 200);
-        colors[1].r = CVar_GetS32("gDog2ColR", 150);
-        colors[1].g = CVar_GetS32("gDog2ColG", 100);
-        colors[1].b = CVar_GetS32("gDog2ColB", 50);
+        colors[0].r = Dog1.r;
+        colors[0].g = Dog1.g;
+        colors[0].b = Dog1.b;
+        colors[1].r = Dog2.r;
+        colors[1].g = Dog2.g;
+        colors[1].b = Dog2.b;
     } else {
-        colors[0].r = 255;
-        colors[0].g = 255;
-        colors[0].b = 200;
-        colors[1].r = 150;
-        colors[1].g = 100;
-        colors[1].b = 50;
+        colors[0].r = Dog1_ori.r;
+        colors[0].g = Dog1_ori.g;
+        colors[0].b = Dog1_ori.b;
+        colors[1].r = Dog2_ori.r;
+        colors[1].g = Dog2_ori.g;
+        colors[1].b = Dog2_ori.b;
     }
     gDPSetEnvColor(POLY_OPA_DISP++, colors[this->actor.params & 0xF].r, colors[this->actor.params & 0xF].g,
                    colors[this->actor.params & 0xF].b, colors[this->actor.params & 0xF].a);
