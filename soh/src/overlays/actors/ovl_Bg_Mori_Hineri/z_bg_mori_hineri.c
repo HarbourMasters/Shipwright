@@ -140,7 +140,9 @@ void func_808A39FC(BgMoriHineri* this, GlobalContext* globalCtx) {
             colHeader = NULL;
             this->dyna.actor.draw = BgMoriHineri_DrawHallAndRoom;
             if (this->dyna.actor.params == 0) {
-                this->actionFunc = func_808A3C8C;
+                // In vanilla this actionFunc is set to func_808A3C8C, and the boss key chest is rendered from scratch in BgMoriHineri_DrawHallAndRoom
+                // In SOH we instead spawn the en_box actor, which allows the rendering to be handled consistently with the rest of the chests in the game
+                this->actionFunc = BgMoriHineri_SpawnBossKeyChest;
                 CollisionHeader_GetVirtual(&object_mori_hineri1_Col_0054B8, &colHeader);
             } else if (this->dyna.actor.params == 1) {
                 this->actionFunc = BgMoriHineri_SpawnBossKeyChest;
@@ -161,9 +163,15 @@ void BgMoriHineri_DoNothing(BgMoriHineri* this, GlobalContext* globalCtx) {
 }
 
 void BgMoriHineri_SpawnBossKeyChest(BgMoriHineri* this, GlobalContext* globalCtx) {
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOX, this->dyna.actor.world.pos.x + 147.0f,
-                this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0, 0x27EE);
-    this->actionFunc = BgMoriHineri_DoNothing;
+    if (this->dyna.actor.params == 0) {
+        Object_Spawn(&globalCtx->objectCtx, OBJECT_BOX);
+        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOX, -1515.0f, 1440.0f,  -3475.0f, -0x4000, 0x4000, 0, 0x27EE);
+        this->actionFunc = func_808A3C8C;
+    } else {
+        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOX, this->dyna.actor.world.pos.x + 147.0f,
+                    this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0, 0x27EE);
+        this->actionFunc = BgMoriHineri_DoNothing;
+    }
 }
 
 void func_808A3C8C(BgMoriHineri* this, GlobalContext* globalCtx) {
@@ -254,29 +262,6 @@ void BgMoriHineri_DrawHallAndRoom(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDungeonDoorDL);
-    }
-    if ((this->boxObjIdx > 0) && ((this->boxObjIdx = Object_GetIndex(&globalCtx->objectCtx, OBJECT_BOX)) > 0) &&
-        Object_IsLoaded(&globalCtx->objectCtx, this->boxObjIdx)) {
-        gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->boxObjIdx].segment);
-        gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
-        Matrix_Put(&mtx);
-        Matrix_Translate(147.0f, -245.0f, -453.0f, MTXMODE_APPLY);
-        Matrix_RotateY(M_PI / 2, MTXMODE_APPLY);
-        Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gTreasureChestBossKeyChestFrontDL);
-        Matrix_Put(&mtx);
-        Matrix_Translate(167.0f, -218.0f, -453.0f, MTXMODE_APPLY);
-        if (Flags_GetTreasure(globalCtx, 0xE)) {
-            Matrix_RotateZ(0x3500 * (M_PI / 0x8000), MTXMODE_APPLY);
-        } else {
-            Matrix_RotateZ(M_PI, MTXMODE_APPLY);
-        }
-        Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gTreasureChestBossKeyChestSideAndTopDL);
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

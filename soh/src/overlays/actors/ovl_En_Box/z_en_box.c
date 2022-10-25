@@ -185,6 +185,11 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
     EnBox_UpdateSizeAndTexture(this, globalCtx);
+    // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
+    // key chest, and it's up on the wall so disable gravity for it.
+    if (globalCtx->sceneNum == SCENE_BMORI1 && this->dyna.actor.params == 10222) {
+        this->movementFlags = ENBOX_MOVE_IMMOBILE;
+    }
 }
 
 void EnBox_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -606,9 +611,12 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
-    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0)) {
-        EnBox_CreateExtraChestTextures();
-        GetItemEntry getItemEntry = GET_ITEM_NONE;
+    EnBox_CreateExtraChestTextures();
+    int cvar = CVar_GetS32("gChestSizeAndTextureMatchesContents", 0);
+    GetItemCategory getItemCategory;
+
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && cvar > 0) {
+         GetItemEntry getItemEntry = GET_ITEM_NONE;
 
         if (gSaveContext.n64ddFlag) {
             getItemEntry = Randomizer_GetItemFromActorWithoutObtainabilityCheck(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
@@ -616,12 +624,14 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
             getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
         }
 
-        GetItemCategory getItemCategory = getItemEntry.getItemCategory;
+        getItemCategory = getItemEntry.getItemCategory;
         // If they don't have bombchu's yet consider the bombchu item major
         if (getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
             getItemCategory = ITEM_CATEGORY_MAJOR;
         }
+    }
 
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 3)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
@@ -634,7 +644,22 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
                 Actor_SetFocus(&this->dyna.actor, 40.0f);
                 break;
         }
+    } else {
+        switch (this->type) {
+            case ENBOX_TYPE_SMALL:
+            case ENBOX_TYPE_6:
+            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
+            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                Actor_SetFocus(&this->dyna.actor, 20.0f);
+                break;
+            default:
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                Actor_SetFocus(&this->dyna.actor, 40.0f);
+        }
+    }
 
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 2)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -660,19 +685,6 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
                 break;
         }
     } else {
-        switch (this->type) {
-            case ENBOX_TYPE_SMALL:
-            case ENBOX_TYPE_6:
-            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
-            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
-                Actor_SetScale(&this->dyna.actor, 0.005f);
-                Actor_SetFocus(&this->dyna.actor, 20.0f);
-                break;
-            default:
-                Actor_SetScale(&this->dyna.actor, 0.01f);
-                Actor_SetFocus(&this->dyna.actor, 40.0f);
-        }
-
         if (this->type != ENBOX_TYPE_DECORATED_BIG) {
             this->boxBodyDL = gTreasureChestChestFrontDL;
             this->boxLidDL = gTreasureChestChestSideAndLidDL;

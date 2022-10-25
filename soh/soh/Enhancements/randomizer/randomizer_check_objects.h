@@ -1,8 +1,11 @@
 #pragma once
 #include "randomizerTypes.h"
 #include <string>
-#include <vector>
 #include <map>
+
+// Forward Declarations to avoid duplicate definition issues
+enum ActorID : int;
+enum SceneID : int;
 
 // Check types based on main settings
 typedef enum {
@@ -64,11 +67,20 @@ typedef enum {
     RCAREA_INVALID
 } RandomizerCheckArea;
 
+#define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+
+#define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
+    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
+
 typedef struct {
     RandomizerCheck rc;
     RandomizerCheckVanillaOrMQ vOrMQ;
     RandomizerCheckType rcType;
     RandomizerCheckArea rcArea;
+    ActorID actorId;
+    SceneID sceneId;
+    int32_t actorParams;
+    GetItemID ogItemId;
     bool visibleInImgui;
     std::string rcShortName;
     std::string rcSpoilerName;
@@ -78,6 +90,7 @@ namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);
     bool AreaIsOverworld(RandomizerCheckArea area);
     std::string GetRCAreaName(RandomizerCheckArea area);
-    std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> GetAllRCObjects();
+    std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
+    std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
     void UpdateImGuiVisibility();
 }

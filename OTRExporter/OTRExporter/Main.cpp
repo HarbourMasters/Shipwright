@@ -91,8 +91,17 @@ static void ExporterProgramEnd()
 		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
 
 		for (auto item : files) {
+			std::string fName = item.first;
+			if (fName.find("gTitleZeldaShieldLogoMQTex") != std::string::npos && !ZRom(romPath).IsMQ())
+			{
+				size_t pos = 0;
+				if ((pos = fName.find("gTitleZeldaShieldLogoMQTex", 0)) != std::string::npos)
+				{
+					fName.replace(pos, 27, "gTitleZeldaShieldLogoTex");
+				}
+			}
 			auto fileData = item.second;
-			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(),
+			otrArchive->AddFile(fName, (uintptr_t)fileData.data(),
 		                      fileData.size());
 		}
 

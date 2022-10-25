@@ -125,7 +125,7 @@ OTRGlobals::OTRGlobals() {
     for (uint32_t version : versions) {
         if (!ValidHashes.contains(version)) {
 #if defined(__SWITCH__)
-            printf("Invalid OTR File!\n");
+            SPDLOG_ERROR("Invalid OTR File!");
 #elif defined(__WIIU__)
             Ship::WiiU::ThrowInvalidOTR();
 #else
@@ -372,11 +372,11 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_BLUE_FIRE,        OBJECT_GI_FIRE,          GID_BLUE_FIRE,        0x5D, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BLUE_FIRE),
         GET_ITEM(ITEM_POE,              OBJECT_GI_GHOST,         GID_POE,              0x97, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POE),
         GET_ITEM(ITEM_BIG_POE,          OBJECT_GI_GHOST,         GID_BIG_POE,          0xF9, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BIG_POE),
-        GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_DOOR_KEY),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_RUPEE_GREEN_LOSE),
-        GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_RUPEE_BLUE_LOSE),
-        GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_RUPEE_RED_LOSE),
-        GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_RUPEE_PURPLE_LOSE),
+        GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,       MOD_NONE, GI_DOOR_KEY),
+        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_RUPEE_GREEN_LOSE),
+        GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE_LOSE),
+        GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED_LOSE),
+        GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE_LOSE),
         GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xFA, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_PIECE_WIN),
         GET_ITEM(ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK,         GID_STICK,            0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_20),
         GET_ITEM(ITEM_STICK_UPGRADE_30, OBJECT_GI_STICK,         GID_STICK,            0x91, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_30),
@@ -641,7 +641,7 @@ extern "C" uint32_t ResourceMgr_GetGameVersion()
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
-uint32_t IsGameMasterQuest() {
+uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
     if (OTRGlobals::Instance->HasMasterQuest()) {
         if (!OTRGlobals::Instance->HasOriginal()) {
@@ -652,7 +652,7 @@ uint32_t IsGameMasterQuest() {
             value = 0;
             if (gSaveContext.n64ddFlag) {
                 if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(gGlobalCtx->sceneNum)) {
+                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                         value = 1;
                     }
                 }
@@ -662,12 +662,20 @@ uint32_t IsGameMasterQuest() {
     return value;
 }
 
+uint32_t IsGameMasterQuest() {
+    return gGlobalCtx != NULL ? IsSceneMasterQuest(gGlobalCtx->sceneNum) : 0;
+}
+
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
     return OTRGlobals::Instance->HasMasterQuest();
 }
 
 extern "C" uint32_t ResourceMgr_GameHasOriginal() {
     return OTRGlobals::Instance->HasOriginal();
+}
+
+extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum) {
+    return IsSceneMasterQuest(sceneNum);
 }
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
@@ -800,7 +808,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 }
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
-    return Randomizer::GetSeedTexture(index);
+    return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
@@ -1767,6 +1775,41 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
+extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
+    std::string postfix;
+
+    if (gSaveContext.language == LANGUAGE_FRA) {
+        postfix = "\x04\x1A\x08" "Désirez-vous l'équiper maintenant?" "\x09&&"
+                  "\x1B%g" "Oui" "&"
+                           "Non" "%w\x02";
+    } else if (gSaveContext.language == LANGUAGE_GER) {
+        postfix = "\x04\x1A\x08" "Möchtest Du es jetzt ausrüsten?" "\x09&&"
+                  "\x1B%g" "Ja!" "&"
+                           "Nein!" "%w\x02";
+    } else {
+        postfix = "\x04\x1A\x08" "Would you like to equip it now?" "\x09&&"
+                  "\x1B%g" "Yes" "&"
+                           "No" "%w\x02";
+    }
+    CustomMessageManager::Instance->FormatCustomMessage(postfix);
+    std::string str;
+    std::string FixedBaseStr(src);
+    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+
+    if (RemoveControlChar != std::string::npos) {
+        FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
+    }
+    str = FixedBaseStr + postfix;
+
+    if (!str.empty()) {
+        memset(buffer, 0, maxBufferSize);
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, str.length());
+        memcpy(buffer, str.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
+}
+
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
@@ -1799,7 +1842,7 @@ extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bo
     OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
 }
 
-extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
 
@@ -1817,6 +1860,10 @@ extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams,
 
 extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
+}
+
+extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
 }
 
 extern "C" CustomMessageEntry Randomizer_GetNaviMessage() {

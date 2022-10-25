@@ -204,7 +204,7 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
     SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
@@ -1227,7 +1227,7 @@ void SaveManager::SaveBase() {
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", ResourceMgr_IsGameMasterQuest());
+    SaveManager::Instance->SaveData("isMasterQuest", gSaveContext.isMasterQuest);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
