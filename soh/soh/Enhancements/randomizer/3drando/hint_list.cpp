@@ -2685,49 +2685,49 @@ void HintTable_Init() {
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be given %rfrom the start%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&possession %rmême du héros%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&possession %rmême du héros%w.",
               /*spanish*/ "Y obtendrás la llave del #señor del mal# desde el #inicio#." },
     });
 
     hintTable[GANON_BK_VANILLA_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be kept in a big chest&%rinside its tower%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&encoffrée %rdans sa tour%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&encoffrée %rdans sa tour%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en un gran cofre de #su torre#." },
     });
 
     hintTable[GANON_BK_OWN_DUNGEON_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden somewhere %rinside&its castle%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&cachée %rdans son vaste château%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&cachée %rdans son vaste château%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en #algún lugar de su castillo#." },
     });
 
     hintTable[GANON_BK_OVERWORLD_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden %routside of&dungeons%w in Hyrule.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve %rhors des donjons%w d'Hyrule.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve %rhors des donjons%w d'Hyrule.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará #fuera de las mazmorras# de Hyrule." },
     });
 
     hintTable[GANON_BK_ANY_DUNGEON_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden %rinside a&dungeon%w in Hyrule.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve %rdans un donjon%w d'Hyrule.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve %rdans un donjon%w d'Hyrule.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará #en una mazmorra# de Hyrule." },
     });
 
     hintTable[GANON_BK_ANYWHERE_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden somewhere&%rin Hyrule%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve quelque part %rdans Hyrule%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve quelque part %rdans Hyrule%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en #cualquier lugar de Hyrule#." },
     });
 
     hintTable[GANON_BK_TRIFORCE_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be given to the Hero once&the %rTriforce%w is completed.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&révèlera une fois la %rTriforce%w&assemblée.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&révèlera une fois la %rTriforce%w&assemblée.",
               /*spanish*/ "Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#." },
     });
 
@@ -2768,7 +2768,7 @@ void HintTable_Init() {
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
               "is|Spiritual Stones and Medallions%w&are| retrieved.",
               /*french*/
-              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou %d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales&et&Médaillons%w seront récupérés|.",
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou %d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales et&Médaillons%w seront récupérés|.",
               /*spanish*/
               "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras "
               "espirituales o medallones|#." },
