@@ -203,7 +203,7 @@ Color3b Ship::BinaryReader::ReadColor3b()
 std::string Ship::BinaryReader::ReadString()
 {
     std::string res;
-    int numChars = reader->ReadInt32();
+    int numChars = ReadInt32();
     for (int i = 0; i < numChars; i++) {
         res += reader->ReadChar();
     }

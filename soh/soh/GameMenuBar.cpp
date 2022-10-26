@@ -182,6 +182,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 0);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 0);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 0);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
@@ -344,6 +346,8 @@ namespace GameMenuBar {
 
         // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
 
@@ -410,6 +414,8 @@ namespace GameMenuBar {
         CVar_SetS32("gN64WeirdFrames", 1);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 1);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 1);
     }
 
     void applyEnhancementPresetEnhanced(void) {
@@ -437,6 +443,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 1);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 1);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
         // Always Win Goron Pot
@@ -805,6 +813,8 @@ namespace GameMenuBar {
                     );
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
+                    UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
+                    UIWidgets::Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                     UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
@@ -819,6 +829,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
+                    UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                     ImGui::EndMenu();
                 }
 

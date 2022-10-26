@@ -62,6 +62,7 @@ class Randomizer {
     void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
     std::string GetChildAltarText() const;
@@ -77,8 +78,8 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
+    CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     static void CreateCustomMessages();
-    static std::string RandomizeRupeeName(std::string message, int language);
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };

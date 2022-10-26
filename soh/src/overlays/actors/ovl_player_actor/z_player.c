@@ -12581,6 +12581,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     GetItemEntry giEntry;
     s32 temp1;
     s32 temp2;
+    static s32 equipItem;
+    static bool equipNow;
 
     if (this->getItemId == GI_NONE && this->getItemEntry.objectId == OBJECT_INVALID) {
         return 1;
@@ -12593,6 +12595,10 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             giEntry = this->getItemEntry;
         }
         this->unk_84F = 1;
+        equipItem = giEntry.itemId;
+        equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
+                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
+                    CVar_GetS32("gNoRestrictAge", 0));
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
@@ -12643,6 +12649,30 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             // Just in case something weird happens with modIndex.
             Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
         }
+    }
+    else if (equipNow && Message_ShouldAdvanceSilent(globalCtx) &&
+             Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
+        if (globalCtx->msgCtx.choiceIndex == 0) { // Equip now? Yes
+
+            if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
+                gSaveContext.equips.buttonItems[0] = equipItem;
+                Inventory_ChangeEquipment(EQUIP_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
+                func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
+
+            } else if (equipItem >= ITEM_SHIELD_DEKU && equipItem <= ITEM_SHIELD_MIRROR) {
+                Inventory_ChangeEquipment(EQUIP_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
+                func_808328EC(&this->actor, NA_SE_IT_SHIELD_REMOVE);
+                Player_SetEquipmentData(globalCtx, this);
+
+            } else if (equipItem == ITEM_TUNIC_GORON || equipItem == ITEM_TUNIC_ZORA) {
+                Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+                Player_SetEquipmentData(globalCtx, this);
+            }
+        }
+        equipNow = false;
+        Message_CloseTextbox(globalCtx);
+        globalCtx->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
