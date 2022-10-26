@@ -12,6 +12,7 @@
 #include <libultraship/ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
+#include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
@@ -431,26 +432,19 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
-    // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so manually adding a "free" variation here
+    // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so adding a "free" variation here
+    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "\x12\x38\x82" "All right! You win! In return for&sparing me, I will give you a&%g{{item}}%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen &%g{{item}}%w geben!\x07\x10\xA3",
+            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en&échange, je te donne un &%g{{item}}%w! Vas-y prends le!\x07\x10\xA3",
+        });
     CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "\x12\x38\x82\All right! You win! In return for&sparing me, I will give you a&%gmysterious item%w!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82\In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen %gmysteriösen&Gegenstand%w geben! Bitte nimm ihn!\x07\x10\xA3",
-            "\x12\x38\x82\J'me rends! Laisse-moi partir et en&échange, je te donne un %gobjet &mystérieux%w! Vas-y prends le!\x07\x10\xA3",
+            "\x12\x38\x82" "All right! You win! In return for&sparing me, I will sell you a&%g{{item}}%w!&%r{{price}} Rupees%w it is!\x07\x10\xA3",
+            "\x12\x38\x82" "Aufgeben! Ich verkaufe dir einen&%g{{item}}%w&für %r{{price}} Rubine%w!\x07\x10\xA3",
+            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"
         });
-    // Currently a scrub message is created for each price between 5-95, identified by the price itself. Soon we'll migrate this
-    // to be more consistent with shop items, where they are identified by randomizer_inf and only generated where necessary
-    for (u32 price = 5; price <= 95; price += 5) {
-        CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM + price,
-            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
-                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
-              "\x12\x38\x82\Aufgeben! Ich verkaufe dir einen&%ggeheimnisvollen Gegenstand%w&für %r" +
-                  std::to_string(price) + " Rubine%w!\x07\x10\xA3",
-              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
-                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
-            });
-    }
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
         {
@@ -464,37 +458,20 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
 
-    for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
-        RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
-        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck].rgID;
-        std::vector<std::string> shopItemName;
-        // TODO: This should eventually be replaced with a full fledged trick model & trick name system
-        if (shopItemGet == RG_ICE_TRAP) {
-            shopItemGet = this->itemLocations[shopItemCheck].fakeRgID;
-            shopItemName = {
-                std::string(this->itemLocations[shopItemCheck].trickName),
-                std::string(this->itemLocations[shopItemCheck].trickName),
-                std::string(this->itemLocations[shopItemCheck].trickName)
-            };
-        } else { 
-            shopItemName = EnumToSpoilerfileGetName[shopItemGet];
-        }
-        u16 shopItemPrice = merchantPrices[shopItemCheck];
-        // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
-        // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-                "\x08%r" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
-                "\x08%r" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
-                "\x08%r" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
+    // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
+    // prompted buy/don't buy
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+            "\x08%r{{item}}: {{price}} Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+            "\x08%r{{item}}: {{price}} Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
+            "\x08%r{{item}}: {{price}} Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
         });
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index + NUM_SHOP_ITEMS, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-                "\x08" + shopItemName[0] + ": " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
-                "\x08" + shopItemName[1] + ": " + std::to_string(shopItemPrice) + " Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
-                "\x08" + shopItemName[2] + ": " + std::to_string(shopItemPrice) + " Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+            "\x08{{item}}: {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+            "\x08{{item}}: {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+            "\x08{{item}}: {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
         });
-    }
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
@@ -2499,6 +2476,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 act
     return GetCheckObjectFromActor(actorId, sceneNum, actorParams).rc;
 }
 
+RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerInf) {
+    for (auto const& [key, value] : rcToRandomizerInf) {
+        if (value == randomizerInf) return key;
+    }
+
+    return RC_UNKNOWN_CHECK;
+}
+
 std::thread randoThread;
 
 void GenerateRandomizerImgui() {
@@ -3893,6 +3878,39 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
 }
 
+CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+    RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
+    RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
+    std::vector<std::string> shopItemName;
+    if (mysterious) {
+        shopItemName = {
+            "mysterious item",
+            "mysteriösen Gegenstand",
+            "objet mystérieux"
+        };
+    // TODO: This should eventually be replaced with a full fledged trick model & trick name system
+    } else if (shopItemGet == RG_ICE_TRAP) {
+        shopItemGet = this->itemLocations[rc].fakeRgID;
+        shopItemName = {
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName)
+        };
+    } else { 
+        shopItemName = EnumToSpoilerfileGetName[shopItemGet];
+    }
+    u16 shopItemPrice = merchantPrices[rc];
+
+    if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
+    }
+
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", shopItemName[0], shopItemName[1], shopItemName[2]);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{price}}", std::to_string(shopItemPrice));
+    return messageEntry;
+}
+
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
@@ -3911,16 +3929,16 @@ void CreateRupeeMessages() {
     for (u8 rupee : rupees) {
         switch (rupee) {
             case TEXT_BLUE_RUPEE:
-                rupeeText = "\x05\x03 5 #RUPEE#\x05\x00";
+                rupeeText = "\x05\x03 5 {{rupee}}\x05\x00";
                 break;
             case TEXT_RED_RUPEE:
-                rupeeText = "\x05\x01 20 #RUPEE#\x05\x00";
+                rupeeText = "\x05\x01 20 {{rupee}}\x05\x00";
                 break;
             case TEXT_PURPLE_RUPEE:
-                rupeeText = "\x05\x05 50 #RUPEE#\x05\x00";
+                rupeeText = "\x05\x05 50 {{rupee}}\x05\x00";
                 break;
             case TEXT_HUGE_RUPEE:
-                rupeeText = "\x05\x06 200 #RUPEE#\x05\x00";
+                rupeeText = "\x05\x06 200 {{rupee}}\x05\x00";
                 break;
         }
         customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
@@ -3932,37 +3950,12 @@ void CreateRupeeMessages() {
     }
 }
 
-std::string Randomizer::RandomizeRupeeName(std::string message, int language) {
-    int randomIndex;
-    std::string replaceWith;
-    switch (language) {
-        case LANGUAGE_ENG:
-            randomIndex = rand() % (sizeof(englishRupeeNames) / sizeof(englishRupeeNames[0]));
-            replaceWith = englishRupeeNames[randomIndex];
-            break;
-        case LANGUAGE_GER:
-            randomIndex = rand() % (sizeof(germanRupeeNames) / sizeof(germanRupeeNames[0]));
-            replaceWith = germanRupeeNames[randomIndex];
-            break;
-        case LANGUAGE_FRA:
-            randomIndex = rand() % (sizeof(frenchRupeeNames) / sizeof(frenchRupeeNames[0]));
-            replaceWith = frenchRupeeNames[randomIndex];
-            break;
-    }
-    std::string replaceString = "#RUPEE#";
-    size_t pos = message.find(replaceString);
-    size_t len = replaceString.length();
-    message.replace(pos, len, replaceWith);
-    CustomMessageManager::Instance->FormatCustomMessage(message);
-    return message;
-}
-
 CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
-    CustomMessageEntry messageEntry =
-        CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.english = Randomizer::RandomizeRupeeName(messageEntry.english, LANGUAGE_ENG);
-    messageEntry.german = Randomizer::RandomizeRupeeName(messageEntry.german, LANGUAGE_GER);
-    messageEntry.french = Randomizer::RandomizeRupeeName(messageEntry.french, LANGUAGE_FRA);
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    std::string englishName = RandomElement(englishRupeeNames);
+    std::string germanName = RandomElement(germanRupeeNames);
+    std::string frenchName = RandomElement(frenchRupeeNames);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{rupee}}", englishName, germanName, frenchName);
     return messageEntry;
 }
 
