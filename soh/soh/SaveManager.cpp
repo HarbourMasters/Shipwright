@@ -197,7 +197,7 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
-    SaveManager::Instance->LoadArray("masterQuestDungeons", randomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT), [&](size_t i) {
+    SaveManager::Instance->LoadArray("masterQuestDungeons", gSaveContext.mqDungeonCount, [&](size_t i) {
         uint16_t scene;
         SaveManager::Instance->LoadData("", scene);
         randomizer->masterQuestDungeons.emplace(scene);
