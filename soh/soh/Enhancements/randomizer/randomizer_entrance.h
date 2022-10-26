@@ -87,5 +87,6 @@ int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
 void Entrance_SetSavewarpEntrance(void);
 void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
+void Entrance_CheckWeatherState(void);
 
 #endif //_RANDO_ENTRANCE_H_
