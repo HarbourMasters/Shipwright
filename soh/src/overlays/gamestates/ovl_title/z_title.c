@@ -12,7 +12,6 @@
 #include <soh/Enhancements/bootcommands.h>
 #include <libultraship/GameVersions.h>
 #include <soh/SaveManager.h>
-#include "overlays/gamestates/ovl_file_choose/file_choose.h"
 
 #include "time.h"
 
