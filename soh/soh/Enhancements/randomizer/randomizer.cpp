@@ -659,6 +659,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
+                    case RSK_SHUFFLE_ENTRANCES:
+                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
+                    case RSK_SHUFFLE_GROTTOS_ENTRANCES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -846,13 +849,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
-                    case RSK_SHUFFLE_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        }
-                        break;
                     case RSK_SHUFFLE_DUNGEONS_ENTRANCES:
                         if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;
@@ -862,13 +858,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
-                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        }
-                        break;
                     case RSK_SHUFFLE_INTERIORS_ENTRANCES:
                         if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;
@@ -876,13 +865,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         } else if (it.value() == "All") {
                             gSaveContext.randoSettings[index].value = 2;
-                        }
-                        break;
-                    case RSK_SHUFFLE_GROTTOS_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                 }
