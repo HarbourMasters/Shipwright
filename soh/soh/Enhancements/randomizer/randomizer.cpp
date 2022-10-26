@@ -3761,7 +3761,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
 std::vector<std::vector<const char*>> mapGetItemHints = {
     { " It's ordinary.", " It's masterful!" },
     { " It's ordinary.", " It's masterful!" }, // TODO: German Translation (when map items are also translated)
-    { "&Elle est ordinaire.", "&Elle est magnifique!" },
+    { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
 };
 
 CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
