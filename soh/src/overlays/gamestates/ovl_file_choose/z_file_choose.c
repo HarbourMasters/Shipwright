@@ -1792,7 +1792,7 @@ void FileChoose_Main(GameState* thisx) {
     }
 
     if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3) {
-        if (Save_Exist(CVar_GetS32("gSaveFileID", 0))) {
+        if (Save_Exist(CVar_GetS32("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVar_GetS32("gSaveFileID", 0)))) {
             this->buttonIndex = CVar_GetS32("gSaveFileID", 0);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
