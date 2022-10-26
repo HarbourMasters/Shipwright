@@ -3758,7 +3758,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-std::vector<std::vector<char*>> mapGetItemHints = {
+std::vector<std::vector<const char*>> mapGetItemHints = {
     { " It's ordinary.", " It's masterful!" },
     { " It's ordinary.", " It's masterful!" }, // TODO: German Translation (when map items are also translated)
     { "&Elle est ordinaire.", "&Elle est magnifique!" },
@@ -3800,7 +3800,9 @@ CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEnt
             break;
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
+    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", "");
+    } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
     } else {
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", mapGetItemHints[0][0], mapGetItemHints[1][0], mapGetItemHints[2][0]);
