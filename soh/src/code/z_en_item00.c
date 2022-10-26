@@ -1373,9 +1373,41 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+    Color_RGB8 rupeeColor;
+    u8 shouldColor = 0;
+    switch (texIndex) {
+        case 0:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", 0);
+            break;
+        case 1:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", 0);
+            break;
+        case 2:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", 0);
+            break;
+        case 3:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+            break;
+        case 4:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GoldRupee", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_GoldRupee.Changed", 0);
+            break;
+    }
 
-    gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+    if (shouldColor) {
+        gsDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+        gsSPGrayscale(POLY_OPA_DISP++, true);
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        gsSPGrayscale(POLY_OPA_DISP++, false);
+    } else {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+    }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

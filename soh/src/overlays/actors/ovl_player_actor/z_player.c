@@ -11165,13 +11165,13 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
             sp68.x = D_80858AC8.unk_02 + 0x3E2;
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), -240.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
             MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), 240.0f + CVar_GetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
             MATRIX_TOMTX(sp70);
         }
 
