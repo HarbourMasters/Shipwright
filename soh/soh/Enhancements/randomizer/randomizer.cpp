@@ -1146,8 +1146,6 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 
         size_t i = 0;
         for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it, i++) {
-            EntranceOverride entranceOverride;
-
             json entranceJson = *it;
 
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
