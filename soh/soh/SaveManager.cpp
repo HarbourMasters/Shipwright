@@ -177,12 +177,7 @@ void SaveManager::LoadRandomizerVersion2() {
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     size_t merchantPricesSize = 0;
-    if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
-        merchantPricesSize += NUM_SCRUBS;
-    }
-    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 0) {
-        merchantPricesSize += NUM_SHOP_ITEMS;
-    }
+    SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
 
     SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -247,6 +242,7 @@ void SaveManager::SaveRandomizer() {
         merchantPrices.push_back(std::make_pair(check, price));
     }
 
+    SaveManager::Instance->SaveData("merchantPricesSize", merchantPrices.size());
     SaveManager::Instance->SaveArray("merchantPrices", merchantPrices.size(), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
             SaveManager::Instance->SaveData("check", merchantPrices[i].first);
