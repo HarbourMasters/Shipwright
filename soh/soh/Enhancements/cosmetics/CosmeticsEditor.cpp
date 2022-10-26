@@ -55,7 +55,7 @@ typedef enum {
     BOX_EFFECTS,
 } CosmeticBox;
 
-std::map<CosmeticBox, char*> boxLabels = {
+std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_LINK, "Link" },
     { BOX_MIRRORSHIELD, "Mirror Shield" },
     { BOX_SWORDS, "Swords" },
@@ -69,10 +69,10 @@ std::map<CosmeticBox, char*> boxLabels = {
 };
 
 typedef struct {
-    char* cvar;
-    char* rainbowCvar;
-    char* lockedCvar;
-    char* changedCvar;
+    const char* cvar;
+    const char* rainbowCvar;
+    const char* lockedCvar;
+    const char* changedCvar;
     std::string label;
     CosmeticBox box;
     ImVec4 currentColor;
@@ -85,7 +85,7 @@ typedef struct {
 #define COSMETIC_OPTION(id, label, box, defaultColor, supportsAlpha, supportsRainbow, advancedOption) \
     { id, {"gCosmetics." id, "gCosmetics." id ".Rainbow", "gCosmetics." id ".Locked", "gCosmetics." id ".Changed", label, box, defaultColor, defaultColor, supportsAlpha, supportsRainbow, advancedOption} }
 
-std::map<char*, CosmeticOption> cosmeticOptions = {
+static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link_KokiriTunic",              "Kokiri Tunic",         BOX_LINK,         ImVec4( 30, 105,  27, 255), false, true, false),
     COSMETIC_OPTION("Link_GoronTunic",               "Goron Tunic",          BOX_LINK,         ImVec4(100,  20,   0, 255), false, true, false),
     COSMETIC_OPTION("Link_ZoraTunic",                "Zora Tunic",           BOX_LINK,         ImVec4(  0,  60, 100, 255), false, true, false),
