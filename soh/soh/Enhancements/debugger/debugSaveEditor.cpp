@@ -1564,8 +1564,8 @@ void DrawPlayerTab() {
         });
 
         ImGui::Text("Player State");
-        u8 bit[32] = {};
-        u32 flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+        uint8_t bit[32] = {};
+        uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
 
         for (int j = 0; j <= 2; j++) {
             DrawGroupWithBorder([&]() {
