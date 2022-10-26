@@ -655,6 +655,11 @@ namespace Ship {
 	    return APlayer;
     }
 
+    void Window::ReinitAudioPlayer() {
+        audioBackend = GetConfig()->getString("Window.AudioBackend");
+        InitializeAudioPlayer();
+    }
+
     std::shared_ptr<ResourceMgr> Window::GetResourceManager() {
 	    return ResMan;
     }

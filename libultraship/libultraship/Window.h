@@ -45,6 +45,7 @@ namespace Ship {
 			std::string GetName();
 			std::shared_ptr<ControlDeck> GetControlDeck();
 			std::shared_ptr<AudioPlayer> GetAudioPlayer();
+			void ReinitAudioPlayer();
 			std::shared_ptr<ResourceMgr> GetResourceManager();
 			std::shared_ptr<Mercury> GetConfig();
 			std::shared_ptr<spdlog::logger> GetLogger();
