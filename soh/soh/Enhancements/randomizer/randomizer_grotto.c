@@ -131,7 +131,7 @@ static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto, RespawnMode respawnM
 s16 Grotto_CheckSpecialEntrance(s16 nextEntranceIndex) {
 
     // Don't change anything unless grotto shuffle has been enabled
-    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTOS_ENTRANCES)) {
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         return nextEntranceIndex;
     }
 
@@ -188,7 +188,7 @@ s16 Grotto_CheckSpecialEntrance(s16 nextEntranceIndex) {
 void Grotto_OverrideActorEntrance(Actor* thisx) {
 
     // Vanilla Behavior if grottos aren't shuffled
-    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTOS_ENTRANCES)) {
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         return;
     }
 
@@ -214,7 +214,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 // Set the respawn flag for when we want to return from a grotto entrance
 // Used for Sun's Song and Game Over, which usually don't restore saved position data
 void Grotto_ForceGrottoReturn(void) {
-    if (lastEntranceType == GROTTO_RETURN && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTOS_ENTRANCES)) {
+    if (lastEntranceType == GROTTO_RETURN && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         gSaveContext.respawnFlag = 2;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
@@ -226,7 +226,7 @@ void Grotto_ForceGrottoReturn(void) {
 
 // Used for the DMT special voids, which usually don't restore saved position data
 void Grotto_ForceRegularVoidOut(void) {
-    if (lastEntranceType == GROTTO_RETURN && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTOS_ENTRANCES)) {
+    if (lastEntranceType == GROTTO_RETURN && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         gSaveContext.respawn[RESPAWN_MODE_DOWN] = gSaveContext.respawn[RESPAWN_MODE_RETURN];
         gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
@@ -237,7 +237,7 @@ void Grotto_ForceRegularVoidOut(void) {
 // If returning to a FW point saved at a grotto exit, copy the FW data to the Grotto Return Point
 // so that Sun's Song and Game Over will behave correctly
 void Grotto_SetupReturnInfoOnFWReturn(void) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTOS_ENTRANCES)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN] = gSaveContext.respawn[RESPAWN_MODE_TOP];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         lastEntranceType = GROTTO_RETURN;

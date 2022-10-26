@@ -60,7 +60,7 @@ void BgSpot12Saku_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     // If ER is on, force the gate to always use its permanent flag
     // (which it only uses in Child Gerudo Fortress in the vanilla game)
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES)) {
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
         thisx->params = 0x0002;
     }
 
@@ -132,7 +132,7 @@ void BgSpot12Saku_Update(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot12Saku* this = (BgSpot12Saku*)thisx;
 
     // If ER is on, when the guard opens the GtG gate its permanent flag will be set.
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEONS_ENTRANCES) &&
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) &&
         globalCtx->actorCtx.flags.tempSwch & 0x04000000) {
         globalCtx->actorCtx.flags.swch |= 0x00000004;
     }
