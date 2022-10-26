@@ -6,6 +6,7 @@
 
 #include "z_door_ana.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS ACTOR_FLAG_25
 

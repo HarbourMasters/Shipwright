@@ -9,6 +9,8 @@
 #include "vt.h"
 #include "alloca.h"
 
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 void Select_LoadTitle(SelectContext* this) {
     this->state.running = false;
     SET_NEXT_GAMESTATE(&this->state, Title_Init, TitleContext);
