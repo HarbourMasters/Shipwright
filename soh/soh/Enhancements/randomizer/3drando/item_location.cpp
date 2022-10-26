@@ -11,7 +11,6 @@
 
 //Location definitions
 static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;
-static std::unordered_map<RandomizerCheck, Key> locationLookupTable;
 
 void LocationTable_Init() {
     locationTable[NONE]                                  = ItemLocation::Base       (RC_UNKNOWN_CHECK, 0xFF, 0xFF, "Invalid Location",                     NONE,                                  NONE,                      {},                                                                                                                   SpoilerCollectionCheck::None());
@@ -119,7 +118,7 @@ void LocationTable_Init() {
     locationTable[KAK_MAN_ON_ROOF]                       = ItemLocation::Base       (RC_KAK_MAN_ON_ROOF, 0x52, 0x3E, "Kak Man on Roof",                      KAK_MAN_ON_ROOF,                       PIECE_OF_HEART,            {Category::cKakarikoVillage, Category::cKakariko,},                                                                   SpoilerCollectionCheck::ItemGetInf(29),                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_SHOOTING_GALLERY_REWARD]           = ItemLocation::Base       (RC_KAK_SHOOTING_GALLERY_REWARD, 0x42, 0x30, "Kak Shooting Gallery Reward",          KAK_SHOOTING_GALLERY_REWARD,           PROGRESSIVE_BOW,           {Category::cKakarikoVillage, Category::cKakariko, Category::cMinigame},                                               SpoilerCollectionCheck::ItemGetInf(6),                   SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_TRADE_ODD_MUSHROOM]                = ItemLocation::Base       (RC_KAK_TRADE_ODD_MUSHROOM, 0x4E, 0x20, "Kak Trade Odd Mushroom",               KAK_TRADE_ODD_MUSHROOM,                ODD_POTION,              {Category::cKakarikoVillage, Category::cKakariko, Category::cAdultTrade},                                             SpoilerCollectionCheck::ItemGetInf(56),                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[KAK_ANJU_AS_ADULT]                     = ItemLocation::Base       (RC_KAK_ANJU_AS_ADULT, 0x52, 0x1D, "Kak Anju as Adult",                    KAK_ANJU_AS_ADULT,                     POCKET_EGG,               {Category::cKakarikoVillage, Category::cKakariko,},                                                                   SpoilerCollectionCheck::ItemGetInf(36),                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[KAK_ANJU_AS_ADULT]                     = ItemLocation::Base       (RC_KAK_ANJU_AS_ADULT, 0x52, 0x1D, "Kak Anju as Adult",                    KAK_ANJU_AS_ADULT,                     CLAIM_CHECK,               {Category::cKakarikoVillage, Category::cKakariko,},                                                                   SpoilerCollectionCheck::ItemGetInf(36),                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_ANJU_AS_CHILD]                     = ItemLocation::Base       (RC_KAK_ANJU_AS_CHILD, 0x52, 0x0F, "Kak Anju as Child",                    KAK_ANJU_AS_CHILD,                     EMPTY_BOTTLE,              {Category::cKakarikoVillage, Category::cKakariko, Category::cMinigame},                                               SpoilerCollectionCheck::ItemGetInf(4),                   SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_TRADE_POCKET_CUCCO]                = ItemLocation::Base       (RC_KAK_TRADE_POCKET_CUCCO, 0x52, 0x0E, "Kak Trade Pocket Cucco",               KAK_TRADE_POCKET_CUCCO,                COJIRO,                    {Category::cKakarikoVillage, Category::cKakariko, Category::cAdultTrade},                                             SpoilerCollectionCheck::ItemGetInf(38),                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_IMPAS_HOUSE_FREESTANDING_POH]      = ItemLocation::Collectable(RC_KAK_IMPAS_HOUSE_FREESTANDING_POH, 0x37, 0x01, "Kak Impas House Freestanding PoH",     KAK_IMPAS_HOUSE_FREESTANDING_POH,      PIECE_OF_HEART,            {Category::cKakarikoVillage, Category::cKakariko,},                                                                                                                            SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
@@ -918,10 +917,6 @@ void LocationTable_Init() {
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]                 = ItemLocation::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE, 0x00, 0x3A, "DMC Upper Grotto Gossip Stone",               {});
 
     locationTable[GANONDORF_HINT]                                = ItemLocation::OtherHint(RC_GANONDORF_HINT, 0x00, 0x00, "Ganondorf Hint",                              {});
-
-    //TODO also update the Add/Remove/Etc functions
-    for (int i = NONE; i != KEY_ENUM_MAX; i++)
-        locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
 }
 
 std::vector<uint32_t> KF_ShopLocations = {
@@ -1489,10 +1484,6 @@ ItemLocation* Location(uint32_t locKey) {
     return &(locationTable[locKey]);
 }
 
-ItemLocation* Location(RandomizerCheck rc) {
-    return &(locationTable[locationLookupTable[rc]]);
-}
-
 std::vector<uint32_t> allLocations = {};
 std::vector<uint32_t> everyPossibleLocation = {};
 
@@ -1538,7 +1529,7 @@ void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmedia
   SPDLOG_DEBUG("\n\n");
 
   if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
-    GetItemTable(item).ApplyEffect();
+    ItemTable(item).ApplyEffect();
   }
 
   itemsPlaced++;
@@ -1551,10 +1542,10 @@ void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmedia
   }
 
   //If we're placing a non-shop item in a shop location, we want to record it for custom messages
-  if (GetItemTable(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
+  if (ItemTable(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
     int index = TransformShopIndex(GetShopIndex(locKey));
-    NonShopItems[index].Name = GetItemTable(item).GetName();
-    NonShopItems[index].Repurchaseable = GetItemTable(item).GetItemType() == ITEMTYPE_REFILL || GetItemTable(item).GetHintKey() == PROGRESSIVE_BOMBCHUS;
+    NonShopItems[index].Name = ItemTable(item).GetName();
+    NonShopItems[index].Repurchaseable = ItemTable(item).GetItemType() == ITEMTYPE_REFILL || ItemTable(item).GetHintKey() == PROGRESSIVE_BOMBCHUS;
   }
 
   loc->SetPlacedItem(item);
@@ -1625,7 +1616,7 @@ void CreateItemOverrides() {
     SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
-        ItemOverride_Value val = GetItemTable(loc->GetPlaceduint32_t()).Value();
+        ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
         // If this is an ice trap, store the disguise model in iceTrapModels
         if (loc->GetPlaceduint32_t() == ICE_TRAP) {
             iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;

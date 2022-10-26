@@ -274,7 +274,7 @@ void ItemTable_Init() {                              // RandomizerGet           
 
 }
 
-Item& GetItemTable(const uint32_t itemKey) {
+Item& ItemTable(const uint32_t itemKey) {
     return itemTable[itemKey];
 }
 

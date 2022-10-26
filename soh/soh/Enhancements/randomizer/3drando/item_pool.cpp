@@ -465,7 +465,7 @@ static void ReplaceMaxItem(const uint32_t itemToReplace, int max) {
 void PlaceJunkInExcludedLocation(const uint32_t il) {
   //place a non-advancement item in this location
   for (size_t i = 0; i < ItemPool.size(); i++) {
-    if (!GetItemTable(ItemPool[i]).IsAdvancement()) {
+    if (!ItemTable(ItemPool[i]).IsAdvancement()) {
       PlaceItemInLocation(il, ItemPool[i]);
       ItemPool.erase(ItemPool.begin() + i);
       return;
@@ -1059,7 +1059,7 @@ void GenerateItemPool() {
   uint8_t bottleCount = 4;
   std::vector<uint32_t> bottles;
   bottles.assign(normalBottles.begin(), normalBottles.end());
-  IceTrapModels.push_back(GetItemTable(RandomElement(bottles)).GetItemID()); //Get one random bottle type for ice traps
+  IceTrapModels.push_back(ItemTable(RandomElement(bottles)).GetItemID()); //Get one random bottle type for ice traps
   for (uint8_t i = 0; i < bottleCount; i++) {
     if (i >= rutoBottles) {
       AddRandomBottle(bottles);

@@ -1,6 +1,5 @@
 #pragma once
-#include "randomizer_check_objects.h"
-#include "3drando/item_location.hpp"
+
 #include <string>
 #include <vector>
 

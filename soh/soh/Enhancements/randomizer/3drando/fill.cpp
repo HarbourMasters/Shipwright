@@ -33,7 +33,7 @@ static void RemoveStartingItemsFromPool() {
           ItemPool[i] = GetJunkItem();
         }
         continue;
-      } else if (startingItem == ItemPool[i] || (GetItemTable(startingItem).IsBottleItem() && GetItemTable(ItemPool[i]).IsBottleItem())) {
+      } else if (startingItem == ItemPool[i] || (ItemTable(startingItem).IsBottleItem() && ItemTable(ItemPool[i]).IsBottleItem())) {
         if (AdditionalHeartContainers > 0 && (startingItem == PIECE_OF_HEART || startingItem == TREASURE_GAME_HEART)) {
           ItemPool[i] = HEART_CONTAINER;
           AdditionalHeartContainers--;
@@ -111,9 +111,9 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
   if (mode == SearchMode::PoeCollectorAccess && (AreaTable(MARKET_GUARD_HOUSE)->Adult() || !checkPoeCollectorAccess)) {
     // Apply all items that are necessary for checking all location access
       std::vector<uint32_t> itemsToPlace =
-          FilterFromPool(ItemPool, [](const auto i) { return GetItemTable(i).IsAdvancement(); });
+          FilterFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
     for (uint32_t unplacedItem : itemsToPlace) {
-      GetItemTable(unplacedItem).ApplyEffect();
+      ItemTable(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
     if (Settings::ResolvedStartingAge == AGE_CHILD) {
@@ -463,14 +463,14 @@ static void PareDownPlaythrough() {
       LogicReset();
 
       std::string ignore = "";
-      if (GetItemTable(copy).GetItemType() == ITEMTYPE_TOKEN) {
+      if (ItemTable(copy).GetItemType() == ITEMTYPE_TOKEN) {
         ignore = "Tokens";
       }
-      else if (GetItemTable(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
+      else if (ItemTable(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
         ignore = "Bombchus";
       }
-      else if (GetItemTable(copy).GetItemType() == ITEMTYPE_SHOP) {
-        ignore = GetShopItemBaseName(GetItemTable(copy).GetName().GetEnglish());
+      else if (ItemTable(copy).GetItemType() == ITEMTYPE_SHOP) {
+        ignore = GetShopItemBaseName(ItemTable(copy).GetName().GetEnglish());
       }
 
       GetAccessibleLocations(allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
@@ -478,7 +478,7 @@ static void PareDownPlaythrough() {
       //Playthrough is still beatable without this item, therefore it can be removed from playthrough section.
       if (playthroughBeatable) {
         //Uncomment to print playthrough deletion log in citra
-        // std::string itemname(GetItemTable(copy).GetName().GetEnglish());
+        // std::string itemname(ItemTable(copy).GetName().GetEnglish());
         // std::string locationname(Location(loc)->GetName());
         // std::string removallog = itemname + " at " + locationname + " removed from playthrough";
         // CitraPrint(removallog);
@@ -570,7 +570,7 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
         SPDLOG_DEBUG("Items:\n");
         for (const uint32_t item : items) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(GetItemTable(item).GetName().GetEnglish());
+            SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
             SPDLOG_DEBUG("\n");
         }
         SPDLOG_DEBUG("\nAllowed Locations:\n");
@@ -603,22 +603,22 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
 
         // copy all not yet placed advancement items so that we can apply their effects for the fill algorithm
         std::vector<uint32_t> itemsToNotPlace =
-            FilterFromPool(ItemPool, [](const auto i) { return GetItemTable(i).IsAdvancement(); });
+            FilterFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
 
         // shuffle the order of items to place
         Shuffle(itemsToPlace);
         while (!itemsToPlace.empty()) {
             uint32_t item = std::move(itemsToPlace.back());
-            GetItemTable(item).SetAsPlaythrough();
+            ItemTable(item).SetAsPlaythrough();
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items
             LogicReset();
             for (uint32_t unplacedItem : itemsToPlace) {
-                GetItemTable(unplacedItem).ApplyEffect();
+                ItemTable(unplacedItem).ApplyEffect();
             }
             for (uint32_t unplacedItem : itemsToNotPlace) {
-                GetItemTable(unplacedItem).ApplyEffect();
+                ItemTable(unplacedItem).ApplyEffect();
             }
 
             // get all accessible locations that are allowed
@@ -628,11 +628,11 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
             if (accessibleLocations.empty()) {
 
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(GetItemTable(item).GetName().GetEnglish());
+                SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
-                Areas::DumpWorldGraph(GetItemTable(item).GetName().GetEnglish());
+                Areas::DumpWorldGraph(ItemTable(item).GetName().GetEnglish());
                 PlacementLog_Write();
 #endif
 
@@ -692,12 +692,12 @@ static void RandomizeDungeonRewards() {
     0x00000010, //Shadow Medallion
     0x00000020, //Light Medallion
   };
-  int baseOffset = GetItemTable(KOKIRI_EMERALD).GetItemID();
+  int baseOffset = ItemTable(KOKIRI_EMERALD).GetItemID();
 
   //End of Dungeons includes Link's Pocket
   if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
     //get stones and medallions
-    std::vector<uint32_t> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return GetItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
+    std::vector<uint32_t> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
 
     // If there are less than 9 dungeon rewards, prioritize the actual dungeons
     // for placement instead of Link's Pocket
@@ -726,7 +726,7 @@ static void RandomizeDungeonRewards() {
     }
   } else if (LinksPocketItem.Is(LINKSPOCKETITEM_DUNGEON_REWARD)) {
     //get 1 stone/medallion
-    std::vector<uint32_t> rewards = FilterFromPool(ItemPool, [](const auto i) {return GetItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
+    std::vector<uint32_t> rewards = FilterFromPool(ItemPool, [](const auto i) {return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
     // If there are no remaining stones/medallions, then Link's pocket won't get one
     if (rewards.empty()) {
       PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
@@ -734,7 +734,7 @@ static void RandomizeDungeonRewards() {
     }
     uint32_t startingReward = RandomElement(rewards, true);
 
-    LinksPocketRewardBitMask = bitMaskTable[GetItemTable(startingReward).GetItemID() - baseOffset];
+    LinksPocketRewardBitMask = bitMaskTable[ItemTable(startingReward).GetItemID() - baseOffset];
     PlaceItemInLocation(LINKS_POCKET, startingReward);
     //erase the stone/medallion from the Item Pool
     FilterAndEraseFromPool(ItemPool, [startingReward](const uint32_t i) {return i == startingReward;});
@@ -847,11 +847,11 @@ static void RandomizeDungeonItems() {
 
   if (ShuffleRewards.Is(REWARDSHUFFLE_ANY_DUNGEON)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return GetItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(anyDungeonItems, rewards);
   } else if (ShuffleRewards.Is(REWARDSHUFFLE_OVERWORLD)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return GetItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(overworldItems, rewards);
   }
 
@@ -875,7 +875,7 @@ static void RandomizeLinksPocket() {
   if (LinksPocketItem.Is(LINKSPOCKETITEM_ADVANCEMENT)) {
    //Get all the advancement items                                                                                                     don't include tokens
       std::vector<uint32_t> advancementItems = FilterAndEraseFromPool(ItemPool, [](const auto i) {
-          return GetItemTable(i).IsAdvancement() && GetItemTable(i).GetItemType() != ITEMTYPE_TOKEN;
+          return ItemTable(i).IsAdvancement() && ItemTable(i).GetItemType() != ITEMTYPE_TOKEN;
       });
    //select a random one
    uint32_t startingItem = RandomElement(advancementItems, true);
@@ -949,7 +949,7 @@ int Fill() {
       printf("\x1b[7;32HDone");
     }
     //erase temporary shop items
-    FilterAndEraseFromPool(ItemPool, [](const auto item) { return GetItemTable(item).GetItemType() == ITEMTYPE_SHOP; });
+    FilterAndEraseFromPool(ItemPool, [](const auto item) { return ItemTable(item).GetItemType() == ITEMTYPE_SHOP; });
 
     showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
@@ -1010,7 +1010,7 @@ int Fill() {
 
       //Get each song
         std::vector<uint32_t> songs =
-            FilterAndEraseFromPool(ItemPool, [](const auto i) { return GetItemTable(i).GetItemType() == ITEMTYPE_SONG; });
+            FilterAndEraseFromPool(ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_SONG; });
 
       //Get each song location
       std::vector<uint32_t> songLocations;
@@ -1033,7 +1033,7 @@ int Fill() {
     RandomizeLinksPocket();
     //Then place the rest of the advancement items
     std::vector<uint32_t> remainingAdvancementItems =
-        FilterAndEraseFromPool(ItemPool, [](const auto i) { return GetItemTable(i).IsAdvancement(); });
+        FilterAndEraseFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, allLocations, true);
 
     //Fast fill for the rest of the pool
