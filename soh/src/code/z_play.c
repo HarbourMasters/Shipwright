@@ -7,6 +7,7 @@
 #include <libultraship/ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
 #include <time.h>
@@ -1759,6 +1760,10 @@ void* Gameplay_LoadFile(GlobalContext* globalCtx, RomFile* file) {
 }
 
 void Gameplay_InitEnvironment(GlobalContext* globalCtx, s16 skyboxId) {
+    // For entrance rando, ensure the correct weather state and sky mode is applied
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_CheckWeatherState();
+    }
     Skybox_Init(&globalCtx->state, &globalCtx->skyboxCtx, skyboxId);
     Environment_Init(globalCtx, &globalCtx->envCtx, 0);
 }

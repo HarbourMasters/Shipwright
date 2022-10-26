@@ -296,8 +296,7 @@ static void WriteLocation(
 }
 
 //Writes a shuffled entrance to the specified node
-static void WriteShuffledEntrance(Entrance* entrance) {
-  // Entrance* entrance = Entrances(EntranceKey);
+static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
   int16_t originalIndex = entrance->GetIndex();
   int16_t destinationIndex = entrance->GetReverse()->GetIndex();
   int16_t originalBlueWarp = entrance->GetBlueWarp();
@@ -307,7 +306,6 @@ static void WriteShuffledEntrance(Entrance* entrance) {
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
@@ -335,7 +333,7 @@ static void WriteShuffledEntrance(Entrance* entrance) {
               jsonData["entrances"].push_back(reverseEntranceJson);
             }
 
-            jsonData["entrancesMap"][name] = text;
+            jsonData["entrancesMap"][sphereString][name] = text;
             break;
     }
 }
@@ -547,8 +545,12 @@ static void WritePlaythrough() {
 //Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
   for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    auto sphereNum = std::to_string(i);
+    std::string sphereString = "sphere ";
+    if (sphereNum.length() == 1) sphereString += "0";
+    sphereString += sphereNum;
     for (Entrance* entrance : playthroughEntrances[i]) {
-      WriteShuffledEntrance(entrance);
+      WriteShuffledEntrance(sphereString, entrance);
     }
 }
 }

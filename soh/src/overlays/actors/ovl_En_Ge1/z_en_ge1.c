@@ -94,7 +94,7 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGe1* this = (EnGe1*)thisx;
 
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         EnGe1_MoveForRandomizer(thisx, globalCtx);
     }
 
@@ -207,7 +207,7 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void EnGe1_MoveForRandomizer(EnGe1* this, GlobalContext* globalCtx) {
 
-    // Move gate gaurd to haunted wasteland side
+    // Move gate guard to haunted wasteland side
     if (globalCtx->sceneNum == 0x5D && this->actor.world.pos.x == -857 && this->actor.world.pos.z == -3123) {
         this->actor.world.pos.x = -1224.0f;
         this->actor.world.pos.z = -3160.0f;
@@ -277,7 +277,7 @@ void EnGe1_KickPlayer(EnGe1* this, GlobalContext* globalCtx) {
         func_8006D074(globalCtx);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
-            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) {
+            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) { // Always throw child link into the river
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) { // Caught previously
             globalCtx->nextEntranceIndex = 0x5F8;

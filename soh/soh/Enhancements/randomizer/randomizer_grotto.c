@@ -154,7 +154,7 @@ s16 Grotto_CheckSpecialEntrance(s16 nextEntranceIndex) {
 
         // When the nextEntranceIndex is determined by a dynamic exit, we have
         // to set the respawn information and nextEntranceIndex manually
-        if (gGlobalCtx->nextEntranceIndex != -1) {
+        if (gGlobalCtx != NULL && gGlobalCtx->nextEntranceIndex != -1) {
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
             gGlobalCtx->fadeTransition = 3;

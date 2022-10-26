@@ -172,18 +172,13 @@ s16 Entrance_GetOverride(s16 index) {
         return index;
     }
 
-    // Reset the weather mode so the aduly Hyrule Field gloomy weather is not applied
-    // to the skybox of the replaced index for market entrance
-    if (index == 0x0276) { // Hyrule Field -> Market Entrance
-        gWeatherMode = 0;
-    }
-
     return entranceOverrideTable[index];
 }
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == 0x0082 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex) {
+    if (nextEntranceIndex == 0x0082 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
+        gGlobalCtx != NULL) {
         gGlobalCtx->actorCtx.flags.tempSwch = 0;
         gGlobalCtx->actorCtx.flags.tempCollect = 0;
     }
@@ -367,5 +362,90 @@ void Entrance_CheckEpona(void) {
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
+    }
+}
+
+// Certain weather states don't clear normally in entrance rando, so we need to reset and re-apply
+// the correct weather state based on the current entrance and scene
+void Entrance_CheckWeatherState() {
+    gWeatherMode = 0;
+    gGlobalCtx->envCtx.gloomySkyMode = 0;
+
+    // Weather only applyies to adult link
+    if (LINK_IS_CHILD || gSaveContext.sceneSetupIndex >= 4) {
+        return;
+    }
+
+    // Hyrule Market
+    if (gSaveContext.entranceIndex == 0x01FD) { // Hyrule Field by Market Entrance
+        gWeatherMode = 1;
+        return;
+    }
+    // Lon Lon Ranch (No Epona)
+    if (!(gSaveContext.eventChkInf[1] & 0x0100)){ // if you don't have Epona
+        switch (gSaveContext.entranceIndex) {
+        case 0x0157: // Lon Lon Ranch from HF
+        case 0x01F9: // Hyrule Field from LLR
+            gWeatherMode = 2;
+            return;
+        }
+    }
+    // Water Temple
+    if (!(gSaveContext.eventChkInf[4] & 0x0400)) { // have not beaten Water Temple
+        switch (gSaveContext.entranceIndex) {
+            case 0x019D: // Zora River from behind waterfall
+            case 0x01DD: // Zora River from LW water shortcut
+            case 0x04DA: // Lost Woods water shortcut from ZR
+                gWeatherMode = 3;
+                return;
+        }
+        switch (gGlobalCtx->sceneNum) {
+            case 88: // Zora's Domain
+            case 89: // Zora's Fountain
+                gWeatherMode = 3;
+                return;
+        }
+    }
+    // Kakariko Thunderstorm
+    if (((gSaveContext.inventory.questItems & 0x7) == 0x7) && // Have forest, fire, and water medallion
+        !(gSaveContext.sceneFlags[24].clear & 0x02)) { // have not beaten Bongo Bongo
+        switch (gGlobalCtx->sceneNum) {
+            case 82: // Kakariko
+            case 83: // Graveyard
+                gGlobalCtx->envCtx.gloomySkyMode = 2;
+                switch (gSaveContext.entranceIndex) {
+                    case 0x00DB: // Kakariko from HF
+                    case 0x0191: // Kakariko from Death Mountain Trail
+                    case 0x0205: // Graveyard from Shadow Temple
+                        break;
+                    default:
+                        gWeatherMode = 5;
+                        return;
+                }
+        }
+    }
+    // Death Mountain Cloudy
+    if (!(gSaveContext.eventChkInf[4] & 0x0200)) { // have not beaten Fire Temple
+        if (gGlobalCtx->nextEntranceIndex == 0x04D6) { // Lost Woods Goron City Shortcut
+            gWeatherMode = 2;
+            return;
+        }
+        switch (gGlobalCtx->sceneNum) {
+            case 82: // Kakariko
+            case 83: // Graveyard
+            case 96: // Death Mountain Trail
+            case 97: // Death Mountain Crater
+                if (!gGlobalCtx->envCtx.gloomySkyMode) {
+                    gGlobalCtx->envCtx.gloomySkyMode = 1;
+                }
+                switch (gSaveContext.entranceIndex) {
+                    case 0x00DB: // Kakariko from HF
+                    case 0x0195: // Kakariko from Graveyard
+                        break;
+                    default:
+                        gWeatherMode = 2;
+                        return;
+                }
+        }
     }
 }

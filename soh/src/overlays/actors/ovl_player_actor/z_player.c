@@ -4273,6 +4273,7 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
                     globalCtx->fadeTransition = 3;
                     gSaveContext.nextTransition = 3;
                 } else if (globalCtx->nextEntranceIndex >= 0x7FF9) {
+                    // handle dynamic exits
                     if (gSaveContext.n64ddFlag) {
                         globalCtx->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn);
                     } else {
