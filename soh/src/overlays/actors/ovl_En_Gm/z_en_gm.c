@@ -209,6 +209,10 @@ void func_80A3DC44(EnGm* this, GlobalContext* globalCtx) {
                 return;
             case 1:
                 gSaveContext.infTable[11] |= 2;
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                    !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+                        gSaveContext.infTable[11] &= ~2;
+                    }
             case 2:
                 this->actionFunc = EnGm_ProcessChoiceIndex;
             default:
@@ -243,8 +247,17 @@ void EnGm_ProcessChoiceIndex(EnGm* this, GlobalContext* globalCtx) {
                     Message_ContinueTextbox(globalCtx, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                        !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+                            GiveItemEntryFromActor(&this->actor, globalCtx,
+                            Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
+                            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+                            gSaveContext.infTable[11] |= 2;
+                            this->actionFunc = func_80A3DF00;
+                    } else {
                     func_8002F434(&this->actor, globalCtx, GI_SWORD_KNIFE, 415.0f, 10.0f);
                     this->actionFunc = func_80A3DF00;
+                    }
                 }
                 break;
             case 1: // no
