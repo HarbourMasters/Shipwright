@@ -273,7 +273,16 @@ void func_80A3DF00(EnGm* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_SWORD_KNIFE, 415.0f, 10.0f);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+        !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON) {
+            GiveItemEntryFromActor(&this->actor, globalCtx,
+            Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+            gSaveContext.infTable[11] |= 2;
+        }
+        else {
+            func_8002F434(&this->actor, globalCtx, GI_SWORD_KNIFE, 415.0f, 10.0f);
+        }
     }
 }
 
