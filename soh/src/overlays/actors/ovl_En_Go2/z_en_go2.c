@@ -142,6 +142,7 @@ typedef enum {
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
+    /* 13 */ ENGO2_ANIM_13, // Added to fix spinning goron issue for biggoron
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -151,7 +152,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01,  0.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -1348,6 +1349,11 @@ void EnGo2_RollingAnimation(EnGo2* this, GlobalContext* globalCtx) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
+    if (CVar_GetS32("gUnfixGoronSpin", 0)) {
+        // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
+        // making the goron do a spin
+        this->skelAnime.animation = NULL;
+    }
     if (this->skelAnime.playSpeed == 0.0f) {
         if ((this->actor.params & 0x1F) != GORON_DMT_BIGGORON) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_WAKE_UP);
@@ -1357,10 +1363,25 @@ void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(globalCtx, 4200, -99, &this->actor, MAIN_CAM);
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
+        // There is an issue interpolating between ENGO2_ANIM_0 and ENGO2_ANIM_1/10, the goron
+        // is technically in the same position at the end of ANIM_0 and beginning of ANIM_1/10
+        // but something isn't getting translated correctly causing the 360 degree spin before
+        // then continuing the wake up animation like normal. One solution is to use ANIM_0
+        // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
+        // current animation frame is at 0, meaning no morphing is necessary anyway.
+        // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
+        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
+        }
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
+        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
+        }
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;

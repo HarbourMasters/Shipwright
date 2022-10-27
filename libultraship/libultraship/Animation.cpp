@@ -48,7 +48,7 @@ void Ship::AnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 			data.unk_02 = reader->ReadInt16();
 			data.unk_04 = reader->ReadInt16();
 			data.unk_06 = reader->ReadInt16();
-			data.unk_08 = reader->ReadSingle();
+			data.unk_08 = reader->ReadFloat();
 
 			anim->transformDataArr.push_back(data);
 		}

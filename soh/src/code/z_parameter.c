@@ -1100,6 +1100,18 @@ void func_80083108(GlobalContext* globalCtx) {
                     }
                 }
 
+                for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
+                        // Equipment on c-buttons is always enabled
+                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
+                            sp28 = 1;
+                        }
+
+                        gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
+                    }
+                }
+
                 if (interfaceCtx->restrictions.bottles != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
@@ -1253,6 +1265,8 @@ void func_80083108(GlobalContext* globalCtx) {
                             (gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_TIME) &&
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) &&
+                            !((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&  // Never disable equipment
+                              (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) && // (tunics/boots) on C-buttons
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
                             if ((globalCtx->sceneNum != SCENE_TAKARAYA) ||
@@ -2502,13 +2516,6 @@ u8 Item_CheckObtainability(u8 item) {
         } else {
             return ITEM_NONE;
         }
-    } else if ( gSaveContext.n64ddFlag &&
-        ((item >= RG_GERUDO_FORTRESS_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= RG_FOREST_TEMPLE_BOSS_KEY) && (item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-        (item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP) ||
-        (item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS))
-    ) {
-        return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {

@@ -65,7 +65,10 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     }
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
+    // Entrance index and grotto content data to load the correct grotto and actors
     gSaveContext.entranceIndex = this->betterGrottos[grottoIndex].entranceIndex;
+    gSaveContext.respawn[RESPAWN_MODE_RETURN].data = this->betterGrottos[grottoIndex].data;
+    // Infomation to return to the correct grotto exit
     gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = this->betterGrottos[grottoIndex].returnEntranceIndex;
     gSaveContext.respawn[RESPAWN_MODE_RETURN].roomIndex = this->betterGrottos[grottoIndex].roomIndex;
     gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x4ff;
@@ -563,8 +566,9 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Goron City Shop", 0x037C },
         { "Zora Shop", 0x0380 },
     }},
-    { "46:Great Fairies", Select_LoadGame, 5, {
-        { "Hyrule Castle", 0x04C2 },
+    { "46:Great Fairies", Select_LoadGame, 6, {
+        { "Hyrule Castle (Child)", 0x0578 },
+        { "Hyrule Castle (Adult)", 0x04C2 },
         { "Death Mountain Trail", 0x0315 },
         { "Death Mountain Crater", 0x04BE },
         { "Zoras Fountain", 0x0371 },

@@ -413,6 +413,9 @@ static void gfx_generate_cc(struct ColorCombiner *comb, uint64_t cc_id) {
                     val = SHADER_TEXEL1A;
                     used_textures[1] = true;
                     break;
+                case G_CCMUX_NOISE:
+                    val = SHADER_NOISE;
+                    break;
                 case G_CCMUX_PRIMITIVE:
                 case G_CCMUX_PRIMITIVE_ALPHA:
                 case G_CCMUX_PRIM_LOD_FRAC:
