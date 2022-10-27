@@ -8,6 +8,7 @@
 #include "soh/frame_interpolation.h"
 #include <libultraship/GameVersions.h>
 #include "objects/object_mag/object_mag.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
 
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
@@ -80,6 +81,31 @@ void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 center
             remainingSize -= textureSize;
         }
     }
+    CLOSE_DISPS(gfxCtx);
+}
+
+void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
+                         f32 dx, f32 dy) {
+    f32 unk;
+    s32 ulx, uly, lrx, lry;
+    f32 w, h;
+    s32 dsdx, dtdy;
+
+    OPEN_DISPS(gfxCtx);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, r, g, b, a);
+
+    w = 8.0f * z;
+    h = 12.0f * z;
+    unk = (1.0f / z) * 1024;
+    dsdx = unk * dx;
+    dtdy = dy * unk;
+
+    ulx = (x - w) * 4.0f;
+    uly = (y - h) * 4.0f;
+    lrx = (x + w) * 4.0f;
+    lry = (y + h) * 4.0f;
+    gSPTextureRectangle(POLY_OPA_DISP++, ulx, uly, lrx, lry, G_TX_RENDERTILE, s, t, dsdx, dtdy);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -464,6 +490,63 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     }
 }
 
+void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    f32 arrowAnimTween;
+    f32 new_var3;       // likely fake temp
+    s32 new_var2 = 255; // likely fake temp
+    f32 stickAnimTween;
+
+    arrowAnimTween = this->arrowAnimTween;
+    stickAnimTween = this->stickAnimTween;
+    if (this->arrowAnimState == 0) {
+        arrowAnimTween += 0.027f;
+        if (arrowAnimTween > 1.0f) {
+            arrowAnimTween = 1.0f;
+            this->arrowAnimState = 1;
+        }
+
+    } else {
+        arrowAnimTween -= 0.027f;
+        if (arrowAnimTween < 0.0f) {
+            arrowAnimTween = 0.0f;
+            this->arrowAnimState = 0;
+        }
+    }
+
+    this->arrowAnimTween = arrowAnimTween;
+    if (this->stickAnimState == 0) {
+        stickAnimTween += 0.027f;
+        if (stickAnimTween > 1.0f) {
+            stickAnimTween = 1.0f;
+            this->stickAnimState = 1;
+        }
+
+    } else {
+        stickAnimTween = 0.0f;
+        this->stickAnimState = 0;
+    }
+
+    this->stickAnimTween = stickAnimTween;
+    this->stickLeftPrompt.arrowColorR = (u8)(255 - ((s32)(155.0f * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorG = (u8)(new_var2 - (s32)(155.0f * arrowAnimTween));
+    new_var3 = (155.0f * arrowAnimTween);
+    this->stickLeftPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
+    this->stickRightPrompt.arrowColorR = (u8)(new_var2 - (s32)new_var3);
+    this->stickRightPrompt.arrowColorG = (u8)(255 - (s32)new_var3);
+    this->stickRightPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
+    this->stickRightPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
+    this->stickRightPrompt.arrowTexX = 260.0f;
+    this->stickLeftPrompt.arrowTexX = 63.0f;
+    this->stickRightPrompt.stickTexX = 244.0f;
+    this->stickLeftPrompt.stickTexX = 79.0f;
+    this->stickRightPrompt.stickTexX += (8.0f * stickAnimTween);
+    this->stickLeftPrompt.stickTexX -= (8.0f * stickAnimTween);
+    this->stickLeftPrompt.arrowTexY = this->stickRightPrompt.arrowTexY = 135.0f;
+    this->stickLeftPrompt.stickTexY = this->stickRightPrompt.stickTexY = 139.0f;
+}
+
 void FileChoose_StartQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
@@ -485,6 +568,7 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
@@ -1202,6 +1286,42 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw next title label
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU)) {
+        u8 drawStickLeftPrompt = this->questType[this->selectedFileIndex] == MASTER_QUEST;
+        u8 drawStickRightPrompt = this->questType[this->selectedFileIndex] == NORMAL_QUEST;
+        if (drawStickLeftPrompt || drawStickRightPrompt) {
+            func_800944C4(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            if (drawStickLeftPrompt) {
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                       this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                       this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            }
+            if (drawStickRightPrompt) {
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                       this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                       this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                       this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            }
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            if (drawStickLeftPrompt) {
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                       this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                       this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                       this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            }
+            if (drawStickRightPrompt) {
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                       this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                       this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                       this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            }
+        }
         if (this->questType[this->selectedFileIndex] == 0) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nqLogoAlpha);
             FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
@@ -2298,6 +2418,41 @@ void FileChoose_InitContext(GameState* thisx) {
     this->unk_1CAD6[2] = 6;
     this->unk_1CAD6[3] = 8;
     this->unk_1CAD6[4] = 10;
+
+    this->stickLeftPrompt.stickColorR = 200;
+    this->stickLeftPrompt.stickColorG = 200;
+    this->stickLeftPrompt.stickColorB = 200;
+    this->stickLeftPrompt.stickColorA = 180;
+    this->stickLeftPrompt.stickTexX = 49;
+    this->stickLeftPrompt.stickTexY = 95;
+    this->stickLeftPrompt.arrowColorR = 255;
+    this->stickLeftPrompt.arrowColorG = 255;
+    this->stickLeftPrompt.arrowColorB = 0;
+    this->stickLeftPrompt.arrowColorA = 200;
+    this->stickLeftPrompt.arrowTexX = 33;
+    this->stickLeftPrompt.arrowTexY = 91;
+    this->stickLeftPrompt.z = 1;
+    this->stickLeftPrompt.isEnabled = false;
+
+    this->stickRightPrompt.stickColorR = 200;
+    this->stickRightPrompt.stickColorG = 200;
+    this->stickRightPrompt.stickColorB = 200;
+    this->stickRightPrompt.stickColorA = 180;
+    this->stickRightPrompt.stickTexX = 274;
+    this->stickRightPrompt.stickTexY = 95;
+    this->stickRightPrompt.arrowColorR = 255;
+    this->stickRightPrompt.arrowColorG = 255;
+    this->stickRightPrompt.arrowColorB = 0;
+    this->stickRightPrompt.arrowColorA = 200;
+    this->stickRightPrompt.arrowTexX = 290;
+    this->stickRightPrompt.arrowTexY = 91;
+    this->stickRightPrompt.z = 1;
+    this->stickRightPrompt.isEnabled = false;
+
+    this->arrowAnimState = 0;
+    this->stickAnimState = 0;
+    this->arrowAnimTween = 0;
+    this->stickAnimTween = 0;
 
     ShrinkWindow_SetVal(0);
 
