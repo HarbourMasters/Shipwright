@@ -12,18 +12,17 @@
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 
-#define gDPSetImageTile(pkt, fmt, siz, uls, ult, lrs, lrt, pal, cms, cmt, masks, maskt, shifts, shiftt)                \
-    do {                                                                                                               \
-        gDPPipeSync(pkt);                                                                                              \
-        gDPTileSync(pkt);                                                                                              \
-        gDPSetTile(pkt, fmt, siz, (((((lrs) - (uls) + 1) * siz##_TILE_BYTES) + 7) >> 3), 0, G_TX_LOADTILE, 0, cmt,     \
-                   maskt, shiftt, cms, masks, shifts);                                                                 \
-        gDPTileSync(pkt);                                                                                              \
-        gDPSetTile(pkt, fmt, siz, (((((lrs) - (uls) + 1) * siz##_LINE_BYTES) + 7) >> 3), 0, G_TX_RENDERTILE, pal, cmt, \
-                   maskt, shiftt, cms, masks, shifts);                                                                 \
-        gDPSetTileSize(pkt, G_TX_RENDERTILE, (uls) << G_TEXTURE_IMAGE_FRAC, (ult) << G_TEXTURE_IMAGE_FRAC,             \
-                       (lrs) << G_TEXTURE_IMAGE_FRAC, (lrt) << G_TEXTURE_IMAGE_FRAC);                                  \
-    } while (0)
+void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
+                         s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
+    OPEN_DISPS(gfxCtx);
+    gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, texWidth, texHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2,
+                        G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
+
+    CLOSE_DISPS(gfxCtx);
+}
 
 void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
     u8* curTexture;
@@ -1157,6 +1156,18 @@ static void* sOptionsButtonTextures[] = {
     gFileSelOptionsButtonENGTex,
 };
 
+const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
+    switch (lang) {
+        case LANGUAGE_ENG:
+        default:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestENGTex";
+        case LANGUAGE_FRA:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestFRATex";
+        case LANGUAGE_GER:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestGERTex";
+    }
+}
+
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -1171,7 +1182,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 pad;
     char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
         this->configMode == CM_START_QUEST_MENU)
-                  ? ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelPleaseChooseAQuestENGTex")
+                  ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
                   : sTitleLabels[gSaveContext.language][this->titleLabel];
     Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
@@ -1191,10 +1202,19 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw next title label
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU)) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nqLogoAlpha);
-        FileChoose_DrawImageRGBA32(this->state.gfxCtx, 80, 135, gTitleZeldaShieldLogoTex, 160, 160);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->mqLogoAlpha);
-        FileChoose_DrawImageRGBA32(this->state.gfxCtx, 240, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
+        if (this->questType[this->selectedFileIndex] == 0) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nqLogoAlpha);
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->mqLogoAlpha);
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
+            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
+        }
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
