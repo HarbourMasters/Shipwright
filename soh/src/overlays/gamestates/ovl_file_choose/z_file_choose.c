@@ -12,6 +12,7 @@
 
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
+#define RANDOMIZER_QUEST 2
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
@@ -22,6 +23,65 @@ void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 
     gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2,
                         G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
 
+    CLOSE_DISPS(gfxCtx);
+}
+
+void FileChoose_DrawRawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
+    u8* curTexture;
+    s32 textureCount;
+    u32 rectLeft;
+    u32 rectTop;
+    u32 textureHeight;
+    s32 remainingSize;
+    s32 textureSize;
+    s32 pad;
+    s32 i;
+
+    OPEN_DISPS(gfxCtx);
+
+    source = ResourceMgr_LoadFileRaw(source);
+
+    curTexture = source;
+    rectLeft = centerX - (width / 2);
+    rectTop = centerY - (height / 2);
+    textureHeight = 4096 / (width << 2);
+    remainingSize = (width * height) << 2;
+    textureSize = (width * textureHeight) << 2;
+    textureCount = remainingSize / textureSize;
+    if ((remainingSize % textureSize) != 0) {
+        textureCount += 1;
+    }
+
+    gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    remainingSize -= textureSize;
+
+    for (i = 0; i < textureCount; i++) {
+        gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, curTexture);
+
+        gDPLoadSync(POLY_OPA_DISP++);
+        gDPLoadTile(POLY_OPA_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
+
+        gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2,
+                            (rectTop + textureHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+        curTexture += textureSize;
+        rectTop += textureHeight;
+
+        if ((remainingSize - textureSize) < 0) {
+            if (remainingSize > 0) {
+                textureHeight = remainingSize / (s32)(width << 2);
+                remainingSize -= textureSize;
+
+                gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0,
+                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                 G_TX_NOLOD, G_TX_NOLOD);
+            }
+        } else {
+            remainingSize -= textureSize;
+        }
+    }
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -407,8 +467,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_QUEST_MENU;
-                this->nqLogoAlpha = 0;
-                this->mqLogoAlpha = 0;
+                this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }  
@@ -494,7 +553,7 @@ void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     f32 arrowAnimTween;
     f32 new_var3;       // likely fake temp
-    s32 new_var2 = 255; // likely fake temp
+    s32 new_var2 = 155; // likely fake temp
     f32 stickAnimTween;
 
     arrowAnimTween = this->arrowAnimTween;
@@ -528,14 +587,14 @@ void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx) {
     }
 
     this->stickAnimTween = stickAnimTween;
-    this->stickLeftPrompt.arrowColorR = (u8)(255 - ((s32)(155.0f * arrowAnimTween)));
-    this->stickLeftPrompt.arrowColorG = (u8)(new_var2 - (s32)(155.0f * arrowAnimTween));
-    new_var3 = (155.0f * arrowAnimTween);
-    this->stickLeftPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorR = (u8)(155 - ((s32)(75.0f * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorG = (u8)(new_var2 - (s32)(55.0f * arrowAnimTween));
+    new_var3 = (75.0f * arrowAnimTween);
+    this->stickLeftPrompt.arrowColorB = (u8)(255 - ((s32)(75.0f * arrowAnimTween)));
     this->stickLeftPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
     this->stickRightPrompt.arrowColorR = (u8)(new_var2 - (s32)new_var3);
-    this->stickRightPrompt.arrowColorG = (u8)(255 - (s32)new_var3);
-    this->stickRightPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
+    this->stickRightPrompt.arrowColorG = (u8)(155 - (s32)new_var3);
+    this->stickRightPrompt.arrowColorB = (u8)(255 - ((s32)(75.0f * arrowAnimTween)));
     this->stickRightPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
     this->stickRightPrompt.arrowTexX = 260.0f;
     this->stickLeftPrompt.arrowTexX = 63.0f;
@@ -550,18 +609,10 @@ void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx) {
 void FileChoose_StartQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    this->nqLogoAlpha += 25;
-    this->mqLogoAlpha += 25;
+    this->logoAlpha += 25;
 
-    if (this->nqLogoAlpha >= 128) {
-        this->nqLogoAlpha = 128;
-    }
-
-    if (this->mqLogoAlpha >= 128) {
-        this->mqLogoAlpha = 128;
-    }
-
-    if (this->nqLogoAlpha == 128 && this->mqLogoAlpha == 128) {
+    if (this->logoAlpha >= 255) {
+        this->logoAlpha = 255;
         this->configMode = CM_QUEST_MENU;
     }
 }
@@ -574,29 +625,24 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
 
     if (ABS(this->stickRelX) > 30) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        this->questType[this->selectedFileIndex] ^= MASTER_QUEST;
-    }
+        if (this->stickRelX > 30) {
+            this->questType[this->selectedFileIndex] += 1;
+        } else if (this->stickRelX < -30) {
+            this->questType[this->selectedFileIndex] -= 1;
+        }
 
-    if (!this->questType[this->selectedFileIndex]) {
-        for (i = 0; i < 15; i++) {
-            if (this->nqLogoAlpha < 255)
-                this->nqLogoAlpha++;
-            if (this->mqLogoAlpha > 128)
-                this->mqLogoAlpha--;
+        if (this->questType[this->selectedFileIndex] > RANDOMIZER_QUEST) {
+            this->questType[this->selectedFileIndex] = NORMAL_QUEST;
+        } else if (this->questType[this->selectedFileIndex] < NORMAL_QUEST) {
+            this->questType[this->selectedFileIndex] = RANDOMIZER_QUEST;
         }
-    } else {
-        for (i = 0; i < 15; i++) {
-            if (this->mqLogoAlpha < 255)
-                this->mqLogoAlpha++;
-            if (this->nqLogoAlpha > 128)
-                this->nqLogoAlpha--;
-        }
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        gSaveContext.isMasterQuest = this->questType[this->selectedFileIndex];
+        gSaveContext.isMasterQuest = this->questType[this->selectedFileIndex] == MASTER_QUEST;
+        gSaveContext.n64ddFlag = this->questType[this->selectedFileIndex] == RANDOMIZER_QUEST;
         osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_ROTATE_TO_NAME_ENTRY;
@@ -1286,54 +1332,55 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw next title label
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU)) {
-        u8 drawStickLeftPrompt = this->questType[this->selectedFileIndex] == MASTER_QUEST;
-        u8 drawStickRightPrompt = this->questType[this->selectedFileIndex] == NORMAL_QUEST;
-        if (drawStickLeftPrompt || drawStickRightPrompt) {
-            func_800944C4(this->state.gfxCtx);
-            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD);
-            if (drawStickLeftPrompt) {
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                       this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
-                                       this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-            }
-            if (drawStickRightPrompt) {
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                       this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                       this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                                       this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-            }
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD);
-            if (drawStickLeftPrompt) {
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
-                                       this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
-                                       this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
-                                       this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-            }
-            if (drawStickRightPrompt) {
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                                       this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                                       this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                                       this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-            }
-        }
-        if (this->questType[this->selectedFileIndex] == 0) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nqLogoAlpha);
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
-            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+        // draw control stick prompts.
+        func_800944C4(this->state.gfxCtx);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        switch (this->questType[this->selectedFileIndex]) {
+            case NORMAL_QUEST:
+            default:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+                break;
 
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->mqLogoAlpha);
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
-            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
-            FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
+            case MASTER_QUEST:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
+                break;
+            
+            case RANDOMIZER_QUEST:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+                FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
+                break;
         }
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -2423,14 +2470,14 @@ void FileChoose_InitContext(GameState* thisx) {
     this->stickLeftPrompt.stickColorG = 200;
     this->stickLeftPrompt.stickColorB = 200;
     this->stickLeftPrompt.stickColorA = 180;
-    this->stickLeftPrompt.stickTexX = 49;
-    this->stickLeftPrompt.stickTexY = 95;
-    this->stickLeftPrompt.arrowColorR = 255;
-    this->stickLeftPrompt.arrowColorG = 255;
-    this->stickLeftPrompt.arrowColorB = 0;
+    this->stickLeftPrompt.stickTexX = 79;
+    this->stickLeftPrompt.stickTexY = 139;
+    this->stickLeftPrompt.arrowColorR = 155;
+    this->stickLeftPrompt.arrowColorG = 155;
+    this->stickLeftPrompt.arrowColorB = 255;
     this->stickLeftPrompt.arrowColorA = 200;
-    this->stickLeftPrompt.arrowTexX = 33;
-    this->stickLeftPrompt.arrowTexY = 91;
+    this->stickLeftPrompt.arrowTexX = 63;
+    this->stickLeftPrompt.arrowTexY = 135;
     this->stickLeftPrompt.z = 1;
     this->stickLeftPrompt.isEnabled = false;
 
@@ -2438,14 +2485,14 @@ void FileChoose_InitContext(GameState* thisx) {
     this->stickRightPrompt.stickColorG = 200;
     this->stickRightPrompt.stickColorB = 200;
     this->stickRightPrompt.stickColorA = 180;
-    this->stickRightPrompt.stickTexX = 274;
-    this->stickRightPrompt.stickTexY = 95;
-    this->stickRightPrompt.arrowColorR = 255;
-    this->stickRightPrompt.arrowColorG = 255;
-    this->stickRightPrompt.arrowColorB = 0;
+    this->stickRightPrompt.stickTexX = 244;
+    this->stickRightPrompt.stickTexY = 139;
+    this->stickRightPrompt.arrowColorR = 155;
+    this->stickRightPrompt.arrowColorG = 155;
+    this->stickRightPrompt.arrowColorB = 255;
     this->stickRightPrompt.arrowColorA = 200;
-    this->stickRightPrompt.arrowTexX = 290;
-    this->stickRightPrompt.arrowTexY = 91;
+    this->stickRightPrompt.arrowTexX = 260;
+    this->stickRightPrompt.arrowTexY = 135;
     this->stickRightPrompt.z = 1;
     this->stickRightPrompt.isEnabled = false;
 
@@ -2493,8 +2540,8 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
-    this->nqLogoAlpha = 0;
-    this->mqLogoAlpha = 0;
+    this->logoAlpha = 0;
+    this->logoAlpha = 0;
     this->questType[0] = NORMAL_QUEST;
     this->questType[1] = NORMAL_QUEST;
     this->questType[2] = NORMAL_QUEST;
