@@ -298,11 +298,8 @@ namespace Ship {
 
         dwMenubar = GetConfig()->getBool("Window.Options", false);
 
-        gfxBackend = GetConfig()->getString("Window.GfxBackend");
-        InitializeWindowManager();
-
-        audioBackend = GetConfig()->getString("Window.AudioBackend");
-        InitializeAudioPlayer();
+        InitializeWindowManager(GetConfig()->getString("Window.GfxBackend"));
+        InitializeAudioPlayer(GetConfig()->getString("Window.AudioBackend"));
 
         gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
@@ -438,7 +435,25 @@ namespace Ship {
         return dwHeight;
     }
 
-    void Window::InitializeAudioPlayer() {
+    void Window::InitializeAudioPlayer(std::string audioBackend) {
+        // Config can override
+#ifdef _WIN32
+        if (audioBackend == "wasapi") {
+            APlayer = std::make_shared<WasapiAudioPlayer>();
+            return;
+        }
+#endif
+#if defined(__linux)
+        if (audioBackend == "pulse") {
+            APlayer = std::make_shared<PulseAudioPlayer>();
+            return;
+        }
+#endif
+        if (audioBackend == "sdl") {
+            APlayer = std::make_shared<SDLAudioPlayer>();
+            return;
+        }
+
 #ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
 #elif defined(__linux)
@@ -446,24 +461,32 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
-
-        // Config can override
-#ifdef _WIN32
-        if (audioBackend == "wasapi") {
-            APlayer = std::make_shared<WasapiAudioPlayer>();
-        }
-#endif
-#if defined(__linux)
-        if (audioBackend == "pulse") {
-            APlayer = std::make_shared<PulseAudioPlayer>();
-        }
-#endif
-        if (audioBackend == "sdl") {
-            APlayer = std::make_shared<SDLAudioPlayer>();
-        }
     }
 
-    void Window::InitializeWindowManager() {
+    void Window::InitializeWindowManager(std::string gfxBackend) {
+        // Config can override
+#ifdef ENABLE_DX11
+        if (gfxBackend == "dx11") {
+            RenderingApi = &gfx_direct3d11_api;
+            WmApi = &gfx_dxgi_api;
+            return;
+        }
+#endif
+#ifdef ENABLE_OPENGL
+        if (gfxBackend == "sdl") {
+            RenderingApi = &gfx_opengl_api;
+            WmApi = &gfx_sdl;
+            return;
+        }
+#if defined(__linux__) && defined(X11_SUPPORTED)
+        if (gfxBackend == "glx") {
+            RenderingApi = &gfx_opengl_api;
+            WmApi = &gfx_glx;
+            return;
+        }
+#endif
+#endif
+
         // First set default
 #ifdef ENABLE_OPENGL
         RenderingApi = &gfx_opengl_api;
@@ -486,26 +509,6 @@ namespace Ship {
 #ifdef __WIIU__
         RenderingApi = &gfx_gx2_api;
         WmApi = &gfx_wiiu;
-#endif
-
-        // Config can override
-#ifdef ENABLE_DX11
-        if (gfxBackend == "dx11") {
-            RenderingApi = &gfx_direct3d11_api;
-            WmApi = &gfx_dxgi_api;
-        }
-#endif
-#ifdef ENABLE_OPENGL
-        if (gfxBackend == "sdl") {
-            RenderingApi = &gfx_opengl_api;
-            WmApi = &gfx_sdl;
-        }
-#if defined(__linux__) && defined(X11_SUPPORTED)
-        if (gfxBackend == "glx") {
-            RenderingApi = &gfx_opengl_api;
-            WmApi = &gfx_glx;
-        }
-#endif
 #endif
     }
 
@@ -653,11 +656,6 @@ namespace Ship {
 
     std::shared_ptr<AudioPlayer> Window::GetAudioPlayer() {
 	    return APlayer;
-    }
-
-    void Window::ReinitAudioPlayer() {
-        audioBackend = GetConfig()->getString("Window.AudioBackend");
-        InitializeAudioPlayer();
     }
 
     std::shared_ptr<ResourceMgr> Window::GetResourceManager() {

@@ -45,13 +45,14 @@ namespace Ship {
 			std::string GetName();
 			std::shared_ptr<ControlDeck> GetControlDeck();
 			std::shared_ptr<AudioPlayer> GetAudioPlayer();
-			void ReinitAudioPlayer();
 			std::shared_ptr<ResourceMgr> GetResourceManager();
 			std::shared_ptr<Mercury> GetConfig();
 			std::shared_ptr<spdlog::logger> GetLogger();
 			const char* GetKeyName(int32_t scancode);
 			int32_t GetLastScancode();
 			void SetLastScancode(int32_t scanCode);
+			void InitializeAudioPlayer(std::string audioBackend);
+			void InitializeWindowManager(std::string gfxBackend);
 
 		protected:
 			Window() = default;
@@ -64,10 +65,8 @@ namespace Ship {
 
 			void InitializeConfiguration();
 			void InitializeControlDeck();
-			void InitializeAudioPlayer();
 			void InitializeLogging();
 			void InitializeResourceManager(const std::vector<std::string>& OTRFiles = {}, const std::unordered_set<uint32_t>& ValidHashes = {});
-			void InitializeWindowManager();
 
 			std::shared_ptr<spdlog::logger> Logger;
 			std::shared_ptr<Mercury> Config; // Config needs to be after the Window because we call the Window during it's destructor.
@@ -75,8 +74,6 @@ namespace Ship {
 			std::shared_ptr<AudioPlayer> APlayer;
 			std::shared_ptr<ControlDeck> ControllerApi;
 
-			std::string gfxBackend;
-			std::string audioBackend;
 			GfxRenderingAPI* RenderingApi;
 			GfxWindowManagerAPI* WmApi;
 			bool bIsFullscreen;

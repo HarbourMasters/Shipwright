@@ -1720,7 +1720,7 @@ extern "C" bool AudioPlayer_Init(void) {
         // loop over available audio apis if current fails
         for (uint8_t i = 0; i < audioBackends.size(); i++) {
             SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
-            OTRGlobals::Instance->context->ReinitAudioPlayer();
+            OTRGlobals::Instance->context->InitializeAudioPlayer(audioBackends[i].first);
             if (OTRGlobals::Instance->context->GetAudioPlayer()->Init()) {
                 return true;
             }
