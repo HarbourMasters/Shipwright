@@ -221,10 +221,10 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
-    { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEONS_ENTRANCES },
+    { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
     { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
-    { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIORS_ENTRANCES },
-    { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTOS_ENTRANCES },
+    { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
+    { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -769,6 +769,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
+                    case RSK_SHUFFLE_ENTRANCES:
+                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
+                    case RSK_SHUFFLE_GROTTO_ENTRANCES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -965,14 +968,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
-                    case RSK_SHUFFLE_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        }
-                        break;
-                    case RSK_SHUFFLE_DUNGEONS_ENTRANCES:
+                    case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                         if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;
                         } else if (it.value() == "On") {
@@ -981,27 +977,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
-                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
-                        }
-                        break;
-                    case RSK_SHUFFLE_INTERIORS_ENTRANCES:
+                    case RSK_SHUFFLE_INTERIOR_ENTRANCES:
                         if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;
                         } else if (it.value() == "Simple") {
                             gSaveContext.randoSettings[index].value = 1;
                         } else if (it.value() == "All") {
                             gSaveContext.randoSettings[index].value = 2;
-                        }
-                        break;
-                    case RSK_SHUFFLE_GROTTOS_ENTRANCES:
-                        if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                 }
@@ -2713,10 +2695,10 @@ void GenerateRandomizerImgui() {
                                           CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) || 
                                           CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
-    cvarSettings[RSK_SHUFFLE_DUNGEONS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
-    cvarSettings[RSK_SHUFFLE_INTERIORS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
-    cvarSettings[RSK_SHUFFLE_GROTTOS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
