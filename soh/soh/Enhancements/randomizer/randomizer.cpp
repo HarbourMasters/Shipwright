@@ -981,26 +981,31 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 
     bool success = false;
 
-    // Have all these use strcpy so that the nul terminator is copied as well
+    // Have all these use strncpy so that the nul terminator is copied 
+    // and also set the last index to nul for safety
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
         std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        strcpy(gSaveContext.childAltarText, formattedChildAltarText.c_str());
+        strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
+        gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
 
         std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        strcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str());
+        strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
+        gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
 
         std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
-        strcpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str());
+        strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
+        gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
-        strcpy(gSaveContext.ganonText, formattedGanonJsonText.c_str());
+        strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
+        gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -1008,7 +1013,9 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
 
             std::string hintMessage = FormatJsonHintText(it.value());
-            strcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str());
+            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
+            strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
+            gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
 
             index++;
         }
