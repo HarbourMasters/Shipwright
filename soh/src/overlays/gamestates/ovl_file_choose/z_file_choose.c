@@ -14,7 +14,18 @@
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
-#define MAX_QUEST RANDOMIZER_QUEST
+u8 getMaxQuest() {
+    if ((strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0)) {
+        return RANDOMIZER_QUEST;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest()) {
+        return MASTER_QUEST;
+    }
+
+    return NORMAL_QUEST;
+}
+#define MAX_QUEST getMaxQuest()
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
@@ -391,7 +402,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
 
-        if (CVar_GetS32("gRandomizer", 0) && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
+        if (strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
@@ -628,15 +639,15 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     if (ABS(this->stickRelX) > 30) {
         if (this->stickRelX > 30) {
-            this->questType[this->selectedFileIndex] += 1;
+            this->questType[this->buttonIndex] += 1;
         } else if (this->stickRelX < -30) {
-            this->questType[this->selectedFileIndex] -= 1;
+            this->questType[this->buttonIndex] -= 1;
         }
 
-        if (this->questType[this->selectedFileIndex] > MAX_QUEST) {
-            this->questType[this->selectedFileIndex] = MIN_QUEST;
-        } else if (this->questType[this->selectedFileIndex] < MIN_QUEST) {
-            this->questType[this->selectedFileIndex] = MAX_QUEST;
+        if (this->questType[this->buttonIndex] > MAX_QUEST) {
+            this->questType[this->buttonIndex] = MIN_QUEST;
+        } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
+            this->questType[this->buttonIndex] = MAX_QUEST;
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -644,8 +655,8 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        gSaveContext.isMasterQuest = this->questType[this->selectedFileIndex] == MASTER_QUEST;
-        gSaveContext.n64ddFlag = this->questType[this->selectedFileIndex] == RANDOMIZER_QUEST;
+        gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
+        gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
         osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_ROTATE_TO_NAME_ENTRY;
@@ -1336,31 +1347,33 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     // draw next title label
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU)) {
         // draw control stick prompts.
-        func_800944C4(this->state.gfxCtx);
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
-                                this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                                this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
-                                this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
-                                this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
-                                this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                                this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                                this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                                this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-        switch (this->questType[this->selectedFileIndex]) {
+        if (MIN_QUEST != MAX_QUEST) {
+            func_800944C4(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                    this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                    this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                    this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                    this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                    this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                    this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                    this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                    this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                    this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                    this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                    this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                    this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        }
+        switch (this->questType[this->buttonIndex]) {
             case NORMAL_QUEST:
             default:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);

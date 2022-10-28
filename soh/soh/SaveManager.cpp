@@ -482,9 +482,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
-
-    gSaveContext.isMasterQuest = CVar_GetS32("gMasterQuest", 0) && !CVar_GetS32("gRandomizer", 0);
-
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
