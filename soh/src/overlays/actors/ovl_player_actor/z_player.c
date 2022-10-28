@@ -4212,6 +4212,7 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
             } else {
                 globalCtx->nextEntranceIndex = globalCtx->setupExitList[sp3C - 1];
 
+                // Main override for entrance rando and entrance skips
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
                 }
