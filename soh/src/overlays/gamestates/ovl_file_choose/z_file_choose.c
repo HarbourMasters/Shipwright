@@ -427,6 +427,7 @@ u8 generating;
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
+    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadText", 0);
@@ -479,7 +480,23 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->prevConfigMode = this->configMode;
-                this->configMode = CM_ROTATE_TO_QUEST_MENU;
+                if (MIN_QUEST != MAX_QUEST) {
+                    this->configMode = CM_ROTATE_TO_QUEST_MENU;
+                } else {
+                    this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+                    this->questType[this->buttonIndex] = MIN_QUEST;
+                    CVar_SetS32("gOnFileSelectNameEntry", 1);
+                    this->kbdButton = FS_KBD_BTN_NONE;
+                    this->charPage = FS_CHAR_PAGE_ENG;
+                    this->kbdX = 0;
+                    this->kbdY = 0;
+                    this->charIndex = 0;
+                    this->charBgAlpha = 0;
+                    this->newFileNameCharCount = 0;
+                    this->nameEntryBoxPosX = 120;
+                    this->nameEntryBoxAlpha = 0;
+                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+                }
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -707,7 +724,10 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if (this->windowRot >= 628.0f) {
+    if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
+        this->windowRot = 314.0f;
+        this->configMode = CM_START_NAME_ENTRY;
+    } else if (this->windowRot >= 628.0f) {
         this->windowRot = 628.0f;
         this->configMode = CM_START_NAME_ENTRY;
     }
@@ -737,7 +757,7 @@ void FileChoose_RotateToMain(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if ((this->configMode == CM_OPTIONS_TO_MAIN && this->windowRot >= 628.0f) || 
+    if (((this->configMode == CM_OPTIONS_TO_MAIN || MIN_QUEST == MAX_QUEST) && this->windowRot >= 628.0f) || 
         (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->windowRot >= 942.0f)) {
         this->windowRot = 0.0f;
         this->configMode = CM_MAIN_MENU;
@@ -1695,7 +1715,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         if (this->windowRot != 0) {
             if (this->configMode == CM_ROTATE_TO_QUEST_MENU || 
-                (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN)) {
+                (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN) ||
+                MIN_QUEST == MAX_QUEST) {
                 Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
             } else {
                 Matrix_RotateX((this->windowRot - 942.0f) / 100.0f, MTXMODE_APPLY);
@@ -1734,7 +1755,11 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
-        Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
+        if (MIN_QUEST == MAX_QUEST) {
+            Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
+        } else {
+            Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
+        }
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
