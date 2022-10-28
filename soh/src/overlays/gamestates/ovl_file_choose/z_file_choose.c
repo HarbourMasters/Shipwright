@@ -670,7 +670,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
+    if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
         gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
@@ -688,6 +688,11 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+        return;
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        this->configMode = CM_QUEST_TO_MAIN;
         return;
     }
 }
@@ -757,7 +762,7 @@ void FileChoose_RotateToMain(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if (((this->configMode == CM_OPTIONS_TO_MAIN || MIN_QUEST == MAX_QUEST) && this->windowRot >= 628.0f) || 
+    if (((this->configMode == CM_OPTIONS_TO_MAIN || MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) && this->windowRot >= 628.0f) || 
         (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->windowRot >= 942.0f)) {
         this->windowRot = 0.0f;
         this->configMode = CM_MAIN_MENU;
@@ -797,7 +802,8 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenu,
     FileChoose_StartOptions,       FileChoose_RotateToMain,
     FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
-    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu
+    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
+    FileChoose_RotateToMain
 };
 
 /**
@@ -1345,7 +1351,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 isActive;
     s16 pad;
     char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
-        this->configMode == CM_START_QUEST_MENU)
+        this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN)
                   ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
                   : sTitleLabels[gSaveContext.language][this->titleLabel];
     Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
@@ -1716,7 +1722,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         if (this->windowRot != 0) {
             if (this->configMode == CM_ROTATE_TO_QUEST_MENU || 
                 (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN) ||
-                MIN_QUEST == MAX_QUEST) {
+                MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) {
                 Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
             } else {
                 Matrix_RotateX((this->windowRot - 942.0f) / 100.0f, MTXMODE_APPLY);
@@ -1813,7 +1819,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
     // draw quest menu
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
-        (this->configMode == CM_ROTATE_TO_NAME_ENTRY)) {
+        (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);

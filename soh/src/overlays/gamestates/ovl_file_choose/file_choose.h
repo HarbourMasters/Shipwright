@@ -59,6 +59,7 @@ typedef enum {
     CM_ROTATE_TO_QUEST_MENU,
     CM_QUEST_MENU,
     CM_START_QUEST_MENU,
+    CM_QUEST_TO_MAIN,
 } ConfigMode;
 
 typedef enum {
