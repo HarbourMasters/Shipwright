@@ -7,6 +7,7 @@
 #include "z_en_ge1.h"
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -41,7 +42,6 @@ void EnGe1_TalkAfterGame_Archery(EnGe1* this, GlobalContext* globalCtx);
 void EnGe1_Wait_Archery(EnGe1* this, GlobalContext* globalCtx);
 void EnGe1_CueUpAnimation(EnGe1* this);
 void EnGe1_StopFidget(EnGe1* this);
-void EnGe1_MoveForRandomizer(EnGe1* this, GlobalContext* globalCtx);
 
 const ActorInit En_Ge1_InitVars = {
     ACTOR_EN_GE1,
@@ -94,8 +94,16 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGe1* this = (EnGe1*)thisx;
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-        EnGe1_MoveForRandomizer(thisx, globalCtx);
+    // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (this->actor.params & 0xFF) == GE1_TYPE_GATE_OPERATOR) {
+        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0, 0x0302);
+    }
+
+    // Convert the "extra" gate operator into a normal one so it matches the same params
+    if ((this->actor.params & 0xFF) == GE1_TYPE_EXTRA_GATE_OPERATOR) {
+        this->actor.params &= ~0xFF;
+        this->actor.params |= GE1_TYPE_GATE_OPERATOR;
     }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
@@ -117,15 +125,7 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
 
         case GE1_TYPE_GATE_GUARD:
             this->hairstyle = GE1_HAIR_SPIKY;
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-                if (EnGe1_CheckCarpentersFreed()) {
-                    this->actionFunc = EnGe1_CheckGate_GateOp;
-                } else {
-                    this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
-                }
-            } else {
-                this->actionFunc = EnGe1_GetReaction_GateGuard;
-            }
+            this->actionFunc = EnGe1_GetReaction_GateGuard;
             break;
 
         case GE1_TYPE_GATE_OPERATOR:
@@ -141,18 +141,10 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-                if (EnGe1_CheckCarpentersFreed()) {
-                    this->actionFunc = EnGe1_CheckGate_GateOp;
-                } else {
-                    this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
-                }
+            if (EnGe1_CheckCarpentersFreed()) {
+                this->actionFunc = EnGe1_SetNormalText;
             } else {
-                if (EnGe1_CheckCarpentersFreed()) {
-                    this->actionFunc = EnGe1_SetNormalText;
-                } else {
-                    this->actionFunc = EnGe1_WatchForAndSensePlayer;
-                }
+                this->actionFunc = EnGe1_WatchForAndSensePlayer;
             }
             break;
 
@@ -190,7 +182,7 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (EnGe1_CheckCarpentersFreed()) {
-                // If the gtg gate is permanently open, don't let the gaurd charge to open it
+                // If the gtg gate is permanently open, don't let the gaurd charge to open it again
                 if (gSaveContext.n64ddFlag && gSaveContext.sceneFlags[93].swch & 0x00000004) {
                     this->actionFunc = EnGe1_SetNormalText;
                 } else {
@@ -203,17 +195,6 @@ void EnGe1_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     this->stateFlags = 0;
-}
-
-void EnGe1_MoveForRandomizer(EnGe1* this, GlobalContext* globalCtx) {
-
-    // Move gate guard to haunted wasteland side
-    if (globalCtx->sceneNum == 0x5D && this->actor.world.pos.x == -857 && this->actor.world.pos.z == -3123) {
-        this->actor.world.pos.x = -1224.0f;
-        this->actor.world.pos.z = -3160.0f;
-        this->actor.world.pos.y = 93.291f;
-        this->actor.shape.rot.y = -23120.0f; 
-    }
 }
 
 void EnGe1_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -276,13 +257,16 @@ void EnGe1_KickPlayer(EnGe1* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
-            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) { // Always throw child link into the river
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) { // Caught previously
             globalCtx->nextEntranceIndex = 0x5F8;
         } else {
             globalCtx->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_CheckGeurdoGuardCapture();
         }
 
         globalCtx->fadeTransition = 0x26;
@@ -473,11 +457,7 @@ void EnGe1_WaitUntilGateOpened_GateOp(EnGe1* this, GlobalContext* globalCtx) {
 void EnGe1_OpenGate_GateOp(EnGe1* this, GlobalContext* globalCtx) {
     if (this->stateFlags & GE1_STATE_IDLE_ANIM) {
         this->actionFunc = EnGe1_WaitUntilGateOpened_GateOp;
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            Flags_SetSwitch(globalCtx, (769 >> 8) & 0x3F);
-        } else {
-            Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
-        }
+        Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
         this->cutsceneTimer = 50;
         Message_CloseTextbox(globalCtx);
     } else if ((this->skelAnime.curFrame == 15.0f) || (this->skelAnime.curFrame == 19.0f)) {

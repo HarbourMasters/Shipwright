@@ -449,3 +449,20 @@ void Entrance_CheckWeatherState() {
         }
     }
 }
+
+// Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
+// In ER, Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley
+// Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
+void Entrance_CheckGeurdoGuardCapture(void) {
+    if (LINK_IS_CHILD) {
+        gGlobalCtx->nextEntranceIndex = 0x1A5;
+    }
+
+    if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
+        gGlobalCtx->nextEntranceIndex == 0x1A5) { // Geurdo Valley thrown out
+        if (gGlobalCtx->sceneNum != 0x5A) { // Geurdo Valley
+            gGlobalCtx->nextEntranceIndex = 0x129; // Gerudo Fortress
+        }
+    }
+}
+
