@@ -13,6 +13,8 @@
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
+#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
+#define MAX_QUEST RANDOMIZER_QUEST
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
@@ -631,11 +633,12 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->questType[this->selectedFileIndex] -= 1;
         }
 
-        if (this->questType[this->selectedFileIndex] > RANDOMIZER_QUEST) {
-            this->questType[this->selectedFileIndex] = NORMAL_QUEST;
-        } else if (this->questType[this->selectedFileIndex] < NORMAL_QUEST) {
-            this->questType[this->selectedFileIndex] = RANDOMIZER_QUEST;
+        if (this->questType[this->selectedFileIndex] > MAX_QUEST) {
+            this->questType[this->selectedFileIndex] = MIN_QUEST;
+        } else if (this->questType[this->selectedFileIndex] < MIN_QUEST) {
+            this->questType[this->selectedFileIndex] = MAX_QUEST;
         }
+
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
@@ -1378,7 +1381,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
                 FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
                 break;
         }
@@ -2541,10 +2544,9 @@ void FileChoose_Init(GameState* thisx) {
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
     this->logoAlpha = 0;
-    this->logoAlpha = 0;
-    this->questType[0] = NORMAL_QUEST;
-    this->questType[1] = NORMAL_QUEST;
-    this->questType[2] = NORMAL_QUEST;
+    this->questType[0] = MIN_QUEST;
+    this->questType[1] = MIN_QUEST;
+    this->questType[2] = MIN_QUEST;
     fileSelectSpoilerFileLoaded = false;
     CVar_SetS32("gOnFileSelectNameEntry", 0);
 
