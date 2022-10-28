@@ -385,7 +385,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    if (this->windowRot == 0) {
+    if (this->windowRot == 0 || (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == RANDOMIZER_QUEST)) {
         if (this->selectMode == SM_CONFIRM_FILE) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->buttonIndex]);
 
@@ -1417,6 +1417,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 break;
             
             case RANDOMIZER_QUEST:
+                DrawSeedHashSprites(this);
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
