@@ -56,8 +56,6 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
-    if(!CVar_GetS32("gRandomizer", 0)) return;
-
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
             SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
