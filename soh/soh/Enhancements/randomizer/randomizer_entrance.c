@@ -277,6 +277,35 @@ void Entrance_SetSavewarpEntrance(void) {
     }
 }
 
+void Entrance_OverrideBlueWarp(void) {
+    switch (gGlobalCtx->sceneNum) {
+        case SCENE_YDAN_BOSS: // Ghoma boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
+            return;
+        case SCENE_DDAN_BOSS: // King Dodongo boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
+            return;
+        case SCENE_BDAN_BOSS: // Barinade boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
+            return;
+        case SCENE_MORIBOSSROOM: // Phantom Ganon boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
+            return;
+        case SCENE_FIRE_BS: // Volvagia boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
+            return;
+        case SCENE_MIZUSIN_BS: // Morpha boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
+            return;
+        case SCENE_JYASINBOSS: // Bongo-Bongo boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
+            return;
+        case SCENE_HAKADAN_BS: // Twinrova boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
+            return;
+    }
+}
+
 void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     switch (cutsceneCmd) {
         case 24: // Dropping a fish for Jabu Jabu

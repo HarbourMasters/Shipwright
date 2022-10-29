@@ -549,7 +549,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetEventChkInf(0x25);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x47A);
+                    globalCtx->nextEntranceIndex = 0x47A;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_GORON_RUBY);
@@ -557,11 +557,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x47A);
-                } else {
-                    globalCtx->nextEntranceIndex = 0x47A;
-                }
+                globalCtx->nextEntranceIndex = 0x47A;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_YDAN_BOSS) {
@@ -570,7 +566,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetEventChkInf(9);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
+                    globalCtx->nextEntranceIndex = 0x0457;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
@@ -578,21 +574,18 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
-                } else {
-                    globalCtx->nextEntranceIndex = 0x457;
-                }
+                globalCtx->nextEntranceIndex = 0x457;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_BDAN_BOSS) {
-            if (gSaveContext.n64ddFlag) {
-                globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x10E);
-            } else {
-                globalCtx->nextEntranceIndex = 0x10E;
-            }
+            globalCtx->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0;
         }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
+        }
+
         osSyncPrintf("\n\n\nおわりおわり");
         globalCtx->sceneLoadFlag = 0x14;
         globalCtx->fadeTransition = 7;
@@ -687,12 +680,16 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
 
         if (gSaveContext.n64ddFlag) {
-            globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x10E);
+            globalCtx->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0;
         } else {
             Item_Give(globalCtx, ITEM_ZORA_SAPPHIRE);
             globalCtx->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0xFFF0;
+        }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
         }
 
         globalCtx->sceneLoadFlag = 0x14;
@@ -801,7 +798,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
 
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x608);
+                    globalCtx->nextEntranceIndex = 0x608;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
@@ -810,9 +807,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
                 }
             } else {
-                if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x608);
-                } else if (!LINK_IS_ADULT) {
+                if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x600;
                 } else {
                     globalCtx->nextEntranceIndex = 0x608;
@@ -825,7 +820,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
 
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x564);
+                    globalCtx->nextEntranceIndex = 0x564;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_MEDALLION_FIRE);
@@ -833,9 +828,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                     gSaveContext.nextCutsceneIndex = 0xFFF3;
                 }
             } else {
-                if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x564);
-                } else if (!LINK_IS_ADULT) {
+                if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x4F6;
                 } else {
                     globalCtx->nextEntranceIndex = 0x564;
@@ -848,7 +841,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
 
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x60C);
+                    globalCtx->nextEntranceIndex = 0x60C;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_MEDALLION_WATER);
@@ -857,9 +850,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
                 }
             } else {
-                if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x60C);
-                } else if (!LINK_IS_ADULT) {
+                if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x604;
                 } else {
                     globalCtx->nextEntranceIndex = 0x60C;
@@ -871,7 +862,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
 
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x610);
+                    globalCtx->nextEntranceIndex = 0x610;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_MEDALLION_SPIRIT);
@@ -892,7 +883,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
 
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x580);
+                    globalCtx->nextEntranceIndex = 0x580;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(globalCtx, ITEM_MEDALLION_SHADOW);
@@ -909,6 +900,11 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
+        }
+
         globalCtx->sceneLoadFlag = 0x14;
         globalCtx->fadeTransition = 3;
         gSaveContext.nextTransition = 7;
