@@ -12,6 +12,7 @@ static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
 
+static u8 isFastFileIdIncompatible = 0;
 
 static Gfx sScreenFillSetupDL[] = {
     gsDPPipeSync(),
@@ -32,7 +33,14 @@ static s16 sWindowContentColors[2][3] = {
 };
 
 static int FileChoose_IsSaveCompatible(const SaveFileMetaInfo* restrict meta) {
-    return meta->isMasterQuest == ResourceMgr_IsGameMasterQuest();
+    bool valid = true;
+    if (meta->requiresMasterQuest) {
+        valid = valid && ResourceMgr_GameHasMasterQuest();
+    }
+    if (meta->requiresOriginal) {
+        valid = valid && ResourceMgr_GameHasOriginal();
+    }
+    return valid;
 }
 
 void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
@@ -197,6 +205,8 @@ void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int 
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
+bool fileSelectSpoilerFileLoaded = false;
+
 void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
@@ -219,13 +229,13 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
 
-        if (CVar_GetS32("gRandomizer", 0) && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0) {
+        if (CVar_GetS32("gRandomizer", 0) && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
                 SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
             }
-        }
+            }
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -234,7 +244,6 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
-bool fileSelectSpoilerFileLoaded;
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -270,8 +279,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
 
     if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
         (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded &&
-            SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
             CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
         }
@@ -290,6 +298,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Randomizer_LoadRequiredTrials(fileLoc);
         Randomizer_LoadItemLocations(fileLoc, silent);
         Randomizer_LoadMerchantMessages(fileLoc);
+        Randomizer_LoadMasterQuestDungeons(fileLoc);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1102,7 +1111,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // draw rando label
         if (Save_GetSaveMetaInfo(i)->randoSave) {
-            if (CVar_GetS32("gHudColors", 1) == 2) {
+            if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
@@ -1118,7 +1127,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
         }
         //Draw MQ label
-        if (Save_GetSaveMetaInfo(i)->isMasterQuest && Save_GetSaveMetaInfo(i)->valid) {
+        if (Save_GetSaveMetaInfo(i)->requiresMasterQuest && !Save_GetSaveMetaInfo(i)->randoSave && Save_GetSaveMetaInfo(i)->valid) {
             if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
@@ -1150,7 +1159,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
 
-        if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->isMasterQuest) {
+        if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
             gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
         }
     }
@@ -1600,10 +1609,14 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipMask;
     s32 pad;
 
-    if (this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
-        Sram_OpenSave();
+        if (this->buttonIndex == 0xFF) {
+            Sram_InitDebugSave();
+        } else {
+            Sram_OpenSave();
+        }
         gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         this->state.running = false;
@@ -1619,7 +1632,9 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadRequiredTrials("");
     Randomizer_LoadMerchantMessages("");
+    Randomizer_LoadMasterQuestDungeons("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -1775,6 +1790,20 @@ void FileChoose_Main(GameState* thisx) {
 
     if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
+    }
+
+    if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVar_GetS32("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVar_GetS32("gSaveFileID", 0)))) {
+            this->buttonIndex = CVar_GetS32("gSaveFileID", 0);
+            this->menuMode = FS_MENU_MODE_SELECT;
+            this->selectMode = SM_LOAD_GAME;
+        } else {
+            isFastFileIdIncompatible = 1;
+        }
+    } else if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) == 3) {
+        this->buttonIndex = 0xFF;
+        this->menuMode = FS_MENU_MODE_SELECT;
+        this->selectMode = SM_LOAD_GAME;
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -2091,6 +2120,7 @@ void FileChoose_Init(GameState* thisx) {
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
     fileSelectSpoilerFileLoaded = false;
+    isFastFileIdIncompatible = 0;
     CVar_SetS32("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;

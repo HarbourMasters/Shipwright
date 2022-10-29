@@ -1860,6 +1860,16 @@ namespace Settings {
         StartingAge.Unlock();
       }
 
+      //Adult is also not compatible with the following combination:
+      //DoT:Intended, ShuffleOcarinas:false, Logic:Glitchless
+      if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED) && !ShuffleOcarinas &&
+        Logic.Is(LOGIC_GLITCHLESS)) {
+          StartingAge.SetSelectedIndex(AGE_CHILD);
+          StartingAge.Lock();
+        } else {
+          StartingAge.Unlock();
+        }
+
       //Only show stone count option if Stones is selected
       if (Bridge.Is(RAINBOWBRIDGE_STONES)) {
         BridgeStoneCount.Unhide();
@@ -2535,6 +2545,13 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+        MQDungeonCount.SetSelectedIndex(13);
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+        MQDungeonCount.SetSelectedIndex(0);
+    } else {
+        MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
+    }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
@@ -2591,6 +2608,11 @@ namespace Settings {
     GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
     BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    LACSStoneCount.SetSelectedIndex(cvarSettings[RSK_LACS_STONE_COUNT]);
+    LACSMedallionCount.SetSelectedIndex(cvarSettings[RSK_LACS_MEDALLION_COUNT]);
+    LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
+    LACSDungeonCount.SetSelectedIndex(cvarSettings[RSK_LACS_DUNGEON_COUNT]);
+    LACSTokenCount.SetSelectedIndex(cvarSettings[RSK_LACS_TOKEN_COUNT]);
 
     NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
     BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
@@ -2729,9 +2751,11 @@ namespace Settings {
       int choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
         ResolvedStartingAge = AGE_CHILD;
+        StartingAge.SetSelectedIndex(AGE_CHILD);
       }
       else {
         ResolvedStartingAge = AGE_ADULT;
+        StartingAge.SetSelectedIndex(AGE_ADULT);
       }
     }
     else {

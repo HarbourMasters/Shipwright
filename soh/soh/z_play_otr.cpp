@@ -28,7 +28,13 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s", scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string sceneVersion;
+    if (IsGameMasterQuest()) {
+        sceneVersion = "mq";
+    } else {
+        sceneVersion = "nonmq";
+    }
+    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
     globalCtx->sceneSegment = (Ship::Scene*)OTRGameplay_LoadFile(globalCtx, scenePath.c_str());
 

@@ -11,6 +11,7 @@ public:
 	ZRom(std::string romPath);
 
 	std::vector<uint8_t> GetFile(std::string fileName);
+    bool IsMQ();
 
 protected:
 	std::vector<uint8_t> romData;

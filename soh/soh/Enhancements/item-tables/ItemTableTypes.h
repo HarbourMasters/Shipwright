@@ -20,11 +20,20 @@ typedef enum GetItemFrom {
     ITEM_FROM_CHEST,
 } GetItemFrom;
 
-#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, modIndex, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, NULL }
+typedef enum GetItemCategory {
+    /* 0x00 */ ITEM_CATEGORY_JUNK,
+    /* 0x01 */ ITEM_CATEGORY_LESSER,
+    /* 0x02 */ ITEM_CATEGORY_BOSS_KEY,
+    /* 0x03 */ ITEM_CATEGORY_SMALL_KEY,
+    /* 0x04 */ ITEM_CATEGORY_SKULLTULA_TOKEN,
+    /* 0x05 */ ITEM_CATEGORY_MAJOR,
+} GetItemCategory;
+
+#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
+    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
 
 #define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, NULL }
+    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
 
 typedef struct GlobalContext GlobalContext;
 typedef struct GetItemEntry GetItemEntry;
@@ -42,5 +51,6 @@ typedef struct GetItemEntry {
     /* 0x0A */ uint16_t gid; // Stores the GID value unmodified for future reference.
     /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
     /* 0x0E */ GetItemFrom getItemFrom;
+    /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
     CustomDrawFunc drawFunc;
 };                   // size = 0x0F

@@ -57,6 +57,12 @@ class CustomMessageManager {
   public:
     static CustomMessageManager* Instance;
 
+    /*
+    Replaces the specified string in a CustomMessageEntry with the provided value
+    */
+    static void ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string textToReplace, std::string value);
+    static void ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string textToReplace, std::string englishValue, std::string germanValue, std::string frenchValue);
+
     CustomMessageManager();
     ~CustomMessageManager();
 
