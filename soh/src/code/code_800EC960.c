@@ -1698,6 +1698,12 @@ void Audio_OcaSetInstrument(u8 arg0) {
         return;
     }
 
+    u16 sfxEditorId = arg0 + 0x81;
+    u16 newArg0 = getReplacementSeq(sfxEditorId);
+    if (newArg0 != sfxEditorId) {
+        arg0 = newArg0 - 0x81;
+    }
+
     Audio_SeqCmd8(SEQ_PLAYER_SFX, 1, SFX_PLAYER_CHANNEL_OCARINA, arg0);
     D_80130F10 = arg0;
     if (arg0 == 0) {
