@@ -5,6 +5,7 @@
 #include <libultraship/Cvar.h>
 #include <libultraship/ImGuiImpl.h>
 #include <functions.h>
+#include "../randomizer/3drando/random.hpp"
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
@@ -171,8 +172,8 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
 
 void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type, bool sfx = false) {
     if (ImGui::Button("Reset All")) {
-        for (const auto& [defaultValue, nameAndStorageKeySuffix] : map) {
-            const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+        for (const auto& [defaultValue, seqData] : map) {
+            const auto& [name, storageKeySuffix, seqType] = seqData;
             if (seqType == type) {
                 const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
                 CVar_SetS32(storageKey.c_str(), defaultValue);
@@ -183,21 +184,21 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
     ImGui::SameLine();
     if (ImGui::Button("Randomize All")) {
         std::vector<u16> values;
-        for (const auto& [value, nameAndStorageKeySuffix] : map) {
-            const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+        for (const auto& [value, seqData] : map) {
+            const auto& [name, storageKeySuffix, seqType] = seqData;
 
             if (seqType == type) {
                 values.push_back(value);
             }
         }
-        for (const auto& [defaultValue, nameAndStorageKeySuffix] : map) {
-            const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+        Shuffle(values);
+        for (const auto& [defaultValue, seqData] : map) {
+            const auto& [name, storageKeySuffix, seqType] = seqData;
             const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
             if (seqType == type) {
-                const int randomIndex = rand() % values.size();
-                const int randomValue = values[randomIndex];
-                values.erase(values.begin() + randomIndex);
+                const int randomValue = values.back();
                 CVar_SetS32(storageKey.c_str(), randomValue);
+                values.pop_back();
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
@@ -207,8 +208,8 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 110.0f);
-    for (const auto& [defaultValue, nameAndStorageKeySuffix] : map) {
-        const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+    for (const auto& [defaultValue, seqData] : map) {
+        const auto& [name, storageKeySuffix, seqType] = seqData;
 
         if (seqType != type) {
             continue;
@@ -218,6 +219,7 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         const std::string hiddenKey = "##" + storageKey;
         const std::string stopButton = " Stop  " + hiddenKey;
         const std::string previewButton = "Preview" + hiddenKey;
+        const std::string resetButton = "Reset" + hiddenKey;
         const int currentValue = CVar_GetS32(storageKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
@@ -225,15 +227,15 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         ImGui::Text(name.c_str());
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(static_cast<u16>(currentValue))).c_str())) {
-            for (const auto& [value, nameAndStorageKeySuffix] : map) {
-                const auto& [name, storageKeySuffix, seqType] = nameAndStorageKeySuffix;
+        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(currentValue)).c_str())) {
+            for (const auto& [value, seqData] : map) {
+                const auto& [name, storageKeySuffix, seqType] = seqData;
                 if (seqType != type) {
                     continue;
                 }
 
-                if (ImGui::Selectable(std::get<0>(nameAndStorageKeySuffix).c_str())) {
-                    CVar_SetS32(storageKey.c_str(), static_cast<int>(value));
+                if (ImGui::Selectable(std::get<0>(seqData).c_str())) {
+                    CVar_SetS32(storageKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
                 }
             }
@@ -268,7 +270,7 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         }
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
-        if (ImGui::Button("Reset")) {
+        if (ImGui::Button(resetButton.c_str())) {
             CVar_SetS32(storageKey.c_str(), defaultValue);
             SohImGui::RequestCvarSaveOnNextTick();
         }
@@ -305,7 +307,7 @@ void DrawSfxEditor(bool& open) {
         CVar_SetS32("gSfxEditor", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(465, 630), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("SFX Editor", &open)) {
         ImGui::End();
         return;
