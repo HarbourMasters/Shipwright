@@ -12,6 +12,7 @@ static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
 
+static u8 isFastFileIdIncompatible = 0;
 
 static Gfx sScreenFillSetupDL[] = {
     gsDPPipeSync(),
@@ -1791,13 +1792,13 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3) {
+    if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
         if (Save_Exist(CVar_GetS32("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVar_GetS32("gSaveFileID", 0)))) {
             this->buttonIndex = CVar_GetS32("gSaveFileID", 0);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
-            CVar_SetS32("gSaveFileID", 4);
+            isFastFileIdIncompatible = 1;
         }
     } else if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) == 3) {
         this->buttonIndex = 0xFF;
@@ -2119,6 +2120,7 @@ void FileChoose_Init(GameState* thisx) {
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
     fileSelectSpoilerFileLoaded = false;
+    isFastFileIdIncompatible = 0;
     CVar_SetS32("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;
