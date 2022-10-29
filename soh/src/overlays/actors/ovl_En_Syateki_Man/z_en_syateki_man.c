@@ -282,8 +282,7 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
             if(CVar_GetS32("gInstantShootingGalleryWin", 0)) {
                 gallery->hitCount = 10;
                 gallery->signal = ENSYATEKI_END;
-            }
-            else {
+            } else {
                 gallery->signal = ENSYATEKI_START;
             }
             this->actionFunc = EnSyatekiMan_WaitForGame;
