@@ -36,7 +36,8 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
 
     // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        Grotto_CheckSpecialEntrance(Entrance_GetOverride(entranceIndex));
+        // Ignore return value as we want to load into the entrance specified by the debug menu
+        Grotto_OverrideSpecialEntrance(Entrance_GetOverride(entranceIndex));
     }
 
     if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
@@ -85,7 +86,8 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         // Use grotto content and parent scene num to identify the right grotto
         s16 grottoEntrance = Grotto_GetRenamedGrottoIndexFromOriginal(this->betterGrottos[grottoIndex].data, this->betterGrottos[grottoIndex].exitScene);
-        Grotto_CheckSpecialEntrance(Entrance_GetOverride(grottoEntrance));
+        // Ignore return value as we want to load into the entrance specified by the debug menu
+        Grotto_OverrideSpecialEntrance(Entrance_GetOverride(grottoEntrance));
     }
 
     if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {

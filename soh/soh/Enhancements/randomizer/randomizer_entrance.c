@@ -1,3 +1,12 @@
+/*
+ * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/entrance.c
+ * It's been adapted for SoH to use our gGlobalCtx with slightly different named properties, and our enums for some scenes/entrances.
+ * 
+ * Unlike 3DS rando, we need to be able to support the user loading up vanilla and rando saves, so the logic around
+ * modifying the entrance table requires that we save the original table and reset whenever loading a vanilla save.
+ * A modified dynamicExitList is manually included since we can't read it from addressing like 3ds rando.
+ */
+
 #include "randomizer_entrance.h"
 #include "randomizer_grotto.h"
 #include <string.h>
@@ -9,6 +18,7 @@ extern GlobalContext* gGlobalCtx;
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
 //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
 s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8, 0x04EE, 0x03C0, 0x0463, 0x01CD, 0x0394, 0x0340, 0x057C };
+//                                       OGC Fairy                                                                       HC Fairy
 
 // Warp Song indices array : 0x53C33C = { 0x0600, 0x04F6, 0x0604, 0x01F1, 0x0568, 0x05F4 }
 
@@ -182,11 +192,11 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         gGlobalCtx->actorCtx.flags.tempSwch = 0;
         gGlobalCtx->actorCtx.flags.tempCollect = 0;
     }
-    return Grotto_CheckSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
+    return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
-    return Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
+    return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
@@ -340,7 +350,7 @@ void Entrance_EnableFW(void) {
 }
 
 // Check if Link should still be riding epona after changing entrances
-void Entrance_CheckEpona(void) {
+void Entrance_HandleEponaState(void) {
     s32 entrance = gGlobalCtx->nextEntranceIndex;
     Player* player = GET_PLAYER(gGlobalCtx);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
@@ -396,7 +406,7 @@ void Entrance_CheckEpona(void) {
 
 // Certain weather states don't clear normally in entrance rando, so we need to reset and re-apply
 // the correct weather state based on the current entrance and scene
-void Entrance_CheckWeatherState() {
+void Entrance_OverrideWeatherState() {
     gWeatherMode = 0;
     gGlobalCtx->envCtx.gloomySkyMode = 0;
 
@@ -482,7 +492,7 @@ void Entrance_CheckWeatherState() {
 // Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
 // In ER, Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley
 // Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
-void Entrance_CheckGeurdoGuardCapture(void) {
+void Entrance_OverrideGeurdoGuardCapture(void) {
     if (LINK_IS_CHILD) {
         gGlobalCtx->nextEntranceIndex = 0x1A5;
     }

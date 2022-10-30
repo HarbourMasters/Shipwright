@@ -161,7 +161,7 @@ void Gameplay_Destroy(GameState* thisx) {
 
     // In ER, remove link from epona when entering somewhere that doesn't support epona
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-        Entrance_CheckEpona();
+        Entrance_HandleEponaState();
     }
 
     globalCtx->state.gfxCtx->callback = NULL;
@@ -1763,7 +1763,7 @@ void* Gameplay_LoadFile(GlobalContext* globalCtx, RomFile* file) {
 void Gameplay_InitEnvironment(GlobalContext* globalCtx, s16 skyboxId) {
     // For entrance rando, ensure the correct weather state and sky mode is applied
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        Entrance_CheckWeatherState();
+        Entrance_OverrideWeatherState();
     }
     Skybox_Init(&globalCtx->state, &globalCtx->skyboxCtx, skyboxId);
     Environment_Init(globalCtx, &globalCtx->envCtx, 0);

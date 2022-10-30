@@ -1,3 +1,8 @@
+/*
+ * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/grotto.c
+ * It's been adapted for SoH to use our gGlobalCtx and slightly different named properties.
+ */
+
 #include "randomizer_grotto.h"
 
 #include "global.h"
@@ -128,7 +133,7 @@ static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto, RespawnMode respawnM
 
 // Translates and overrides the passed in entrance index if it corresponds to a
 // special grotto entrance (grotto load or returnpoint)
-s16 Grotto_CheckSpecialEntrance(s16 nextEntranceIndex) {
+s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
     // Don't change anything unless grotto shuffle has been enabled
     if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
@@ -205,7 +210,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 
             // Run the index through the special entrances override check
             lastEntranceType = GROTTO_LOAD;
-            gGlobalCtx->nextEntranceIndex = Grotto_CheckSpecialEntrance(index);
+            gGlobalCtx->nextEntranceIndex = Grotto_OverrideSpecialEntrance(index);
             return;
         }
     }

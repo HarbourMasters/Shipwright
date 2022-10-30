@@ -268,7 +268,7 @@ void EnGe1_KickPlayer(EnGe1* this, GlobalContext* globalCtx) {
         }
 
         if (gSaveContext.n64ddFlag) {
-            Entrance_CheckGeurdoGuardCapture();
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         globalCtx->fadeTransition = 0x26;
