@@ -51,8 +51,8 @@ namespace Ship {
 			const char* GetKeyName(int32_t scancode);
 			int32_t GetLastScancode();
 			void SetLastScancode(int32_t scanCode);
-			void InitializeAudioPlayer(std::string audioBackend);
-			void InitializeWindowManager(std::string gfxBackend);
+			void InitializeAudioPlayer(std::string_view audioBackend);
+			void InitializeWindowManager(std::string_view gfxBackend);
 
 		protected:
 			Window() = default;

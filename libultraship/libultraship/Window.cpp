@@ -435,7 +435,7 @@ namespace Ship {
         return dwHeight;
     }
 
-    void Window::InitializeAudioPlayer(std::string audioBackend) {
+    void Window::InitializeAudioPlayer(std::string_view audioBackend) {
         // Config can override
 #ifdef _WIN32
         if (audioBackend == "wasapi") {
@@ -463,7 +463,7 @@ namespace Ship {
 #endif
     }
 
-    void Window::InitializeWindowManager(std::string gfxBackend) {
+    void Window::InitializeWindowManager(std::string_view gfxBackend) {
         // Config can override
 #ifdef ENABLE_DX11
         if (gfxBackend == "dx11") {
