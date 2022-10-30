@@ -1153,14 +1153,11 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
                     gSaveContext.entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
                     gSaveContext.entranceOverrides[i].destination = entranceIt.value();
-                }
-                if (entranceIt.key() == "blueWarp") {
+                } else if (entranceIt.key() == "blueWarp") {
                     gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
-                }
-                if (entranceIt.key() == "override") {
+                } else if (entranceIt.key() == "override") {
                     gSaveContext.entranceOverrides[i].override = entranceIt.value();
-                }
-                if (entranceIt.key() == "overrideDestination") {
+                } else if (entranceIt.key() == "overrideDestination") {
                     gSaveContext.entranceOverrides[i].overrideDestination = entranceIt.value();
                 }
             }
@@ -2989,7 +2986,7 @@ void DrawRandoEditor(bool& open) {
                     "- Windmill\n"
                     "- Link's House\n"
                     "- Temple of Time\n"
-                    "- Kakariko Potion Shop.\n"
+                    "- Kakariko Potion Shop"
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, 0);
 

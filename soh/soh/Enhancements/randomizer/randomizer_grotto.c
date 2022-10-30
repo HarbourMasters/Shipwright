@@ -229,7 +229,7 @@ void Grotto_ForceRegularVoidOut(void) {
     if (lastEntranceType == GROTTO_RETURN && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         gSaveContext.respawn[RESPAWN_MODE_DOWN] = gSaveContext.respawn[RESPAWN_MODE_RETURN];
         gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = grottoReturnTable[grottoId].pos;
         gSaveContext.respawnFlag = 1;
     }
 }

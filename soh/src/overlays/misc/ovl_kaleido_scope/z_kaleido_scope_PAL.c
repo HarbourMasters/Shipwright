@@ -4214,8 +4214,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     if (pauseCtx->promptChoice == 0) {
                         Gameplay_TriggerRespawn(globalCtx);
                         gSaveContext.respawnFlag = -2;
-                        // handle death warp to last entrance from grottos
-                        if (gSaveContext.n64ddFlag) {
+                        // In ER, handle death warp to last entrance from grottos
+                        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                             Grotto_ForceGrottoReturn();
                         }
                         gSaveContext.nextTransition = 2;

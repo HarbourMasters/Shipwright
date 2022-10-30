@@ -270,7 +270,7 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINK_HOME) {
         gSaveContext.entranceIndex = LINK_HOUSE_SAVEWARP_ENTRANCE;
-    } else if (gSaveContext.linkAge == 1) { // child
+    } else if (LINK_IS_CHILD) {
         gSaveContext.entranceIndex = Entrance_GetOverride(LINK_HOUSE_SAVEWARP_ENTRANCE);
     } else {
         gSaveContext.entranceIndex = Entrance_GetOverride(0x05F4); // Temple of Time Adult Spawn
@@ -316,7 +316,7 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     }
 }
 
-void EnableFW(void) {
+void Entrance_EnableFW(void) {
     Player* player = GET_PLAYER(gGlobalCtx);
     // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,
     // Grottos area, Fishing Pond, Ganon Battle and for states that disable buttons.
@@ -345,7 +345,7 @@ void Entrance_CheckEpona(void) {
     Player* player = GET_PLAYER(gGlobalCtx);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & 0x00800000)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
 
         static const s16 validEponaEntrances[] = {
             0x0102, // Hyrule Field -> Lake Hylia
@@ -411,7 +411,7 @@ void Entrance_CheckWeatherState() {
         return;
     }
     // Lon Lon Ranch (No Epona)
-    if (!(gSaveContext.eventChkInf[1] & 0x0100)){ // if you don't have Epona
+    if (!Flags_GetEventChkInf(0x18)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
         case 0x0157: // Lon Lon Ranch from HF
         case 0x01F9: // Hyrule Field from LLR

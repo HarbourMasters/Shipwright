@@ -34,8 +34,8 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
-        // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
+    // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Grotto_CheckSpecialEntrance(Entrance_GetOverride(entranceIndex));
     }
 
@@ -81,10 +81,10 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x4ff;
     gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = this->betterGrottos[grottoIndex].pos;
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
+    // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         // Use grotto content and parent scene num to identify the right grotto
         s16 grottoEntrance = Grotto_GetRenamedGrottoIndexFromOriginal(this->betterGrottos[grottoIndex].data, this->betterGrottos[grottoIndex].exitScene);
-        // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
         Grotto_CheckSpecialEntrance(Entrance_GetOverride(grottoEntrance));
     }
 

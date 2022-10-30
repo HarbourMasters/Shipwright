@@ -159,7 +159,8 @@ void Gameplay_Destroy(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     Player* player = GET_PLAYER(globalCtx);
 
-    if (gSaveContext.n64ddFlag) {
+    // In ER, remove link from epona when entering somewhere that doesn't support epona
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_CheckEpona();
     }
 

@@ -13402,8 +13402,8 @@ void func_8084F88C(Player* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
                 Gameplay_TriggerRespawn(globalCtx);
-                // handle DMT and other special void outs to respawn from last entrance from grotto 
-                if (gSaveContext.n64ddFlag) {
+                // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
             } else {

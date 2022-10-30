@@ -6307,8 +6307,8 @@ void Interface_Update(GlobalContext* globalCtx) {
             gSaveContext.respawnFlag = -2;
             globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
 
-            if (gSaveContext.n64ddFlag) {
-                // Handle sun song respawn from last entrance from grottos
+            // In ER, handle sun song respawn from last entrance from grottos
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_ForceGrottoReturn();
             }
 
