@@ -3,7 +3,6 @@
 #include "macros.h"
 #include "functions.h"
 #include "randomizerTypes.h"
-#include <libultraship/Cvar.h>
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"

@@ -2713,7 +2713,6 @@ namespace Settings {
     }
 
     std::vector<uint8_t> randKeyRingDungeons = {};
-
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {
       dungeons[i]->ClearKeyRing();
