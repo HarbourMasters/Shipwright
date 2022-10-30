@@ -3404,6 +3404,28 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
     }
 }
 
+void Interface_DrawLineupTick(GlobalContext* globalCtx) {
+    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    func_80094520(globalCtx->state.gfxCtx);
+
+    gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+
+    s16 width = 32;
+    s16 height = 32;
+    s16 x = -8 + (SCREEN_WIDTH / 2);
+    s16 y = CVar_GetS32("gOpenMenuBar", 0) ? -4 : -6;
+
+    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
+
+    gDPPipeSync(OVERLAY_DISP++);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
+}
+
 void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 magicDrop = R_MAGIC_BAR_LARGE_Y-R_MAGIC_BAR_SMALL_Y+2;
@@ -5018,6 +5040,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
             // Make sure item counts have black backgrounds
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
+        }
+
+        if (CVar_GetS32("gDrawLineupTick", 1)) {
+            Interface_DrawLineupTick(globalCtx);
         }
 
         if (fullUi || gSaveContext.unk_13F0 > 0) {
