@@ -9586,7 +9586,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
             if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
                 (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex + 1]] != 9 && LINK_IS_ADULT &&
-                 !CVar_GetS32("gNoRestrictAge", 0))) {
+                 !CVar_GetS32("gTimelessEquipment", 0))) {
                 gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
                 gSaveContext.equips.buttonItems[cSlotIndex + 1] = ITEM_NONE;
             }
@@ -12600,7 +12600,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         equipItem = giEntry.itemId;
         equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
                    ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
-                    CVar_GetS32("gNoRestrictAge", 0));
+                    CVar_GetS32("gTimelessEquipment", 0));
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
