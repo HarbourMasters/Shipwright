@@ -12,6 +12,7 @@ static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
 
+static u8 isFastFileIdIncompatible = 0;
 
 static Gfx sScreenFillSetupDL[] = {
     gsDPPipeSync(),
@@ -1609,10 +1610,14 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipMask;
     s32 pad;
 
-    if (this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
-        Sram_OpenSave();
+        if (this->buttonIndex == 0xFF) {
+            Sram_InitDebugSave();
+        } else {
+            Sram_OpenSave();
+        }
         gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         this->state.running = false;
@@ -1628,7 +1633,9 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadRequiredTrials("");
     Randomizer_LoadMerchantMessages("");
+    Randomizer_LoadMasterQuestDungeons("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -1784,6 +1791,20 @@ void FileChoose_Main(GameState* thisx) {
 
     if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
+    }
+
+    if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVar_GetS32("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVar_GetS32("gSaveFileID", 0)))) {
+            this->buttonIndex = CVar_GetS32("gSaveFileID", 0);
+            this->menuMode = FS_MENU_MODE_SELECT;
+            this->selectMode = SM_LOAD_GAME;
+        } else {
+            isFastFileIdIncompatible = 1;
+        }
+    } else if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) == 3) {
+        this->buttonIndex = 0xFF;
+        this->menuMode = FS_MENU_MODE_SELECT;
+        this->selectMode = SM_LOAD_GAME;
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -2100,6 +2121,7 @@ void FileChoose_Init(GameState* thisx) {
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
     fileSelectSpoilerFileLoaded = false;
+    isFastFileIdIncompatible = 0;
     CVar_SetS32("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;

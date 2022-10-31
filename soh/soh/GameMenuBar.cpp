@@ -1528,13 +1528,11 @@ namespace GameMenuBar {
                     "File N.1",
                     "File N.2",
                     "File N.3",
+                    "Zelda Map Select (require OoT Debug Mode)",
                     "File select",
-                    "Zelda Map Select (require OoT Debug Mode)"
                 };
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
-                UIWidgets::PaddedEnhancementCheckbox("Create a new save if none", "gCreateNewSave", true, false);
-                UIWidgets::Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
             };
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
