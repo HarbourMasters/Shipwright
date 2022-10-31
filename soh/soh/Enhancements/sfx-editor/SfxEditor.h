@@ -11,4 +11,5 @@ enum SeqType {
     SEQ_FANFARE    = 1 << 4,
     SEQ_BGM_ERROR  = 1 << 5,
     SEQ_SFX        = 1 << 6,
+    SEQ_INSTRUMENT = 1 << 7,
 };

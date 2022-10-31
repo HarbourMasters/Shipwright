@@ -369,20 +369,12 @@ extern f32 D_80130F28;
 void Audio_QueueSeqCmd(u32 cmd) 
 {
     u8 op = cmd >> 28;
-    //Don't do any seq editing if the command is not related to seqs
-    if (op == 0x0 || op == 0x2 || op == 0x3){
-        u32 seqMask = ((1 << 16) - 1);
-        u16 oldSeqId = (cmd & seqMask);
+    if (op == 0 || op == 2 || op == 12){
+        u16 oldSeqId = cmd & 0xFFFF;
         u16 newSeqId = getReplacementSeq(oldSeqId);
         if (newSeqId != oldSeqId) {
-            if (oldSeqId == 0x2) {
-                if (cmd == 2) {
-                    cmd = newSeqId;
-                }
-            }
-            else {
-                cmd = (cmd & ~seqMask) | newSeqId;
-            }
+            cmd &= ~0xFFFF;
+            cmd |= newSeqId;
         }
     }
 
