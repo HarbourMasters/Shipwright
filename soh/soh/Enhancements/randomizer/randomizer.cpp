@@ -204,6 +204,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
+    { "Shuffle Settings:Shuffle 100 Golden Skulltula Reward", RSK_SHUFFLE_100_GS_REWARD },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -2491,6 +2492,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
+    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVar_GetS32("gRandomizeShuffle100GSReward", 0);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
@@ -3158,6 +3160,17 @@ void DrawRandoEditor(bool& open) {
                     "D-pad.\n"
                     "\n"
                     "If disabled, only the Claim Check will be found in the pool."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle 100 GS Reward
+                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
+                    "have collected all 100 Golden Skull Tokens.\n"
+                    "\n"
+                    "You can still talk to him multiple times to get Huge Rupees."
                 );
 
                 UIWidgets::PaddedSeparator();
