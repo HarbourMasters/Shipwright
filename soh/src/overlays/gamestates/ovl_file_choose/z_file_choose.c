@@ -653,11 +653,12 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
+    bool dpad = CVar_GetS32("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
 
-    if (ABS(this->stickRelX) > 30) {
-        if (this->stickRelX > 30) {
+    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
-        } else if (this->stickRelX < -30) {
+        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
         }
 
@@ -1824,8 +1825,12 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                        this->windowAlpha);
+        if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->windowAlpha);
+        }
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
