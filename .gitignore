@@ -53,6 +53,8 @@ graphs/
 !*_custom*
 .extracted-assets.json
 
+!OTRExporter/assets/**/*.png
+
 # Docs
 !docs/tutorial/
 
@@ -408,6 +410,7 @@ ReleaseObj/*
 .tags
 tags
 oot.otr
+oot-mq.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json

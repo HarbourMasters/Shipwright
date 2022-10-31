@@ -328,7 +328,7 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		std::string xmlPath = StringHelper::Replace(parent->GetXmlFilePath().string(), "\\", "/");
 
 		if (StringHelper::Contains(outName, "_room_") || StringHelper::Contains(outName, "_scene"))
-			prefix = "scenes";
+			prefix = "scenes/nonmq";
 		else if (StringHelper::Contains(xmlPath, "objects/"))
 			prefix = "objects";
 		else if (StringHelper::Contains(xmlPath, "textures/"))
@@ -342,8 +342,9 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		else if (StringHelper::Contains(xmlPath, "text/"))
 			prefix = "text";
 
-		if (prefix != "")
+		if (prefix != "") {
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+        }
 		else
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
@@ -358,6 +359,28 @@ static const char %s[] __attribute__((aligned (2))) = d%s;
 
 			if (nameSet) {
 				nameSet->insert(name);
+			}
+		}
+
+		if (name == "gTitleZeldaShieldLogoMQTex")
+		{
+			std::string addName = "gTitleZeldaShieldLogoTex";
+			nameStr = StringHelper::Strip(StringHelper::Strip(addName, "\n"), "\r");
+			str += StringHelper::Sprintf("\n#define d%s \"__OTR__%s/%s/%s\"", addName.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			if (nameSet && nameSet->find(addName) == nameSet->end())
+			{
+				str += StringHelper::Sprintf(R"(
+#ifdef _WIN32
+static const __declspec(align(2)) char %s[] = d%s;
+#else
+static const char %s[] __attribute__((aligned (2))) = d%s;
+#endif
+			)", addName.c_str(), addName.c_str(), addName.c_str(), addName.c_str());
+
+				if (nameSet)
+				{
+					nameSet->insert(addName);
+				}
 			}
 		}
 

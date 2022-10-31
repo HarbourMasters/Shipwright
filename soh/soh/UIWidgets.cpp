@@ -178,7 +178,8 @@ namespace UIWidgets {
         return pressed;
     }
 
-    void EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+        bool changed = false;
         if (disabled) {
             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
@@ -187,6 +188,7 @@ namespace UIWidgets {
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
 
         if (disabled) {
@@ -196,14 +198,20 @@ namespace UIWidgets {
             }
             ImGui::PopItemFlag();
         }
+        return changed;
     }
 
-    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+        bool changed = false;
         if (padTop) Spacer(0);
 
-        EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic);
+        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic)) {
+            changed = true;
+        }
 
         if (padBottom) Spacer(0);
+
+        return changed;
     }
 
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
@@ -301,10 +309,11 @@ namespace UIWidgets {
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
         float val = CVar_GetFloat(cvarName, defaultValue);
 
-        if (!isPercentage)
+        if (!isPercentage) {
             ImGui::Text(text, val);
-        else
+        } else {
             ImGui::Text(text, static_cast<int>(100 * val));
+        }
 
         Spacer(0);
 
@@ -312,10 +321,11 @@ namespace UIWidgets {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
             if (ImGui::Button(MinusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val -= 0.1f;
-                else
+                } else {
                     val -= 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
@@ -325,15 +335,18 @@ namespace UIWidgets {
         if (PlusMinusButton) {
         #ifdef __SWITCH__
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-        #elif __WIIU__
+        #elif defined(__WIIU__)
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
         #else
             ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
         #endif
         }
-        if (ImGui::SliderFloat(id, &val, min, max, format))
-        {
-            CVar_SetFloat(cvarName, val);
+        if (ImGui::SliderFloat(id, &val, min, max, format)) {
+            if (isPercentage) {
+                CVar_SetFloat(cvarName, roundf(val * 100) / 100);
+            } else {
+                CVar_SetFloat(cvarName, val);
+            }
             SohImGui::RequestCvarSaveOnNextTick();
         }
         if (PlusMinusButton) {
@@ -345,24 +358,23 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                if (!isPercentage)
+                if (!isPercentage) {
                     val += 0.1f;
-                else
+                } else {
                     val += 0.01f;
+                }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
         }
 
-        if (val < min)
-        {
+        if (val < min) {
             val = min;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
 
-        if (val > max)
-        {
+        if (val > max) {
             val = max;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -403,7 +415,8 @@ namespace UIWidgets {
         ImGui::Text("%s", text);
     }
 
-    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
+    bool DrawResetColorButton(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
+        bool changed = false;
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "Reset";
@@ -425,11 +438,14 @@ namespace UIWidgets {
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
+        return changed;
     }
 
-    void RandomizeColor(const char* cvarName, ImVec4* colors) {
+    bool DrawRandomizeColorButton(const char* cvarName, ImVec4* colors) {
+        bool changed = false;
         Color_RGBA8 NewColors = {0,0,0,255};
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
@@ -439,9 +455,9 @@ namespace UIWidgets {
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            #ifdef __SWITCH__
+#if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
-            #endif
+#endif
             ImVec4 color = GetRandomValue(255);
             colors->x = color.x;
             colors->y = color.y;
@@ -452,8 +468,19 @@ namespace UIWidgets {
             CVar_SetRGBA(cvarName, NewColors);
             CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         Tooltip("Chooses a random color\nOverwrites previously chosen color");
+        return changed;
+    }
+
+    void DrawLockColorCheckbox(const char* cvarName) {
+        std::string Cvar_Lock = cvarName;
+        Cvar_Lock += "Lock";
+        s32 lock = CVar_GetS32(Cvar_Lock.c_str(), 0);
+        std::string FullName = "Lock##" + Cvar_Lock;
+        EnhancementCheckbox(FullName.c_str(), Cvar_Lock.c_str());
+        Tooltip("Prevents this color from being changed upon selecting \"Randomize all\"");
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
@@ -468,7 +495,8 @@ namespace UIWidgets {
         Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
     }
 
-    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
+    bool EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
+        bool changed = false;
         LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
 
         ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
@@ -491,6 +519,7 @@ namespace UIWidgets {
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
         else
@@ -505,6 +534,7 @@ namespace UIWidgets {
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
 
@@ -512,16 +542,23 @@ namespace UIWidgets {
 
         //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
         ImGui::PushItemWidth(-FLT_MIN);
-        ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
+        if (DrawResetColorButton(cvarName, &ColorRGBA, default_colors, has_alpha)) {
+            changed = true;
+        }
         ImGui::SameLine();
-        RandomizeColor(cvarName, &ColorRGBA);
+        if (DrawRandomizeColorButton(cvarName, &ColorRGBA)) {
+            changed = true;
+        }
         if (allow_rainbow) {
             if (ImGui::GetContentRegionAvail().x > 185) {
                 ImGui::SameLine();
             }
             RainbowColor(cvarName, &ColorRGBA);
         }
+        DrawLockColorCheckbox(cvarName);
         ImGui::NewLine();
         ImGui::PopItemWidth();
+
+        return changed;
     }
 }

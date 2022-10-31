@@ -1,0 +1,30 @@
+<Root>
+    <File Name="object_zl2_anime1" Segment="6">
+        <Animation Name="gZelda2Anime1Anim_0003BC" Offset="0x3BC"/>
+        <Animation Name="gZelda2Anime1Anim_000A50" Offset="0xA50"/>
+        <Animation Name="gZelda2Anime1Anim_000EB0" Offset="0xEB0"/>
+        <Animation Name="gZelda2Anime1Anim_001010" Offset="0x1010"/>
+        <Animation Name="gZelda2Anime1Anim_0013A0" Offset="0x13A0"/>
+        <Animation Name="gZelda2Anime1Anim_001670" Offset="0x1670"/>
+        <Animation Name="gZelda2Anime1Anim_001B48" Offset="0x1B48"/>
+        <Animation Name="gZelda2Anime1Anim_0022D0" Offset="0x22D0"/>
+        <Animation Name="gZelda2Anime1Anim_002750" Offset="0x2750"/>
+        <Animation Name="gZelda2Anime1Anim_002B14" Offset="0x2B14"/>
+        <Animation Name="gZelda2Anime1Anim_002F30" Offset="0x2F30"/>
+        <Animation Name="gZelda2Anime1Anim_00325C" Offset="0x325C"/>
+        <Animation Name="gZelda2Anime1Anim_003538" Offset="0x3538"/>
+        <Animation Name="gZelda2Anime1Anim_004900" Offset="0x4900"/>
+        <Animation Name="gZelda2Anime1Anim_005F40" Offset="0x5F40"/>
+        <Animation Name="gZelda2Anime1Anim_006778" Offset="0x6778"/>
+        <Animation Name="gZelda2Anime1Anim_007D0C" Offset="0x7D0C"/>
+        <Animation Name="gZelda2Anime1Anim_0087B8" Offset="0x87B8"/>
+        <Animation Name="gZelda2Anime1Anim_0090D8" Offset="0x90D8"/>
+        <Animation Name="gZelda2Anime1Anim_009AD4" Offset="0x9AD4"/>
+        <Animation Name="gZelda2Anime1Anim_00A15C" Offset="0xA15C"/>
+        <Animation Name="gZelda2Anime1Anim_00A79C" Offset="0xA79C"/>
+        <Animation Name="gZelda2Anime1Anim_00AAD4" Offset="0xAAD4"/>
+        <Animation Name="gZelda2Anime1Anim_00AFE0" Offset="0xAFE0"/>
+        <Animation Name="gZelda2Anime1Anim_00B224" Offset="0xB224"/>
+        <Animation Name="gZelda2Anime1Anim_00B5FC" Offset="0xB5FC"/>
+    </File>
+</Root>

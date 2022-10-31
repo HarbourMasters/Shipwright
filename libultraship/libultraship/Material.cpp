@@ -42,7 +42,7 @@ namespace Ship
     ShaderParam::ShaderParam(BinaryReader* reader)
     {
         name = reader->ReadUInt32();
-        dataType = (DataType)reader->ReadByte();
+        dataType = (DataType)reader->ReadInt8();
 
         switch (dataType)
         {
@@ -50,7 +50,7 @@ namespace Ship
             value = reader->ReadUByte();
             break;
         case DataType::S8:
-            value = reader->ReadByte();
+            value = reader->ReadInt8();
             break;
         case DataType::U16:
             value = reader->ReadUInt16();

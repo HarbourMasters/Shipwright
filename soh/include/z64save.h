@@ -65,7 +65,7 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGet get;
+    RandomizerGetData get;
 } ItemLocationRando;
 
 typedef struct {
@@ -175,6 +175,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
+    uint32_t isMasterQuest;
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
@@ -183,10 +184,11 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[8];
+    u16 randomizerInf[9];
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
+    u8 mqDungeonCount;
 } SaveContext; // size = 0x1428
 
 typedef enum {

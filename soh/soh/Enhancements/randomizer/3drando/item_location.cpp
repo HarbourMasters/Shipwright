@@ -815,7 +815,7 @@ void LocationTable_Init() {
     locationTable[KAK_POTION_SHOP_ITEM_7]                        = ItemLocation::Base(RC_KAK_POTION_SHOP_ITEM_7, 0x30, 0x36, "Kak Potion Shop Item 7",                            KAK_POTION_SHOP_ITEM_7,      BUY_POE,                   {Category::cKakarikoVillage, Category::cKakariko, Category::cShop},                                               SpoilerCollectionCheck::ShopItem(0x30, 6),               SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_POTION_SHOP_ITEM_8]                        = ItemLocation::Base(RC_KAK_POTION_SHOP_ITEM_8, 0x30, 0x37, "Kak Potion Shop Item 8",                            KAK_POTION_SHOP_ITEM_8,      BUY_FAIRYS_SPIRIT,         {Category::cKakarikoVillage, Category::cKakariko, Category::cShop},                                               SpoilerCollectionCheck::ShopItem(0x30, 7),               SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
 
-    locationTable[MARKET_BOMBCHU_SHOP_ITEM_1]                    = ItemLocation::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_1, 0x32, 0x30, "MK Bombchu Shop Item 1",                            MARKET_BOMBCHU_SHOP_ITEM_1,  BUY_BOMBCHU_5,             {Category::cInnerMarket, Category::cMarket, Category::cShop},                                                     SpoilerCollectionCheck::ShopItem(0x32, 0),               SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[MARKET_BOMBCHU_SHOP_ITEM_1]                    = ItemLocation::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_1, 0x32, 0x30, "MK Bombchu Shop Item 1",                            MARKET_BOMBCHU_SHOP_ITEM_1,  BUY_BOMBCHU_10,            {Category::cInnerMarket, Category::cMarket, Category::cShop},                                                     SpoilerCollectionCheck::ShopItem(0x32, 0),               SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
     locationTable[MARKET_BOMBCHU_SHOP_ITEM_2]                    = ItemLocation::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_2, 0x32, 0x31, "MK Bombchu Shop Item 2",                            MARKET_BOMBCHU_SHOP_ITEM_2,  BUY_BOMBCHU_10,            {Category::cInnerMarket, Category::cMarket, Category::cShop},                                                     SpoilerCollectionCheck::ShopItem(0x32, 1),               SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
     locationTable[MARKET_BOMBCHU_SHOP_ITEM_3]                    = ItemLocation::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_3, 0x32, 0x32, "MK Bombchu Shop Item 3",                            MARKET_BOMBCHU_SHOP_ITEM_3,  BUY_BOMBCHU_10,            {Category::cInnerMarket, Category::cMarket, Category::cShop},                                                     SpoilerCollectionCheck::ShopItem(0x32, 2),               SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
     locationTable[MARKET_BOMBCHU_SHOP_ITEM_4]                    = ItemLocation::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_4, 0x32, 0x33, "MK Bombchu Shop Item 4",                            MARKET_BOMBCHU_SHOP_ITEM_4,  BUY_BOMBCHU_10,            {Category::cInnerMarket, Category::cMarket, Category::cShop},                                                     SpoilerCollectionCheck::ShopItem(0x32, 3),               SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
@@ -1489,6 +1489,7 @@ std::vector<uint32_t> everyPossibleLocation = {};
 
 //set of overrides to write to the patch
 std::set<ItemOverride, ItemOverride_Compare> overrides = {};
+std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
 
 std::vector<std::vector<uint32_t>> playthroughLocations;
 std::vector<uint32_t> wothLocations;
@@ -1616,9 +1617,13 @@ void CreateItemOverrides() {
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
         ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
-        // If this is an ice trap in a shop, change the name based on what the model will look like
-        if (loc->GetPlaceduint32_t() == ICE_TRAP && loc->IsCategory(Category::cShop)) {
-            NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
+        // If this is an ice trap, store the disguise model in iceTrapModels
+        if (loc->GetPlaceduint32_t() == ICE_TRAP) {
+            iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
+            // If this is ice trap is in a shop, change the name based on what the model will look like
+            if (loc->IsCategory(Category::cShop)) {
+                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
+            }
         }
         overrides.insert({
             .key = loc->Key(),

@@ -1529,13 +1529,6 @@ void HintTable_Init() {
     |      JUNK HINT TEXT      |
     ---------------------------*/
 
-    hintTable[JUNK01] = HintText::Junk({
-        // obscure text
-        Text{ "Remember to check your 3DS battery level&and save often.",
-              /*french*/ "Surveillez votre batterie 3DS et sauvegardez souvent!",
-              /*spanish*/ "No te olvides de revisar la batería de la 3DS y guarda partida de vez en cuando." },
-    });
-
     hintTable[JUNK02] = HintText::Junk({
         // obscure text
         Text{ "They say you must read the names of \"Special Deal\" shop items carefully.",
@@ -2085,6 +2078,326 @@ void HintTable_Init() {
         Text{"They say that Glowsticks can be found in the Raveyard.", /*french*/"On peut trouver des Bâtons Lumineux sur le dancefloor du cimetière.", /*spanish*/"blarg"},
     });
 
+    hintTable[JUNK_WTC_1] = HintText::Junk({
+        Text{ "They say %rthere are no more than 18&people on this island.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_2] = HintText::Junk({
+        Text{ "They say I am one yet many", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_3] = HintText::Junk({
+        Text{ "They say its all in the name of guiding&humanity down the right path.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
+    hintTable[JUNK_WTC_4] = HintText::Junk({
+        Text{ "They say \"Repetition requested\"", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_5] = HintText::Junk({
+        Text{ "They say %rThe red tells only the truth!", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_6] = HintText::Junk({
+        Text{ "They say good tidings to you^my traitorous @", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_7] = HintText::Junk({
+        Text{ "They say when the seagulls cried,&none were left alive.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_7] = HintText::Junk({
+        Text{ "They say when the seagulls cried,&none were left alive.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_8] = HintText::Junk({
+        Text{ "They say she is lying with the red letters!", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_9] = HintText::Junk({
+        Text{ "They say we'll meet again,&when something else cries.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_1] = HintText::Junk({
+        Text{ "They say you know I've kiboshed before...^and I will kibosh again.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
+    hintTable[JUNK_SEI_2] = HintText::Junk({
+        Text{ "They say if relationship @ walks through that door,^they will KILL independent @.",
+              HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_3] = HintText::Junk({
+        Text{ "They say you gotta have the BIG Salad.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_4] = HintText::Junk({
+        Text{ "They say it's a festivus miracle", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_5] = HintText::Junk({
+        Text{ "They say there are no houses in Tuscany to rent.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_6] = HintText::Junk({
+        Text{ "They say my last boyfriend had a real&Kroner comprehension problem.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
+    hintTable[JUNK_SEI_7] = HintText::Junk({
+        Text{ "They say it's a festivus miracle.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_8] = HintText::Junk({
+        Text{ "They say Louis quit the importing&to focus on the exporting.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_9] = HintText::Junk({
+        Text{ "They say no thanks, I can't drink coffee&late at night, it keeps me up.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    
+    hintTable[JUNK_SEI_10] = HintText::Junk({
+        Text{ "They say it's not a lie if you believe it.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_11] = HintText::Junk({
+        Text{ "They say there was a second spitter.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_12] = HintText::Junk({
+        Text{ "They say there was a second spitter.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_13] = HintText::Junk({
+        Text{ "They say the jerk store called,^they're running out of YOU.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    
+    hintTable[JUNK_SEI_14] = HintText::Junk({
+        Text{ "They say when you look annoyed all the time,&people thing you are busy.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_15] = HintText::Junk({
+        Text{ "They say when you look annoyed all the time,&people think you are busy.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
+    hintTable[JUNK_SEI_16] = HintText::Junk({
+        Text{ "They say he fires people like its a bodily function.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_17] = HintText::Junk({
+        Text{ "They say he threatened to move the ship to New Jersey&just to upset people.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_18] = HintText::Junk({
+        Text{ "They say there was significant shrinkage.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_19] = HintText::Junk({
+        Text{ "They say if it wasn't for the toilet there'd be no books.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_20] = HintText::Junk({
+        Text{ "They say if it wasn't for the toilet there'd be no books.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_21] = HintText::Junk({
+        Text{ "They say don't trust men in capes.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    
+    hintTable[JUNK_SEI_22] = HintText::Junk({
+        Text{ "They say @'s uncle works for Nintendo.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_23] = HintText::Junk({
+        Text{ "They say @'s stole the marble rye.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_24] = HintText::Junk({
+        Text{ "They say there is no better harmony&than the black and white cookie.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_25] = HintText::Junk({
+        Text{ "They say @ hasn't vomited since 1983.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_26] = HintText::Junk({
+        Text{ "They say you gotta have the early bird special.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_27] = HintText::Junk({
+        Text{ "They say a donation has been made in your name&to the human fund.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_28] = HintText::Junk({
+        Text{ "They say you want to be my latex salesman.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SEI_29] = HintText::Junk({
+        Text{ "They say if every instinct you have is wrong...^... then the opposite would have to be right.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_OTR_MEANS_1] = HintText::Junk({
+        Text{ "They say OTR stands for&Over the Rainbow", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_2] = HintText::Junk({
+        Text{ "They say that OTR stands for&Onions, Tomatoes, and Radishes", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_3] = HintText::Junk({
+        Text{ "They say that OTR stands for&Ocarina of Time Resources", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_4] = HintText::Junk({
+        Text{ "They say that OTR stands for&Over the Road", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_5] = HintText::Junk({
+        Text{ "They say that OTR stands for&Off the Record", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_6] = HintText::Junk({
+        Text{ "They say that OTR stands for&Office of Tax and Revenue", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_7] = HintText::Junk({
+        Text{ "They say OTR stands for&Over the Rainbow", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_8] = HintText::Junk({
+        Text{ "They say that OTR stands for&Office of Trade Relations", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_9] = HintText::Junk({
+        Text{ "They say that OTR stands for&Original Theatrical Release", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_10] = HintText::Junk({
+        Text{ "They say that OTR stands for&Operational Test Requirement", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_11] = HintText::Junk({
+        Text{ "They say that OTR stands for&Operational Trouble Report", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_12] = HintText::Junk({
+        Text{ "They say that OTR stands for&Oxygen Transmission Rate", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_13] = HintText::Junk({
+        Text{ "They say that OTR stands for&One Touch Recording", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_14] = HintText::Junk({
+        Text{ "They say that OTR stands for&Olympic Torch Relay", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_15] = HintText::Junk({
+        Text{ "They say that OTR stands for&Off the Rack", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_16] = HintText::Junk({
+        Text{ "They say that OTR stands for&Overhead Transfer Rate", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_17] = HintText::Junk({
+        Text{ "They say that OTR stands for&Operational TurnaRound", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_18] = HintText::Junk({
+        Text{ "They say that OTR stands for&Opportunity to Recall", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_19] = HintText::Junk({
+        Text{ "They say that OTR stands for&Operability Test Report", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_20] = HintText::Junk({
+        Text{ "They say that OTR stands for&Overall Tuning Range", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_21] = HintText::Junk({
+        Text{ "They say that OTR stands for&One Time Requisition", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_22] = HintText::Junk({
+        Text{ "They say that OTR stands for&Oblivious to Reality", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_23] = HintText::Junk({
+        Text{ "They say that OTR stands for&On the Run", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_24] = HintText::Junk({
+        Text{ "They say that OTR stands for&On Time Reporting", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_25] = HintText::Junk({
+        Text{ "They say that OTR stands for&Order to Receipt", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_26] = HintText::Junk({
+        Text{ "They say that OTR stands for&Other Terrestrial Radio", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_27] = HintText::Junk({
+        Text{ "They say that OTR stands for&On Target Reports", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_28] = HintText::Junk({
+        Text{ "They say that OTR stands for&One Time Repair", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_29] = HintText::Junk({
+        Text{ "They say that OTR stands for&Own the Room", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+    hintTable[JUNK_OTR_MEANS_30] = HintText::Junk({
+        Text{ "They say that OTR stands for&Online Text Repository", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_1] = HintText::Junk({
+        Text{ "They say %gKenix%w isn't a developer...^...Just a PR guy", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_2] = HintText::Junk({
+        Text {"They say... No", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg"},
+     });
+
+    hintTable[JUNK_MISC_3] = HintText::Junk({ 
+        Text{ "They say BIG RIGS: OTR", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" } 
+    });
+
+    hintTable[JUNK_MISC_4] = HintText::Junk({
+        Text{ "They say you wanted to see me %pMr. Kenix%w?", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_5] = HintText::Junk({
+        Text{ "They say Louis once saw an&equals not get set equals", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_6] = HintText::Junk({
+        Text{ "They say only you can find your rom.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_7] = HintText::Junk({
+        Text{ "They say ZAPD is good software.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_8] = HintText::Junk({
+        Text{ "They say you can encounter&a parascode in tall grass.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_9] = HintText::Junk({
+        Text{ "They say the ship sails on March 32nd.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_10] = HintText::Junk({
+        Text{ "They say bombing dodongos is fun.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_11] = HintText::Junk({
+        Text{ "They say shopkeepers don't give credits.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_12] = HintText::Junk({
+        Text{ "They say shopkeepers don't give credits.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_13] = HintText::Junk({
+        Text{ "They say Malon is glitched.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_14] = HintText::Junk({
+        Text{ "They say do I look like I know&what a DList is?", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_15] = HintText::Junk({
+        Text{ "They say do I look like I know&what an AList is?", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_16] = HintText::Junk({
+        Text{ "They say the king drinks enthusiastically", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_MISC_17] = HintText::Junk({
+        Text{ "They say Rubies are on the path to&Lamp Oil, Rope, and Bombs", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
     /*--------------------------
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
@@ -2319,8 +2632,7 @@ void HintTable_Init() {
         // obscure text
         Text{ "The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
               /*french*/
-              "Les êtres de sagesse attendront&le héros muni des #Médaillons de&l'Ombre et l'Esprit# et des&#Flèches "
-              "de Lumière#.",
+              "Les êtres de sagesse attendront&le héros muni des %rMédaillons de&l'Ombre et l'Esprit%w et des&%yFlèches de Lumière%w.",
               /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto "
               "a la #flecha de luz#." },
@@ -2330,14 +2642,14 @@ void HintTable_Init() {
         // obscure text                                                  singular        plural
         Text{
             "The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
-            /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale|Pierres&Ancestrales|#.",
+            /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale|Pierres&Ancestrales|%w.",
             /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#." },
     });
 
     hintTable[BRIDGE_MEDALLIONS_HINT] = HintText::Bridge({
         // obscure text                                                  singular  plural
         Text{ "The awakened ones will await&for the Hero to collect&%d |Medallion|Medallions|.",
-              /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |médaillon|médaillons|#.",
+              /*french*/ "Les êtres de sagesse attendront&le héros muni de %r#%d |Médaillon|Médaillons|%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |medallón|medallones|#." },
     });
 
@@ -2346,8 +2658,7 @@ void HintTable_Init() {
         Text{ "The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones "
               "and Medallions|.",
               /*french*/
-              "Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale ou "
-              "Médaillon|Pierres&Ancestrales ou Médaillons|#.",
+              "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale ou Médaillon|Pierres&Ancestrales ou Médaillons|%w.",
               /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y "
               "medallones|#." },
@@ -2356,14 +2667,14 @@ void HintTable_Init() {
     hintTable[BRIDGE_DUNGEONS_HINT] = HintText::Bridge({
         // obscure text                                                  singular plural
         Text{ "The awakened ones will await&for the Hero to conquer&%d |Dungeon|Dungeons|.",
-              /*french*/ "Les êtres de sagesse attendront&la conquête de #%d |Donjon|Donjons|#.",
+              /*french*/ "Les êtres de sagesse attendront&la conquête de %r%d |Donjon|Donjons|%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe& complete #%d |mazmorra|mazmorras|#." },
     });
 
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
         // obscure text
         Text{ "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
-              /*french*/ "Les êtres de sagesse attendront&le héros muni de #%d |Symbole|Symboles| &de Skulltula d'or#.",
+              /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
     });
 
@@ -2374,49 +2685,49 @@ void HintTable_Init() {
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be given %rfrom the start%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&possession %rmême du héros%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&possession %rmême du héros%w.",
               /*spanish*/ "Y obtendrás la llave del #señor del mal# desde el #inicio#." },
     });
 
     hintTable[GANON_BK_VANILLA_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be kept in a big chest&%rinside its tower%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&encoffrée %rdans sa tour%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&encoffrée %rdans sa tour%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en un gran cofre de #su torre#." },
     });
 
     hintTable[GANON_BK_OWN_DUNGEON_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden somewhere %rinside&its castle%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w sera&cachée %rdans son vaste château%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&cachée %rdans son vaste château%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en #algún lugar de su castillo#." },
     });
 
     hintTable[GANON_BK_OVERWORLD_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden %routside of&dungeons%w in Hyrule.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve %rhors des donjons%w d'Hyrule.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve %rhors des donjons%w d'Hyrule.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará #fuera de las mazmorras# de Hyrule." },
     });
 
     hintTable[GANON_BK_ANY_DUNGEON_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden %rinside a&dungeon%w in Hyrule.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve %rdans un donjon%w d'Hyrule.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve %rdans un donjon%w d'Hyrule.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará #en una mazmorra# de Hyrule." },
     });
 
     hintTable[GANON_BK_ANYWHERE_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be hidden somewhere&%rin Hyrule%w.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&trouve quelque part %rdans Hyrule%w.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&trouve quelque part %rdans Hyrule%w.",
               /*spanish*/ "Y la llave del #señor del mal# aguardará en #cualquier lugar de Hyrule#." },
     });
 
     hintTable[GANON_BK_TRIFORCE_HINT] = HintText::GanonsBossKey({
         // obscure text
         Text{ "And the %revil one%w's key will&be given to the Hero once&the %rTriforce%w is completed.",
-              /*french*/ "Aussi, la clé du %rMalin%w se&révèlera une fois la %rTriforce%w&assemblée.",
+              /*french*/ "Aussi, la %rclé du Malin%w se&révèlera une fois la %rTriforce%w&assemblée.",
               /*spanish*/ "Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#." },
     });
 
@@ -2427,8 +2738,8 @@ void HintTable_Init() {
     hintTable[LACS_VANILLA_HINT] = HintText::LACS({
         // obscure text
         Text{
-            "And the #evil one#'s key will be&provided by Zelda once the #Shadow&and Spirit Medallions# are retrieved.",
-            /*french*/ "Aussi, Zelda crééra la clé du&#Malin# avec les #médaillons de&l'ombre et de l'esprit#.",
+            "And the %revil one%w's key will be&provided by Zelda once the&%rShadow and Spirit Medallions%w&are retrieved.",
+            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois que &les %rMédaillons de l'Ombre et de&l'Esprit%w seront récupérés.",
             /*spanish*/
             "Y Zelda entregará la llave&del #señor del mal# tras obtener&#el medallón de las sombras y del "
             "espíritu#." },
@@ -2436,17 +2747,17 @@ void HintTable_Init() {
 
     hintTable[LACS_MEDALLIONS_HINT] = HintText::LACS({
         // obscure text                                                     singular      plural
-        Text{ "And the #evil one#'s key will be&provided by Zelda once #%d&|Medallion# is|Medallions# are| retrieved.",
-              /*french*/ "Aussi, Zelda crééra la clé du&#Malin# avec #%d |médaillon|médaillons|#.",
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Medallion%w is|Medallions%w are| retrieved.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Médaillon%w aura été&récupéré|que&%r%d Médaillons%w auront été&récupérés|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |medallón|medallones|#." },
     });
 
     hintTable[LACS_STONES_HINT] = HintText::LACS({
         // obscure text                                                     singular            plural
         Text{
-            "And the #evil one#'s key will be&provided by Zelda once #%d |Spiritual&Stone# is|Spiritual&Stones# are| "
+            "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone%w is|Spiritual Stones%w are| "
             "retrieved.",
-            /*french*/ "Aussi, Zelda crééra la clé du&#Malin# avec #%d des |pierre&spirituelle|pierres&spirituelles|#.",
+            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale%w aura été&récupérée|que&%r%d Pierres Ancestrales%w auront été&récupérées|.",
             /*spanish*/
             "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual|piedras "
             "espirituales|#." },
@@ -2454,11 +2765,10 @@ void HintTable_Init() {
 
     hintTable[LACS_REWARDS_HINT] = HintText::LACS({
         // obscure text                                                     singular                         plural
-        Text{ "And the #evil one#'s key will be&provided by Zelda once #%d |Spiritual&Stone or Medallion# "
-              "is|Spiritual&Stones and Medallions# are| retrieved.",
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
+              "is|Spiritual Stones and Medallions%w&are| retrieved.",
               /*french*/
-              "Aussi, Zelda crééra la clé du&#Malin# avec #%d |Pierre Ancestrale&et des médaillon|Pierres "
-              "Ancestrales&et des médaillons|#.",
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou %d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales et&Médaillons%w seront récupérés|.",
               /*spanish*/
               "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras "
               "espirituales o medallones|#." },
@@ -2466,16 +2776,16 @@ void HintTable_Init() {
 
     hintTable[LACS_DUNGEONS_HINT] = HintText::LACS({
         // obscure text                                                     singular    plural
-        Text{ "And the #evil one#'s key will be&provided by Zelda once #%d |Dungeon#&is|Dungeons#&are| conquered.",
-              /*french*/ "Aussi, Zelda crééra la clé du&#Malin# une fois #%d |donjon conquéri|donjons conquéris|#.",
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Dungeon%w is|Dungeons%w are| conquered.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d donjon %wsera conquis|que&%r%d donjons%w seront conquis|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras completar&#%d |mazmorra|mazmorras|#." },
     });
 
     hintTable[LACS_TOKENS_HINT] = HintText::LACS({
         // obscure text                                                     singular                 plural
-        Text{ "And the #evil one#'s key will be&provided by Zelda once #%d |Gold&Skulltula Token# is|Gold&Skulltula "
-              "Tokens# are| retrieved.",
-              /*french*/ "Aussi, Zelda crééra la clé du&#Malin# avec #%d |symbole|symboles| de&Skulltula d'or#.",
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d |Gold&Skulltula Token%w is|Gold&Skulltula "
+              "Tokens%w are| retrieved.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d symbole de Skulltula d'or&%wsera récupuéré|que &%r%d symboles de Skulltula d'or&%wseront recupérés|.",
               /*spanish*/
               "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |símbolo|símbolos| de&skulltula "
               "dorada#." },

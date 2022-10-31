@@ -172,7 +172,7 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->scrubIdentity = Randomizer_IdentifyScrub(globalCtx->sceneNum, this->actor.params, respawnData);
 
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 1 || Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 3 && this->scrubIdentity.itemPrice != -1) {
+        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 1 || Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 3) && this->scrubIdentity.itemPrice != -1) {
             this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
         }
 
@@ -181,9 +181,7 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;
             this->dnsItemEntry->setRupeesAndFlags = EnDns_RandomizerPurchase;
             this->dnsItemEntry->itemAmount = 1;
-            // Currently the textID is simply identified by the item price since that is the only thing
-            // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
-            this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
+            this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
         }
     }
     this->actionFunc = EnDns_SetupWait;
@@ -516,9 +514,7 @@ void EnDns_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
     if (gSaveContext.n64ddFlag && this->scrubIdentity.isShuffled) {
-        // Currently the textID is simply identified by the item price since that is the only thing
-        // unique to it, later on this will change to identifying by scrubIdentity.randomizerInf
-        this->actor.textId = 0x9000 + this->dnsItemEntry->itemPrice;
+        this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
     }
     Actor_SetFocus(&this->actor, 60.0f);
     Actor_SetScale(&this->actor, 0.01f);

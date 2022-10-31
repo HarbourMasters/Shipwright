@@ -1,3 +1,7 @@
+/*  gx2_shader_gen.c - Fast3D GX2 shader generator for libultraship
+
+    Created in 2022 by GaryOderNichts
+*/
 #ifdef __WIIU__
 
 #include "gx2_shader_gen.h"
@@ -597,7 +601,7 @@ static int generatePixelShader(GX2PixelShader *psh, struct CCFeatures *cc_featur
     psh->regs.spi_ps_input_cntls[0] = 0 | (1 << 8);
 
     // inputs
-    for (int i = 0; i < num_ps_inputs; i++) {
+    for (uint32_t i = 0; i < num_ps_inputs; i++) {
         psh->regs.spi_ps_input_cntls[i + 1] = i | (1 << 8);
     }
 
@@ -656,7 +660,7 @@ static int generateVertexShader(GX2VertexShader *vsh, struct CCFeatures *cc_feat
     );
 
     // params
-    for (int i = 0; i < num_ps_inputs - 1; i++) {
+    for (uint32_t i = 0; i < num_ps_inputs - 1; i++) {
         ADD_INSTR(
             EXP(PARAM(i), _R(i + 2), _x, _y, _z, _w) NO_BARRIER,
         );

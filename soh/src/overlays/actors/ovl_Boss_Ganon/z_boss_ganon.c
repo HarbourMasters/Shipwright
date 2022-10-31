@@ -1199,10 +1199,11 @@ void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
     u8* tex1 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
     u8* tex2 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
 
     for (i = 0; i < 2048; i++) {
         if ((tex1[i] != 0) && (Rand_ZeroOne() < 0.03f)) {
-            if ((((u8*)gGanondorfWindowShatterTemplateTex)[i] == 0) || (windowShatterState == GDF_WINDOW_SHATTER_FULL)) {
+            if ((templateTex[i] == 0) || (windowShatterState == GDF_WINDOW_SHATTER_FULL)) {
                 tex1[i] = tex2[i] = 1;
             }
         }
@@ -3802,6 +3803,7 @@ void BossGanon_DrawShadowTexture(void* tex, BossGanon* this, GlobalContext* glob
     gDPLoadTextureBlock(POLY_OPA_DISP++, tex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPDisplayList(POLY_OPA_DISP++, gGanondorfShadowModelDL);
+    gSPInvalidateTexCache(POLY_OPA_DISP++, tex); // Shadow texture will change every frame, no use keeping it around
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -3814,6 +3816,12 @@ void BossGanon_Draw(Actor* thisx, GlobalContext* globalCtx) {
     shadowTex = Graph_Alloc(globalCtx->state.gfxCtx, 64 * 64);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    // Invalidate textures if they have changed
+    if (this->windowShatterState != GDF_WINDOW_SHATTER_OFF) {
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_006C18);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_007418);
+    }
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);

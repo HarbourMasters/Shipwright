@@ -295,7 +295,6 @@ static u8 sDeadLimbLifetime[] = {
  */
 void BossGoma_ClearPixels16x16Rgba16(s16* rgba16image, u8* clearPixelTable, s16 i) 
 {
-    rgba16image = ResourceMgr_LoadTexByName(rgba16image);
     if (clearPixelTable[i]) {
         rgba16image[i] = 0;
     }
@@ -308,12 +307,10 @@ void BossGoma_ClearPixels16x16Rgba16(s16* rgba16image, u8* clearPixelTable, s16 
 void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 i) {
     s16* targetPixel;
 
-    rgba16image = ResourceMgr_LoadTexByName(rgba16image);
-
     if (clearPixelTable[i]) {
         // address of the top left pixel in a 2x2 pixels block located at
         // (i & 0xF, i >> 4) in a 16x16 grid of 2x2 pixels
-        targetPixel = (s32)rgba16image + (s16)((i & 0xF) * 2 + (i & 0xF0) * 4) * 2;
+        targetPixel = rgba16image + ((i & 0xF) * 2 + (i & 0xF0) * 4);
         // set the 2x2 block of pixels to 0
         targetPixel[0] = 0;
         targetPixel[1] = 0;
@@ -326,14 +323,13 @@ void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 
  * Clear pixels from Gohma's textures
  */
 void BossGoma_ClearPixels(u8* clearPixelTable, s16 i) {
-    return;
-    BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex)), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex)), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex)), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex)), clearPixelTable, i);
 
-    BossGoma_ClearPixels32x32Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaShellTex), clearPixelTable, i);
-    BossGoma_ClearPixels32x32Rgba16(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex)), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex)), clearPixelTable, i);
 }
 
 static InitChainEntry sInitChain[] = {
@@ -2130,12 +2126,14 @@ void BossGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Translate(0.0f, -4000.0f, 0.0f, MTXMODE_APPLY);
 
     // Invalidate Texture Cache since Goma modifies her own texture
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaBodyTex);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellUndersideTex);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaDarkShellTex);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaEyeTex);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellTex);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaIrisTex);
+    if (this->visualState == VISUALSTATE_DEFEATED) {
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaBodyTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellUndersideTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaDarkShellTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaEyeTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaIrisTex);
+    }
 
     if (this->noBackfaceCulling) {
         gSPSegment(POLY_OPA_DISP++, 0x08, BossGoma_NoBackfaceCullingDlist(globalCtx->state.gfxCtx));

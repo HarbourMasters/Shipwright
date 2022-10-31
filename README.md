@@ -4,7 +4,7 @@ A PC port of OoT allowing you to enjoy the game with modern controls, widescreen
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
-## Quick Start
+## Quick Start (Windows)
 
 1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
 2) Requires a supported copy of the game (See supported games below).
@@ -23,6 +23,13 @@ sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 > May lead to crashes and instability
 ```
 sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
+```
+#### Ocarina of Time Debug PAL GC MQ (Dungeons will be Master Quest)
+```
+Build team: `zelda@srd022j`
+Build date: `03-02-21 00:16:31` (year-month-day)
+sha1: 079b855b943d6ad8bd1eb026c0ed169ecbdac7da (Produced by decomp)
+sha1: 50bebedad9e0f10746a52b07239e47fa6c284d03 (Alternate)
 ```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!

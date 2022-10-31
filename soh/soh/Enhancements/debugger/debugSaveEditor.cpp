@@ -799,6 +799,15 @@ void DrawFlagsTab() {
                 gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest = act->flags.chest;
             }
             UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
+            
+            if (ImGui::Button("Clear Flags")) {
+                act->flags.swch = 0;
+                act->flags.clear = 0;
+                act->flags.collect = 0;
+                act->flags.chest = 0;
+            }
+            UIWidgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
+
 
             ImGui::EndGroup();
         } else {

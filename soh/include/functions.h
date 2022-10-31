@@ -20,11 +20,11 @@ extern "C"
 #endif
 
 f32 fabsf(f32 f);
-#pragma intrinsic(fabsf)
+//#pragma intrinsic(fabsf)
 f32 sqrtf(f32 f);
-#pragma intrinsic(sqrtf)
+//#pragma intrinsic(sqrtf)
 f64 sqrt(f64 d);
-#pragma intrinsic(sqrt)
+//#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
@@ -64,6 +64,8 @@ u32 func_80001F8C(void);
 u32 Locale_IsRegionNative(void);
 #ifdef __WIIU__
 void _assert(const char* exp, const char* file, s32 line);
+#elif defined(__linux__)
+void __assert(const char* exp, const char* file, s32 line) __THROW;
 #elif !defined(__APPLE__) && !defined(__SWITCH__)
 void __assert(const char* exp, const char* file, s32 line);
 #endif
@@ -974,6 +976,8 @@ void Color_RGBA8_Copy(Color_RGBA8* dst, Color_RGBA8* src);
 void func_80078884(u16 sfxId);
 void func_800788CC(u16 sfxId);
 void func_80078914(Vec3f* arg0, u16 sfxId);
+s16 getHealthMeterXOffset();
+s16 getHealthMeterYOffset();
 void HealthMeter_Init(GlobalContext* globalCtx);
 void HealthMeter_Update(GlobalContext* globalCtx);
 void HealthMeter_Draw(GlobalContext* globalCtx);
@@ -1074,6 +1078,8 @@ void Interface_SetDoAction(GlobalContext* globalCtx, u16 action);
 void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState);
 void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action);
 s32 Health_ChangeBy(GlobalContext* globalCtx, s16 healthChange);
+void Health_GiveHearts(s16 hearts);
+void Health_RemoveHearts(s16 hearts);
 void Rupees_ChangeBy(s16 rupeeChange);
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(GlobalContext* globalCtx);
@@ -1089,6 +1095,7 @@ f32 Path_OrientAndGetDistSq(Actor* actor, Path* path, s16 waypoint, s16* yaw);
 void Path_CopyLastPoint(Path* path, Vec3f* dest);
 void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx);
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
+u8 PlayerGrounded(Player* player);
 void Player_SetBootData(GlobalContext* globalCtx, Player* player);
 s32 Player_InBlockingCsMode(GlobalContext* globalCtx, Player* player);
 s32 Player_InCsMode(GlobalContext* globalCtx);
@@ -1101,6 +1108,7 @@ void Player_SetModelGroup(Player* player, s32 modelGroup);
 void func_8008EC70(Player* player);
 void Player_SetEquipmentData(GlobalContext* globalCtx, Player* player);
 void Player_UpdateBottleHeld(GlobalContext* globalCtx, Player* player, s32 item, s32 actionParam);
+void func_80837C0C(GlobalContext* globalCtx, Player* this, s32 arg2, f32 arg3, f32 arg4, s16 arg5, s32 arg6);
 void func_8008EDF0(Player* player);
 void func_8008EE08(Player* player);
 void func_8008EEAC(GlobalContext* globalCtx, Actor* actor);
@@ -1519,6 +1527,9 @@ Gfx* Gameplay_SetFog(GlobalContext* globalCtx, Gfx* gfx);
 void Gameplay_Destroy(GameState* thisx);
 void Gameplay_Init(GameState* thisx);
 void Gameplay_Main(GameState* thisx);
+u8 CheckStoneCount();
+u8 CheckMedallionCount();
+u8 CheckDungeonCount();
 s32 Gameplay_InCsMode(GlobalContext* globalCtx);
 f32 func_800BFCB8(GlobalContext* globalCtx, MtxF* mf, Vec3f* vec);
 void* Gameplay_LoadFile(GlobalContext* globalCtx, RomFile* file);
@@ -2412,8 +2423,6 @@ void Opening_Init(GameState* thisx);
 void Opening_Destroy(GameState* thisx);
 void FileChoose_Init(GameState* thisx);
 void FileChoose_Destroy(GameState* thisx);
-
-char* SetQuote();
 
 void Heaps_Alloc(void);
 void Heaps_Free(void);

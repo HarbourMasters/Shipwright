@@ -86,8 +86,8 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
-
-	    if (SohImGui::GetInputEditor()->IsOpened()) return;
+        
+        if (SohImGui::GetInputEditor()->IsOpened()) return;
 
         Ship::Window::GetInstance()->GetControlDeck()->WriteToPad(pad);
         Ship::ExecuteHooks<Ship::ControllerRead>(pad);
@@ -199,8 +199,8 @@ extern "C" {
 
         if (res != nullptr)
         {
-            if (index < res->imageDataSize)
-                res->imageData[index] = value;
+            if ((index * 2) < res->imageDataSize)
+                ((s16*)res->imageData)[index] = value;
             else
             {
                 // Dangit Morita
@@ -232,11 +232,11 @@ namespace Ship {
         return Context.lock();
     }
 
-    std::shared_ptr<Window> Window::CreateInstance(const std::string Name) {
+    std::shared_ptr<Window> Window::CreateInstance(const std::string Name, const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         if (Context.expired()) {
             auto Shared = std::make_shared<Window>(Name);
             Context = Shared;
-            Shared->Initialize();
+            Shared->Initialize(OTRFiles, ValidHashes);
             return Shared;
         }
 
@@ -263,6 +263,7 @@ namespace Ship {
             GetConfig()->setInt("Window.Height", 480);
             GetConfig()->setBool("Window.Options", false);
             GetConfig()->setString("Window.GfxBackend", "");
+            GetConfig()->setString("Window.AudioBackend", "");
 
             GetConfig()->setBool("Window.Fullscreen.Enabled", false);
             GetConfig()->setInt("Window.Fullscreen.Width", 1920);
@@ -278,12 +279,11 @@ namespace Ship {
         }
     }
 
-    void Window::Initialize() {
+    void Window::Initialize(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         InitializeLogging();
         InitializeConfiguration();
-        InitializeResourceManager();
+        InitializeResourceManager(OTRFiles, ValidHashes);
         CreateDefaults();
-        InitializeAudioPlayer();
         InitializeControlDeck();
 
         bIsFullscreen = GetConfig()->getBool("Window.Fullscreen.Enabled", false);
@@ -297,8 +297,12 @@ namespace Ship {
         }
 
         dwMenubar = GetConfig()->getBool("Window.Options", false);
-        const std::string& gfx_backend = GetConfig()->getString("Window.GfxBackend");
+
+        gfxBackend = GetConfig()->getString("Window.GfxBackend");
         InitializeWindowManager();
+
+        audioBackend = GetConfig()->getString("Window.AudioBackend");
+        InitializeAudioPlayer();
 
         gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
@@ -442,6 +446,21 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
+
+        // Config can override
+#ifdef _WIN32
+        if (audioBackend == "wasapi") {
+            APlayer = std::make_shared<WasapiAudioPlayer>();
+        }
+#endif
+#if defined(__linux)
+        if (audioBackend == "pulse") {
+            APlayer = std::make_shared<PulseAudioPlayer>();
+        }
+#endif
+        if (audioBackend == "sdl") {
+            APlayer = std::make_shared<SDLAudioPlayer>();
+        }
     }
 
     void Window::InitializeWindowManager() {
@@ -461,7 +480,7 @@ namespace Ship {
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef ENABLE_DX11
-    	RenderingApi = &gfx_direct3d11_api;
+        RenderingApi = &gfx_direct3d11_api;
         WmApi = &gfx_dxgi_api;
 #endif
 #ifdef __WIIU__
@@ -560,10 +579,14 @@ namespace Ship {
         }
     }
 
-    void Window::InitializeResourceManager() {
-        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+    void Window::InitializeResourceManager(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
+        MainPath = Config->getString("Game.Main Archive", GetAppDirectoryPath());
         PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
-        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        if (OTRFiles.empty()) {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath, ValidHashes);
+        } else {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), OTRFiles, ValidHashes);
+        }
 
         if (!ResMan->DidLoadSuccessfully())
         {

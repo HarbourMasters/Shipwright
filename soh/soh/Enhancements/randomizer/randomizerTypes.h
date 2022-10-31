@@ -4,6 +4,8 @@
 #include "z64item.h"
 #include "randomizer_inf.h"
 
+#define MAX_TRICK_NAME_SIZE 50
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -946,7 +948,6 @@ typedef enum {
     RG_BUY_HEART,
     RG_BUY_BOMBCHU_10,
     RG_BUY_BOMBCHU_20,
-    RG_BUY_BOMBCHU_5,
     RG_BUY_DEKU_SEEDS_30,
     RG_SOLD_OUT,
     RG_BUY_BLUE_FIRE,
@@ -965,6 +966,12 @@ typedef enum {
     RG_MAX
 } RandomizerGet;
 
+typedef struct {
+    RandomizerGet rgID;
+    RandomizerGet fakeRgID;
+    char trickName[MAX_TRICK_NAME_SIZE];
+} RandomizerGetData;
+
 typedef enum {
     RSK_NONE,
     RSK_LOGIC_RULES,
@@ -972,6 +979,7 @@ typedef enum {
     RSK_KAK_GATE,
     RSK_DOOR_OF_TIME,
     RSK_ZORAS_FOUNTAIN,
+    RSK_STARTING_AGE,
     RSK_GERUDO_FORTRESS,
     RSK_RAINBOW_BRIDGE,
     RSK_RAINBOW_BRIDGE_STONE_COUNT,
@@ -1025,7 +1033,15 @@ typedef enum {
     RSK_SUNLIGHT_ARROWS,
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHUS_IN_LOGIC,
-    RSK_LINKS_POCKET
+    RSK_LINKS_POCKET,
+    RSK_RANDOM_MQ_DUNGEONS,
+    RSK_MQ_DUNGEON_COUNT,
+    RSK_LACS_MEDALLION_COUNT,
+    RSK_LACS_STONE_COUNT,
+    RSK_LACS_REWARD_COUNT,
+    RSK_LACS_DUNGEON_COUNT,
+    RSK_LACS_TOKEN_COUNT,
+    RSK_MAX
 } RandomizerSettingKey;
 
 typedef enum {
@@ -1041,7 +1057,7 @@ typedef struct ScrubIdentity {
     RandomizerCheck randomizerCheck;
     GetItemID getItemId;
     int32_t itemPrice;
-    bool isShuffled;
+    uint8_t isShuffled;
 } ScrubIdentity;
 
 typedef struct ShopItemIdentity {
@@ -1051,3 +1067,8 @@ typedef struct ShopItemIdentity {
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
+
+typedef struct CowIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowIdentity;

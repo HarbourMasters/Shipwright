@@ -48,7 +48,7 @@ std::vector<uint32_t> GetMinVanillaShopItems(int total_replaced) {
     BUY_ARROWS_10,
     BUY_ARROWS_30,
     BUY_ARROWS_50,
-    BUY_BOMBCHU_5,
+    BUY_BOMBCHU_10,
     BUY_BOMBCHU_10,
     BUY_BOMBCHU_10,
     BUY_BOMBCHU_20,
@@ -239,7 +239,7 @@ void InitTrickNames() {
      Text{"Skull Hammer", "Maillet Ressort", "Martillo de hierro"}};
   trickNameTable[GI_STONE_OF_AGONY] = {
      Text{"Shard of Agahnim", "Fragment d'Agahnim", "Piedra de Agahnim"},
-     Text{"Stone of Agony", "Pierre de Souffrance", "Fragmento de la Agonía"},
+     Text{"Shard of Agony", "Fragment de Souffrance", "Piedra de la Agonía"},
      Text{"Pirate's Charm", "Pierre de Pirate", "Amuleto Pirata"}};
   trickNameTable[GI_DINS_FIRE] = {
      Text{"Eldin's Fire", "Feu d'Eldin", "Fuego de Eldin"},
