@@ -1636,6 +1636,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadRequiredTrials("");
     Randomizer_LoadMerchantMessages("");
     Randomizer_LoadMasterQuestDungeons("");
+    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

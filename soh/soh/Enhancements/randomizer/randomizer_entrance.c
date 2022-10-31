@@ -1,3 +1,12 @@
+/*
+ * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/entrance.c
+ * It's been adapted for SoH to use our gGlobalCtx with slightly different named properties, and our enums for some scenes/entrances.
+ * 
+ * Unlike 3DS rando, we need to be able to support the user loading up vanilla and rando saves, so the logic around
+ * modifying the entrance table requires that we save the original table and reset whenever loading a vanilla save.
+ * A modified dynamicExitList is manually included since we can't read it from addressing like 3ds rando.
+ */
+
 #include "randomizer_entrance.h"
 #include "randomizer_grotto.h"
 #include <string.h>
@@ -9,6 +18,7 @@ extern GlobalContext* gGlobalCtx;
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
 //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
 s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8, 0x04EE, 0x03C0, 0x0463, 0x01CD, 0x0394, 0x0340, 0x057C };
+//                                       OGC Fairy                                                                       HC Fairy
 
 // Warp Song indices array : 0x53C33C = { 0x0600, 0x04F6, 0x0604, 0x01F1, 0x0568, 0x05F4 }
 
@@ -73,13 +83,6 @@ void Entrance_Init(void) {
         gEntranceTable[0x07A].scene = 0x4A;
         gEntranceTable[0x07A].spawn = 0x00;
         gEntranceTable[0x07A].field = 0x0183;
-    }
-
-    // Skip Tower Escape Sequence if given by settings
-    if (Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
-        gEntranceTable[0x43F].scene = 0x4F;
-        gEntranceTable[0x43F].spawn = 0x01;
-        gEntranceTable[0x43F].field = 0x4183;
     }
 
     // Delete the title card and add a fade in for Hyrule Field from Ocarina of Time cutscene
@@ -182,11 +185,11 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         gGlobalCtx->actorCtx.flags.tempSwch = 0;
         gGlobalCtx->actorCtx.flags.tempCollect = 0;
     }
-    return Grotto_CheckSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
+    return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
-    return Grotto_CheckSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
+    return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
@@ -270,10 +273,39 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINK_HOME) {
         gSaveContext.entranceIndex = LINK_HOUSE_SAVEWARP_ENTRANCE;
-    } else if (gSaveContext.linkAge == 1) { // child
+    } else if (LINK_IS_CHILD) {
         gSaveContext.entranceIndex = Entrance_GetOverride(LINK_HOUSE_SAVEWARP_ENTRANCE);
     } else {
         gSaveContext.entranceIndex = Entrance_GetOverride(0x05F4); // Temple of Time Adult Spawn
+    }
+}
+
+void Entrance_OverrideBlueWarp(void) {
+    switch (gGlobalCtx->sceneNum) {
+        case SCENE_YDAN_BOSS: // Ghoma boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
+            return;
+        case SCENE_DDAN_BOSS: // King Dodongo boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
+            return;
+        case SCENE_BDAN_BOSS: // Barinade boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
+            return;
+        case SCENE_MORIBOSSROOM: // Phantom Ganon boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
+            return;
+        case SCENE_FIRE_BS: // Volvagia boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
+            return;
+        case SCENE_MIZUSIN_BS: // Morpha boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
+            return;
+        case SCENE_JYASINBOSS: // Bongo-Bongo boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
+            return;
+        case SCENE_HAKADAN_BS: // Twinrova boss room
+            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
+            return;
     }
 }
 
@@ -287,7 +319,7 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     }
 }
 
-void EnableFW(void) {
+void Entrance_EnableFW(void) {
     Player* player = GET_PLAYER(gGlobalCtx);
     // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,
     // Grottos area, Fishing Pond, Ganon Battle and for states that disable buttons.
@@ -311,12 +343,12 @@ void EnableFW(void) {
 }
 
 // Check if Link should still be riding epona after changing entrances
-void Entrance_CheckEpona(void) {
+void Entrance_HandleEponaState(void) {
     s32 entrance = gGlobalCtx->nextEntranceIndex;
     Player* player = GET_PLAYER(gGlobalCtx);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & 0x00800000)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
 
         static const s16 validEponaEntrances[] = {
             0x0102, // Hyrule Field -> Lake Hylia
@@ -367,7 +399,7 @@ void Entrance_CheckEpona(void) {
 
 // Certain weather states don't clear normally in entrance rando, so we need to reset and re-apply
 // the correct weather state based on the current entrance and scene
-void Entrance_CheckWeatherState() {
+void Entrance_OverrideWeatherState() {
     gWeatherMode = 0;
     gGlobalCtx->envCtx.gloomySkyMode = 0;
 
@@ -382,7 +414,7 @@ void Entrance_CheckWeatherState() {
         return;
     }
     // Lon Lon Ranch (No Epona)
-    if (!(gSaveContext.eventChkInf[1] & 0x0100)){ // if you don't have Epona
+    if (!Flags_GetEventChkInf(0x18)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
         case 0x0157: // Lon Lon Ranch from HF
         case 0x01F9: // Hyrule Field from LLR
@@ -449,3 +481,20 @@ void Entrance_CheckWeatherState() {
         }
     }
 }
+
+// Rectify the "Getting Caught By Gerudo" entrance index if necessary, based on the age and current scene
+// In ER, Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot, instead of being thrown in the valley
+// Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
+void Entrance_OverrideGeurdoGuardCapture(void) {
+    if (LINK_IS_CHILD) {
+        gGlobalCtx->nextEntranceIndex = 0x1A5;
+    }
+
+    if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
+        gGlobalCtx->nextEntranceIndex == 0x1A5) { // Geurdo Valley thrown out
+        if (gGlobalCtx->sceneNum != 0x5A) { // Geurdo Valley
+            gGlobalCtx->nextEntranceIndex = 0x129; // Gerudo Fortress
+        }
+    }
+}
+

@@ -24,6 +24,7 @@
 
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -4263,6 +4264,7 @@ s32 func_80839034(GlobalContext* globalCtx, Player* this, CollisionPoly* poly, u
             } else {
                 globalCtx->nextEntranceIndex = globalCtx->setupExitList[sp3C - 1];
 
+                // Main override for entrance rando and entrance skips
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
                 }
@@ -13541,8 +13543,8 @@ void func_8084F88C(Player* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
                 Gameplay_TriggerRespawn(globalCtx);
-                // handle DMT and other special void outs to respawn from last entrance from grotto 
-                if (gSaveContext.n64ddFlag) {
+                // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
             } else {

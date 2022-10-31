@@ -12,7 +12,6 @@
 #define ENTRANCE_SHUFFLE_SUCCESS 0
 #define ENTRANCE_SHUFFLE_FAILURE 1
 
-
 extern std::list<EntranceOverride> entranceOverrides;
 
 enum class EntranceType {

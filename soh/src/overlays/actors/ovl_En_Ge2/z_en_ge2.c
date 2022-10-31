@@ -7,6 +7,7 @@
 #include "z_en_ge2.h"
 #include "vt.h"
 #include "objects/object_gla/object_gla.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -245,13 +246,16 @@ void EnGe2_CaptureClose(EnGe2* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
-            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) { // Always throw child link into the river
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) {
             globalCtx->nextEntranceIndex = 0x5F8;
         } else {
             globalCtx->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         globalCtx->fadeTransition = 0x26;
@@ -272,13 +276,16 @@ void EnGe2_CaptureCharge(EnGe2* this, GlobalContext* globalCtx) {
     } else {
         func_8006D074(globalCtx);
 
-        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE) ||
-            (gSaveContext.n64ddFlag && LINK_IS_CHILD)) { // Always throw child link into the river
+        if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             globalCtx->nextEntranceIndex = 0x1A5;
         } else if (gSaveContext.eventChkInf[12] & 0x80) {
             globalCtx->nextEntranceIndex = 0x5F8;
         } else {
             globalCtx->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         globalCtx->fadeTransition = 0x26;

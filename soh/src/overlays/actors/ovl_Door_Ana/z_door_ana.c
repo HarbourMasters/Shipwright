@@ -6,6 +6,7 @@
 
 #include "z_door_ana.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS ACTOR_FLAG_25
 
@@ -140,7 +141,8 @@ void DoorAna_WaitOpen(DoorAna* this, GlobalContext* globalCtx) {
             }
             globalCtx->nextEntranceIndex = entrances[destinationIdx];
 
-            if (gSaveContext.n64ddFlag) {
+            // In ER, load the correct entrance based on the grotto link is falling into
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_OverrideActorEntrance(&this->actor);
             }
 

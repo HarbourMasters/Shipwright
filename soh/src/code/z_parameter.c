@@ -4,6 +4,7 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -6312,8 +6313,8 @@ void Interface_Update(GlobalContext* globalCtx) {
             gSaveContext.respawnFlag = -2;
             globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
 
-            if (gSaveContext.n64ddFlag) {
-                // Handle sun song respawn from last entrance from grottos
+            // In ER, handle sun song respawn from last entrance from grottos
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_ForceGrottoReturn();
             }
 
