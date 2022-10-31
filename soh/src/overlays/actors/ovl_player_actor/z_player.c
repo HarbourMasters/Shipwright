@@ -10942,6 +10942,15 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
 
+        if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
+            }
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+            }
+        }
+
         Player_UpdateCommon(this, globalCtx, &sp44);
     }
 
@@ -10981,15 +10990,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
-    }
-
-    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
-            gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-        }
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
-            gWalkSpeedToggle2 = !gWalkSpeedToggle2;
-        }
     }
 }
 
