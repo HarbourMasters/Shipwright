@@ -74,6 +74,25 @@ void HintTable_Init() {
         Text{ "#Malon's obstacle course# leads to", /*french*/ "la #course à obstacle de Malon# amène à",
               /*spanish*/ "la #carrera de obstáculos de Malon# brinda" });
 
+    hintTable[KAK_100_GOLD_SKULLTULA_REWARD] = HintText::Always(
+        {
+            // obscure text
+            Text{ "#100 bug badges# rewards",
+                  /*french*/ "#100 écussons# donnent",
+                  /*spanish*/ "#100 medallas de insectos# otorgan" },
+            Text{ "#100 spider souls# yields",
+                  /*french*/ "#100 âmes d'arachnide# donnent",
+                  /*spanish*/ "#100 almas de araña# otorgan" },
+            Text{ "#100 auriferous arachnids# lead to",
+                  /*french*/ "#100 arachnides aurifères# donnent",
+                  /*spanish*/ "#100 arácnidos auríferos# otorgan" },
+        },
+        {},
+        // clear text
+        Text{ "slaying #100 Gold Skulltulas# reveals",
+              /*french*/ "détruire #100 Skulltulas d'or# donne",
+              /*spanish*/ "exterminar #100 skulltulas doradas# revela" });
+
     /*--------------------------
     |    SOMETIMES HINT TEXT   |
     ---------------------------*/
