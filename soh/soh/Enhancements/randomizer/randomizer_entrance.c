@@ -85,13 +85,6 @@ void Entrance_Init(void) {
         gEntranceTable[0x07A].field = 0x0183;
     }
 
-    // Skip Tower Escape Sequence if given by settings
-    if (Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
-        gEntranceTable[0x43F].scene = 0x4F;
-        gEntranceTable[0x43F].spawn = 0x01;
-        gEntranceTable[0x43F].field = 0x4183;
-    }
-
     // Delete the title card and add a fade in for Hyrule Field from Ocarina of Time cutscene
     for (index = 0x50F; index < 0x513; ++index) {
         gEntranceTable[index].field = 0x010B;
