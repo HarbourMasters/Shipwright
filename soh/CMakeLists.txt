@@ -1700,7 +1700,7 @@ find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    find_package(SDL2-net)
+    find_package(SDL2_net)
     set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
 endif()
 
@@ -1973,7 +1973,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "SDL2::SDL2_net;"
+            "SDL2_net::SDL2_net-static;"
 			"glfw;"
 			"winmm;"
 			"imm32;"
