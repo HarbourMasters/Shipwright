@@ -680,14 +680,13 @@ void SaveManager::LoadFile(int fileNum) {
 }
 
 bool SaveManager::SaveFile_Exist(int fileNum) {
-    
     try {
-        std::filesystem::exists(GetFileName(fileNum));
-        printf("File[%d] - exist \n",fileNum);
-        return true;
+        bool exists = std::filesystem::exists(GetFileName(fileNum));
+        SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist" );
+        return exists;
     }
     catch(std::filesystem::filesystem_error const& ex) {
-        printf("File[%d] - do not exist \n",fileNum);
+        SPDLOG_ERROR("Filesystem error");
         return false;
     }
 }

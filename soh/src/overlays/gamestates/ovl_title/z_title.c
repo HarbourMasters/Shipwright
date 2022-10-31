@@ -243,13 +243,13 @@ void Title_Main(GameState* thisx) {
         POLY_OPA_DISP = gfx;
     }
 
-    if (this->exit) {
+    if (this->exit || CVar_GetS32("gSkipLogoTitle", 0)) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = 1;
         this->state.running = false;
 
-        if (gLoadFileSelect)
+        if (gLoadFileSelect || CVar_GetS32("gSkipLogoTitle", 0))
             SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, FileChooseContext);
         else
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);
@@ -267,99 +267,28 @@ void Title_Destroy(GameState* thisx) {
 void Title_Init(GameState* thisx) {
     //u32 size = 0;
     TitleContext* this = (TitleContext*)thisx;
-    FileChooseContext* FileChooseCtx = (FileChooseContext*)thisx;
 
-    if (CVar_GetS32("gSkipLogoTitle",0)) {
-        bool saveloading = false;
-        Sram_InitSram(&this->state.init);
-        gSaveContext.language = CVar_GetS32("gLanguages", 0);
-        s32 selectedfile = CVar_GetS32("gSaveFileID", 0);
-        if (selectedfile == 4) {
-            if (CVar_GetS32("gDebugEnabled",0)) {
-                selectedfile = 0xFF;
-            } else {
-                selectedfile = 3;
-            }
-        }
-        if (selectedfile < 0) {
-            selectedfile = 3; //If somehow the save file number under 0 revert back to 3 to prevent boot error
-        }
-        if(selectedfile == 3){
-            saveloading = true;
-            gSaveContext.seqId = (u8)NA_BGM_DISABLED;
-            gSaveContext.natureAmbienceId = 0xFF;
-            gSaveContext.gameMode = 1;
-            SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, FileChooseContext);
-            this->state.running = false;
-            return;
-        } else if (selectedfile == 0xFF || selectedfile > 3) {
-            saveloading = true;
-            Sram_InitDebugSave();
-            gSaveContext.fileNum = selectedfile;
-            SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
-            this->state.running = false;
-            return;
-        } else if (selectedfile >= 0 && selectedfile <= 2) {
-            if (Save_Exist(selectedfile) == true) { //The file exist load it
-                saveloading = true;
-                gSaveContext.fileNum = selectedfile;
-                Sram_OpenSave();
-                Randomizer_LoadSettings("");
-                Randomizer_LoadHintLocations("");
-                Randomizer_LoadItemLocations("", true);
-                Randomizer_LoadMerchantMessages("");
-                gSaveContext.gameMode = 0;
-                gSaveContext.magic = gSaveContext.magic;
-                SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
-                this->state.running = false;
-                return;
-            } else { 
-                if (CVar_GetS32("gCreateNewSave",0)) {
-                    //File do not exist create a new save file
-                    saveloading = true;
-                    Sram_InitSram(&FileChooseCtx->state.init);
-                    gSaveContext.fileNum = selectedfile;
-                    Sram_InitSave(FileChooseCtx);
-                    Sram_OpenSave();      
-                    gSaveContext.gameMode = 0;
-                    SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
-                    this->state.running = false;
-                    return;
-                } else {
-                    //File do not exist but user do not wish to auto create a save file with blank name
-                    saveloading = true;
-                    gSaveContext.seqId = (u8)NA_BGM_DISABLED;
-                    gSaveContext.natureAmbienceId = 0xFF;
-                    gSaveContext.gameMode = 1;
-                    SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, FileChooseContext);
-                    this->state.running = false;
-                    return;
-                }
-            }
-        }
-    } else {
-        quote = SetQuote();
+    quote = SetQuote();
 
-        this->staticSegment = NULL;
-        //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
-        osSyncPrintf("z_title.c\n");
-        //ASSERT(this->staticSegment != NULL);
+    this->staticSegment = NULL;
+    //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
+    osSyncPrintf("z_title.c\n");
+    //ASSERT(this->staticSegment != NULL);
 
-        //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
+    //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
 
-        // Disable vismono
-        D_801614B0.a = 0;
-        R_UPDATE_RATE = 1;
-        Matrix_Init(&this->state);
-        View_Init(&this->view, this->state.gfxCtx);
-        this->state.main = Title_Main;
-        this->state.destroy = Title_Destroy;
-        this->exit = false;
-        gSaveContext.fileNum = 0xFF;
-        this->ult = 0;
-        this->unk_1D4 = 0x14;
-        this->coverAlpha = 255;
-        this->addAlpha = -3;
-        this->visibleDuration = 0x3C;
-    }
+    // Disable vismono
+    D_801614B0.a = 0;
+    R_UPDATE_RATE = 1;
+    Matrix_Init(&this->state);
+    View_Init(&this->view, this->state.gfxCtx);
+    this->state.main = Title_Main;
+    this->state.destroy = Title_Destroy;
+    this->exit = false;
+    gSaveContext.fileNum = 0xFF;
+    this->ult = 0;
+    this->unk_1D4 = 0x14;
+    this->coverAlpha = 255;
+    this->addAlpha = -3;
+    this->visibleDuration = 0x3C;
 }
