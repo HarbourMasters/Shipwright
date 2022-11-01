@@ -45,5 +45,6 @@ void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
 void Entrance_HandleEponaState(void);
 void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGeurdoGuardCapture(void);
+void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
 
 #endif //_RANDO_ENTRANCE_H_
