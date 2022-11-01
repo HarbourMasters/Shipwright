@@ -19,14 +19,6 @@
 
 class CrowdControl {
     private:
-        typedef struct CCPacket {
-            uint32_t packetId;
-            std::string effectType;
-            uint32_t effectValue;
-            std::string effectCategory;
-            long timeRemaining;
-        } CCPacket;
-
         enum EffectResult {
             /// <summary>The effect executed successfully.</summary>
             Success = 0x00,
@@ -64,19 +56,41 @@ class CrowdControl {
             long timeRemaining;
             ResponseType type = ResponseType::EffectRequest;
         };
+
+        typedef struct CCPacket {
+            uint32_t packetId;
+            std::string effectType;
+            uint32_t effectValue;
+            std::string effectCategory;
+            long timeRemaining;
+
+            // Metadata used while executing (only for timed effects)
+            bool isPaused;
+            EffectResult lastExecutionResult;
+        } CCPacket;
         
         std::thread ccThreadReceive;
+        std::thread ccThreadProcess;
 
         TCPsocket tcpsock;
         IPaddress ip;
 
+        bool isEnabled;
         bool connected;
 
         char received[512];
 
-        std::vector<CCPacket*> receivedCommands;
-        std::mutex receivedCommandsMutex;
+        std::vector<CCPacket*> activeEffects;
+        std::mutex activeEffectsMutex;
 
+        void ListenToServer();
+        void ProcessActiveEffects();
+
+        void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining,
+                                       CrowdControl::EffectResult status);
+        CCPacket* ParseMessage(char payload[512]);
+
+        void InitCrowdControl();
         void RunCrowdControl(CCPacket* packet);
         void ReceiveFromCrowdControl();
         EffectResult ExecuteEffect(std::string effectId, uint32_t value, bool dryRun);
@@ -85,7 +99,10 @@ class CrowdControl {
 
     public:
         static CrowdControl* Instance;
-        void InitCrowdControl();
+        void Init();
+        void Shutdown();
+        void Enable();
+        void Disable();
 };
 #endif
 #endif
