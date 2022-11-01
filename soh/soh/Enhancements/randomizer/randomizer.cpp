@@ -2957,8 +2957,11 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Shuffling Ganon's Castle can be enabled separately.\n"
                     "\n"
-                    "Additionally, the entrance of Deku Tree, Fire Temple and Bottom of the Well are opened for both child and adult."
-                    "Bottom of the Well still requires playing Song of Storms to the Windmill guy"
+                    "Additionally, the entrances of Deku Tree, Fire Temple, Bottom of the Well and Gerudo Training Ground are opened for both child and adult.\n"
+                    "\n"
+                    "- Deku Tree will be open for adult after Mido has seen child Link with a sword and shield.\n"
+                    "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
+                    "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, 0);
 
@@ -2972,7 +2975,7 @@ void DrawRandoEditor(bool& open) {
                     "Some entrances are unshuffled to avoid issues:\n"
                     "- Hyrule Castle Courtyard and Garden entrance\n"
                     "- Both Market Back Alley entrances\n"
-                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)."
+                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)"
                 );
 
                 UIWidgets::PaddedSeparator();
