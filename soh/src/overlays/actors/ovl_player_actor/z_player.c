@@ -10955,6 +10955,15 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
 
+        if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
+            }
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+            }
+        }
+
         Player_UpdateCommon(this, globalCtx, &sp44);
     }
 
@@ -10994,15 +11003,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
-    }
-
-    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
-            gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-        }
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
-            gWalkSpeedToggle2 = !gWalkSpeedToggle2;
-        }
     }
 }
 
@@ -12628,12 +12628,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             } else {
                 if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
-                    ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                    ((giEntry.itemId == ITEM_HEART_PIECE_2) &&
                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
                     temp1 = NA_BGM_HEART_GET | 0x900;
                 } else {
                     temp1 = temp2 =
-                        (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                        (giEntry.itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
                 }
                 Audio_PlayFanfare(temp1);
             }
