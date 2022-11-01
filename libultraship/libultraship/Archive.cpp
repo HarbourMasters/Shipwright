@@ -412,7 +412,7 @@ namespace Ship {
             std::wstring wfullPath = std::filesystem::absolute(OTRFiles[i]).wstring();
 #endif
 #if defined(__SWITCH__)
-            std::string fullPath = OTRFiles[0];
+            std::string fullPath = OTRFiles[i];
 #else  
             std::string fullPath = std::filesystem::absolute(OTRFiles[i]).string();
 #endif
