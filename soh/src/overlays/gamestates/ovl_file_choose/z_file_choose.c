@@ -679,6 +679,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+        this->logoAlpha = 0;
         CVar_SetS32("gOnFileSelectNameEntry", 1);
         this->kbdButton = FS_KBD_BTN_NONE;
         this->charPage = FS_CHAR_PAGE_ENG;
@@ -761,24 +762,43 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
+    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN) || 
+        this->configMode == CM_OPTIONS_TO_MAIN) {
+        this->windowRot -= VREG(16);
 
-    this->windowRot += VREG(16);
+        if (this->windowRot <= 0.0f) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
+    }
 
-    if (((this->configMode == CM_OPTIONS_TO_MAIN || MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) && this->windowRot >= 628.0f) || 
-        (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->windowRot >= 942.0f)) {
-        this->windowRot = 0.0f;
-        this->configMode = CM_MAIN_MENU;
+    if (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode == CM_MAIN_MENU) {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 942.0f || (MIN_QUEST == MAX_QUEST && this->windowRot >= 628.0f)) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
     }
 }
 
 void FileChoose_RotateToQuest(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    this->windowRot += VREG(16);
+    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        this->windowRot -= VREG(16);
 
-    if (this->windowRot >= 314.0f) {
-        this->windowRot = 314.0f;
-        this->configMode = CM_START_QUEST_MENU;
+        if (this->windowRot <= 314.0f) {
+            this->windowRot = 314.0f;
+            this->configMode = CM_START_QUEST_MENU;
+        }
+    } else {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 314.0f) {
+            this->windowRot = 314.0f;
+            this->configMode = CM_START_QUEST_MENU;
+        }
     }
 }
 
@@ -805,7 +825,7 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_StartOptions,       FileChoose_RotateToMain,
     FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
     FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
-    FileChoose_RotateToMain
+    FileChoose_RotateToMain,       FileChoose_RotateToQuest,
 };
 
 /**
@@ -1353,7 +1373,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 isActive;
     s16 pad;
     char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
-        this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN)
+        this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN ||
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
                   ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
                   : sTitleLabels[gSaveContext.language][this->titleLabel];
     Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
@@ -1373,7 +1394,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
     // draw next title label
-    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU)) {
+    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) || 
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
         // draw control stick prompts.
         if (MIN_QUEST != MAX_QUEST) {
             func_800944C4(this->state.gfxCtx);
@@ -1707,7 +1729,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     FrameInterpolation_RecordOpenChild(this, this->configMode);
 
     if ((this->configMode != CM_NAME_ENTRY) && (this->configMode != CM_START_NAME_ENTRY) &&
-        (this->configMode != CM_QUEST_MENU)) {
+        (this->configMode != CM_QUEST_MENU) && this->configMode != CM_NAME_ENTRY_TO_QUEST_MENU) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -1822,7 +1844,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
     // draw quest menu
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
-        (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN) {
+        (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN ||
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
