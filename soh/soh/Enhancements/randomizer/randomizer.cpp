@@ -2564,10 +2564,10 @@ void GenerateRandomizerImgui() {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-    // Still used in 3DS logic, but not in our UI. Instead, enable if any of the entrance rando options are enabled.
+    // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) || 
+                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);

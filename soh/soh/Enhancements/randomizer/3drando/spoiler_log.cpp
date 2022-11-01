@@ -532,7 +532,7 @@ static void WritePlaythrough() {
   for (uint32_t i = 0; i < playthroughLocations.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString =  "sphere ";
-    if (sphereNum.length() == 1) sphereString += "0";
+    if (i < 10) sphereString += "0";
     sphereString += sphereNum;
     for (const uint32_t key : playthroughLocations[i]) {
       WriteLocation(sphereString, key, true);
@@ -547,12 +547,12 @@ static void WriteShuffledEntrances() {
   for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString = "sphere ";
-    if (sphereNum.length() == 1) sphereString += "0";
+    if (i < 10) sphereString += "0";
     sphereString += sphereNum;
     for (Entrance* entrance : playthroughEntrances[i]) {
       WriteShuffledEntrance(sphereString, entrance);
     }
-}
+  }
 }
 
 // Writes the WOTH locations to the spoiler log, if there are any.
