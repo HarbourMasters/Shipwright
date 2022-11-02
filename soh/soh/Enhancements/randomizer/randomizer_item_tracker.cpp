@@ -306,6 +306,8 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.currentAmmo = gSaveContext.sohStats.heartPieces;
             break;
         case ITEM_KEY_SMALL:
+            // Though the ammo/capacity naming doesn't really make sense for keys, we are
+            // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
             result.currentCapacity = gSaveContext.sohStats.dungeonKeys[item.data];
             switch (item.data) {
