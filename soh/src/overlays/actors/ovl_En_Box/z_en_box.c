@@ -613,9 +613,12 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
     EnBox_CreateExtraChestTextures();
     int cvar = CVar_GetS32("gChestSizeAndTextureMatchesContents", 0);
+    int agonyCVar = CVar_GetS32("gChestSizeDependsStoneOfAgony", 0);
+    int stoneCheck = CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY);
     GetItemCategory getItemCategory;
 
-    if (globalCtx->sceneNum != SCENE_TAKARAYA && cvar > 0) {
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && cvar > 0 && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
+
          GetItemEntry getItemEntry = GET_ITEM_NONE;
 
         if (gSaveContext.n64ddFlag) {
@@ -631,7 +634,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 3)) {
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 3) && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:

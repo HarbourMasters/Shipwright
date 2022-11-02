@@ -172,6 +172,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastChests", 0);
         // Chest size & texture matches contents
         CVar_SetS32("gChestSizeAndTextureMatchesContents", 0);
+        // Chest size & texture matches contents only with agony
+        CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
         // Fast Drops
         CVar_SetS32("gFastDrops", 0);
         // Better Owl
@@ -811,6 +813,12 @@ namespace GameMenuBar {
                         " - Boss keys: Vanilla size and texture\n"
                         " - Skulltula Tokens: Small skulltula chest\n"
                     );
+                    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) > 0) {
+                        UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
+                        UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
+                    } else {
+                        CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
+                    }
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                     UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
