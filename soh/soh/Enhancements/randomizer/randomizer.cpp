@@ -2590,42 +2590,30 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-    if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
-        ImGui::Text("Coming Soon! Randomizer is currently not compatible with Master Quest Dungeons.\nFor now, please "
-                    "generate an "
-                    "OTR using a non-Master Quest rom to play the Randomizer");
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
-    UIWidgets::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-    if (CVar_GetS32("gRandomizer", 0)) {
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-        if (ImGui::Button("Generate Seed")) {
-            if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-                randoThread = std::thread(&GenerateRandomizerImgui);
-            }
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    if (ImGui::Button("Generate Seed")) {
+        if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+            randoThread = std::thread(&GenerateRandomizerImgui);
         }
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-        std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
-        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-
-        // RANDOTODO settings presets
-        // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-        // ImGui::Text("Settings File: %s", presetfilepath.c_str());
     }
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
+    ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+
+    // RANDOTODO settings presets
+    // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+    // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
 
-    if (CVar_GetS32("gRandomizer", 0) &&
-        ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+    if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
