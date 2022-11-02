@@ -228,6 +228,7 @@ namespace UIWidgets {
     }
 
     bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
+        bool changed = false;
         if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }
@@ -245,7 +246,9 @@ namespace UIWidgets {
                 }
             }
             ImGui::EndCombo();
+            changed = true;
         }
+        return changed;
     }
 
     void PaddedText(const char* text, bool padTop, bool padBottom) {
