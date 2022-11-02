@@ -9573,7 +9573,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
             if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
                 (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex + 1]] != 9 && LINK_IS_ADULT &&
-                 !CVar_GetS32("gNoRestrictAge", 0))) {
+                 !CVar_GetS32("gTimelessEquipment", 0))) {
                 gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
                 gSaveContext.equips.buttonItems[cSlotIndex + 1] = ITEM_NONE;
             }
@@ -10942,6 +10942,15 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
 
+        if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
+            }
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+            }
+        }
+
         Player_UpdateCommon(this, globalCtx, &sp44);
     }
 
@@ -10981,15 +10990,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
-    }
-
-    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
-            gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-        }
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
-            gWalkSpeedToggle2 = !gWalkSpeedToggle2;
-        }
     }
 }
 
@@ -12570,6 +12570,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     GetItemEntry giEntry;
     s32 temp1;
     s32 temp2;
+    static s32 equipItem;
+    static bool equipNow;
 
     if (this->getItemId == GI_NONE && this->getItemEntry.objectId == OBJECT_INVALID) {
         return 1;
@@ -12582,6 +12584,10 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             giEntry = this->getItemEntry;
         }
         this->unk_84F = 1;
+        equipItem = giEntry.itemId;
+        equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
+                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
+                    CVar_GetS32("gTimelessEquipment", 0));
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
@@ -12609,12 +12615,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             } else {
                 if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
-                    ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                    ((giEntry.itemId == ITEM_HEART_PIECE_2) &&
                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
                     temp1 = NA_BGM_HEART_GET | 0x900;
                 } else {
                     temp1 = temp2 =
-                        (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                        (giEntry.itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
                 }
                 Audio_PlayFanfare(temp1);
             }
@@ -12632,6 +12638,30 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             // Just in case something weird happens with modIndex.
             Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
         }
+    }
+    else if (equipNow && Message_ShouldAdvanceSilent(globalCtx) &&
+             Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
+        if (globalCtx->msgCtx.choiceIndex == 0) { // Equip now? Yes
+
+            if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
+                gSaveContext.equips.buttonItems[0] = equipItem;
+                Inventory_ChangeEquipment(EQUIP_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
+                func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
+
+            } else if (equipItem >= ITEM_SHIELD_DEKU && equipItem <= ITEM_SHIELD_MIRROR) {
+                Inventory_ChangeEquipment(EQUIP_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
+                func_808328EC(&this->actor, NA_SE_IT_SHIELD_REMOVE);
+                Player_SetEquipmentData(globalCtx, this);
+
+            } else if (equipItem == ITEM_TUNIC_GORON || equipItem == ITEM_TUNIC_ZORA) {
+                Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+                Player_SetEquipmentData(globalCtx, this);
+            }
+        }
+        equipNow = false;
+        Message_CloseTextbox(globalCtx);
+        globalCtx->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
