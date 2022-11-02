@@ -766,7 +766,7 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN) || 
+    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) || 
         this->configMode == CM_OPTIONS_TO_MAIN) {
         this->windowRot -= VREG(16);
 
