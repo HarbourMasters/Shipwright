@@ -338,6 +338,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_RED IM_COL32(255, 0, 0, 255)
 #define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
 #define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
+#define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
 
 void DrawItemCount(ItemTrackerItem item) {
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
@@ -500,6 +501,7 @@ void DrawBottle(ItemTrackerItem item) {
 
 void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t itemId = item.id;
+    ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVar_GetS32("gItemTrackerIconSize", 36);
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
@@ -514,13 +516,19 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
+    if (ResourceMgr_IsSceneMasterQuest(item.data) && CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data)) {
+        dungeonColor = IM_COL_PURPLE;
+    }
+
     if (itemId == ITEM_KEY_SMALL) {
         DrawItemCount(item);
 
         ImVec2 p = ImGui::GetCursorScreenPos();
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
+        ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text(dungeonName.c_str());
+        ImGui::PopStyleColor();
     }
 
     if (itemId == ITEM_DUNGEON_MAP && 
@@ -529,7 +537,9 @@ void DrawDungeonItem(ItemTrackerItem item) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text(dungeonName.c_str());
+        ImGui::PopStyleColor();
     }
     ImGui::EndGroup();
 

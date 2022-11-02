@@ -95,35 +95,6 @@ namespace GameMenuBar {
         Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
     }
 
-    bool MasterQuestCheckboxDisabled() {
-        return !(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())
-                || CVar_GetS32("gRandomizer", 0);
-    }
-
-    std::string MasterQuestDisabledTooltip()  {
-        std::string tooltip = "";
-        if (CVar_GetS32("gRandomizer", 0)) {
-            tooltip = "This option is disabled because you have the Randomizer enabled.\nRandomizer has it's own "
-                      "settings surrounding Master Quest dungeons\nthat you can set from the Randomizer Settings Menu.";
-        }
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            tooltip = "This option is force-enabled because you have only loaded the\noot-mq.otr file. If you wish to "
-                      "play the Original Quest,\nplease provide the oot.otr file.";
-        }
-        if (!OTRGlobals::Instance->HasMasterQuest()) {
-            tooltip = "This option is disabled because you have only loaded the\noot.otr file. If you wish to play "
-                      "the Master Quest,\nplease proivde the oot-mq.otr file.";
-        }
-        return tooltip;
-    }
-
-    UIWidgets::CheckboxGraphics MasterQuestDisabledGraphic() {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            return UIWidgets::CheckboxGraphics::Checkmark;
-        }
-        return UIWidgets::CheckboxGraphics::Cross;
-    }
-
     void applyEnhancementPresetDefault(void) {
         // D-pad Support on Pause
         CVar_SetS32("gDpadPause", 0);
@@ -1322,10 +1293,6 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-            UIWidgets::PaddedEnhancementCheckbox("Master Quest", "gMasterQuest", true, false, MasterQuestCheckboxDisabled(), MasterQuestDisabledTooltip().c_str(), MasterQuestDisabledGraphic());
-            UIWidgets::Tooltip("Enables Master Quest.\n\nWhen checked, any non-rando save files you create will be "
-                                "Master Quest save files. Master Quest save files will still have Master Quest dungeons "
-                                "regardless of this setting and require oot-mq.otr to be present in order to play.");
 
             const char* cam_cvar = "gCustomCameraDistMax";
             {
@@ -1421,6 +1388,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Allows you to walk through walls");
             UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
             UIWidgets::Tooltip("Makes every surface in the game climbable");
+            UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
+            UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
             UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
             UIWidgets::Tooltip("Holding L makes you float into the air");
             UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);

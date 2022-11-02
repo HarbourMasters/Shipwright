@@ -311,7 +311,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (CVar_GetS32("gRandomizer", 0) && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 &&
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 &&
         !((Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasMasterQuest()) ||
           (Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasOriginal()))) {
         // Set N64DD Flags for save file

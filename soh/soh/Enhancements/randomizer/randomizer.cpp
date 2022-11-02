@@ -1109,25 +1109,31 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 
     bool success = false;
 
+    // Have all these use strncpy so that the null terminator is copied 
+    // and also set the last index to null for safety
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
         std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        memcpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), formattedChildAltarText.length());
+        strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
+        gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
 
         std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        memcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), formattedAdultAltarText.length());
+        strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
+        gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
 
         std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
-        memcpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), formattedGanonHintJsonText.length());
+        strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
+        gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
-        memcpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), formattedGanonJsonText.length());
+        strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
+        gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -1135,7 +1141,9 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
 
             std::string hintMessage = FormatJsonHintText(it.value());
-            memcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), hintMessage.length());
+            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
+            strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
+            gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
 
             index++;
         }
@@ -2786,42 +2794,30 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-    if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
-        ImGui::Text("Coming Soon! Randomizer is currently not compatible with Master Quest Dungeons.\nFor now, please "
-                    "generate an "
-                    "OTR using a non-Master Quest rom to play the Randomizer");
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
-    UIWidgets::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-    if (CVar_GetS32("gRandomizer", 0)) {
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-        if (ImGui::Button("Generate Seed")) {
-            if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-                randoThread = std::thread(&GenerateRandomizerImgui);
-            }
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    if (ImGui::Button("Generate Seed")) {
+        if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+            randoThread = std::thread(&GenerateRandomizerImgui);
         }
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-        std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
-        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-
-        // RANDOTODO settings presets
-        // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-        // ImGui::Text("Settings File: %s", presetfilepath.c_str());
     }
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
+    ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+
+    // RANDOTODO settings presets
+    // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+    // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
 
-    if (CVar_GetS32("gRandomizer", 0) &&
-        ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+    if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4058,6 +4054,59 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
+std::vector<std::vector<const char*>> mapGetItemHints = {
+    { " It's ordinary.", " It's masterful!" },
+    { " It's ordinary.", " It's masterful!" }, // TODO: German Translation (when map items are also translated)
+    { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
+};
+
+CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, itemEntry.getItemId);
+    int sceneNum;
+    switch (itemEntry.getItemId) {
+        case RG_DEKU_TREE_MAP:
+            sceneNum = SCENE_YDAN;
+            break;
+        case RG_DODONGOS_CAVERN_MAP:
+            sceneNum = SCENE_DDAN;
+            break;
+        case RG_JABU_JABUS_BELLY_MAP:
+            sceneNum = SCENE_BDAN;
+            break;
+        case RG_FOREST_TEMPLE_MAP:
+            sceneNum = SCENE_BMORI1;
+            break;
+        case RG_FIRE_TEMPLE_MAP:
+            sceneNum = SCENE_HIDAN;
+            break;
+        case RG_WATER_TEMPLE_MAP:
+            sceneNum = SCENE_MIZUSIN;
+            break;
+        case RG_SPIRIT_TEMPLE_MAP:
+            sceneNum = SCENE_JYASINZOU;
+            break;
+        case RG_SHADOW_TEMPLE_MAP:
+            sceneNum = SCENE_HAKADAN;
+            break;
+        case RG_BOTTOM_OF_THE_WELL_MAP:
+            sceneNum = SCENE_HAKADANCH;
+            break;
+        case RG_ICE_CAVERN_MAP:
+            sceneNum = SCENE_ICE_DOUKUTO;
+            break;
+    }
+
+    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", "");
+    } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
+    } else {
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{typeHint}}", mapGetItemHints[0][0], mapGetItemHints[1][0], mapGetItemHints[2][0]);
+    }
+
+    return messageEntry;
+}
+
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
@@ -4399,26 +4448,26 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!",
                             "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!",
-                            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!",
-                            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!",
-                            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!",
-                            "Vous obtenez la %rCarte %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!",
-                            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wdu &%pPuits%w!{{typeHint}}"),
+        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!{{typeHint}}",
+                            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
 
         GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!",
                             "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),

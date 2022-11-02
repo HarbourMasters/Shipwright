@@ -223,7 +223,7 @@ void Audio_ProcessSoundRequest(void)
     if (req->sfxId == 0) {
         return;
     }
-    req->sfxId = getReplacementSeq(req->sfxId);
+    req->sfxId = SfxEditor_GetReplacementSeq(req->sfxId);
     bankId = SFX_BANK(req->sfxId);
     if ((1 << bankId) & D_801333F0) {
         AudioDebug_ScrPrt((const s8*)D_80133340, req->sfxId);

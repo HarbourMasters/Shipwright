@@ -1699,7 +1699,7 @@ void Audio_OcaSetInstrument(u8 arg0) {
     }
 
     u16 sfxEditorId = arg0 + 0x81;
-    u16 newArg0 = getReplacementSeq(sfxEditorId);
+    u16 newArg0 = SfxEditor_GetReplacementSeq(sfxEditorId);
     if (newArg0 != sfxEditorId) {
         arg0 = newArg0 - 0x81;
     }
@@ -4586,7 +4586,7 @@ s32 func_800F5A58(u8 arg0) {
  */
 void func_800F5ACC(u16 seqId) {
     u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
-    curSeqId = getReverseReplacementSeq(curSeqId);
+    curSeqId = SfxEditor_GetReverseReplacementSeq(curSeqId);
 
     if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != getReplacementSeq(seqId)) {
         Audio_SetSequenceMode(SEQ_MODE_IGNORE);
