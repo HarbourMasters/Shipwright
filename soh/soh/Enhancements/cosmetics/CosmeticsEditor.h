@@ -36,7 +36,6 @@ static ImVec4 charged1_col;           static ImVec4 charged2_col;
 static ImVec4 charged1_colenv;        static ImVec4 charged2_colenv;
 static ImVec4 Keese1_primcol;         static ImVec4 Keese2_primcol;
 static ImVec4 Keese1_envcol;          static ImVec4 Keese2_envcol;
-static ImVec4 doggo1col;              static ImVec4 doggo2col;
 static ImVec4 df_col;                 static ImVec4 df_colenv;
 static ImVec4 nl_diam_col;            static ImVec4 nl_diam_colenv;
 static ImVec4 nl_orb_col;             static ImVec4 nl_orb_colenv;
@@ -58,10 +57,6 @@ static CosmeticsColorIndividual Keese1_prim = { "Fire Primary color", "Affects t
 static CosmeticsColorIndividual Keese2_prim = { "Ice Primary color", "Affects the primary color of the Ice itself of the Keese", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255), true, false, false };
 static CosmeticsColorIndividual Keese1_env = { "Fire Secondary color", "Affects the secondary color of the Fire itself of the Keese", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255), true, false, false };
 static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects the secondary color of the Ice itself of the Keese", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255), true, false, false };
-
-//Good old Dogs, we all love them
-static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
-static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
 //Arrows (Fire -> Ice -> Light)
 static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };

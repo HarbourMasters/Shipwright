@@ -35,7 +35,10 @@ extern GlobalContext* gGlobalCtx;
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "objects/object_gi_longsword/object_gi_longsword.h"
 #include "objects/object_gi_clothes/object_gi_clothes.h"
+#include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
+#include "objects/object_gla/object_gla.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
+#include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 }
@@ -50,6 +53,7 @@ typedef enum {
     BOX_EQUIPMENT,
     BOX_CONSUMABLE,
     BOX_HUD,
+    BOX_TITLE,
     BOX_NPC,
     BOX_WORLD,
     BOX_EFFECTS,
@@ -63,6 +67,7 @@ std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_EQUIPMENT, "Equipment" },
     { BOX_CONSUMABLE, "Consumables" },
     { BOX_HUD, "HUD" },
+    { BOX_TITLE, "Title Screen" },
     { BOX_NPC, "NPCs" },
     { BOX_WORLD, "World" },
     { BOX_EFFECTS, "Effects" },
@@ -98,6 +103,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("MirrorShield_Emblem",           "Emblem",               BOX_MIRRORSHIELD, ImVec4(205, 225, 255, 255), false, true, true),
 
     COSMETIC_OPTION("Swords_KokiriBlade",            "Kokiri Sword Blade",   BOX_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Swords_KokiriHilt",             "Kokiri Sword Hilt",    BOX_SWORDS,       ImVec4(160, 100,  15, 255), false, true, true),
     COSMETIC_OPTION("Swords_MasterBlade",            "Master Sword Blade",   BOX_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Swords_MasterHilt",             "Master Sword Hilt",    BOX_SWORDS,       ImVec4( 80,  80, 168, 255), false, true, true),
     COSMETIC_OPTION("Swords_BiggoronBlade",          "Biggoron Sword Blade", BOX_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
@@ -121,36 +127,44 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_BowHandle",           "Bow Handle",           BOX_EQUIPMENT,    ImVec4( 50, 150, 255, 255), false, true, true),
     // Todo: Slingshot
     // Todo: Hookshot
+    COSMETIC_OPTION("Equipment_ChuFace",             "Bombchu Face",         BOX_EQUIPMENT,    ImVec4(  0, 100, 150, 255), false, true, true),
+    COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         BOX_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
 
-    COSMETIC_OPTION("Consumable_Hearts",            "Hearts",                BOX_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_DDHearts",          "DD Hearts",             BOX_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_DDBorder",          "DD Border",             BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_Magic",             "Magic",                 BOX_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_MagicActive",       "Magic Active",          BOX_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_MagicBorder",       "Magic Border",          BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
-    COSMETIC_OPTION("Consumable_MagicBorderActive", "Magic Border Active",   BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
-    COSMETIC_OPTION("Consumable_GreenRupee",        "Green Rupee",           BOX_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_BlueRupee",         "Blue Rupee",            BOX_CONSUMABLE,   ImVec4( 50,  50, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_RedRupee",          "Red Rupee",             BOX_CONSUMABLE,   ImVec4(255,  50,  50, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_PurpleRupee",       "Purple Rupee",          BOX_CONSUMABLE,   ImVec4(150,  50, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_GoldRupee",         "Gold Rupee",            BOX_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_SilverRupee",       "Silver Rupee",          BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_Hearts",             "Hearts",               BOX_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
+    COSMETIC_OPTION("Consumable_DDHearts",           "DD Hearts",            BOX_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Consumable_DDBorder",           "DD Border",            BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_Magic",              "Magic",                BOX_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
+    COSMETIC_OPTION("Consumable_MagicActive",        "Magic Active",         BOX_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicBorder",        "Magic Border",         BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
+    COSMETIC_OPTION("Consumable_MagicBorderActive",  "Magic Border Active",  BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
+    COSMETIC_OPTION("Consumable_GreenRupee",         "Green Rupee",          BOX_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_BlueRupee",          "Blue Rupee",           BOX_CONSUMABLE,   ImVec4( 50,  50, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_RedRupee",           "Red Rupee",            BOX_CONSUMABLE,   ImVec4(255,  50,  50, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_PurpleRupee",        "Purple Rupee",         BOX_CONSUMABLE,   ImVec4(150,  50, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_GoldRupee",          "Gold Rupee",           BOX_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_SilverRupee",        "Silver Rupee",         BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("Hud_AButton",                  "A Button",              BOX_HUD,          ImVec4(  0, 200,  50, 255), false, true, false), // gCCABtnPrim
-    COSMETIC_OPTION("Hud_BButton",                  "B Button",              BOX_HUD,          ImVec4(255,  30,  30, 255), false, true, false), // gCCBBtnPrim
-    COSMETIC_OPTION("Hud_CButtons",                 "C Buttons",             BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, false), // gCCCBtnPrim
-    COSMETIC_OPTION("Hud_CUpButton",                "C Up Button",           BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCUBtnPrim
-    COSMETIC_OPTION("Hud_CDownButton",              "C Down Button",         BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCDBtnPrim
-    COSMETIC_OPTION("Hud_CLeftButton",              "C Left Button",         BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCLBtnPrim
-    COSMETIC_OPTION("Hud_CRightButton",             "C Right Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCRBtnPrim
-    COSMETIC_OPTION("Hud_StartButton",              "Start Button",          BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, false), // gCCStartBtnPrim
-    COSMETIC_OPTION("Hud_Dpad",                     "Dpad",                  BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, false), // gCCDpadPrim
-    COSMETIC_OPTION("Hud_KeyCount",                 "Key Count",             BOX_HUD,          ImVec4(200, 230, 255, 255), false, true, true), // gCCKeysPrim
-    COSMETIC_OPTION("Hud_StoneOfAgony",             "Stone of Agony",        BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, true), // gCCVSOAPrim
-    COSMETIC_OPTION("Hud_Minimap",                  "Minimap",               BOX_HUD,          ImVec4(  0, 255, 255, 255), false, true, false), // gCCMinimapPrim / gCCMinimapDGNPrim
-    COSMETIC_OPTION("Hud_MinimapPosition",          "Minimap Position",      BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true), // gCCMinimapCPPrim
-    COSMETIC_OPTION("Hud_MinimapEntrance",          "Minimap Entrance",      BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true), // gCCMinimapLEPrim
-    COSMETIC_OPTION("Hud_FileChoose",               "File Choose",           BOX_HUD,          ImVec4(100, 150, 255, 255), false, true, true), // gCCFileChoosePrim
+    COSMETIC_OPTION("Hud_AButton",                   "A Button",             BOX_HUD,          ImVec4(  0, 200,  50, 255), false, true, false), // gCCABtnPrim
+    COSMETIC_OPTION("Hud_BButton",                   "B Button",             BOX_HUD,          ImVec4(255,  30,  30, 255), false, true, false), // gCCBBtnPrim
+    COSMETIC_OPTION("Hud_CButtons",                  "C Buttons",            BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, false), // gCCCBtnPrim
+    COSMETIC_OPTION("Hud_CUpButton",                 "C Up Button",          BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCUBtnPrim
+    COSMETIC_OPTION("Hud_CDownButton",               "C Down Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCDBtnPrim
+    COSMETIC_OPTION("Hud_CLeftButton",               "C Left Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCLBtnPrim
+    COSMETIC_OPTION("Hud_CRightButton",              "C Right Button",       BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCRBtnPrim
+    COSMETIC_OPTION("Hud_StartButton",               "Start Button",         BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, false), // gCCStartBtnPrim
+    COSMETIC_OPTION("Hud_Dpad",                      "Dpad",                 BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, false), // gCCDpadPrim
+    COSMETIC_OPTION("Hud_KeyCount",                  "Key Count",            BOX_HUD,          ImVec4(200, 230, 255, 255), false, true, true), // gCCKeysPrim
+    COSMETIC_OPTION("Hud_StoneOfAgony",              "Stone of Agony",       BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, true), // gCCVSOAPrim
+    COSMETIC_OPTION("Hud_Minimap",                   "Minimap",              BOX_HUD,          ImVec4(  0, 255, 255, 255), false, true, false), // gCCMinimapPrim / gCCMinimapDGNPrim
+    COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true), // gCCMinimapCPPrim
+    COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true), // gCCMinimapLEPrim
+
+    COSMETIC_OPTION("Hud_FileChoose",                "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // gCCFileChoosePrim
+    COSMETIC_OPTION("Hud_NintendoLogo",              "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
+    COSMETIC_OPTION("Hud_N64LogoRed",                "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_N64LogoBlue",               "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
+    COSMETIC_OPTION("Hud_N64LogoGreen",              "N64 Green",            BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true),
+    COSMETIC_OPTION("Hud_N64LogoYellow",             "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
 
     /* Magic/Effects */
 
@@ -166,19 +180,20 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     // Sword Trails
 
     /* World */
-    COSMETIC_OPTION("World_BlockOfTime",            "Block of Time",         BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("World_Moon",                   "Moon",                  BOX_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
+    COSMETIC_OPTION("World_BlockOfTime",             "Block of Time",        BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("World_Moon",                    "Moon",                 BOX_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
+    COSMETIC_OPTION("World_GossipStone",             "Gossip Stone",         BOX_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
 
     /* NPCs */
     // Navi
     // Keese Fire
     // Keese Ice
-    COSMETIC_OPTION("NPC_Dog1",                     "Dog 1",                 BOX_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
-    COSMETIC_OPTION("NPC_Dog2",                     "Dog 2",                 BOX_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
-    COSMETIC_OPTION("NPC_GoldenSkulltula",          "Golden Skulltula",      BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("NPC_Kokiri",                   "Kokiri",                BOX_NPC,          ImVec4(  0, 130,  70, 255), false, true, true),
+    COSMETIC_OPTION("NPC_Dog1",                      "Dog 1",                BOX_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
+    COSMETIC_OPTION("NPC_Dog2",                      "Dog 2",                BOX_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
+    COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               BOX_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
+    COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               BOX_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     // Cucco
-    // Gerudo Guards
 };
 
 const char* MarginCvarList[] {
@@ -246,7 +261,7 @@ void ResetPositionAll() {
 
 int hue = 0;
 
-void LoadRainbowColor(bool& open) {
+void CosmeticsUpdateTick(bool& open) {
     int index = 0;
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVar_GetS32(cosmeticOption.rainbowCvar, 0)) {
@@ -443,6 +458,43 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade3",      swordsKokiriBlade.changedCvar,       10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade4",      swordsKokiriBlade.changedCvar,       12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
+    CosmeticOption swordsKokiriHilt = cosmeticOptions.at("Swords_KokiriHilt");
+    if (rainbowTick == false || CVar_GetS32(swordsKokiriHilt.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {swordsKokiriHilt.defaultColor.w, swordsKokiriHilt.defaultColor.x, swordsKokiriHilt.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(swordsKokiriHilt.cvar, defaultColor);
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt1",       swordsKokiriHilt.changedCvar,         4, gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt2",       swordsKokiriHilt.changedCvar,         4, gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt3",       swordsKokiriHilt.changedCvar,         4, gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt4",       swordsKokiriHilt.changedCvar,         4,  gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt5",       swordsKokiriHilt.changedCvar,         4,  gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt6",       swordsKokiriHilt.changedCvar,         4,  gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt7",       swordsKokiriHilt.changedCvar,         4,  gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt8",       swordsKokiriHilt.changedCvar,         4,  gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+
+        if (!rainbowTick) {
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt9",       swordsKokiriHilt.changedCvar,       108, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt10",      swordsKokiriHilt.changedCvar,       134, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt12",      swordsKokiriHilt.changedCvar,       106, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt13",      swordsKokiriHilt.changedCvar,       126, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt18",      swordsKokiriHilt.changedCvar,       100, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt19",      swordsKokiriHilt.changedCvar,       126, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt20",      swordsKokiriHilt.changedCvar,       128, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt21",      swordsKokiriHilt.changedCvar,        98, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt22",      swordsKokiriHilt.changedCvar,       118, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt23",      swordsKokiriHilt.changedCvar,       120, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt24",      swordsKokiriHilt.changedCvar,       166, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt25",      swordsKokiriHilt.changedCvar,       192, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt26",      swordsKokiriHilt.changedCvar,       194, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt27",      swordsKokiriHilt.changedCvar,       156, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt28",      swordsKokiriHilt.changedCvar,       176, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt29",      swordsKokiriHilt.changedCvar,       178, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt30",      swordsKokiriHilt.changedCvar,       162, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt31",      swordsKokiriHilt.changedCvar,       188, gsDPGrayscale(false));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt32",      swordsKokiriHilt.changedCvar,       190, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt33",      swordsKokiriHilt.changedCvar,        98, gsDPGrayscale(true));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt34",      swordsKokiriHilt.changedCvar,       118, gsDPGrayscale(false));
+        }
+    }
     CosmeticOption swordsMasterBlade = cosmeticOptions.at("Swords_MasterBlade");
     if (rainbowTick == false || CVar_GetS32(swordsMasterBlade.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {swordsMasterBlade.defaultColor.w, swordsMasterBlade.defaultColor.x, swordsMasterBlade.defaultColor.y};
@@ -620,6 +672,30 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHandle6",  equipmentHammerHandle.changedCvar,   36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
+    CosmeticOption equipmentChuFace = cosmeticOptions.at("Equipment_ChuFace");
+    if (rainbowTick == false || CVar_GetS32(equipmentChuFace.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {equipmentChuFace.defaultColor.w, equipmentChuFace.defaultColor.x, equipmentChuFace.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(equipmentChuFace.cvar, defaultColor);
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace1",       equipmentChuFace.changedCvar,        10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace2",       equipmentChuFace.changedCvar,        12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace3",       equipmentChuFace.changedCvar,         4, gDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+
+        if (!rainbowTick) {
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace4",       equipmentChuFace.changedCvar,        20, gsDPGrayscale(true));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace5",       equipmentChuFace.changedCvar,        54, gsDPGrayscale(false));
+        }
+    }
+    CosmeticOption equipmentChuBody = cosmeticOptions.at("Equipment_ChuBody");
+    if (rainbowTick == false || CVar_GetS32(equipmentChuBody.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {equipmentChuBody.defaultColor.w, equipmentChuBody.defaultColor.x, equipmentChuBody.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(equipmentChuBody.cvar, defaultColor);
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody1",       equipmentChuBody.changedCvar,        78, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody2",       equipmentChuBody.changedCvar,        80, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody3",       equipmentChuBody.changedCvar,       120, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody4",       equipmentChuBody.changedCvar,       122, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuBody5",       equipmentChuBody.changedCvar,        92, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
     CosmeticOption consumableGreenRupee = cosmeticOptions.at("Consumable_GreenRupee");
     if (rainbowTick == false || CVar_GetS32(consumableGreenRupee.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {consumableGreenRupee.defaultColor.w, consumableGreenRupee.defaultColor.x, consumableGreenRupee.defaultColor.y};
@@ -703,6 +779,59 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      66, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
         PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     236, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     238, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+    }
+
+    CosmeticOption npcGerudo = cosmeticOptions.at("NPC_Gerudo");
+    if (rainbowTick == false || CVar_GetS32(npcGerudo.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {npcGerudo.defaultColor.w, npcGerudo.defaultColor.x, npcGerudo.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(npcGerudo.cvar, defaultColor);
+        PATCH_GFX(gGerudoPurpleTorsoDL,                           "NPC_Gerudo1",              npcGerudo.changedCvar,              278, gsDPSetEnvColor( color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightThighDL,                      "NPC_Gerudo2",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftThighDL,                       "NPC_Gerudo3",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleVeilDL,                            "NPC_Gerudo4",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftShinDL,                        "NPC_Gerudo5",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightShinDL,                       "NPC_Gerudo6",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftHandDL,                        "NPC_Gerudo7",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
+    CosmeticOption n64LogoRed = cosmeticOptions.at("Hud_N64LogoRed");
+    if (rainbowTick == false || CVar_GetS32(n64LogoRed.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {n64LogoRed.defaultColor.w, n64LogoRed.defaultColor.x, n64LogoRed.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(n64LogoRed.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoRed1",          n64LogoRed.changedCvar,              34, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoRed2",          n64LogoRed.changedCvar,              36, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+    }
+    CosmeticOption n64LogoBlue = cosmeticOptions.at("Hud_N64LogoBlue");
+    if (rainbowTick == false || CVar_GetS32(n64LogoBlue.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {n64LogoBlue.defaultColor.w, n64LogoBlue.defaultColor.x, n64LogoBlue.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(n64LogoBlue.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoBlue1",         n64LogoBlue.changedCvar,             58, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoBlue2",         n64LogoBlue.changedCvar,             60, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+    }
+    CosmeticOption n64LogoGreen = cosmeticOptions.at("Hud_N64LogoGreen");
+    if (rainbowTick == false || CVar_GetS32(n64LogoGreen.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {n64LogoGreen.defaultColor.w, n64LogoGreen.defaultColor.x, n64LogoGreen.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(n64LogoGreen.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoGreen1",        n64LogoGreen.changedCvar,           112, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoGreen2",        n64LogoGreen.changedCvar,           114, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+    }
+    CosmeticOption n64LogoYellow = cosmeticOptions.at("Hud_N64LogoYellow");
+    if (rainbowTick == false || CVar_GetS32(n64LogoYellow.rainbowCvar, 0)) {
+        Color_RGB8 defaultColor = {n64LogoYellow.defaultColor.w, n64LogoYellow.defaultColor.x, n64LogoYellow.defaultColor.y};
+        Color_RGB8 color = CVar_GetRGB(n64LogoYellow.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoYellow1",       n64LogoYellow.changedCvar,          162, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoYellow2",       n64LogoYellow.changedCvar,          164, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+    }
+
+    if (gGlobalCtx != nullptr) {
+        if (CVar_GetS32("gCosmetics.Link_BodyScale.Changed", 0)) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            float scale = CVar_GetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
+            player->actor.scale.x = scale;
+            player->actor.scale.y = scale;
+            player->actor.scale.z = scale;
+        }
     }
 }
 
@@ -1166,6 +1295,7 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 2, 0);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
+    UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 0.15f, "", 0.03f, false);
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!CVar_GetS32(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
@@ -1182,6 +1312,13 @@ void DrawCosmeticsEditor(bool& open) {
                 ResetColor(cosmeticOption);
             }
         }
+        CVar_SetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
+        CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 0);
+        CVar_SetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+        CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 0);
+        CVar_SetFloat("gCosmetics.BunnyHood_EarLength", 0.0f);
+        CVar_SetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f);
+        CVar_SetFloat("gCosmetics.Goron_NeckLength", 0.0f);
         ApplyOrResetCustomGfxPatches();
         SohImGui::RequestCvarSaveOnNextTick();
     }
@@ -1210,11 +1347,11 @@ void DrawCosmeticsEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("Silly")) {
             ImGui::Text("Link");
-            if (UIWidgets::EnhancementSliderFloat("Scale: %f", "##Link_Scale", "gCosmetics.Link_Scale", 0.001f, 0.025f, "", 0.01f, false)) {
-                Player* player = GET_PLAYER(gGlobalCtx);
-                player->actor.scale.x = CVar_GetFloat("gCosmetics.Link_Scale", 0.01f);
-                player->actor.scale.y = CVar_GetFloat("gCosmetics.Link_Scale", 0.01f);
-                player->actor.scale.z = CVar_GetFloat("gCosmetics.Link_Scale", 0.01f);
+            if (UIWidgets::EnhancementSliderFloat("Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
+                CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
+            }
+            if (UIWidgets::EnhancementSliderFloat("Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
+                CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 1);
             }
             ImGui::Text("Bunny Hood");
             UIWidgets::EnhancementSliderFloat("Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
@@ -1239,9 +1376,8 @@ void DrawCosmeticsEditor(bool& open) {
 
 void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
-    //LoadRainbowColor() will this way run in background once it's window is activated
-    //ImGui::SetNextItemWidth(0.0f);
-    SohImGui::AddWindow("Enhancements", "Rainbowfunction", LoadRainbowColor, true, true);
+    //CosmeticsUpdateTick() will this way run in background once it's window is activated
+    SohImGui::AddWindow("Enhancements", "Cosmetics Update Tick", CosmeticsUpdateTick, true, true);
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {

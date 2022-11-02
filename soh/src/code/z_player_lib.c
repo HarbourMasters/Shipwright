@@ -947,6 +947,15 @@ s32 func_8008FCC8(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
 
         if (limbIndex == PLAYER_LIMB_HEAD) {
+            if (CVar_GetS32("gCosmetics.Link_HeadScale.Changed", 0)) {
+                f32 scale = CVar_GetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                if (scale > 1.2f) {
+                    Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+                } else if (scale < 1.0f) {
+                    Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+                }
+            }
             rot->x += this->unk_6BA;
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
