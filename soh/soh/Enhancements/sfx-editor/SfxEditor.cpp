@@ -9,10 +9,11 @@
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
-s8 reverbAdd = 0; 
+s8 reverbAdd = 0;
 
+//  {originalSequenceId,           {label,                                  sfxKey,                          category},
 const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
-    {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC  ",           SEQ_BGM_WORLD}},
+    {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC",             SEQ_BGM_WORLD}},
     {NA_BGM_DUNGEON,               {"Dodongo's Cavern",                    "NA_BGM_DUNGEON",                 SEQ_BGM_WORLD}},
     {NA_BGM_KAKARIKO_ADULT,        {"Kakariko Village (Adult)",            "NA_BGM_KAKARIKO_ADULT",          SEQ_BGM_WORLD}},
     {NA_BGM_ENEMY,                 {"Battle",                              "NA_BGM_ENEMY",                   SEQ_BGM_BATTLE}},
@@ -98,12 +99,12 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_STAFF_4,               {"End Credits IV",                      "NA_BGM_STAFF_4",                 SEQ_BGM_WORLD}},
     {NA_BGM_FIRE_BOSS,             {"King Dodongo & Volvagia Boss Battle", "NA_BGM_FIRE_BOSS",               SEQ_BGM_BATTLE}},
     {NA_BGM_TIMED_MINI_GAME,       {"Mini-Game",                           "NA_BGM_TIMED_MINI_GAME",         SEQ_BGM_EVENT}},
-    {0x82,                         {"Ocarina",                             "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT}},
-    {0x83,                         {"Malon",                               "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT}},
-    {0x84,                         {"Whistle",                             "OCARINA_INSTRUMENT_WHISTLE",     SEQ_INSTRUMENT}},
-    {0x85,                         {"Harp",                                "OCARINA_INSTRUMENT_HARP",        SEQ_INSTRUMENT}},
-    {0x86,                         {"Organ",                               "OCARINA_INSTRUMENT_GRIND_ORGAN", SEQ_INSTRUMENT}},
-    {0x87,                         {"Flute",                               "OCARINA_INSTRUMENT_FLUTE",       SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 1,        {"Ocarina",                             "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 2,        {"Malon",                               "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 3,        {"Whistle",                             "OCARINA_INSTRUMENT_WHISTLE",     SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 4,        {"Harp",                                "OCARINA_INSTRUMENT_HARP",        SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 5,        {"Organ",                               "OCARINA_INSTRUMENT_GRIND_ORGAN", SEQ_INSTRUMENT}},
+    {INSTRUMENT_OFFSET + 6,        {"Flute",                               "OCARINA_INSTRUMENT_FLUTE",       SEQ_INSTRUMENT}},
     {NA_SE_EV_SMALL_DOG_BARK,      {"Bark",                                "NA_SE_EV_SMALL_DOG_BARK",        SEQ_SFX}},
     {NA_SE_EN_AWA_BOUND,           {"Bomb Bounce",                         "NA_SE_EN_AWA_BOUND",             SEQ_SFX}},
     {NA_SE_EN_SHADEST_TAIKO_LOW,   {"Bongo Bongo Low",                     "NA_SE_EN_SHADEST_TAIKO_LOW",     SEQ_SFX}},
@@ -177,16 +178,16 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_SE_EV_CHICKEN_CRY_A,       {"Chicken Cry",                         "NA_SE_EV_CHICKEN_CRY_A",         SEQ_SFX}},
 };
 
-void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
-    const std::string hiddenTabKey = "##" + tabKey;
-    const std::string resetAllButton = "Reset All" + hiddenTabKey;
-    const std::string randomizeAllButton = "Randomize All" + hiddenTabKey;
+void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
+    const std::string hiddenTabId = "##" + tabId;
+    const std::string resetAllButton = "Reset All" + hiddenTabId;
+    const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
         for (const auto& [defaultValue, seqData] : map) {
-            const auto& [name, storageKeySuffix, seqType] = seqData;
+            const auto& [name, sfxKey, seqType] = seqData;
             if (seqType == type) {
-                const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
-                CVar_SetS32(storageKey.c_str(), defaultValue);
+                const std::string cvarKey = "gSfxEditor_" + sfxKey;
+                CVar_SetS32(cvarKey.c_str(), defaultValue);
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
@@ -195,42 +196,40 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
     if (ImGui::Button(randomizeAllButton.c_str())) {
         std::vector<u16> values;
         for (const auto& [value, seqData] : map) {
-            const auto& [name, storageKeySuffix, seqType] = seqData;
-
-            if (seqType == type) {
+            if (std::get<2>(seqData) == type) {
                 values.push_back(value);
             }
         }
         Shuffle(values);
         for (const auto& [defaultValue, seqData] : map) {
-            const auto& [name, storageKeySuffix, seqType] = seqData;
-            const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
+            const auto& [name, sfxKey, seqType] = seqData;
+            const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType == type) {
                 const int randomValue = values.back();
-                CVar_SetS32(storageKey.c_str(), randomValue);
+                CVar_SetS32(cvarKey.c_str(), randomValue);
                 values.pop_back();
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
     }
 
-    ImGui::BeginTable(tabKey.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
+    ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 110.0f);
     for (const auto& [defaultValue, seqData] : map) {
-        const auto& [name, storageKeySuffix, seqType] = seqData;
+        const auto& [name, sfxKey, seqType] = seqData;
 
         if (seqType != type) {
             continue;
         }
 
-        const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
-        const std::string hiddenKey = "##" + storageKey;
+        const std::string cvarKey = "gSfxEditor_" + sfxKey;
+        const std::string hiddenKey = "##" + cvarKey;
         const std::string stopButton = " Stop  " + hiddenKey;
         const std::string previewButton = "Preview" + hiddenKey;
         const std::string resetButton = "Reset" + hiddenKey;
-        const int currentValue = CVar_GetS32(storageKey.c_str(), defaultValue);
+        const int currentValue = CVar_GetS32(cvarKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
@@ -239,13 +238,13 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(currentValue)).c_str())) {
             for (const auto& [value, seqData] : map) {
-                const auto& [name, storageKeySuffix, seqType] = seqData;
+                const auto& [name, sfxKey, seqType] = seqData;
                 if (seqType != type) {
                     continue;
                 }
 
                 if (ImGui::Selectable(std::get<0>(seqData).c_str())) {
-                    CVar_SetS32(storageKey.c_str(), value);
+                    CVar_SetS32(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
                 }
             }
@@ -268,7 +267,8 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
                     if (type == SEQ_SFX) {
                         Audio_PlaySoundGeneral(defaultValue, &pos, 4, &freqScale, &freqScale, &reverbAdd);
                     } else if (type == SEQ_INSTRUMENT) {
-
+                        Audio_OcaSetInstrument(defaultValue - INSTRUMENT_OFFSET);
+                        Audio_OcaSetSongPlayback(9, 1);
                     } else {
                         // TODO: Cant do both here, so have to click preview button twice
                         func_800F5ACC(defaultValue);
@@ -280,30 +280,30 @@ void Draw_SfxTab(const std::string& tabKey, const std::map<u16, std::tuple<std::
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
-            CVar_SetS32(storageKey.c_str(), defaultValue);
+            CVar_SetS32(cvarKey.c_str(), defaultValue);
             SohImGui::RequestCvarSaveOnNextTick();
         }
     }
     ImGui::EndTable();
 }
 
-extern "C" u16 getReplacementSeq(u16 seqId) {
+extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
     if (sequenceMap.find(seqId) == sequenceMap.end()) {
         return seqId;
     }
 
-    const auto& [name, storageKeySuffix, seqType] = sequenceMap.at(seqId);
-    const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
-    const int replacementSeq = CVar_GetS32(storageKey.c_str(), seqId);
+    const auto& [name, sfxKey, seqType] = sequenceMap.at(seqId);
+    const std::string cvarKey = "gSfxEditor_" + sfxKey;
+    const int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
 
     return static_cast<u16>(replacementSeq);
 }
 
-extern "C" u16 getReverseReplacementSeq(u16 seqId) {
-    for (const auto& [id, nameAndStorageKeySuffix] : sequenceMap) {
-        const auto& [name, storageKeySuffix, seqType] = sequenceMap.at(id);
-        const std::string storageKey = "gSfxEditor_" + storageKeySuffix;
-        if (CVar_GetS32(storageKey.c_str(), id) == seqId){
+extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
+    for (const auto& [id, nameAndsfxKey] : sequenceMap) {
+        const auto& [name, sfxKey, seqType] = sequenceMap.at(id);
+        const std::string cvarKey = "gSfxEditor_" + sfxKey;
+        if (CVar_GetS32(cvarKey.c_str(), id) == seqId){
             return static_cast<u16>(id);
         }
     }

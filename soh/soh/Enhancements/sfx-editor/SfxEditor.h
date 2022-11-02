@@ -2,6 +2,8 @@
 
 void InitSfxEditor();
 
+#define INSTRUMENT_OFFSET 0x81
+
 enum SeqType {
     SEQ_NOSHUFFLE  = 0,
     SEQ_BGM_WORLD  = 1 << 0,
