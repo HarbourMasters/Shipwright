@@ -981,8 +981,8 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 
     bool success = false;
 
-    // Have all these use strncpy so that the nul terminator is copied 
-    // and also set the last index to nul for safety
+    // Have all these use strncpy so that the null terminator is copied 
+    // and also set the last index to null for safety
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
