@@ -3595,7 +3595,7 @@ void func_80837948(GlobalContext* globalCtx, Player* this, s32 arg2) {
     }
 
     if ((arg2 >= 16) && (arg2 < 20)) {
-        if (CVar_GetS32("gRestoreQPA", 0) && temp == -1) {
+        if (CVar_GetS32("gRestoreQPA", 1) && temp == -1) {
             flags = 0x16171617;
         }
         else {
