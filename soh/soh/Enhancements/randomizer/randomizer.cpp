@@ -2692,10 +2692,10 @@ void GenerateRandomizerImgui() {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-    // Still used in 3DS logic, but not in our UI. Instead, enable if any of the entrance rando options are enabled.
+    // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) || 
+                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
@@ -3074,8 +3074,11 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Shuffling Ganon's Castle can be enabled separately.\n"
                     "\n"
-                    "Additionally, the entrance of Deku Tree, Fire Temple and Bottom of the Well are opened for both child and adult."
-                    "Bottom of the Well still requires playing Song of Storms to the Windmill guy"
+                    "Additionally, the entrances of Deku Tree, Fire Temple, Bottom of the Well and Gerudo Training Ground are opened for both child and adult.\n"
+                    "\n"
+                    "- Deku Tree will be open for adult after Mido has seen child Link with a sword and shield.\n"
+                    "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
+                    "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, 0);
 
@@ -3089,7 +3092,7 @@ void DrawRandoEditor(bool& open) {
                     "Some entrances are unshuffled to avoid issues:\n"
                     "- Hyrule Castle Courtyard and Garden entrance\n"
                     "- Both Market Back Alley entrances\n"
-                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)."
+                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)"
                 );
 
                 UIWidgets::PaddedSeparator();

@@ -73,7 +73,7 @@ void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
-    // If dungeon entrance randomizer is on, keep the tree mouth open link is adult and sword and shield are shown to mido
+    // If dungeon entrance randomizer is on, keep the tree mouth open when link is adult and sword & shield have been shown to mido
     } else if ((LINK_IS_ADULT && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) ||
         !Flags_GetEventChkInf(0x4)) || (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;

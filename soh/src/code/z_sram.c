@@ -197,7 +197,7 @@ void Sram_OpenSave() {
         }
     }
 
-    // Setup the entrance override table for rando
+    // Setup the modified entrance table and entrance shuffle table for rando
     if (gSaveContext.n64ddFlag) {
         Entrance_Init();
         if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||

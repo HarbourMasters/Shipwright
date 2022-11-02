@@ -1792,6 +1792,10 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
     OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideSpawnScene(sceneNum, spawn);
+    }
 }
 
 void func_800C016C(GlobalContext* globalCtx, Vec3f* src, Vec3f* dest) {

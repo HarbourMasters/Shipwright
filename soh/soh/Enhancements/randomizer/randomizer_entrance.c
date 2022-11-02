@@ -185,6 +185,13 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         gGlobalCtx->actorCtx.flags.tempSwch = 0;
         gGlobalCtx->actorCtx.flags.tempCollect = 0;
     }
+
+    // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
+    // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
+    if (gGlobalCtx->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+        return nextEntranceIndex;
+    }
+
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
@@ -416,10 +423,10 @@ void Entrance_OverrideWeatherState() {
     // Lon Lon Ranch (No Epona)
     if (!Flags_GetEventChkInf(0x18)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
-        case 0x0157: // Lon Lon Ranch from HF
-        case 0x01F9: // Hyrule Field from LLR
-            gWeatherMode = 2;
-            return;
+            case 0x0157: // Lon Lon Ranch from HF
+            case 0x01F9: // Hyrule Field from LLR
+                gWeatherMode = 2;
+                return;
         }
     }
     // Water Temple
@@ -498,3 +505,22 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
     }
 }
 
+void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == 2) { // Shuffle Ganon's Castle
+        // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
+        if (sceneNum == 95 && spawn == 1) {
+            gGlobalCtx->linkActorEntry->pos.x = 0x033A;
+            gGlobalCtx->linkActorEntry->pos.y = 0x0623;
+            gGlobalCtx->linkActorEntry->pos.z = 0xFF22;
+        }
+
+        // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
+        if (sceneNum == 100 && spawn == 1) {
+            gGlobalCtx->linkActorEntry->pos.x = 0xFEA8;
+            gGlobalCtx->linkActorEntry->pos.y = 0x065C;
+            gGlobalCtx->linkActorEntry->pos.z = 0x0290;
+            gGlobalCtx->linkActorEntry->rot.y = 0x0700;
+            gGlobalCtx->linkActorEntry->params = 0x0DFF; // stationary spawn
+        }
+    }
+}
