@@ -241,12 +241,12 @@ namespace UIWidgets {
                     if (ImGui::Selectable(ComboArray[i], i == selected)) {
                         CVar_SetS32(name, i);
                         selected = i;
+                        changed = true;
                         SohImGui::RequestCvarSaveOnNextTick();
                     }
                 }
             }
             ImGui::EndCombo();
-            changed = true;
         }
         return changed;
     }
