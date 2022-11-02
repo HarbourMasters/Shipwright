@@ -1909,6 +1909,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+            } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
