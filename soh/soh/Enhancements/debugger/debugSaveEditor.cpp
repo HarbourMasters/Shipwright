@@ -134,6 +134,7 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
     ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
+    ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
 };
@@ -1302,7 +1303,9 @@ void DrawQuestStatusTab() {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(SohImGui::GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
-            ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene);
+            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
+                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
+            };
         } else {
             // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)
             ImGui::Text("Barinade's Lair does not have small keys");
