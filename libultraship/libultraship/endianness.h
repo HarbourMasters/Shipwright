@@ -1,8 +1,29 @@
 #ifndef ENDIANESS_H
 #define ENDIANESS_H
 
+#ifdef __cplusplus
+namespace Ship
+{
+    enum class Endianness
+    {
+        Little = 0,
+        Big = 1,
+
+#if (defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)) || defined(__BIG_ENDIAN__)
+        Native = Big,
+#else
+        Native = Little,
+#endif
+    };
+}
+#endif
+
 #ifdef _MSC_VER
 #include <stdlib.h>
+
+#define BSWAP16 _byteswap_ushort
+#define BSWAP32 _byteswap_ulong
+#define BSWAP64 _byteswap_uint64
 
 #define BOMSWAP16 _byteswap_ushort
 #define BOMSWAP32 _byteswap_ulong
@@ -19,6 +40,11 @@
      (((x) <<  8) & 0x000000FF00000000) | (((x) << 24) & 0x0000FF0000000000) | \
      (((x) << 40) & 0x00FF000000000000) | (((x) << 56) & 0xFF00000000000000))
 #else
+
+#define BSWAP16 __builtin_bswap16
+#define BSWAP32 __builtin_bswap32
+#define BSWAP64 __builtin_bswap64
+
 #define BOMSWAP16 __builtin_bswap16
 #define BOMSWAP32 __builtin_bswap32
 #define BOMSWAP64 __builtin_bswap64

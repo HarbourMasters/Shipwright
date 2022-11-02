@@ -17,8 +17,9 @@ namespace Ship {
 	// It works with the original game's assets because the entire ROM is 64MB and fits into RAM of any semi-modern PC.
 	class ResourceMgr {
 	public:
-		ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath);
-		~ResourceMgr();
+		ResourceMgr(std::shared_ptr<Window> Context, const std::string& MainPath, const std::string& PatchesPath, const std::unordered_set<uint32_t> &ValidHashes);
+        ResourceMgr(std::shared_ptr<Window> Context, const std::vector<std::string> &OTRFiles, const std::unordered_set<uint32_t> &ValidHashes);
+        ~ResourceMgr();
 
 		bool IsRunning();
 		bool DidLoadSuccessfully();
@@ -29,7 +30,9 @@ namespace Ship {
 		void InvalidateResourceCache();
 		uint32_t GetGameVersion();
 		void SetGameVersion(uint32_t newGameVersion);
-		std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
+        std::vector<uint32_t> GetGameVersions();
+        void PushGameVersion(uint32_t newGameVersion);
+        std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
 		std::shared_ptr<File> LoadFile(const std::string& FilePath);
 		std::shared_ptr<Resource> GetCachedFile(const char* FilePath) const;
 		std::shared_ptr<Resource> LoadResource(const char* FilePath);
@@ -61,5 +64,6 @@ namespace Ship {
 		std::condition_variable FileLoadNotifier;
 		std::condition_variable ResourceLoadNotifier;
 		uint32_t gameVersion;
+        std::vector<uint32_t> gameVersions;
 	};
 }

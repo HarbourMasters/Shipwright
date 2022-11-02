@@ -489,7 +489,7 @@ s32 Player_IsBurningStickInRange(GlobalContext* globalCtx, Vec3f* pos, f32 xzRan
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
-    if (LINK_IS_ADULT) {
+    if (CVar_GetS32("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {
         return PLAYER_STR_BRACELET;
@@ -784,7 +784,14 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
             if (strengthUpgrade >= 2) { // silver or gold gauntlets
                 gDPPipeSync(POLY_OPA_DISP++);
 
-                color = &sGauntletColors[strengthUpgrade - 2];
+                if (!CVar_GetS32("gUseGauntletsCol", 0)) {
+                    color = &sGauntletColors[strengthUpgrade - 2];
+                } else if (strengthUpgrade == PLAYER_STR_SILVER_G) {
+                    *color = CVar_GetRGB("gGauntlets_Silver", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G) {
+                    *color = CVar_GetRGB("gGauntlets_Golden", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                }
+                
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);

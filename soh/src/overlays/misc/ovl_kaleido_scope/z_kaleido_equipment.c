@@ -474,9 +474,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
 
-        if (!((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
-              (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
-               ((void)0, gSaveContext.linkAge)))) {
+        if (!(CHECK_EQUIPMENT_AGE(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]))) {
             pauseCtx->nameColorSet = 1;
         }
 
@@ -511,9 +509,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
-            if ((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
-                (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
-                 ((void)0, gSaveContext.linkAge))) {
+            if (CHECK_EQUIPMENT_AGE(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
                     // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
@@ -645,7 +641,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
 
             if ((gBitFlags[bit] & gSaveContext.inventory.equipment) && (pauseCtx->cursorSpecialPos == 0)) {
-                if ((gEquipAgeReqs[i][k + 1] == 9) || (gEquipAgeReqs[i][k + 1] == ((void)0, gSaveContext.linkAge))) {
+                if (CHECK_EQUIPMENT_AGE(i, k + 1)) {
                     if (temp == cursorSlot) {
                         pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
                             pauseCtx->equipVtx[j].v.ob[0] - 2;
@@ -668,12 +664,13 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
     for (rowStart = 0, j = 0, temp = 0, i = 0; i < 4; i++, rowStart += 4, j += 16) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[j], 16, 0);
-
+        bool drawGreyItems = !CVar_GetS32("gTimelessEquipment", 0);
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
-                if ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
-                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD) { // Grey Out the Gauntlets
+                if (drawGreyItems &&
+                    ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
+                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) { // Grey Out the Gauntlets
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -682,15 +679,16 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             }
         } else {
             if ((i == 0) && (CUR_UPG_VALUE(sAdultUpgrades[i]) == 0)) { // If the player doesn't have the bow, load the current slingshot ammo upgrade instead.
-                {
+                if (drawGreyItems) {
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
                 gsSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
-                if ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(gSaveContext.n64ddFlag)) { // Grey Out the Goron Bracelet when Not Randomized
+                if (drawGreyItems &&
+                    ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
+                        !(gSaveContext.n64ddFlag))) { // Grey Out the Goron Bracelet when Not Randomized
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -702,7 +700,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         for (k = 0, bit = rowStart, point = 4; k < 3; k++, point += 4, temp++, bit++) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
-            bool age_restricted = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            bool age_restricted = !CHECK_ITEM_AGE(itemId);
             if (age_restricted) {
                 gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gsSPGrayscale(POLY_KAL_DISP++, true);

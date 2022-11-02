@@ -10,7 +10,8 @@ typedef struct {
     u32 questItems;
     s8 defense;
     u16 health;
-    u32 isMasterQuest;
+    u32 requiresMasterQuest;
+    u32 requiresOriginal;
     u8 seedHash[5];
     u8 randoSave;
 } SaveFileMetaInfo;
@@ -116,6 +117,7 @@ public:
     static void InitFileDebug();
 
     static void LoadRandomizerVersion1();
+    static void LoadRandomizerVersion2();
     static void SaveRandomizer();
 
     static void LoadBaseVersion1();

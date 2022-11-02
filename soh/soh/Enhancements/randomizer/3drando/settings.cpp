@@ -85,7 +85,7 @@ namespace Settings {
 
   //World Settings
   Option RandomizeWorld            = Option::Bool("Randomize Settings",     {"No","Yes"},                                                      {worldRandomize},                                                                                                OptionCategory::Toggle);
-  Option StartingAge               = Option::U8  ("Starting Age",           {"Adult", "Child", "Random"},                                      {ageDesc},                                                                                                       OptionCategory::Setting,    AGE_CHILD);
+  Option StartingAge               = Option::U8  ("Starting Age",           {"Child", "Adult", "Random"},                                      {ageDesc},                                                                                                       OptionCategory::Setting,    AGE_CHILD);
   uint8_t ResolvedStartingAge;
   Option ShuffleEntrances          = Option::Bool("Shuffle Entrances",      {"Off", "On"},                                                     {shuffleEntrancesDesc});
   Option ShuffleDungeonEntrances   = Option::U8  ("Dungeon Entrances",    {"Off", "On", "On + Ganon"},                                       {dungeonEntrancesDesc});
@@ -1860,6 +1860,16 @@ namespace Settings {
         StartingAge.Unlock();
       }
 
+      //Adult is also not compatible with the following combination:
+      //DoT:Intended, ShuffleOcarinas:false, Logic:Glitchless
+      if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED) && !ShuffleOcarinas &&
+        Logic.Is(LOGIC_GLITCHLESS)) {
+          StartingAge.SetSelectedIndex(AGE_CHILD);
+          StartingAge.Lock();
+        } else {
+          StartingAge.Unlock();
+        }
+
       //Only show stone count option if Stones is selected
       if (Bridge.Is(RAINBOWBRIDGE_STONES)) {
         BridgeStoneCount.Unhide();
@@ -2517,6 +2527,7 @@ namespace Settings {
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
     ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
     OpenDoorOfTime.SetSelectedIndex(cvarSettings[RSK_DOOR_OF_TIME]);
+    StartingAge.SetSelectedIndex(cvarSettings[RSK_STARTING_AGE]);
     GerudoFortress.SetSelectedIndex(cvarSettings[RSK_GERUDO_FORTRESS]);
     Bridge.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE]);
     BridgeStoneCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT]);
@@ -2533,6 +2544,13 @@ namespace Settings {
         GanonsTrialsCount.SetSelectedIndex(0);
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    }
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+        MQDungeonCount.SetSelectedIndex(13);
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+        MQDungeonCount.SetSelectedIndex(0);
+    } else {
+        MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
     }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
@@ -2590,6 +2608,11 @@ namespace Settings {
     GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
     BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    LACSStoneCount.SetSelectedIndex(cvarSettings[RSK_LACS_STONE_COUNT]);
+    LACSMedallionCount.SetSelectedIndex(cvarSettings[RSK_LACS_MEDALLION_COUNT]);
+    LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
+    LACSDungeonCount.SetSelectedIndex(cvarSettings[RSK_LACS_DUNGEON_COUNT]);
+    LACSTokenCount.SetSelectedIndex(cvarSettings[RSK_LACS_TOKEN_COUNT]);
 
     NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
     BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
@@ -2728,9 +2751,11 @@ namespace Settings {
       int choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
         ResolvedStartingAge = AGE_CHILD;
+        StartingAge.SetSelectedIndex(AGE_CHILD);
       }
       else {
         ResolvedStartingAge = AGE_ADULT;
+        StartingAge.SetSelectedIndex(AGE_ADULT);
       }
     }
     else {

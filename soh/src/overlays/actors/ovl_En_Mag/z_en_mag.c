@@ -913,7 +913,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) 
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->mainAlpha);
 
     if ((s16)this->mainAlpha != 0) {
-        EnMag_DrawImageRGBA32(&gfx, 160, 100, (u8*)gTitleZeldaShieldLogoMQTex, 160, 160);
+        EnMag_DrawImageRGBA32(&gfx, 160, 100, (u8*)gTitleZeldaShieldLogoTex, 160, 160);
     }
 
     func_8009457C(&gfx);

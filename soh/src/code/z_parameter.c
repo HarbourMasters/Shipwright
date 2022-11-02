@@ -1507,6 +1507,24 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
+        } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_STARTING_AGE)) {
+            /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
+            will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
+            (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
+            When becoming child, set swordless flag if player doesn't have kokiri sword
+            Only in rando to keep swordless link bugs in vanilla*/
+            if (1 << 0 & gSaveContext.inventory.equipment == 0) {
+                gSaveContext.infTable[29] |= 1;
+            }
+
+            //zero out items
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
+                }
+            }
+            gSaveContext.equips.equipment = 0x1111;
         }
     }
 
@@ -3388,6 +3406,7 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
 
 void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+    s16 magicDrop = R_MAGIC_BAR_LARGE_Y-R_MAGIC_BAR_SMALL_Y+2;
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
@@ -3415,6 +3434,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         s16 rMagicBarX;
         s16 PosX_MidEnd;
         s16 rMagicFillX;
+        s32 lineLength = CVar_GetS32("gHeartsLineLength", 10);
         if (CVar_GetS32("gMagicBarPosType", 0) != 0) {
             magicBarY = CVar_GetS32("gMagicBarPosY", 0)+Y_Margins;
             if (CVar_GetS32("gMagicBarPosType", 0) == 1) {//Anchor Left
@@ -3439,10 +3459,20 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
                 rMagicBarX = -9999;
                 PosX_MidEnd = -9999;
                 rMagicFillX = -9999;
+            } else if (CVar_GetS32("gMagicBarPosType", 0) == 5) {//Anchor To life meter
+                magicBarY = R_MAGIC_BAR_SMALL_Y-2 +
+                            magicDrop*(lineLength == 0 ? 0 : (gSaveContext.healthCapacity-1)/(0x10*lineLength)) +
+                            CVar_GetS32("gMagicBarPosY", 0) + getHealthMeterYOffset();
+                s16 xPushover = CVar_GetS32("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_BAR_X-1;
+                PosX_Start = xPushover;
+                rMagicBarX = xPushover;
+                PosX_MidEnd = xPushover+8;
+                rMagicFillX = CVar_GetS32("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_FILL_X-1;
             }
         } else {
-            if (gSaveContext.healthCapacity > 0xA0) {
-                magicBarY = magicBarY_original_l;
+            if ((gSaveContext.healthCapacity-1)/0x10 >= lineLength && lineLength != 0) {
+                magicBarY = magicBarY_original_l +
+                            magicDrop*(lineLength == 0 ? 0 : ((gSaveContext.healthCapacity-1)/(0x10*lineLength) - 1));
             } else {
                 magicBarY = magicBarY_original_s;
             }
@@ -5173,7 +5203,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, DPad_colors_ori.r,DPad_colors_ori.g,DPad_colors_ori.b, dpadAlpha);
             }
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
+                gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/textures/parameter_static/gDPad"),
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,

@@ -477,20 +477,13 @@ static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
 static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("master-quest-dungeons");
-
-  for (const auto* dungeon : Dungeon::dungeonList) {
-    if (dungeon->IsVanilla()) {
-      continue;
+    for (const auto* dungeon : Dungeon::dungeonList) {
+        std::string dungeonName;
+        if (dungeon->IsVanilla()) {
+            continue;
+        }
+        jsonData["masterQuestDungeons"].push_back(dungeon->GetName());
     }
-
-    auto node = parentNode->InsertNewChildElement("dungeon");
-    node->SetAttribute("name", dungeon->GetName().c_str());
-  }
-
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
 }
 
 // Writes the required trials to the spoiler log, if there are any.
@@ -677,8 +670,38 @@ static void WriteAllLocations(int language) {
 
         // Eventually check for other things here like fake name
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-          jsonData["locations"][location->GetName()]["item"] = placedItemName;
-          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
+            if (location->GetPlacedItemKey() == ICE_TRAP && location->IsCategory(Category::cShop)) {
+                switch (language) {
+                    case 0:
+                    default:
+                        jsonData["locations"][location->GetName()]["model"] =
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                        jsonData["locations"][location->GetName()]["trickName"] = 
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
+                        break;
+                    case 2:
+                        jsonData["locations"][location->GetName()]["model"] =
+                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                        jsonData["locations"][location->GetName()]["trickName"] =
+                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
+                        break;
+                }
+            }
+            jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        } else if (location->GetPlacedItemKey() == ICE_TRAP && iceTrapModels.contains(location->GetRandomizerCheck())) {
+            jsonData["locations"][location->GetName()]["item"] = placedItemName;
+            switch (language) {
+                case 0:
+                default:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][location->GetName()]["model"] =
+                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                    break;
+            }
         } else {
           jsonData["locations"][location->GetName()] = placedItemName;
         }
@@ -711,7 +734,7 @@ const char* SpoilerLog_Write(int language) {
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
     //}
-    //WriteMasterQuestDungeons(spoilerLog);
+    WriteMasterQuestDungeons(spoilerLog);
     WriteRequiredTrials();
     WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
