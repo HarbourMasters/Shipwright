@@ -203,6 +203,13 @@ typedef enum {
 } GerudoKeysSetting;
 
 typedef enum {
+    KEYRINGS_OFF,
+    KEYRINGS_RANDOM,
+    KEYRINGS_RANDOM_COUNT,
+    KEYRINGS_SELECTION,
+} KeyRingsSetting;
+
+typedef enum {
     BOSSKEYSANITY_START_WITH,
     BOSSKEYSANITY_VANILLA,
     BOSSKEYSANITY_OWN_DUNGEON,
@@ -925,6 +932,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;
   extern Option KeyRings;
+  extern Option KeyRingsRandomCount;
   extern Option RingFortress;
   extern Option RingForest;
   extern Option RingFire;
