@@ -1563,6 +1563,27 @@ void DrawPlayerTab() {
             }
         });
 
+        ImGui::Text("Player State");
+        uint8_t bit[32] = {};
+        uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+
+        for (int j = 0; j <= 2; j++) {
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("State Flags %d", j + 1);
+                for (int i = 0; i <= 31; i++) {
+                    bit[i] = ((flags[j] >> i) & 1);
+                    if (bit[i] != 0) {
+                        ImGui::Text("Flag %d", i);
+                    }
+                }
+            });
+            ImGui::SameLine();
+        }
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Sword");
+            ImGui::Text("  %d", player->swordState);
+        });
+
     } else {
         ImGui::Text("Global Context needed for player info!");
     }
