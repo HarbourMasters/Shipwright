@@ -55,8 +55,8 @@ std::vector<ItemTrackerItem> equipmentItems = {
 
 std::vector<ItemTrackerItem> miscItems = {
     ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),            ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),         ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest), ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest),
+    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),         ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest), ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest), ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardStones = {
@@ -297,35 +297,44 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.maxCapacity = result.currentCapacity = 100;
             result.currentAmmo = gSaveContext.inventory.gsTokens;
             break;
+        case ITEM_HEART_CONTAINER:
+            result.maxCapacity = result.currentCapacity = 8;
+            result.currentAmmo = gSaveContext.sohStats.heartContainers;
+            break;
+        case ITEM_HEART_PIECE:
+            result.maxCapacity = result.currentCapacity = 36;
+            result.currentAmmo = gSaveContext.sohStats.heartPieces;
+            break;
         case ITEM_KEY_SMALL:
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
+            result.currentCapacity = gSaveContext.sohStats.dungeonKeys[item.data];
             switch (item.data) {
                 case SCENE_BMORI1:
-                    result.maxCapacity = result.currentCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
+                    result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HIDAN:
-                    result.maxCapacity = result.currentCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
+                    result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_MIZUSIN:
-                    result.maxCapacity = result.currentCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
+                    result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_JYASINZOU:
-                    result.maxCapacity = result.currentCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+                    result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HAKADAN:
-                    result.maxCapacity = result.currentCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
+                    result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
                     break;
                 case SCENE_HAKADANCH:
-                    result.maxCapacity = result.currentCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+                    result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
                 case SCENE_MEN:
-                    result.maxCapacity = result.currentCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                    result.maxCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                     break;
                 case SCENE_GERUDOWAY:
-                    result.maxCapacity = result.currentCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                    result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
                     break;
                 case SCENE_GANONTIKA:
-                    result.maxCapacity = result.currentCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
+                    result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
                     break;
             }
             break;
@@ -344,8 +353,32 @@ void DrawItemCount(ItemTrackerItem item) {
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
     int32_t trackerNumberDisplayMode = CVar_GetS32("gItemTrackerCapacityTrack", 1);
+    int32_t trackerKeyNumberDisplayMode = CVar_GetS32("gItemTrackerKeyTrack", 0);
 
-    if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
+    if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
+        std::string currentString = "";
+        std::string maxString = std::to_string(currentAndMax.maxCapacity);
+        ImU32 currentColor = IM_COL_WHITE;
+        ImU32 maxColor = IM_COL_GREEN;
+        // "Collected / Max", "Current / Collected / Max", "Current / Max"
+        if (trackerKeyNumberDisplayMode == 1 || trackerKeyNumberDisplayMode == 2) {
+            currentString+= std::to_string(currentAndMax.currentAmmo);
+            currentString+= "/";
+        }
+        if (trackerKeyNumberDisplayMode == 0 || trackerKeyNumberDisplayMode == 1) {
+            currentString+= std::to_string(currentAndMax.currentCapacity);
+            currentString+= "/";
+        }
+
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+        ImGui::Text(currentString.c_str());
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+        ImGui::Text(maxString.c_str());
+        ImGui::PopStyleColor();
+    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = "";
         ImU32 currentColor = IM_COL_WHITE;
@@ -361,7 +394,8 @@ void DrawItemCount(ItemTrackerItem item) {
             item.id == ITEM_BOMBCHU ||
             item.id == ITEM_BEAN ||
             item.id == QUEST_SKULL_TOKEN ||
-            item.id == ITEM_KEY_SMALL;
+            item.id == ITEM_HEART_CONTAINER ||
+            item.id == ITEM_HEART_PIECE;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
 
@@ -444,7 +478,11 @@ void DrawItem(ItemTrackerItem item) {
     switch (item.id) {
         case ITEM_HEART_CONTAINER:
             actualItemId = item.id;
-            hasItem = !!gSaveContext.doubleDefense;
+            hasItem = gSaveContext.sohStats.heartContainers > 0;
+            break;
+        case ITEM_HEART_PIECE:
+            actualItemId = item.id;
+            hasItem = gSaveContext.sohStats.heartPieces > 0;
             break;
         case ITEM_MAGIC_SMALL:
         case ITEM_MAGIC_LARGE:
@@ -783,15 +821,11 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), miscItems.begin(), miscItems.end());
     }
     if (CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) == 1) {
-        if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-        }
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
     }
     if (CVar_GetS32("gItemTrackerSongsDisplayType", 1) == 1) {
         if (CVar_GetS32("gItemTrackerMiscItemsDisplayType", 1) == 1 && CVar_GetS32("gItemTrackerDungeonRewardsDisplayType", 1) != 1) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -900,6 +934,7 @@ void DrawItemTracker(bool& open) {
 }
 
 const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
+const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
 
 void DrawItemTrackerOptions(bool& open) {
     if (!open) {
@@ -955,6 +990,9 @@ void DrawItemTrackerOptions(bool& open) {
     if (CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVar_GetS32("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
     }
+    ImGui::Text("Key Count Tracking");
+    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 3, 0);
+    UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
 
     ImGui::TableNextColumn();
 

@@ -461,13 +461,21 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
             // TODO: If master quest there are different key counts
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
+            gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
+            gSaveContext.sohStats.dungeonKeys[SCENE_HIDAN]     = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
             gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = WATER_TEMPLE_SMALL_KEY_MAX; // Water
+            gSaveContext.sohStats.dungeonKeys[SCENE_MIZUSIN]     = WATER_TEMPLE_SMALL_KEY_MAX; // Water
             gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = SPIRIT_TEMPLE_SMALL_KEY_MAX; // Spirit
+            gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU]     = SPIRIT_TEMPLE_SMALL_KEY_MAX; // Spirit
             gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = SHADOW_TEMPLE_SMALL_KEY_MAX; // Shadow
+            gSaveContext.sohStats.dungeonKeys[SCENE_HAKADAN]     = SHADOW_TEMPLE_SMALL_KEY_MAX; // Shadow
             gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
+            gSaveContext.sohStats.dungeonKeys[SCENE_HAKADANCH]     = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
             gSaveContext.inventory.dungeonKeys[SCENE_MEN] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
+            gSaveContext.sohStats.dungeonKeys[SCENE_MEN]     = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
             gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
+            gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
         // "Start with" == 0 for Boss Kesanity
