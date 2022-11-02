@@ -10369,7 +10369,6 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
         If you fly around no stone of agony for you! */
         Color_RGB8 StoneOfAgony_ori = { 255, 255, 255 };
         if (CVar_GetS32("gVisualAgony", 0) != 0 && !this->stateFlags1) {
-            CVar_SetS32("gHasStoneOfAgony", 1);
             s16 Top_Margins = (CVar_GetS32("gHUDMargin_T", 0) * -1);
             s16 Left_Margins = CVar_GetS32("gHUDMargin_L", 0);
             s16 Right_Margins = CVar_GetS32("gHUDMargin_R", 0);
