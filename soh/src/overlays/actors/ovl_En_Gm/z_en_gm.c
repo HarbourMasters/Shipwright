@@ -97,7 +97,7 @@ s32 func_80A3D7C8(void) {
         return 1;
     } else if (gBitFlags[3] & gSaveContext.inventory.equipment) {
         return 2;
-    } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS)){
+    } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS)) && (gBitFlags[2] & gSaveContext.inventory.equipment)){
         return 1;
     } else {
         return 3;
