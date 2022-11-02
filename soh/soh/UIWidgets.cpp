@@ -227,7 +227,7 @@ namespace UIWidgets {
         }
     }
 
-    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
+    bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
         if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }

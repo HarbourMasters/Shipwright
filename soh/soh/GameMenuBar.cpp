@@ -803,7 +803,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Kick open every chest");
                     UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
                     const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
-                    UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0);
+                    if(UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0)) {
+                        if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) > 0) {
+                            UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
+                            UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
+                        } else {
+                            CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
+                        }
+                    }
                     UIWidgets::Tooltip(
                         "Chest sizes and textures are changed to help identify the item inside.\n"
                         " - Major items: Large gold chests\n"
@@ -813,12 +820,6 @@ namespace GameMenuBar {
                         " - Boss keys: Vanilla size and texture\n"
                         " - Skulltula Tokens: Small skulltula chest\n"
                     );
-                    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) > 0) {
-                        UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
-                        UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
-                    } else {
-                        CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
-                    }
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                     UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
