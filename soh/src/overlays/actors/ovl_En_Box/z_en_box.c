@@ -662,7 +662,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 2)) {
+    if (globalCtx->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 2) && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
