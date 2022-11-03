@@ -580,6 +580,8 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i]|=(fishSize) << 16;
                 }
                 UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
+                
+                ImGui::TreePop();
                 continue;
             }
             
