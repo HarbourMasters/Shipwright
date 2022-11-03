@@ -126,7 +126,6 @@ void CrowdControl::ListenToServer() {
             }
 
             if (socketsReady == 0) {
-                SPDLOG_TRACE("[CrowdControl] No sockets ready to be read");
                 continue;
             }
 
@@ -169,7 +168,6 @@ void CrowdControl::ListenToServer() {
                     if (!isConflictingEffectActive) {
                         activeEffectsMutex.lock();
                         activeEffects.push_back(incomingEffect);
-                        SPDLOG_TRACE("[CrowdControl] {} effects active now", activeEffects.size());
                         activeEffectsMutex.unlock();
                     }
                 }
