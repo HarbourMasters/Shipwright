@@ -6,6 +6,7 @@
 #include <libultraship/ImGuiImpl.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/fmt.h>
 #include <regex>
 
 extern "C" {
@@ -363,14 +364,14 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE(EFFECT_EMPTY_MAGIC);
             return EffectResult::Success;
         } else if (effectId == EFFECT_ADD_RUPEES) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees {}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("update_rupees {}", value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_REMOVE_RUPEES) {
             if (gSaveContext.rupees - value < 0) {
                 return EffectResult::Failure;
             }
 
-            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees -{}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("update_rupees -{}", value));
             return EffectResult::Success;
         }
     }
@@ -390,14 +391,14 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
                     || effectId == EFFECT_SPAWN_CUCCO_STORM
         ) {
             if (PlayerGrounded(player)) {
-                if (dryRun == 0) CMD_EXECUTE(std::format("{}", effectId));
+                if (dryRun == 0) CMD_EXECUTE(fmt::format("{}", effectId));
                 return EffectResult::Success;
             }
             return EffectResult::Failure;
         } else if (effectId == EFFECT_HEAL
                     || effectId == EFFECT_KNOCKBACK
         ) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_GIANT_LINK
                     || effectId == EFFECT_MINISH_LINK
@@ -409,7 +410,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
                     || effectId == EFFECT_PACIFIST
                     || effectId == EFFECT_RAINSTORM
         ) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} 1", effectId));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} 1", effectId));
             return EffectResult::Success;
         } else if (effectId == EFFECT_REVERSE_CONTROLS) {
             if (dryRun == 0) CMD_EXECUTE("reverse_controls 1"); 
@@ -450,17 +451,17 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
            if (dryRun == 0) CMD_EXECUTE("speed_modifier -2");
             return EffectResult::Success;
         } else if (effectId == EFFECT_DAMAGE_MULTIPLIER) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier -{}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier -{}", value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_DEFENSE_MULTIPLIER) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier {}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier {}", value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_DAMAGE) {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return EffectResult::Failure;
             }
             
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
             return EffectResult::Success;
         }
     }
@@ -548,7 +549,7 @@ void CrowdControl::RemoveEffect(std::string effectId) {
                 || effectId == EFFECT_PACIFIST
                 || effectId == EFFECT_RAINSTORM
         ) {
-            CMD_EXECUTE(std::format("{} 0", effectId));
+            CMD_EXECUTE(fmt::format("{} 0", effectId));
             return;
         } else if (effectId == EFFECT_IRON_BOOTS || effectId == EFFECT_HOVER_BOOTS) {
             CMD_EXECUTE("boots kokiri");
