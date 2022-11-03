@@ -659,8 +659,22 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
+                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
+                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] += 1;
+            }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
+                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
+                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] -= 1;
+            }
         }
 
         if (this->questType[this->buttonIndex] > MAX_QUEST) {
