@@ -95,35 +95,6 @@ namespace GameMenuBar {
         Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
     }
 
-    bool MasterQuestCheckboxDisabled() {
-        return !(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())
-                || CVar_GetS32("gRandomizer", 0);
-    }
-
-    std::string MasterQuestDisabledTooltip()  {
-        std::string tooltip = "";
-        if (CVar_GetS32("gRandomizer", 0)) {
-            tooltip = "This option is disabled because you have the Randomizer enabled.\nRandomizer has it's own "
-                      "settings surrounding Master Quest dungeons\nthat you can set from the Randomizer Settings Menu.";
-        }
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            tooltip = "This option is force-enabled because you have only loaded the\noot-mq.otr file. If you wish to "
-                      "play the Original Quest,\nplease provide the oot.otr file.";
-        }
-        if (!OTRGlobals::Instance->HasMasterQuest()) {
-            tooltip = "This option is disabled because you have only loaded the\noot.otr file. If you wish to play "
-                      "the Master Quest,\nplease proivde the oot-mq.otr file.";
-        }
-        return tooltip;
-    }
-
-    UIWidgets::CheckboxGraphics MasterQuestDisabledGraphic() {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            return UIWidgets::CheckboxGraphics::Checkmark;
-        }
-        return UIWidgets::CheckboxGraphics::Cross;
-    }
-
     void applyEnhancementPresetDefault(void) {
         // D-pad Support on Pause
         CVar_SetS32("gDpadPause", 0);
@@ -182,6 +153,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 0);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 0);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 0);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
@@ -281,8 +254,8 @@ namespace GameMenuBar {
         CVar_SetS32("gGuardVision", 0);
         // Enable passage of time on file select
         CVar_SetS32("gTimeFlowFileSelect", 0);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 0);
+        // Inject Item Counts in messages
+        CVar_SetS32("gInjectItemCounts", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
         // Pull out Ocarina to Summon Scarecrow
@@ -344,6 +317,8 @@ namespace GameMenuBar {
 
         // Restore old Gold Skulltula cutscene
         CVar_SetS32("gGsCutscene", 0);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 0);
         // Autosave
         CVar_SetS32("gAutosave", 0);
 
@@ -378,8 +353,8 @@ namespace GameMenuBar {
         CVar_SetS32("gAssignableTunicsAndBoots", 1);
         // Enable passage of time on file select
         CVar_SetS32("gTimeFlowFileSelect", 1);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 1);
+        // Inject Item Counts in messages
+        CVar_SetS32("gInjectItemCounts", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 1);
@@ -410,6 +385,8 @@ namespace GameMenuBar {
         CVar_SetS32("gN64WeirdFrames", 1);
         // Bombchus out of bounds
         CVar_SetS32("gBombchusOOB", 1);
+        // Skip save confirmation
+        CVar_SetS32("gSkipSaveConfirmation", 1);
     }
 
     void applyEnhancementPresetEnhanced(void) {
@@ -437,6 +414,8 @@ namespace GameMenuBar {
         CVar_SetS32("gInstantPutaway", 1);
         // Instant Boomerang Recall
         CVar_SetS32("gFastBoomerang", 1);
+        // Ask to Equip New Items
+        CVar_SetS32("gAskToEquip", 1);
         // Mask Select in Inventory
         CVar_SetS32("gMaskSelect", 1);
         // Always Win Goron Pot
@@ -805,6 +784,8 @@ namespace GameMenuBar {
                     );
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
+                    UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
+                    UIWidgets::Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
                     UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                     UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
@@ -819,6 +800,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
+                    UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                     ImGui::EndMenu();
                 }
 
@@ -1015,8 +998,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                 UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", "gGuardVision", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount", true, false);
-                UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
+                UIWidgets::PaddedEnhancementCheckbox("Item counts in messages", "gInjectItemCounts", true, false);
+                UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
 
@@ -1178,6 +1161,13 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0));
             }
+            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVar_GetS32("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gSfxEditor", 0);
+                CVar_SetS32("gSfxEditor", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("SFX Editor", CVar_GetS32("gSfxEditor", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
 
@@ -1303,10 +1293,6 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-            UIWidgets::PaddedEnhancementCheckbox("Master Quest", "gMasterQuest", true, false, MasterQuestCheckboxDisabled(), MasterQuestDisabledTooltip().c_str(), MasterQuestDisabledGraphic());
-            UIWidgets::Tooltip("Enables Master Quest.\n\nWhen checked, any non-rando save files you create will be "
-                                "Master Quest save files. Master Quest save files will still have Master Quest dungeons "
-                                "regardless of this setting and require oot-mq.otr to be present in order to play.");
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
@@ -1348,6 +1334,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Allows you to walk through walls");
             UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
             UIWidgets::Tooltip("Makes every surface in the game climbable");
+            UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
+            UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
             UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
             UIWidgets::Tooltip("Holding L makes you float into the air");
             UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
@@ -1455,13 +1443,11 @@ namespace GameMenuBar {
                     "File N.1",
                     "File N.2",
                     "File N.3",
+                    "Zelda Map Select (require OoT Debug Mode)",
                     "File select",
-                    "Zelda Map Select (require OoT Debug Mode)"
                 };
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
-                UIWidgets::PaddedEnhancementCheckbox("Create a new save if none", "gCreateNewSave", true, false);
-                UIWidgets::Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
             };
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");

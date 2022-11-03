@@ -462,7 +462,7 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx, u8 ruto, u8 adult) {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, this->actor.params, GI_NONE);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, globalCtx->sceneNum, 0x00, GI_NONE);
 
     if (this->actor.parent != NULL && this->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {
