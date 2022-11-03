@@ -326,14 +326,14 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE("empty_magic");
             return EffectResult::Success;
         } else if (effectId == "add_rupees") {
-            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees {}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("update_rupees {}", value));
             return EffectResult::Success;
         } else if (effectId == "remove_rupees") {
             if (gSaveContext.rupees - value < 0) {
                 return EffectResult::Failure;
             }
 
-            if (dryRun == 0) CMD_EXECUTE(std::format("update_rupees -{}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("update_rupees -{}", value));
             return EffectResult::Success;
         }
     }
@@ -353,14 +353,14 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
                     || effectId == "cucco_storm"
         ) {
             if (PlayerGrounded(player)) {
-                if (dryRun == 0) CMD_EXECUTE(std::format("{}", effectId));
+                if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("{}", effectId));
                 return EffectResult::Success;
             }
             return EffectResult::Failure;
         } else if (effectId == "heal"
                     || effectId == "knockback"
         ) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("{} {}", effectId, value));
             return EffectResult::Success;
         } else if (effectId == "giant_link"
                     || effectId == "minish_link"
@@ -372,7 +372,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
                     || effectId == "pacifist"
                     || effectId == "rainstorm"
         ) {
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} 1", effectId));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("{} 1", effectId));
             return EffectResult::Success;
         } else if (effectId == "reverse") {
             if (dryRun == 0) CMD_EXECUTE("reverse_controls 1"); 
@@ -413,17 +413,17 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
            if (dryRun == 0) CMD_EXECUTE("speed_modifier -2");
             return EffectResult::Success;
         } else if (effectId == "damage_multiplier") {
-            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier -{}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("defense_modifier -{}", value));
             return EffectResult::Success;
         } else if (effectId == "defense_multiplier") {
-            if (dryRun == 0) CMD_EXECUTE(std::format("defense_modifier {}", value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("defense_modifier {}", value));
             return EffectResult::Success;
         } else if (effectId == "damage") {
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return EffectResult::Failure;
             }
             
-            if (dryRun == 0) CMD_EXECUTE(std::format("{} {}", effectId, value));
+            if (dryRun == 0) CMD_EXECUTE(fmt::v8::format("{} {}", effectId, value));
             return EffectResult::Success;
         }
     }
@@ -511,7 +511,7 @@ void CrowdControl::RemoveEffect(std::string effectId) {
                 || effectId == "pacifist"
                 || effectId == "rainstorm"
         ) {
-            CMD_EXECUTE(std::format("{} 0", effectId));
+            CMD_EXECUTE(fmt::v8::format("{} 0", effectId));
             return;
         } else if (effectId == "iron_boots" || effectId == "hover_boots") {
             CMD_EXECUTE("boots kokiri");

@@ -250,7 +250,7 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows" OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
 )
@@ -397,7 +397,7 @@ set(Source_Files__soh__Enhancements__item_tables
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows" OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.cpp"
 )
@@ -1779,6 +1779,22 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
         "SPDLOG_NO_TLS;"
 		"STBI_NO_THREAD_LOCALS;"
 	)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+		"$<$<CONFIG:Debug>:"
+			"_DEBUG"
+		">"
+		"$<$<CONFIG:Release>:"
+			"NDEBUG"
+		">"
+		"SPDLOG_ACTIVE_LEVEL=0;"
+		"_CONSOLE;"
+		"_CRT_SECURE_NO_WARNINGS;"
+		"ENABLE_OPENGL;"
+        "ENABLE_CROWD_CONTROL;"
+		"UNICODE;"
+		"_UNICODE"
+	)
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
@@ -2028,6 +2044,20 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     target_include_directories(${PROJECT_NAME} PRIVATE
         ${DEVKITPRO}/portlibs/wiiu/include/
     )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_package(SDL2)
+    find_package(SDL2_net)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+ 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "ZAPDUtils;"
+		"SDL2::SDL2;"
+        "SDL2::SDL2main;"
+        "SDL2_net::SDL2_net-static;"
+		${CMAKE_DL_LIBS}
+		Threads::Threads
+	)
 else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
