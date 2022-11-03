@@ -95,35 +95,6 @@ namespace GameMenuBar {
         Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
     }
 
-    bool MasterQuestCheckboxDisabled() {
-        return !(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())
-                || CVar_GetS32("gRandomizer", 0);
-    }
-
-    std::string MasterQuestDisabledTooltip()  {
-        std::string tooltip = "";
-        if (CVar_GetS32("gRandomizer", 0)) {
-            tooltip = "This option is disabled because you have the Randomizer enabled.\nRandomizer has it's own "
-                      "settings surrounding Master Quest dungeons\nthat you can set from the Randomizer Settings Menu.";
-        }
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            tooltip = "This option is force-enabled because you have only loaded the\noot-mq.otr file. If you wish to "
-                      "play the Original Quest,\nplease provide the oot.otr file.";
-        }
-        if (!OTRGlobals::Instance->HasMasterQuest()) {
-            tooltip = "This option is disabled because you have only loaded the\noot.otr file. If you wish to play "
-                      "the Master Quest,\nplease proivde the oot-mq.otr file.";
-        }
-        return tooltip;
-    }
-
-    UIWidgets::CheckboxGraphics MasterQuestDisabledGraphic() {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            return UIWidgets::CheckboxGraphics::Checkmark;
-        }
-        return UIWidgets::CheckboxGraphics::Cross;
-    }
-
     void applyEnhancementPresetDefault(void) {
         // D-pad Support on Pause
         CVar_SetS32("gDpadPause", 0);
@@ -283,8 +254,8 @@ namespace GameMenuBar {
         CVar_SetS32("gGuardVision", 0);
         // Enable passage of time on file select
         CVar_SetS32("gTimeFlowFileSelect", 0);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 0);
+        // Inject Item Counts in messages
+        CVar_SetS32("gInjectItemCounts", 0);
         // Pull grave during the day
         CVar_SetS32("gDayGravePull", 0);
         // Pull out Ocarina to Summon Scarecrow
@@ -382,8 +353,8 @@ namespace GameMenuBar {
         CVar_SetS32("gAssignableTunicsAndBoots", 1);
         // Enable passage of time on file select
         CVar_SetS32("gTimeFlowFileSelect", 1);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 1);
+        // Inject Item Counts in messages
+        CVar_SetS32("gInjectItemCounts", 1);
 
         // Pause link animation (0 to 16)
         CVar_SetS32("gPauseLiveLink", 1);
@@ -1027,8 +998,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                 UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", "gGuardVision", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount", true, false);
-                UIWidgets::Tooltip("Injects Golden Skulltula total count in pickup messages");
+                UIWidgets::PaddedEnhancementCheckbox("Item counts in messages", "gInjectItemCounts", true, false);
+                UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
 
@@ -1105,6 +1076,8 @@ namespace GameMenuBar {
                 }
                 UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
+                UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
                 UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
                 UIWidgets::Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars", true, false);
@@ -1187,6 +1160,13 @@ namespace GameMenuBar {
                 CVar_SetS32("gCosmeticsEditorEnabled", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0));
+            }
+            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVar_GetS32("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gSfxEditor", 0);
+                CVar_SetS32("gSfxEditor", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("SFX Editor", CVar_GetS32("gSfxEditor", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1313,10 +1293,6 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-            UIWidgets::PaddedEnhancementCheckbox("Master Quest", "gMasterQuest", true, false, MasterQuestCheckboxDisabled(), MasterQuestDisabledTooltip().c_str(), MasterQuestDisabledGraphic());
-            UIWidgets::Tooltip("Enables Master Quest.\n\nWhen checked, any non-rando save files you create will be "
-                                "Master Quest save files. Master Quest save files will still have Master Quest dungeons "
-                                "regardless of this setting and require oot-mq.otr to be present in order to play.");
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
@@ -1358,6 +1334,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Allows you to walk through walls");
             UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
             UIWidgets::Tooltip("Makes every surface in the game climbable");
+            UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
+            UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
             UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
             UIWidgets::Tooltip("Holding L makes you float into the air");
             UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
@@ -1465,13 +1443,11 @@ namespace GameMenuBar {
                     "File N.1",
                     "File N.2",
                     "File N.3",
+                    "Zelda Map Select (require OoT Debug Mode)",
                     "File select",
-                    "Zelda Map Select (require OoT Debug Mode)"
                 };
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
-                UIWidgets::PaddedEnhancementCheckbox("Create a new save if none", "gCreateNewSave", true, false);
-                UIWidgets::Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
             };
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
