@@ -197,10 +197,8 @@ void CrowdControl::ProcessActiveEffects() {
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect
                 if (effect->timeRemaining <= 0) {
-                    activeEffectsMutex.lock();
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
-                    activeEffectsMutex.unlock();
                     RemoveEffect(effect->effectType.c_str());
 
                     delete effect;
