@@ -1571,7 +1571,6 @@ namespace GameMenuBar {
             UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
             UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
 
-            // TODO: Better place for this check? Hooks?
             if (CVar_GetS32("gCrowdControl", 0)) {
                 CrowdControl::Instance->Enable();
             } else {
