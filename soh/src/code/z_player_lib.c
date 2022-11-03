@@ -563,16 +563,19 @@ s32 Player_HoldsHookshot(Player* this) {
 }
 
 s32 Player_HoldsBow(Player* this) {
-    return (
-        this->heldItemId == ITEM_BOW ||
-        this->heldItemId == ITEM_BOW_ARROW_FIRE ||
-        this->heldItemId == ITEM_BOW_ARROW_ICE ||
-        this->heldItemId == ITEM_BOW_ARROW_LIGHT
-    );
+    switch(this->heldItemActionParam){
+        case PLAYER_AP_BOW:
+        case PLAYER_AP_BOW_FIRE:
+        case PLAYER_AP_BOW_ICE:
+        case PLAYER_AP_BOW_LIGHT:
+            return true;
+        default:
+            return false;
+    }
 }
 
 s32 Player_HoldsSlingshot(Player* this) {
-    return this->heldItemId == ITEM_SLINGSHOT;
+    return this->heldItemActionParam == PLAYER_AP_SLINGSHOT;
 }
 
 s32 func_8008F128(Player* this) {

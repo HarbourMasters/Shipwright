@@ -2169,7 +2169,7 @@ void func_80834298(Player* this, GlobalContext* globalCtx) {
 
 //Sets the projectile weapon & ammoType when firing, returns current ammo amount
 s32 Player_ModifyProjectileType(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
-    if (this->heldItemId != ITEM_SLINGSHOT) {
+    if (this->heldItemActionParam != PLAYER_AP_SLINGSHOT) {
         *itemPtr = ITEM_BOW;
         if (this->stateFlags1 & PLAYER_STATE1_23) {
             *typePtr = ARROW_NORMAL_HORSE;
@@ -4877,7 +4877,7 @@ s32 Camera_UpdateCameraMode(GlobalContext* globalCtx, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            if (this->heldItemId == ITEM_SLINGSHOT) {
+            if (this->heldItemActionParam == PLAYER_AP_SLINGSHOT) {
                 cameraMode = CAM_MODE_SLINGSHOT;
             } else {
                 cameraMode = CAM_MODE_BOWARROW;
