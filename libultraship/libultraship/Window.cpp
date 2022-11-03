@@ -261,7 +261,7 @@ namespace Ship {
         if (GetConfig()->isNewInstance) {
             GetConfig()->setInt("Window.Width", 640);
             GetConfig()->setInt("Window.Height", 480);
-            GetConfig()->setBool("Window.Options", false);
+
             GetConfig()->setString("Window.GfxBackend", "");
             GetConfig()->setString("Window.AudioBackend", "");
 
@@ -295,8 +295,6 @@ namespace Ship {
             dwWidth = GetConfig()->getInt("Window.Width", 640);
             dwHeight = GetConfig()->getInt("Window.Height", 480);
         }
-
-        dwMenubar = GetConfig()->getBool("Window.Options", false);
 
         InitializeWindowManager(GetConfig()->getString("Window.GfxBackend"));
         InitializeAudioPlayer(GetConfig()->getString("Window.AudioBackend"));
@@ -360,13 +358,8 @@ namespace Ship {
         WmApi->set_fullscreen(bIsFullscreen);
     }
 
-    void Window::ShowCursor(bool hide) {
-        if (!this->bIsFullscreen || this->dwMenubar) {
-            WmApi->show_cursor(true);
-        }
-        else {
-            WmApi->show_cursor(hide);
-        }
+    void Window::SetCursorVisibility(bool visible) {
+        WmApi->set_cursor_visibility(visible);
     }
 
     void Window::MainLoop(void (*MainFunction)(void)) {
@@ -422,7 +415,12 @@ namespace Ship {
 
         Window::GetInstance()->bIsFullscreen = bIsFullscreen;
         pConf->setBool("Window.Fullscreen.Enabled", bIsFullscreen);
-        Window::GetInstance()->ShowCursor(!bIsFullscreen);
+        if (bIsFullscreen) {
+            bool menuBarOpen = Window::GetInstance()->GetMenuBar();
+            Window::GetInstance()->SetCursorVisibility(menuBarOpen);
+        } else if (!bIsFullscreen) {
+            Window::GetInstance()->SetCursorVisibility(true);
+        }
     }
 
     uint32_t Window::GetCurrentWidth() {

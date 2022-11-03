@@ -9573,7 +9573,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
             if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
                 (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex + 1]] != 9 && LINK_IS_ADULT &&
-                 !CVar_GetS32("gNoRestrictAge", 0))) {
+                 !CVar_GetS32("gTimelessEquipment", 0))) {
                 gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
                 gSaveContext.equips.buttonItems[cSlotIndex + 1] = ITEM_NONE;
             }
@@ -10942,6 +10942,15 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
 
+        if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
+            }
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+            }
+        }
+
         Player_UpdateCommon(this, globalCtx, &sp44);
     }
 
@@ -10981,15 +10990,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
-    }
-
-    if (CVar_GetS32("gEnableWalkModify", 0) && CVar_GetS32("gWalkSpeedToggle", 0)) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
-            gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-        }
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
-            gWalkSpeedToggle2 = !gWalkSpeedToggle2;
-        }
     }
 }
 
@@ -12587,7 +12587,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         equipItem = giEntry.itemId;
         equipNow = CVar_GetS32("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
                    ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
-                    CVar_GetS32("gNoRestrictAge", 0));
+                    CVar_GetS32("gTimelessEquipment", 0));
 
         Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
@@ -12615,12 +12615,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             } else {
                 if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
-                    ((giEntry.itemId == ITEM_HEART_PIECE) &&
+                    ((giEntry.itemId == ITEM_HEART_PIECE_2) &&
                         ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
                     temp1 = NA_BGM_HEART_GET | 0x900;
                 } else {
                     temp1 = temp2 =
-                        (giEntry.itemId == ITEM_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                        (giEntry.itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
                 }
                 Audio_PlayFanfare(temp1);
             }

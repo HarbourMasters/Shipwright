@@ -26,6 +26,12 @@ typedef struct {
 } Inventory; // size = 0x5E
 
 typedef struct {
+    /*      */ u8 heartPieces;
+    /*      */ u8 heartContainers;
+    /*      */ u8 dungeonKeys[19];
+} SohStats;
+
+typedef struct {
     /* 0x00 */ u32 chest;
     /* 0x04 */ u32 swch;
     /* 0x08 */ u32 clear;
@@ -189,6 +195,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
+    SohStats sohStats;
 } SaveContext; // size = 0x1428
 
 typedef enum {

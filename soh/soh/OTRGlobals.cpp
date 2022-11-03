@@ -33,6 +33,7 @@
 #include <libultraship/AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
+#include "Enhancements/sfx-editor/SfxEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -440,6 +441,7 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -1922,6 +1924,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+            } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
@@ -1995,7 +1999,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+        if (CVar_GetS32("gInjectItemCounts", 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2012,6 +2016,14 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
             CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
         }
+    }
+    if (textId == TEXT_HEART_CONTAINER && CVar_GetS32("gInjectItemCounts", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
+    }
+    if (textId == TEXT_HEART_PIECE && CVar_GetS32("gInjectItemCounts", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
     if (messageEntry.textBoxType != -1) {
         font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;

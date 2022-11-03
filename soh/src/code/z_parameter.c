@@ -1760,6 +1760,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         // but we check for a globalCtx here so the game won't crash if we do somehow get here.
         if (gSaveContext.n64ddFlag && globalCtx != NULL) {
             if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
+                gSaveContext.sohStats.dungeonKeys[13]++;
                 if (gSaveContext.inventory.dungeonKeys[13] < 0) {
                     gSaveContext.inventory.dungeonKeys[13] = 1;
                     PerformAutosave(globalCtx, item);
@@ -1772,6 +1773,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             }
 
             if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                gSaveContext.sohStats.dungeonKeys[6]++;
                 if (gSaveContext.inventory.dungeonKeys[6] < 0) {
                     gSaveContext.inventory.dungeonKeys[6] = 1;
                     PerformAutosave(globalCtx, item);
@@ -1783,6 +1785,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 }
             }
         }
+        gSaveContext.sohStats.dungeonKeys[gSaveContext.mapIndex]++;
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             PerformAutosave(globalCtx, item);
@@ -2132,11 +2135,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
+        gSaveContext.sohStats.heartPieces++;
         PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_HEART_CONTAINER) {
         gSaveContext.healthCapacity += 0x10;
         gSaveContext.health += 0x10;
+        gSaveContext.sohStats.heartContainers++;
         PerformAutosave(globalCtx, item);
         return ITEM_NONE;
     } else if (item == ITEM_HEART) {
@@ -2356,10 +2361,12 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+                (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
                 (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
                 (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
                 (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
         int mapIndex = gSaveContext.mapIndex;
+        int numOfKeysOnKeyring = 0;
         switch (item) {
             case RG_DEKU_TREE_MAP:
             case RG_DEKU_TREE_COMPASS:
@@ -2376,37 +2383,49 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             case RG_FOREST_TEMPLE_MAP:
             case RG_FOREST_TEMPLE_COMPASS:
             case RG_FOREST_TEMPLE_SMALL_KEY:
+            case RG_FOREST_TEMPLE_KEY_RING:
             case RG_FOREST_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_BMORI1;
+                numOfKeysOnKeyring = FOREST_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_FIRE_TEMPLE_MAP:
             case RG_FIRE_TEMPLE_COMPASS:
             case RG_FIRE_TEMPLE_SMALL_KEY:
+            case RG_FIRE_TEMPLE_KEY_RING:
             case RG_FIRE_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_HIDAN;
+                numOfKeysOnKeyring = FIRE_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_WATER_TEMPLE_MAP:
             case RG_WATER_TEMPLE_COMPASS:
             case RG_WATER_TEMPLE_SMALL_KEY:
+            case RG_WATER_TEMPLE_KEY_RING:
             case RG_WATER_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_MIZUSIN;
+                numOfKeysOnKeyring = WATER_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SPIRIT_TEMPLE_MAP:
             case RG_SPIRIT_TEMPLE_COMPASS:
             case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            case RG_SPIRIT_TEMPLE_KEY_RING:
             case RG_SPIRIT_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_JYASINZOU;
+                numOfKeysOnKeyring = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SHADOW_TEMPLE_MAP:
             case RG_SHADOW_TEMPLE_COMPASS:
             case RG_SHADOW_TEMPLE_SMALL_KEY:
+            case RG_SHADOW_TEMPLE_KEY_RING:
             case RG_SHADOW_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_HAKADAN;
+                numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_BOTTOM_OF_THE_WELL_MAP:
             case RG_BOTTOM_OF_THE_WELL_COMPASS:
             case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
                 mapIndex = SCENE_HAKADANCH;
+                numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
             case RG_ICE_CAVERN_MAP:
             case RG_ICE_CAVERN_COMPASS:
@@ -2416,17 +2435,24 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 mapIndex = SCENE_GANON;
                 break;
             case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
                 mapIndex = SCENE_MEN;
+                numOfKeysOnKeyring = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                 break;
             case RG_GERUDO_FORTRESS_SMALL_KEY:
+            case RG_GERUDO_FORTRESS_KEY_RING:
                 mapIndex = SCENE_GERUDOWAY;
+                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
             case RG_GANONS_CASTLE_SMALL_KEY:
+            case RG_GANONS_CASTLE_KEY_RING:
                 mapIndex = SCENE_GANONTIKA;
+                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
         }
 
         if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            gSaveContext.sohStats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
                 return RG_NONE;
@@ -2434,6 +2460,9 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
                 gSaveContext.inventory.dungeonKeys[mapIndex]++;
                 return RG_NONE;
             }
+        } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
+            gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            return RG_NONE;
         } else {
             int bitmask;
             if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
@@ -3402,6 +3431,28 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
             gSaveContext.unk_13F0 = 0;
             break;
     }
+}
+
+void Interface_DrawLineupTick(GlobalContext* globalCtx) {
+    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
+    func_80094520(globalCtx->state.gfxCtx);
+
+    gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+
+    s16 width = 32;
+    s16 height = 32;
+    s16 x = -8 + (SCREEN_WIDTH / 2);
+    s16 y = CVar_GetS32("gOpenMenuBar", 0) ? -4 : -6;
+
+    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
+
+    gDPPipeSync(OVERLAY_DISP++);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_DrawMagicBar(GlobalContext* globalCtx) {
@@ -5018,6 +5069,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
             // Make sure item counts have black backgrounds
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
+        }
+
+        if (CVar_GetS32("gDrawLineupTick", 1)) {
+            Interface_DrawLineupTick(globalCtx);
         }
 
         if (fullUi || gSaveContext.unk_13F0 > 0) {
