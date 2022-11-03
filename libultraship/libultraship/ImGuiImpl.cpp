@@ -381,7 +381,7 @@ namespace SohImGui {
         io->IniFilename = strcpy(new char[imguiIniPath.length() + 1], imguiIniPath.c_str());
         io->LogFilename = strcpy(new char[imguiLogPath.length() + 1], imguiLogPath.c_str());
 
-        if (UseViewports()) {
+        if (CVar_GetS32("gEnableMultiViewports", 1) && UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
 
@@ -724,7 +724,7 @@ namespace SohImGui {
     void Render() {
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
-        if (UseViewports()) {
+        if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             if (impl.backend == Backend::SDL) {
                 SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
                 SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
@@ -742,7 +742,7 @@ namespace SohImGui {
 
     void CancelFrame() {
         ImGui::EndFrame();
-        if (UseViewports()) {
+        if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             ImGui::UpdatePlatformWindows();
         }
     }
