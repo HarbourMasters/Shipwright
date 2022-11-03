@@ -36,9 +36,20 @@ RUN apt-get update && \
 	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 
 	
 RUN git clone https://github.com/Perlmint/glew-cmake.git && \
-	cmake glew-cmake && \
+	mkdir build-glew && \
+	cd build-glew && \
+	cmake ../glew-cmake && \
 	make -j$(nproc) && \
-	make install
+	make install && \
+	cd ..
+
+RUN git clone https://github.com/libsdl-org/SDL_net && \
+	mkdir build-sdl2_net && \
+	cd build-sdl2_net && \
+	cmake ../SDL_net && \
+	make -j$(nproc) && \
+	make install && \
+	cd ..
 
 ENV SDL2VER=2.0.22
 RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
