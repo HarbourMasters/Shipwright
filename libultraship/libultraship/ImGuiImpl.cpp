@@ -310,9 +310,9 @@ namespace SohImGui {
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
-            return true;
+            return CVar_GetS32("gEnableMultiViewports", 1);
         case Backend::SDL:
-            return true;
+            return CVar_GetS32("gEnableMultiViewports", 1);
         default:
             return false;
         }
@@ -381,7 +381,7 @@ namespace SohImGui {
         io->IniFilename = strcpy(new char[imguiIniPath.length() + 1], imguiIniPath.c_str());
         io->LogFilename = strcpy(new char[imguiLogPath.length() + 1], imguiLogPath.c_str());
 
-        if (CVar_GetS32("gEnableMultiViewports", 1) && UseViewports()) {
+        if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
 
