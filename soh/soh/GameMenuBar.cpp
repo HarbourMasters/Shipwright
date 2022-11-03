@@ -686,6 +686,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
+                if (SohImGui::supportsViewports()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                    UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
+                }
+
                 EXPERIMENTAL();
 
                 ImGui::Text("Texture Filter (Needs reload)");
