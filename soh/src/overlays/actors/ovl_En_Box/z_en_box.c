@@ -184,6 +184,12 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_Init(globalCtx, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
+    if (gSaveContext.n64ddFlag) {
+        this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+    } else {
+        this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
+    }
+
     EnBox_UpdateSizeAndTexture(this, globalCtx);
     // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
     // key chest, and it's up on the wall so disable gravity for it.
@@ -616,18 +622,18 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, GlobalContext* globalCtx) {
     GetItemCategory getItemCategory;
 
     if (globalCtx->sceneNum != SCENE_TAKARAYA && cvar > 0) {
-         GetItemEntry getItemEntry = GET_ITEM_NONE;
-
-        if (gSaveContext.n64ddFlag) {
-            getItemEntry = Randomizer_GetItemFromActorWithoutObtainabilityCheck(this->dyna.actor.id, globalCtx->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-        } else {
-            getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
-        }
-
-        getItemCategory = getItemEntry.getItemCategory;
+        getItemCategory = this->getItemEntry.getItemCategory;
         // If they don't have bombchu's yet consider the bombchu item major
-        if (getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
+        if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
             getItemCategory = ITEM_CATEGORY_MAJOR;
+        // If it's a bottle and they already have one, consider the item lesser
+        } else if (
+            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
+            (this->getItemEntry.modIndex == MOD_NONE && (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))
+        ) {
+            if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
+                getItemCategory = ITEM_CATEGORY_LESSER;
+            }
         }
     }
 
