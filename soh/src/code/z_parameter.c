@@ -5071,7 +5071,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
         }
 
-        if (CVar_GetS32("gDrawLineupTick", 1)) {
+        if (CVar_GetS32("gDrawLineupTick", 0)) {
             Interface_DrawLineupTick(globalCtx);
         }
 
