@@ -392,7 +392,7 @@ void Player_SetLeftHandModels(Player * this, s32 modelGroup) {
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
-    if(CVar_GetS32("gBowSlingshotFix", 0) && (this->leftHandType == 11 || this->leftHandType == 12)) {
+    if (this->leftHandType == 11 || this->leftHandType == 12) {
         this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][Player_HoldsSlingshot(this)];
     }
 }
@@ -401,7 +401,7 @@ void Player_SetRightHandModels(Player * this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if(CVar_GetS32("gBowSlingshotFix", 0) && (this->rightHandType == 11 || this->rightHandType == 12)){
+    if (this->rightHandType == 11 || this->rightHandType == 12) {
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 }
@@ -562,7 +562,7 @@ s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemActionParam == PLAYER_AP_HOOKSHOT) || (this->heldItemActionParam == PLAYER_AP_LONGSHOT);
 }
 
-s32 Player_HoldsBow(Player* this){
+s32 Player_HoldsBow(Player* this) {
     return (
         this->heldItemId == ITEM_BOW ||
         this->heldItemId == ITEM_BOW_ARROW_FIRE ||
@@ -571,7 +571,7 @@ s32 Player_HoldsBow(Player* this){
     );
 }
 
-s32 Player_HoldsSlingshot(Player* this){
+s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemId == ITEM_SLINGSHOT;
 }
 
@@ -1101,9 +1101,9 @@ s32 func_800902F0(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
             *dList = sArmOutDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             *dList = sHandOutDLs[gSaveContext.linkAge];
-            if (CVar_GetS32("gBowSlingshotFix", 0) && Player_HoldsSlingshot(this)) {
+            if (Player_HoldsSlingshot(this)) {
                 *dList = NULL;
-            } else if (CVar_GetS32("gBowSlingshotFix", 0) && Player_HoldsBow(this)) {
+            } else if (Player_HoldsBow(this)) {
                 *dList = gLinkAdultRightHandOutNearDL;
             }
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
@@ -1115,9 +1115,9 @@ s32 func_800902F0(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
 
             if (Player_HoldsHookshot(this)) {
                 *dList = gLinkAdultRightHandHoldingHookshotFarDL;
-            } else if (CVar_GetS32("gBowSlingshotFix", 0) && Player_HoldsBow(this)) {
+            } else if (Player_HoldsBow(this)) {
                 *dList = gLinkAdultRightHandHoldingBowFirstPersonDL;
-            } else if (CVar_GetS32("gBowSlingshotFix", 0) && Player_HoldsSlingshot(this)) {
+            } else if (Player_HoldsSlingshot(this)) {
                 *dList = gLinkChildRightArmStretchedSlingshotDL;
             }
         } else {
@@ -1454,10 +1454,7 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
-            BowStringData* stringData = &sBowStringData[gSaveContext.linkAge];
-            if (CVar_GetS32("gBowSlingshotFix", 0)){
-                stringData = &sBowStringData[Player_HoldsSlingshot(this)];
-            }
+            BowStringData* stringData = &sBowStringData[Player_HoldsSlingshot(this)];
 
             OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1628,7 +1625,7 @@ s32 func_80091880(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
     }
 
     dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-    if(CVar_GetS32("gBowSlingshotFix", 0) && (type == 11 || type == 12)){
+    if (type == 11 || type == 12) {
         &sPlayerDListGroups[type][Player_HoldsSlingshot(GET_PLAYER(globalCtx))];
     }
     *dList = dLists[dListOffset];

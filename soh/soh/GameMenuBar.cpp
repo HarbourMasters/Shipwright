@@ -819,6 +819,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
+                    UIWidgets::PaddedEnhancementCheckbox("Ignore Age for Ammo Drops", "gAmmoDropsIgnoreAge", true, false);
+                    UIWidgets::Tooltip("Allows Deku Seeds and Arrows to drop for both ages.");
                     ImGui::EndMenu();
                 }
 
@@ -1116,8 +1118,6 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
-                UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingshotFix", true, false);
-                UIWidgets::Tooltip("Allows child to use bow with arrows\nAllows adult to use slingshot with seeds.\nDoesn't enable equipping them from the item screen");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
 

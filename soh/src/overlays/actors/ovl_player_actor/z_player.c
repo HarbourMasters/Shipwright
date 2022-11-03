@@ -2169,11 +2169,7 @@ void func_80834298(Player* this, GlobalContext* globalCtx) {
 
 //Sets the projectile weapon & ammoType when firing, returns current ammo amount
 s32 Player_ModifyProjectileType(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
-    bool useSlingshot = CVar_GetS32("gBowSlingshotFix", 0)
-        ? (this->heldItemId == ITEM_SLINGSHOT)
-        : LINK_IS_CHILD;
-
-    if (!useSlingshot) {
+    if (this->heldItemId != ITEM_SLINGSHOT) {
         *itemPtr = ITEM_BOW;
         if (this->stateFlags1 & PLAYER_STATE1_23) {
             *typePtr = ARROW_NORMAL_HORSE;
@@ -4881,10 +4877,7 @@ s32 Camera_UpdateCameraMode(GlobalContext* globalCtx, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            bool useSlinshotCamera = CVar_GetS32("gBowSlingshotFix", 0)
-                ? this->heldItemId == ITEM_SLINGSHOT 
-                : LINK_IS_CHILD;
-            if (useSlinshotCamera) {
+            if (this->heldItemId == ITEM_SLINGSHOT) {
                 cameraMode = CAM_MODE_SLINGSHOT;
             } else {
                 cameraMode = CAM_MODE_BOWARROW;
@@ -11452,11 +11445,7 @@ s32 func_8084B3CC(GlobalContext* globalCtx, Player* this) {
         func_80835C58(globalCtx, this, func_8084FA54, 0);
 
         if (!func_8002DD6C(this) || Player_HoldsHookshot(this)) {
-            s32 itemToUse = ITEM_BOW;
-
-            if (CVar_GetS32("gBowSlingshotFix", 0) && LINK_IS_CHILD){
-                itemToUse = ITEM_SLINGSHOT;
-            }
+            s32 itemToUse = LINK_IS_ADULT ? ITEM_BOW : ITEM_SLINGSHOT;
 
             func_80835F44(globalCtx, this, itemToUse);
         }
