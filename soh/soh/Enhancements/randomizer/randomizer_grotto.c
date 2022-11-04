@@ -143,7 +143,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     // If Link hits a grotto exit, load the entrance index from the grotto exit list
     // based on the current grotto ID
     if (nextEntranceIndex == 0x7FFF) {
-        // SaveFile_SetEntranceDiscovered(0x0800 + grottoId);
+        Entrance_SetEntranceDiscovered(0x0800 + grottoId);
         nextEntranceIndex = grottoExitList[grottoId];
     }
 
@@ -205,7 +205,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 
         if (grottoContent == grottoLoadTable[index].content && gGlobalCtx->sceneNum == grottoLoadTable[index].scene) {
             // Find the override for the matching index from the grotto Load List
-            // SaveFile_SetEntranceDiscovered(0x0700 + index);
+            Entrance_SetEntranceDiscovered(0x0700 + index);
             index = grottoLoadList[index];
 
             // Run the index through the special entrances override check
