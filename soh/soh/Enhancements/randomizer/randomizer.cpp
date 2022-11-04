@@ -467,9 +467,9 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
-            "How about buying %r& {{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %r& {{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %r& {{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w" 
+            "How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
+            "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w" 
         });
     
     //Carpet Salesman
