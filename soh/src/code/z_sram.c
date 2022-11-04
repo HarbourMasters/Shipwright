@@ -200,14 +200,11 @@ void Sram_OpenSave() {
     // Setup the modified entrance table and entrance shuffle table for rando
     if (gSaveContext.n64ddFlag) {
         Entrance_Init();
+        Entrance_InitEntranceTrackingData();
         if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
             gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
             Entrance_SetSavewarpEntrance();
         }
-    } else {
-        // When going from a rando save to a vanilla save within the same game instance
-        // we need to reset the entrance table back to its vanilla state
-        Entrance_ResetEntranceTable();
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -590,4 +587,10 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
+
+    // When going from a rando save to a vanilla save within the same game instance
+    // we need to reset the entrance table back to its vanilla state
+    Entrance_ResetEntranceTable();
+    // Clear out the entrance tracker
+    Entrance_InitEntranceTrackingData();
 }

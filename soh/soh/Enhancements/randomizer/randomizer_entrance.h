@@ -30,6 +30,7 @@ typedef struct {
     int16_t blueWarp;
     int16_t override;
     int16_t overrideDestination;
+    uint8_t discovered;
 } EntranceOverride;
 
 void Entrance_Init(void);
@@ -46,5 +47,6 @@ void Entrance_HandleEponaState(void);
 void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGeurdoGuardCapture(void);
 void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
+void Entrance_EnableFW(void);
 
 #endif //_RANDO_ENTRANCE_H_
