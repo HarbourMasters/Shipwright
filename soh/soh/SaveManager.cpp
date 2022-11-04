@@ -56,8 +56,6 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
-    if(!CVar_GetS32("gRandomizer", 0)) return;
-
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
             SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
@@ -418,6 +416,11 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
+    gSaveContext.sohStats.heartPieces = 0;
+    gSaveContext.sohStats.heartContainers = 0;
+    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
+        gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
+    }
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -482,9 +485,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
-
-    gSaveContext.isMasterQuest = CVar_GetS32("gMasterQuest", 0) && !CVar_GetS32("gRandomizer", 0);
-
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
@@ -566,6 +566,11 @@ void SaveManager::InitFileDebug() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
+    gSaveContext.sohStats.heartPieces = 8;
+    gSaveContext.sohStats.heartContainers = 8;
+    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
+        gSaveContext.sohStats.dungeonKeys[dungeon] = 8;
+    }
 
     gSaveContext.horseData.scene = SCENE_SPOT00;
     gSaveContext.horseData.pos.x = -1840;
@@ -960,6 +965,13 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("defenseHearts", gSaveContext.inventory.defenseHearts);
         SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
     });
+    SaveManager::Instance->LoadStruct("sohStats", []() {
+        SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
+        SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
+        SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
+        });
+    });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
             SaveManager::Instance->LoadData("chest", gSaveContext.sceneFlags[i].chest);
@@ -1113,6 +1125,13 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveData("defenseHearts", gSaveContext.inventory.defenseHearts);
         SaveManager::Instance->SaveData("gsTokens", gSaveContext.inventory.gsTokens);
+    });
+    SaveManager::Instance->SaveStruct("sohStats", []() {
+        SaveManager::Instance->SaveData("heartPieces", gSaveContext.sohStats.heartPieces);
+        SaveManager::Instance->SaveData("heartContainers", gSaveContext.sohStats.heartContainers);
+        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.dungeonKeys[i]);
+        });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->SaveStruct("", [&i]() {
