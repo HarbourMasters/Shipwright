@@ -144,6 +144,7 @@ void SaveManager::LoadRandomizerVersion2() {
             SaveManager::Instance->LoadData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
             SaveManager::Instance->LoadData("override", gSaveContext.entranceOverrides[i].override);
             SaveManager::Instance->LoadData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+            SaveManager::Instance->LoadData("discovered", gSaveContext.entranceOverrides[i].discovered);
         });
     });
 
@@ -236,6 +237,7 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
             SaveManager::Instance->SaveData("override", gSaveContext.entranceOverrides[i].override);
             SaveManager::Instance->SaveData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+            SaveManager::Instance->SaveData("discovered", gSaveContext.entranceOverrides[i].discovered);
         });
     });
 
