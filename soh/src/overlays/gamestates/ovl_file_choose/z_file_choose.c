@@ -458,6 +458,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadItemLocations(fileLoc, silent);
             Randomizer_LoadMerchantMessages(fileLoc);
             Randomizer_LoadMasterQuestDungeons(fileLoc);
+            Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
     }
 }
