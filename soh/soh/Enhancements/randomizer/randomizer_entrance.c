@@ -46,6 +46,8 @@ static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
 
+void Entrance_SetEntranceDiscovered(int16_t entranceIndex);
+
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
         && entranceOverride->override == 0 && entranceOverride->overrideDestination == 0;
@@ -192,10 +194,12 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         return nextEntranceIndex;
     }
 
+    Entrance_SetEntranceDiscovered(nextEntranceIndex);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
+    Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex]);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
@@ -523,4 +527,41 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
             gPlayState->linkActorEntry->params = 0x0DFF; // stationary spawn
         }
     }
+}
+
+void Entrance_SetEntranceDiscovered(int16_t entranceIndex) {
+    // Skip if this is a dynamic entrance
+    if (entranceIndex > 0x0820) {
+        return;
+    }
+
+    // If crossing the water entrance for Hyrule Field <-> ZR, set the land entrance as discovered
+    if (entranceIndex == 0x01D9) { //Hyrule Field -> ZR Front water entrance
+        entranceIndex = 0x00EA;
+    } else if (entranceIndex == 0x0311) { //ZR Front -> Hyrule Field water entrance
+        entranceIndex = 0x0181;
+    }
+
+    int16_t override = -1;
+
+    // Mark entrance as discovered
+    for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+        if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+            gSaveContext.entranceOverrides[i].discovered = 1;
+            override = gSaveContext.entranceOverrides[i].overrideDestination;
+            break;
+        }
+    }
+
+    // Mark reverse direction when coupled and not a one way entrance
+    if (override != -1) {
+        for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+            if (override == gSaveContext.entranceOverrides[i].index) {
+                gSaveContext.entranceOverrides[i].discovered = 1;
+                break;
+            }
+        }
+    }
+
+    Entrance_InitEntranceTrackingData();
 }
