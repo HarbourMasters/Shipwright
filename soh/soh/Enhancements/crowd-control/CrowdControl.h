@@ -38,6 +38,8 @@ class CrowdControl {
             Resumed = 0x07,
             /// <summary>The timed effect has finished.</summary>
             Finished = 0x08,
+            /// <summary>Effect is being initiated. SoH exclusive to check against if an effect state has changed or not.</summary>
+            Initiate = 0xFE,
             /// <summary>The processor isn't ready to start or has shut down.</summary>
             NotReady = 0xFF
         };
