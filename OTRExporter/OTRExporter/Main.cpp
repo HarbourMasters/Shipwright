@@ -127,11 +127,34 @@ static void ExporterProgramEnd()
 					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
 					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 				}
-			}
-
-			auto fileData = File::ReadAllBytes(item);
-			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
-			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+			} else if (splitPath.size() >= 2) {
+                std::string extension = splitPath.at(splitPath.size() - 1);
+                splitPath.pop_back();
+                std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
+                if (extension == "seq" && std::filesystem::exists(afterPath + ".meta")) {
+                    uint8_t fontIdx;
+                    std::ifstream metaFile(afterPath + ".meta");
+                    std::string metaName;
+                    std::getline(metaFile, metaName);
+                    std::string metaFontIdx;
+                    if (std::getline(metaFile, metaFontIdx)) {
+                        std::istringstream fontIdxStream(metaFontIdx);
+                        fontIdxStream >> fontIdx;
+                    }
+                    std::string type;
+                    if (!std::getline(metaFile, type)) {
+                        type = "bgm";
+                    }
+                    afterPath += ("_" + type);
+                    auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx);
+                    printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
+                    otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+                }
+            } else {
+                auto fileData = File::ReadAllBytes(item);
+                printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
+                otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+            }
 		}
 
 		//otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());

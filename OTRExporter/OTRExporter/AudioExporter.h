@@ -13,4 +13,5 @@ public:
 	void WriteSoundFontEntry(ZAudio* audio, SoundFontEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer);
 	void WriteEnvData(std::vector<AdsrEnvelope*> envelopes, BinaryWriter* writer);
 	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer) override;
+    static std::vector<char> BuildAssetSequence(const fs::path& sourcePath, uint8_t fontIdx);
 };
