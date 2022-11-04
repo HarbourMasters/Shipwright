@@ -310,9 +310,9 @@ namespace SohImGui {
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
-            return true;
+            return CVar_GetS32("gEnableMultiViewports", 1);
         case Backend::SDL:
-            return true;
+            return CVar_GetS32("gEnableMultiViewports", 1);
         default:
             return false;
         }
@@ -724,7 +724,7 @@ namespace SohImGui {
     void Render() {
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
-        if (UseViewports()) {
+        if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             if (impl.backend == Backend::SDL) {
                 SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
                 SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
@@ -742,7 +742,7 @@ namespace SohImGui {
 
     void CancelFrame() {
         ImGui::EndFrame();
-        if (UseViewports()) {
+        if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             ImGui::UpdatePlatformWindows();
         }
     }

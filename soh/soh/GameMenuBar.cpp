@@ -658,6 +658,11 @@ namespace GameMenuBar {
                     ImGui::EndCombo();
                 }
 
+                UIWidgets::Spacer(0);
+
+                UIWidgets::EnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports");
+                UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
+
                 EXPERIMENTAL();
 
                 ImGui::Text("Texture Filter (Needs reload)");
