@@ -77,17 +77,36 @@ extern "C" void OTRMessage_Init()
     sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
     sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
 
-    auto file2 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/staff_message_data_static/staff_message_data_static"));
+	auto file2 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/staff_message_data_static/staff_message_data_static"));
+    auto customTextFile = std::static_pointer_cast<Ship::Text>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/test/test.xml"));
 
-    sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
+    int customTextMsgCnt = 0;
 
-    for (size_t i = 0; i < file2->messages.size(); i++)
-    {
-	    sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
-	    sStaffMessageEntryTablePtr[i].typePos = (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
-	    sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
-	    sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
-    }
+     if (customTextFile != nullptr)
+        customTextMsgCnt = customTextFile->messages.size();
+
+	sStaffMessageEntryTablePtr =
+         (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file2->messages.size() + customTextMsgCnt));
+
+    if (customTextFile != nullptr) {
+            for (int i = 0; i < customTextFile->messages.size(); i++) {
+                sNesMessageEntryTablePtr[i].textId = customTextFile->messages[i].id;
+                sNesMessageEntryTablePtr[i].typePos =
+                    (customTextFile->messages[i].textboxType << 4) | customTextFile->messages[i].textboxYPos;
+                sNesMessageEntryTablePtr[i].segment = customTextFile->messages[i].msg.c_str();
+                sNesMessageEntryTablePtr[i].msgSize = customTextFile->messages[i].msg.size();
+            }
+        }
+
+	for (int i = 0; i < file2->messages.size(); i++)
+	{
+            sStaffMessageEntryTablePtr[customTextMsgCnt + i].textId = file2->messages[i].id;
+            sStaffMessageEntryTablePtr[customTextMsgCnt + i].typePos =
+                (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
+            sStaffMessageEntryTablePtr[customTextMsgCnt + i].segment = file2->messages[i].msg.c_str();
+            sStaffMessageEntryTablePtr[customTextMsgCnt + i].msgSize = file2->messages[i].msg.size();
+	}
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateGetItemMessage(
@@ -144,24 +163,4 @@ extern "C" void OTRMessage_Init()
             "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r{{heartPieceCount}}%w en tout!"
         }
     );
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
-        {
-            TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
-            "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w",
-        }
-    );
-
-	auto file3 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/test/test.xml"));
-
-	for (int i = 0; i < file->messages.size(); i++) 
-	{
-            //sNesMessageEntryTablePtr[i].textId = file3->messages[0].id;
-            //sNesMessageEntryTablePtr[i].typePos =
-                //(file3->messages[0].textboxType << 4) | file3->messages[0].textboxYPos;
-            sNesMessageEntryTablePtr[i].segment = file3->messages[0].msg.c_str();
-            sNesMessageEntryTablePtr[i].msgSize = file3->messages[0].msg.size();
-    }
 }
