@@ -1984,7 +1984,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
           (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
           (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
             RandomizerInf randoInf = (RandomizerInf)(textId == TEXT_MEDIGORON ? RAND_INF_MERCHANTS_MEDIGORON : RAND_INF_MERCHANTS_CARPET_SALESMAN);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) == 2);            
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != 2);            
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
