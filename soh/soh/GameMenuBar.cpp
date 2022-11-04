@@ -1563,6 +1563,15 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0));
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(
+                    GetWindowButtonText("Randomizer Stats", CVar_GetS32("gRandoStatsEnabled", 0)).c_str(),
+                    buttonSize)) {
+                bool currentValue = CVar_GetS32("gRandoStatsEnabled", 0);
+                CVar_SetS32("gRandoStatsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Randomizer Stats", CVar_GetS32("gRandoStatsEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
             UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);

@@ -79,6 +79,15 @@ typedef struct {
 } RandoSetting;
 
 typedef struct {
+    u32 gameTimer;
+    u32 itemGetTime[ITEM_LAST_USED];
+    u16 rupeesCollected;
+    u16 rupeesSpent;
+    u16 iceTrapCount;
+    u16 songsFound;
+} RandoGameStats;
+
+typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
     /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child
     /* 0x0008 */ s32 cutsceneIndex;
@@ -189,6 +198,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
+    RandoGameStats randoStats;
 } SaveContext; // size = 0x1428
 
 typedef enum {

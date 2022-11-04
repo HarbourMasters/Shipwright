@@ -6228,6 +6228,10 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
         func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+        // Rando stats: Increment Ice Trap count
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.randoStats.iceTrapCount++;
+        }
         return 1;
     }
 
@@ -10505,6 +10509,10 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     sControlInput = input;
 
+    if (gSaveContext.n64ddFlag) {
+        gSaveContext.randoStats.gameTimer++;
+    }
+
     if (this->unk_A86 < 0) {
         this->unk_A86++;
         if (this->unk_A86 == 0) {
@@ -12598,6 +12606,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     gSaveContext.bgsFlag = true;
                     gSaveContext.swordHealth = 8;
                 }
+                if (gSaveContext.n64ddFlag) {
+                    gSaveContext.randoStats.itemGetTime[giEntry.itemId] = gSaveContext.randoStats.gameTimer;
+                    if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
+                        gSaveContext.randoStats.songsFound++;
+                    }
+                }
                 Item_Give(globalCtx, giEntry.itemId);
             } else {
                 Randomizer_Item_Give(globalCtx, giEntry);
@@ -12857,6 +12871,10 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+                    // Rando stats: Increment Ice Trap count
+                    if (gSaveContext.n64ddFlag) {
+                        gSaveContext.randoStats.iceTrapCount++;
+                    }
                 }
                 return;
             }

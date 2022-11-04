@@ -984,9 +984,82 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::End();
 }
 
+void DisplayTimeHHMMSS(uint32_t timeInFrames, const char* text) {
+
+    if (timeInFrames < 1) {
+        return;
+    }
+
+    uint32_t sec = timeInFrames / 20;
+    uint32_t hh = sec / 3600;
+    uint32_t mm = (sec - hh * 3600) / 60;
+    uint32_t ss = sec - hh * 3600 - mm * 60;
+
+   // ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.x -
+   //                      ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+
+    ImGui::Text(text);
+    ImGui::SameLine();
+
+    if (mm < 10 && ss < 10) {
+        ImGui::Text(" %dh 0%dm 0%ds", hh, mm, ss);
+    }
+    if (mm < 10 && ss >= 10) {
+        ImGui::Text(" %dh 0%dm %ds", hh, mm, ss);
+    }
+    if (mm >= 10 && ss < 10) {
+        ImGui::Text(" %dh %dm 0%ds", hh, mm, ss);
+    }
+    if (mm >= 10 && ss >- 10) {
+        ImGui::Text(" %dh %dm 0%ds", hh, mm, ss);
+    }
+}
+
+void DrawRandoStatsTracker(bool& open) {
+    if (!open) {
+        CVar_SetS32("gRandoStatsEnabled", 0);
+        return;
+    }
+
+    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    if (!ImGui::Begin("Randomizer Stats", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    DisplayTimeHHMMSS(gSaveContext.randoStats.gameTimer, "Gameplay Time:");
+
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
+    ImGui::BeginTable("randoStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+
+    ImGui::TableSetupColumn("Time Found", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableSetupColumn("Collection", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableHeadersRow();
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+
+    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SWORD_KOKIRI], "Kokiri Sword:        ");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_BOOMERANG],    "Boomerang:           ");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SONG_LULLABY], "Zelda's Lullaby:     ");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SONG_SARIA],   "Saria's Song:        ");
+
+    ImGui::TableNextColumn();
+
+    ImGui::Text("Rupees Collected:     %d", gSaveContext.randoStats.rupeesCollected);
+    ImGui::Text("Rupees Spent:         %d", gSaveContext.randoStats.rupeesSpent);
+    ImGui::Text("Songs Found:          %d", gSaveContext.randoStats.songsFound);
+    ImGui::Text("Ice Traps:            %d", gSaveContext.randoStats.iceTrapCount);
+    
+    ImGui::PopStyleVar(1);
+    ImGui::EndTable();
+
+    ImGui::End();
+}
+
 void InitItemTracker() {
     SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVar_GetS32("gItemTrackerEnabled", 0) == 1);
     SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    SohImGui::AddWindow("Randomizer", "Randomizer Stats", DrawRandoStatsTracker);
     float trackerBgR = CVar_GetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVar_GetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVar_GetFloat("gItemTrackerBgColorB", 0);
