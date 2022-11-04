@@ -144,27 +144,27 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable_GoldRupee",          "Gold Rupee",           BOX_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
     COSMETIC_OPTION("Consumable_SilverRupee",        "Silver Rupee",         BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("Hud_AButton",                   "A Button",             BOX_HUD,          ImVec4(  0, 200,  50, 255), false, true, false), // gCCABtnPrim
-    COSMETIC_OPTION("Hud_BButton",                   "B Button",             BOX_HUD,          ImVec4(255,  30,  30, 255), false, true, false), // gCCBBtnPrim
-    COSMETIC_OPTION("Hud_CButtons",                  "C Buttons",            BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, false), // gCCCBtnPrim
-    COSMETIC_OPTION("Hud_CUpButton",                 "C Up Button",          BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCUBtnPrim
-    COSMETIC_OPTION("Hud_CDownButton",               "C Down Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCDBtnPrim
-    COSMETIC_OPTION("Hud_CLeftButton",               "C Left Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCLBtnPrim
-    COSMETIC_OPTION("Hud_CRightButton",              "C Right Button",       BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true), // gCCCRBtnPrim
-    COSMETIC_OPTION("Hud_StartButton",               "Start Button",         BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, false), // gCCStartBtnPrim
-    COSMETIC_OPTION("Hud_Dpad",                      "Dpad",                 BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, false), // gCCDpadPrim
-    COSMETIC_OPTION("Hud_KeyCount",                  "Key Count",            BOX_HUD,          ImVec4(200, 230, 255, 255), false, true, true), // gCCKeysPrim
-    COSMETIC_OPTION("Hud_StoneOfAgony",              "Stone of Agony",       BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, true), // gCCVSOAPrim
-    COSMETIC_OPTION("Hud_Minimap",                   "Minimap",              BOX_HUD,          ImVec4(  0, 255, 255, 255), false, true, false), // gCCMinimapPrim / gCCMinimapDGNPrim
-    COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true), // gCCMinimapCPPrim
-    COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true), // gCCMinimapLEPrim
+    COSMETIC_OPTION("Hud_AButton",                   "A Button",             BOX_HUD,          ImVec4(  0, 200,  50, 255), false, true, false),
+    COSMETIC_OPTION("Hud_BButton",                   "B Button",             BOX_HUD,          ImVec4(255,  30,  30, 255), false, true, false),
+    COSMETIC_OPTION("Hud_CButtons",                  "C Buttons",            BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, false),
+    COSMETIC_OPTION("Hud_CUpButton",                 "C Up Button",          BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_CDownButton",               "C Down Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_CLeftButton",               "C Left Button",        BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_CRightButton",              "C Right Button",       BOX_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_StartButton",               "Start Button",         BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Hud_Dpad",                      "Dpad",                 BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Hud_KeyCount",                  "Key Count",            BOX_HUD,          ImVec4(200, 230, 255, 255), false, true, true),
+    COSMETIC_OPTION("Hud_StoneOfAgony",              "Stone of Agony",       BOX_HUD,          ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Hud_Minimap",                   "Minimap",              BOX_HUD,          ImVec4(  0, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("Hud_FileChoose",                "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // gCCFileChoosePrim
-    COSMETIC_OPTION("Hud_NintendoLogo",              "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
-    COSMETIC_OPTION("Hud_N64LogoRed",                "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud_N64LogoBlue",               "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
-    COSMETIC_OPTION("Hud_N64LogoGreen",              "N64 Green",            BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true),
-    COSMETIC_OPTION("Hud_N64LogoYellow",             "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // TODO, waiting for title screen change gCCFileChoosePrim, 
+    COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
+    COSMETIC_OPTION("Title_N64LogoRed",              "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title_N64LogoBlue",             "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
+    COSMETIC_OPTION("Title_N64LogoGreen",            "N64 Green",            BOX_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title_N64LogoYellow",           "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
 
     /* Magic/Effects */
 
@@ -795,33 +795,33 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
-    CosmeticOption n64LogoRed = cosmeticOptions.at("Hud_N64LogoRed");
+    CosmeticOption n64LogoRed = cosmeticOptions.at("Title_N64LogoRed");
     if (rainbowTick == false || CVar_GetS32(n64LogoRed.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {n64LogoRed.defaultColor.w, n64LogoRed.defaultColor.x, n64LogoRed.defaultColor.y};
         Color_RGB8 color = CVar_GetRGB(n64LogoRed.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoRed1",          n64LogoRed.changedCvar,              34, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoRed2",          n64LogoRed.changedCvar,              36, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed1",          n64LogoRed.changedCvar,              34, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed2",          n64LogoRed.changedCvar,              36, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
-    CosmeticOption n64LogoBlue = cosmeticOptions.at("Hud_N64LogoBlue");
+    CosmeticOption n64LogoBlue = cosmeticOptions.at("Title_N64LogoBlue");
     if (rainbowTick == false || CVar_GetS32(n64LogoBlue.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {n64LogoBlue.defaultColor.w, n64LogoBlue.defaultColor.x, n64LogoBlue.defaultColor.y};
         Color_RGB8 color = CVar_GetRGB(n64LogoBlue.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoBlue1",         n64LogoBlue.changedCvar,             58, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoBlue2",         n64LogoBlue.changedCvar,             60, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue1",         n64LogoBlue.changedCvar,             58, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue2",         n64LogoBlue.changedCvar,             60, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
-    CosmeticOption n64LogoGreen = cosmeticOptions.at("Hud_N64LogoGreen");
+    CosmeticOption n64LogoGreen = cosmeticOptions.at("Title_N64LogoGreen");
     if (rainbowTick == false || CVar_GetS32(n64LogoGreen.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {n64LogoGreen.defaultColor.w, n64LogoGreen.defaultColor.x, n64LogoGreen.defaultColor.y};
         Color_RGB8 color = CVar_GetRGB(n64LogoGreen.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoGreen1",        n64LogoGreen.changedCvar,           112, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoGreen2",        n64LogoGreen.changedCvar,           114, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen1",        n64LogoGreen.changedCvar,           112, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen2",        n64LogoGreen.changedCvar,           114, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
-    CosmeticOption n64LogoYellow = cosmeticOptions.at("Hud_N64LogoYellow");
+    CosmeticOption n64LogoYellow = cosmeticOptions.at("Title_N64LogoYellow");
     if (rainbowTick == false || CVar_GetS32(n64LogoYellow.rainbowCvar, 0)) {
         Color_RGB8 defaultColor = {n64LogoYellow.defaultColor.w, n64LogoYellow.defaultColor.x, n64LogoYellow.defaultColor.y};
         Color_RGB8 color = CVar_GetRGB(n64LogoYellow.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoYellow1",       n64LogoYellow.changedCvar,          162, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Hud_N64LogoYellow2",       n64LogoYellow.changedCvar,          164, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,          162, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,          164, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
 
     if (gGlobalCtx != nullptr) {
@@ -1363,6 +1363,7 @@ void DrawCosmeticsEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("HUD")) {
             DrawCosmeticBox(BOX_HUD);
+            DrawCosmeticBox(BOX_TITLE);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("HUD Placement")) {

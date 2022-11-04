@@ -172,7 +172,7 @@ u16 graveHue = 0;
 
 void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u16 index = thisx->world.pos.x + thisx->world.pos.z;
-    float frequency = 0.03f;
+    float frequency = 0.01f;
     Color_RGB8 newColor;
     newColor.r = sin(frequency * ((graveHue + index) % 360) + 0) * 127 + 128;
     newColor.g = sin(frequency * ((graveHue + index) % 360) + 2) * 127 + 128;
@@ -191,6 +191,10 @@ void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx) {
         globalCtx->envCtx.adjLight1Color[0] = newColor.r;
         globalCtx->envCtx.adjLight1Color[1] = newColor.g;
         globalCtx->envCtx.adjLight1Color[2] = newColor.b;
+        D_801614B0.r = newColor.r;
+        D_801614B0.g = newColor.g;
+        D_801614B0.b = newColor.b;
+        D_801614B0.a = 255;
         gsDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
         gsSPGrayscale(POLY_OPA_DISP++, true);
     }
