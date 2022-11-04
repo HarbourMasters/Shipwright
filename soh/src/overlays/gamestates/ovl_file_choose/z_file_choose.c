@@ -419,6 +419,49 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
 u8 generating;
 
+void FileChoose_UpdateRandomizer() {
+    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
+            generating = 1;
+            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
+            return;
+    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
+            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+            generating = 0;
+            return;
+    } else if (generating) {
+            return;
+    }
+
+    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
+            CVar_SetString("gSpoilerLog", "");
+            fileSelectSpoilerFileLoaded = false;
+    }
+
+    if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+            if (CVar_GetS32("gNewFileDropped", 0) != 0) {
+            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
+            }
+            bool silent = true;
+            if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+            silent = false;
+            }
+            CVar_SetS32("gNewSeedGenerated", 0);
+            CVar_SetS32("gNewFileDropped", 0);
+            CVar_SetString("gDroppedFile", "");
+            fileSelectSpoilerFileLoaded = false;
+            const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+            Randomizer_LoadSettings(fileLoc);
+            Randomizer_LoadHintLocations(fileLoc);
+            Randomizer_LoadRequiredTrials(fileLoc);
+            Randomizer_LoadItemLocations(fileLoc, silent);
+            Randomizer_LoadMerchantMessages(fileLoc);
+            Randomizer_LoadMasterQuestDungeons(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
+    }
+}
+
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
  * If an empty file is selected, enter the name entry config mode.
@@ -433,49 +476,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadText", 0);
 
-    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
-        generating = 1;
-        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
-        return;
-    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
-        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
-        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-        generating = 0;
-        return;
-    } else if (generating) {
-        return;
-    }
-
-    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
-        CVar_SetString("gSpoilerLog", "");
-        fileSelectSpoilerFileLoaded = false;
-    }
-
-    if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
-        if (CVar_GetS32("gNewFileDropped", 0) != 0) {
-            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
-        }
-        bool silent = true;
-        if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-            (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
-            silent = false;
-        }
-        CVar_SetS32("gNewSeedGenerated", 0);
-        CVar_SetS32("gNewFileDropped", 0);
-        CVar_SetString("gDroppedFile", "");
-        fileSelectSpoilerFileLoaded = false;
-        const char* fileLoc = CVar_GetString("gSpoilerLog", "");
-        Randomizer_LoadSettings(fileLoc);
-        Randomizer_LoadHintLocations(fileLoc);
-        Randomizer_LoadRequiredTrials(fileLoc);
-        Randomizer_LoadItemLocations(fileLoc, silent);
-        Randomizer_LoadMerchantMessages(fileLoc);
-        Randomizer_LoadMasterQuestDungeons(fileLoc);
-        Randomizer_LoadEntranceOverrides(fileLoc, silent);
-        fileSelectSpoilerFileLoaded = true;
-    }
+    FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
@@ -657,11 +658,27 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVar_GetS32("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
 
+    FileChoose_UpdateRandomizer();
+
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
+                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
+                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] += 1;
+            }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
+                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
+                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] -= 1;
+            }
         }
 
         if (this->questType[this->buttonIndex] > MAX_QUEST) {
@@ -763,7 +780,7 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN) || 
+    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) || 
         this->configMode == CM_OPTIONS_TO_MAIN) {
         this->windowRot -= VREG(16);
 
