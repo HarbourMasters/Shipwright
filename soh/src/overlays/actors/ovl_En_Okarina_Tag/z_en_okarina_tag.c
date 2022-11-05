@@ -265,11 +265,13 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
                         func_80078884(NA_SE_SY_OCARINA_ERROR);
                         break;
                     } else {
+                        Flags_SetEnv(globalCtx, 2);
                         func_80078884(NA_SE_SY_CORRECT_CHIME);
                     }
+                } else {
+                    globalCtx->csCtx.segment = D_80ABFB40;
+                    gSaveContext.cutsceneTrigger = 1;
                 }
-                globalCtx->csCtx.segment = D_80ABFB40;
-                gSaveContext.cutsceneTrigger = 1;
                 break;
             case 6:
                 // Don't start the cutscene in a rando save.
