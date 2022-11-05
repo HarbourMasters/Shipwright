@@ -671,12 +671,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(PulseAudio)
 endif()
 
-if (NOT GLEW_FOUND)
-    set(GLEW-LIB glew_s)
+if (NOT NO_GLEW)
+    if (NOT GLEW_FOUND)
+        set(GLEW-LIB glew_s)
+    else()
+        set(GLEW-LIB  GLEW::GLEW)
+    endif()
 else()
-    set(GLEW-LIB  GLEW::GLEW)
+    message(STATUS "Disabling GLEW")
+    add_compile_definitions(NO_GLEW)
 endif()
- 
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         target_link_libraries(${PROJECT_NAME}
