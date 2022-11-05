@@ -664,7 +664,20 @@ endif()
 ################################################################################
 # Link with other targets.
 
-find_package(OpenGL QUIET)
+cmake_dependent_option(USE_OPENGLES "Build targetting OpenGLESv2 instead of full OpenGL" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+
+if (USE_OPENGLES)
+    add_compile_definitions(USE_OPENGLES IMGUI_IMPL_OPENGL_ES3)
+    find_library(OPENGL-LIB GLESv2)
+    if (NOT OPENGL-LIB)
+        message(FATAL_ERROR "USE_OPENGLES=ON, but libGLESv2 could not be found")
+    endif()
+    message(STATUS "Building with GLESv2")
+
+else()
+    find_package(OpenGL QUIET)
+    set(OPENGL-LIB ${OPENGL_opengl_LIBRARY})
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(X11)
@@ -730,7 +743,7 @@ else()
         ${PULSEAUDIO_LIBRARY}
         ${GLEW-LIB}
         ${OPENGL_glx_LIBRARY}
-        ${OPENGL_opengl_LIBRARY}
+        ${OPENGL-LIB}
         ${X11_LIBRARIES}
         storm
     )
