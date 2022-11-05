@@ -11,6 +11,7 @@
 
 //Location definitions
 static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;
+static std::unordered_map<RandomizerCheck, Key> locationLookupTable;
 
 void LocationTable_Init() {
     locationTable[NONE]                                  = ItemLocation::Base       (RC_UNKNOWN_CHECK, 0xFF, 0xFF, "Invalid Location",                     NONE,                                  NONE,                      {},                                                                                                                   SpoilerCollectionCheck::None());
@@ -917,6 +918,10 @@ void LocationTable_Init() {
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]                 = ItemLocation::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE, 0x00, 0x3A, "DMC Upper Grotto Gossip Stone",               {});
 
     locationTable[GANONDORF_HINT]                                = ItemLocation::OtherHint(RC_GANONDORF_HINT, 0x00, 0x00, "Ganondorf Hint",                              {});
+
+    // TODO also update the Add/Remove/Etc functions
+    for (int i = NONE; i != KEY_ENUM_MAX; i++)
+        locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
 }
 
 std::vector<uint32_t> KF_ShopLocations = {
@@ -1482,6 +1487,10 @@ std::vector<uint32_t> overworldLocations = {
 
 ItemLocation* Location(uint32_t locKey) {
     return &(locationTable[locKey]);
+}
+
+ItemLocation* Location(RandomizerCheck rc) {
+    return &(locationTable[locationLookupTable[rc]]);
 }
 
 std::vector<uint32_t> allLocations = {};
