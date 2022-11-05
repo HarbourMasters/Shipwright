@@ -2094,9 +2094,10 @@ void func_80075B44(GlobalContext* globalCtx) {
                 gSaveContext.bgsDayCount++;
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
-                if ((Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_HatchPocketCucco(globalCtx)) &&
-                    globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
+                if (Inventory_ReplaceItem(globalCtx, ITEM_WEIRD_EGG, ITEM_CHICKEN) && globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
+                    gSaveContext.sohStats.weirdEggHasHatched = 1;
+                    Message_StartTextbox(globalCtx, 0x3066, NULL);
+                } else if (Inventory_HatchPocketCucco(globalCtx) && globalCtx->csCtx.state == 0 && !Player_InCsMode(globalCtx)) {
                     Message_StartTextbox(globalCtx, 0x3066, NULL);
                 }
                 globalCtx->envCtx.unk_E0++;

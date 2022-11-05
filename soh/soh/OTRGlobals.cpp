@@ -1809,6 +1809,13 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 extern "C" u8 GetNextChildTradeItem(GlobalContext* globalCtx, u8 forward) {
     std::vector<u8> possibleItems;
 
+    if (gSaveContext.sohStats.weirdEggHasHatched) {
+        possibleItems.push_back(ITEM_CHICKEN);
+    // If weird egg hasn't hatched yet but been obtained
+    } else if (gSaveContext.eventChkInf[1] & 0x4) {
+        possibleItems.push_back(ITEM_WEIRD_EGG);
+    }
+
     // Obtained Zelda's Letter
     if (gSaveContext.eventChkInf[4] & 1) possibleItems.push_back(ITEM_LETTER_ZELDA);
     // Obtained Keaton Mask

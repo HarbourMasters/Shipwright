@@ -29,6 +29,7 @@ typedef struct {
     /*      */ u8 heartPieces;
     /*      */ u8 heartContainers;
     /*      */ u8 dungeonKeys[19];
+    /*      */ u8 weirdEggHasHatched;
 } SohStats;
 
 typedef struct {
