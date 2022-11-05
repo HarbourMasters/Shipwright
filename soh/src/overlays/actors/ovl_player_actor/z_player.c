@@ -10511,6 +10511,8 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     if (gSaveContext.n64ddFlag) {
         gSaveContext.randoStats.gameTimer++;
+        gSaveContext.randoStats.totalTimer =
+            gSaveContext.randoStats.gameTimer / 2 + gSaveContext.randoStats.pauseTimer / 3;
     }
 
     if (this->unk_A86 < 0) {
@@ -12607,7 +12609,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     gSaveContext.swordHealth = 8;
                 }
                 if (gSaveContext.n64ddFlag) {
-                    gSaveContext.randoStats.itemGetTime[giEntry.itemId] = gSaveContext.randoStats.gameTimer;
+                    gSaveContext.randoStats.itemGetTime[giEntry.itemId] = gSaveContext.randoStats.totalTimer;
                     if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
                         gSaveContext.randoStats.songsFound++;
                     }

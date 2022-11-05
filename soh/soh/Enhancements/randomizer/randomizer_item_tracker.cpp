@@ -1034,16 +1034,17 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void DisplayTimeHHMMSS(uint32_t timeInFrames, const char* text) {
+void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text) {
 
-    if (timeInFrames < 1) {
+    if (timeInTenthsOfSeconds < 1) {
         return;
     }
 
-    uint32_t sec = timeInFrames / 20;
+    uint32_t sec = timeInTenthsOfSeconds / 10;
     uint32_t hh = sec / 3600;
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
+    uint32_t ds = timeInTenthsOfSeconds % 10;
 
    // ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.x -
    //                      ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
@@ -1052,16 +1053,16 @@ void DisplayTimeHHMMSS(uint32_t timeInFrames, const char* text) {
     ImGui::SameLine();
 
     if (mm < 10 && ss < 10) {
-        ImGui::Text(" %dh 0%dm 0%ds", hh, mm, ss);
+        ImGui::Text(" %d:0%d:0%d:%d", hh, mm, ss, ds);
     }
     if (mm < 10 && ss >= 10) {
-        ImGui::Text(" %dh 0%dm %ds", hh, mm, ss);
+        ImGui::Text(" %d:0%d:%d:%d", hh, mm, ss, ds);
     }
     if (mm >= 10 && ss < 10) {
-        ImGui::Text(" %dh %dm 0%ds", hh, mm, ss);
+        ImGui::Text(" %d:%d:0%d:%d", hh, mm, ss, ds);
     }
-    if (mm >= 10 && ss >- 10) {
-        ImGui::Text(" %dh %dm 0%ds", hh, mm, ss);
+    if (mm >= 10 && ss >= 10) {
+        ImGui::Text(" %d:%d:%d:%d", hh, mm, ss, ds);
     }
 }
 
@@ -1077,7 +1078,9 @@ void DrawRandoStatsTracker(bool& open) {
         return;
     }
 
-    DisplayTimeHHMMSS(gSaveContext.randoStats.gameTimer, "Gameplay Time:");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.totalTimer,   "Total game Time: ");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.gameTimer/2,  "Gameplay Time:   ");
+    DisplayTimeHHMMSS(gSaveContext.randoStats.pauseTimer/3, "Pause Menu Time: ");
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("randoStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
@@ -1095,10 +1098,12 @@ void DrawRandoStatsTracker(bool& open) {
 
     ImGui::TableNextColumn();
 
-    ImGui::Text("Rupees Collected:     %d", gSaveContext.randoStats.rupeesCollected);
-    ImGui::Text("Rupees Spent:         %d", gSaveContext.randoStats.rupeesSpent);
-    ImGui::Text("Songs Found:          %d", gSaveContext.randoStats.songsFound);
-    ImGui::Text("Ice Traps:            %d", gSaveContext.randoStats.iceTrapCount);
+    ImGui::Text("Items Collected:         %d", gSaveContext.randoStats.collectionCount);
+    ImGui::NewLine();
+    ImGui::Text("Rupees Collected:        %d", gSaveContext.randoStats.rupeesCollected);
+    ImGui::Text("Rupees Spent:            %d", gSaveContext.randoStats.rupeesSpent);
+    ImGui::Text("Songs Found:             %d", gSaveContext.randoStats.songsFound);
+    ImGui::Text("Ice Traps:               %d", gSaveContext.randoStats.iceTrapCount);
     
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

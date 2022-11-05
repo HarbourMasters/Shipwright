@@ -103,6 +103,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
                 if (gSaveContext.n64ddFlag) {
                     Randomizer_UpdateSkullReward(this, globalCtx);
+                    gSaveContext.randoStats.collectionCount++;
                 } else {
                     Item_Give(globalCtx, giveItemId);
                 }
@@ -139,6 +140,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
             Randomizer_UpdateSkullReward(this, globalCtx);
+            gSaveContext.randoStats.collectionCount++;
         } else {
             Item_Give(globalCtx, giveItemId);
         }

@@ -56,6 +56,12 @@ void KaleidoScopeCall_Update(GlobalContext* globalCtx) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
 
+    if (gSaveContext.n64ddFlag) {
+        gSaveContext.randoStats.pauseTimer++;
+        gSaveContext.randoStats.totalTimer =
+            gSaveContext.randoStats.gameTimer / 2 + gSaveContext.randoStats.pauseTimer / 3;
+    }
+
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {
         if (pauseCtx->state == 1) {
             if (ShrinkWindow_GetCurrentVal() == 0) {

@@ -86,7 +86,10 @@ typedef struct {
 
 typedef struct {
     u32 gameTimer;
+    u32 pauseTimer;
+    u32 totalTimer;
     u32 itemGetTime[ITEM_LAST_USED];
+    u16 collectionCount;
     u16 rupeesCollected;
     u16 rupeesSpent;
     u16 iceTrapCount;
