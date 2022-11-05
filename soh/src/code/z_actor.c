@@ -3144,7 +3144,7 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
-    // Hack to remove bats and skulltulas that spawn in graveyard because of removing object dependency.
+    // Hack to remove bats and skulltulas that spawn in graveyard because of bypassing object dependency.
     if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
         return NULL;
     }
@@ -3194,10 +3194,14 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             } else if (actorId == ACTOR_EN_PEEHAT && params == 1) {
                 posY = posY + 50;
             }
-
         }
     }
 
+    return Actor_Spawn_NoRandomize(actorCtx, globalCtx, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+}
+
+Actor* Actor_Spawn_NoRandomize(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY,
+                               f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;
@@ -3267,17 +3271,19 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             osSyncPrintf(VT_FGCOL(GREEN));
             osSyncPrintf("OVL(a):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", overlayEntry->vramStart,
                          overlayEntry->vramEnd, overlayEntry->loadedRamAddr,
-                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart,
+                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd -
+                             (uintptr_t)overlayEntry->vramStart,
                          (uintptr_t)overlayEntry->vramStart - (uintptr_t)overlayEntry->loadedRamAddr, name);
             osSyncPrintf(VT_RST);
 
             overlayEntry->numLoaded = 0;
         }
 
-        actorInit = (void*)(uintptr_t)((overlayEntry->initInfo != NULL)
-                                     ? (void*)((uintptr_t)overlayEntry->initInfo -
-                                               ((intptr_t)overlayEntry->vramStart - (intptr_t)overlayEntry->loadedRamAddr))
-                                     : NULL);
+        actorInit =
+            (void*)(uintptr_t)((overlayEntry->initInfo != NULL) ? (void*)((uintptr_t)overlayEntry->initInfo -
+                                                                          ((intptr_t)overlayEntry->vramStart -
+                                                                           (intptr_t)overlayEntry->loadedRamAddr))
+                                                                : NULL);
     }
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
