@@ -59,17 +59,17 @@ class CrowdControl {
             ResponseType type = ResponseType::EffectRequest;
         };
 
-        typedef struct CCPacket {
-            uint32_t packetId;
-            std::string effectType;
-            uint32_t effectValue;
-            std::string effectCategory;
+        typedef struct Effect {
+            uint32_t id;
+            std::string type;
+            uint32_t value;
+            std::string category;
             long timeRemaining;
 
             // Metadata used while executing (only for timed effects)
             bool isPaused;
             EffectResult lastExecutionResult;
-        } CCPacket;
+        } Effect;
         
         std::thread ccThreadReceive;
         std::thread ccThreadProcess;
@@ -82,7 +82,7 @@ class CrowdControl {
 
         char received[512];
 
-        std::vector<CCPacket*> activeEffects;
+        std::vector<Effect*> activeEffects;
         std::mutex activeEffectsMutex;
 
         void ListenToServer();
@@ -90,14 +90,10 @@ class CrowdControl {
 
         void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining,
                                        CrowdControl::EffectResult status);
-        CCPacket* ParseMessage(char payload[512]);
-
-        void InitCrowdControl();
-        void RunCrowdControl(CCPacket* packet);
-        void ReceiveFromCrowdControl();
+        Effect* ParseMessage(char payload[512]);
         EffectResult ExecuteEffect(std::string effectId, uint32_t value, bool dryRun);
-        bool SpawnEnemy(std::string effectId);
         void RemoveEffect(std::string effectId);
+        bool SpawnEnemy(std::string effectId);
 
     public:
         static CrowdControl* Instance;

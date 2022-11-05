@@ -136,21 +136,21 @@ void CrowdControl::ListenToServer() {
             }
 
             try {
-                CCPacket* incomingEffect = ParseMessage(received);
+                Effect* incomingEffect = ParseMessage(received);
 
                 // If effect is a one off run, let's execute
                 if (!incomingEffect->timeRemaining) {
                     EffectResult result =
-                        ExecuteEffect(incomingEffect->effectType.c_str(), incomingEffect->effectValue, false);
-                    EmitMessage(tcpsock, incomingEffect->packetId, incomingEffect->timeRemaining, result);
+                        ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, false);
+                    EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
                 } else {
                     // check if a conflicting event is already active
                     bool isConflictingEffectActive = false;
-                    for (CCPacket* pack : activeEffects) {
-                        if (pack != incomingEffect && pack->effectCategory == incomingEffect->effectCategory &&
-                            pack->packetId < incomingEffect->packetId) {
+                    for (Effect* pack : activeEffects) {
+                        if (pack != incomingEffect && pack->category == incomingEffect->category &&
+                            pack->id < incomingEffect->id) {
                             isConflictingEffectActive = true;
-                            EmitMessage(tcpsock, incomingEffect->packetId, incomingEffect->timeRemaining,
+                            EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining,
                                         EffectResult::Retry);
 
                             break;
@@ -159,9 +159,9 @@ void CrowdControl::ListenToServer() {
 
                     // check if effect can be executed
                     EffectResult result =
-                        ExecuteEffect(incomingEffect->effectType.c_str(), incomingEffect->effectValue, true);
+                        ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, true);
                     if (result == EffectResult::Retry || result == EffectResult::Failure) {
-                        EmitMessage(tcpsock, incomingEffect->packetId, incomingEffect->timeRemaining, result);
+                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
                         continue;
                     }
 
@@ -190,26 +190,26 @@ void CrowdControl::ProcessActiveEffects() {
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
-            CCPacket *effect = *it;
-            EffectResult result = ExecuteEffect(effect->effectType.c_str(), effect->effectValue, false);
+            Effect *effect = *it;
+            EffectResult result = ExecuteEffect(effect->type.c_str(), effect->value, false);
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
-                    RemoveEffect(effect->effectType.c_str());
+                    RemoveEffect(effect->type.c_str());
 
                     delete effect;
                 } else {
                     // If we have a success after previously being paused, fire Resume event
                     if (effect->isPaused) {
                         effect->isPaused = false;
-                        EmitMessage(tcpsock, effect->packetId, effect->timeRemaining, EffectResult::Resumed);
+                        EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
                     } else {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
                             effect->lastExecutionResult = result;
-                            EmitMessage(tcpsock, effect->packetId, effect->timeRemaining, EffectResult::Success);
+                            EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Success);
                         }
                     }
 
@@ -218,7 +218,7 @@ void CrowdControl::ProcessActiveEffects() {
             } else { // Timed effects only do Success or Retry
                 if (!effect->isPaused && effect->timeRemaining > 0) {
                     effect->isPaused = true;
-                    EmitMessage(tcpsock, effect->packetId, effect->timeRemaining, EffectResult::Paused);
+                    EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Paused);
                 }
 
                 it++;
@@ -246,76 +246,76 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
     SDLNet_TCP_Send(socket, jsonPayload.c_str(), jsonPayload.size() + 1);
 }
 
-CrowdControl::CCPacket* CrowdControl::ParseMessage(char payload[512]) {
+CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     nlohmann::json dataReceived = nlohmann::json::parse(payload);
-    CCPacket* packet = new CCPacket();
+    Effect* effect = new Effect();
 
-    packet->lastExecutionResult = EffectResult::Initiate;
-    packet->packetId = dataReceived["id"];
+    effect->lastExecutionResult = EffectResult::Initiate;
+    effect->id = dataReceived["id"];
     auto parameters = dataReceived["parameters"];
     if (parameters.size() > 0) {
-        packet->effectValue = dataReceived["parameters"][0];
+        effect->value = dataReceived["parameters"][0];
     }
-    packet->effectType = dataReceived["code"].get<std::string>();
+    effect->type = dataReceived["code"].get<std::string>();
 
 
-    if (packet->effectType == EFFECT_HIGH_GRAVITY || packet->effectType == EFFECT_LOW_GRAVITY) {
-        packet->effectCategory = "gravity";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_DAMAGE_MULTIPLIER || packet->effectType == EFFECT_DEFENSE_MULTIPLIER) {
-        packet->effectCategory = "defense";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_GIANT_LINK || packet->effectType == EFFECT_MINISH_LINK ||
-               packet->effectType == EFFECT_INVISIBLE_LINK || packet->effectType == EFFECT_PAPER_LINK) {
-        packet->effectCategory = "link_size";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_FREEZE || packet->effectType == EFFECT_DAMAGE || packet->effectType == EFFECT_HEAL ||
-               packet->effectType == EFFECT_KNOCKBACK || packet->effectType == EFFECT_ELECTROCUTE ||
-               packet->effectType == EFFECT_BURN || packet->effectType == EFFECT_KILL) {
-        packet->effectCategory = "link_damage";
-    } else if (packet->effectType == EFFECT_HOVER_BOOTS || packet->effectType == EFFECT_IRON_BOOTS) {
-        packet->effectCategory = "boots";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_ADD_HEART_CONTAINER || packet->effectType == EFFECT_REMOVE_HEART_CONTAINER) {
-        packet->effectCategory = "heart_container";
-    } else if (packet->effectType == EFFECT_NO_UI) {
-        packet->effectCategory = "ui";
-        packet->timeRemaining = 60000;
-    } else if (packet->effectType == EFFECT_FILL_MAGIC || packet->effectType == EFFECT_EMPTY_MAGIC) {
-        packet->effectCategory = "magic";
-    } else if (packet->effectType == EFFECT_OHKO) {
-        packet->effectCategory = "ohko";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_PACIFIST) {
-        packet->effectCategory = "pacifist";
-        packet->timeRemaining = 15000;
-    } else if (packet->effectType == EFFECT_RAINSTORM) {
-        packet->effectCategory = "weather";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_REVERSE_CONTROLS) {
-        packet->effectCategory = "controls";
-        packet->timeRemaining = 60000;
-    } else if (packet->effectType == EFFECT_ADD_RUPEES || packet->effectType == EFFECT_REMOVE_RUPEES) {
-        packet->effectCategory = "rupees";
-    } else if (packet->effectType == EFFECT_INCREASE_SPEED || packet->effectType == EFFECT_DECREASE_SPEED) {
-        packet->effectCategory = "speed";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_NO_Z_TARGETING) {
-        packet->effectCategory = "no_z";
-        packet->timeRemaining = 30000;
-    } else if (packet->effectType == EFFECT_SPAWN_WALLMASTER || packet->effectType == EFFECT_SPAWN_ARWING ||
-               packet->effectType == EFFECT_SPAWN_DARK_LINK || packet->effectType == EFFECT_SPAWN_STALFOS ||
-               packet->effectType == EFFECT_SPAWN_WOLFOS || packet->effectType == EFFECT_SPAWN_FREEZARD ||
-               packet->effectType == EFFECT_SPAWN_KEESE || packet->effectType == EFFECT_SPAWN_ICE_KEESE ||
-               packet->effectType == EFFECT_SPAWN_FIRE_KEESE || packet->effectType == EFFECT_SPAWN_TEKTITE ||
-               packet->effectType == EFFECT_SPAWN_LIKE_LIKE || packet->effectType == EFFECT_SPAWN_CUCCO_STORM) {
-        packet->effectCategory = "spawn";
+    if (effect->type == EFFECT_HIGH_GRAVITY || effect->type == EFFECT_LOW_GRAVITY) {
+        effect->category = "gravity";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_DAMAGE_MULTIPLIER || effect->type == EFFECT_DEFENSE_MULTIPLIER) {
+        effect->category = "defense";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_GIANT_LINK || effect->type == EFFECT_MINISH_LINK ||
+               effect->type == EFFECT_INVISIBLE_LINK || effect->type == EFFECT_PAPER_LINK) {
+        effect->category = "link_size";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_FREEZE || effect->type == EFFECT_DAMAGE || effect->type == EFFECT_HEAL ||
+               effect->type == EFFECT_KNOCKBACK || effect->type == EFFECT_ELECTROCUTE ||
+               effect->type == EFFECT_BURN || effect->type == EFFECT_KILL) {
+        effect->category = "link_damage";
+    } else if (effect->type == EFFECT_HOVER_BOOTS || effect->type == EFFECT_IRON_BOOTS) {
+        effect->category = "boots";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_ADD_HEART_CONTAINER || effect->type == EFFECT_REMOVE_HEART_CONTAINER) {
+        effect->category = "heart_container";
+    } else if (effect->type == EFFECT_NO_UI) {
+        effect->category = "ui";
+        effect->timeRemaining = 60000;
+    } else if (effect->type == EFFECT_FILL_MAGIC || effect->type == EFFECT_EMPTY_MAGIC) {
+        effect->category = "magic";
+    } else if (effect->type == EFFECT_OHKO) {
+        effect->category = "ohko";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_PACIFIST) {
+        effect->category = "pacifist";
+        effect->timeRemaining = 15000;
+    } else if (effect->type == EFFECT_RAINSTORM) {
+        effect->category = "weather";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_REVERSE_CONTROLS) {
+        effect->category = "controls";
+        effect->timeRemaining = 60000;
+    } else if (effect->type == EFFECT_ADD_RUPEES || effect->type == EFFECT_REMOVE_RUPEES) {
+        effect->category = "rupees";
+    } else if (effect->type == EFFECT_INCREASE_SPEED || effect->type == EFFECT_DECREASE_SPEED) {
+        effect->category = "speed";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_NO_Z_TARGETING) {
+        effect->category = "no_z";
+        effect->timeRemaining = 30000;
+    } else if (effect->type == EFFECT_SPAWN_WALLMASTER || effect->type == EFFECT_SPAWN_ARWING ||
+               effect->type == EFFECT_SPAWN_DARK_LINK || effect->type == EFFECT_SPAWN_STALFOS ||
+               effect->type == EFFECT_SPAWN_WOLFOS || effect->type == EFFECT_SPAWN_FREEZARD ||
+               effect->type == EFFECT_SPAWN_KEESE || effect->type == EFFECT_SPAWN_ICE_KEESE ||
+               effect->type == EFFECT_SPAWN_FIRE_KEESE || effect->type == EFFECT_SPAWN_TEKTITE ||
+               effect->type == EFFECT_SPAWN_LIKE_LIKE || effect->type == EFFECT_SPAWN_CUCCO_STORM) {
+        effect->category = "spawn";
     } else {
-        packet->effectCategory = "none";
-        packet->timeRemaining = 0;
+        effect->category = "none";
+        effect->timeRemaining = 0;
     }
 
-    return packet;
+    return effect;
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uint32_t value, bool dryRun) {
