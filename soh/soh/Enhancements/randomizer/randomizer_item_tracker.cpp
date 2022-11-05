@@ -556,7 +556,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data)) {
+    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_MEN || item.data == SCENE_GANONTIKA)) {
         dungeonColor = IM_COL_PURPLE;
     }
 
