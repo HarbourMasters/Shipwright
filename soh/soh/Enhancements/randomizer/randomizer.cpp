@@ -205,6 +205,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
+    { "Start with Bunny Hood", RSK_STARTING_BUNNY_HOOD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
     { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
@@ -642,6 +643,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
+                    case RSK_STARTING_BUNNY_HOOD:
                     case RSK_COMPLETE_MASK_QUEST:
                     case RSK_SKIP_SCARECROWS_SONG:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
@@ -2407,6 +2409,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
                                         CVar_GetS32("gRandomizeStartingOcarina", 0);
+    cvarSettings[RSK_STARTING_BUNNY_HOOD] = CVar_GetS32("gRandomizeStartingBunnyHood", 0);
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
@@ -3733,6 +3736,8 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
+                UIWidgets::PaddedSeparator();
+                UIWidgets::EnhancementCheckbox(Settings::StartingBunnyHood.GetName().c_str(), "gRandomizeStartingBunnyHood");
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
