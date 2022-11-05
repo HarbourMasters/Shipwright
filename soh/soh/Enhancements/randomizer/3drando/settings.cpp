@@ -532,6 +532,7 @@ namespace Settings {
   Option StartingHearts           = Option::U8  ("Hearts",               {NumOpts(1, 20)},                                                                {""}, OptionCategory::Setting, 2); // Default 3 hearts
   Option StartingMagicMeter       = Option::U8  ("Magic Meter",          {"Off",             "Single Magic",     "Double Magic"},                         {""});
   Option StartingDoubleDefense    = Option::U8  ("Double Defense",       {"Off",             "On"},                                                       {""});
+  Option StartingBunnyHood        = Option::U8  ("Start with Bunny Hood",{"Off",             "On"},                                                       {""});
   std::vector<Option *> startingEquipmentOptions = {
     &StartingKokiriSword,
     &StartingBiggoronSword,
@@ -547,6 +548,7 @@ namespace Settings {
     &StartingHearts,
     &StartingMagicMeter,
     &StartingDoubleDefense,
+    &StartingBunnyHood,
   };
 
   Option StartingKokiriEmerald    = Option::U8  ("Kokiri's Emerald",     {"Off",             "On"},                                                       {""});
@@ -2594,6 +2596,7 @@ namespace Settings {
     // the checkboxes work because 0 is "Off" and 1 is "On"
     StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
+    StartingBunnyHood.SetSelectedIndex(cvarSettings[RSK_STARTING_BUNNY_HOOD]);
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
