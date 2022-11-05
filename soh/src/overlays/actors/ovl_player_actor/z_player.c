@@ -6033,7 +6033,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             }
         }
 
-        if (CVar_GetS32("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVar_GetS32("gMMBunnyHood", 0) == 1 && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         } 
         
