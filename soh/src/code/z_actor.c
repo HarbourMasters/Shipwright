@@ -3191,12 +3191,31 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
             rotX = 0;
 
-            // When spawning big jellyfish, spawn it up high.
-            if (actorId == ACTOR_EN_VALI) {
-                posY = posY + 300;
-            // Spawn Peahat Larva slightly higher because they kill themselves instantly when they touch the ground while spawning
-            } else if (actorId == ACTOR_EN_PEEHAT && params == 1) {
-                posY = posY + 50;
+            switch (actorId) {
+                // When spawning big jellyfish, spawn it up high.
+                case ACTOR_EN_VALI: 
+                    posY = posY + 300;
+                    break;
+                // Spawn peahat off the ground, otherwise it kills itself by colliding with the ground.
+                case ACTOR_EN_PEEHAT:
+                    if (params == 1) {
+                        posY = posY + 100;
+                    }
+                    break;
+                // Spawn skulltulas off the ground.
+                case ACTOR_EN_ST:
+                    posY = posY + 200;
+                    break;
+                // Spawn flying enemies off the ground.
+                case ACTOR_EN_FIREFLY:
+                case ACTOR_EN_BILI:
+                case ACTOR_EN_BB:
+                case ACTOR_EN_CLEAR_TAG:
+                case ACTOR_EN_CROW:
+                    posY = posY + 75;
+                    break;
+                default:
+                    break;
             }
         }
     }
