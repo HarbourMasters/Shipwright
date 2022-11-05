@@ -97,46 +97,50 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
         int bridgeDungeonCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
         int bridgeTokenCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
 
-        if (CheckPlayerPosition(player, globalCtx)) {
-            switch (bridge) {
-                case 1:
-                    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 2:
-                    if (CheckStoneCount() >= bridgeStoneCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 3:
-                    if (CheckMedallionCount() >= bridgeMedallionCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 4:
-                    if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 5:
-                    if (CheckDungeonCount() >= bridgeDungeonCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 6:
-                    if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-            }
+        switch (bridge) {
+            case 1:
+                if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                    (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 2:
+                if (CheckStoneCount() >= bridgeStoneCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 3:
+                if (CheckMedallionCount() >= bridgeMedallionCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 4:
+                if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 5:
+                if (CheckDungeonCount() >= bridgeDungeonCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 6:
+                if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
         }
     }
 }
 
 void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, GlobalContext* globalCtx) {
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[2] != NULL) &&
+    if (gSaveContext.n64ddFlag || (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[2] != NULL) &&
         (globalCtx->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
