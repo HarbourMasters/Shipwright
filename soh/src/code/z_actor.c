@@ -3144,7 +3144,7 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
-    // Hack to remove bats and skulltulas that spawn in graveyard because of bypassing object dependency.
+    // Hack to remove bats and skulltulas that spawn in graveyard because of bypassing object dependency with enemy randomizer on.
     if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
         return NULL;
     }

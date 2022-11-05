@@ -258,6 +258,13 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
         Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sLaserCylinderInit);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_SWORD_REFLECT_MG);
     } else { // Initialize the Arwing.
+
+        // Change Arwing to regular enemy instead of boss with enemy randomizer and crowd control.
+        // This way Arwings will be considered for "clear enemy" rooms properly.
+        if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
+            Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, thisx, ACTORCAT_ENEMY);
+        }
+
         this->actor.flags |= ACTOR_FLAG_0;
         this->actor.targetMode = 5;
         Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sArwingCylinderInit);
