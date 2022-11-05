@@ -163,8 +163,8 @@ static int GetMaxGSCount() {
   else if (Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
     maxUseful = 10;
   }
-  //Return max of the two possible reasons tokens could be important
-  return std::max(maxUseful, maxBridge);
+  //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
+  return std::max(maxUseful, maxBridge) - StartingSkulltulaToken.Value<uint8_t>();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -772,7 +772,7 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
 
   //Add specific items that need be randomized within this dungeon
   if (Keysanity.Is(KEYSANITY_OWN_DUNGEON) && dungeon->GetSmallKey() != NONE) {
-    std::vector<uint32_t> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return i == dungeon->GetSmallKey();});
+    std::vector<uint32_t> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
     AddElementsToPool(dungeonItems, dungeonSmallKeys);
   }
 
@@ -813,10 +813,10 @@ static void RandomizeDungeonItems() {
 
   for (auto dungeon : dungeonList) {
     if (Keysanity.Is(KEYSANITY_ANY_DUNGEON)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetSmallKey();});
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
     } else if (Keysanity.Is(KEYSANITY_OVERWORLD)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetSmallKey();});
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(overworldItems, dungeonKeys);
     }
 
