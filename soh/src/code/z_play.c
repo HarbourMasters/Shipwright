@@ -536,8 +536,10 @@ void Play_Init(GameState* thisx) {
             gSaveContext.totalDays++;
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
-            if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                Inventory_HatchPocketCucco(play)) {
+            if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN)) {
+                gSaveContext.sohStats.weirdEggHasHatched = 1;
+                Message_StartTextbox(play, 0x3066, NULL);
+            } else if (Inventory_HatchPocketCucco(play)) {
                 Message_StartTextbox(play, 0x3066, NULL);
             }
             gSaveContext.nextDayTime = 0xFFFE;
