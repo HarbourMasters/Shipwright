@@ -2448,7 +2448,7 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
             case RG_GANONS_CASTLE_SMALL_KEY:
             case RG_GANONS_CASTLE_KEY_RING:
                 mapIndex = SCENE_GANONTIKA;
-                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
                 break;
         }
 

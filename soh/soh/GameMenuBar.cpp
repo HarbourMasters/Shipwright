@@ -825,6 +825,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
+                    UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
+                    UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     ImGui::EndMenu();
                 }
 

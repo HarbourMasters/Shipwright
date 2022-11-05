@@ -103,6 +103,9 @@ void EnBom_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->bombCollider, thisx, &sCylinderInit);
     Collider_SetJntSph(globalCtx, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
     this->explosionColliderItems[0].info.toucher.damage += (thisx->shape.rot.z & 0xFF00) >> 8;
+    if (CVar_GetS32("gNutsExplodeBombs", 0)) {
+        this->bombCollider.info.bumper.dmgFlags |= 1;
+    }
 
     this->bombCollider.info.bumper.dmgFlags |= 16; //makes boomerang interact with it
 
