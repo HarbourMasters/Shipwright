@@ -2050,6 +2050,10 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
+extern "C" void Entrance_ClearEntranceTrackingData(void) {
+    ClearEntranceTrackingData();
+}
+
 extern "C" void Entrance_InitEntranceTrackingData(void) {
     InitEntranceTrackingData();
 }
