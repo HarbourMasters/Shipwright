@@ -592,5 +592,5 @@ void Sram_InitSram(GameState* gameState) {
     // we need to reset the entrance table back to its vanilla state
     Entrance_ResetEntranceTable();
     // Clear out the entrance tracker
-    Entrance_InitEntranceTrackingData();
+    Entrance_ClearEntranceTrackingData();
 }
