@@ -2109,7 +2109,7 @@ void func_80B584B4(EnZl3* this, GlobalContext* globalCtx) {
     s32 pad;
     Player* player = GET_PLAYER(globalCtx);
     s8 invincibilityTimer = player->invincibilityTimer;
-    Actor* nearbyEnTest = Actor_FindNearby(globalCtx, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f);
+    Actor* nearbyEnTest = Actor_FindNearby(globalCtx, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
 
     if (D_80B5A4BC == 0) {
         if ((nearbyEnTest == NULL) && (!Gameplay_InCsMode(globalCtx))) {
