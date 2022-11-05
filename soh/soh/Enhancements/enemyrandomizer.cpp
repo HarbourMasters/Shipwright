@@ -43,6 +43,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_RD, 1 },         // Redead (standing)
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
     { ACTOR_EN_FD, 0 },         // Flare Dancer
+    { ACTOR_EN_SB, 0 },         // Shell Blade
     { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
     { ACTOR_EN_RR, 0 },         // Like-Like
     { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
@@ -96,6 +97,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_RD,        // Redead, Gibdo
     ACTOR_EN_SW,        // Skullwalltula
     ACTOR_EN_FD,        // Flare Dancer
+    ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
     ACTOR_EN_NY,        // Spike (rolling enemy)

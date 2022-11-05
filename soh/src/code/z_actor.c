@@ -3149,9 +3149,17 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
+    if (actorId == ACTOR_EN_SB || actorId == ACTOR_EN_NY) {
+        params = params;
+    }
+
     uint8_t excludedEnemiesToRandomize = 
         // Always leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
-        actorId == ACTOR_EN_AM && globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141;
+        (actorId == ACTOR_EN_AM && globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141) ||
+        // Never randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
+        // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
+        (actorId == ACTOR_EN_SB && globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435)) ||
+        (actorId == ACTOR_EN_NY && globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
     
     uint8_t tryRandomizeEnemy = 
         CVar_GetS32("gRandomizedEnemies", 0) && 
