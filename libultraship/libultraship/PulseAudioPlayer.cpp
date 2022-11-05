@@ -1,4 +1,4 @@
-#if defined(__linux__) || defined(__BSD__)
+#if !defined(NO_PULSE) && defined(__linux__) || defined(__BSD__)
 
 #include "PulseAudioPlayer.h"
 #include <spdlog/spdlog.h>

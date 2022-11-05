@@ -113,7 +113,7 @@ namespace SohImGui {
 #ifdef _WIN32
         { "wasapi", "Windows Audio Session API" },
 #endif
-#if defined(__linux)
+#if defined(__linux) && !defined(NO_PULSE)
         { "pulse", "PulseAudio" },
 #endif
         { "sdl", "SDL Audio" }

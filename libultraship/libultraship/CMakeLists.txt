@@ -664,11 +664,21 @@ endif()
 ################################################################################
 # Link with other targets.
 
+cmake_dependent_option(NO_PULSE "Build without PulseAudio, using only SDLAudio" OFF "CMAKE_SYSTEM_NAME STREQUAL Linux" OFF)
+
 find_package(OpenGL QUIET)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(X11)
     find_package(PulseAudio)
+
+    if (NOT NO_PULSE)
+        find_package(PulseAudio)
+        set(PULSE-LIB ${PULSEAUDIO_LIBRARY})
+    else()
+        add_compile_definitions(NO_PULSE)
+        message(STATUS "Disabling Pulse")
+    endif()
 endif()
 
 if (NOT GLEW_FOUND)
@@ -727,7 +737,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 else()
     target_link_libraries(${PROJECT_NAME}
         SDL2::SDL2
-        ${PULSEAUDIO_LIBRARY}
+        ${PULSE-LIB}
         ${GLEW-LIB}
         ${OPENGL_glx_LIBRARY}
         ${OPENGL_opengl_LIBRARY}

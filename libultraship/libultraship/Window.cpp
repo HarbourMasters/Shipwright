@@ -439,7 +439,7 @@ namespace Ship {
     void Window::InitializeAudioPlayer() {
 #ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
-#elif defined(__linux)
+#elif defined(__linux) && !defined(NO_PULSE)
         APlayer = std::make_shared<PulseAudioPlayer>();
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
@@ -451,7 +451,7 @@ namespace Ship {
             APlayer = std::make_shared<WasapiAudioPlayer>();
         }
 #endif
-#if defined(__linux)
+#if defined(__linux) && !defined(NO_PULSE)
         if (audioBackend == "pulse") {
             APlayer = std::make_shared<PulseAudioPlayer>();
         }
