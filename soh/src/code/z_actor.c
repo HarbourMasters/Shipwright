@@ -3144,13 +3144,12 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
-    // Hack to remove bats and skulltulas that spawn in graveyard because of bypassing object dependency with enemy randomizer on.
-    if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
+    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
+    // Remove bats and skulltulas from graveyard.
+    // Remove octorok in lost woods.
+    if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) ||
+        (actorId == ACTOR_EN_OKUTA && globalCtx->sceneNum == SCENE_SPOT10)) {
         return NULL;
-    }
-
-    if (actorId == ACTOR_EN_SB || actorId == ACTOR_EN_NY) {
-        params = params;
     }
 
     uint8_t excludedEnemiesToRandomize = 
