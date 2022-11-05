@@ -1332,6 +1332,48 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
+extern "C" u8 GetNextChildTradeItem(GlobalContext* globalCtx, u8 forward) {
+    std::vector<u8> possibleItems;
+
+    // Obtained Zelda's Letter
+    if (gSaveContext.eventChkInf[4] & 1) possibleItems.push_back(ITEM_LETTER_ZELDA);
+    // Obtained Keaton Mask
+    if (gSaveContext.itemGetInf[2] & 0x8) possibleItems.push_back(ITEM_MASK_KEATON);
+    // Obtained Skull Mask
+    if (gSaveContext.itemGetInf[2] & 0x10) possibleItems.push_back(ITEM_MASK_SKULL);
+    // Obtained Spooky Mask
+    if (gSaveContext.itemGetInf[2] & 0x20) possibleItems.push_back(ITEM_MASK_SPOOKY);
+    // Obtained Bunny Hood
+    if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
+    // Sold All Masks
+    if (gSaveContext.itemGetInf[3] & 0x8000) {
+        possibleItems.push_back(ITEM_MASK_GORON);
+        possibleItems.push_back(ITEM_MASK_ZORA);
+        possibleItems.push_back(ITEM_MASK_GERUDO);
+        possibleItems.push_back(ITEM_MASK_TRUTH);
+    }
+
+    if (possibleItems.size() == 0) {
+        return ITEM_NONE;
+    }
+
+    auto it = find(possibleItems.begin(), possibleItems.end(), INV_CONTENT(ITEM_TRADE_CHILD));
+    // Fall back to 0 if they happen to have an item they aren't supposed to
+    s8 itemIndex = it == possibleItems.end() ? 0 : (it - possibleItems.begin());
+    s8 maxIndex = possibleItems.size() - 1;
+    
+    if (forward) itemIndex++;
+    else itemIndex--;
+
+    if (itemIndex > maxIndex) {
+        itemIndex = 0;
+    } else if (itemIndex < 0) {
+        itemIndex = maxIndex;
+    }
+
+    return possibleItems[itemIndex];
+}
+
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
