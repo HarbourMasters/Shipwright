@@ -422,6 +422,7 @@ static void WriteStartingInventory() {
           setting->GetName() == "Start with Max Rupees" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
+          setting->GetName() == "Start with Bunny Hood" ||
           setting->GetName() == "Start with Deku Shield") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
