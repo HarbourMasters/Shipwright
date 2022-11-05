@@ -132,4 +132,22 @@ extern "C" void OTRMessage_Init()
           "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w",
         }
     );
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
+        {
+            TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
+            "Du erhältst ein %rHerzgefäß%w! Du&hast insgesamt %r{{heartContainerCount}}%w Gefäße&gesammelt!",
+            "Vous obtenez un %rRécipient de&coeur%w! Vous avez&collecté %r{{heartContainerCount}}%w récipients en tout!"
+        }
+    );
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
+        {
+            TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
+            "Du erhältst ein %rHerzteil%w! Du hast&insgesamt %r{{heartPieceCount}}%w Teile&gesammelt!",
+            "Vous obtenez un %rMorceau de&coeur%w! Vous avez&collecté %r{{heartPieceCount}}%w morceaux en tout!"
+        }
+    );
 }

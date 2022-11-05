@@ -36,7 +36,7 @@ namespace Ship {
 			uint16_t GetPixelDepth(float x, float y);
 			void ToggleFullscreen();
 			void SetFullscreen(bool bIsFullscreen);
-			void ShowCursor(bool hide);
+			void SetCursorVisibility(bool visible);
 			uint32_t GetCurrentWidth();
 			uint32_t GetCurrentHeight();
 			bool IsFullscreen();

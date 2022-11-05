@@ -2397,6 +2397,7 @@ f32 absf(f32);
 void* func_801068B0(void* dst, void* src, size_t size);
 void Message_UpdateOcarinaGame(GlobalContext* globalCtx);
 u8 Message_ShouldAdvance(GlobalContext* globalCtx);
+u8 Message_ShouldAdvanceSilent(GlobalContext* globalCtx);
 void Message_CloseTextbox(GlobalContext*);
 void Message_StartTextbox(GlobalContext* globalCtx, u16 textId, Actor* actor);
 void Message_ContinueTextbox(GlobalContext* globalCtx, u16 textId);

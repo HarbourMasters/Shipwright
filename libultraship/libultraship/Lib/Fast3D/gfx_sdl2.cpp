@@ -219,8 +219,12 @@ static void gfx_sdl_set_fullscreen(bool enable) {
     set_fullscreen(enable, true);
 }
 
-static void gfx_sdl_show_cursor(bool hide) {
-    SDL_ShowCursor(hide);
+static void gfx_sdl_set_cursor_visibility(bool visible) {
+    if (visible) {
+        SDL_ShowCursor(SDL_ENABLE);
+    } else {
+        SDL_ShowCursor(SDL_DISABLE);
+    }
 }
 
 static void gfx_sdl_set_keyboard_callbacks(bool (*on_key_down)(int scancode), bool (*on_key_up)(int scancode), void (*on_all_keys_up)(void)) {
@@ -394,7 +398,7 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_set_keyboard_callbacks,
     gfx_sdl_set_fullscreen_changed_callback,
     gfx_sdl_set_fullscreen,
-    gfx_sdl_show_cursor,
+    gfx_sdl_set_cursor_visibility,
     gfx_sdl_main_loop,
     gfx_sdl_get_dimensions,
     gfx_sdl_handle_events,
