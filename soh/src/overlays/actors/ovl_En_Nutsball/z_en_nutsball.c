@@ -75,7 +75,11 @@ void EnNutsball_Init(Actor* thisx, GlobalContext* globalCtx) {
     ActorShape_Init(&this->actor.shape, 400.0f, ActorShadow_DrawCircle, 13.0f);
     Collider_InitCylinder(globalCtx, &this->collider);
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
-    this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIDs[this->actor.params]);
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        this->objBankIndex = 0;
+    } else {
+        this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIDs[this->actor.params]);
+    }
 
     if (this->objBankIndex < 0) {
         Actor_Kill(&this->actor);
