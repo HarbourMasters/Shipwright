@@ -43,6 +43,7 @@ typedef struct {
     SpoilerEntranceGroup srcGroup;
     SpoilerEntranceGroup dstGroup;
     TrackerEntranceType type;
+    std::string metaTag;
     uint8_t oneExit;
 } EntranceData;
 
@@ -62,6 +63,7 @@ typedef struct {
 
 extern EntranceTrackingData gEntranceTrackingData;
 
+void ClearEntranceTrackingData();
 void InitEntranceTracker();
 void DrawEntranceTracker(bool& open);
 void InitEntranceTrackingData();
