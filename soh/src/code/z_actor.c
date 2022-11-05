@@ -3151,10 +3151,6 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         (actorId == ACTOR_EN_OKUTA && globalCtx->sceneNum == SCENE_SPOT10)) {
         return NULL;
     }
-
-    if (actorId == ACTOR_EN_TEST) {
-        params = params;
-    }
     
     uint8_t tryRandomizeEnemy = 
         CVar_GetS32("gRandomizedEnemies", 0) && 
@@ -3183,6 +3179,12 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
             // Get randomized enemy ID and parameter.
             enemyEntry newEnemy = GetRandomizedEnemy();
+
+            // While randomized enemy isn't allowed in certain situations, randomize again.
+            while (!IsEnemyAllowedToSpawn(globalCtx, newEnemy)) {
+                newEnemy = GetRandomizedEnemy();
+            }
+
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
 

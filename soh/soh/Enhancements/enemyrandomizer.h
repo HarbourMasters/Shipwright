@@ -12,4 +12,5 @@ typedef struct enemyEntry {
 #ifndef __cplusplus
 uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId, int param, f32 posX);
 enemyEntry GetRandomizedEnemy(void);
+uint8_t IsEnemyAllowedToSpawn(GlobalContext* globalCtx, enemyEntry newEnemy);
 #endif

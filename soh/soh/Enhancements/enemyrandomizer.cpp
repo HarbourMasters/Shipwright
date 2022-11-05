@@ -174,3 +174,16 @@ extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId
     // If no enemy is found, don't randomize the actor.
     return 0;
 }
+
+extern "C" uint8_t IsEnemyAllowedToSpawn(GlobalContext* globalCtx, enemyEntry enemy) {
+
+    // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
+    // becoming impossible to kill
+    switch (globalCtx->sceneNum) { 
+        case SCENE_GANON:
+            return (enemy.enemyId != ACTOR_EN_CLEAR_TAG && enemy.enemyId != ACTOR_EN_VALI && !(enemy.enemyId == ACTOR_EN_ZF && enemy.enemyParam == -1));
+        default:
+            return 1;
+    }
+
+}
