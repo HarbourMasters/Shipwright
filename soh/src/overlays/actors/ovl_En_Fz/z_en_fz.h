@@ -6,7 +6,7 @@
 
 struct EnFz;
 
-typedef void (*EnFzActionFunc)(struct EnFz*, GlobalContext*);
+typedef void (*EnFzActionFunc)(struct EnFz*, PlayState*);
 typedef void (*EnFzSpawnIceSmokeFunc)(struct EnFz*);
 
 typedef struct {

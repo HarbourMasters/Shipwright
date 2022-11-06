@@ -11,7 +11,7 @@ typedef enum {
 
 struct EnSiofuki;
 
-typedef void (*EnSiofukiActionFunc)(struct EnSiofuki*, GlobalContext*);
+typedef void (*EnSiofukiActionFunc)(struct EnSiofuki*, PlayState*);
 
 typedef struct EnSiofuki {
     /* 0x0000 */ DynaPolyActor dyna;

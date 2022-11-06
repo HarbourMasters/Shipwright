@@ -7,16 +7,16 @@
 #include "z_eff_ss_g_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-u32 EffectSsGFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsGFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsGFire_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsGFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsGFire_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsGFire_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_G_Fire_InitVars = {
     EFFECT_SS_G_FIRE,
     EffectSsGFire_Init,
 };
 
-u32 EffectSsGFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsGFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGFireInitParams* initParams = (EffectSsGFireInitParams*)initParamsx;
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
@@ -42,16 +42,16 @@ u32 EffectSsGFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     return 1;
 }
 
-void EffectSsGFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGFire_Draw(PlayState* play, u32 index, EffectSs* this) {
     void* fireFootprintTextures[] = {
         gEffFireFootprint1Tex, gEffFireFootprint2Tex, gEffFireFootprint3Tex, gEffFireFootprint4Tex,
         gEffFireFootprint5Tex, gEffFireFootprint6Tex, gEffFireFootprint7Tex, gEffFireFootprint8Tex,
     };
     s16 texIdx = (this->rgTexIdx / 100) % 7;
 
-    EffectSs_DrawGEffect(globalCtx, this, fireFootprintTextures[texIdx]);
+    EffectSs_DrawGEffect(play, this, fireFootprintTextures[texIdx]);
 }
 
-void EffectSsGFire_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGFire_Update(PlayState* play, u32 index, EffectSs* this) {
     this->rgTexIdx += this->rgTexIdxStep;
 }

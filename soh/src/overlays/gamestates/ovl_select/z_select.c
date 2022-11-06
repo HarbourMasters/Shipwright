@@ -46,7 +46,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     gSaveContext.showTitleCard = true;
     gWeatherMode = 0;
     this->state.running = false;
-    SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+    SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
 }
 
 void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
@@ -88,7 +88,7 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     gSaveContext.showTitleCard = true;
     gWeatherMode = 0;
     this->state.running = false;
-    SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+    SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
 }
 
 static SceneSelectEntry sScenes[] = {

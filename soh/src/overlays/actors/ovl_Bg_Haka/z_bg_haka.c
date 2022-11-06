@@ -9,16 +9,16 @@
 
 #define FLAGS 0
 
-void BgHaka_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHaka_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHaka_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHaka_Init(Actor* thisx, PlayState* play);
+void BgHaka_Destroy(Actor* thisx, PlayState* play);
+void BgHaka_Update(Actor* thisx, PlayState* play);
+void BgHaka_Draw(Actor* thisx, PlayState* play);
 
 void func_8087B758(BgHaka* this, Player* player);
-void func_8087B7E8(BgHaka* this, GlobalContext* globalCtx);
-void func_8087B938(BgHaka* this, GlobalContext* globalCtx);
-void func_8087BAAC(BgHaka* this, GlobalContext* globalCtx);
-void func_8087BAE4(BgHaka* this, GlobalContext* globalCtx);
+void func_8087B7E8(BgHaka* this, PlayState* play);
+void func_8087B938(BgHaka* this, PlayState* play);
+void func_8087BAAC(BgHaka* this, PlayState* play);
+void func_8087BAE4(BgHaka* this, PlayState* play);
 
 const ActorInit Bg_Haka_InitVars = {
     ACTOR_BG_HAKA,
@@ -38,7 +38,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHaka_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHaka_Init(Actor* thisx, PlayState* play) {
     BgHaka* this = (BgHaka*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -46,14 +46,14 @@ void BgHaka_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gGravestoneCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->actionFunc = func_8087B7E8;
 }
 
-void BgHaka_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHaka_Destroy(Actor* thisx, PlayState* play) {
     BgHaka* this = (BgHaka*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 void func_8087B758(BgHaka* this, Player* player) {
@@ -65,20 +65,20 @@ void func_8087B758(BgHaka* this, Player* player) {
     }
 }
 
-void func_8087B7E8(BgHaka* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_8087B7E8(BgHaka* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
-        if (globalCtx->sceneNum == SCENE_SPOT02 && !LINK_IS_ADULT && IS_DAY && !gSaveContext.n64ddFlag && !CVar_GetS32("gDayGravePull", 0)) {
+        if (play->sceneNum == SCENE_SPOT02 && !LINK_IS_ADULT && IS_DAY && !gSaveContext.n64ddFlag && !CVar_GetS32("gDayGravePull", 0)) {
             this->dyna.unk_150 = 0.0f;
             player->stateFlags2 &= ~0x10;
-            if (!Gameplay_InCsMode(globalCtx)) {
-                Message_StartTextbox(globalCtx, 0x5073, NULL);
+            if (!Play_InCsMode(play)) {
+                Message_StartTextbox(play, 0x5073, NULL);
                 this->dyna.actor.params = 100;
                 this->actionFunc = func_8087BAE4;
             }
         } else if (0.0f < this->dyna.unk_150 ||
-                   (globalCtx->sceneNum == SCENE_SPOT06 && !LINK_IS_ADULT && !Flags_GetSwitch(globalCtx, 0x23))) {
+                   (play->sceneNum == SCENE_SPOT06 && !LINK_IS_ADULT && !Flags_GetSwitch(play, 0x23))) {
             this->dyna.unk_150 = 0.0f;
             player->stateFlags2 &= ~0x10;
         } else {
@@ -89,8 +89,8 @@ void func_8087B7E8(BgHaka* this, GlobalContext* globalCtx) {
     func_8087B758(this, player);
 }
 
-void func_8087B938(BgHaka* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_8087B938(BgHaka* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 sp38;
 
     this->dyna.actor.speedXZ += 0.05f;
@@ -105,8 +105,8 @@ void func_8087B938(BgHaka* this, GlobalContext* globalCtx) {
         player->stateFlags2 &= ~0x10;
         if (this->dyna.actor.params == 1) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
-        } else if (!IS_DAY && globalCtx->sceneNum == SCENE_SPOT02) {
-            Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
+        } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
                         this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
                         1);
         }
@@ -115,8 +115,8 @@ void func_8087B938(BgHaka* this, GlobalContext* globalCtx) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
 }
 
-void func_8087BAAC(BgHaka* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_8087BAAC(BgHaka* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
         this->dyna.unk_150 = 0.0f;
@@ -124,8 +124,8 @@ void func_8087BAAC(BgHaka* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8087BAE4(BgHaka* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_8087BAE4(BgHaka* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 pad;
 
     if (this->dyna.actor.params != 0) {
@@ -141,25 +141,25 @@ void func_8087BAE4(BgHaka* this, GlobalContext* globalCtx) {
     func_8087B758(this, player);
 }
 
-void BgHaka_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHaka_Update(Actor* thisx, PlayState* play) {
     BgHaka* this = (BgHaka*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHaka_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+void BgHaka_Draw(Actor* thisx, PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGravestoneStoneDL);
     Matrix_Translate(0.0f, 0.0f, thisx->minVelocityY * 10.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gGravestoneEarthDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

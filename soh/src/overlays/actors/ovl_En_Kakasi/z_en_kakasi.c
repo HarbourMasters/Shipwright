@@ -10,17 +10,17 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_25)
 
-void EnKakasi_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnKakasi_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnKakasi_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnKakasi_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnKakasi_Init(Actor* thisx, PlayState* play);
+void EnKakasi_Destroy(Actor* thisx, PlayState* play);
+void EnKakasi_Update(Actor* thisx, PlayState* play);
+void EnKakasi_Draw(Actor* thisx, PlayState* play);
 
-void func_80A8F660(EnKakasi* this, GlobalContext* globalCtx);
-void func_80A8F75C(EnKakasi* this, GlobalContext* globalCtx);
-void func_80A8F8D0(EnKakasi* this, GlobalContext* globalCtx);
-void func_80A8F9C8(EnKakasi* this, GlobalContext* globalCtx);
-void func_80A8FBB8(EnKakasi* this, GlobalContext* globalCtx);
-void func_80A8FAA4(EnKakasi* this, GlobalContext* globalCtx);
+void func_80A8F660(EnKakasi* this, PlayState* play);
+void func_80A8F75C(EnKakasi* this, PlayState* play);
+void func_80A8F8D0(EnKakasi* this, PlayState* play);
+void func_80A8F9C8(EnKakasi* this, PlayState* play);
+void func_80A8FBB8(EnKakasi* this, PlayState* play);
+void func_80A8FAA4(EnKakasi* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -55,24 +55,24 @@ const ActorInit En_Kakasi_InitVars = {
     NULL,
 };
 
-void EnKakasi_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnKakasi_Destroy(Actor* thisx, PlayState* play) {
     EnKakasi* this = (EnKakasi*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
-    SkelAnime_Free(&this->skelanime, globalCtx); // OTR - Fixed this memory leak
+    Collider_DestroyCylinder(play, &this->collider);
+    SkelAnime_Free(&this->skelanime, play); // OTR - Fixed this memory leak
     //! @bug SkelAnime_Free is not called
 }
 
-void EnKakasi_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnKakasi_Init(Actor* thisx, PlayState* play) {
     EnKakasi* this = (EnKakasi*)thisx;
 
     osSyncPrintf("\n\n");
     osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ Ｌｅｔ’ｓ ＤＡＮＣＥ！ ☆☆☆☆☆ %f\n" VT_RST, this->actor.world.pos.y);
 
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.targetMode = 6;
-    SkelAnime_InitFlex(globalCtx, &this->skelanime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
+    SkelAnime_InitFlex(play, &this->skelanime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
 
     this->rot = this->actor.world.rot;
     this->actor.flags |= ACTOR_FLAG_10;
@@ -93,8 +93,8 @@ void func_80A8F28C(EnKakasi* this) {
     Math_SmoothStepToS(&this->actor.shape.rot.z, this->rot.z, 5, 0x2710, 0);
 }
 
-void func_80A8F320(EnKakasi* this, GlobalContext* globalCtx, s16 arg) {
-    s16 ocarinaNote = globalCtx->msgCtx.lastOcaNoteIdx;
+void func_80A8F320(EnKakasi* this, PlayState* play, s16 arg) {
+    s16 ocarinaNote = play->msgCtx.lastOcaNoteIdx;
     s16 currentFrame;
 
     if (arg != 0) {
@@ -171,7 +171,7 @@ void func_80A8F320(EnKakasi* this, GlobalContext* globalCtx, s16 arg) {
     }
 }
 
-void func_80A8F660(EnKakasi* this, GlobalContext* globalCtx) {
+void func_80A8F660(EnKakasi* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&object_ka_Anim_000214);
 
     Animation_Change(&this->skelanime, &object_ka_Anim_000214, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
@@ -194,13 +194,13 @@ void func_80A8F660(EnKakasi* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80A8F75C;
 }
 
-void func_80A8F75C(EnKakasi* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80A8F75C(EnKakasi* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     func_80A8F28C(this);
     SkelAnime_Update(&this->skelanime);
     this->camId = SUBCAM_NONE;
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         if (this->unk_196 == TEXT_STATE_EVENT) {
             this->actionFunc = func_80A8F9C8;
         } else {
@@ -215,9 +215,9 @@ void func_80A8F75C(EnKakasi* this, GlobalContext* globalCtx) {
             if (absyawTowardsPlayer < 0x4300) {
                 if (!this->unk_194) {
                     if (player->stateFlags2 & 0x1000000) {
-                        this->camId = OnePointCutscene_Init(globalCtx, 2260, -99, &this->actor, MAIN_CAM);
+                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
 
-                        func_8010BD58(globalCtx, OCARINA_ACTION_SCARECROW_LONG_RECORDING);
+                        func_8010BD58(play, OCARINA_ACTION_SCARECROW_LONG_RECORDING);
                         this->unk_19A = 0;
                         this->unk_1B8 = 0.0;
                         player->stateFlags2 |= 0x800000;
@@ -228,93 +228,93 @@ void func_80A8F75C(EnKakasi* this, GlobalContext* globalCtx) {
                         player->stateFlags2 |= 0x800000;
                     }
                 }
-                func_8002F2CC(&this->actor, globalCtx, 100.0f);
+                func_8002F2CC(&this->actor, play, 100.0f);
             }
         }
     }
 }
 
-void func_80A8F8D0(EnKakasi* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80A8F8D0(EnKakasi* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04 && globalCtx->msgCtx.msgMode == MSGMODE_NONE) {
+    if (play->msgCtx.ocarinaMode == OCARINA_MODE_04 && play->msgCtx.msgMode == MSGMODE_NONE) {
         // "end?"
         osSyncPrintf(VT_FGCOL(BLUE) "☆☆☆☆☆ 終り？ ☆☆☆☆☆ \n" VT_RST);
 
         if (this->unk_19A != 0) {
-            Message_CloseTextbox(globalCtx);
+            Message_CloseTextbox(play);
             this->actor.textId = 0x4077;
             this->unk_196 = TEXT_STATE_EVENT;
-            Message_StartTextbox(globalCtx, this->actor.textId, NULL);
+            Message_StartTextbox(play, this->actor.textId, NULL);
             this->actionFunc = func_80A8F9C8;
         } else {
-            OnePointCutscene_EndCutscene(globalCtx, this->camId);
+            OnePointCutscene_EndCutscene(play, this->camId);
             this->camId = SUBCAM_NONE;
             this->actionFunc = func_80A8F660;
         }
-    } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_01) {
-        func_80A8F320(this, globalCtx, 0);
+    } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
+        func_80A8F320(this, play, 0);
         player->stateFlags2 |= 0x800000;
     }
 }
 
-void func_80A8F9C8(EnKakasi* this, GlobalContext* globalCtx) {
+void func_80A8F9C8(EnKakasi* this, PlayState* play) {
     func_80A8F28C(this);
     SkelAnime_Update(&this->skelanime);
-    func_8002DF54(globalCtx, NULL, 8);
+    func_8002DF54(play, NULL, 8);
 
-    if (this->unk_196 == Message_GetState(&globalCtx->msgCtx) && Message_ShouldAdvance(globalCtx)) {
+    if (this->unk_196 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
 
         if (this->camId != SUBCAM_NONE) {
-            func_8005B1A4(globalCtx->cameraPtrs[this->camId]);
+            func_8005B1A4(play->cameraPtrs[this->camId]);
         }
-        this->camId = OnePointCutscene_Init(globalCtx, 2270, -99, &this->actor, MAIN_CAM);
-        globalCtx->msgCtx.msgMode = MSGMODE_PAUSED;
-        func_8002DF54(globalCtx, NULL, 8);
-        func_8010BD58(globalCtx, OCARINA_ACTION_SCARECROW_LONG_PLAYBACK);
+        this->camId = OnePointCutscene_Init(play, 2270, -99, &this->actor, MAIN_CAM);
+        play->msgCtx.msgMode = MSGMODE_PAUSED;
+        func_8002DF54(play, NULL, 8);
+        func_8010BD58(play, OCARINA_ACTION_SCARECROW_LONG_PLAYBACK);
         this->actionFunc = func_80A8FAA4;
     }
 }
 
-void func_80A8FAA4(EnKakasi* this, GlobalContext* globalCtx) {
-    if (globalCtx->msgCtx.ocarinaMode != OCARINA_MODE_0F) {
-        func_80A8F320(this, globalCtx, 1);
+void func_80A8FAA4(EnKakasi* this, PlayState* play) {
+    if (play->msgCtx.ocarinaMode != OCARINA_MODE_0F) {
+        func_80A8F320(this, play, 1);
         return;
     }
 
-    osSyncPrintf("game_play->message.msg_mode=%d\n", globalCtx->msgCtx.msgMode);
+    osSyncPrintf("game_play->message.msg_mode=%d\n", play->msgCtx.msgMode);
 
-    if (globalCtx->msgCtx.msgMode == MSGMODE_NONE) {
+    if (play->msgCtx.msgMode == MSGMODE_NONE) {
         if (this->unk_194) {
             this->actor.textId = 0x4077;
             this->unk_196 = TEXT_STATE_EVENT;
-            Message_StartTextbox(globalCtx, this->actor.textId, NULL);
+            Message_StartTextbox(play, this->actor.textId, NULL);
         } else {
             this->actor.textId = 0x4078;
             this->unk_196 = TEXT_STATE_EVENT;
-            Message_StartTextbox(globalCtx, this->actor.textId, NULL);
+            Message_StartTextbox(play, this->actor.textId, NULL);
         }
         this->actionFunc = func_80A8FBB8;
-        OnePointCutscene_EndCutscene(globalCtx, this->camId);
+        OnePointCutscene_EndCutscene(play, this->camId);
         this->camId = SUBCAM_NONE;
-        this->camId = OnePointCutscene_Init(globalCtx, 2260, -99, &this->actor, MAIN_CAM);
-        func_8005B1A4(globalCtx->cameraPtrs[this->camId]);
+        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
+        func_8005B1A4(play->cameraPtrs[this->camId]);
     }
 }
 
-void func_80A8FBB8(EnKakasi* this, GlobalContext* globalCtx) {
+void func_80A8FBB8(EnKakasi* this, PlayState* play) {
     func_80A8F28C(this);
     SkelAnime_Update(&this->skelanime);
 
-    if (this->unk_196 == Message_GetState(&globalCtx->msgCtx) && Message_ShouldAdvance(globalCtx)) {
-        func_8005B1A4(globalCtx->cameraPtrs[this->camId]);
-        Message_CloseTextbox(globalCtx);
-        func_8002DF54(globalCtx, NULL, 7);
+    if (this->unk_196 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
+        func_8005B1A4(play->cameraPtrs[this->camId]);
+        Message_CloseTextbox(play);
+        func_8002DF54(play, NULL, 7);
         this->actionFunc = func_80A8F660;
     }
 }
 
-void EnKakasi_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnKakasi_Update(Actor* thisx, PlayState* play) {
     EnKakasi* this = (EnKakasi*)thisx;
     s32 pad;
     s32 i;
@@ -329,14 +329,14 @@ void EnKakasi_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     this->height = 60.0f;
     Actor_SetFocus(&this->actor, this->height);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 50.0f, 50.0f, 100.0f, 28);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 28);
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-void EnKakasi_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnKakasi_Draw(Actor* thisx, PlayState* play) {
     EnKakasi* this = (EnKakasi*)thisx;
 
     if (BREG(3) != 0) {
@@ -344,7 +344,7 @@ void EnKakasi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // "flag!"
         osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ フラグ！ ☆☆☆☆☆ %d\n" VT_RST, gSaveContext.scarecrowCustomSongSet);
     }
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
+    func_80093D18(play->state.gfxCtx);
+    SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           NULL, NULL, this);
 }

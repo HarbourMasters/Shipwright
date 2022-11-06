@@ -6,7 +6,7 @@
 
 struct BgGndIceblock;
 
-typedef void (*BgGndIceblockActionFunc)(struct BgGndIceblock*, GlobalContext*);
+typedef void (*BgGndIceblockActionFunc)(struct BgGndIceblock*, PlayState*);
 
 typedef struct BgGndIceblock {
     /* 0x0000 */ DynaPolyActor dyna;

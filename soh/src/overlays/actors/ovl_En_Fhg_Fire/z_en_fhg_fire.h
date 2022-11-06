@@ -6,7 +6,7 @@
 
 struct EnFhgFire;
 
-typedef void (*EnFhgFireUpdateFunc)(struct EnFhgFire*, GlobalContext*);
+typedef void (*EnFhgFireUpdateFunc)(struct EnFhgFire*, PlayState*);
 
 typedef enum {
     /*   1 */ FHGFIRE_LIGHTNING_STRIKE = 1,

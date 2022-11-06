@@ -9,10 +9,10 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnGanonMant_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGanonMant_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGanonMant_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnGanonMant_Init(Actor* thisx, PlayState* play);
+void EnGanonMant_Destroy(Actor* thisx, PlayState* play);
+void EnGanonMant_Update(Actor* thisx, PlayState* play);
+void EnGanonMant_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Ganon_Mant_InitVars = {
     ACTOR_EN_GANON_MANT,
@@ -100,13 +100,13 @@ static u16 sVerticesMap[GANON_MANT_NUM_STRANDS * GANON_MANT_NUM_JOINTS] = {
 
 #include "overlays/ovl_En_Ganon_Mant/ovl_En_Ganon_Mant.h"
 
-void EnGanonMant_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnGanonMant_Init(Actor* thisx, PlayState* play) {
     EnGanonMant* this = (EnGanonMant*)thisx;
 
     this->actor.flags &= ~ACTOR_FLAG_0;
 }
 
-void EnGanonMant_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGanonMant_Destroy(Actor* thisx, PlayState* play) {
 }
 
 /**
@@ -154,7 +154,7 @@ void EnGanonMant_Tear(EnGanonMant* this) {
 /**
  * Updates the dynamic strands that control the shape and motion of the cloak
  */
-void EnGanonMant_UpdateStrand(GlobalContext* globalCtx, EnGanonMant* this, Vec3f* root, Vec3f* pos, Vec3f* nextPos,
+void EnGanonMant_UpdateStrand(PlayState* play, EnGanonMant* this, Vec3f* root, Vec3f* pos, Vec3f* nextPos,
                               Vec3f* rot, Vec3f* vel, s16 strandNum) {
     f32 xDiff;
     f32 zDiff;
@@ -334,7 +334,7 @@ void EnGanonMant_UpdateVertices(EnGanonMant* this) {
     }
 }
 
-void EnGanonMant_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnGanonMant_Update(Actor* thisx, PlayState* play) {
     EnGanonMant* this = (EnGanonMant*)thisx;
     BossGanon* ganon = (BossGanon*)this->actor.parent;
 
@@ -360,17 +360,17 @@ void EnGanonMant_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
+void EnGanonMant_DrawCloak(PlayState* play, EnGanonMant* this) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     // Invalidate cape texture as it may have been torn
     gSPInvalidateTexCache(POLY_OPA_DISP++, gMantTex);
 
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // set texture
@@ -387,10 +387,10 @@ void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
     // draw cloak
     gSPDisplayList(POLY_OPA_DISP++, gMantDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnGanonMant_Draw(Actor* thisx, PlayState* play) {
     EnGanonMant* this = (EnGanonMant*)thisx;
     f32 xDiff;
     f32 pitch;
@@ -462,7 +462,7 @@ void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
 
             // Update the strand joints
-            EnGanonMant_UpdateStrand(globalCtx, this, &this->strands[strandIdx].root, this->strands[strandIdx].joints,
+            EnGanonMant_UpdateStrand(play, this, &this->strands[strandIdx].root, this->strands[strandIdx].joints,
                                      this->strands[nextStrandIdx].joints, this->strands[strandIdx].rotations,
                                      this->strands[strandIdx].velocities, strandIdx);
             Matrix_Pop();
@@ -471,5 +471,5 @@ void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx) {
         this->updateHasRun = false;
     }
 
-    EnGanonMant_DrawCloak(globalCtx, this);
+    EnGanonMant_DrawCloak(play, this);
 }

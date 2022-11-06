@@ -12,13 +12,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnWallTubo_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnWallTubo_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnWallTubo_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnWallTubo_Init(Actor* thisx, PlayState* play);
+void EnWallTubo_Destroy(Actor* thisx, PlayState* play);
+void EnWallTubo_Update(Actor* thisx, PlayState* play);
 
-void EnWallTubo_FindGirl(EnWallTubo* this, GlobalContext* globalCtx);
-void EnWallTubo_DetectChu(EnWallTubo* this, GlobalContext* globalCtx);
-void EnWallTubo_SetWallFall(EnWallTubo* this, GlobalContext* globalCtx);
+void EnWallTubo_FindGirl(EnWallTubo* this, PlayState* play);
+void EnWallTubo_DetectChu(EnWallTubo* this, PlayState* play);
+void EnWallTubo_SetWallFall(EnWallTubo* this, PlayState* play);
 
 const ActorInit En_Wall_Tubo_InitVars = {
     ACTOR_EN_WALL_TUBO,
@@ -33,7 +33,7 @@ const ActorInit En_Wall_Tubo_InitVars = {
     NULL,
 };
 
-void EnWallTubo_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnWallTubo_Init(Actor* thisx, PlayState* play) {
     EnWallTubo* this = (EnWallTubo*)thisx;
 
     osSyncPrintf("\n\n");
@@ -43,13 +43,13 @@ void EnWallTubo_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = EnWallTubo_FindGirl;
 }
 
-void EnWallTubo_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnWallTubo_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnWallTubo_FindGirl(EnWallTubo* this, GlobalContext* globalCtx) {
+void EnWallTubo_FindGirl(EnWallTubo* this, PlayState* play) {
     Actor* lookForGirl;
 
-    lookForGirl = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+    lookForGirl = play->actorCtx.actorLists[ACTORCAT_NPC].head;
 
     while (lookForGirl != NULL) {
         if (lookForGirl->id != ACTOR_EN_BOM_BOWL_MAN) {
@@ -63,7 +63,7 @@ void EnWallTubo_FindGirl(EnWallTubo* this, GlobalContext* globalCtx) {
     this->actionFunc = EnWallTubo_DetectChu;
 }
 
-void EnWallTubo_DetectChu(EnWallTubo* this, GlobalContext* globalCtx) {
+void EnWallTubo_DetectChu(EnWallTubo* this, PlayState* play) {
     EnBomChu* chu;
     s32 pad;
     Vec3f effAccel = { 0.0f, 0.1f, 0.0f };
@@ -72,8 +72,8 @@ void EnWallTubo_DetectChu(EnWallTubo* this, GlobalContext* globalCtx) {
     s16 quakeIndex;
 
     if (this->chuGirl->minigamePlayStatus != 0) {
-        if (globalCtx->cameraPtrs[MAIN_CAM]->setting == CAM_SET_CHU_BOWLING) {
-            chu = (EnBomChu*)globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
+        if (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_CHU_BOWLING) {
+            chu = (EnBomChu*)play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
 
             while (chu != NULL) {
                 if ((&chu->actor == &this->actor) || (chu->actor.id != ACTOR_EN_BOM_CHU)) {
@@ -91,8 +91,8 @@ void EnWallTubo_DetectChu(EnWallTubo* this, GlobalContext* globalCtx) {
                     chu->timer = 2;
                     func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
                     this->timer = 60;
-                    EffectSsBomb2_SpawnLayered(globalCtx, &this->explosionCenter, &effVelocity, &effAccel, 200, 40);
-                    quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 1);
+                    EffectSsBomb2_SpawnLayered(play, &this->explosionCenter, &effVelocity, &effAccel, 200, 40);
+                    quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 1);
                     Quake_SetSpeed(quakeIndex, 0x7FFF);
                     Quake_SetQuakeValues(quakeIndex, 100, 0, 0, 0);
                     Quake_SetCountdown(quakeIndex, 100);
@@ -106,18 +106,18 @@ void EnWallTubo_DetectChu(EnWallTubo* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnWallTubo_SetWallFall(EnWallTubo* this, GlobalContext* globalCtx) {
+void EnWallTubo_SetWallFall(EnWallTubo* this, PlayState* play) {
     BgBowlWall* wall;
     Vec3f effAccel = { 0.0f, 0.1f, 0.0f };
     Vec3f effVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f effPos;
 
-    if ((globalCtx->gameplayFrames & 1) == 0) {
+    if ((play->gameplayFrames & 1) == 0) {
         effPos.x = this->explosionCenter.x + Rand_CenteredFloat(300.0f);
         effPos.y = this->explosionCenter.y + Rand_CenteredFloat(300.0f);
         effPos.z = this->explosionCenter.z;
-        EffectSsBomb2_SpawnLayered(globalCtx, &effPos, &effVelocity, &effAccel, 100, 30);
-        EffectSsHahen_SpawnBurst(globalCtx, &effPos, 10.0f, 0, 50, 15, 3, HAHEN_OBJECT_DEFAULT, 10, NULL);
+        EffectSsBomb2_SpawnLayered(play, &effPos, &effVelocity, &effAccel, 100, 30);
+        EffectSsHahen_SpawnBurst(play, &effPos, 10.0f, 0, 50, 15, 3, HAHEN_OBJECT_DEFAULT, 10, NULL);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
     }
 
@@ -138,18 +138,18 @@ void EnWallTubo_SetWallFall(EnWallTubo* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnWallTubo_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnWallTubo_Update(Actor* thisx, PlayState* play) {
     EnWallTubo* this = (EnWallTubo*)thisx;
 
     if (this->timer != 0) {
         this->timer--;
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (BREG(0)) {
         DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 0, 0, 255, 255, 4, globalCtx->state.gfxCtx);
+                               1.0f, 0, 0, 255, 255, 4, play->state.gfxCtx);
     }
 }

@@ -6,7 +6,7 @@
 
 struct EnBlkobj;
 
-typedef void (*EnBlkobjActionFunc)(struct EnBlkobj*, GlobalContext*);
+typedef void (*EnBlkobjActionFunc)(struct EnBlkobj*, PlayState*);
 
 typedef struct EnBlkobj {
     /* 0x0000 */ DynaPolyActor dyna;
