@@ -6,7 +6,7 @@
 
 struct ArmsHook;
 
-typedef void (*ArmsHookActionFunc)(struct ArmsHook*, GlobalContext*);
+typedef void (*ArmsHookActionFunc)(struct ArmsHook*, PlayState*);
 
 typedef struct ArmsHook {
     /* 0x0000 */ Actor actor;

@@ -9,13 +9,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnHorseZelda_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseZelda_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseZelda_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseZelda_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHorseZelda_Init(Actor* thisx, PlayState* play);
+void EnHorseZelda_Destroy(Actor* thisx, PlayState* play);
+void EnHorseZelda_Update(Actor* thisx, PlayState* play);
+void EnHorseZelda_Draw(Actor* thisx, PlayState* play);
 
-void func_80A6DCCC(EnHorseZelda* this, GlobalContext* globalCtx);
-void func_80A6DDFC(EnHorseZelda* this, GlobalContext* globalCtx);
+void func_80A6DCCC(EnHorseZelda* this, PlayState* play);
+void func_80A6DDFC(EnHorseZelda* this, PlayState* play);
 void func_80A6DC7C(EnHorseZelda* this);
 
 const ActorInit En_Horse_Zelda_InitVars = {
@@ -111,7 +111,7 @@ void func_80A6D8D0(unknownStruct* data, s32 index, Vec3f* vec) {
     vec->z = data[index].unk_0.z;
 }
 
-void func_80A6D918(EnHorseZelda* this, GlobalContext* globalCtx) {
+void func_80A6D918(EnHorseZelda* this, PlayState* play) {
     s32 pad;
     Vec3f sp28;
     s16 yawDiff;
@@ -134,7 +134,7 @@ void func_80A6D918(EnHorseZelda* this, GlobalContext* globalCtx) {
     }
     this->actor.shape.rot.y = this->actor.world.rot.y;
 
-    if (Actor_WorldDistXZToActor(&this->actor, &GET_PLAYER(globalCtx)->actor) <= 300.0f) {
+    if (Actor_WorldDistXZToActor(&this->actor, &GET_PLAYER(play)->actor) <= 300.0f) {
         if (this->actor.speedXZ < 12.0f) {
             this->actor.speedXZ += 1.0f;
         } else {
@@ -147,7 +147,7 @@ void func_80A6D918(EnHorseZelda* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnHorseZelda_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseZelda_Init(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -158,24 +158,24 @@ void EnHorseZelda_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.focus.pos = this->actor.world.pos;
     this->action = 0;
     this->actor.focus.pos.y += 70.0f;
-    Skin_Init(globalCtx, &this->skin, &gHorseZeldaSkel, &gHorseZeldaGallopingAnim);
+    Skin_Init(play, &this->skin, &gHorseZeldaSkel, &gHorseZeldaGallopingAnim);
     this->animationIndex = 0;
     Animation_PlayOnce(&this->skin.skelAnime, sAnimationHeaders[0]);
-    Collider_InitCylinder(globalCtx, &this->colliderCylinder);
-    Collider_SetCylinderType1(globalCtx, &this->colliderCylinder, &this->actor, &sCylinderInit);
-    Collider_InitJntSph(globalCtx, &this->colliderSphere);
-    Collider_SetJntSph(globalCtx, &this->colliderSphere, &this->actor, &sJntSphInit, &this->colliderSphereItem);
+    Collider_InitCylinder(play, &this->colliderCylinder);
+    Collider_SetCylinderType1(play, &this->colliderCylinder, &this->actor, &sCylinderInit);
+    Collider_InitJntSph(play, &this->colliderSphere);
+    Collider_SetJntSph(play, &this->colliderSphere, &this->actor, &sJntSphInit, &this->colliderSphereItem);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     this->animationIndex = 0;
     func_80A6DC7C(this);
 }
 
-void EnHorseZelda_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseZelda_Destroy(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->colliderCylinder);
-    Collider_DestroyJntSph(globalCtx, &this->colliderSphere);
-    Skin_Free(globalCtx, &this->skin);
+    Collider_DestroyCylinder(play, &this->colliderCylinder);
+    Collider_DestroyJntSph(play, &this->colliderSphere);
+    Skin_Free(play, &this->skin);
 }
 
 void func_80A6DC7C(EnHorseZelda* this) {
@@ -187,7 +187,7 @@ void func_80A6DC7C(EnHorseZelda* this) {
     Animation_PlayOnce(&this->skin.skelAnime, sAnimationHeaders[this->animationIndex]);
 }
 
-void func_80A6DCCC(EnHorseZelda* this, GlobalContext* globalCtx) {
+void func_80A6DCCC(EnHorseZelda* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     if (SkelAnime_Update(&this->skin.skelAnime)) {
         func_80A6DC7C(this);
@@ -206,14 +206,14 @@ void func_80A6DD14(EnHorseZelda* this) {
                      Animation_GetLastFrame(sAnimationHeaders[this->animationIndex]), ANIMMODE_ONCE, 0.0f);
 }
 
-void func_80A6DDFC(EnHorseZelda* this, GlobalContext* globalCtx) {
-    func_80A6D918(this, globalCtx);
+void func_80A6DDFC(EnHorseZelda* this, PlayState* play) {
+    func_80A6D918(this, play);
     if (SkelAnime_Update(&this->skin.skelAnime)) {
         func_80A6DD14(this);
     }
 }
 
-void func_80A6DE38(EnHorseZelda* this, GlobalContext* globalCtx) {
+void func_80A6DE38(EnHorseZelda* this, PlayState* play) {
     s32 pad;
     CollisionPoly* poly;
     s32 pad2;
@@ -223,25 +223,25 @@ void func_80A6DE38(EnHorseZelda* this, GlobalContext* globalCtx) {
     pos.x = (Math_SinS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.x;
     pos.y = this->actor.world.pos.y + 60.0f;
     pos.z = (Math_CosS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.z;
-    this->unk_1F4 = BgCheck_EntityRaycastFloor3(&globalCtx->colCtx, &poly, &bgId, &pos);
+    this->unk_1F4 = BgCheck_EntityRaycastFloor3(&play->colCtx, &poly, &bgId, &pos);
     this->actor.shape.rot.x = Math_FAtan2F(this->actor.world.pos.y - this->unk_1F4, 30.0f) * (0x8000 / M_PI);
 }
 
-void EnHorseZelda_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseZelda_Update(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
     s32 pad;
 
-    sActionFuncs[this->action](this, globalCtx);
+    sActionFuncs[this->action](this, play);
     this->actor.speedXZ = 0.0f;
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;
     Collider_UpdateCylinder(&this->actor, &this->colliderCylinder);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderCylinder.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderCylinder.base);
 }
 
-void EnHorseZelda_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* skin) {
+void EnHorseZelda_PostDraw(Actor* thisx, PlayState* play, Skin* skin) {
     Vec3f sp4C;
     Vec3f sp40;
     EnHorseZelda* this = (EnHorseZelda*)thisx;
@@ -263,13 +263,13 @@ void EnHorseZelda_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* skin) {
     }
 
     //! @bug see relevant comment in `EnHorse_SkinCallback1`
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderSphere.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderSphere.base);
 }
 
-void EnHorseZelda_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseZelda_Draw(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
-    func_80A6DE38(this, globalCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
-    func_800A6330(&this->actor, globalCtx, &this->skin, EnHorseZelda_PostDraw, true);
+    func_80A6DE38(this, play);
+    func_80093D18(play->state.gfxCtx);
+    func_800A6330(&this->actor, play, &this->skin, EnHorseZelda_PostDraw, true);
 }

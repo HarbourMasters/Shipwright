@@ -33,8 +33,8 @@ EffectInfo sEffectInfoTable[] = {
     },
 };
 
-GlobalContext* Effect_GetGlobalCtx(void) {
-    return sEffectContext.globalCtx;
+PlayState* Effect_GetPlayState(void) {
+    return sEffectContext.play;
 }
 
 void* Effect_GetByIndex(s32 index) {
@@ -77,7 +77,7 @@ void Effect_InitStatus(EffectStatus* status) {
     status->unk_02 = 0;
 }
 
-void Effect_InitContext(GlobalContext* globalCtx) {
+void Effect_InitContext(PlayState* play) {
     s32 i;
 
     for (i = 0; i < SPARK_COUNT; i++) {
@@ -93,10 +93,10 @@ void Effect_InitContext(GlobalContext* globalCtx) {
         Effect_InitStatus(&sEffectContext.blures[i].status);
     }
 
-    sEffectContext.globalCtx = globalCtx;
+    sEffectContext.play = play;
 }
 
-void Effect_Add(GlobalContext* globalCtx, s32* pIndex, s32 type, u8 arg3, u8 arg4, void* initParams) {
+void Effect_Add(PlayState* play, s32* pIndex, s32 type, u8 arg3, u8 arg4, void* initParams) {
     s32 i;
     u32 slotFound;
     void* effect = NULL;
@@ -104,7 +104,7 @@ void Effect_Add(GlobalContext* globalCtx, s32* pIndex, s32 type, u8 arg3, u8 arg
 
     *pIndex = TOTAL_EFFECT_COUNT;
 
-    if (FrameAdvance_IsEnabled(globalCtx) != true) {
+    if (FrameAdvance_IsEnabled(play) != true) {
         slotFound = false;
         switch (type) {
             case EFFECT_SPARK:
@@ -178,13 +178,13 @@ void Effect_DrawAll(GraphicsContext* gfxCtx) {
     }
 }
 
-void Effect_UpdateAll(GlobalContext* globalCtx) {
+void Effect_UpdateAll(PlayState* play) {
     s32 i;
 
     for (i = 0; i < SPARK_COUNT; i++) {
         if (sEffectContext.sparks[i].status.active) {
             if (sEffectInfoTable[EFFECT_SPARK].update(&sEffectContext.sparks[i].effect) == 1) {
-                Effect_Delete(globalCtx, i);
+                Effect_Delete(play, i);
             }
         }
     }
@@ -192,7 +192,7 @@ void Effect_UpdateAll(GlobalContext* globalCtx) {
     for (i = 0; i < BLURE_COUNT; i++) {
         if (sEffectContext.blures[i].status.active) {
             if (sEffectInfoTable[EFFECT_BLURE1].update(&sEffectContext.blures[i].effect) == 1) {
-                Effect_Delete(globalCtx, i + SPARK_COUNT);
+                Effect_Delete(play, i + SPARK_COUNT);
             }
         }
     }
@@ -200,13 +200,13 @@ void Effect_UpdateAll(GlobalContext* globalCtx) {
     for (i = 0; i < SHIELD_PARTICLE_COUNT; i++) {
         if (sEffectContext.shieldParticles[i].status.active) {
             if (sEffectInfoTable[EFFECT_SHIELD_PARTICLE].update(&sEffectContext.shieldParticles[i].effect) == 1) {
-                Effect_Delete(globalCtx, i + SPARK_COUNT + BLURE_COUNT);
+                Effect_Delete(play, i + SPARK_COUNT + BLURE_COUNT);
             }
         }
     }
 }
 
-void Effect_Delete(GlobalContext* globalCtx, s32 index) {
+void Effect_Delete(PlayState* play, s32 index) {
     if (index == TOTAL_EFFECT_COUNT) {
         return;
     }
@@ -232,7 +232,7 @@ void Effect_Delete(GlobalContext* globalCtx, s32 index) {
     }
 }
 
-void Effect_DeleteAll(GlobalContext* globalCtx) {
+void Effect_DeleteAll(PlayState* play) {
     s32 i;
 
     osSyncPrintf("エフェクト総て解放\n"); // "All effect release"

@@ -9,19 +9,19 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnMag_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_InitMq(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_InitVanilla(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_Init(Actor* thisx, PlayState* play);
+void EnMag_InitMq(Actor* thisx, PlayState* play);
+void EnMag_InitVanilla(Actor* thisx, PlayState* play);
 
-void EnMag_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx);
+void EnMag_Destroy(Actor* thisx, PlayState* play);
+void EnMag_UpdateMq(Actor* thisx, PlayState* play);
+void EnMag_UpdateVanilla(Actor* thisx, PlayState* play);
 
-void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx);
-void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp);
-void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp);
+void EnMag_Draw(Actor* thisx, PlayState* play);
+void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp);
+void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp);
 
-typedef void (*EnMagDrawInnerFunc)(struct Actor*, GlobalContext*, Gfx**);
+typedef void (*EnMagDrawInnerFunc)(struct Actor*, PlayState*, Gfx**);
 
 static EnMagDrawInnerFunc drawInnerFunc;
 
@@ -38,20 +38,20 @@ const ActorInit En_Mag_InitVars = {
     NULL,
 };
 
-void EnMag_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_Init(Actor* thisx, PlayState* play) {
     if (ResourceMgr_IsGameMasterQuest()) {
-        EnMag_InitMq(thisx, globalCtx);
+        EnMag_InitMq(thisx, play);
         drawInnerFunc = EnMag_DrawInnerMq;
         thisx->update = EnMag_UpdateMq;
     } else {
-        EnMag_InitVanilla(thisx, globalCtx);
+        EnMag_InitVanilla(thisx, play);
         thisx->update = EnMag_UpdateVanilla;
         drawInnerFunc = EnMag_DrawInnerVanilla;
     }
 }
 
 static s16 sDelayTimer = 0;
-void EnMag_InitMq(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_InitMq(Actor* thisx, PlayState* play) {
     EnMag* this = (EnMag*)thisx;
 
     YREG(1) = 63;
@@ -121,7 +121,7 @@ void EnMag_InitMq(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_E320 = 0;
 }
 
-void EnMag_InitVanilla(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_InitVanilla(Actor* thisx, PlayState* play) {
     EnMag* this = (EnMag*)thisx;
     Color_RGB8 Original_Prim = { 255, 255, 170 };
     Color_RGB8 Original_Env = { 255, 100, 0 };
@@ -211,18 +211,18 @@ void EnMag_InitVanilla(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_E320 = 0;
 }
 
-void EnMag_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
     s32 pad[2];
     EnMag* this = (EnMag*)thisx;
 
     if (gSaveContext.fileNum != 0xFEDC) {
         if (this->globalState < MAG_STATE_DISPLAY) {
-            if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
-                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
+            if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) ||
+                CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
+                CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
                 Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
@@ -247,19 +247,19 @@ void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx) {
             }
         } else if (this->globalState >= MAG_STATE_DISPLAY) {
             if (sDelayTimer == 0) {
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
-                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
+                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) ||
+                    CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
+                    CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (globalCtx->sceneLoadFlag != 20) {
+                    if (play->sceneLoadFlag != 20) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        globalCtx->sceneLoadFlag = 20;
-                        globalCtx->fadeTransition = 2;
+                        play->sceneLoadFlag = 20;
+                        play->fadeTransition = 2;
                     }
 
                     this->copyrightAlphaStep = 15;
@@ -363,18 +363,18 @@ void EnMag_UpdateMq(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->globalState == MAG_STATE_INITIAL) {
-        if (Flags_GetEnv(globalCtx, 3)) {
+        if (Flags_GetEnv(play, 3)) {
             this->effectFadeInTimer = 40;
             this->globalState = MAG_STATE_FADE_IN;
         }
     } else if (this->globalState == MAG_STATE_DISPLAY) {
-        if (Flags_GetEnv(globalCtx, 4)) {
+        if (Flags_GetEnv(play, 4)) {
             this->globalState = MAG_STATE_FADE_OUT;
         }
     }
 }
 
-void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
     s32 pad[2];
     EnMag* this = (EnMag*)thisx;
     Color_RGB8 Original_Prim = { 255, 255, 170 };
@@ -382,9 +382,9 @@ void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx) {
 
     if (gSaveContext.fileNum != 0xFEDC) {
         if (this->globalState < MAG_STATE_DISPLAY) {
-            if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
-                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
+            if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) ||
+                CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
+                CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
                 Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
@@ -418,19 +418,19 @@ void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx) {
             }
         } else if (this->globalState >= MAG_STATE_DISPLAY) {
             if (sDelayTimer == 0) {
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
-                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
+                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) ||
+                    CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
+                    CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (globalCtx->sceneLoadFlag != 20) {
+                    if (play->sceneLoadFlag != 20) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        globalCtx->sceneLoadFlag = 20;
-                        globalCtx->fadeTransition = 2;
+                        play->sceneLoadFlag = 20;
+                        play->fadeTransition = 2;
                     }
 
                     this->copyrightAlphaStep = 15;
@@ -549,12 +549,12 @@ void EnMag_UpdateVanilla(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->globalState == MAG_STATE_INITIAL) {
-        if (Flags_GetEnv(globalCtx, 3)) {
+        if (Flags_GetEnv(play, 3)) {
             this->effectFadeInTimer = 40;
             this->globalState = MAG_STATE_FADE_IN;
         }
     } else if (this->globalState == MAG_STATE_DISPLAY) {
-        if (Flags_GetEnv(globalCtx, 4)) {
+        if (Flags_GetEnv(play, 4)) {
             this->globalState = MAG_STATE_FADE_OUT;
         }
     }
@@ -671,7 +671,7 @@ void EnMag_DrawCharTexture(Gfx** gfxp, u8* texture, s32 rectLeft, s32 rectTop) {
 }
 
 
-void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
+void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
@@ -694,7 +694,7 @@ void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
     u16 rectLeft;
     u16 rectTop;
 
-    gSPSegment(gfx++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
+    gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
     func_8009457C(&gfx);
 
@@ -861,7 +861,7 @@ void EnMag_DrawInnerMq(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
     *gfxp = gfx;
 }
 
-void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
+void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
@@ -884,7 +884,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) 
     u16 rectLeft;
     u16 rectTop;
 
-    gSPSegment(gfx++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
+    gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
     func_8009457C(&gfx);
 
@@ -1048,22 +1048,22 @@ void EnMag_DrawInnerVanilla(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) 
     *gfxp = gfx;
 }
 
-void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnMag_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     Gfx* gfx;
     Gfx* gfxRef;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     gfxRef = POLY_OPA_DISP;
     gfx = Graph_GfxPlusOne(gfxRef);
     gSPDisplayList(OVERLAY_DISP++, gfx);
 
-    drawInnerFunc(thisx, globalCtx, &gfx);
+    drawInnerFunc(thisx, play, &gfx);
 
     gSPEndDisplayList(gfx++);
     Graph_BranchDlist(gfxRef, gfx);
     POLY_OPA_DISP = gfx;
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

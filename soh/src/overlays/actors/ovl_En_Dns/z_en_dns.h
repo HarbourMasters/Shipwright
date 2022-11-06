@@ -6,7 +6,7 @@
 
 struct EnDns;
 
-typedef void (*EnDnsActionFunc)(struct EnDns*, GlobalContext*);
+typedef void (*EnDnsActionFunc)(struct EnDns*, PlayState*);
 typedef u32 (*EnDnsPurchaseableCheck)(struct EnDns*);
 typedef void (*EnDnsSetRupeesAndFlags)(struct EnDns*);
 

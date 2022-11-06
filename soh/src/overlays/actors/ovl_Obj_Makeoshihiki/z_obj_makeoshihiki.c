@@ -10,8 +10,8 @@
 
 #define FLAGS ACTOR_FLAG_5
 
-void ObjMakeoshihiki_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjMakeoshihiki_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ObjMakeoshihiki_Init(Actor* thisx, PlayState* play);
+void ObjMakeoshihiki_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Obj_Makeoshihiki_InitVars = {
     ACTOR_OBJ_MAKEOSHIHIKI,       ACTORCAT_PROP,           FLAGS,
@@ -46,16 +46,16 @@ static BlockConfig sBlocks[] = {
 
 static u32 sFlags[3][2] = { { 0, 0 }, { 1, 0 }, { 0, 1 } };
 
-static void (*sFlagSwitchFuncs[])(GlobalContext* globalCtx, s32 flag) = { Flags_UnsetSwitch, Flags_SetSwitch };
+static void (*sFlagSwitchFuncs[])(PlayState* play, s32 flag) = { Flags_UnsetSwitch, Flags_SetSwitch };
 
-void ObjMakeoshihiki_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMakeoshihiki_Init(Actor* thisx, PlayState* play) {
     BlockConfig* block = &sBlocks[thisx->home.rot.z & 1];
     s32 typeIdx;
     Vec3f* spawnPos;
 
-    if (!((thisx->params >> 6) & 1) && Flags_GetSwitch(globalCtx, thisx->params & 0x3F)) {
+    if (!((thisx->params >> 6) & 1) && Flags_GetSwitch(play, thisx->params & 0x3F)) {
         typeIdx = 1;
-    } else if (!((thisx->params >> 0xE) & 1) && Flags_GetSwitch(globalCtx, (thisx->params >> 8) & 0x3F)) {
+    } else if (!((thisx->params >> 0xE) & 1) && Flags_GetSwitch(play, (thisx->params >> 8) & 0x3F)) {
         typeIdx = 2;
     } else {
         typeIdx = 0;
@@ -63,7 +63,7 @@ void ObjMakeoshihiki_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     spawnPos = &block->posVecs[typeIdx];
 
-    if (Actor_SpawnAsChild(&globalCtx->actorCtx, thisx, globalCtx, ACTOR_OBJ_OSHIHIKI, spawnPos->x, spawnPos->y,
+    if (Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_OBJ_OSHIHIKI, spawnPos->x, spawnPos->y,
                            spawnPos->z, 0, block->rotY, 0,
                            ((block->color << 6) & 0xC0) | (block->type & 0xF) | 0xFF00) == NULL) {
         // "Push-pull block failure"
@@ -80,7 +80,7 @@ void ObjMakeoshihiki_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("(%s)(arg_data %04xF)(angleZ %d)\n", __FILE__, thisx->params, thisx->home.rot.z);
 }
 
-void ObjMakeoshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMakeoshihiki_Draw(Actor* thisx, PlayState* play) {
     BlockConfig* block = &sBlocks[thisx->home.rot.z & 1];
     s32 i;
     s32 sfxCond1;
@@ -94,7 +94,7 @@ void ObjMakeoshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 if ((thisx->params >> 6) & 1) {
                     sfxCond1 = false;
                 } else {
-                    if (Flags_GetSwitch(globalCtx, thisx->params & 0x3F)) {
+                    if (Flags_GetSwitch(play, thisx->params & 0x3F)) {
                         cond = true;
                     } else {
                         cond = false;
@@ -105,7 +105,7 @@ void ObjMakeoshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 if ((thisx->params >> 0xE) & 1) {
                     sfxCond2 = false;
                 } else {
-                    if (Flags_GetSwitch(globalCtx, (thisx->params >> 8) & 0x3F)) {
+                    if (Flags_GetSwitch(play, (thisx->params >> 8) & 0x3F)) {
                         cond2 = true;
                     } else {
                         cond2 = false;
@@ -118,8 +118,8 @@ void ObjMakeoshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 }
             }
 
-            sFlagSwitchFuncs[sFlags[i][0]](globalCtx, thisx->params & 0x3F);
-            sFlagSwitchFuncs[sFlags[i][1]](globalCtx, (thisx->params >> 8) & 0x3F);
+            sFlagSwitchFuncs[sFlags[i][0]](play, thisx->params & 0x3F);
+            sFlagSwitchFuncs[sFlags[i][1]](play, (thisx->params >> 8) & 0x3F);
 
             if (block->unk_24[i] & 2) {
                 ((ObjOshihiki*)thisx->child)->cantMove = true;

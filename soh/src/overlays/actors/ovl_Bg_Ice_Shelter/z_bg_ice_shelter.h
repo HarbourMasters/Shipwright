@@ -6,7 +6,7 @@
 
 struct BgIceShelter;
 
-typedef void (*BgIceShelterActionFunc)(struct BgIceShelter*, GlobalContext*);
+typedef void (*BgIceShelterActionFunc)(struct BgIceShelter*, PlayState*);
 
 typedef struct BgIceShelter {
     /* 0x0000 */ DynaPolyActor dyna;
