@@ -9,10 +9,10 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void OceffWipe3_Init(Actor* thisx, GlobalContext* globalCtx);
-void OceffWipe3_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void OceffWipe3_Update(Actor* thisx, GlobalContext* globalCtx);
-void OceffWipe3_Draw(Actor* thisx, GlobalContext* globalCtx);
+void OceffWipe3_Init(Actor* thisx, PlayState* play);
+void OceffWipe3_Destroy(Actor* thisx, PlayState* play);
+void OceffWipe3_Update(Actor* thisx, PlayState* play);
+void OceffWipe3_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Oceff_Wipe3_InitVars = {
     ACTOR_OCEFF_WIPE3,
@@ -29,30 +29,30 @@ const ActorInit Oceff_Wipe3_InitVars = {
 
 #include "overlays/ovl_Oceff_Wipe3/ovl_Oceff_Wipe3.h"
 
-void OceffWipe3_Init(Actor* thisx, GlobalContext* globalCtx) {
+void OceffWipe3_Init(Actor* thisx, PlayState* play) {
     OceffWipe3* this = (OceffWipe3*)thisx;
 
     Actor_SetScale(&this->actor, 0.1f);
     this->counter = 0;
-    this->actor.world.pos = GET_ACTIVE_CAM(globalCtx)->eye;
+    this->actor.world.pos = GET_ACTIVE_CAM(play)->eye;
     // it's actually WIPE3...
     osSyncPrintf(VT_FGCOL(CYAN) " WIPE2 arg_data = %d\n" VT_RST, this->actor.params);
 }
 
-void OceffWipe3_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void OceffWipe3_Destroy(Actor* thisx, PlayState* play) {
     OceffWipe3* this = (OceffWipe3*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
-    func_800876C8(globalCtx);
+    func_800876C8(play);
     if (gSaveContext.nayrusLoveTimer != 0) {
         player->stateFlags3 |= 0x40;
     }
 }
 
-void OceffWipe3_Update(Actor* thisx, GlobalContext* globalCtx) {
+void OceffWipe3_Update(Actor* thisx, PlayState* play) {
     OceffWipe3* this = (OceffWipe3*)thisx;
 
-    this->actor.world.pos = GET_ACTIVE_CAM(globalCtx)->eye;
+    this->actor.world.pos = GET_ACTIVE_CAM(play)->eye;
     if (this->counter < 100) {
         this->counter++;
     } else {
@@ -60,8 +60,8 @@ void OceffWipe3_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void OceffWipe3_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    u32 scroll = globalCtx->state.frames & 0xFFF;
+void OceffWipe3_Draw(Actor* thisx, PlayState* play) {
+    u32 scroll = play->state.frames & 0xFFF;
     OceffWipe3* this = (OceffWipe3*)thisx;
     f32 z;
     u8 alpha;
@@ -70,8 +70,8 @@ void OceffWipe3_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vtx* vtxPtr;
     Vec3f vec;
 
-    eye = GET_ACTIVE_CAM(globalCtx)->eye;
-    Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(globalCtx));
+    eye = GET_ACTIVE_CAM(play)->eye;
+    Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(play));
     if (this->counter < 32) {
         z = Math_SinS(this->counter << 9) * 1330;
     } else {
@@ -89,24 +89,24 @@ void OceffWipe3_Draw(Actor* thisx, GlobalContext* globalCtx) {
         vtxPtr[11].v.cn[3] = vtxPtr[13].v.cn[3] = vtxPtr[15].v.cn[3] = vtxPtr[17].v.cn[3] = vtxPtr[19].v.cn[3] =
             vtxPtr[21].v.cn[3] = alpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     Matrix_Translate(eye.x + vec.x, eye.y + vec.y, eye.z + vec.z, MTXMODE_NEW);
     Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);
-    Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+    Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_Translate(0.0f, 0.0f, -z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 100, 200, 0, 128);
     gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
-    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, scroll * 12, scroll * (-12), 64, 64, 1,
+    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 12, scroll * (-12), 64, 64, 1,
                                                      scroll * 8, scroll * (-8), 64, 64));
     gSPDisplayList(POLY_XLU_DISP++, sFrustumDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

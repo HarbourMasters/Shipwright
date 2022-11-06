@@ -8,7 +8,7 @@
 
 struct BgMizuShutter;
 
-typedef void (*BgMizuShutterActionFunc)(struct BgMizuShutter*, GlobalContext*);
+typedef void (*BgMizuShutterActionFunc)(struct BgMizuShutter*, PlayState*);
 
 typedef struct BgMizuShutter {
     /* 0x0000 */ DynaPolyActor dyna;

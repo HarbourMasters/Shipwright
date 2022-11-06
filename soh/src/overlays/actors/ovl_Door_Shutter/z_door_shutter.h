@@ -41,7 +41,7 @@ typedef enum {
 
 struct DoorShutter;
 
-typedef void (*DoorShutterActionFunc)(struct DoorShutter*, GlobalContext*);
+typedef void (*DoorShutterActionFunc)(struct DoorShutter*, PlayState*);
 
 typedef struct DoorShutter {
     /* 0x0000 */ DynaPolyActor dyna;

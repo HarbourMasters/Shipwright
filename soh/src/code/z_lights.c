@@ -205,8 +205,8 @@ s32 Lights_FreeNode(LightNode* light) {
     }
 }
 
-void LightContext_Init(GlobalContext* globalCtx, LightContext* lightCtx) {
-    LightContext_InitList(globalCtx, lightCtx);
+void LightContext_Init(PlayState* play, LightContext* lightCtx) {
+    LightContext_InitList(play, lightCtx);
     LightContext_SetAmbientColor(lightCtx, 80, 80, 80);
     LightContext_SetFog(lightCtx, 0, 0, 0, 996, 12800);
     memset(&sLightsBuffer, 0, sizeof(sLightsBuffer));
@@ -233,13 +233,13 @@ Lights* LightContext_NewLights(LightContext* lightCtx, GraphicsContext* gfxCtx) 
     return Lights_New(gfxCtx, lightCtx->ambientColor[0], lightCtx->ambientColor[1], lightCtx->ambientColor[2]);
 }
 
-void LightContext_InitList(GlobalContext* globalCtx, LightContext* lightCtx) {
+void LightContext_InitList(PlayState* play, LightContext* lightCtx) {
     lightCtx->listHead = NULL;
 }
 
-void LightContext_DestroyList(GlobalContext* globalCtx, LightContext* lightCtx) {
+void LightContext_DestroyList(PlayState* play, LightContext* lightCtx) {
     while (lightCtx->listHead != NULL) {
-        LightContext_RemoveLight(globalCtx, lightCtx, lightCtx->listHead);
+        LightContext_RemoveLight(play, lightCtx, lightCtx->listHead);
         lightCtx->listHead = lightCtx->listHead->next;
     }
 }
@@ -250,7 +250,7 @@ void LightContext_DestroyList(GlobalContext* globalCtx, LightContext* lightCtx) 
  * Note: Due to the limited number of slots in a Lights group, inserting too many lights in the
  * list may result in older entries not being bound to a Light when calling Lights_BindAll
  */
-LightNode* LightContext_InsertLight(GlobalContext* globalCtx, LightContext* lightCtx, LightInfo* info) {
+LightNode* LightContext_InsertLight(PlayState* play, LightContext* lightCtx, LightInfo* info) {
     LightNode* node;
 
     node = Lights_FindBufSlot();
@@ -270,7 +270,7 @@ LightNode* LightContext_InsertLight(GlobalContext* globalCtx, LightContext* ligh
     return node;
 }
 
-void LightContext_RemoveLight(GlobalContext* globalCtx, LightContext* lightCtx, LightNode* node) {
+void LightContext_RemoveLight(PlayState* play, LightContext* lightCtx, LightNode* node) {
     if (node != NULL) {
         if (node->prev != NULL) {
             node->prev->next = node->next;
@@ -326,7 +326,7 @@ Lights* Lights_New(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambient
     return lights;
 }
 
-void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
+void Lights_GlowCheckPrepare(PlayState* play) {
     LightNode* node;
     LightPoint* params;
     Vec3f pos;
@@ -335,7 +335,7 @@ void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
     f32 wX;
     f32 wY;
 
-    node = globalCtx->lightCtx.listHead;
+    node = play->lightCtx.listHead;
 
     while (node != NULL) {
         params = &node->info->params.point;
@@ -348,7 +348,7 @@ void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            func_8002BE04(globalCtx, &pos, &multDest, &wDest);
+            func_8002BE04(play, &pos, &multDest, &wDest);
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;
 
@@ -364,7 +364,7 @@ void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
     }
 }
 
-void Lights_GlowCheck(GlobalContext* globalCtx) {
+void Lights_GlowCheck(PlayState* play) {
     LightNode* node;
     LightPoint* params;
     Vec3f pos;
@@ -375,7 +375,7 @@ void Lights_GlowCheck(GlobalContext* globalCtx) {
     s32 wZ;
     s32 zBuf;
 
-    node = globalCtx->lightCtx.listHead;
+    node = play->lightCtx.listHead;
 
     while (node != NULL) {
         params = &node->info->params.point;
@@ -388,7 +388,7 @@ void Lights_GlowCheck(GlobalContext* globalCtx) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            func_8002BE04(globalCtx, &pos, &multDest, &wDest);
+            func_8002BE04(play, &pos, &multDest, &wDest);
             params->drawGlow = false;
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;
@@ -410,13 +410,13 @@ void Lights_GlowCheck(GlobalContext* globalCtx) {
     }
 }
 
-void Lights_DrawGlow(GlobalContext* globalCtx) {
+void Lights_DrawGlow(PlayState* play) {
     s32 pad;
     LightNode* node;
 
-    node = globalCtx->lightCtx.listHead;
+    node = play->lightCtx.listHead;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -439,7 +439,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, params->color[0], params->color[1], params->color[2], 50);
             Matrix_Translate(params->x, params->y, params->z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGlowCircleDL);
             FrameInterpolation_RecordCloseChild();
@@ -448,5 +448,5 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         node = node->next;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

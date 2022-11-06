@@ -29,7 +29,7 @@ typedef struct ConsoleCommand
     char* description;
 } ConsoleCommand;
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 void GameConsole_Init();
 

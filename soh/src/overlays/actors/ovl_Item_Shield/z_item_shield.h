@@ -6,7 +6,7 @@
 
 struct ItemShield;
 
-typedef void (*ItemShieldActionFunc)(struct ItemShield*, GlobalContext*);
+typedef void (*ItemShieldActionFunc)(struct ItemShield*, PlayState*);
 
 typedef struct ItemShield {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct EnVali;
 
-typedef void (*EnValiActionFunc)(struct EnVali*, GlobalContext*);
+typedef void (*EnValiActionFunc)(struct EnVali*, PlayState*);
 
 typedef enum {
     /* 0x00 */ EN_VALI_LIMB_NONE,

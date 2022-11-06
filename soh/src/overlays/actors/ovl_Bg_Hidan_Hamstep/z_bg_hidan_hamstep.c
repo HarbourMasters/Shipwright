@@ -9,16 +9,16 @@
 
 #define FLAGS 0
 
-void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHamstep_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHamstep_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHamstep_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanHamstep_Init(Actor* thisx, PlayState* play);
+void BgHidanHamstep_Destroy(Actor* thisx, PlayState* play);
+void BgHidanHamstep_Update(Actor* thisx, PlayState* play);
+void BgHidanHamstep_Draw(Actor* thisx, PlayState* play);
 
-void func_808887C4(BgHidanHamstep* this, GlobalContext* globalCtx);
-void func_80888860(BgHidanHamstep* this, GlobalContext* globalCtx);
-void func_808889B8(BgHidanHamstep* this, GlobalContext* globalCtx);
-void func_80888A58(BgHidanHamstep* this, GlobalContext* globalCtx);
-void BgHidanHamstep_DoNothing(BgHidanHamstep* this, GlobalContext* globalCtx);
+void func_808887C4(BgHidanHamstep* this, PlayState* play);
+void func_80888860(BgHidanHamstep* this, PlayState* play);
+void func_808889B8(BgHidanHamstep* this, PlayState* play);
+void func_80888A58(BgHidanHamstep* this, PlayState* play);
+void BgHidanHamstep_DoNothing(BgHidanHamstep* this, PlayState* play);
 
 static f32 sYPosOffsets[] = {
     -20.0f, -120.0f, -220.0f, -320.0f, -420.0f,
@@ -94,14 +94,14 @@ void BgHidanHamstep_SetupAction(BgHidanHamstep* this, s32 action) {
     this->actionFunc = sActionFuncs[action];
 }
 
-s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, GlobalContext* globalCtx2) {
+s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, PlayState* play2) {
     BgHidanHamstep* step = this;
     s32 i;
     Vec3f pos;
     f32 sin;
     f32 cos;
     s16 params;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
 
     pos = pos; // Required to match
     pos.y = this->dyna.actor.home.pos.y - 100.0f;
@@ -116,7 +116,7 @@ s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, GlobalContext* globalCtx2
         params |= (this->dyna.actor.params & 0xFF00);
 
         step = (BgHidanHamstep*)Actor_SpawnAsChild(
-            &globalCtx->actorCtx, &step->dyna.actor, globalCtx, ACTOR_BG_HIDAN_HAMSTEP, pos.x, pos.y, pos.z,
+            &play->actorCtx, &step->dyna.actor, play, ACTOR_BG_HIDAN_HAMSTEP, pos.x, pos.y, pos.z,
             this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, params);
 
         if (step == NULL) {
@@ -126,7 +126,7 @@ s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, GlobalContext* globalCtx2
     return 1;
 }
 
-void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHamstep_Init(Actor* thisx, PlayState* play) {
     BgHidanHamstep* this = (BgHidanHamstep*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -139,8 +139,8 @@ void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
 
     if ((this->dyna.actor.params & 0xFF) == 0) {
-        Collider_InitTris(globalCtx, &this->collider);
-        Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInit, this->colliderItems);
+        Collider_InitTris(play, &this->collider);
+        Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInit, this->colliderItems);
 
         for (i = 0; i < 2; i++) {
             for (i2 = 0; i2 < 3; i2++) {
@@ -158,9 +158,9 @@ void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx) {
         CollisionHeader_GetVirtual(&gFireTempleStoneStep2Col, &colHeader);
     }
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0xFF)) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0xFF)) {
         if ((this->dyna.actor.params & 0xFF) == 0) {
             this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + (-20.0f);
             BgHidanHamstep_SetupAction(this, 4);
@@ -181,7 +181,7 @@ void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx) {
     if ((this->dyna.actor.params & 0xFF) == 0) {
         // "Fire Temple Object [Hammer Step] appears"
         osSyncPrintf("◯◯◯炎の神殿オブジェクト【ハンマーステップ】出現\n");
-        if (BgHidanHamstep_SpawnChildren(this, globalCtx) == 0) {
+        if (BgHidanHamstep_SpawnChildren(this, play) == 0) {
             step = this;
 
             // "[Hammer Step] I can't create a step!"
@@ -196,17 +196,17 @@ void BgHidanHamstep_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanHamstep_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHamstep_Destroy(Actor* thisx, PlayState* play) {
     BgHidanHamstep* this = (BgHidanHamstep*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 
     if ((this->dyna.actor.params & 0xFF) == 0) {
-        Collider_DestroyTris(globalCtx, &this->collider);
+        Collider_DestroyTris(play, &this->collider);
     }
 }
 
-void func_808884C8(BgHidanHamstep* step, GlobalContext* globalCtx) {
+void func_808884C8(BgHidanHamstep* step, PlayState* play) {
     Vec3f pos = step->dyna.actor.world.pos;
     s32 i;
     f32 sin;
@@ -214,7 +214,7 @@ void func_808884C8(BgHidanHamstep* step, GlobalContext* globalCtx) {
 
     pos.y -= 20.0f;
 
-    func_80033480(globalCtx, &pos, 0.0f, 0, 600, 300, 0);
+    func_80033480(play, &pos, 0.0f, 0, 600, 300, 0);
 
     sin = Math_SinS(step->dyna.actor.shape.rot.y + 0x8000);
     cos = Math_CosS(step->dyna.actor.shape.rot.y + 0x8000);
@@ -224,16 +224,16 @@ void func_808884C8(BgHidanHamstep* step, GlobalContext* globalCtx) {
     for (i = 0; i < ARRAY_COUNT(sEffectPositions); i++) {
         pos.x = (sEffectPositions[i][1] * sin) + (sEffectPositions[i][0] * cos) + step->dyna.actor.world.pos.x;
         pos.z = ((sEffectPositions[i][1] * cos) - (sEffectPositions[i][0] * sin)) + step->dyna.actor.world.pos.z;
-        func_80033480(globalCtx, &pos, 0.0f, 0, 150, 150, 0);
+        func_80033480(play, &pos, 0.0f, 0, 150, 150, 0);
     }
 }
 
-void func_80888638(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void func_80888638(BgHidanHamstep* this, PlayState* play) {
     BgHidanHamstep* child = (BgHidanHamstep*)this->dyna.actor.child;
 
     while (child != NULL) {
         if ((child->dyna.actor.params & 0xFF) != 0) {
-            func_808884C8(child, globalCtx);
+            func_808884C8(child, play);
         }
         child = (BgHidanHamstep*)child->dyna.actor.child;
     }
@@ -277,19 +277,19 @@ void func_80888734(BgHidanHamstep* this) {
     }
 }
 
-void func_808887C4(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void func_808887C4(BgHidanHamstep* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
-        OnePointCutscene_Init(globalCtx, 3310, 100, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3310, 100, &this->dyna.actor, MAIN_CAM);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_HAMMER_SWITCH);
         this->collider.base.acFlags = AC_NONE;
         BgHidanHamstep_SetupAction(this, 1);
-        Flags_SetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0xFF);
+        Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0xFF);
     } else {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void func_80888860(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void func_80888860(BgHidanHamstep* this, PlayState* play) {
     s32 pad;
     s32 pad2;
     s32 quakeIndex;
@@ -308,20 +308,20 @@ void func_80888860(BgHidanHamstep* this, GlobalContext* globalCtx) {
 
 
             if (this->unk_244 == 1) {
-                quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 3);
+                quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
                 Quake_SetSpeed(quakeIndex, -15536);
                 Quake_SetQuakeValues(quakeIndex, 0, 0, 500, 0);
                 Quake_SetCountdown(quakeIndex, 20);
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
                 func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 255, 20, 150);
-                func_80888638(this, globalCtx);
+                func_80888638(this, play);
                 osSyncPrintf("A(%d)\n", this->dyna.actor.params);
             }
         }
     }
 }
 
-void func_808889B8(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void func_808889B8(BgHidanHamstep* this, PlayState* play) {
     s32 pad;
     BgHidanHamstep* parent = (BgHidanHamstep*)this->dyna.actor.parent;
 
@@ -338,7 +338,7 @@ void func_808889B8(BgHidanHamstep* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80888A58(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void func_80888A58(BgHidanHamstep* this, PlayState* play) {
     s32 pad;
     s32 pad2;
     s32 quakeIndex;
@@ -366,14 +366,14 @@ void func_80888A58(BgHidanHamstep* this, GlobalContext* globalCtx) {
 
 
             if (this->unk_244 == 1) {
-                quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 3);
+                quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
                 Quake_SetSpeed(quakeIndex, -15536);
                 Quake_SetQuakeValues(quakeIndex, 20, 1, 0, 0);
                 Quake_SetCountdown(quakeIndex, 7);
 
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
                 func_800AA000(10000.0f, 255, 20, 150);
-                func_808884C8(this, globalCtx);
+                func_808884C8(this, play);
 
                 if ((this->dyna.actor.params & 0xFF) == 5) {
                     func_80078884(NA_SE_SY_CORRECT_CHIME);
@@ -385,21 +385,21 @@ void func_80888A58(BgHidanHamstep* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanHamstep_DoNothing(BgHidanHamstep* this, GlobalContext* globalCtx) {
+void BgHidanHamstep_DoNothing(BgHidanHamstep* this, PlayState* play) {
 }
 
-void BgHidanHamstep_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHamstep_Update(Actor* thisx, PlayState* play) {
     BgHidanHamstep* this = (BgHidanHamstep*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHidanHamstep_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+void BgHidanHamstep_Draw(Actor* thisx, PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if ((thisx->params & 0xFF) == 0) {
@@ -408,5 +408,5 @@ void BgHidanHamstep_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStoneStep2DL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -15,7 +15,7 @@ typedef enum {
 
 struct BgBdanSwitch;
 
-typedef void (*BgBdanSwitchActionFunc)(struct BgBdanSwitch*, GlobalContext*);
+typedef void (*BgBdanSwitchActionFunc)(struct BgBdanSwitch*, PlayState*);
 
 typedef struct BgBdanSwitch {
     /* 0x0000 */ DynaPolyActor dyna;

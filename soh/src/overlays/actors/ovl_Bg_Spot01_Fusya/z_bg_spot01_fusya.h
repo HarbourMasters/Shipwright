@@ -6,7 +6,7 @@
 
 struct BgSpot01Fusya;
 
-typedef void (*BgSpot01FusyaActionFunc)(struct BgSpot01Fusya*, GlobalContext*);
+typedef void (*BgSpot01FusyaActionFunc)(struct BgSpot01Fusya*, PlayState*);
 
 typedef struct BgSpot01Fusya {
     /* 0x0000 */ Actor actor;

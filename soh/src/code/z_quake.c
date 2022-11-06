@@ -319,9 +319,9 @@ s16 Quake_Calc(Camera* camera, QuakeCamCalc* camData) {
     s32 ret;
     u32 eq;
     Vec3f vec;
-    GlobalContext* globalCtx;
+    PlayState* play;
 
-    globalCtx = camera->globalCtx;
+    play = camera->play;
     vec.x = 0.0f;
     vec.y = 0.0f;
     vec.z = 0.0f;
@@ -344,7 +344,7 @@ s16 Quake_Calc(Camera* camera, QuakeCamCalc* camData) {
     for (idx = 0; idx < ARRAY_COUNT(sQuakeRequest); idx++) {
         req = &sQuakeRequest[idx];
         if (req->callbackIdx != 0) {
-            if (globalCtx->cameraPtrs[req->camPtrIdx] == NULL) {
+            if (play->cameraPtrs[req->camPtrIdx] == NULL) {
                 osSyncPrintf(VT_COL(YELLOW, BLACK) "quake: stopped! 'coz camera [%d] killed!!\n" VT_RST,
                              req->camPtrIdx);
                 Quake_Remove(req);

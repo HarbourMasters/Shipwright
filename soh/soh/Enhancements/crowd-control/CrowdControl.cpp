@@ -14,7 +14,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 }
 
 #include "../debugconsole.h"
@@ -325,11 +325,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uint32_t value, bool dryRun) {
     // Don't execute effect and don't advance timer when the player is not in a proper loaded savefile
     // and when they're busy dying.
-    if (gGlobalCtx == NULL || gGlobalCtx->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
+    if (gPlayState == NULL || gPlayState->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
         return EffectResult::Retry;
     }
 
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
 
     if (player != NULL) {
         if (effectId == EFFECT_ADD_HEART_CONTAINER) {
@@ -377,8 +377,8 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
         }
     }
 
-    if (player != NULL && !Player_InBlockingCsMode(gGlobalCtx, player) && gGlobalCtx->pauseCtx.state == 0
-                                                                       && gGlobalCtx->msgCtx.msgMode == 0) {
+    if (player != NULL && !Player_InBlockingCsMode(gPlayState, player) && gPlayState->pauseCtx.state == 0
+                                                                       && gPlayState->msgCtx.msgMode == 0) {
         if (effectId == EFFECT_HIGH_GRAVITY) {
             if (dryRun == 0) CMD_EXECUTE("gravity 2");
             return EffectResult::Success;
@@ -471,7 +471,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
 }
 
 bool CrowdControl::SpawnEnemy(std::string effectId) {
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
 
     int enemyId = 0;
     int enemyParams = 0;
@@ -527,17 +527,17 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
         posYOffset = 50;
     }
 
-    return Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, enemyId, player->actor.world.pos.x + posXOffset,
+    return Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
         player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams);
 
 }
 
 void CrowdControl::RemoveEffect(std::string effectId) {
-    if (gGlobalCtx == NULL) {
+    if (gPlayState == NULL) {
         return;
     }
 
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
 
     if (player != NULL) {
         if (effectId == EFFECT_GIANT_LINK

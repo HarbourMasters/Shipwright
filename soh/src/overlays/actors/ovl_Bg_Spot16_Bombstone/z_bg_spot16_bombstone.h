@@ -6,7 +6,7 @@
 
 struct BgSpot16Bombstone;
 
-typedef void (*BgSpot16BombstoneActionFunc)(struct BgSpot16Bombstone*, GlobalContext*);
+typedef void (*BgSpot16BombstoneActionFunc)(struct BgSpot16Bombstone*, PlayState*);
 
 typedef struct BgSpot16Bombstone {
     /* 0x0000 */ Actor actor;

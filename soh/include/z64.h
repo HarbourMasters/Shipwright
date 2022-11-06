@@ -1228,7 +1228,7 @@ typedef struct {
 } TransitionActorContext;
 
 // Global Context (dbg ram start: 80212020)
-typedef struct GlobalContext {
+typedef struct PlayState {
     /* 0x00000 */ GameState state;
     /* 0x000A4 */ s16 sceneNum;
     /* 0x000A6 */ u8 sceneConfig;
@@ -1266,15 +1266,15 @@ typedef struct GlobalContext {
     /* 0x117A4 */ ObjectContext objectCtx;
     /* 0x11CBC */ RoomContext roomCtx;
     /* 0x11D34 */ TransitionActorContext transiActorCtx;
-    /* 0x11D3C */ void (*playerInit)(Player* player, struct GlobalContext* globalCtx, FlexSkeletonHeader* skelHeader);
-    /* 0x11D40 */ void (*playerUpdate)(Player* player, struct GlobalContext* globalCtx, Input* input);
-    /* 0x11D44 */ s32 (*isPlayerDroppingFish)(struct GlobalContext* globalCtx);
-    /* 0x11D48 */ s32 (*startPlayerFishing)(struct GlobalContext* globalCtx);
-    /* 0x11D4C */ s32 (*grabPlayer)(struct GlobalContext* globalCtx, Player* player);
-    /* 0x11D50 */ s32 (*startPlayerCutscene)(struct GlobalContext* globalCtx, Actor* actor, s32 mode);
-    /* 0x11D54 */ void (*func_11D54)(Player* player, struct GlobalContext* globalCtx);
-    /* 0x11D58 */ s32 (*damagePlayer)(struct GlobalContext* globalCtx, s32 damage);
-    /* 0x11D5C */ void (*talkWithPlayer)(struct GlobalContext* globalCtx, Actor* actor);
+    /* 0x11D3C */ void (*playerInit)(Player* player, struct PlayState* play, FlexSkeletonHeader* skelHeader);
+    /* 0x11D40 */ void (*playerUpdate)(Player* player, struct PlayState* play, Input* input);
+    /* 0x11D44 */ s32 (*isPlayerDroppingFish)(struct PlayState* play);
+    /* 0x11D48 */ s32 (*startPlayerFishing)(struct PlayState* play);
+    /* 0x11D4C */ s32 (*grabPlayer)(struct PlayState* play, Player* player);
+    /* 0x11D50 */ s32 (*startPlayerCutscene)(struct PlayState* play, Actor* actor, s32 mode);
+    /* 0x11D54 */ void (*func_11D54)(Player* player, struct PlayState* play);
+    /* 0x11D58 */ s32 (*damagePlayer)(struct PlayState* play, s32 damage);
+    /* 0x11D5C */ void (*talkWithPlayer)(struct PlayState* play, Actor* actor);
     /* 0x11D60 */ MtxF viewProjectionMtxF;
     /* 0x11DA0 */ MtxF billboardMtxF;
     /* 0x11DE0 */ Mtx* billboardMtx;
@@ -1315,12 +1315,29 @@ typedef struct GlobalContext {
     /* 0x1242B */ u8 unk_1242B;
     /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
-} GlobalContext; // size = 0x12518
+} PlayState; // size = 0x12518
 
 typedef struct {
     /* 0x0000 */ GameState state;
     /* 0x00A8 */ View view;
 } OpeningContext; // size = 0x1D0
+
+typedef struct {
+    /* 0x00 */ u32 stickColorR;
+    /* 0x04 */ u32 stickColorG;
+    /* 0x08 */ u32 stickColorB;
+    /* 0x0C */ u32 stickColorA;
+    /* 0x10 */ f32 stickTexX;
+    /* 0x14 */ f32 stickTexY;
+    /* 0x18 */ u32 arrowColorR;
+    /* 0x1C */ u32 arrowColorG;
+    /* 0x20 */ u32 arrowColorB;
+    /* 0x24 */ u32 arrowColorA;
+    /* 0x28 */ f32 arrowTexX;
+    /* 0x2C */ f32 arrowTexY;
+    /* 0x30 */ f32 z;
+    /* 0x34 */ s32 isEnabled;
+} StickDirectionPrompt;
 
 typedef struct {
     /* 0x00000 */ GameState state;
@@ -1392,6 +1409,14 @@ typedef struct {
     /* 0x1CAD2 */ s16 kbdY;
     /* 0x1CAD4 */ s16 newFileNameCharCount;
     /* 0x1CAD6 */ s16 unk_1CAD6[5];
+    s16 logoAlpha;
+    s8 questType[3]; // 0 for Normal, 1 for MQ
+    StickDirectionPrompt stickLeftPrompt;
+    StickDirectionPrompt stickRightPrompt;
+    f32 arrowAnimTween;
+    f32 stickAnimTween;
+    u8 arrowAnimState;
+    u8 stickAnimState;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {

@@ -6,7 +6,7 @@
 
 struct EnMa3;
 
-typedef void (*EnMa3ActionFunc)(struct EnMa3*, GlobalContext*);
+typedef void (*EnMa3ActionFunc)(struct EnMa3*, PlayState*);
 
 typedef enum {
     /* 0x00 */ MALON_ADULT_LIMB_NONE,

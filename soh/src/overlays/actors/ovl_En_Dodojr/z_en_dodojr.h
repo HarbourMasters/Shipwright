@@ -6,7 +6,7 @@
 
 struct EnDodojr;
 
-typedef void (*EnDodojrActionFunc)(struct EnDodojr*, GlobalContext*);
+typedef void (*EnDodojrActionFunc)(struct EnDodojr*, PlayState*);
 
 typedef struct EnDodojr {
     /* 0x0000 */ Actor actor;
