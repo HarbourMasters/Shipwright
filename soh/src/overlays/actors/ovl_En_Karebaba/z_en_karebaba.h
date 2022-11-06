@@ -6,7 +6,7 @@
 
 struct EnKarebaba;
 
-typedef void (*EnKarebabaActionFunc)(struct EnKarebaba*, GlobalContext*);
+typedef void (*EnKarebabaActionFunc)(struct EnKarebaba*, PlayState*);
 
 typedef struct EnKarebaba {
     /* 0x0000 */ Actor actor;

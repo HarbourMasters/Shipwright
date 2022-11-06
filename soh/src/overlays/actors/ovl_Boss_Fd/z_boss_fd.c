@@ -35,16 +35,16 @@ typedef enum {
     /* 2 */ EYE_CLOSED
 } BossFdEyeState;
 
-void BossFd_Init(Actor* thisx, GlobalContext* globalCtx);
-void BossFd_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BossFd_Update(Actor* thisx, GlobalContext* globalCtx);
-void BossFd_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BossFd_Init(Actor* thisx, PlayState* play);
+void BossFd_Destroy(Actor* thisx, PlayState* play);
+void BossFd_Update(Actor* thisx, PlayState* play);
+void BossFd_Draw(Actor* thisx, PlayState* play);
 
-void BossFd_SetupFly(BossFd* this, GlobalContext* globalCtx);
-void BossFd_Fly(BossFd* this, GlobalContext* globalCtx);
-void BossFd_Wait(BossFd* this, GlobalContext* globalCtx);
-void BossFd_UpdateEffects(BossFd* this, GlobalContext* globalCtx);
-void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this);
+void BossFd_SetupFly(BossFd* this, PlayState* play);
+void BossFd_Fly(BossFd* this, PlayState* play);
+void BossFd_Wait(BossFd* this, PlayState* play);
+void BossFd_UpdateEffects(BossFd* this, PlayState* play);
+void BossFd_DrawBody(PlayState* play, BossFd* this);
 
 const ActorInit Boss_Fd_InitVars = {
     ACTOR_BOSS_FD,
@@ -156,7 +156,7 @@ void BossFd_SetCameraSpeed(BossFd* this, f32 speedMod) {
     this->camData.atVel.z = fabsf(this->camData.at.z - this->camData.nextAt.z) * speedMod;
 }
 
-void BossFd_UpdateCamera(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_UpdateCamera(BossFd* this, PlayState* play) {
     if (this->introCamera != SUBCAM_FREE) {
         Math_ApproachF(&this->camData.eye.x, this->camData.nextEye.x, this->camData.eyeMaxVel.x,
                        this->camData.eyeVel.x * this->camData.speedMod);
@@ -172,26 +172,26 @@ void BossFd_UpdateCamera(BossFd* this, GlobalContext* globalCtx) {
                        this->camData.atVel.z * this->camData.speedMod);
         Math_ApproachF(&this->camData.speedMod, 1.0f, 1.0f, this->camData.accel);
         this->camData.at.y += this->camData.yMod;
-        Gameplay_CameraSetAtEye(globalCtx, this->introCamera, &this->camData.at, &this->camData.eye);
+        Play_CameraSetAtEye(play, this->introCamera, &this->camData.at, &this->camData.eye);
         Math_ApproachZeroF(&this->camData.yMod, 1.0f, 0.1f);
     }
 }
 
-void BossFd_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BossFd_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BossFd* this = (BossFd*)thisx;
     s16 i;
 
-    Flags_SetSwitch(globalCtx, 0x14);
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_BG_VB_SIMA, 680.0f, -100.0f, 0.0f, 0, 0, 0,
+    Flags_SetSwitch(play, 0x14);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_VB_SIMA, 680.0f, -100.0f, 0.0f, 0, 0, 0,
                        100);
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 0.0f);
     Actor_SetScale(&this->actor, 0.05f);
-    SkelAnime_Init(globalCtx, &this->skelAnimeHead, &gVolvagiaHeadSkel, &gVolvagiaHeadEmergeAnim, NULL, NULL, 0);
-    SkelAnime_Init(globalCtx, &this->skelAnimeRightArm, &gVolvagiaRightArmSkel, &gVolvagiaRightArmEmergeAnim, NULL,
+    SkelAnime_Init(play, &this->skelAnimeHead, &gVolvagiaHeadSkel, &gVolvagiaHeadEmergeAnim, NULL, NULL, 0);
+    SkelAnime_Init(play, &this->skelAnimeRightArm, &gVolvagiaRightArmSkel, &gVolvagiaRightArmEmergeAnim, NULL,
                    NULL, 0);
-    SkelAnime_Init(globalCtx, &this->skelAnimeLeftArm, &gVolvagiaLeftArmSkel, &gVolvagiaLeftArmEmergeAnim, NULL, NULL,
+    SkelAnime_Init(play, &this->skelAnimeLeftArm, &gVolvagiaLeftArmSkel, &gVolvagiaLeftArmEmergeAnim, NULL, NULL,
                    0);
     this->introState = BFD_CS_WAIT;
     if (this->introState == BFD_CS_NONE) {
@@ -200,8 +200,8 @@ void BossFd_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actor.world.pos.x = this->actor.world.pos.z = 0.0f;
     this->actor.world.pos.y = -200.0f;
-    Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sJntSphInit, this->elements);
+    Collider_InitJntSph(play, &this->collider);
+    Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->elements);
 
     for (i = 0; i < 100; i++) {
         this->bodySegsPos[i].x = this->actor.world.pos.x;
@@ -219,35 +219,35 @@ void BossFd_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->introState == BFD_CS_NONE) {
         this->actionFunc = BossFd_Wait;
     } else {
-        BossFd_SetupFly(this, globalCtx);
+        BossFd_SetupFly(this, play);
     }
 
-    if (Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num)) {
+    if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
-        Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
                            WARP_DUNGEON_ADULT);
-        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0);
     } else {
-        Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_BOSS_FD2, this->actor.world.pos.x,
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_FD2, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, this->introState);
     }
 }
 
-void BossFd_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BossFd_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BossFd* this = (BossFd*)thisx;
 
-    SkelAnime_Free(&this->skelAnimeHead, globalCtx);
-    SkelAnime_Free(&this->skelAnimeRightArm, globalCtx);
-    SkelAnime_Free(&this->skelAnimeLeftArm, globalCtx);
-    Collider_DestroyJntSph(globalCtx, &this->collider);
+    SkelAnime_Free(&this->skelAnimeHead, play);
+    SkelAnime_Free(&this->skelAnimeRightArm, play);
+    SkelAnime_Free(&this->skelAnimeLeftArm, play);
+    Collider_DestroyJntSph(play, &this->collider);
 }
 
 s32 BossFd_IsFacingLink(BossFd* this) {
     return ABS((s16)(this->actor.yawTowardsPlayer - this->actor.world.rot.y)) < 0x2000;
 }
 
-void BossFd_SetupFly(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_SetupFly(BossFd* this, PlayState* play) {
     Animation_PlayOnce(&this->skelAnimeHead, &gVolvagiaHeadEmergeAnim);
     Animation_PlayOnce(&this->skelAnimeRightArm, &gVolvagiaRightArmEmergeAnim);
     Animation_PlayOnce(&this->skelAnimeLeftArm, &gVolvagiaLeftArmEmergeAnim);
@@ -266,7 +266,7 @@ static Vec3f sCeilingTargets[] = {
     { 0.0f, 900.0f, 243.0f },  { -243.0f, 900.0f, 100.0f }, { -243.0, 900.0f, -100.0f },
 };
 
-void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_Fly(BossFd* this, PlayState* play) {
     u8 sp1CF = false;
     u8 temp_rand;
     s16 i1;
@@ -275,7 +275,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
     f32 dx;
     f32 dy;
     f32 dz;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     f32 angleToTarget;
     f32 pitchToTarget;
     Vec3f* holePosition1;
@@ -306,8 +306,8 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
     //                                        Boss Intro Cutscene
 
     if (this->introState != BFD_CS_NONE) {
-        Player* player2 = GET_PLAYER(globalCtx);
-        Camera* mainCam = Gameplay_GetCamera(globalCtx, MAIN_CAM);
+        Player* player2 = GET_PLAYER(play);
+        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
 
         switch (this->introState) {
             case BFD_CS_WAIT:
@@ -321,11 +321,11 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     (fabsf(player2->actor.world.pos.x - 340.0f) < 60.0f)) {
 
                     this->introState = BFD_CS_START;
-                    func_80064520(globalCtx, &globalCtx->csCtx);
-                    func_8002DF54(globalCtx, &this->actor, 8);
-                    this->introCamera = Gameplay_CreateSubCamera(globalCtx);
-                    Gameplay_ChangeCameraStatus(globalCtx, MAIN_CAM, CAM_STAT_WAIT);
-                    Gameplay_ChangeCameraStatus(globalCtx, this->introCamera, CAM_STAT_ACTIVE);
+                    func_80064520(play, &play->csCtx);
+                    func_8002DF54(play, &this->actor, 8);
+                    this->introCamera = Play_CreateSubCamera(play);
+                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
                     player2->actor.world.pos.x = 380.0f;
                     player2->actor.world.pos.y = 100.0f;
                     player2->actor.world.pos.z = 0.0f;
@@ -398,7 +398,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     Math_ApproachF(&this->camData.shake, 2.0f, 1.0f, 0.8 * 0.01f);
                 }
                 if (this->timers[0] == 40) {
-                    func_8002DF54(globalCtx, &this->actor, 0x13);
+                    func_8002DF54(play, &this->actor, 0x13);
                 }
                 if (this->timers[0] == 0) {
                     this->introState = BFD_CS_LOOK_GROUND;
@@ -427,7 +427,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     this->timers[0] = 170;
                     this->camData.speedMod = 0.0f;
                     this->camData.accel = 0.0f;
-                    func_8002DF54(globalCtx, &this->actor, 0x14);
+                    func_8002DF54(play, &this->actor, 0x14);
                 }
                 break;
             case BFD_CS_COLLAPSE:
@@ -477,7 +477,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                 if (this->timers[3] == 190) {
                     this->camData.atMaxVel.x = this->camData.atMaxVel.y = this->camData.atMaxVel.z = 0.05f;
                     this->platformSignal = VBSIMA_KILL;
-                    func_8002DF54(globalCtx, &this->actor, 1);
+                    func_8002DF54(play, &this->actor, 1);
                 }
                 if (this->actor.world.pos.y > 120.0f) {
                     this->camData.nextAt = this->actor.world.pos;
@@ -498,7 +498,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_FIRE_BOSS);
                 }
                 if ((this->timers[3] == 130) && !(gSaveContext.eventChkInf[7] & 8)) {
-                    TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
+                    TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                            SEGMENTED_TO_VIRTUAL(gVolvagiaBossTitleCardTex), 160, 180, 128, 40, true);
                 }
                 if (this->timers[3] <= 100) {
@@ -542,17 +542,17 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     mainCam->eye = this->camData.eye;
                     mainCam->eyeNext = this->camData.eye;
                     mainCam->at = this->camData.at;
-                    func_800C08AC(globalCtx, this->introCamera, 0);
+                    func_800C08AC(play, this->introCamera, 0);
                     this->introState = this->introFlyState = this->introCamera = BFD_CS_NONE;
-                    func_80064534(globalCtx, &globalCtx->csCtx);
-                    func_8002DF54(globalCtx, &this->actor, 7);
+                    func_80064534(play, &play->csCtx);
+                    func_8002DF54(play, &this->actor, 7);
                     this->actionFunc = BossFd_Wait;
                     this->handoffSignal = FD2_SIGNAL_GROUND;
                     gSaveContext.eventChkInf[7] |= 8;
                 }
                 break;
         }
-        BossFd_UpdateCamera(this, globalCtx);
+        BossFd_UpdateCamera(this, play);
     } else {
         this->fwork[BFD_FLY_SPEED] = 5.0f;
     }
@@ -636,7 +636,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                 this->holePosition.x = this->targetPosition.x;
                 this->holePosition.z = this->targetPosition.z;
 
-                func_80033E1C(globalCtx, 1, 0x50, 0x5000);
+                func_80033E1C(play, 1, 0x50, 0x5000);
                 if (this->introState != BFD_CS_NONE) {
                     this->timers[0] = 50;
                 } else {
@@ -672,7 +672,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     this->work[BFD_CEILING_TARGET] = 0;
                 }
             }
-            Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 50.0f, 50.0f, 100.0f, 2);
+            Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 2);
             if (this->timers[1] == 0) {
                 osSyncPrintf("BGCHECKKKKKKKKKKKKKKKKKKKKKKK\n");
                 if (this->actor.bgCheckFlags & 0x10) {
@@ -680,7 +680,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                     this->timers[1] = 10;
                     Audio_PlaySoundGeneral(NA_SE_EV_EXPLOSION, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    func_80033E1C(globalCtx, 3, 0xA, 0x7530);
+                    func_80033E1C(play, 3, 0xA, 0x7530);
                     this->work[BFD_ROCK_TIMER] = 300;
                 }
             } else {
@@ -772,7 +772,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                 s16 sp150;
 
                 if (this->fogMode == 0) {
-                    globalCtx->envCtx.unk_D8 = 0;
+                    play->envCtx.unk_D8 = 0;
                 }
                 this->fogMode = 0xA;
 
@@ -791,7 +791,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
 
                         sp164.y = 0.03f;
 
-                        EffectSsKFire_Spawn(globalCtx, &sp188, &sp17C, &sp164, (s16)Rand_ZeroFloat(20.0f) + 40, 0x64);
+                        EffectSsKFire_Spawn(play, &sp188, &sp17C, &sp164, (s16)Rand_ZeroFloat(20.0f) + 40, 0x64);
 
                         for (i2 = 0; i2 < 15; i2++) {
                             sp170.x = Rand_CenteredFloat(20.0f);
@@ -853,7 +853,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                         this->work[BFD_CAM_SHAKE_TIMER] = 20;
                         Audio_PlaySoundGeneral(NA_SE_EN_VALVAISA_LAND2, &this->actor.projectedPos, 4, &D_801333E0,
                                                &D_801333E0, &D_801333E8);
-                        func_8002DF54(globalCtx, &this->actor, 5);
+                        func_8002DF54(play, &this->actor, 5);
                         for (i1 = 0; i1 < 15; i1++) {
                             Vec3f sp144 = { 0.0f, 0.0f, 0.0f };
                             Vec3f sp138 = { 0.0f, 0.0f, 0.0f };
@@ -902,7 +902,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
 
                 sp108.y = 0.03f;
 
-                EffectSsKFire_Spawn(globalCtx, &sp120, &sp114, &sp108, (s16)Rand_ZeroFloat(15.0f) + 30, 0);
+                EffectSsKFire_Spawn(play, &sp120, &sp114, &sp108, (s16)Rand_ZeroFloat(15.0f) + 30, 0);
             }
             if (this->timers[0] < 20) {
                 Math_ApproachZeroF(&this->actor.scale.x, 1.0f, 0.0025f);
@@ -913,7 +913,7 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
                 this->actor.world.pos.y -= 1000.0f;
             }
             if (this->timers[0] == 7) {
-                Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
+                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
             }
             break;
@@ -985,14 +985,14 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
         if (this->work[BFD_ACTION_STATE] < BOSSFD_SKULL_FALL) {
             if ((this->actor.prevPos.y < 90.0f) && (90.0f <= this->actor.world.pos.y)) {
                 this->timers[4] = 80;
-                func_80033E1C(globalCtx, 1, 80, 0x5000);
+                func_80033E1C(play, 1, 80, 0x5000);
                 this->work[BFD_ROAR_TIMER] = 40;
                 this->work[BFD_MANE_EMBERS_TIMER] = 30;
                 this->work[BFD_SPLASH_TIMER] = 10;
             }
             if ((this->actor.prevPos.y > 90.0f) && (90.0f >= this->actor.world.pos.y)) {
                 this->timers[4] = 80;
-                func_80033E1C(globalCtx, 1, 80, 0x5000);
+                func_80033E1C(play, 1, 80, 0x5000);
                 this->work[BFD_MANE_EMBERS_TIMER] = 30;
                 this->work[BFD_SPLASH_TIMER] = 10;
             }
@@ -1031,12 +1031,12 @@ void BossFd_Fly(BossFd* this, GlobalContext* globalCtx) {
     }
 }
 
-void BossFd_Wait(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_Wait(BossFd* this, PlayState* play) {
     if (this->handoffSignal == FD2_SIGNAL_FLY) { // Set by BossFd2
         u8 temp_rand;
 
         this->handoffSignal = FD2_SIGNAL_NONE;
-        BossFd_SetupFly(this, globalCtx);
+        BossFd_SetupFly(this, play);
         do {
             temp_rand = Rand_ZeroFloat(8.9f);
         } while (temp_rand == this->holeIndex);
@@ -1052,7 +1052,7 @@ void BossFd_Wait(BossFd* this, GlobalContext* globalCtx) {
     }
     if (this->handoffSignal == FD2_SIGNAL_DEATH) {
         this->handoffSignal = FD2_SIGNAL_NONE;
-        BossFd_SetupFly(this, globalCtx);
+        BossFd_SetupFly(this, play);
         this->holeIndex = 1;
         this->targetPosition.x = sHoleLocations[1].x;
         this->targetPosition.y = sHoleLocations[1].y - 200.0f;
@@ -1065,7 +1065,7 @@ void BossFd_Wait(BossFd* this, GlobalContext* globalCtx) {
 
 static Vec3f sFireAudioVec = { 0.0f, 0.0f, 50.0f };
 
-void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_Effects(BossFd* this, PlayState* play) {
     static Color_RGBA8 colorYellow = { 255, 255, 0, 255 };
     static Color_RGBA8 colorRed = { 255, 10, 0, 255 };
     s16 breathOpacity = 0;
@@ -1079,36 +1079,36 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
     s16 i;
 
     if (this->fogMode == 0) {
-        globalCtx->envCtx.unk_BF = 0;
-        globalCtx->envCtx.unk_D8 = 0.5f + 0.5f * Math_SinS(this->work[BFD_VAR_TIMER] * 0x500);
-        globalCtx->envCtx.unk_DC = 2;
-        globalCtx->envCtx.unk_BD = 1;
-        globalCtx->envCtx.unk_BE = 0;
+        play->envCtx.unk_BF = 0;
+        play->envCtx.unk_D8 = 0.5f + 0.5f * Math_SinS(this->work[BFD_VAR_TIMER] * 0x500);
+        play->envCtx.unk_DC = 2;
+        play->envCtx.unk_BD = 1;
+        play->envCtx.unk_BE = 0;
     } else if (this->fogMode == 3) {
-        globalCtx->envCtx.unk_BF = 0;
-        globalCtx->envCtx.unk_DC = 2;
-        globalCtx->envCtx.unk_BD = 2;
-        globalCtx->envCtx.unk_BE = 0;
-        Math_ApproachF(&globalCtx->envCtx.unk_D8, 1.0f, 1.0f, 0.05f);
+        play->envCtx.unk_BF = 0;
+        play->envCtx.unk_DC = 2;
+        play->envCtx.unk_BD = 2;
+        play->envCtx.unk_BE = 0;
+        Math_ApproachF(&play->envCtx.unk_D8, 1.0f, 1.0f, 0.05f);
     } else if (this->fogMode == 2) {
         this->fogMode--;
-        globalCtx->envCtx.unk_BF = 0;
-        Math_ApproachF(&globalCtx->envCtx.unk_D8, 0.55f + 0.05f * Math_SinS(this->work[BFD_VAR_TIMER] * 0x3E00), 1.0f,
+        play->envCtx.unk_BF = 0;
+        Math_ApproachF(&play->envCtx.unk_D8, 0.55f + 0.05f * Math_SinS(this->work[BFD_VAR_TIMER] * 0x3E00), 1.0f,
                        0.15f);
-        globalCtx->envCtx.unk_DC = 2;
-        globalCtx->envCtx.unk_BD = 3;
-        globalCtx->envCtx.unk_BE = 0;
+        play->envCtx.unk_DC = 2;
+        play->envCtx.unk_BD = 3;
+        play->envCtx.unk_BE = 0;
     } else if (this->fogMode == 10) {
         this->fogMode = 1;
-        globalCtx->envCtx.unk_BF = 0;
-        Math_ApproachF(&globalCtx->envCtx.unk_D8, 0.21f + 0.07f * Math_SinS(this->work[BFD_VAR_TIMER] * 0xC00), 1.0f,
+        play->envCtx.unk_BF = 0;
+        Math_ApproachF(&play->envCtx.unk_D8, 0.21f + 0.07f * Math_SinS(this->work[BFD_VAR_TIMER] * 0xC00), 1.0f,
                        0.05f);
-        globalCtx->envCtx.unk_DC = 2;
-        globalCtx->envCtx.unk_BD = 3;
-        globalCtx->envCtx.unk_BE = 0;
+        play->envCtx.unk_DC = 2;
+        play->envCtx.unk_BD = 3;
+        play->envCtx.unk_BE = 0;
     } else if (this->fogMode == 1) {
-        Math_ApproachF(&globalCtx->envCtx.unk_D8, 0.0f, 1.0f, 0.03f);
-        if (globalCtx->envCtx.unk_D8 <= 0.01f) {
+        Math_ApproachF(&play->envCtx.unk_D8, 0.0f, 1.0f, 0.03f);
+        if (play->envCtx.unk_D8 <= 0.01f) {
             this->fogMode = 0;
         }
     }
@@ -1162,7 +1162,7 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
             if ((this->actor.colChkInfo.health == 0) ||
                 ((this->introState == BFD_CS_EMERGE) && (this->actor.world.rot.x > 0x3000))) {
                 if ((u8)this->fogMode == 0) {
-                    globalCtx->envCtx.unk_D8 = 0.0f;
+                    play->envCtx.unk_D8 = 0.0f;
                 }
                 this->fogMode = 2;
             }
@@ -1180,7 +1180,7 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
                 spawnPos1.y = 100.0f;
                 spawnPos1.z = temp_z + this->holePosition.z;
 
-                func_8002836C(globalCtx, &spawnPos1, &spawnVel1, &spawnAccel1, &colorYellow, &colorRed,
+                func_8002836C(play, &spawnPos1, &spawnVel1, &spawnAccel1, &colorYellow, &colorRed,
                               (s16)Rand_ZeroFloat(150.0f) + 800, 10, (s16)Rand_ZeroFloat(5.0f) + 17);
             }
         } else {
@@ -1198,7 +1198,7 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
                 spawnPos1.y = 100.0f;
                 spawnPos1.z = temp_z + this->holePosition.z;
 
-                func_8002836C(globalCtx, &spawnPos1, &spawnVel1, &spawnAccel1, &colorYellow, &colorRed, 500, 10, 20);
+                func_8002836C(play, &spawnPos1, &spawnVel1, &spawnAccel1, &colorYellow, &colorRed, 500, 10, 20);
             }
         }
 
@@ -1280,7 +1280,7 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
     }
 }
 
-void BossFd_CollisionCheck(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_CollisionCheck(BossFd* this, PlayState* play) {
     ColliderJntSphElement* headCollider = &this->collider.elements[0];
     ColliderInfo* hurtbox;
 
@@ -1301,7 +1301,7 @@ void BossFd_CollisionCheck(BossFd* this, GlobalContext* globalCtx) {
     }
 }
 
-void BossFd_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BossFd_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BossFd* this = (BossFd*)thisx;
     f32 headGlow;
@@ -1312,7 +1312,7 @@ void BossFd_Update(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("FD MOVE START \n");
     this->work[BFD_VAR_TIMER]++;
     this->work[BFD_MOVE_TIMER]++;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     for (i = 0; i < ARRAY_COUNT(this->timers); i++) {
         if (this->timers[i] != 0) {
@@ -1330,13 +1330,13 @@ void BossFd_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
     if (this->work[BFD_ACTION_STATE] < BOSSFD_DEATH_START) {
         if (this->work[BFD_INVINC_TIMER] == 0) {
-            BossFd_CollisionCheck(this, globalCtx);
+            BossFd_CollisionCheck(this, play);
         }
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
 
-    BossFd_Effects(this, globalCtx);
+    BossFd_Effects(this, play);
     this->fwork[BFD_TEX1_SCROLL_X] += 4.0f;
     this->fwork[BFD_TEX1_SCROLL_Y] = 120.0f;
     this->fwork[BFD_TEX2_SCROLL_X] += 3.0f;
@@ -1362,7 +1362,7 @@ void BossFd_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->work[BFD_ROCK_TIMER]--;
         if ((this->work[BFD_ROCK_TIMER] % 16) == 0) {
             EnVbBall* bossFdRock = (EnVbBall*)Actor_SpawnAsChild(
-                &globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_VB_BALL, this->actor.world.pos.x, 1000.0f,
+                &play->actorCtx, &this->actor, play, ACTOR_EN_VB_BALL, this->actor.world.pos.x, 1000.0f,
                 this->actor.world.pos.z, 0, 0, (s16)Rand_ZeroFloat(50.0f) + 130, 100);
 
             if (bossFdRock != NULL) {
@@ -1425,13 +1425,13 @@ void BossFd_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
     osSyncPrintf("FD MOVE END 1\n");
-    BossFd_UpdateEffects(this, globalCtx);
+    BossFd_UpdateEffects(this, play);
     osSyncPrintf("FD MOVE END 2\n");
 }
 
-void BossFd_UpdateEffects(BossFd* this, GlobalContext* globalCtx) {
+void BossFd_UpdateEffects(BossFd* this, PlayState* play) {
     BossFdEffect* effect = this->effects;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     Color_RGB8 colors[4] = { { 255, 128, 0 }, { 255, 0, 0 }, { 255, 255, 0 }, { 255, 0, 0 } };
     Vec3f diff;
     s16 i1;
@@ -1478,7 +1478,7 @@ void BossFd_UpdateEffects(BossFd* this, GlobalContext* globalCtx) {
                 diff.z = player->actor.world.pos.z - effect->pos.z;
                 if ((this->timers[3] == 0) && (sqrtf(SQ(diff.x) + SQ(diff.y) + SQ(diff.z)) < 20.0f)) {
                     this->timers[3] = 50;
-                    func_8002F6D4(globalCtx, NULL, 5.0f, effect->kbAngle, 0.0f, 0x30);
+                    func_8002F6D4(play, NULL, 5.0f, effect->kbAngle, 0.0f, 0x30);
                     if (player->isBurning == false) {
                         for (i2 = 0; i2 < ARRAY_COUNT(player->flameTimers); i2++) {
                             player->flameTimers[i2] = Rand_S16Offset(0, 200);
@@ -1512,12 +1512,12 @@ void BossFd_UpdateEffects(BossFd* this, GlobalContext* globalCtx) {
     }
 }
 
-void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
+void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
     static void* dustTex[] = {
         gDust1Tex, gDust1Tex, gDust2Tex, gDust3Tex, gDust4Tex, gDust5Tex, gDust6Tex, gDust7Tex, gDust8Tex,
     };
     u8 flag = false;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s16 i;
     BossFdEffect* firstEffect = effect;
 
@@ -1527,14 +1527,14 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
         if (effect->type == BFD_FX_EMBER) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(globalCtx->state.gfxCtx);
+                func_80093D84(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaEmberMaterialDL);
                 flag++;
             }
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, effect->color.r, effect->color.g, effect->color.b, effect->alpha);
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
-            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
@@ -1550,7 +1550,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
         if (effect->type == BFD_FX_DEBRIS) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D18(globalCtx->state.gfxCtx);
+                func_80093D18(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gVolvagiaDebrisMaterialDL);
                 flag++;
             }
@@ -1582,7 +1582,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
 
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
-            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1607,7 +1607,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 0, effect->alpha);
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
-            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1623,7 +1623,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
         if (effect->type == BFD_FX_SKULL_PIECE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(globalCtx->state.gfxCtx);
+                func_80093D84(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaSkullPieceMaterialDL);
                 flag++;
             }
@@ -1643,29 +1643,29 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void BossFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BossFd_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     BossFd* this = (BossFd*)thisx;
 
     osSyncPrintf("FD DRAW START\n");
     if (this->actionFunc != BossFd_Wait) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
-        func_80093D18(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         if (this->work[BFD_DAMAGE_FLASH_TIMER] & 2) {
             POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
         }
 
-        BossFd_DrawBody(globalCtx, this);
-        POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        BossFd_DrawBody(play, this);
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 
     osSyncPrintf("FD DRAW END\n");
-    BossFd_DrawEffects(this->effects, globalCtx);
+    BossFd_DrawEffects(this->effects, play);
     osSyncPrintf("FD DRAW END2\n");
 }
 
-s32 BossFd_OverrideRightArmDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 BossFd_OverrideRightArmDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                 void* thisx) {
     BossFd* this = (BossFd*)thisx;
 
@@ -1688,7 +1688,7 @@ s32 BossFd_OverrideRightArmDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     return false;
 }
 
-s32 BossFd_OverrideLeftArmDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 BossFd_OverrideLeftArmDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                void* thisx) {
     BossFd* this = (BossFd*)thisx;
 
@@ -1714,7 +1714,7 @@ s32 BossFd_OverrideLeftArmDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
 static s16 sBodyIndex[] = { 0, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5 };
 static s16 sManeIndex[] = { 0, 28, 26, 24, 22, 20, 18, 16, 14, 12, 10 }; // Unused
 
-void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec3f* maneRot, f32* maneScale, u8 mode) {
+void BossFd_DrawMane(PlayState* play, BossFd* this, Vec3f* manePos, Vec3f* maneRot, f32* maneScale, u8 mode) {
     f32 sp140[] = { 0.0f, 10.0f, 17.0f, 20.0f, 19.5f, 18.0f, 17.0f, 15.0f, 15.0f, 15.0f };
     f32 sp118[] = { 0.0f, 10.0f, 17.0f, 20.0f, 21.0f, 21.0f, 21.0f, 21.0f, 21.0f, 21.0f };
     f32 spF0[] = { 0.4636457f, 0.3366129f, 0.14879614f, 0.04995025f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
@@ -1730,7 +1730,7 @@ void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec
     f32 phi_f20;
     f32 phi_f22;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     maneLength = this->skinSegments;
     maneLength = CLAMP_MAX(maneLength, 10);
@@ -1771,15 +1771,15 @@ void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec
         Matrix_Scale(maneScale[maneIndex] * (0.01f - (i * 0.0008f)), maneScale[maneIndex] * (0.01f - (i * 0.0008f)),
                      0.01f, MTXMODE_APPLY);
         Matrix_RotateX(-M_PI / 2.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gVolvagiaManeModelDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s32 BossFd_OverrideHeadDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 BossFd_OverrideHeadDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     BossFd* this = (BossFd*)thisx;
 
     switch (limbIndex) {
@@ -1806,7 +1806,7 @@ s32 BossFd_OverrideHeadDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     return false;
 }
 
-void BossFd_PostHeadDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void BossFd_PostHeadDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f targetMod = { 4500.0f, 0.0f, 0.0f };
     static Vec3f headMod = { 4000.0f, 0.0f, 0.0f };
     BossFd* this = (BossFd*)thisx;
@@ -1830,18 +1830,18 @@ static Gfx* sBodyDLists[] = {
     gVolvagiaBodySeg16DL, gVolvagiaBodySeg17DL, gVolvagiaBodySeg18DL,
 };
 
-void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
+void BossFd_DrawBody(PlayState* play, BossFd* this) {
     s16 segIndex;
     s16 i;
     f32 temp_float;
-    Mtx* tempMat = Graph_Alloc(globalCtx->state.gfxCtx, 18 * sizeof(Mtx));
+    Mtx* tempMat = Graph_Alloc(play->state.gfxCtx, 18 * sizeof(Mtx));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     if (this->skinSegments != 0) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeState]));
     }
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
                                 (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1, (s16)this->fwork[BFD_TEX2_SCROLL_X],
                                 (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20));
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
@@ -1856,7 +1856,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     Matrix_RotateX(-this->bodySegsRot[segIndex].x, MTXMODE_APPLY);
     Matrix_Translate(-13.0f, -5.0f, 13.0f, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnimeRightArm.skeleton, this->skelAnimeRightArm.jointTable,
+    SkelAnime_DrawOpa(play, this->skelAnimeRightArm.skeleton, this->skelAnimeRightArm.jointTable,
                       BossFd_OverrideRightArmDraw, NULL, this);
     Matrix_Pop();
     osSyncPrintf("RH\n");
@@ -1868,7 +1868,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     Matrix_RotateX(-this->bodySegsRot[segIndex].x, MTXMODE_APPLY);
     Matrix_Translate(13.0f, -5.0f, 13.0f, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnimeLeftArm.skeleton, this->skelAnimeLeftArm.jointTable,
+    SkelAnime_DrawOpa(play, this->skelAnimeLeftArm.skeleton, this->skelAnimeLeftArm.jointTable,
                       BossFd_OverrideLeftArmDraw, NULL, this);
     Matrix_Pop();
     osSyncPrintf("BD\n");
@@ -1916,7 +1916,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
                     temp_float = 0.1f * sp84;
                 }
                 Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gVolvagiaRibsDL);
 
@@ -1928,7 +1928,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
                     Matrix_Get(&spFC);
                     Matrix_MtxFToYXZRotS(&spFC, &spDC, 0);
                     bones =
-                        (EnVbBall*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_VB_BALL,
+                        (EnVbBall*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_VB_BALL,
                                                       spE4.x, spE4.y, spE4.z, spDC.x, spDC.y, spDC.z, i + 200);
 
                     bones->actor.scale.x = this->actor.scale.x * temp_float;
@@ -1965,34 +1965,34 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     Matrix_Pop();
     osSyncPrintf("BHCE\n");
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnimeHead.skeleton, this->skelAnimeHead.jointTable, BossFd_OverrideHeadDraw,
+    SkelAnime_DrawOpa(play, this->skelAnimeHead.skeleton, this->skelAnimeHead.jointTable, BossFd_OverrideHeadDraw,
                       BossFd_PostHeadDraw, &this->actor);
     osSyncPrintf("SK\n");
     {
         Vec3f spB0 = { 0.0f, 1700.0f, 7000.0f };
         Vec3f spA4 = { -1000.0f, 700.0f, 7000.0f };
 
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
         gSPDisplayList(POLY_XLU_DISP++, gVolvagiaManeMaterialDL);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, this->fwork[BFD_MANE_COLOR_CENTER], 0, 255);
         Matrix_Push();
         Matrix_MultVec3f(&spB0, &this->centerMane.head);
-        BossFd_DrawMane(globalCtx, this, this->centerMane.pos, this->fireManeRot, this->centerMane.scale, MANE_CENTER);
+        BossFd_DrawMane(play, this, this->centerMane.pos, this->fireManeRot, this->centerMane.scale, MANE_CENTER);
         Matrix_Pop();
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, this->fwork[BFD_MANE_COLOR_RIGHT], 0, 255);
         Matrix_Push();
         Matrix_MultVec3f(&spA4, &this->rightMane.head);
-        BossFd_DrawMane(globalCtx, this, this->rightMane.pos, this->fireManeRot, this->rightMane.scale, MANE_RIGHT);
+        BossFd_DrawMane(play, this, this->rightMane.pos, this->fireManeRot, this->rightMane.scale, MANE_RIGHT);
         Matrix_Pop();
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, this->fwork[BFD_MANE_COLOR_LEFT], 0, 255);
         Matrix_Push();
         spA4.x *= -1.0f;
         Matrix_MultVec3f(&spA4, &this->leftMane.head);
-        BossFd_DrawMane(globalCtx, this, this->leftMane.pos, this->fireManeRot, this->leftMane.scale, MANE_LEFT);
+        BossFd_DrawMane(play, this, this->leftMane.pos, this->fireManeRot, this->leftMane.scale, MANE_LEFT);
         Matrix_Pop();
     }
 
     Matrix_Pop();
     osSyncPrintf("END\n");
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

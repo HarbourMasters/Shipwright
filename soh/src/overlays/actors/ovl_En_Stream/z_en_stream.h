@@ -6,7 +6,7 @@
 
 struct EnStream;
 
-typedef void (*EnStreamActionFunc)(struct EnStream*, GlobalContext*);
+typedef void (*EnStreamActionFunc)(struct EnStream*, PlayState*);
 
 typedef struct EnStream {
     /* 0x0000 */ Actor actor;

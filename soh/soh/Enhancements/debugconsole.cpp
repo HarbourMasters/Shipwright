@@ -24,7 +24,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 }
 
 #include <libultraship/Cvar.h>
@@ -52,12 +52,12 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
         return CMD_FAILED;
     }
 
-    if (gGlobalCtx == nullptr) {
-        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
+    if (gPlayState == nullptr) {
+        SohImGui::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;
     }
 
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
     PosRot spawnPoint;
     const s16 actorId = std::stoi(args[1]);
     const s16 params = std::stoi(args[2]);
@@ -87,7 +87,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
             }
     }
 
-    if (Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
+    if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
         SohImGui::GetConsole()->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
@@ -97,8 +97,8 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
 
 static bool GiveDekuShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     // Give Deku Shield to the player, and automatically equip it when they're child and have no shield currently equiped.
-    Player* player = GET_PLAYER(gGlobalCtx);
-    Item_Give(gGlobalCtx, ITEM_SHIELD_DEKU);
+    Player* player = GET_PLAYER(gPlayState);
+    Item_Give(gPlayState, ITEM_SHIELD_DEKU);
     if (LINK_IS_CHILD && player->currentShield == PLAYER_SHIELD_NONE) {
         player->currentShield = PLAYER_SHIELD_DEKU;
         Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
@@ -173,12 +173,12 @@ static bool RupeeHandler(std::shared_ptr<Ship::Console> Console, const std::vect
 }
 
 static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
-    if (gGlobalCtx == nullptr) {
-        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
+    if (gPlayState == nullptr) {
+        SohImGui::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;
     }
 
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
 
     if (args.size() == 1) {
         SohImGui::GetConsole()->SendInfoMessage("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
@@ -200,13 +200,13 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args) {
-    if (gGlobalCtx == nullptr) {
-        SohImGui::GetConsole()->SendErrorMessage("GlobalCtx == nullptr");
+    if (gPlayState == nullptr) {
+        SohImGui::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;
     }
 
-    SET_NEXT_GAMESTATE(&gGlobalCtx->state, TitleSetup_Init, GameState);
-    gGlobalCtx->state.running = false;
+    SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
+    gPlayState->state.running = false;
     return CMD_SUCCESS;
 }
 
@@ -332,7 +332,7 @@ static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::v
         return CMD_FAILED;
     }
 
-    GiveItemEntryWithoutActor(gGlobalCtx, getItemEntry);
+    GiveItemEntryWithoutActor(gPlayState, getItemEntry);
 
     return CMD_SUCCESS;
 }
@@ -352,53 +352,53 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
         return CMD_FAILED;
     }
 
-    gGlobalCtx->nextEntranceIndex = entrance;
-    gGlobalCtx->sceneLoadFlag = 0x14;
-    gGlobalCtx->fadeTransition = 11;
+    gPlayState->nextEntranceIndex = entrance;
+    gPlayState->sceneLoadFlag = 0x14;
+    gPlayState->fadeTransition = 11;
     gSaveContext.nextTransition = 11;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx != nullptr) {
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
+    if (gPlayState != nullptr) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
             gSaveContext.respawnFlag = 1;
-            gGlobalCtx->sceneLoadFlag = 0x14;
-            gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-            gGlobalCtx->fadeTransition = 2;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
+            gPlayState->fadeTransition = 2;
             gSaveContext.nextTransition = 2;
     } else {
-        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx != nullptr) {
-        gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
-        gGlobalCtx->sceneLoadFlag = 0x14;
-        gGlobalCtx->fadeTransition = 11;
+    if (gPlayState != nullptr) {
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+        gPlayState->sceneLoadFlag = 0x14;
+        gPlayState->fadeTransition = 11;
         gSaveContext.nextTransition = 11;
     } else {
-        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx != nullptr) {
+    if (gPlayState != nullptr) {
         if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
-                gGlobalCtx->sceneLoadFlag = 0x14;
-                gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-                gGlobalCtx->fadeTransition = 5;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
+                gPlayState->fadeTransition = 5;
         } else {
             SohImGui::GetConsole()->SendErrorMessage("Farore's wind not set!");
         }
     }
     else {
-        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
     }
     
@@ -406,18 +406,18 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
 }
 
 static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gGlobalCtx != nullptr) {
-        SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, FileChooseContext);
-        gGlobalCtx->state.running = 0;
+    if (gPlayState != nullptr) {
+        SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
+        gPlayState->state.running = 0;
     } else {
-        SohImGui::GetConsole()->SendErrorMessage("gGlobalCtx == nullptr");
+        SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    gGlobalCtx->state.running = 0;
+    gPlayState->state.running = 0;
     return CMD_SUCCESS;
 }
 
@@ -490,7 +490,7 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     try {
         chaosEffectInvisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (!chaosEffectInvisibleLink) {
-            Player* player = GET_PLAYER(gGlobalCtx);
+            Player* player = GET_PLAYER(gPlayState);
             player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
         }
 
@@ -624,10 +624,10 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
             return CMD_FAILED;
         }
 
-        Player* player = GET_PLAYER(gGlobalCtx);
+        Player* player = GET_PLAYER(gPlayState);
 
-        Health_ChangeBy(gGlobalCtx, -value * 0x10);
-        func_80837C0C(gGlobalCtx, player, 0, 0, 0, 0, 0);
+        Health_ChangeBy(gPlayState, -value * 0x10);
+        func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
         player->invincibilityTimer = 28;
 
         return CMD_SUCCESS;
@@ -650,7 +650,7 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             return CMD_FAILED;
         }
 
-        Health_ChangeBy(gGlobalCtx, value * 0x10);
+        Health_ChangeBy(gPlayState, value * 0x10);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Heal value must be a number.");
@@ -659,7 +659,7 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Magic_Fill(gGlobalCtx);
+    Magic_Fill(gPlayState);
     return CMD_SUCCESS;
 }
 
@@ -708,7 +708,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
         chaosEffectPacifistMode = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         // Force interface to update to make the buttons transparent
         gSaveContext.unk_13E8 = 50;
-        Interface_Update(gGlobalCtx);
+        Interface_Update(gPlayState);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Pacifist value must be a number.");
@@ -746,30 +746,30 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
     try {
         uint32_t rainstorm = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         if (rainstorm) {
-            gGlobalCtx->envCtx.unk_F2[0] = 20;    // rain intensity target
-            gGlobalCtx->envCtx.gloomySkyMode = 1; // start gloomy sky
-            if ((gWeatherMode != 0) || gGlobalCtx->envCtx.unk_17 != 0) {
-                gGlobalCtx->envCtx.unk_DE = 1;
+            gPlayState->envCtx.unk_F2[0] = 20;    // rain intensity target
+            gPlayState->envCtx.gloomySkyMode = 1; // start gloomy sky
+            if ((gWeatherMode != 0) || gPlayState->envCtx.unk_17 != 0) {
+                gPlayState->envCtx.unk_DE = 1;
             }
-            gGlobalCtx->envCtx.lightningMode = LIGHTNING_MODE_ON;
-            Environment_PlayStormNatureAmbience(gGlobalCtx);
+            gPlayState->envCtx.lightningMode = LIGHTNING_MODE_ON;
+            Environment_PlayStormNatureAmbience(gPlayState);
         } else {
-            gGlobalCtx->envCtx.unk_F2[0] = 0;
-            if (gGlobalCtx->csCtx.state == CS_STATE_IDLE) {
-                Environment_StopStormNatureAmbience(gGlobalCtx);
+            gPlayState->envCtx.unk_F2[0] = 0;
+            if (gPlayState->csCtx.state == CS_STATE_IDLE) {
+                Environment_StopStormNatureAmbience(gPlayState);
             } else if (func_800FA0B4(SEQ_PLAYER_BGM_MAIN) == NA_BGM_NATURE_AMBIENCE) {
                 Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_LIGHTNING, CHANNEL_IO_PORT_1, 0);
                 Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_RAIN, CHANNEL_IO_PORT_1, 0);
             }
             osSyncPrintf("\n\n\nE_wether_flg=[%d]", gWeatherMode);
-            osSyncPrintf("\nrain_evt_trg=[%d]\n\n", gGlobalCtx->envCtx.gloomySkyMode);
-            if (gWeatherMode == 0 && (gGlobalCtx->envCtx.gloomySkyMode == 1)) {
-                gGlobalCtx->envCtx.gloomySkyMode = 2; // end gloomy sky
+            osSyncPrintf("\nrain_evt_trg=[%d]\n\n", gPlayState->envCtx.gloomySkyMode);
+            if (gWeatherMode == 0 && (gPlayState->envCtx.gloomySkyMode == 1)) {
+                gPlayState->envCtx.gloomySkyMode = 2; // end gloomy sky
             } else {
-                gGlobalCtx->envCtx.gloomySkyMode = 0;
-                gGlobalCtx->envCtx.unk_DE = 0;
+                gPlayState->envCtx.gloomySkyMode = 0;
+                gPlayState->envCtx.unk_DE = 0;
             }
-            gGlobalCtx->envCtx.lightningMode = LIGHTNING_MODE_LAST;
+            gPlayState->envCtx.lightningMode = LIGHTNING_MODE_LAST;
         }
 
 
@@ -844,10 +844,10 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
         return CMD_FAILED;
     }
 
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
     player->currentBoots = it->second;
     Inventory_ChangeEquipment(EQUIP_BOOTS, it->second + 1);
-    Player_SetBootData(gGlobalCtx, player);
+    Player_SetBootData(gPlayState, player);
 
     return CMD_SUCCESS;
 }
@@ -865,8 +865,8 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
             return CMD_FAILED;
         }
 
-        Player* player = GET_PLAYER(gGlobalCtx);
-        func_8002F71C(gGlobalCtx, &player->actor, value * 5, player->actor.world.rot.y + 0x8000, value * 5);
+        Player* player = GET_PLAYER(gPlayState);
+        func_8002F71C(gPlayState, &player->actor, value * 5, player->actor.world.rot.y + 0x8000, value * 5);
     
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -876,9 +876,9 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
-        func_80837C0C(gGlobalCtx, player, 4, 0, 0, 0, 0);
+        func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
         return CMD_SUCCESS;
     }
 
@@ -886,21 +886,21 @@ static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std
 }
 
 static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
         for (int i = 0; i < 18; i++) {
             player->flameTimers[i] = Rand_S16Offset(0, 200);
         }
         player->isBurning = true;
-        func_80837C0C(gGlobalCtx, player, 0, 0, 0, 0, 0);
+        func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Player* player = GET_PLAYER(gGlobalCtx);
-    EnNiw* cucco = (EnNiw*)Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, ACTOR_EN_NIW, player->actor.world.pos.x,
+    Player* player = GET_PLAYER(gPlayState);
+    EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
     return CMD_SUCCESS;

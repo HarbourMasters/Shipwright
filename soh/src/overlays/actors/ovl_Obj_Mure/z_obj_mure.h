@@ -6,7 +6,7 @@
 
 struct ObjMure;
 
-typedef void (*ObjMureActionFunc)(struct ObjMure*, GlobalContext*);
+typedef void (*ObjMureActionFunc)(struct ObjMure*, PlayState*);
 
 #define OBJMURE_MAX_SPAWNS 15
 

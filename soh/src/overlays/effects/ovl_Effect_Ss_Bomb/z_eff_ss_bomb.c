@@ -10,16 +10,16 @@
 #define rScale regs[0]
 #define rTexIdx regs[1]
 
-u32 EffectSsBomb_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsBomb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsBomb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsBomb_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsBomb_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Bomb_InitVars = {
     EFFECT_SS_BOMB,
     EffectSsBomb_Init,
 };
 
-u32 EffectSsBomb_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsBomb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsBombInitParams* initParams = (EffectSsBombInitParams*)initParamsx;
 
     Math_Vec3f_Copy(&this->pos, &initParams->pos);
@@ -35,14 +35,14 @@ u32 EffectSsBomb_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void*
     return 1;
 }
 
-void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsBomb_Draw(PlayState* play, u32 index, EffectSs* this) {
     static void* explosionTextures[] = {
         gEffBombExplosion1Tex,
         gEffBombExplosion2Tex,
         gEffBombExplosion3Tex,
         gEffBombExplosion4Tex,
     };
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     MtxF mfTrans;
     MtxF mfScale;
     MtxF mfResult;
@@ -58,7 +58,7 @@ void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
     SkinMatrix_SetScale(&mfScale, scale, scale, 1.0f);
-    SkinMatrix_MtxFMtxFMult(&mfTrans, &globalCtx->billboardMtxF, &mfTrans11DA0);
+    SkinMatrix_MtxFMtxFMult(&mfTrans, &play->billboardMtxF, &mfTrans11DA0);
     SkinMatrix_MtxFMtxFMult(&mfTrans11DA0, &mfScale, &mfResult);
 
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -80,7 +80,7 @@ void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsBomb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsBomb_Update(PlayState* play, u32 index, EffectSs* this) {
     if ((this->life < 21) && (this->life > 16)) {
         this->rTexIdx = (20 - this->life);
     } else {

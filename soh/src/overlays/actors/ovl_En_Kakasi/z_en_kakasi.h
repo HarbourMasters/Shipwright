@@ -6,7 +6,7 @@
 
 struct EnKakasi;
 
-typedef void (*EnKakasiFunc)(struct EnKakasi*, GlobalContext*);
+typedef void (*EnKakasiFunc)(struct EnKakasi*, PlayState*);
 
 typedef struct EnKakasi {
     /* 0x0000 */ Actor actor;

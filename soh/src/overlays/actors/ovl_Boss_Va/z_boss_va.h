@@ -6,7 +6,7 @@
 
 struct BossVa;
 
-typedef void (*BossVaActionFunc)(struct BossVa*, GlobalContext*);
+typedef void (*BossVaActionFunc)(struct BossVa*, PlayState*);
 
 typedef struct BossVa {
     /* 0x0000 */ Actor actor;

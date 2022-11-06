@@ -10,14 +10,14 @@
 
 #define FLAGS 0
 
-void BgGjyoBridge_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgGjyoBridge_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgGjyoBridge_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgGjyoBridge_Init(Actor* thisx, PlayState* play);
+void BgGjyoBridge_Destroy(Actor* thisx, PlayState* play);
+void BgGjyoBridge_Update(Actor* thisx, PlayState* play);
+void BgGjyoBridge_Draw(Actor* thisx, PlayState* play);
 
-void func_808787A4(BgGjyoBridge* this, GlobalContext* globalCtx);
-void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx);
-void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, GlobalContext* globalCtx);
+void func_808787A4(BgGjyoBridge* this, PlayState* play);
+void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play);
+void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play);
 
 const ActorInit Bg_Gjyo_Bridge_InitVars = {
     ACTOR_BG_GJYO_BRIDGE,
@@ -37,7 +37,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgGjyoBridge_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgGjyoBridge_Init(Actor* thisx, PlayState* play) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
     s32 pad;
     CollisionHeader* colHeader;
@@ -48,46 +48,46 @@ void BgGjyoBridge_Init(Actor* thisx, GlobalContext* globalCtx) {
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gRainbowBridgeCol, &colHeader);
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
     if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == 0)) {
         this->actionFunc = func_808787A4;
     } else {
         this->dyna.actor.draw = NULL;
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->actionFunc = BgGjyoBridge_TriggerCutscene;
     }
 }
 
-void BgGjyoBridge_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgGjyoBridge_Destroy(Actor* thisx, PlayState* play) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_808787A4(BgGjyoBridge* this, GlobalContext* globalCtx) {
+void func_808787A4(BgGjyoBridge* this, PlayState* play) {
 }
 
-void LaunchBridgeCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) {
-    globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gRainbowBridgeCs);
+void LaunchBridgeCutscene(BgGjyoBridge* this, PlayState* play) {
+    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gRainbowBridgeCs);
     gSaveContext.cutsceneTrigger = 1;
     this->actionFunc = BgGjyoBridge_SpawnBridge;
 }
 
-u8 CheckPlayerPosition(Player* player, GlobalContext* globalCtx) {
+u8 CheckPlayerPosition(Player* player, PlayState* play) {
     return (player->actor.world.pos.x > -70.0f) && (player->actor.world.pos.x < 300.0f) &&
            (player->actor.world.pos.y > 1340.0f) && (player->actor.world.pos.z > 1340.0f) &&
-           (player->actor.world.pos.z < 1662.0f) && !Gameplay_InCsMode(globalCtx);
+           (player->actor.world.pos.z < 1662.0f) && !Play_InCsMode(play);
 }
 
-void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (!gSaveContext.n64ddFlag) {
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-            (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, globalCtx)) {
-            LaunchBridgeCutscene(this, globalCtx);
+            (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, play)) {
+            LaunchBridgeCutscene(this, play);
         }
     } else {
         int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
@@ -97,78 +97,82 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
         int bridgeDungeonCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
         int bridgeTokenCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
 
-        if (CheckPlayerPosition(player, globalCtx)) {
-            switch (bridge) {
-                case 1:
-                    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 2:
-                    if (CheckStoneCount() >= bridgeStoneCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 3:
-                    if (CheckMedallionCount() >= bridgeMedallionCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 4:
-                    if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 5:
-                    if (CheckDungeonCount() >= bridgeDungeonCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 6:
-                    if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-            }
+        switch (bridge) {
+            case 1:
+                if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                    (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 2:
+                if (CheckStoneCount() >= bridgeStoneCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 3:
+                if (CheckMedallionCount() >= bridgeMedallionCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 4:
+                if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 5:
+                if (CheckDungeonCount() >= bridgeDungeonCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 6:
+                if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
         }
     }
 }
 
-void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, GlobalContext* globalCtx) {
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[2] != NULL) &&
-        (globalCtx->csCtx.npcActions[2]->action == 2)) {
+void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
+    if (gSaveContext.n64ddFlag || (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
+        (play->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
-        func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
         gSaveContext.eventChkInf[4] |= 0x2000;
     }
 }
 
-void BgGjyoBridge_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgGjyoBridge_Update(Actor* thisx, PlayState* play) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgGjyoBridge_Draw(Actor* thisx, PlayState* play) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TexScroll(globalCtx->state.gfxCtx, globalCtx->gameplayFrames & 127,
-                             globalCtx->gameplayFrames * -3 & 127, 32, 32));
+               Gfx_TexScroll(play->state.gfxCtx, play->gameplayFrames & 127,
+                             play->gameplayFrames * -3 & 127, 32, 32));
 
     gSPSegment(POLY_XLU_DISP++, 9,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, -globalCtx->gameplayFrames & 127, 32, 32, 1, 0,
-                                globalCtx->gameplayFrames & 127, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, -play->gameplayFrames & 127, 32, 32, 1, 0,
+                                play->gameplayFrames & 127, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gRainbowBridgeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

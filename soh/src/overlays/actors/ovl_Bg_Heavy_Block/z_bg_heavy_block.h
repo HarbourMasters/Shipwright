@@ -6,7 +6,7 @@
 
 struct BgHeavyBlock;
 
-typedef void (*BgHeavyBlockActionFunc)(struct BgHeavyBlock*, GlobalContext*);
+typedef void (*BgHeavyBlockActionFunc)(struct BgHeavyBlock*, PlayState*);
 
 typedef struct BgHeavyBlock {
     /* 0x0000 */ DynaPolyActor dyna;

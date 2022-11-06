@@ -6,7 +6,7 @@
 
 struct BgGndSoulmeiro;
 
-typedef void (*BgGndSoulmeiroActionFunc)(struct BgGndSoulmeiro*, GlobalContext*);
+typedef void (*BgGndSoulmeiroActionFunc)(struct BgGndSoulmeiro*, PlayState*);
 
 typedef struct BgGndSoulmeiro {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct ObjMakekinsuta;
 
-typedef void (*ObjMakekinsutaActionFunc)(struct ObjMakekinsuta*, GlobalContext*);
+typedef void (*ObjMakekinsutaActionFunc)(struct ObjMakekinsuta*, PlayState*);
 
 typedef struct ObjMakekinsuta {
     /* 0x0000 */ Actor actor;
