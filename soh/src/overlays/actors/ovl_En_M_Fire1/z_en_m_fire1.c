@@ -8,9 +8,9 @@
 
 #define FLAGS 0
 
-void EnMFire1_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnMFire1_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnMFire1_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnMFire1_Init(Actor* thisx, PlayState* play);
+void EnMFire1_Destroy(Actor* thisx, PlayState* play);
+void EnMFire1_Update(Actor* thisx, PlayState* play);
 
 const ActorInit En_M_Fire1_InitVars = {
     ACTOR_EN_M_FIRE1,
@@ -45,25 +45,25 @@ static ColliderCylinderInit sCylinderInit = {
     { 200, 200, 0, { 0 } },
 };
 
-void EnMFire1_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnMFire1_Init(Actor* thisx, PlayState* play) {
     EnMFire1* this = (EnMFire1*)thisx;
     s32 pad;
 
     if (this->actor.params < 0) {
-        Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_ITEMACTION);
+        Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ITEMACTION);
     }
 
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 }
 
-void EnMFire1_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnMFire1_Destroy(Actor* thisx, PlayState* play) {
     EnMFire1* this = (EnMFire1*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnMFire1_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnMFire1_Update(Actor* thisx, PlayState* play) {
     EnMFire1* this = (EnMFire1*)thisx;
     s32 pad;
 
@@ -71,6 +71,6 @@ void EnMFire1_Update(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     } else {
         Collider_UpdateCylinder(&this->actor, &this->collider);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
 }

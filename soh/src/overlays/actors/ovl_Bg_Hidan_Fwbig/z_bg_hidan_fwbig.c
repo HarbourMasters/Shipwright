@@ -17,19 +17,19 @@ typedef enum {
     /* 2 */ FWBIG_KILL
 } HidanFwbigMoveState;
 
-void BgHidanFwbig_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanFwbig_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanFwbig_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanFwbig_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanFwbig_Init(Actor* thisx, PlayState* play);
+void BgHidanFwbig_Destroy(Actor* thisx, PlayState* play);
+void BgHidanFwbig_Update(Actor* thisx, PlayState* play);
+void BgHidanFwbig_Draw(Actor* thisx, PlayState* play);
 
 void BgHidanFwbig_UpdatePosition(BgHidanFwbig* this);
 
-void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, GlobalContext* globalCtx);
-void BgHidanFwbig_WaitForCs(BgHidanFwbig* this, GlobalContext* globalCtx);
-void BgHidanFwbig_Lower(BgHidanFwbig* this, GlobalContext* globalCtx);
-void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, GlobalContext* globalCtx);
-void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, GlobalContext* globalCtx);
-void BgHidanFwbig_Move(BgHidanFwbig* this, GlobalContext* globalCtx);
+void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, PlayState* play);
+void BgHidanFwbig_WaitForCs(BgHidanFwbig* this, PlayState* play);
+void BgHidanFwbig_Lower(BgHidanFwbig* this, PlayState* play);
+void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, PlayState* play);
+void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, PlayState* play);
+void BgHidanFwbig_Move(BgHidanFwbig* this, PlayState* play);
 
 const ActorInit Bg_Hidan_Fwbig_InitVars = {
     ACTOR_BG_HIDAN_FWBIG,
@@ -68,14 +68,14 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneScale, 1000, ICHAIN_STOP),
 };
 
-void BgHidanFwbig_Init(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void BgHidanFwbig_Init(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     BgHidanFwbig* this = (BgHidanFwbig*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->direction = (u16)(thisx->params >> 8);
     thisx->params &= 0xFF;
@@ -105,11 +105,11 @@ void BgHidanFwbig_Init(Actor* thisx, GlobalContext* globalCtx2) {
     }
 }
 
-void BgHidanFwbig_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanFwbig_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHidanFwbig* this = (BgHidanFwbig*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
 void BgHidanFwbig_UpdatePosition(BgHidanFwbig* this) {
@@ -119,24 +119,24 @@ void BgHidanFwbig_UpdatePosition(BgHidanFwbig* this) {
     this->actor.world.pos.z = (Math_CosS(startAngle) * 885.4f) + this->actor.home.pos.z;
 }
 
-void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->actor.params)) {
+void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->actor.params)) {
         this->actionFunc = BgHidanFwbig_WaitForCs;
-        OnePointCutscene_Init(globalCtx, 3340, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3340, -99, &this->actor, MAIN_CAM);
         this->timer = 35;
     }
 }
 
-void BgHidanFwbig_WaitForCs(BgHidanFwbig* this, GlobalContext* globalCtx) {
+void BgHidanFwbig_WaitForCs(BgHidanFwbig* this, PlayState* play) {
     if (this->timer-- == 0) {
         this->actionFunc = BgHidanFwbig_Lower;
     }
 }
 
-void BgHidanFwbig_Rise(BgHidanFwbig* this, GlobalContext* globalCtx) {
+void BgHidanFwbig_Rise(BgHidanFwbig* this, PlayState* play) {
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y, 10.0f)) {
         if (this->direction == 0) {
-            Flags_UnsetSwitch(globalCtx, this->actor.params);
+            Flags_UnsetSwitch(play, this->actor.params);
             this->actionFunc = BgHidanFwbig_WaitForSwitch;
         } else {
             this->actionFunc = BgHidanFwbig_Move;
@@ -144,7 +144,7 @@ void BgHidanFwbig_Rise(BgHidanFwbig* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanFwbig_Lower(BgHidanFwbig* this, GlobalContext* globalCtx) {
+void BgHidanFwbig_Lower(BgHidanFwbig* this, PlayState* play) {
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y - (2400.0f * this->actor.scale.y), 10.0f)) {
         if (this->direction == 0) {
             this->actionFunc = BgHidanFwbig_WaitForTimer;
@@ -164,7 +164,7 @@ void BgHidanFwbig_Lower(BgHidanFwbig* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, GlobalContext* globalCtx) {
+void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -174,17 +174,17 @@ void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, GlobalContext* globalCtx) {
     func_8002F994(&this->actor, this->timer);
 }
 
-void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (player->actor.world.pos.x < 1150.0f) {
         this->actionFunc = BgHidanFwbig_Rise;
-        OnePointCutscene_Init(globalCtx, 3290, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3290, -99, &this->actor, MAIN_CAM);
     }
 }
 
-void BgHidanFwbig_Move(BgHidanFwbig* this, GlobalContext* globalCtx) {
-    if (!Player_InCsMode(globalCtx)) {
+void BgHidanFwbig_Move(BgHidanFwbig* this, PlayState* play) {
+    if (!Player_InCsMode(play)) {
         if (Math_ScaledStepToS(&this->actor.shape.rot.y, this->actor.home.rot.y + (this->direction * 0x6390), 0x20)) {
             this->moveState = FWBIG_RESET;
             this->actionFunc = BgHidanFwbig_Lower;
@@ -194,8 +194,8 @@ void BgHidanFwbig_Move(BgHidanFwbig* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanFwbig_MoveCollider(BgHidanFwbig* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgHidanFwbig_MoveCollider(BgHidanFwbig* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Vec3f projPos;
     f32 cs;
     f32 sn;
@@ -217,23 +217,23 @@ void BgHidanFwbig_MoveCollider(BgHidanFwbig* this, GlobalContext* globalCtx) {
     this->actor.world.rot.y = (projPos.z < 0.0f) ? this->actor.shape.rot.y : this->actor.shape.rot.y + 0x8000;
 }
 
-void BgHidanFwbig_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanFwbig_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHidanFwbig* this = (BgHidanFwbig*)thisx;
 
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
-        func_8002F71C(globalCtx, &this->actor, 5.0f, this->actor.world.rot.y, 1.0f);
+        func_8002F71C(play, &this->actor, 5.0f, this->actor.world.rot.y, 1.0f);
         if (this->direction != 0) {
             this->actionFunc = BgHidanFwbig_Lower;
         }
     }
-    if ((this->direction != 0) && (globalCtx->roomCtx.prevRoom.num == this->actor.room)) {
+    if ((this->direction != 0) && (play->roomCtx.prevRoom.num == this->actor.room)) {
         this->moveState = FWBIG_KILL;
         this->actionFunc = BgHidanFwbig_Lower;
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if ((this->actor.home.pos.y - 200.0f) < this->actor.world.pos.y) {
         if (gSaveContext.sceneSetupIndex < 4) {
@@ -241,19 +241,19 @@ void BgHidanFwbig_Update(Actor* thisx, GlobalContext* globalCtx) {
         } else if ((s16)this->actor.world.pos.x == -513) {
             func_8002F974(&this->actor, NA_SE_EV_FLAME_OF_FIRE - SFX_FLAG);
         }
-        BgHidanFwbig_MoveCollider(this, globalCtx);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        BgHidanFwbig_MoveCollider(this, play);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void BgHidanFwbig_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanFwbig_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     f32 height;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gEffUnknown4Tex));
 
@@ -266,13 +266,13 @@ void BgHidanFwbig_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
-                                (u8)(globalCtx->gameplayFrames * -15), 0x20, 0x40));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
+                                (u8)(play->gameplayFrames * -15), 0x20, 0x40));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigFireWallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

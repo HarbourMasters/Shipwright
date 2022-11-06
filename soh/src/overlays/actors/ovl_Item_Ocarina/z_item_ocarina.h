@@ -6,7 +6,7 @@
 
 struct ItemOcarina;
 
-typedef void (*ItemOcarinaActionFunc)(struct ItemOcarina*, GlobalContext*);
+typedef void (*ItemOcarinaActionFunc)(struct ItemOcarina*, PlayState*);
 
 typedef struct ItemOcarina {
     /* 0x0000 */ Actor actor;

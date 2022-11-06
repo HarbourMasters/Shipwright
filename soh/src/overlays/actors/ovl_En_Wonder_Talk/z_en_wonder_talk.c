@@ -9,13 +9,13 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_27)
 
-void EnWonderTalk_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnWonderTalk_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnWonderTalk_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnWonderTalk_Init(Actor* thisx, PlayState* play);
+void EnWonderTalk_Destroy(Actor* thisx, PlayState* play);
+void EnWonderTalk_Update(Actor* thisx, PlayState* play);
 
-void func_80B391CC(EnWonderTalk* this, GlobalContext* globalCtx);
-void func_80B395F0(EnWonderTalk* this, GlobalContext* globalCtx);
-void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx);
+void func_80B391CC(EnWonderTalk* this, PlayState* play);
+void func_80B395F0(EnWonderTalk* this, PlayState* play);
+void func_80B3943C(EnWonderTalk* this, PlayState* play);
 
 const ActorInit En_Wonder_Talk_InitVars = {
     ACTOR_EN_WONDER_TALK,
@@ -30,10 +30,10 @@ const ActorInit En_Wonder_Talk_InitVars = {
     NULL,
 };
 
-void EnWonderTalk_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnWonderTalk_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnWonderTalk_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnWonderTalk_Init(Actor* thisx, PlayState* play) {
     EnWonderTalk* this = (EnWonderTalk*)thisx;
 
     osSyncPrintf("\n\n");
@@ -48,7 +48,7 @@ void EnWonderTalk_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
     this->actor.targetMode = 1;
     if (this->switchFlag >= 0) {
-        if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+        if (Flags_GetSwitch(play, this->switchFlag)) {
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
             Actor_Kill(&this->actor);
             return;
@@ -58,8 +58,8 @@ void EnWonderTalk_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_15C = 40.0f;
 }
 
-void func_80B391CC(EnWonderTalk* this, GlobalContext* globalCtx) {
-    if (this->switchFlag < 0 || !Flags_GetSwitch(globalCtx, this->switchFlag)) {
+void func_80B391CC(EnWonderTalk* this, PlayState* play) {
+    if (this->switchFlag < 0 || !Flags_GetSwitch(play, this->switchFlag)) {
         switch (this->unk_150) {
             case 1:
                 // "Slate GO!"
@@ -129,7 +129,7 @@ void func_80B391CC(EnWonderTalk* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx) {
+void func_80B3943C(EnWonderTalk* this, PlayState* play) {
     s16 yawDiff;
     s16 yawDiffTemp;
 
@@ -138,17 +138,17 @@ void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
         return;
     }
-    if (this->switchFlag < 0 || !Flags_GetSwitch(globalCtx, this->switchFlag)) {
-        if ((Actor_ProcessTalkRequest(&this->actor, globalCtx))) {
+    if (this->switchFlag < 0 || !Flags_GetSwitch(play, this->switchFlag)) {
+        if ((Actor_ProcessTalkRequest(&this->actor, play))) {
             if (this->unk_156 != TEXT_STATE_DONE) {
                 // not if we're rando'd in the temple of time talking to the altar
-                if(!(gSaveContext.n64ddFlag && globalCtx->sceneNum == 67)) {
+                if(!(gSaveContext.n64ddFlag && play->sceneNum == 67)) {
                     this->actionFunc = func_80B395F0;
                 }
             } else {
                 if (this->switchFlag >= 0) {
                     this->actor.flags &= ~ACTOR_FLAG_0;
-                    Flags_SetSwitch(globalCtx, this->switchFlag);
+                    Flags_SetSwitch(play, this->switchFlag);
                 }
                 this->actionFunc = func_80B391CC;
             }
@@ -170,25 +170,25 @@ void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx) {
                     osSyncPrintf("\n\n");
                 }
                 this->unk_15A = 0;
-                func_8002F2CC(&this->actor, globalCtx, this->unk_15C);
+                func_8002F2CC(&this->actor, play, this->unk_15C);
             }
         }
     }
 }
 
-void func_80B395F0(EnWonderTalk* this, GlobalContext* globalCtx) {
-    if (this->unk_156 == Message_GetState(&globalCtx->msgCtx) && Message_ShouldAdvance(globalCtx)) {
+void func_80B395F0(EnWonderTalk* this, PlayState* play) {
+    if (this->unk_156 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         if (this->switchFlag >= 0) {
             this->actor.flags &= ~ACTOR_FLAG_0;
-            Flags_SetSwitch(globalCtx, this->switchFlag);
+            Flags_SetSwitch(play, this->switchFlag);
         }
         switch (this->unk_150) {
             case 1:
-                Message_CloseTextbox(globalCtx);
+                Message_CloseTextbox(play);
                 this->actionFunc = func_80B391CC;
                 break;
             case 2:
-                switch (globalCtx->msgCtx.choiceIndex) {
+                switch (play->msgCtx.choiceIndex) {
                     case 0:
                         if (!LINK_IS_ADULT) {
                             // "I'm still a child!"
@@ -208,13 +208,13 @@ void func_80B395F0(EnWonderTalk* this, GlobalContext* globalCtx) {
                 }
 
                 this->unk_156 = TEXT_STATE_DONE;
-                Message_ContinueTextbox(globalCtx, this->actor.textId);
+                Message_ContinueTextbox(play, this->actor.textId);
                 this->actionFunc = func_80B391CC;
                 break;
             case 3:
-                Message_CloseTextbox(globalCtx);
+                Message_CloseTextbox(play);
                 if (this->unk_164 == 0) {
-                    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_POH, this->actor.world.pos.x,
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 2);
                     this->unk_164 = 1;
                 }
@@ -222,9 +222,9 @@ void func_80B395F0(EnWonderTalk* this, GlobalContext* globalCtx) {
                 this->actionFunc = func_80B391CC;
                 break;
             case 5:
-                Message_CloseTextbox(globalCtx);
+                Message_CloseTextbox(play);
                 if (this->unk_164 == 0) {
-                    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_POH, this->actor.world.pos.x,
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
                     this->unk_164 = 1;
                 }
@@ -234,13 +234,13 @@ void func_80B395F0(EnWonderTalk* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnWonderTalk_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnWonderTalk_Update(Actor* thisx, PlayState* play) {
     EnWonderTalk* this = (EnWonderTalk*)thisx;
 
     if (this->unk_158 != 0) {
         this->unk_158--;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, this->height);
 
     if (BREG(0) != 0) {
@@ -248,12 +248,12 @@ void EnWonderTalk_Update(Actor* thisx, GlobalContext* globalCtx) {
             if ((this->unk_15A & 1) == 0) {
                 DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                        this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                       1.0f, 1.0f, 10, 10, 10, 255, 4, globalCtx->state.gfxCtx);
+                                       1.0f, 1.0f, 10, 10, 10, 255, 4, play->state.gfxCtx);
             }
         } else {
             DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                    this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                   1.0f, 1.0f, 0, 255, 0, 255, 4, globalCtx->state.gfxCtx);
+                                   1.0f, 1.0f, 0, 255, 0, 255, 4, play->state.gfxCtx);
         }
     }
 }

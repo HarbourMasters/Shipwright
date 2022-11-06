@@ -6,7 +6,7 @@
 
 struct EnToryo;
 
-typedef void (*EnToryoActionFunc)(struct EnToryo* this, GlobalContext* globalCtx);
+typedef void (*EnToryoActionFunc)(struct EnToryo* this, PlayState* play);
 
 typedef struct EnToryo {
     /* 0x0000 */ Actor actor;

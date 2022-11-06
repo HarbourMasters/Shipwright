@@ -10,21 +10,21 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void DemoGo_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoGo_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoGo_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoGo_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoGo_Init(Actor* thisx, PlayState* play);
+void DemoGo_Destroy(Actor* thisx, PlayState* play);
+void DemoGo_Update(Actor* thisx, PlayState* play);
+void DemoGo_Draw(Actor* thisx, PlayState* play);
 
-void func_8097CE10(DemoGo* this, GlobalContext* globalCtx);
-void func_8097CFDC(DemoGo* this, GlobalContext* globalCtx);
-void func_8097CFFC(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D01C(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D058(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D088(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D0D0(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D130(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D290(DemoGo* this, GlobalContext* globalCtx);
-void func_8097D29C(DemoGo* this, GlobalContext* globalCtx);
+void func_8097CE10(DemoGo* this, PlayState* play);
+void func_8097CFDC(DemoGo* this, PlayState* play);
+void func_8097CFFC(DemoGo* this, PlayState* play);
+void func_8097D01C(DemoGo* this, PlayState* play);
+void func_8097D058(DemoGo* this, PlayState* play);
+void func_8097D088(DemoGo* this, PlayState* play);
+void func_8097D0D0(DemoGo* this, PlayState* play);
+void func_8097D130(DemoGo* this, PlayState* play);
+void func_8097D290(DemoGo* this, PlayState* play);
+void func_8097D29C(DemoGo* this, PlayState* play);
 
 static void* sEyeTextures[] = { gGoronCsEyeOpenTex, gGoronCsEyeHalfTex, gGoronCsEyeClosedTex };
 
@@ -69,21 +69,21 @@ s32 func_8097C870(DemoGo* this) {
     return ret;
 }
 
-void func_8097C8A8(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097C8A8(DemoGo* this, PlayState* play) {
     Actor* thisx = &this->actor;
     Vec3f sp20;
     f32 sp1C;
 
     if ((thisx->params == 0) || (thisx->params == 1)) {
-        SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &thisx->world.pos, &sp20, &sp1C);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &sp20, 20, NA_SE_EV_OBJECT_FALL);
+        SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &thisx->world.pos, &sp20, &sp1C);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &sp20, 20, NA_SE_EV_OBJECT_FALL);
     }
 }
 
-void DemoGo_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGo_Destroy(Actor* thisx, PlayState* play) {
     DemoGo* this = (DemoGo*)thisx;
 
-    SkelAnime_Free(&this->skelAnime, globalCtx);
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void func_8097C930(DemoGo* this) {
@@ -112,28 +112,28 @@ void func_8097C9DC(DemoGo* this) {
     }
 }
 
-void func_8097CA30(DemoGo* this, GlobalContext* globalCtx) {
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 75.0f, 30.0f, 30.0f, 5);
+void func_8097CA30(DemoGo* this, PlayState* play) {
+    Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 5);
 }
 
-void func_8097CA78(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097CA78(DemoGo* this, PlayState* play) {
     s16 pad;
     Vec3f vec = this->actor.world.pos;
-    func_80033480(globalCtx, &vec, kREG(11) + 100.0f, kREG(12) + 0xA, kREG(13) + 0x12C, kREG(14), 0);
+    func_80033480(play, &vec, kREG(11) + 100.0f, kREG(12) + 0xA, kREG(13) + 0x12C, kREG(14), 0);
     func_8097C9B8(this);
 }
 
-void func_8097CB0C(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097CB0C(DemoGo* this, PlayState* play) {
     Actor* thisx = &this->actor;
     PosRot* world = &thisx->world;
-    CutsceneContext* csCtx = &globalCtx->csCtx;
+    CutsceneContext* csCtx = &play->csCtx;
     CsCmdActorAction* npcAction;
     f32 temp_ret;
     s32 pad;
     Vec3f startPos;
     Vec3f endPos;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = csCtx->npcActions[func_8097C870(this)];
         if (npcAction != NULL) {
             temp_ret = Environment_LerpWeight(npcAction->endFrame, npcAction->startFrame, csCtx->frames);
@@ -166,15 +166,15 @@ void func_8097CCC0(DemoGo* this) {
     Actor_MoveForward(&this->actor);
 }
 
-void func_8097CCE0(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097CCE0(DemoGo* this, PlayState* play) {
     CsCmdActorAction* npcAction;
     Actor* thisx = &this->actor;
     s32 rotYDelta;
     s32 newRotY;
     s32 thisRotY;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        npcAction = globalCtx->csCtx.npcActions[func_8097C870(this)];
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        npcAction = play->csCtx.npcActions[func_8097C870(this)];
         if (npcAction != NULL) {
             thisRotY = thisx->world.rot.y;
             rotYDelta = npcAction->rot.y - thisRotY;
@@ -195,8 +195,8 @@ s32 DemoGo_UpdateSkelAnime(DemoGo* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-s32 func_8097CDB0(DemoGo* this, GlobalContext* globalCtx, u16 npcAction) {
-    CutsceneContext* csCtx = &globalCtx->csCtx;
+s32 func_8097CDB0(DemoGo* this, PlayState* play, u16 npcAction) {
+    CutsceneContext* csCtx = &play->csCtx;
     s32 actionIdx = func_8097C870(this);
 
     if ((csCtx->state != CS_STATE_IDLE) && (csCtx->npcActions[actionIdx] != NULL) &&
@@ -206,39 +206,39 @@ s32 func_8097CDB0(DemoGo* this, GlobalContext* globalCtx, u16 npcAction) {
     return 0;
 }
 
-void func_8097CE10(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097CE10(DemoGo* this, PlayState* play) {
     this->action = 1;
 }
 
-void func_8097CE20(DemoGo* this, GlobalContext* globalCtx) {
-    if (func_8097CDB0(this, globalCtx, 2)) {
+void func_8097CE20(DemoGo* this, PlayState* play) {
+    if (func_8097CDB0(this, play, 2)) {
         this->action = 2;
         this->drawConfig = 1;
-        func_8097CB0C(this, globalCtx);
-        func_8097C8A8(this, globalCtx);
+        func_8097CB0C(this, play);
+        func_8097C8A8(this, play);
     }
 }
 
-void func_8097CE78(DemoGo* this, GlobalContext* globalCtx) {
-    CutsceneContext* csCtx = &globalCtx->csCtx;
+void func_8097CE78(DemoGo* this, PlayState* play) {
+    CutsceneContext* csCtx = &play->csCtx;
     CsCmdActorAction* npcAction;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = csCtx->npcActions[func_8097C870(this)];
         if (npcAction != NULL && csCtx->frames >= npcAction->endFrame) {
-            func_8097CA78(this, globalCtx);
+            func_8097CA78(this, play);
             this->action = 3;
         }
     }
 }
 
-void func_8097CEEC(DemoGo* this, GlobalContext* globalCtx) {
-    if (func_8097CDB0(this, globalCtx, 3)) {
+void func_8097CEEC(DemoGo* this, PlayState* play) {
+    if (func_8097CDB0(this, play, 3)) {
         this->action = 4;
     }
 }
 
-void func_8097CF20(DemoGo* this, GlobalContext* globalCtx, s32 arg2) {
+void func_8097CF20(DemoGo* this, PlayState* play, s32 arg2) {
     AnimationHeader* animation = &gGoronAnim_0029A8;
     if (arg2 != 0) {
         Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, Animation_GetLastFrame(animation), ANIMMODE_LOOP,
@@ -255,100 +255,100 @@ void func_8097CF9C(DemoGo* this) {
     }
 }
 
-void func_8097CFDC(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CE10(this, globalCtx);
+void func_8097CFDC(DemoGo* this, PlayState* play) {
+    func_8097CE10(this, play);
 }
 
-void func_8097CFFC(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CE20(this, globalCtx);
+void func_8097CFFC(DemoGo* this, PlayState* play) {
+    func_8097CE20(this, play);
 }
 
-void func_8097D01C(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CB0C(this, globalCtx);
-    func_8097CA30(this, globalCtx);
-    func_8097CE78(this, globalCtx);
+void func_8097D01C(DemoGo* this, PlayState* play) {
+    func_8097CB0C(this, play);
+    func_8097CA30(this, play);
+    func_8097CE78(this, play);
 }
 
-void func_8097D058(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CA30(this, globalCtx);
-    func_8097CEEC(this, globalCtx);
+void func_8097D058(DemoGo* this, PlayState* play) {
+    func_8097CA30(this, play);
+    func_8097CEEC(this, play);
 }
 
-void func_8097D088(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097D088(DemoGo* this, PlayState* play) {
     s32 something;
 
-    func_8097CA30(this, globalCtx);
+    func_8097CA30(this, play);
     something = DemoGo_UpdateSkelAnime(this);
     func_8097C930(this);
-    func_8097CF20(this, globalCtx, something);
+    func_8097CF20(this, play, something);
 }
 
-void func_8097D0D0(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CCE0(this, globalCtx);
+void func_8097D0D0(DemoGo* this, PlayState* play) {
+    func_8097CCE0(this, play);
     func_8097CCC0(this);
-    func_8097CA30(this, globalCtx);
+    func_8097CA30(this, play);
     DemoGo_UpdateSkelAnime(this);
     func_8097C930(this);
     func_8097C9DC(this);
     func_8097CF9C(this);
 }
-void func_8097D130(DemoGo* this, GlobalContext* globalCtx) {
-    func_8097CCE0(this, globalCtx);
+void func_8097D130(DemoGo* this, PlayState* play) {
+    func_8097CCE0(this, play);
     func_8097CC08(this);
-    func_8097CA30(this, globalCtx);
+    func_8097CA30(this, play);
     DemoGo_UpdateSkelAnime(this);
     func_8097C930(this);
     func_8097C9DC(this);
 }
 
-void DemoGo_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGo_Update(Actor* thisx, PlayState* play) {
     DemoGo* this = (DemoGo*)thisx;
 
     if (this->action < 0 || this->action >= 7 || D_8097D44C[this->action] == 0) {
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    D_8097D44C[this->action](this, globalCtx);
+    D_8097D44C[this->action](this, play);
 }
 
-void DemoGo_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGo_Init(Actor* thisx, PlayState* play) {
     DemoGo* this = (DemoGo*)thisx;
     AnimationHeader* animation = &gGoronAnim_004930;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGoronSkel, NULL, NULL, NULL, 0);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gGoronSkel, NULL, NULL, NULL, 0);
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, Animation_GetLastFrame(animation), ANIMMODE_ONCE, 0.0f);
     this->action = 0;
 }
 
-void func_8097D290(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097D290(DemoGo* this, PlayState* play) {
 }
 
-void func_8097D29C(DemoGo* this, GlobalContext* globalCtx) {
+void func_8097D29C(DemoGo* this, PlayState* play) {
     s32 pad;
     s16 eyeTexIdx = this->unk_190;
     SkelAnime* skelAnime = &this->skelAnime;
     void* eyeTexture = sEyeTextures[eyeTexIdx];
     void* mouthTexture = gGoronCsMouthSmileTex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
 
-    SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
                           this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void DemoGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGo_Draw(Actor* thisx, PlayState* play) {
     DemoGo* this = (DemoGo*)thisx;
 
     if (this->drawConfig < 0 || this->drawConfig >= 2 || D_8097D468[this->drawConfig] == NULL) {
         osSyncPrintf(VT_FGCOL(RED) "描画モードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    D_8097D468[this->drawConfig](this, globalCtx);
+    D_8097D468[this->drawConfig](this, play);
 }

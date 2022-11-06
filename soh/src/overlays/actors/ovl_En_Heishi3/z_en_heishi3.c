@@ -10,18 +10,18 @@
 
 #define FLAGS 0
 
-void EnHeishi3_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnHeishi3_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnHeishi3_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnHeishi3_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHeishi3_Init(Actor* thisx, PlayState* play);
+void EnHeishi3_Destroy(Actor* thisx, PlayState* play);
+void EnHeishi3_Update(Actor* thisx, PlayState* play);
+void EnHeishi3_Draw(Actor* thisx, PlayState* play);
 
-void EnHeishi3_SetupGuardType(EnHeishi3* this, GlobalContext* globalCtx);
-void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, GlobalContext* globalCtx);
-void EnHeishi3_StandSentinelInCastle(EnHeishi3* this, GlobalContext* globalCtx);
-void EnHeishi3_CatchStart(EnHeishi3* this, GlobalContext* globalCtx);
-void EnHeishi3_ResetAnimationToIdle(EnHeishi3* this, GlobalContext* globalCtx);
-void func_80A55D00(EnHeishi3* this, GlobalContext* globalCtx);
-void func_80A55BD4(EnHeishi3* this, GlobalContext* globalCtx);
+void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play);
+void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, PlayState* play);
+void EnHeishi3_StandSentinelInCastle(EnHeishi3* this, PlayState* play);
+void EnHeishi3_CatchStart(EnHeishi3* this, PlayState* play);
+void EnHeishi3_ResetAnimationToIdle(EnHeishi3* this, PlayState* play);
+void func_80A55D00(EnHeishi3* this, PlayState* play);
+void func_80A55BD4(EnHeishi3* this, PlayState* play);
 
 static s16 sPlayerCaught = 0;
 
@@ -58,7 +58,7 @@ static ColliderCylinderInit sCylinderInit = {
     { 15, 70, 0, { 0, 0, 0 } },
 };
 
-void EnHeishi3_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnHeishi3_Init(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     sPlayerCaught = 0;
@@ -72,12 +72,12 @@ void EnHeishi3_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
     Actor_SetScale(&this->actor, 0.01f);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
+    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
                    17);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->actor.targetMode = 6;
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     // "Castle Gate Soldier - Power Up"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 城門兵パワーアップ ☆☆☆☆☆ \n" VT_RST);
 
@@ -86,13 +86,13 @@ void EnHeishi3_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = EnHeishi3_SetupGuardType;
 }
 
-void EnHeishi3_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnHeishi3_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnHeishi3_SetupGuardType(EnHeishi3* this, GlobalContext* globalCtx) {
+void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gEnHeishiIdleAnim);
 
     Animation_Change(&this->skelAnime, &gEnHeishiIdleAnim, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
@@ -106,13 +106,13 @@ void EnHeishi3_SetupGuardType(EnHeishi3* this, GlobalContext* globalCtx) {
 /**
  * Handles the guards standing on Hyrule Castle Grounds.
  **/
-void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, GlobalContext* globalCtx) {
+void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, PlayState* play) {
     Player* player;
     s16 yawDiff;
     s16 yawDiffNew;
     f32 sightRange;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     yawDiffNew = ABS(yawDiff);
@@ -132,10 +132,10 @@ void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, GlobalContext* globalCtx)
     if ((this->actor.xzDistToPlayer < sightRange) &&
         (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 100.0f) && (sPlayerCaught == 0)) {
         sPlayerCaught = 1;
-        Message_StartTextbox(globalCtx, 0x702D, &this->actor);
+        Message_StartTextbox(play, 0x702D, &this->actor);
         func_80078884(NA_SE_SY_FOUND);
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST); // "Discovered!"
-        func_8002DF54(globalCtx, &this->actor, 1);
+        func_8002DF54(play, &this->actor, 1);
         this->actionFunc = EnHeishi3_CatchStart;
     }
 }
@@ -143,8 +143,8 @@ void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, GlobalContext* globalCtx)
 /**
  * Handles the guards standing in front of Hyrule Castle.
  **/
-void EnHeishi3_StandSentinelInCastle(EnHeishi3* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnHeishi3_StandSentinelInCastle(EnHeishi3* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     SkelAnime_Update(&this->skelAnime);
     if ((player->actor.world.pos.x < -190.0f) && (player->actor.world.pos.x > -380.0f) &&
@@ -160,15 +160,15 @@ void EnHeishi3_StandSentinelInCastle(EnHeishi3* this, GlobalContext* globalCtx) 
             }
         }
         sPlayerCaught = 1;
-        Message_StartTextbox(globalCtx, 0x702D, &this->actor);
+        Message_StartTextbox(play, 0x702D, &this->actor);
         func_80078884(NA_SE_SY_FOUND);
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST); // "Discovered!"
-        func_8002DF54(globalCtx, &this->actor, 1);
+        func_8002DF54(play, &this->actor, 1);
         this->actionFunc = EnHeishi3_CatchStart;
     }
 }
 
-void EnHeishi3_CatchStart(EnHeishi3* this, GlobalContext* globalCtx) {
+void EnHeishi3_CatchStart(EnHeishi3* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gEnHeishiWalkAnim);
 
     Animation_Change(&this->skelAnime, &gEnHeishiWalkAnim, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
@@ -177,7 +177,7 @@ void EnHeishi3_CatchStart(EnHeishi3* this, GlobalContext* globalCtx) {
     this->actor.speedXZ = 2.5f;
 }
 
-void func_80A55BD4(EnHeishi3* this, GlobalContext* globalCtx) {
+void func_80A55BD4(EnHeishi3* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 1.0f) || Animation_OnFrame(&this->skelAnime, 17.0f)) {
@@ -191,7 +191,7 @@ void func_80A55BD4(EnHeishi3* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnHeishi3_ResetAnimationToIdle(EnHeishi3* this, GlobalContext* globalCtx) {
+void EnHeishi3_ResetAnimationToIdle(EnHeishi3* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gEnHeishiIdleAnim);
 
     Animation_Change(&this->skelAnime, &gEnHeishiIdleAnim, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
@@ -199,20 +199,20 @@ void EnHeishi3_ResetAnimationToIdle(EnHeishi3* this, GlobalContext* globalCtx) {
 }
 
 // This function initiates the respawn after the player gets caught.
-void func_80A55D00(EnHeishi3* this, GlobalContext* globalCtx) {
+void func_80A55D00(EnHeishi3* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx) &&
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play) &&
         (this->respawnFlag == 0)) {
         gSaveContext.eventChkInf[4] |= 0x4000;
-        globalCtx->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
-        globalCtx->sceneLoadFlag = 0x14;
+        play->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
+        play->sceneLoadFlag = 0x14;
         this->respawnFlag = 1;
-        globalCtx->fadeTransition = 0x2E;
+        play->fadeTransition = 0x2E;
         gSaveContext.nextTransition = 0x2E;
     }
 }
 
-void EnHeishi3_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnHeishi3_Update(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
     s32 pad;
 
@@ -221,15 +221,15 @@ void EnHeishi3_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->caughtTimer != 0) {
         this->caughtTimer -= 1;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->actor.shape.rot = this->actor.world.rot;
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-s32 EnHeishi3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnHeishi3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                void* thisx) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
@@ -245,10 +245,10 @@ s32 EnHeishi3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
     return false;
 }
 
-void EnHeishi3_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnHeishi3_Draw(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi3_OverrideLimbDraw, NULL,
+    func_80093D18(play->state.gfxCtx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi3_OverrideLimbDraw, NULL,
                       this);
 }

@@ -6,7 +6,7 @@
 
 struct BgSpot12Gate;
 
-typedef void (*BgSpot12GateActionFunc)(struct BgSpot12Gate*, GlobalContext*);
+typedef void (*BgSpot12GateActionFunc)(struct BgSpot12Gate*, PlayState*);
 
 typedef struct BgSpot12Gate {
     /* 0x0000 */ DynaPolyActor dyna;

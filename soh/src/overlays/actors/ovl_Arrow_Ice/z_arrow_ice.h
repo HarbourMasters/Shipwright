@@ -6,7 +6,7 @@
 
 struct ArrowIce;
 
-typedef void (*ArrowIceActionFunc)(struct ArrowIce*, GlobalContext*);
+typedef void (*ArrowIceActionFunc)(struct ArrowIce*, PlayState*);
 
 typedef struct ArrowIce {
     /* 0x0000 */ Actor actor;

@@ -13,7 +13,7 @@ typedef enum {
 
 struct EnHeishi4;
 
-typedef void (*EnHeishi4ActionFunc)(struct EnHeishi4*, GlobalContext*);
+typedef void (*EnHeishi4ActionFunc)(struct EnHeishi4*, PlayState*);
 
 typedef struct EnHeishi4 {
     /* 0x0000 */ Actor actor;

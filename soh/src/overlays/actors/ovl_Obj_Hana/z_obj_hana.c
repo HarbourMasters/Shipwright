@@ -9,10 +9,10 @@
 
 #define FLAGS 0
 
-void ObjHana_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjHana_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjHana_Update(Actor* thisx, GlobalContext* globalCtx);
-void ObjHana_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ObjHana_Init(Actor* thisx, PlayState* play);
+void ObjHana_Destroy(Actor* thisx, PlayState* play);
+void ObjHana_Update(Actor* thisx, PlayState* play);
+void ObjHana_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Obj_Hana_InitVars = {
     ACTOR_OBJ_HANA,
@@ -70,7 +70,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 800, ICHAIN_STOP),
 };
 
-void ObjHana_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjHana_Init(Actor* thisx, PlayState* play) {
     ObjHana* this = (ObjHana*)thisx;
     s16 type = this->actor.params & 3;
     HanaParams* params = &sHanaParams[type];
@@ -79,8 +79,8 @@ void ObjHana_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_SetScale(&this->actor, params->scale);
     this->actor.shape.yOffset = params->yOffset;
     if (params->radius >= 0) {
-        Collider_InitCylinder(globalCtx, &this->collider);
-        Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+        Collider_InitCylinder(play, &this->collider);
+        Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         Collider_UpdateCylinder(&this->actor, &this->collider);
         this->collider.dim.radius = params->radius;
         this->collider.dim.height = params->height;
@@ -92,22 +92,22 @@ void ObjHana_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ObjHana_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ObjHana_Destroy(Actor* thisx, PlayState* play) {
     ObjHana* this = (ObjHana*)thisx;
 
     if (sHanaParams[this->actor.params & 3].radius >= 0) {
-        Collider_DestroyCylinder(globalCtx, &this->collider);
+        Collider_DestroyCylinder(play, &this->collider);
     }
 }
 
-void ObjHana_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjHana_Update(Actor* thisx, PlayState* play) {
     ObjHana* this = (ObjHana*)thisx;
 
     if (sHanaParams[this->actor.params & 3].radius >= 0 && this->actor.xzDistToPlayer < 400.0f) {
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void ObjHana_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, sHanaParams[thisx->params & 3].dList);
+void ObjHana_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, sHanaParams[thisx->params & 3].dList);
 }

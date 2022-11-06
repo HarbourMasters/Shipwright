@@ -17,9 +17,9 @@
 #define rEnvColorB regs[7]
 #define rScale regs[8]
 
-u32 EffectSsHitMark_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsHitMark_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsHitMark_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsHitMark_Update(PlayState* play, u32 index, EffectSs* this);
 
 static Color_RGB8 sColors[] = {
     { 255, 255, 255 }, { 255, 255, 0 }, { 255, 255, 255 }, { 255, 0, 0 },   { 255, 200, 100 }, { 200, 150, 0 },
@@ -41,7 +41,7 @@ EffectSsInit Effect_Ss_HitMark_InitVars = {
     EffectSsHitMark_Init,
 };
 
-u32 EffectSsHitMark_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     s32 colorIdx;
     EffectSsHitMarkInitParams* initParams = (EffectSsHitMarkInitParams*)initParamsx;
     this->pos = initParams->pos;
@@ -69,8 +69,8 @@ u32 EffectSsHitMark_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, vo
     return 1;
 }
 
-void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsHitMark_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     MtxF mfTrans;
     MtxF mfScale;
     MtxF mfResult;
@@ -84,7 +84,7 @@ void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
     scale = this->rScale / 100.0f;
     SkinMatrix_SetScale(&mfScale, scale, scale, 1.0f);
-    SkinMatrix_MtxFMtxFMult(&mfTrans, &globalCtx->billboardMtxF, &mfTrans11DA0);
+    SkinMatrix_MtxFMtxFMult(&mfTrans, &play->billboardMtxF, &mfTrans11DA0);
     SkinMatrix_MtxFMtxFMult(&mfTrans11DA0, &mfScale, &mfResult);
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -101,7 +101,7 @@ void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsHitMark_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsHitMark_Update(PlayState* play, u32 index, EffectSs* this) {
     s32 colorIdx;
 
     if (this->rType == EFFECT_HITMARK_DUST) {

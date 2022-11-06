@@ -4,45 +4,45 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void DemoIk_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoIk_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoIk_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoIk_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoIk_Init(Actor* thisx, PlayState* play);
+void DemoIk_Destroy(Actor* thisx, PlayState* play);
+void DemoIk_Update(Actor* thisx, PlayState* play);
+void DemoIk_Draw(Actor* thisx, PlayState* play);
 
-void DemoIk_Type1Init(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type2Init(DemoIk* this, GlobalContext* globalCtx);
+void DemoIk_Type1Init(DemoIk* this, PlayState* play);
+void DemoIk_Type2Init(DemoIk* this, PlayState* play);
 
-void DemoIk_Type1Action0(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type1Action1(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type1Action2(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type2Action0(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type2Action1(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type2Action2(DemoIk* this, GlobalContext* globalCtx);
+void DemoIk_Type1Action0(DemoIk* this, PlayState* play);
+void DemoIk_Type1Action1(DemoIk* this, PlayState* play);
+void DemoIk_Type1Action2(DemoIk* this, PlayState* play);
+void DemoIk_Type2Action0(DemoIk* this, PlayState* play);
+void DemoIk_Type2Action1(DemoIk* this, PlayState* play);
+void DemoIk_Type2Action2(DemoIk* this, PlayState* play);
 
-void DemoIk_DrawNothing(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type1Draw(DemoIk* this, GlobalContext* globalCtx);
-void DemoIk_Type2Draw(DemoIk* this, GlobalContext* globalCtx);
+void DemoIk_DrawNothing(DemoIk* this, PlayState* play);
+void DemoIk_Type1Draw(DemoIk* this, PlayState* play);
+void DemoIk_Type2Draw(DemoIk* this, PlayState* play);
 
-void DemoIk_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoIk_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void DemoIk_BgCheck(DemoIk* this, GlobalContext* globalCtx) {
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 75.0f, 30.0f, 30.0f, 5);
+void DemoIk_BgCheck(DemoIk* this, PlayState* play) {
+    Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 5);
 }
 
 s32 DemoIk_UpdateSkelAnime(DemoIk* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* DemoIk_GetCue(GlobalContext* globalCtx, s32 index) {
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        return globalCtx->csCtx.npcActions[index];
+CsCmdActorAction* DemoIk_GetCue(PlayState* play, s32 index) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        return play->csCtx.npcActions[index];
     }
     return NULL;
 }
 
-s32 DemoIk_CheckCue(GlobalContext* globalCtx, u16 action, s32 index) {
-    CsCmdActorAction* cue = DemoIk_GetCue(globalCtx, index);
+s32 DemoIk_CheckCue(PlayState* play, u16 action, s32 index) {
+    CsCmdActorAction* cue = DemoIk_GetCue(play, index);
 
     if ((cue != NULL) && (cue->action == action)) {
         return 1;
@@ -50,9 +50,9 @@ s32 DemoIk_CheckCue(GlobalContext* globalCtx, u16 action, s32 index) {
     return 0;
 }
 
-void DemoIk_SetMove(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_SetMove(DemoIk* this, PlayState* play) {
     this->skelAnime.moveFlags |= 1;
-    AnimationContext_SetMoveActor(globalCtx, &this->actor, &this->skelAnime, 1.0f);
+    AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 
 void DemoIk_EndMove(DemoIk* this) {
@@ -109,7 +109,7 @@ void DemoIk_Type1PlaySound(DemoIk* this) {
     }
 }
 
-void DemoIk_SpawnDeadDb(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_SpawnDeadDb(DemoIk* this, PlayState* play) {
     static Vec3f deadDbOffsets[] = {
         { -14.0f, 5.0f, 5.0f },  { -20.0f, 12.0f, 0.0f }, { -5.0f, 10.0f, -1.0f }, { -10.0f, 8.0f, 14.0f },
         { -3.0f, 10.0f, 7.0f },  { -10.0f, 11.0f, 0.0f }, { 9.0f, 10.0f, -8.0f },  { 4.0f, 10.0f, 3.0f },
@@ -118,7 +118,7 @@ void DemoIk_SpawnDeadDb(DemoIk* this, GlobalContext* globalCtx) {
     s32 i;
     s32 index = DemoIk_GetIndexFromParams(this->actor.params);
 
-    if (DemoIk_CheckCue(globalCtx, 5, index)) {
+    if (DemoIk_CheckCue(play, 5, index)) {
         Vec3f pos;
         Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
         s32 startIndex;
@@ -138,13 +138,13 @@ void DemoIk_SpawnDeadDb(DemoIk* this, GlobalContext* globalCtx) {
             pos.x = deadDbOffsets[i].x + this->actor.world.pos.x;
             pos.y = deadDbOffsets[i].y + this->actor.world.pos.y;
             pos.z = deadDbOffsets[i].z + this->actor.world.pos.z;
-            EffectSsDeadDb_Spawn(globalCtx, &pos, &zeroVec, &zeroVec, 10, 7, 255, 255, 255, 255, 0, 0, 255, 1, 9, true);
+            EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 10, 7, 255, 255, 255, 255, 0, 0, 255, 1, 9, true);
         }
     }
 }
 
-void DemoIk_MoveToStartPos(DemoIk* this, GlobalContext* globalCtx, s32 index) {
-    CsCmdActorAction* cue = DemoIk_GetCue(globalCtx, index);
+void DemoIk_MoveToStartPos(DemoIk* this, PlayState* play, s32 index) {
+    CsCmdActorAction* cue = DemoIk_GetCue(play, index);
 
     if (cue != NULL) {
         this->actor.world.pos.x = cue->startPos.x;
@@ -154,7 +154,7 @@ void DemoIk_MoveToStartPos(DemoIk* this, GlobalContext* globalCtx, s32 index) {
     }
 }
 
-void DemoIk_Type1Init(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type1Init(DemoIk* this, PlayState* play) {
     s32 pad[3];
     SkeletonHeader* skeleton;
     AnimationHeader* animation;
@@ -178,7 +178,7 @@ void DemoIk_Type1Init(DemoIk* this, GlobalContext* globalCtx) {
             // No break is required for matching
     }
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, phi_f0);
-    SkelAnime_Init(globalCtx, &this->skelAnime, skeleton, NULL, this->jointTable, this->morphTable, 2);
+    SkelAnime_Init(play, &this->skelAnime, skeleton, NULL, this->jointTable, this->morphTable, 2);
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, Animation_GetLastFrame(animation), ANIMMODE_ONCE, 0.0f);
 }
 
@@ -188,9 +188,9 @@ void func_8098393C(DemoIk* this) {
     this->actor.shape.shadowAlpha = 0;
 }
 
-void func_8098394C(DemoIk* this, GlobalContext* globalCtx) {
+void func_8098394C(DemoIk* this, PlayState* play) {
     DemoIk_EndMove(this);
-    DemoIk_MoveToStartPos(this, globalCtx, DemoIk_GetIndexFromParams(this->actor.params));
+    DemoIk_MoveToStartPos(this, play, DemoIk_GetIndexFromParams(this->actor.params));
     this->actionMode = 1;
     this->drawMode = 1;
     this->actor.shape.shadowAlpha = 255;
@@ -204,8 +204,8 @@ void func_809839AC(DemoIk* this) {
     this->skelAnime.curFrame = 0.0f;
 }
 
-void func_809839D0(DemoIk* this, GlobalContext* globalCtx) {
-    CsCmdActorAction* cue = DemoIk_GetCue(globalCtx, DemoIk_GetIndexFromParams(this->actor.params));
+void func_809839D0(DemoIk* this, PlayState* play) {
+    CsCmdActorAction* cue = DemoIk_GetCue(play, DemoIk_GetIndexFromParams(this->actor.params));
 
     if (cue != NULL) {
         s32 nextCsAction = cue->action;
@@ -217,7 +217,7 @@ void func_809839D0(DemoIk* this, GlobalContext* globalCtx) {
                     func_8098393C(this);
                     break;
                 case 2:
-                    func_8098394C(this, globalCtx);
+                    func_8098394C(this, play);
                     break;
                 case 3:
                     func_809839AC(this);
@@ -237,27 +237,27 @@ void func_809839D0(DemoIk* this, GlobalContext* globalCtx) {
     }
 }
 
-void DemoIk_Type1Action0(DemoIk* this, GlobalContext* globalCtx) {
-    func_809839D0(this, globalCtx);
+void DemoIk_Type1Action0(DemoIk* this, PlayState* play) {
+    func_809839D0(this, play);
 }
 
-void DemoIk_Type1Action1(DemoIk* this, GlobalContext* globalCtx) {
-    DemoIk_BgCheck(this, globalCtx);
-    func_809839D0(this, globalCtx);
+void DemoIk_Type1Action1(DemoIk* this, PlayState* play) {
+    DemoIk_BgCheck(this, play);
+    func_809839D0(this, play);
 }
 
-void DemoIk_Type1Action2(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type1Action2(DemoIk* this, PlayState* play) {
     DemoIk_UpdateSkelAnime(this);
     DemoIk_Type1PlaySound(this);
-    DemoIk_SetMove(this, globalCtx);
-    DemoIk_BgCheck(this, globalCtx);
-    DemoIk_SpawnDeadDb(this, globalCtx);
-    func_809839D0(this, globalCtx);
+    DemoIk_SetMove(this, play);
+    DemoIk_BgCheck(this, play);
+    DemoIk_SpawnDeadDb(this, play);
+    func_809839D0(this, play);
 }
 
-void DemoIk_Type1PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void DemoIk_Type1PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     DemoIk* this = (DemoIk*)thisx;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
     if (limbIndex == 1) {
@@ -277,23 +277,23 @@ void DemoIk_Type1PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     CLOSE_DISPS(gfxCtx);
 }
 
-void DemoIk_Type1Draw(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type1Draw(DemoIk* this, PlayState* play) {
     s32 pad[2];
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(gfxCtx);
-    func_8002EBCC(&this->actor, globalCtx, 0);
+    func_8002EBCC(&this->actor, play, 0);
     func_80093D18(gfxCtx);
     func_80093D84(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, NULL, DemoIk_Type1PostLimbDraw, this);
+    SkelAnime_DrawOpa(play, skelAnime->skeleton, skelAnime->jointTable, NULL, DemoIk_Type1PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 
-void DemoIk_Type2Init(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type2Init(DemoIk* this, PlayState* play) {
     s32 pad[2];
     FlexSkeletonHeader* skeleton;
     AnimationHeader* animation;
@@ -316,7 +316,7 @@ void DemoIk_Type2Init(DemoIk* this, GlobalContext* globalCtx) {
             animation = &object_ik_Anim_0008DC;
     }
 
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, skeleton, NULL, this->jointTable, this->morphTable, 2);
+    SkelAnime_InitFlex(play, &this->skelAnime, skeleton, NULL, this->jointTable, this->morphTable, 2);
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, Animation_GetLastFrame(animation), ANIMMODE_ONCE, 0.0f);
     this->actionMode = 3;
     this->drawMode = 0;
@@ -345,8 +345,8 @@ void func_80983FDC(DemoIk* this) {
     this->drawMode = 0;
 }
 
-void func_80983FEC(DemoIk* this, GlobalContext* globalCtx) {
-    DemoIk_MoveToStartPos(this, globalCtx, 4);
+void func_80983FEC(DemoIk* this, PlayState* play) {
+    DemoIk_MoveToStartPos(this, play, 4);
     this->actionMode = 4;
     this->drawMode = 2;
     this->skelAnime.curFrame = 0.0f;
@@ -358,8 +358,8 @@ void func_8098402C(DemoIk* this) {
     this->skelAnime.curFrame = 0.0f;
 }
 
-void func_80984048(DemoIk* this, GlobalContext* globalCtx) {
-    CsCmdActorAction* cue = DemoIk_GetCue(globalCtx, 4);
+void func_80984048(DemoIk* this, PlayState* play) {
+    CsCmdActorAction* cue = DemoIk_GetCue(play, 4);
 
     if (cue != NULL) {
         s32 nextCsAction = cue->action;
@@ -371,7 +371,7 @@ void func_80984048(DemoIk* this, GlobalContext* globalCtx) {
                     func_80983FDC(this);
                     break;
                 case 5:
-                    func_80983FEC(this, globalCtx);
+                    func_80983FEC(this, play);
                     break;
                 case 6:
                     func_8098402C(this);
@@ -388,21 +388,21 @@ void func_80984048(DemoIk* this, GlobalContext* globalCtx) {
     }
 }
 
-void DemoIk_Type2Action0(DemoIk* this, GlobalContext* globalCtx) {
-    func_80984048(this, globalCtx);
+void DemoIk_Type2Action0(DemoIk* this, PlayState* play) {
+    func_80984048(this, play);
 }
 
-void DemoIk_Type2Action1(DemoIk* this, GlobalContext* globalCtx) {
-    func_80984048(this, globalCtx);
+void DemoIk_Type2Action1(DemoIk* this, PlayState* play) {
+    func_80984048(this, play);
 }
 
-void DemoIk_Type2Action2(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type2Action2(DemoIk* this, PlayState* play) {
     DemoIk_UpdateSkelAnime(this);
     DemoIk_Type2PlaySound(this);
-    func_80984048(this, globalCtx);
+    func_80984048(this, play);
 }
 
-s32 DemoIk_Type2OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 DemoIk_Type2OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                  void* thisx) {
     DemoIk* this = (DemoIk*)thisx;
 
@@ -412,9 +412,9 @@ s32 DemoIk_Type2OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** 
     return 0;
 }
 
-void DemoIk_Type2PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void DemoIk_Type2PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     DemoIk* this = (DemoIk*)thisx;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     f32 frame = DemoIk_GetCurFrame(this);
 
     OPEN_DISPS(gfxCtx);
@@ -445,19 +445,19 @@ void DemoIk_Type2PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     CLOSE_DISPS(gfxCtx);
 }
 
-void DemoIk_Type2Draw(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_Type2Draw(DemoIk* this, PlayState* play) {
     s32 pad[2];
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(gfxCtx);
-    func_8002EBCC(&this->actor, globalCtx, 0);
+    func_8002EBCC(&this->actor, play, 0);
     func_80093D18(gfxCtx);
     func_80093D84(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           DemoIk_Type2OverrideLimbDraw, DemoIk_Type2PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
@@ -467,7 +467,7 @@ static DemoIkActionFunc sActionFuncs[] = {
     DemoIk_Type2Action0, DemoIk_Type2Action1, DemoIk_Type2Action2,
 };
 
-void DemoIk_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoIk_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     DemoIk* this = (DemoIk*)thisx;
 
@@ -477,10 +477,10 @@ void DemoIk_Update(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    sActionFuncs[this->actionMode](this, globalCtx);
+    sActionFuncs[this->actionMode](this, play);
 }
 
-void DemoIk_DrawNothing(DemoIk* this, GlobalContext* globalCtx) {
+void DemoIk_DrawNothing(DemoIk* this, PlayState* play) {
 }
 
 static DemoIkDrawFunc sDrawFuncs[] = {
@@ -489,7 +489,7 @@ static DemoIkDrawFunc sDrawFuncs[] = {
     DemoIk_Type2Draw,
 };
 
-void DemoIk_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoIk_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     DemoIk* this = (DemoIk*)thisx;
 
@@ -498,7 +498,7 @@ void DemoIk_Draw(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_FGCOL(RED) "描画モードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    sDrawFuncs[this->drawMode](this, globalCtx);
+    sDrawFuncs[this->drawMode](this, play);
 }
 
 const ActorInit Demo_Ik_InitVars = {
@@ -514,13 +514,13 @@ const ActorInit Demo_Ik_InitVars = {
     NULL,
 };
 
-void DemoIk_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoIk_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     DemoIk* this = (DemoIk*)thisx;
 
     if (this->actor.params == 0 || this->actor.params == 1 || this->actor.params == 2) {
-        DemoIk_Type1Init(this, globalCtx);
+        DemoIk_Type1Init(this, play);
     } else {
-        DemoIk_Type2Init(this, globalCtx);
+        DemoIk_Type2Init(this, play);
     }
 }

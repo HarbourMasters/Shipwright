@@ -6,7 +6,7 @@
 
 struct BgMoriBigst;
 
-typedef void (*BgMoriBigstActionFunc)(struct BgMoriBigst*, GlobalContext*);
+typedef void (*BgMoriBigstActionFunc)(struct BgMoriBigst*, PlayState*);
 
 typedef struct BgMoriBigst {
     /* 0x0000 */ DynaPolyActor dyna;

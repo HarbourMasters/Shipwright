@@ -294,7 +294,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
 
     if (HealthMeter_IsCritical()) {
         controllerCallback.ledColor = 0;
-    } else if (gGlobalCtx) {
+    } else if (gPlayState) {
         switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
             case PLAYER_TUNIC_KOKIRI:
                 controllerCallback.ledColor = 1;

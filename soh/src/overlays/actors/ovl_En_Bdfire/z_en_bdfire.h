@@ -7,8 +7,8 @@
 
 struct EnBdfire;
 
-typedef void (*EnBdfireActionFunc)(struct EnBdfire*, GlobalContext*);
-typedef void (*EnBdfireDrawFunc)(struct EnBdfire*, GlobalContext*);
+typedef void (*EnBdfireActionFunc)(struct EnBdfire*, PlayState*);
+typedef void (*EnBdfireDrawFunc)(struct EnBdfire*, PlayState*);
 
 typedef struct EnBdfire {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct ItemInbox;
 
-typedef void (*ItemInboxActionFunc)(struct ItemInbox*, GlobalContext*);
+typedef void (*ItemInboxActionFunc)(struct ItemInbox*, PlayState*);
 
 typedef struct ItemInbox {
     /* 0x0000 */ Actor actor;

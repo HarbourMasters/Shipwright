@@ -9,12 +9,12 @@
 
 #define FLAGS ACTOR_FLAG_5
 
-void BgSpot01Idomizu_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idomizu_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idomizu_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play);
+void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play);
+void BgSpot01Idomizu_Update(Actor* thisx, PlayState* play);
+void BgSpot01Idomizu_Draw(Actor* thisx, PlayState* play);
 
-void func_808ABB84(BgSpot01Idomizu* this, GlobalContext* globalCtx);
+void func_808ABB84(BgSpot01Idomizu* this, PlayState* play);
 
 const ActorInit Bg_Spot01_Idomizu_InitVars = {
     ACTOR_BG_SPOT01_IDOMIZU,
@@ -33,7 +33,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgSpot01Idomizu_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play) {
     BgSpot01Idomizu* this = (BgSpot01Idomizu*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -46,14 +46,14 @@ void BgSpot01Idomizu_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.world.pos.y = this->waterHeight;
 }
 
-void BgSpot01Idomizu_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void func_808ABB84(BgSpot01Idomizu* this, GlobalContext* globalCtx) {
+void func_808ABB84(BgSpot01Idomizu* this, PlayState* play) {
     if (gSaveContext.eventChkInf[6] & 0x80) {
         this->waterHeight = -550.0f;
     }
-    globalCtx->colCtx.colHeader->waterBoxes[0].ySurface = this->actor.world.pos.y;
+    play->colCtx.colHeader->waterBoxes[0].ySurface = this->actor.world.pos.y;
     if (this->waterHeight < this->actor.world.pos.y) {
         Audio_PlaySoundGeneral(NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
@@ -61,28 +61,28 @@ void func_808ABB84(BgSpot01Idomizu* this, GlobalContext* globalCtx) {
     Math_ApproachF(&this->actor.world.pos.y, this->waterHeight, 1.0f, 2.0f);
 }
 
-void BgSpot01Idomizu_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idomizu_Update(Actor* thisx, PlayState* play) {
     BgSpot01Idomizu* this = (BgSpot01Idomizu*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idomizu_Draw(Actor* thisx, PlayState* play) {
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    frames = globalCtx->state.frames;
+    frames = play->state.frames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 127 - frames % 128, frames & 0x7F, 32, 32, 1, frames % 128,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - frames % 128, frames & 0x7F, 32, 32, 1, frames % 128,
                                 frames & 0x7F, 32, 32));
 
     gSPDisplayList(POLY_XLU_DISP++, gKakarikoWellWaterDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

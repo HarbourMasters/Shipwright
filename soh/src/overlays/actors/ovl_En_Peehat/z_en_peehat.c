@@ -8,37 +8,37 @@
 #define GROUND_HOVER_HEIGHT 75.0f
 #define MAX_LARVA 3
 
-void EnPeehat_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnPeehat_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnPeehat_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnPeehat_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnPeehat_Init(Actor* thisx, PlayState* play);
+void EnPeehat_Destroy(Actor* thisx, PlayState* play);
+void EnPeehat_Update(Actor* thisx, PlayState* play);
+void EnPeehat_Draw(Actor* thisx, PlayState* play);
 
 void EnPeehat_Ground_SetStateGround(EnPeehat* this);
 void EnPeehat_Flying_SetStateGround(EnPeehat* this);
 void EnPeehat_Larva_SetStateSeekPlayer(EnPeehat* this);
-void EnPeehat_Ground_StateGround(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Ground_StateGround(EnPeehat* this, PlayState* play);
 void EnPeehat_Ground_SetStateRise(EnPeehat* this);
-void EnPeehat_Flying_StateGrounded(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Flying_StateGrounded(EnPeehat* this, PlayState* play);
 void EnPeehat_Flying_SetStateRise(EnPeehat* this);
-void EnPeehat_Flying_StateFly(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Flying_StateFly(EnPeehat* this, PlayState* play);
 void EnPeehat_Flying_SetStateLanding(EnPeehat* this);
-void EnPeehat_Ground_StateRise(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Ground_StateRise(EnPeehat* this, PlayState* play);
 void EnPeehat_Ground_SetStateHover(EnPeehat* this);
-void EnPeehat_Flying_StateRise(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_Ground_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Flying_StateRise(EnPeehat* this, PlayState* play);
+void EnPeehat_Ground_StateSeekPlayer(EnPeehat* this, PlayState* play);
 void EnPeehat_Ground_SetStateReturnHome(EnPeehat* this);
 void EnPeehat_Ground_SetStateLanding(EnPeehat* this);
-void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play);
 void EnPeehat_SetStateAttackRecoil(EnPeehat* this);
-void EnPeehat_Ground_StateLanding(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_Flying_StateLanding(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_Ground_StateHover(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_Ground_StateReturnHome(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_StateAttackRecoil(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_StateBoomerangStunned(EnPeehat* this, GlobalContext* globalCtx);
-void EnPeehat_Adult_StateDie(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_Ground_StateLanding(EnPeehat* this, PlayState* play);
+void EnPeehat_Flying_StateLanding(EnPeehat* this, PlayState* play);
+void EnPeehat_Ground_StateHover(EnPeehat* this, PlayState* play);
+void EnPeehat_Ground_StateReturnHome(EnPeehat* this, PlayState* play);
+void EnPeehat_StateAttackRecoil(EnPeehat* this, PlayState* play);
+void EnPeehat_StateBoomerangStunned(EnPeehat* this, PlayState* play);
+void EnPeehat_Adult_StateDie(EnPeehat* this, PlayState* play);
 void EnPeehat_SetStateExplode(EnPeehat* this);
-void EnPeehat_StateExplode(EnPeehat* this, GlobalContext* globalCtx);
+void EnPeehat_StateExplode(EnPeehat* this, PlayState* play);
 
 const ActorInit En_Peehat_InitVars = {
     ACTOR_EN_PEEHAT,
@@ -188,12 +188,12 @@ void EnPeehat_SetupAction(EnPeehat* this, EnPeehatActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void EnPeehat_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnPeehat_Init(Actor* thisx, PlayState* play) {
     EnPeehat* this = (EnPeehat*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Actor_SetScale(&this->actor, 36.0f * 0.001f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gPeehatSkel, &gPeehatRisingAnim, this->jointTable, this->morphTable,
+    SkelAnime_Init(play, &this->skelAnime, &gPeehatSkel, &gPeehatRisingAnim, this->jointTable, this->morphTable,
                    24);
     ActorShape_Init(&this->actor.shape, 100.0f, ActorShadow_DrawCircle, 27.0f);
     this->actor.focus.pos = this->actor.world.pos;
@@ -203,12 +203,12 @@ void EnPeehat_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.colChkInfo.health = 6;
     this->actor.colChkInfo.damageTable = &sDamageTable;
     this->actor.floorHeight = this->actor.world.pos.y;
-    Collider_InitCylinder(globalCtx, &this->colCylinder);
-    Collider_SetCylinder(globalCtx, &this->colCylinder, &this->actor, &sCylinderInit);
-    Collider_InitQuad(globalCtx, &this->colQuad);
-    Collider_SetQuad(globalCtx, &this->colQuad, &this->actor, &sQuadInit);
-    Collider_InitJntSph(globalCtx, &this->colJntSph);
-    Collider_SetJntSph(globalCtx, &this->colJntSph, &this->actor, &sJntSphInit, this->colJntSphItemList);
+    Collider_InitCylinder(play, &this->colCylinder);
+    Collider_SetCylinder(play, &this->colCylinder, &this->actor, &sCylinderInit);
+    Collider_InitQuad(play, &this->colQuad);
+    Collider_SetQuad(play, &this->colQuad, &this->actor, &sQuadInit);
+    Collider_InitJntSph(play, &this->colJntSph);
+    Collider_SetJntSph(play, &this->colJntSph, &this->actor, &sJntSphInit, this->colJntSphItemList);
 
     this->actor.naviEnemyId = 0x48;
     this->xzDistToRise = 740.0f;
@@ -242,12 +242,12 @@ void EnPeehat_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnPeehat_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnPeehat_Destroy(Actor* thisx, PlayState* play) {
     EnPeehat* this = (EnPeehat*)thisx;
     EnPeehat* parent;
 
-    Collider_DestroyCylinder(globalCtx, &this->colCylinder);
-    Collider_DestroyJntSph(globalCtx, &this->colJntSph);
+    Collider_DestroyCylinder(play, &this->colCylinder);
+    Collider_DestroyJntSph(play, &this->colJntSph);
 
     // If PEAHAT_TYPE_LARVA, decrement total larva spawned
     if (this->actor.params > 0) {
@@ -258,7 +258,7 @@ void EnPeehat_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnPeehat_SpawnDust(GlobalContext* globalCtx, EnPeehat* this, Vec3f* pos, f32 arg3, s32 arg4, f32 arg5, f32 arg6) {
+void EnPeehat_SpawnDust(PlayState* play, EnPeehat* this, Vec3f* pos, f32 arg3, s32 arg4, f32 arg5, f32 arg6) {
     Vec3f dustPos;
     Vec3f dustVel = { 0.0f, 8.0f, 0.0f };
     Vec3f dustAccel = { 0.0f, -1.5f, 0.0f };
@@ -273,21 +273,21 @@ void EnPeehat_SpawnDust(GlobalContext* globalCtx, EnPeehat* this, Vec3f* pos, f3
     dustAccel.z = (Rand_ZeroOne() - 0.5f) * arg5;
     dustVel.y += (Rand_ZeroOne() - 0.5f) * 4.0f;
     pScale = (Rand_ZeroOne() * 5 + 12) * arg6;
-    EffectSsHahen_Spawn(globalCtx, &dustPos, &dustVel, &dustAccel, arg4, pScale, HAHEN_OBJECT_DEFAULT, 10, NULL);
+    EffectSsHahen_Spawn(play, &dustPos, &dustVel, &dustAccel, arg4, pScale, HAHEN_OBJECT_DEFAULT, 10, NULL);
 }
 
 /**
  * Handles being hit when on the ground
  */
-void EnPeehat_HitWhenGrounded(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_HitWhenGrounded(EnPeehat* this, PlayState* play) {
     this->colCylinder.base.acFlags &= ~AC_HIT;
-    if ((globalCtx->gameplayFrames & 0xF) == 0) {
+    if ((play->gameplayFrames & 0xF) == 0) {
         Vec3f itemDropPos = this->actor.world.pos;
 
         itemDropPos.y += 70.0f;
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &itemDropPos, 0x40);
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &itemDropPos, 0x40);
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &itemDropPos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &itemDropPos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &itemDropPos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &itemDropPos, 0x40);
         this->unk_2D4 = 240;
     } else {
         s32 i;
@@ -295,7 +295,7 @@ void EnPeehat_HitWhenGrounded(EnPeehat* this, GlobalContext* globalCtx) {
         this->colCylinder.base.acFlags &= ~AC_HIT;
         for (i = MAX_LARVA - this->unk_2FA; i > 0; i--) {
             Actor* larva =
-                Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_PEEHAT,
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
                                    Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
                                    Rand_CenteredFloat(25.0f) + (this->actor.world.pos.y + 50.0f),
                                    Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, PEAHAT_TYPE_LARVA);
@@ -322,7 +322,7 @@ void EnPeehat_Ground_SetStateGround(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateGround);
 }
 
-void EnPeehat_Ground_StateGround(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Ground_StateGround(EnPeehat* this, PlayState* play) {
     if (IS_DAY) {
         this->actor.flags |= ACTOR_FLAG_0;
         if (this->riseDelayTimer == 0) {
@@ -344,7 +344,7 @@ void EnPeehat_Ground_StateGround(EnPeehat* this, GlobalContext* globalCtx) {
                 Math_SmoothStepToF(&this->scaleShift, 0.0f, 1.0f, 0.005f, 0.0f);
             }
         } else if (this->colCylinder.base.acFlags & AC_HIT) {
-            EnPeehat_HitWhenGrounded(this, globalCtx);
+            EnPeehat_HitWhenGrounded(this, play);
         }
     }
 }
@@ -359,7 +359,7 @@ void EnPeehat_Flying_SetStateGround(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Flying_StateGrounded);
 }
 
-void EnPeehat_Flying_StateGrounded(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Flying_StateGrounded(EnPeehat* this, PlayState* play) {
     if (IS_DAY) {
         if (this->actor.xzDistToPlayer < this->xzDistToRise) {
             EnPeehat_Flying_SetStateRise(this);
@@ -374,7 +374,7 @@ void EnPeehat_Flying_StateGrounded(EnPeehat* this, GlobalContext* globalCtx) {
                 Math_SmoothStepToF(&this->scaleShift, 0.0f, 1.0f, 0.005f, 0.0f);
             }
         } else if (this->colCylinder.base.acFlags & AC_HIT) {
-            EnPeehat_HitWhenGrounded(this, globalCtx);
+            EnPeehat_HitWhenGrounded(this, play);
         }
     }
 }
@@ -385,14 +385,14 @@ void EnPeehat_Flying_SetStateFly(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Flying_StateFly);
 }
 
-void EnPeehat_Flying_StateFly(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Flying_StateFly(EnPeehat* this, PlayState* play) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PIHAT_FLY - SFX_FLAG);
     SkelAnime_Update(&this->skelAnime);
     if (!IS_DAY || this->xzDistToRise < this->actor.xzDistToPlayer) {
         EnPeehat_Flying_SetStateLanding(this);
     } else if (this->actor.xzDistToPlayer < this->xzDistMax) {
-        if (this->unk_2FA < MAX_LARVA && (globalCtx->gameplayFrames & 7) == 0) {
-            Actor* larva = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_PEEHAT,
+        if (this->unk_2FA < MAX_LARVA && (play->gameplayFrames & 7) == 0) {
+            Actor* larva = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
                                               Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
                                               Rand_CenteredFloat(5.0f) + this->actor.world.pos.y,
                                               Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, 1);
@@ -417,7 +417,7 @@ void EnPeehat_Ground_SetStateRise(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateRise);
 }
 
-void EnPeehat_Ground_StateRise(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Ground_StateRise(EnPeehat* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.shape.yOffset, 0.0f, 1.0f, 50.0f, 0.0f);
     if (Math_SmoothStepToS(&this->bladeRotVel, 4000, 1, 800, 0) == 0) {
         if (this->animTimer != 0) {
@@ -437,10 +437,10 @@ void EnPeehat_Ground_StateRise(EnPeehat* this, GlobalContext* globalCtx) {
         if (this->actor.world.pos.y - this->actor.floorHeight < 80.0f) {
             Vec3f pos = this->actor.world.pos;
             pos.y = this->actor.floorHeight;
-            func_80033480(globalCtx, &pos, 90.0f, 1, 0x96, 100, 1);
+            func_80033480(play, &pos, 90.0f, 1, 0x96, 100, 1);
         }
     }
-    EnPeehat_SpawnDust(globalCtx, this, &this->actor.world.pos, 75.0f, 2, 1.05f, 2.0f);
+    EnPeehat_SpawnDust(play, this, &this->actor.world.pos, 75.0f, 2, 1.05f, 2.0f);
     Math_SmoothStepToF(&this->scaleShift, 0.075f, 1.0f, 0.005f, 0.0f);
     this->bladeRot += this->bladeRotVel;
 }
@@ -458,7 +458,7 @@ void EnPeehat_Flying_SetStateRise(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Flying_StateRise);
 }
 
-void EnPeehat_Flying_StateRise(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Flying_StateRise(EnPeehat* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.shape.yOffset, 0.0f, 1.0f, 50.0f, 0.0f);
     if (Math_SmoothStepToS(&this->bladeRotVel, 4000, 1, 800, 0) == 0) {
         if (this->animTimer != 0) {
@@ -480,10 +480,10 @@ void EnPeehat_Flying_StateRise(EnPeehat* this, GlobalContext* globalCtx) {
         if (this->actor.world.pos.y - this->actor.floorHeight < 80.0f) {
             Vec3f pos = this->actor.world.pos;
             pos.y = this->actor.floorHeight;
-            func_80033480(globalCtx, &pos, 90.0f, 1, 0x96, 100, 1);
+            func_80033480(play, &pos, 90.0f, 1, 0x96, 100, 1);
         }
     }
-    EnPeehat_SpawnDust(globalCtx, this, &this->actor.world.pos, 75.0f, 2, 1.05f, 2.0f);
+    EnPeehat_SpawnDust(play, this, &this->actor.world.pos, 75.0f, 2, 1.05f, 2.0f);
     Math_SmoothStepToF(&this->scaleShift, 0.075f, 1.0f, 0.005f, 0.0f);
     this->bladeRot += this->bladeRotVel;
 }
@@ -495,8 +495,8 @@ void EnPeehat_Ground_SetStateSeekPlayer(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateSeekPlayer);
 }
 
-void EnPeehat_Ground_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnPeehat_Ground_StateSeekPlayer(EnPeehat* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     Math_SmoothStepToF(&this->actor.speedXZ, 3.0f, 1.0f, 0.25f, 0.0f);
     Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.floorHeight + 80.0f, 1.0f, 3.0f, 0.0f);
@@ -530,7 +530,7 @@ void EnPeehat_Larva_SetStateSeekPlayer(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Larva_StateSeekPlayer);
 }
 
-void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
     f32 speedXZ = 5.3f;
 
     if (this->actor.xzDistToPlayer <= 5.3f) {
@@ -562,7 +562,7 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx) {
         EnPeehat_SetStateAttackRecoil(this);
     } else if ((this->colQuad.base.atFlags & AT_HIT) || (this->colCylinder.base.acFlags & AC_HIT) ||
                (this->actor.bgCheckFlags & 1)) {
-        Player* player = GET_PLAYER(globalCtx);
+        Player* player = GET_PLAYER(play);
         this->colQuad.base.atFlags &= ~AT_HIT;
         if (!(this->colCylinder.base.acFlags & AC_HIT) && &player->actor == this->colQuad.base.at) {
             if (Rand_ZeroOne() > 0.5f) {
@@ -579,16 +579,16 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, GlobalContext* globalCtx) {
                 pos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                 pos.y = Rand_CenteredFloat(10.0f) + this->actor.world.pos.y;
                 pos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
-                EffectSsDeadDb_Spawn(globalCtx, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 255, 0, 0, 1, 9,
+                EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 255, 0, 0, 1, 9,
                                      1);
             }
         }
         if (&player->actor != this->colQuad.base.at || this->colCylinder.base.acFlags & AC_HIT) {
             if (!(this->actor.bgCheckFlags & 1)) {
-                EffectSsDeadSound_SpawnStationary(globalCtx, &this->actor.projectedPos, NA_SE_EN_PIHAT_SM_DEAD, 1, 1,
+                EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_PIHAT_SM_DEAD, 1, 1,
                                                   40);
             }
-            Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x20);
+            Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x20);
             Actor_Kill(&this->actor);
         }
     }
@@ -600,7 +600,7 @@ void EnPeehat_Ground_SetStateLanding(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateLanding);
 }
 
-void EnPeehat_Ground_StateLanding(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Ground_StateLanding(EnPeehat* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.shape.yOffset, -1000.0f, 1.0f, 50.0f, 0.0f);
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.0f, 0.0f);
     Math_SmoothStepToS(&this->actor.shape.rot.x, 0, 1, 50, 0);
@@ -613,8 +613,8 @@ void EnPeehat_Ground_StateLanding(EnPeehat* this, GlobalContext* globalCtx) {
         if (this->actor.world.pos.y - this->actor.floorHeight < 60.0f) {
             Vec3f pos = this->actor.world.pos;
             pos.y = this->actor.floorHeight;
-            func_80033480(globalCtx, &pos, 80.0f, 1, 150, 100, 1);
-            EnPeehat_SpawnDust(globalCtx, this, &pos, 75.0f, 2, 1.05f, 2.0f);
+            func_80033480(play, &pos, 80.0f, 1, 150, 100, 1);
+            EnPeehat_SpawnDust(play, this, &pos, 75.0f, 2, 1.05f, 2.0f);
         }
     }
     Math_SmoothStepToS(&this->bladeRotVel, 0, 1, 100, 0);
@@ -627,7 +627,7 @@ void EnPeehat_Flying_SetStateLanding(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Flying_StateLanding);
 }
 
-void EnPeehat_Flying_StateLanding(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Flying_StateLanding(EnPeehat* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.shape.yOffset, -1000.0f, 1.0f, 50.0f, 0.0f);
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.0f, 0.0f);
     Math_SmoothStepToS(&this->actor.shape.rot.x, 0, 1, 50, 0);
@@ -640,8 +640,8 @@ void EnPeehat_Flying_StateLanding(EnPeehat* this, GlobalContext* globalCtx) {
         if (this->actor.world.pos.y - this->actor.floorHeight < 60.0f) {
             Vec3f pos = this->actor.world.pos;
             pos.y = this->actor.floorHeight;
-            func_80033480(globalCtx, &pos, 80.0f, 1, 150, 100, 1);
-            EnPeehat_SpawnDust(globalCtx, this, &pos, 75.0f, 2, 1.05f, 2.0f);
+            func_80033480(play, &pos, 80.0f, 1, 150, 100, 1);
+            EnPeehat_SpawnDust(play, this, &pos, 75.0f, 2, 1.05f, 2.0f);
         }
     }
     Math_SmoothStepToS(&this->bladeRotVel, 0, 1, 100, 0);
@@ -656,9 +656,9 @@ void EnPeehat_Ground_SetStateHover(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateHover);
 }
 
-void EnPeehat_Ground_StateHover(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Ground_StateHover(EnPeehat* this, PlayState* play) {
     f32 cos;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     // hover but don't gain altitude
     if (this->actor.world.pos.y - this->actor.floorHeight > 75.0f) {
@@ -686,7 +686,7 @@ void EnPeehat_Ground_StateHover(EnPeehat* this, GlobalContext* globalCtx) {
     if (IS_DAY && Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->xzDistMax) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         EnPeehat_Ground_SetStateSeekPlayer(this);
-        this->unk_2FA = globalCtx->gameplayFrames & 1;
+        this->unk_2FA = play->gameplayFrames & 1;
     } else {
         EnPeehat_Ground_SetStateReturnHome(this);
     }
@@ -702,12 +702,12 @@ void EnPeehat_Ground_SetStateReturnHome(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Ground_StateReturnHome);
 }
 
-void EnPeehat_Ground_StateReturnHome(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Ground_StateReturnHome(EnPeehat* this, PlayState* play) {
     f32 cos;
     s16 yRot;
     Player* player;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     if (this->actor.world.pos.y - this->actor.floorHeight > 75.0f) {
         this->actor.world.pos.y -= 1.0f;
     } else {
@@ -728,7 +728,7 @@ void EnPeehat_Ground_StateReturnHome(EnPeehat* this, GlobalContext* globalCtx) {
     if (IS_DAY && Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->xzDistMax) {
         this->seekPlayerTimer = 400;
         EnPeehat_Ground_SetStateSeekPlayer(this);
-        this->unk_2FA = (globalCtx->gameplayFrames & 1);
+        this->unk_2FA = (play->gameplayFrames & 1);
     }
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PIHAT_FLY - SFX_FLAG);
 }
@@ -741,7 +741,7 @@ void EnPeehat_SetStateAttackRecoil(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_StateAttackRecoil);
 }
 
-void EnPeehat_StateAttackRecoil(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_StateAttackRecoil(EnPeehat* this, PlayState* play) {
     this->bladeRot += this->bladeRotVel;
     SkelAnime_Update(&this->skelAnime);
     this->actor.speedXZ += 0.5f;
@@ -755,7 +755,7 @@ void EnPeehat_StateAttackRecoil(EnPeehat* this, GlobalContext* globalCtx) {
                 pos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                 pos.y = Rand_CenteredFloat(10.0f) + this->actor.world.pos.y;
                 pos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
-                EffectSsDeadDb_Spawn(globalCtx, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 255, 0, 0, 1, 9,
+                EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 255, 0, 0, 1, 9,
                                      1);
             }
             Actor_Kill(&this->actor);
@@ -782,7 +782,7 @@ void EnPeehat_SetStateBoomerangStunned(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_StateBoomerangStunned);
 }
 
-void EnPeehat_StateBoomerangStunned(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_StateBoomerangStunned(EnPeehat* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.0f, 0.0f);
     Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.floorHeight, 1.0f, 8.0f, 0.0f);
     if (this->actor.colorFilterTimer == 0) {
@@ -801,7 +801,7 @@ void EnPeehat_Adult_SetStateDie(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_Adult_StateDie);
 }
 
-void EnPeehat_Adult_StateDie(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Adult_StateDie(EnPeehat* this, PlayState* play) {
     if (this->isStateDieFirstUpdate) {
         this->unk_2D4--;
         if (this->unk_2D4 <= 0 || this->actor.colChkInfo.health == 0) {
@@ -829,8 +829,8 @@ void EnPeehat_Adult_StateDie(EnPeehat* this, GlobalContext* globalCtx) {
             this->actor.world.pos.y - this->actor.floorHeight < 59.0f) {
             Vec3f pos = this->actor.world.pos;
             pos.y = this->actor.floorHeight;
-            func_80033480(globalCtx, &pos, 80.0f, 1, 150, 100, 1);
-            EnPeehat_SpawnDust(globalCtx, this, &pos, 75.0f, 2, 1.05f, 2.0f);
+            func_80033480(play, &pos, 80.0f, 1, 150, 100, 1);
+            EnPeehat_SpawnDust(play, this, &pos, 75.0f, 2, 1.05f, 2.0f);
         }
         if (this->actor.speedXZ < 0) {
             this->actor.speedXZ += 0.25f;
@@ -858,12 +858,12 @@ void EnPeehat_SetStateExplode(EnPeehat* this) {
     EnPeehat_SetupAction(this, EnPeehat_StateExplode);
 }
 
-void EnPeehat_StateExplode(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
     EnBom* bomb;
     s32 pad[2];
 
     if (this->animTimer == 5) {
-        bomb = (EnBom*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOM, this->actor.world.pos.x,
+        bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
                                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0);
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -871,14 +871,14 @@ void EnPeehat_StateExplode(EnPeehat* this, GlobalContext* globalCtx) {
     }
     this->animTimer--;
     if (this->animTimer == 0) {
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x40);
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x40);
-        Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
+        Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Actor_Kill(&this->actor);
     }
 }
 
-void EnPeehat_Adult_CollisionCheck(EnPeehat* this, GlobalContext* globalCtx) {
+void EnPeehat_Adult_CollisionCheck(EnPeehat* this, PlayState* play) {
     if ((this->colCylinder.base.acFlags & AC_BOUNCED) || (this->colQuad.base.acFlags & AC_BOUNCED)) {
         this->colQuad.base.acFlags &= ~AC_BOUNCED;
         this->colCylinder.base.acFlags &= ~AC_BOUNCED;
@@ -910,7 +910,7 @@ void EnPeehat_Adult_CollisionCheck(EnPeehat* this, GlobalContext* globalCtx) {
                 pos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                 pos.y = Rand_ZeroOne() * 25.0f + this->actor.world.pos.y;
                 pos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
-                EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &pos, 70, 0, 0, -1);
+                EffectSsEnFire_SpawnVec3f(play, &this->actor, &pos, 70, 0, 0, -1);
             }
             Actor_SetColorFilter(&this->actor, 0x4000, 200, 0, 100);
         }
@@ -920,23 +920,23 @@ void EnPeehat_Adult_CollisionCheck(EnPeehat* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPeehat_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnPeehat_Update(Actor* thisx, PlayState* play) {
     EnPeehat* this = (EnPeehat*)thisx;
     s32 i;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     // If Adult Peahat
     if (thisx->params <= 0) {
-        EnPeehat_Adult_CollisionCheck(this, globalCtx);
+        EnPeehat_Adult_CollisionCheck(this, play);
     }
     if (thisx->colChkInfo.damageEffect != PEAHAT_DMG_EFF_LIGHT_ICE_ARROW) {
         if (thisx->speedXZ != 0.0f || thisx->velocity.y != 0.0f) {
             Actor_MoveForward(thisx);
-            Actor_UpdateBgCheckInfo(globalCtx, thisx, 25.0f, 30.0f, 30.0f, 5);
+            Actor_UpdateBgCheckInfo(play, thisx, 25.0f, 30.0f, 30.0f, 5);
         }
 
-        this->actionFunc(this, globalCtx);
-        if ((globalCtx->gameplayFrames & 0x7F) == 0) {
+        this->actionFunc(this, play);
+        if ((play->gameplayFrames & 0x7F) == 0) {
             this->jiggleRotInc = (Rand_ZeroOne() * 0.25f) + 0.5f;
         }
         this->jiggleRot += this->jiggleRotInc;
@@ -959,11 +959,11 @@ void EnPeehat_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (thisx->colChkInfo.health > 0) {
         // If Adult Peahat
         if (thisx->params <= 0) {
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder.base);
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colJntSph.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->colCylinder.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->colJntSph.base);
             if (thisx->colorFilterTimer == 0 || !(thisx->colorFilterParams & 0x4000)) {
                 if (this->state != PEAHAT_STATE_EXPLODE) {
-                    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colJntSph.base);
+                    CollisionCheck_SetAC(play, &play->colChkCtx, &this->colJntSph.base);
                 }
             }
         }
@@ -977,8 +977,8 @@ void EnPeehat_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->state == PEAHAT_STATE_15 || this->state == PEAHAT_STATE_SEEK_PLAYER || this->state == PEAHAT_STATE_FLY ||
         this->state == PEAHAT_STATE_RETURN_HOME || this->state == PEAHAT_STATE_EXPLODE) {
         if (thisx->params != PEAHAT_TYPE_FLYING) {
-            CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colQuad.base);
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colQuad.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->colQuad.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->colQuad.base);
         }
         // if PEAHAT_TYPE_GROUNDED
         if (thisx->params < 0 && (thisx->flags & ACTOR_FLAG_6)) {
@@ -988,22 +988,22 @@ void EnPeehat_Update(Actor* thisx, GlobalContext* globalCtx) {
                 s32 bgId;
                 Vec3f* posB = &this->bladeTip[i];
 
-                if (BgCheck_EntityLineTest1(&globalCtx->colCtx, &thisx->world.pos, posB, &posResult, &poly, true, true,
+                if (BgCheck_EntityLineTest1(&play->colCtx, &thisx->world.pos, posB, &posResult, &poly, true, true,
                                             false, true, &bgId) == true) {
-                    func_80033480(globalCtx, &posResult, 0.0f, 1, 300, 150, 1);
-                    EnPeehat_SpawnDust(globalCtx, this, &posResult, 0.0f, 3, 1.05f, 1.5f);
+                    func_80033480(play, &posResult, 0.0f, 1, 300, 150, 1);
+                    EnPeehat_SpawnDust(play, this, &posResult, 0.0f, 3, 1.05f, 1.5f);
                 }
             }
         } else if (thisx->params != PEAHAT_TYPE_FLYING) {
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder.base);
         }
     } else {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder.base);
     }
     Math_SmoothStepToF(&this->scaleShift, 0.0f, 1.0f, 0.001f, 0.0f);
 }
 
-s32 EnPeehat_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnPeehat_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                               void* thisx) {
     EnPeehat* this = (EnPeehat*)thisx;
 
@@ -1012,7 +1012,7 @@ s32 EnPeehat_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     }
     if (limbIndex == 3 || (limbIndex == 23 && (this->state == PEAHAT_STATE_DYING || this->state == PEAHAT_STATE_3 ||
                                                this->state == PEAHAT_STATE_4))) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
         Matrix_Push();
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(this->jiggleRot * 0.115f, MTXMODE_APPLY);
@@ -1022,17 +1022,17 @@ s32 EnPeehat_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
         Matrix_RotateZ(-(this->jiggleRot * 0.1f), MTXMODE_APPLY);
         Matrix_RotateY(-(this->jiggleRot * 0.13f), MTXMODE_APPLY);
         Matrix_RotateX(-(this->jiggleRot * 0.115f), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
         return true;
     }
     return false;
 }
 
-void EnPeehat_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnPeehat_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f peahatBladeTip[] = { { 0.0f, 0.0f, 5500.0f }, { 0.0f, 0.0f, -5500.0f } };
 
     EnPeehat* this = (EnPeehat*)thisx;
@@ -1046,7 +1046,7 @@ void EnPeehat_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
     // is Adult Peahat
     if (limbIndex == 3 && this->actor.params <= 0) {
         damageYRot = 0.0f;
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
         Matrix_Push();
         Matrix_Translate(-1000.0f, 0.0f, 0.0f, MTXMODE_APPLY);
         Collider_UpdateSpheres(0, &this->colJntSph);
@@ -1056,22 +1056,22 @@ void EnPeehat_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
         }
         Matrix_RotateY(3.2f + damageYRot, MTXMODE_APPLY);
         Matrix_Scale(0.3f, 0.2f, 0.2f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }
 
-void EnPeehat_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnPeehat_Draw(Actor* thisx, PlayState* play) {
     static Vec3f D_80AD285C[] = {
         { 0.0f, 0.0f, -4500.0f }, { -4500.0f, 0.0f, 0.0f }, { 4500.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 4500.0f }
     };
     EnPeehat* this = (EnPeehat*)thisx;
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPeehat_OverrideLimbDraw,
+    func_80093D18(play->state.gfxCtx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPeehat_OverrideLimbDraw,
                       EnPeehat_PostLimbDraw, this);
     if (this->actor.speedXZ != 0.0f || this->actor.velocity.y != 0.0f) {
         Matrix_MultVec3f(&D_80AD285C[0], &this->colQuad.dim.quad[1]);
