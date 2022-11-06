@@ -131,10 +131,9 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (param == 0);
-                // Only randomize non-gohma initial egg spawn, not the enemy that comes out of the egg.
-                // Gohma's eggs are important to her own behaviour, so we don't randomize those either.
+                // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
-                    return (param == 8);
+                    return ((param >= 0 && param <= 6) || param == 8);
                 // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
                     return (param == 0);
