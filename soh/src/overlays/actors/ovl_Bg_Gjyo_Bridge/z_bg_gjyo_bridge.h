@@ -6,7 +6,7 @@
 
 struct BgGjyoBridge;
 
-typedef void (*BgGjyoBridgeActionFunc)(struct BgGjyoBridge*, GlobalContext*);
+typedef void (*BgGjyoBridgeActionFunc)(struct BgGjyoBridge*, PlayState*);
 
 typedef struct BgGjyoBridge {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -6,8 +6,8 @@
 
 struct DemoIm;
 
-typedef void (*DemoImActionFunc)(struct DemoIm*, GlobalContext*);
-typedef void (*DemoImDrawFunc)(struct DemoIm*, GlobalContext*);
+typedef void (*DemoImActionFunc)(struct DemoIm*, PlayState*);
+typedef void (*DemoImDrawFunc)(struct DemoIm*, PlayState*);
 
 typedef enum {
     /* 0x00 */ IMPA_LIMB_NONE,

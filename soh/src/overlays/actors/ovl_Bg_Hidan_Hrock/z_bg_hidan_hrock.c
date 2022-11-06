@@ -9,14 +9,14 @@
 
 #define FLAGS 0
 
-void BgHidanHrock_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHrock_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHrock_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanHrock_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanHrock_Init(Actor* thisx, PlayState* play);
+void BgHidanHrock_Destroy(Actor* thisx, PlayState* play);
+void BgHidanHrock_Update(Actor* thisx, PlayState* play);
+void BgHidanHrock_Draw(Actor* thisx, PlayState* play);
 
-void func_8088960C(BgHidanHrock* this, GlobalContext* globalCtx);
-void func_808896B8(BgHidanHrock* this, GlobalContext* globalCtx);
-void func_808894A4(BgHidanHrock* this, GlobalContext* globalCtx);
+void func_8088960C(BgHidanHrock* this, PlayState* play);
+void func_808896B8(BgHidanHrock* this, PlayState* play);
+void func_808894A4(BgHidanHrock* this, PlayState* play);
 
 const ActorInit Bg_Hidan_Hrock_InitVars = {
     ACTOR_BG_HIDAN_HROCK,
@@ -74,7 +74,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(gravity, -1, ICHAIN_STOP),
 };
 
-void BgHidanHrock_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHrock_Init(Actor* thisx, PlayState* play) {
     BgHidanHrock* this = (BgHidanHrock*)thisx;
     ColliderTrisElementInit* colliderElementInit;
     Vec3f vertices[3];
@@ -87,8 +87,8 @@ void BgHidanHrock_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(thisx, sInitChain);
     this->unk_16A = thisx->params & 0x3F;
     thisx->params = (thisx->params >> 8) & 0xFF;
-    Collider_InitTris(globalCtx, &this->collider);
-    Collider_SetTris(globalCtx, &this->collider, thisx, &sTrisInit, this->colliderItems);
+    Collider_InitTris(play, &this->collider);
+    Collider_SetTris(play, &this->collider, thisx, &sTrisInit, this->colliderItems);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
 
     sinRotY = Math_SinS(thisx->shape.rot.y);
@@ -114,7 +114,7 @@ void BgHidanHrock_Init(Actor* thisx, GlobalContext* globalCtx) {
         Collider_SetTrisVertices(&this->collider, i, &vertices[0], &vertices[1], &vertices[2]);
     }
 
-    if (Flags_GetSwitch(globalCtx, this->unk_16A)) {
+    if (Flags_GetSwitch(play, this->unk_16A)) {
         this->actionFunc = func_808894A4;
         if (thisx->params == 0) {
             thisx->world.pos.y -= 2800.0f;
@@ -138,20 +138,20 @@ void BgHidanHrock_Init(Actor* thisx, GlobalContext* globalCtx) {
         CollisionHeader_GetVirtual(&gFireTemplePillarInsertedInGroundCol, &collisionHeader);
     }
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, collisionHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, collisionHeader);
 }
 
-void BgHidanHrock_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHrock_Destroy(Actor* thisx, PlayState* play) {
     BgHidanHrock* this = (BgHidanHrock*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyTris(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyTris(play, &this->collider);
 }
 
-void func_808894A4(BgHidanHrock* this, GlobalContext* globalCtx) {
+void func_808894A4(BgHidanHrock* this, PlayState* play) {
 }
 
-void func_808894B0(BgHidanHrock* this, GlobalContext* globalCtx) {
+void func_808894B0(BgHidanHrock* this, PlayState* play) {
     if (this->unk_168 != 0) {
         this->unk_168--;
     }
@@ -181,7 +181,7 @@ void func_808894B0(BgHidanHrock* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8088960C(BgHidanHrock* this, GlobalContext* globalCtx) {
+void func_8088960C(BgHidanHrock* this, PlayState* play) {
     this->dyna.actor.velocity.y++;
 
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, this->dyna.actor.velocity.y)) {
@@ -189,7 +189,7 @@ void func_8088960C(BgHidanHrock* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
 
         if (this->dyna.actor.params == 0) {
-            if (globalCtx->roomCtx.curRoom.num == 10) {
+            if (play->roomCtx.curRoom.num == 10) {
                 this->dyna.actor.room = 10;
             } else {
                 Actor_Kill(&this->dyna.actor);
@@ -200,7 +200,7 @@ void func_8088960C(BgHidanHrock* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_808896B8(BgHidanHrock* this, GlobalContext* globalCtx) {
+void func_808896B8(BgHidanHrock* this, PlayState* play) {
     if (this->collider.base.acFlags & 2) {
         this->collider.base.acFlags &= ~2;
         this->actionFunc = func_808894B0;
@@ -211,9 +211,9 @@ void func_808896B8(BgHidanHrock* this, GlobalContext* globalCtx) {
         }
 
         this->unk_168 = 20;
-        Flags_SetSwitch(globalCtx, this->unk_16A);
+        Flags_SetSwitch(play, this->unk_16A);
     } else {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 
     if (func_8004356C(&this->dyna)) {
@@ -223,18 +223,18 @@ void func_808896B8(BgHidanHrock* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanHrock_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHrock_Update(Actor* thisx, PlayState* play) {
     BgHidanHrock* this = (BgHidanHrock*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHidanHrock_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanHrock_Draw(Actor* thisx, PlayState* play) {
     static Gfx* dlists[] = {
         gFireTempleTallestPillarAboveRoomBeforeBossDL,
         gFireTemplePillarInsertedInGroundDL,
         gFireTemplePillarInsertedInGroundDL,
     };
 
-    Gfx_DrawDListOpa(globalCtx, dlists[thisx->params]);
+    Gfx_DrawDListOpa(play, dlists[thisx->params]);
 }

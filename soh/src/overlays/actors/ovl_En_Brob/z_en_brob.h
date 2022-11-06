@@ -6,7 +6,7 @@
 
 struct EnBrob;
 
-typedef void (*EnBrobActionFunc)(struct EnBrob* this, GlobalContext* globalCtx);
+typedef void (*EnBrobActionFunc)(struct EnBrob* this, PlayState* play);
 
 typedef struct EnBrob {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -10,11 +10,11 @@
 
 #define FLAGS 0
 
-void EnLight_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnLight_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnLight_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx);
-void EnLight_UpdateSwitch(Actor* thisx, GlobalContext* globalCtx);
+void EnLight_Init(Actor* thisx, PlayState* play);
+void EnLight_Destroy(Actor* thisx, PlayState* play);
+void EnLight_Update(Actor* thisx, PlayState* play);
+void EnLight_Draw(Actor* thisx, PlayState* play);
+void EnLight_UpdateSwitch(Actor* thisx, PlayState* play);
 
 const ActorInit En_Light_InitVars = {
     ACTOR_EN_LIGHT,
@@ -46,7 +46,7 @@ static FlameParams D_80A9E840[] = {
     { { 170, 255, 255, 255 }, { 0, 0, 255 }, 75 },   { { 170, 255, 255, 255 }, { 0, 150, 255 }, 75 },
 };
 
-void EnLight_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnLight_Init(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
     s16 yOffset;
 
@@ -61,7 +61,7 @@ void EnLight_Init(Actor* thisx, GlobalContext* globalCtx) {
                                 this->actor.world.pos.z, 255, 255, 180, -1);
     }
 
-    this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
+    this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
     Actor_SetScale(&this->actor, D_80A9E840[this->actor.params & 0xF].scale * 0.0001f);
     this->timer = (s32)(Rand_ZeroOne() * 255.0f);
 
@@ -70,15 +70,15 @@ void EnLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnLight_Destroy(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
 
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode);
+    LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
 }
 
-void EnLight_UpdatePosRot(EnLight* this, GlobalContext* globalCtx) {
+void EnLight_UpdatePosRot(EnLight* this, PlayState* play) {
     // update yaw for billboard effect
-    this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000;
+    this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
 
     if (this->actor.parent != NULL) {
         Math_Vec3f_Copy(&this->actor.world.pos, &(this->actor.parent)->world.pos);
@@ -88,7 +88,7 @@ void EnLight_UpdatePosRot(EnLight* this, GlobalContext* globalCtx) {
     this->timer++;
 }
 
-void EnLight_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnLight_Update(Actor* thisx, PlayState* play) {
     f32 intensity;
     FlameParams* flameParams;
     s16 radius;
@@ -100,14 +100,14 @@ void EnLight_Update(Actor* thisx, GlobalContext* globalCtx) {
     Lights_PointSetColorAndRadius(&this->lightInfo, (flameParams->primColor.r * intensity),
                                   (flameParams->primColor.g * intensity), (flameParams->primColor.b * intensity),
                                   radius);
-    EnLight_UpdatePosRot(this, globalCtx);
+    EnLight_UpdatePosRot(this, play);
 
     if (this->actor.params >= 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
     }
 }
 
-void EnLight_UpdateSwitch(Actor* thisx, GlobalContext* globalCtx) {
+void EnLight_UpdateSwitch(Actor* thisx, PlayState* play) {
     f32 intensity;
     FlameParams* flameParams;
     EnLight* this = (EnLight*)thisx;
@@ -117,7 +117,7 @@ void EnLight_UpdateSwitch(Actor* thisx, GlobalContext* globalCtx) {
     scale = this->actor.scale.x / ((f32)flameParams->scale * 0.0001);
 
     if ((this->actor.params & 0x800) != 0) {
-        if (Flags_GetSwitch(globalCtx, (this->actor.params & 0x3F0) >> 4)) {
+        if (Flags_GetSwitch(play, (this->actor.params & 0x3F0) >> 4)) {
             Math_StepToF(&scale, 1.0f, 0.05f);
         } else {
             if (scale < 0.1f) {
@@ -127,7 +127,7 @@ void EnLight_UpdateSwitch(Actor* thisx, GlobalContext* globalCtx) {
             Math_StepToF(&scale, 0.0f, 0.05f);
         }
     } else {
-        if (Flags_GetSwitch(globalCtx, (this->actor.params & 0x3F0) >> 4)) {
+        if (Flags_GetSwitch(play, (this->actor.params & 0x3F0) >> 4)) {
             if (scale < 0.1f) {
                 Actor_SetScale(&this->actor, 0.0f);
                 return;
@@ -143,14 +143,14 @@ void EnLight_UpdateSwitch(Actor* thisx, GlobalContext* globalCtx) {
     Lights_PointSetColorAndRadius(&this->lightInfo, (flameParams->primColor.r * intensity),
                                   (flameParams->primColor.g * intensity), (flameParams->primColor.b * intensity),
                                   300.0f * scale);
-    EnLight_UpdatePosRot(this, globalCtx);
+    EnLight_UpdatePosRot(this, play);
 
     if (this->actor.params >= 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
     }
 }
 
-void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnLight_Draw(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
     s32 pad;
     FlameParams* flameParams;
@@ -158,14 +158,14 @@ void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     flameParams = &D_80A9E840[this->actor.params & 0xF];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     if (this->actor.params >= 0) {
         gSPSegment(
             POLY_XLU_DISP++, 0x08,
-            Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (this->timer * -20) & 511, 32, 128));
+            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (this->timer * -20) & 511, 32, 128));
 
         dList = gEffFire1DL;
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, flameParams->primColor.r, flameParams->primColor.g,
@@ -173,7 +173,7 @@ void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetEnvColor(POLY_XLU_DISP++, flameParams->envColor.r, flameParams->envColor.g, flameParams->envColor.b, 0);
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 32, 1, ((this->timer * 2) & 63),
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 32, 1, ((this->timer * 2) & 63),
                                     (this->timer * -6) & 127 * 1, 16, 32));
 
         dList = gUnusedCandleDL;
@@ -181,7 +181,7 @@ void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
     }
 
-    Matrix_RotateY((s16)((Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) - this->actor.shape.rot.y) + 0x8000) *
+    Matrix_RotateY((s16)((Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->actor.shape.rot.y) + 0x8000) *
                        (M_PI / 32768.0f),
                    MTXMODE_APPLY);
 
@@ -190,9 +190,9 @@ void EnLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, dList);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

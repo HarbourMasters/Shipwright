@@ -9,15 +9,15 @@
 
 #define FLAGS 0
 
-void BgYdanSp_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanSp_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanSp_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanSp_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgYdanSp_Init(Actor* thisx, PlayState* play);
+void BgYdanSp_Destroy(Actor* thisx, PlayState* play);
+void BgYdanSp_Update(Actor* thisx, PlayState* play);
+void BgYdanSp_Draw(Actor* thisx, PlayState* play);
 
-void BgYdanSp_BurnFloorWeb(BgYdanSp* this, GlobalContext* globalCtx);
-void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx);
-void BgYdanSp_BurnWallWeb(BgYdanSp* this, GlobalContext* globalCtx);
-void BgYdanSp_WallWebIdle(BgYdanSp* this, GlobalContext* globalCtx);
+void BgYdanSp_BurnFloorWeb(BgYdanSp* this, PlayState* play);
+void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play);
+void BgYdanSp_BurnWallWeb(BgYdanSp* this, PlayState* play);
+void BgYdanSp_WallWebIdle(BgYdanSp* this, PlayState* play);
 
 //extern CollisionHeader gDTWebWallCol;
 
@@ -81,7 +81,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgYdanSp_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanSp_Init(Actor* thisx, PlayState* play) {
     BgYdanSp* this = (BgYdanSp*)thisx;
     ColliderTrisElementInit* ti0 = &sTrisItemsInit[0];
     Vec3f tri[3];
@@ -98,8 +98,8 @@ void BgYdanSp_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->burnSwitchFlag = (thisx->params >> 6) & 0x3F;
     this->dyna.actor.params = (thisx->params >> 0xC) & 0xF;
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
-    Collider_InitTris(globalCtx, &this->trisCollider);
-    Collider_SetTris(globalCtx, &this->trisCollider, &this->dyna.actor, &sTrisInit, this->trisColliderItems);
+    Collider_InitTris(play, &this->trisCollider);
+    Collider_SetTris(play, &this->trisCollider, &this->dyna.actor, &sTrisInit, this->trisColliderItems);
     if (this->dyna.actor.params == WEB_FLOOR) {
         CollisionHeader_GetVirtual(&gDTWebFloorCol, &colHeader);
         this->actionFunc = BgYdanSp_FloorWebIdle;
@@ -139,17 +139,17 @@ void BgYdanSp_Init(Actor* thisx, GlobalContext* globalCtx) {
         tri[1].z = this->dyna.actor.world.pos.z - (sinsY * ti1->dim.vtx[0].x) + (ti1->dim.vtx[2].y * cossY * nSinsX);
         Collider_SetTrisVertices(&this->trisCollider, 1, &tri[0], &tri[2], &tri[1]);
     }
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->timer = 0;
-    if (Flags_GetSwitch(globalCtx, this->isDestroyedSwitchFlag)) {
+    if (Flags_GetSwitch(play, this->isDestroyedSwitchFlag)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
-void BgYdanSp_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanSp_Destroy(Actor* thisx, PlayState* play) {
     BgYdanSp* this = (BgYdanSp*)thisx;
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyTris(globalCtx, &this->trisCollider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyTris(play, &this->trisCollider);
 }
 
 void BgYdanSp_UpdateFloorWebCollision(BgYdanSp* this) {
@@ -169,11 +169,11 @@ void BgYdanSp_UpdateFloorWebCollision(BgYdanSp* this) {
     colHeader->vtxList[0].y = newY;
 }
 
-void BgYdanSp_BurnWeb(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_BurnWeb(BgYdanSp* this, PlayState* play) {
     this->timer = 30;
     this = this;
     func_80078884(NA_SE_SY_CORRECT_CHIME);
-    Flags_SetSwitch(globalCtx, this->isDestroyedSwitchFlag);
+    Flags_SetSwitch(play, this->isDestroyedSwitchFlag);
     if (this->dyna.actor.params == WEB_FLOOR) {
         this->actionFunc = BgYdanSp_BurnFloorWeb;
     } else {
@@ -181,7 +181,7 @@ void BgYdanSp_BurnWeb(BgYdanSp* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgYdanSp_BurnFloorWeb(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_BurnFloorWeb(BgYdanSp* this, PlayState* play) {
     static Vec3f accel = { 0 };
     Vec3f velocity;
     Vec3f pos2;
@@ -222,14 +222,14 @@ void BgYdanSp_BurnFloorWeb(BgYdanSp* this, GlobalContext* globalCtx) {
             velocity.x = (7.0f * sins) * distXZ;
             velocity.y = 0.0f;
             velocity.z = (7.0f * coss) * distXZ;
-            EffectSsDeadDb_Spawn(globalCtx, &this->dyna.actor.home.pos, &velocity, &accel, 60, 6, 255, 255, 150, 170,
+            EffectSsDeadDb_Spawn(play, &this->dyna.actor.home.pos, &velocity, &accel, 60, 6, 255, 255, 150, 170,
                                  255, 0, 0, 1, 0xE, 1);
             rot2 += 0x2AAA;
         }
     }
 }
 
-void BgYdanSp_FloorWebBroken(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_FloorWebBroken(BgYdanSp* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -239,7 +239,7 @@ void BgYdanSp_FloorWebBroken(BgYdanSp* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgYdanSp_FloorWebBreaking(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_FloorWebBreaking(BgYdanSp* this, PlayState* play) {
     static Color_RGBA8 primColor = { 250, 250, 250, 255 };
     static Color_RGBA8 envColor = { 180, 180, 180, 255 };
     static Vec3f zeroVec = { 0 };
@@ -253,17 +253,17 @@ void BgYdanSp_FloorWebBreaking(BgYdanSp* this, GlobalContext* globalCtx) {
 
     this->dyna.actor.world.pos.y = (sinf((f32)this->timer * (M_PI / 20)) * this->unk_16C) + this->dyna.actor.home.pos.y;
     if (this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 190.0f) {
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->timer = 40;
         func_80078884(NA_SE_SY_CORRECT_CHIME);
-        Flags_SetSwitch(globalCtx, this->isDestroyedSwitchFlag);
+        Flags_SetSwitch(play, this->isDestroyedSwitchFlag);
         this->actionFunc = BgYdanSp_FloorWebBroken;
         pos.y = this->dyna.actor.world.pos.y - 60.0f;
         rot = 0;
         for (i = 0; i < 6; i++) {
             pos.x = Math_SinS(rot) * 60.0f + this->dyna.actor.world.pos.x;
             pos.z = Math_CosS(rot) * 60.0f + this->dyna.actor.world.pos.z;
-            func_8002829C(globalCtx, &pos, &zeroVec, &zeroVec, &primColor, &envColor, 1000, 10);
+            func_8002829C(play, &pos, &zeroVec, &zeroVec, &primColor, &envColor, 1000, 10);
 
             rot += 0x2AAA;
         }
@@ -271,24 +271,24 @@ void BgYdanSp_FloorWebBreaking(BgYdanSp* this, GlobalContext* globalCtx) {
     BgYdanSp_UpdateFloorWebCollision(this);
 }
 
-void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play) {
     Player* player;
     Vec3f webPos;
     f32 sqrtFallDistance;
     f32 unk;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     webPos.x = this->dyna.actor.world.pos.x;
     webPos.y = this->dyna.actor.world.pos.y - 50.0f;
     webPos.z = this->dyna.actor.world.pos.z;
-    if (Player_IsBurningStickInRange(globalCtx, &webPos, 70.0f, 50.0f) != 0) {
+    if (Player_IsBurningStickInRange(play, &webPos, 70.0f, 50.0f) != 0) {
         this->dyna.actor.home.pos.x = player->swordInfo[0].tip.x;
         this->dyna.actor.home.pos.z = player->swordInfo[0].tip.z;
-        BgYdanSp_BurnWeb(this, globalCtx);
+        BgYdanSp_BurnWeb(this, play);
         return;
     }
     if ((this->trisCollider.base.acFlags & 2) != 0) {
-        BgYdanSp_BurnWeb(this, globalCtx);
+        BgYdanSp_BurnWeb(this, play);
         return;
     }
     if (func_8004356C(&this->dyna)) {
@@ -338,10 +338,10 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
         }
     }
     BgYdanSp_UpdateFloorWebCollision(this);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->trisCollider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->trisCollider.base);
 }
 
-void BgYdanSp_BurnWallWeb(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_BurnWallWeb(BgYdanSp* this, PlayState* play) {
     static Vec3f accel = { 0 };
     Vec3f velocity;
     Vec3f spC8;
@@ -387,47 +387,47 @@ void BgYdanSp_BurnWallWeb(BgYdanSp* this, GlobalContext* globalCtx) {
             velocity.x = 6.5f * coss2 * distXYZ;
             velocity.y = 6.5f * coss * distXYZ;
             velocity.z = -6.5f * sins * distXYZ;
-            EffectSsDeadDb_Spawn(globalCtx, &this->dyna.actor.home.pos, &velocity, &accel, 80, 6, 255, 255, 150, 170,
+            EffectSsDeadDb_Spawn(play, &this->dyna.actor.home.pos, &velocity, &accel, 80, 6, 255, 255, 150, 170,
                                  255, 0, 0, 1, 0xE, 1);
             rot2 += 0x2AAA;
         }
     }
 }
 
-void BgYdanSp_WallWebIdle(BgYdanSp* this, GlobalContext* globalCtx) {
+void BgYdanSp_WallWebIdle(BgYdanSp* this, PlayState* play) {
     Player* player;
     Vec3f sp30;
 
-    player = GET_PLAYER(globalCtx);
-    if (Flags_GetSwitch(globalCtx, this->burnSwitchFlag) || (this->trisCollider.base.acFlags & 2)) {
+    player = GET_PLAYER(play);
+    if (Flags_GetSwitch(play, this->burnSwitchFlag) || (this->trisCollider.base.acFlags & 2)) {
         this->dyna.actor.home.pos.y = this->dyna.actor.world.pos.y + 80.0f;
-        BgYdanSp_BurnWeb(this, globalCtx);
+        BgYdanSp_BurnWeb(this, play);
     } else if (player->heldItemActionParam == PLAYER_AP_STICK && player->unk_860 != 0) {
         func_8002DBD0(&this->dyna.actor, &sp30, &player->swordInfo[0].tip);
         if (fabsf(sp30.x) < 100.0f && sp30.z < 1.0f && sp30.y < 200.0f) {
-            OnePointCutscene_Init(globalCtx, 3020, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3020, 40, &this->dyna.actor, MAIN_CAM);
             Math_Vec3f_Copy(&this->dyna.actor.home.pos, &player->swordInfo[0].tip);
-            BgYdanSp_BurnWeb(this, globalCtx);
+            BgYdanSp_BurnWeb(this, play);
         }
     }
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->trisCollider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->trisCollider.base);
 }
 
-void BgYdanSp_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanSp_Update(Actor* thisx, PlayState* play) {
     BgYdanSp* this = (BgYdanSp*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgYdanSp_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanSp_Draw(Actor* thisx, PlayState* play) {
     BgYdanSp* this = (BgYdanSp*)thisx;
     s32 i;
     MtxF mtxF;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     if (thisx->params == WEB_WALL) {
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gDTWebWallDL);
     } else if (this->actionFunc == BgYdanSp_FloorWebBroken) {
@@ -435,7 +435,7 @@ void BgYdanSp_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (this->timer == 40) {
             Matrix_Translate(0.0f, (thisx->home.pos.y - thisx->world.pos.y) * 10.0f, 0.0f, MTXMODE_APPLY);
             Matrix_Scale(1.0f, ((thisx->home.pos.y - thisx->world.pos.y) + 10.0f) * 0.1f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDTWebFloorDL);
         }
@@ -444,17 +444,17 @@ void BgYdanSp_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateZYX(-0x5A0, i * 0x2000, 0, MTXMODE_APPLY);
             Matrix_Translate(0.0f, 700.0f, -900.0f, MTXMODE_APPLY);
             Matrix_Scale(3.5f, 5.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDTUnknownWebDL);
         }
     } else {
         Matrix_Translate(0.0f, (thisx->home.pos.y - thisx->world.pos.y) * 10.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(1.0f, ((thisx->home.pos.y - thisx->world.pos.y) + 10.0f) * 0.1f, 1.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gDTWebFloorDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

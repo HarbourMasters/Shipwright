@@ -6,7 +6,7 @@
 
 struct DemoKankyo;
 
-typedef void (*DemoKankyoActionFunc)(struct DemoKankyo*, GlobalContext*);
+typedef void (*DemoKankyoActionFunc)(struct DemoKankyo*, PlayState*);
 
 typedef enum {
     /* 0x00 */ DEMOKANKYO_BLUE_RAIN,

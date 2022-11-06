@@ -18,14 +18,14 @@ typedef enum {
     /* 0x02 */ FLASH_SHRINK
 } FlashState;
 
-void BgGanonOtyuka_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgGanonOtyuka_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgGanonOtyuka_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgGanonOtyuka_Init(Actor* thisx, PlayState* play);
+void BgGanonOtyuka_Destroy(Actor* thisx, PlayState* play);
+void BgGanonOtyuka_Update(Actor* thisx, PlayState* play);
+void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play);
 
-void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, GlobalContext* globalCtx);
-void BgGanonOtyuka_Fall(BgGanonOtyuka* this, GlobalContext* globalCtx);
-void BgGanonOtyuka_DoNothing(Actor* thisx, GlobalContext* globalCtx);
+void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, PlayState* play);
+void BgGanonOtyuka_Fall(BgGanonOtyuka* this, PlayState* play);
+void BgGanonOtyuka_DoNothing(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Ganon_Otyuka_InitVars = {
     ACTOR_BG_GANON_OTYUKA,
@@ -68,15 +68,15 @@ static f32 sSideAngles[] = { M_PI / 2, -M_PI / 2, 0.0f, M_PI };
 
 #include "overlays/ovl_Bg_Ganon_Otyuka/ovl_Bg_Ganon_Otyuka.h"
 
-void BgGanonOtyuka_Init(Actor* thisx, GlobalContext* globalCtx2) {
+void BgGanonOtyuka_Init(Actor* thisx, PlayState* play2) {
     BgGanonOtyuka* this = (BgGanonOtyuka*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&sCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     if (thisx->params != 0x23) {
         thisx->draw = NULL;
@@ -86,18 +86,18 @@ void BgGanonOtyuka_Init(Actor* thisx, GlobalContext* globalCtx2) {
     }
 }
 
-void BgGanonOtyuka_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
+void BgGanonOtyuka_Destroy(Actor* thisx, PlayState* play2) {
     BgGanonOtyuka* this = (BgGanonOtyuka*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("WHY !!!!!!!!!!!!!!!!\n");
     osSyncPrintf(VT_RST);
 }
 
-void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
+void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
     Actor* prop;
     BgGanonOtyuka* platform;
@@ -107,11 +107,11 @@ void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
     Vec3f center;
     s16 i;
 
-    if (this->isFalling || ((globalCtx->actorCtx.unk_02 != 0) && (this->dyna.actor.xyzDistToPlayerSq < 4900.0f))) {
+    if (this->isFalling || ((play->actorCtx.unk_02 != 0) && (this->dyna.actor.xyzDistToPlayerSq < 4900.0f))) {
         osSyncPrintf("OTC O 1\n");
 
         for (i = 0; i < ARRAY_COUNT(D_80876A68); i++) {
-            prop = globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
+            prop = play->actorCtx.actorLists[ACTORCAT_PROP].head;
             while (prop != NULL) {
                 if ((prop == thisx) || (prop->id != ACTOR_BG_GANON_OTYUKA)) {
                     prop = prop->next;
@@ -139,7 +139,7 @@ void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
             center.x = this->dyna.actor.world.pos.x + D_80876A68[i].x;
             center.y = this->dyna.actor.world.pos.y;
             center.z = this->dyna.actor.world.pos.z + D_80876A68[i].z;
-            if (BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &center, 50.0f)) {
+            if (BgCheck_SphVsFirstPoly(&play->colCtx, &center, 50.0f)) {
                 this->unwalledSides |= sSides[i];
             }
         }
@@ -160,8 +160,8 @@ void BgGanonOtyuka_WaitToFall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgGanonOtyuka_Fall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgGanonOtyuka_Fall(BgGanonOtyuka* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s16 i;
     Vec3f pos;
     Vec3f velocity;
@@ -210,12 +210,12 @@ void BgGanonOtyuka_Fall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
                     pos.x = Rand_CenteredFloat(150.0f) + this->dyna.actor.world.pos.x;
                     pos.y = Rand_ZeroFloat(60.0f) + -750.0f;
                     pos.z = Rand_CenteredFloat(150.0f) + this->dyna.actor.world.pos.z;
-                    func_8002836C(globalCtx, &pos, &velocity, &accel, &sDustPrimColor, &sDustEnvColor,
+                    func_8002836C(play, &pos, &velocity, &accel, &sDustPrimColor, &sDustEnvColor,
                                   (s16)Rand_ZeroFloat(100.0f) + 250, 5, (s16)Rand_ZeroFloat(5.0f) + 15);
                 }
 
-                func_80033DB8(globalCtx, 10, 15);
-                SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 40, NA_SE_EV_BOX_BREAK);
+                func_80033DB8(play, 10, 15);
+                SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_BOX_BREAK);
             }
             Actor_Kill(&this->dyna.actor);
         }
@@ -233,33 +233,33 @@ void BgGanonOtyuka_Fall(BgGanonOtyuka* this, GlobalContext* globalCtx) {
     osSyncPrintf("MODE DOWN END\n");
 }
 
-void BgGanonOtyuka_DoNothing(Actor* thisx, GlobalContext* globalCtx) {
+void BgGanonOtyuka_DoNothing(Actor* thisx, PlayState* play) {
 }
 
-void BgGanonOtyuka_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgGanonOtyuka_Update(Actor* thisx, PlayState* play) {
     BgGanonOtyuka* this = (BgGanonOtyuka*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->flashTimer++;
     if (this->dropTimer != 0) {
         this->dropTimer--;
     }
 }
 
-void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
     BgGanonOtyuka* this = (BgGanonOtyuka*)thisx;
     s16 i;
     Gfx* phi_s2;
     Gfx* phi_s1;
-    Camera* camera = Gameplay_GetCamera(globalCtx, 0);
+    Camera* camera = Play_GetCamera(play, 0);
     Actor* actor;
     BgGanonOtyuka* platform;
     BossGanon* ganondorf;
     f32 spBC = -30.0f;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    actor = globalCtx->actorCtx.actorLists[ACTORCAT_BOSS].head;
+    actor = play->actorCtx.actorLists[ACTORCAT_BOSS].head;
     while (actor != NULL) {
         if (actor->id == ACTOR_BOSS_GANON) {
             ganondorf = (BossGanon*)actor;
@@ -276,10 +276,10 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
         actor = actor->next;
     }
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, sPlatformMaterialDL);
 
-    actor = globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
+    actor = play->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (actor != NULL) {
         if (actor->id == ACTOR_BG_GANON_OTYUKA) {
             platform = (BgGanonOtyuka*)actor;
@@ -303,7 +303,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         phi_s1 = sPlatformTopDL;
                     }
                 }
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, phi_s2);
 
@@ -317,7 +317,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
                         gSPMatrix(POLY_OPA_DISP++,
-                                  MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                                  MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                         gSPDisplayList(POLY_OPA_DISP++, sPlatformSideDL);
                         Matrix_Pop();
@@ -330,8 +330,8 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
         actor = actor->next;
     }
 
-    func_80093D84(globalCtx->state.gfxCtx);
-    actor = globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
+    func_80093D84(play->state.gfxCtx);
+    actor = play->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (actor != NULL) {
         if (actor->id == ACTOR_BG_GANON_OTYUKA) {
             platform = (BgGanonOtyuka*)actor;
@@ -339,7 +339,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
             if ((platform->dyna.actor.projectedPos.z > -30.0f) && (platform->flashState != FLASH_NONE)) {
                 FrameInterpolation_RecordOpenChild(platform, 0);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
-                           Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
+                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
                                             platform->flashTimer * 4, 0, 32, 64));
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, platform->flashPrimColorR, platform->flashPrimColorG,
@@ -355,7 +355,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
                         Matrix_Scale(0.3f, platform->flashYScale * 0.3f, 0.3f, MTXMODE_APPLY);
                         gSPMatrix(POLY_XLU_DISP++,
-                                  MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                                  MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                         gSPDisplayList(POLY_XLU_DISP++, sFlashDL);
                         Matrix_Pop();
@@ -368,5 +368,5 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
         actor = actor->next;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

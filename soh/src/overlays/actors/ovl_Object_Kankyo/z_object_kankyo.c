@@ -13,28 +13,28 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
-void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjectKankyo_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjectKankyo_Update(Actor* thisx, GlobalContext* globalCtx);
-void ObjectKankyo_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ObjectKankyo_Init(Actor* thisx, PlayState* play);
+void ObjectKankyo_Destroy(Actor* thisx, PlayState* play);
+void ObjectKankyo_Update(Actor* thisx, PlayState* play);
+void ObjectKankyo_Draw(Actor* thisx, PlayState* play);
 void ObjectKankyo_Reset(void);
 
 void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc func);
-void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_Snow(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_Lightning(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_InitBeams(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_WaitForSunGraveSparkObject(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_WaitForBeamObject(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_Beams(ObjectKankyo* this, GlobalContext* globalCtx);
+void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_Snow(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_Lightning(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_InitBeams(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_WaitForSunGraveSparkObject(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_WaitForBeamObject(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_Beams(ObjectKankyo* this, PlayState* play);
 
-void ObjectKankyo_DrawFairies(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_DrawSnow(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_DrawLightning(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this, GlobalContext* globalCtx);
-void ObjectKankyo_DrawBeams(ObjectKankyo* this, GlobalContext* globalCtx);
+void ObjectKankyo_DrawFairies(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_DrawSnow(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_DrawLightning(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this, PlayState* play);
+void ObjectKankyo_DrawBeams(ObjectKankyo* this, PlayState* play);
 
 static void* sEffLightningTextures[] = {
     gEffLightning1Tex, gEffLightning2Tex, gEffLightning3Tex, gEffLightning4Tex,
@@ -66,7 +66,7 @@ void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc action)
     this->actionFunc = action;
 }
 
-void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
     ObjectKankyo* this = (ObjectKankyo*)thisx;
     s32 pad;
     s16 i;
@@ -102,7 +102,7 @@ void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 4:
             this->effects[0].alpha = 0;
             this->effects[0].amplitude = 0.0f;
-            Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_ITEMACTION);
+            Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ITEMACTION);
             this->requiredObjectLoaded = false;
             ObjectKankyo_SetupAction(this, ObjectKankyo_SunGraveSparkInit);
             break;
@@ -183,14 +183,14 @@ void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ObjectKankyo_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ObjectKankyo_Destroy(Actor* thisx, PlayState* play) {
     Actor_Kill(thisx);
 }
 
-void ObjectKankyo_Snow(ObjectKankyo* this, GlobalContext* globalCtx) {
+void ObjectKankyo_Snow(ObjectKankyo* this, PlayState* play) {
 }
 
-void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
+void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
     static Vec3f sSoundPos = { 0.0f, 0.0f, 0.0f };
     Player* player;
     f32 dist;
@@ -211,14 +211,14 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
     s16 i;
     Vec3f viewForwards;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
 
-    if (globalCtx->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 7) {
-        dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &globalCtx->view.eye);
+    if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 7) {
+        dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &play->view.eye);
 
-        this->prevEyePos.x = globalCtx->view.eye.x;
-        this->prevEyePos.y = globalCtx->view.eye.y;
-        this->prevEyePos.z = globalCtx->view.eye.z;
+        this->prevEyePos.x = play->view.eye.x;
+        this->prevEyePos.y = play->view.eye.y;
+        this->prevEyePos.z = play->view.eye.z;
 
         dist /= 30.0f;
         if (dist > 1.0f) {
@@ -226,7 +226,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
         }
 
         func_800F436C(&sSoundPos, NA_SE_EV_NAVY_FLY - SFX_FLAG, (0.4f * dist) + 0.6f);
-        switch (globalCtx->csCtx.frames) {
+        switch (play->csCtx.frames) {
             case 473:
                 func_800788CC(NA_SE_VO_NA_HELLO_3);
                 break;
@@ -245,16 +245,16 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (globalCtx->envCtx.unk_EE[3] < 64 &&
-        (gSaveContext.entranceIndex != 0x00EE || gSaveContext.sceneSetupIndex != 4 || globalCtx->envCtx.unk_EE[3])) {
-        globalCtx->envCtx.unk_EE[3] += 16;
+    if (play->envCtx.unk_EE[3] < 64 &&
+        (gSaveContext.entranceIndex != 0x00EE || gSaveContext.sceneSetupIndex != 4 || play->envCtx.unk_EE[3])) {
+        play->envCtx.unk_EE[3] += 16;
     }
 
-    for (i = 0; i < globalCtx->envCtx.unk_EE[3]; i++) {
+    for (i = 0; i < play->envCtx.unk_EE[3]; i++) {
         // spawn in front of the camera
-        dx = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
-        dy = globalCtx->view.lookAt.y - globalCtx->view.eye.y;
-        dz = globalCtx->view.lookAt.z - globalCtx->view.eye.z;
+        dx = play->view.lookAt.x - play->view.eye.x;
+        dy = play->view.lookAt.y - play->view.eye.y;
+        dz = play->view.lookAt.z - play->view.eye.z;
         dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
         viewForwards.x = dx / dist;
@@ -267,9 +267,9 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
 
         switch (this->effects[i].state) {
             case 0: // init
-                this->effects[i].base.x = globalCtx->view.eye.x + viewForwardsX * 80.0f;
-                this->effects[i].base.y = globalCtx->view.eye.y + viewForwardsY * 80.0f;
-                this->effects[i].base.z = globalCtx->view.eye.z + viewForwardsZ * 80.0f;
+                this->effects[i].base.x = play->view.eye.x + viewForwardsX * 80.0f;
+                this->effects[i].base.y = play->view.eye.y + viewForwardsY * 80.0f;
+                this->effects[i].base.z = play->view.eye.z + viewForwardsZ * 80.0f;
 
                 this->effects[i].pos.x = (Rand_ZeroOne() - 0.5f) * 160.0f;
                 this->effects[i].pos.y = 30.0f;
@@ -289,9 +289,9 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
             case 1: // blinking fairies / inactive fairy trails
             case 2: // fairy trails
                 this->effects[i].alphaTimer++;
-                baseX = globalCtx->view.eye.x + viewForwards.x * 80.0f;
-                baseY = globalCtx->view.eye.y + viewForwards.y * 80.0f;
-                baseZ = globalCtx->view.eye.z + viewForwards.z * 80.0f;
+                baseX = play->view.eye.x + viewForwards.x * 80.0f;
+                baseY = play->view.eye.y + viewForwards.y * 80.0f;
+                baseZ = play->view.eye.z + viewForwards.z * 80.0f;
 
                 this->effects[i].prevPos.x = this->effects[i].pos.x;
                 this->effects[i].prevPos.y = this->effects[i].pos.y;
@@ -479,53 +479,53 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjectKankyo_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjectKankyo_Update(Actor* thisx, PlayState* play) {
     ObjectKankyo* this = (ObjectKankyo*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void ObjectKankyo_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ObjectKankyo_Draw(Actor* thisx, PlayState* play) {
     ObjectKankyo* this = (ObjectKankyo*)thisx;
 
     switch (this->actor.params) {
         case 0:
-            ObjectKankyo_DrawFairies(this, globalCtx);
+            ObjectKankyo_DrawFairies(this, play);
             break;
 
         case 2:
-            ObjectKankyo_DrawLightning(this, globalCtx);
+            ObjectKankyo_DrawLightning(this, play);
             break;
 
         case 3:
-            ObjectKankyo_DrawSnow(this, globalCtx);
+            ObjectKankyo_DrawSnow(this, play);
             break;
 
         case 4:
-            ObjectKankyo_DrawSunGraveSpark(this, globalCtx);
+            ObjectKankyo_DrawSunGraveSpark(this, play);
             break;
 
         case 5:
-            ObjectKankyo_DrawBeams(this, globalCtx);
+            ObjectKankyo_DrawBeams(this, play);
             break;
     }
 }
 
-void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
+void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     f32 alphaScale;
     Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
     Vec3f vec2 = { 0.0f, 0.0f, 0.0f };
     s16 i;
 
-    if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+    if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
+        OPEN_DISPS(play->state.gfxCtx);
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSunTex));
         gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
 
-        for (i = 0; i < globalCtx->envCtx.unk_EE[3]; i++) {
+        for (i = 0; i < play->envCtx.unk_EE[3]; i++) {
             FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
             Matrix_Translate(this->effects[i].base.x + this->effects[i].pos.x,
                              this->effects[i].base.y + this->effects[i].pos.y,
@@ -588,19 +588,19 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                     break;
             }
 
-            Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-            Matrix_RotateZ(DEG_TO_RAD(globalCtx->state.frames * 20.0f), MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
+            Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
+            Matrix_RotateZ(DEG_TO_RAD(play->state.frames * 20.0f), MTXMODE_APPLY);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
             gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
             FrameInterpolation_RecordCloseChild();
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }
 
-void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
+void ObjectKankyo_DrawSnow(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     f32 dist;
     f32 dx;
     f32 dy;
@@ -616,32 +616,32 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     s32 pad;
     s32 pad2;
 
-    if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
-        if (globalCtx->envCtx.unk_EE[2] < globalCtx->envCtx.unk_EE[3]) {
-            if (globalCtx->state.frames % 16 == 0) {
-                globalCtx->envCtx.unk_EE[2] += 2;
+    if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
+        OPEN_DISPS(play->state.gfxCtx);
+        if (play->envCtx.unk_EE[2] < play->envCtx.unk_EE[3]) {
+            if (play->state.frames % 16 == 0) {
+                play->envCtx.unk_EE[2] += 2;
             }
-        } else if (globalCtx->envCtx.unk_EE[2] > globalCtx->envCtx.unk_EE[3]) {
-            if (globalCtx->state.frames % 16 == 0) {
-                globalCtx->envCtx.unk_EE[2] -= 2;
+        } else if (play->envCtx.unk_EE[2] > play->envCtx.unk_EE[3]) {
+            if (play->state.frames % 16 == 0) {
+                play->envCtx.unk_EE[2] -= 2;
             }
         }
 
-        for (i = 0; i < globalCtx->envCtx.unk_EE[2]; i++) {
+        for (i = 0; i < play->envCtx.unk_EE[2]; i++) {
             switch (this->effects[i].state) {
                 case 0:
                     // spawn in front of the camera
-                    dx = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
-                    dy = globalCtx->view.lookAt.y - globalCtx->view.eye.y;
-                    dz = globalCtx->view.lookAt.z - globalCtx->view.eye.z;
+                    dx = play->view.lookAt.x - play->view.eye.x;
+                    dy = play->view.lookAt.y - play->view.eye.y;
+                    dz = play->view.lookAt.z - play->view.eye.z;
                     dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
                     // fake
                     temp = dz / dist;
-                    this->effects[i].base.x = globalCtx->view.eye.x + dx / dist * 80.0f;
-                    this->effects[i].base.y = globalCtx->view.eye.y + dy / dist * 80.0f;
-                    this->effects[i].base.z = globalCtx->view.eye.z + temp * 80.0f;
+                    this->effects[i].base.x = play->view.eye.x + dx / dist * 80.0f;
+                    this->effects[i].base.y = play->view.eye.y + dy / dist * 80.0f;
+                    this->effects[i].base.z = play->view.eye.z + temp * 80.0f;
 
                     this->effects[i].pos.x = (Rand_ZeroOne() - 0.5f) * 160.0f;
                     this->effects[i].pos.y = 80.0f;
@@ -656,14 +656,14 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                     break;
 
                 case 1:
-                    dx = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
-                    dy = globalCtx->view.lookAt.y - globalCtx->view.eye.y;
-                    dz = globalCtx->view.lookAt.z - globalCtx->view.eye.z;
+                    dx = play->view.lookAt.x - play->view.eye.x;
+                    dy = play->view.lookAt.y - play->view.eye.y;
+                    dz = play->view.lookAt.z - play->view.eye.z;
                     dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
-                    baseX = globalCtx->view.eye.x + dx / dist * 80.0f;
-                    baseY = globalCtx->view.eye.y + dy / dist * 80.0f;
-                    baseZ = globalCtx->view.eye.z + dz / dist * 80.0f;
+                    baseX = play->view.eye.x + dx / dist * 80.0f;
+                    baseY = play->view.eye.y + dy / dist * 80.0f;
+                    baseZ = play->view.eye.z + dz / dist * 80.0f;
 
                     this->effects[i].dirPhase.x += 0.049999997f * Rand_ZeroOne();
                     this->effects[i].dirPhase.z += 0.049999997f * Rand_ZeroOne();
@@ -672,7 +672,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                     this->effects[i].pos.y += -this->effects[i].speed;
 
                     if (this->effects[i].base.y + this->effects[i].pos.y < this->actor.world.pos.y ||
-                        this->effects[i].base.y + this->effects[i].pos.y < globalCtx->view.eye.y - 150.0f) {
+                        this->effects[i].base.y + this->effects[i].pos.y < play->view.eye.y - 150.0f) {
                         this->effects[i].state++;
                     }
 
@@ -718,12 +718,12 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 200, 200, 180);
             gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 200, 180);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust5Tex));
 
-            func_80094C50(globalCtx->state.gfxCtx);
+            func_80094C50(play->state.gfxCtx);
             gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_MODELVIEW | G_MTX_NOPUSH | G_MTX_MUL);
 
             gDPPipeSync(POLY_XLU_DISP++);
@@ -733,16 +733,16 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             gDPPipeSync(POLY_XLU_DISP++);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }
 
-void ObjectKankyo_Lightning(ObjectKankyo* this, GlobalContext* globalCtx) {
-    if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL) {
+void ObjectKankyo_Lightning(ObjectKankyo* this, PlayState* play) {
+    if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL) {
         switch (this->effects[0].state) {
             case 0:
                 this->effects[0].timer = 0;
-                if (globalCtx->csCtx.npcActions[0]->action == 2) {
+                if (play->csCtx.npcActions[0]->action == 2) {
                     this->effects[0].state++;
                 }
                 break;
@@ -754,7 +754,7 @@ void ObjectKankyo_Lightning(ObjectKankyo* this, GlobalContext* globalCtx) {
                 break;
 
             case 2:
-                if (globalCtx->csCtx.npcActions[0]->action == 1) {
+                if (play->csCtx.npcActions[0]->action == 1) {
                     this->effects[0].state = 0;
                 }
                 break;
@@ -762,34 +762,34 @@ void ObjectKankyo_Lightning(ObjectKankyo* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjectKankyo_DrawLightning(ObjectKankyo* this, GlobalContext* globalCtx) {
+void ObjectKankyo_DrawLightning(ObjectKankyo* this, PlayState* play) {
     s32 pad;
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->effects[0].state == 1) {
-        Matrix_Translate(globalCtx->csCtx.npcActions[0]->startPos.x, globalCtx->csCtx.npcActions[0]->startPos.y,
-                         globalCtx->csCtx.npcActions[0]->startPos.z, MTXMODE_NEW);
+        Matrix_Translate(play->csCtx.npcActions[0]->startPos.x, play->csCtx.npcActions[0]->startPos.y,
+                         play->csCtx.npcActions[0]->startPos.z, MTXMODE_NEW);
         Matrix_RotateX(DEG_TO_RAD(20.0f), MTXMODE_APPLY);
         Matrix_RotateZ(DEG_TO_RAD(20.0f), MTXMODE_APPLY);
         Matrix_Scale(2.0f, 5.0f, 2.0f, MTXMODE_APPLY);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 128);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 255, 128);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEffLightningTextures[this->effects[0].timer]));
-        func_80094C50(globalCtx->state.gfxCtx);
+        func_80094C50(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_MODELVIEW | G_MTX_NOPUSH | G_MTX_MUL);
         gDPPipeSync(POLY_XLU_DISP++);
         gSPDisplayList(POLY_XLU_DISP++, gEffLightningDL);
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, GlobalContext* globalCtx) {
-    s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_SPOT02_OBJECTS);
+void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, PlayState* play) {
+    s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_SPOT02_OBJECTS);
 
     if (objBankIndex < 0) {
         ASSERT(objBankIndex < 0);
@@ -799,8 +799,8 @@ void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, GlobalContext* globalCtx
     ObjectKankyo_SetupAction(this, ObjectKankyo_WaitForSunGraveSparkObject);
 }
 
-void ObjectKankyo_WaitForSunGraveSparkObject(ObjectKankyo* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->requiredObjBankIndex)) {
+void ObjectKankyo_WaitForSunGraveSparkObject(ObjectKankyo* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->requiredObjBankIndex)) {
         this->requiredObjectLoaded = true;
         this->effects[0].alpha = 0;
         this->actor.objBankIndex = this->requiredObjBankIndex;
@@ -809,9 +809,9 @@ void ObjectKankyo_WaitForSunGraveSparkObject(ObjectKankyo* this, GlobalContext* 
     }
 }
 
-void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, GlobalContext* globalCtx) {
-    if (globalCtx->csCtx.state != 0) {
-        if (globalCtx->csCtx.npcActions[1] != NULL && globalCtx->csCtx.npcActions[1]->action == 2) {
+void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, PlayState* play) {
+    if (play->csCtx.state != 0) {
+        if (play->csCtx.npcActions[1] != NULL && play->csCtx.npcActions[1]->action == 2) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
             if ((s16)this->effects[0].alpha + 20 > 255) {
                 this->effects[0].alpha = 255;
@@ -823,16 +823,16 @@ void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCtx2) {
+void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     Vec3f start;
     Vec3f end;
     f32 weight;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    if (globalCtx->csCtx.state != 0) {
-        if (globalCtx->csCtx.npcActions[1] != NULL && globalCtx->csCtx.npcActions[1]->action == 2 &&
+    OPEN_DISPS(play->state.gfxCtx);
+    if (play->csCtx.state != 0) {
+        if (play->csCtx.npcActions[1] != NULL && play->csCtx.npcActions[1]->action == 2 &&
             this->requiredObjectLoaded) {
             // apparently, light waves with larger amplitudes look brighter, so the name 'amplitude' kind of works here
             if (this->effects[0].state == 0) {
@@ -853,20 +853,20 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
                 this->effects[0].timer = 0;
             }
 
-            start.x = globalCtx->csCtx.npcActions[1]->startPos.x;
-            start.y = globalCtx->csCtx.npcActions[1]->startPos.y;
-            start.z = globalCtx->csCtx.npcActions[1]->startPos.z;
+            start.x = play->csCtx.npcActions[1]->startPos.x;
+            start.y = play->csCtx.npcActions[1]->startPos.y;
+            start.z = play->csCtx.npcActions[1]->startPos.z;
 
-            end.x = globalCtx->csCtx.npcActions[1]->endPos.x;
-            end.y = globalCtx->csCtx.npcActions[1]->endPos.y;
-            end.z = globalCtx->csCtx.npcActions[1]->endPos.z;
+            end.x = play->csCtx.npcActions[1]->endPos.x;
+            end.y = play->csCtx.npcActions[1]->endPos.y;
+            end.z = play->csCtx.npcActions[1]->endPos.z;
 
-            weight = Environment_LerpWeight(globalCtx->csCtx.npcActions[1]->endFrame,
-                                            globalCtx->csCtx.npcActions[1]->startFrame, globalCtx->csCtx.frames);
+            weight = Environment_LerpWeight(play->csCtx.npcActions[1]->endFrame,
+                                            play->csCtx.npcActions[1]->startFrame, play->csCtx.frames);
             Matrix_Translate((end.x - start.x) * weight + start.x, (end.y - start.y) * weight + start.y,
                              (end.z - start.z) * weight + start.z, MTXMODE_NEW);
             Matrix_Scale(this->effects[0].size, this->effects[0].size, this->effects[0].size, MTXMODE_APPLY);
-            func_80093D84(globalCtx->state.gfxCtx);
+            func_80093D84(play->state.gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (u8)(105 * this->effects[0].amplitude) + 150, 255,
                             (u8)(105 * this->effects[0].amplitude) + 150, this->effects[0].alpha);
@@ -874,8 +874,8 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
                            (u8)(255 * this->effects[0].amplitude), 255 - (u8)(255 * this->effects[0].amplitude),
                            this->effects[0].alpha);
 
-            Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80BA5900[this->effects[0].timer]));
@@ -886,11 +886,11 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void ObjectKankyo_InitBeams(ObjectKankyo* this, GlobalContext* globalCtx) {
-    s32 objectIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_DEMO_KEKKAI);
+void ObjectKankyo_InitBeams(ObjectKankyo* this, PlayState* play) {
+    s32 objectIndex = Object_GetIndex(&play->objectCtx, OBJECT_DEMO_KEKKAI);
 
     if (objectIndex < 0) {
         ASSERT(objectIndex < 0);
@@ -900,20 +900,20 @@ void ObjectKankyo_InitBeams(ObjectKankyo* this, GlobalContext* globalCtx) {
     ObjectKankyo_SetupAction(this, ObjectKankyo_WaitForBeamObject);
 }
 
-void ObjectKankyo_WaitForBeamObject(ObjectKankyo* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->requiredObjBankIndex)) {
+void ObjectKankyo_WaitForBeamObject(ObjectKankyo* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->requiredObjBankIndex)) {
         this->requiredObjectLoaded = true;
         this->actor.objBankIndex = this->requiredObjBankIndex;
         ObjectKankyo_SetupAction(this, ObjectKankyo_Beams);
     }
 }
 
-void ObjectKankyo_Beams(ObjectKankyo* this, GlobalContext* globalCtx) {
+void ObjectKankyo_Beams(ObjectKankyo* this, PlayState* play) {
     u8 i;
 
-    if (globalCtx->csCtx.state != 0) {
+    if (play->csCtx.state != 0) {
         for (i = 0; i < 6; i++) {
-            if (globalCtx->csCtx.npcActions[i + 1] != NULL && globalCtx->csCtx.npcActions[i + 1]->action == 2) {
+            if (play->csCtx.npcActions[i + 1] != NULL && play->csCtx.npcActions[i + 1]->action == 2) {
                 if (this->effects[i].size == 0.1f) {
                     func_800F3F3C(11);
                 }
@@ -923,7 +923,7 @@ void ObjectKankyo_Beams(ObjectKankyo* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
+void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
     static Color_RGB8 sBeamPrimColors[] = {
         { 255, 255, 170 }, { 170, 255, 255 }, { 255, 170, 255 },
         { 255, 255, 170 }, { 255, 255, 170 }, { 255, 255, 170 },
@@ -932,7 +932,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
         { 0, 200, 0 }, { 0, 50, 255 }, { 100, 0, 200 }, { 200, 0, 0 }, { 200, 255, 0 }, { 255, 120, 0 },
     };
     ObjectKankyo* this = this2;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     s16 i;
     f32 beamX[] = { 430.0f, 860.0f, 430.0f, -426.0f, -862.0f, -440.0f };
     f32 beamY[] = { 551.0f, 551.0f, 551.0f, 554.0f, 551.0f, 547.0f };
@@ -940,7 +940,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     f32 beamYaw[] = { 29.9f, 90.0f, 150.0f, 30.0f, 90.0f, -30.1f };
     f32 beamPitch[] = { 103.4f, 103.8f, 103.6f, -103.4f, -103.5f, 103.5f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->requiredObjectLoaded) {
         for (i = 0; i < 6; i++) {
@@ -950,24 +950,24 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                 Matrix_RotateY(DEG_TO_RAD(beamYaw[i]), MTXMODE_APPLY);
                 Matrix_RotateX(DEG_TO_RAD(beamPitch[i]), MTXMODE_APPLY);
                 Matrix_Scale(this->effects[i].size, 0.1f, this->effects[i].size, MTXMODE_APPLY);
-                func_80093D84(globalCtx->state.gfxCtx);
+                func_80093D84(play->state.gfxCtx);
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, sBeamPrimColors[i].r, sBeamPrimColors[i].g,
                                 sBeamPrimColors[i].b, 128);
                 gDPSetEnvColor(POLY_XLU_DISP++, sBeamEnvColors[i].r, sBeamEnvColors[i].g, sBeamEnvColors[i].b, 128);
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_LOAD);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
-                           Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->state.frames * 5,
-                                            globalCtx->state.frames * 10, 32, 64, 1, globalCtx->state.frames * 5,
-                                            globalCtx->state.frames * 10, 32, 64));
+                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 5,
+                                            play->state.frames * 10, 32, 64, 1, play->state.frames * 5,
+                                            play->state.frames * 10, 32, 64));
                 gSPDisplayList(POLY_XLU_DISP++, gDemoKekkaiDL_005FF0);
                 FrameInterpolation_RecordCloseChild();
             }
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 void ObjectKankyo_Reset(void) {

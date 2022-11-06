@@ -32,7 +32,7 @@ void Sram_InitDebugSave(void) {
 
 // RANDOTODO replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
-// nothing breaks when calling it without a valid globalCtx first
+// nothing breaks when calling it without a valid play first
 void GiveLinkRupees(int numOfRupees) {
     int maxRupeeCount;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {

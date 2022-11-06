@@ -6,8 +6,8 @@
 
 struct DemoGt;
 
-typedef void (*DemoGtUpdateFunc)(struct DemoGt*, GlobalContext*);
-typedef void (*DemoGtDrawFunc)(struct DemoGt*, GlobalContext*);
+typedef void (*DemoGtUpdateFunc)(struct DemoGt*, PlayState*);
+typedef void (*DemoGtDrawFunc)(struct DemoGt*, PlayState*);
 
 typedef struct DemoGt {
     /* 0x0000 */ DynaPolyActor dyna;

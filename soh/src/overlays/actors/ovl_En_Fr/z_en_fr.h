@@ -6,7 +6,7 @@
 
 struct EnFr;
 
-typedef void (*EnFrActionFunc)(struct EnFr*, GlobalContext*);
+typedef void (*EnFrActionFunc)(struct EnFr*, PlayState*);
 typedef void (*EnFrBlinkFunc)(struct EnFr*);
 
 typedef enum {

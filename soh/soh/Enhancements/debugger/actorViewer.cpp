@@ -15,7 +15,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -99,7 +99,7 @@ std::map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_TP, "Electric Tailpasaran" },
     { ACTOR_EN_ST, "Skulltula" },
     { ACTOR_EN_BW, "Torch Slug" },
-    { ACTOR_EN_A_OBJ, "Gameplay_keep items" },
+    { ACTOR_EN_A_OBJ, "Play_keep items" },
     { ACTOR_EN_EIYER, "Stinger (Land)" },
     { ACTOR_EN_RIVER_SOUND, "Ambient Sound Effects" },
     { ACTOR_EN_HORSE_NORMAL, "Horse" },
@@ -516,8 +516,8 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
     if (data.size() != 0) {
         data.clear();
     }
-    if (gGlobalCtx != nullptr) {
-        ActorListEntry currList = gGlobalCtx->actorCtx.actorLists[i];
+    if (gPlayState != nullptr) {
+        ActorListEntry currList = gPlayState->actorCtx.actorLists[i];
         Actor* currAct = currList.head;
         if (currAct != nullptr) {
             while (currAct != nullptr) {
@@ -555,8 +555,8 @@ void DrawActorViewer(bool& open) {
     static std::vector<Actor*> list;
     static u16 lastSceneId = 0;
 
-    if (gGlobalCtx != nullptr) {
-        needs_reset = lastSceneId != gGlobalCtx->sceneNum;
+    if (gPlayState != nullptr) {
+        needs_reset = lastSceneId != gPlayState->sceneNum;
         if (needs_reset) {
             display = empty;
             fetch = nullptr;
@@ -566,7 +566,7 @@ void DrawActorViewer(bool& open) {
             list.clear();
             needs_reset = false;
         }
-        lastSceneId = gGlobalCtx->sceneNum;
+        lastSceneId = gPlayState->sceneNum;
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
             for (int i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
@@ -579,9 +579,9 @@ void DrawActorViewer(bool& open) {
         }
 
         if (ImGui::BeginCombo("Actor", filler.c_str())) {
-            if (gGlobalCtx != nullptr && lastSceneId != gGlobalCtx->sceneNum) {
+            if (gPlayState != nullptr && lastSceneId != gPlayState->sceneNum) {
                 PopulateActorDropdown(category, list);
-                lastSceneId = gGlobalCtx->sceneNum;
+                lastSceneId = gPlayState->sceneNum;
             }
             for (int i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + list[i]->overlayEntry->name;
@@ -652,13 +652,13 @@ void DrawActorViewer(bool& open) {
             }
 
             if (ImGui::Button("Go to Actor")) {
-                Player* player = GET_PLAYER(gGlobalCtx);
+                Player* player = GET_PLAYER(gPlayState);
                 Math_Vec3f_Copy(&player->actor.world.pos, &display.world.pos);
                 Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
             }
 
             if (ImGui::Button("Fetch from Target")) {
-                Player* player = GET_PLAYER(gGlobalCtx);
+                Player* player = GET_PLAYER(gPlayState);
                 fetch = player->targetActor;
                 if (fetch != NULL) {
                     display = *fetch;
@@ -669,7 +669,7 @@ void DrawActorViewer(bool& open) {
             }
             UIWidgets::InsertHelpHoverText("Grabs actor with target arrow above it. You might need C-Up for enemies");
             if (ImGui::Button("Fetch from Held")) {
-                Player* player = GET_PLAYER(gGlobalCtx);
+                Player* player = GET_PLAYER(gPlayState);
                 fetch = player->heldActor;
                 if (fetch != NULL) {
                     display = *fetch;
@@ -680,7 +680,7 @@ void DrawActorViewer(bool& open) {
             }
             UIWidgets::InsertHelpHoverText("Grabs actor that Link is holding");
             if (ImGui::Button("Fetch from Interaction")) {
-                Player* player = GET_PLAYER(gGlobalCtx);
+                Player* player = GET_PLAYER(gPlayState);
                 fetch = player->interactRangeActor;
                 if (fetch != NULL) {
                     display = *fetch;
@@ -722,7 +722,7 @@ void DrawActorViewer(bool& open) {
             });
 
             if (ImGui::Button("Fetch from Link")) {
-                Player* player = GET_PLAYER(gGlobalCtx);
+                Player* player = GET_PLAYER(gPlayState);
                 Vec3f newPos = player->actor.world.pos;
                 Vec3s newRot = player->actor.world.rot;
                 newActor.pos = newPos;
@@ -731,7 +731,7 @@ void DrawActorViewer(bool& open) {
 
             if (ImGui::Button("Spawn")) {
                 if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX && gActorOverlayTable[newActor.id].initInfo != NULL) {
-                    Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, newActor.id, newActor.pos.x, newActor.pos.y,
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
                 } else {
                     func_80078884(NA_SE_SY_ERROR);
@@ -743,7 +743,7 @@ void DrawActorViewer(bool& open) {
                 if (parent != NULL) {
                     if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
                         gActorOverlayTable[newActor.id].initInfo != NULL) {
-                        Actor_SpawnAsChild(&gGlobalCtx->actorCtx, parent, gGlobalCtx, newActor.id, newActor.pos.x,
+                        Actor_SpawnAsChild(&gPlayState->actorCtx, parent, gPlayState, newActor.id, newActor.pos.x,
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {

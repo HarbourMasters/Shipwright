@@ -6,8 +6,8 @@
 
 struct EnXc;
 
-typedef void (*EnXcActionFunc)(struct EnXc*, GlobalContext*);
-typedef void (*EnXcDrawFunc)(struct Actor*, GlobalContext*);
+typedef void (*EnXcActionFunc)(struct EnXc*, PlayState*);
+typedef void (*EnXcDrawFunc)(struct Actor*, PlayState*);
 
 typedef enum {
     /* 0 */ SHEIK_TYPE_0,

@@ -10,22 +10,22 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
-void EnGb_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGb_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGb_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnGb_Init(Actor* thisx, PlayState* play);
+void EnGb_Destroy(Actor* thisx, PlayState* play);
+void EnGb_Update(Actor* thisx, PlayState* play);
+void EnGb_Draw(Actor* thisx, PlayState* play);
 
-void func_80A2F83C(EnGb* this, GlobalContext* globalCtx);
-void func_80A2FC70(EnGb* this, GlobalContext* globalCtx);
-void func_80A2FA50(EnGb* this, GlobalContext* globalCtx);
-void func_80A2F9C0(EnGb* this, GlobalContext* globalCtx);
-void func_80A2F94C(EnGb* this, GlobalContext* globalCtx);
-void func_80A2FB40(EnGb* this, GlobalContext* globalCtx);
-void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx);
-void func_80A2FC0C(EnGb* this, GlobalContext* globalCtx);
+void func_80A2F83C(EnGb* this, PlayState* play);
+void func_80A2FC70(EnGb* this, PlayState* play);
+void func_80A2FA50(EnGb* this, PlayState* play);
+void func_80A2F9C0(EnGb* this, PlayState* play);
+void func_80A2F94C(EnGb* this, PlayState* play);
+void func_80A2FB40(EnGb* this, PlayState* play);
+void func_80A2FBB0(EnGb* this, PlayState* play);
+void func_80A2FC0C(EnGb* this, PlayState* play);
 
-void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx);
-void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx);
+void EnGb_DrawCagedSouls(EnGb* this, PlayState* play);
+void EnGb_UpdateCagedSouls(EnGb* this, PlayState* play);
 
 const ActorInit En_Gb_InitVars = {
     ACTOR_EN_GB,
@@ -150,7 +150,7 @@ void func_80A2F180(EnGb* this) {
     }
 }
 
-void EnGb_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnGb_Init(Actor* thisx, PlayState* play) {
     EnGb* this = (EnGb*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -161,18 +161,18 @@ void EnGb_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gPoeSellerCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable,
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable,
                        this->morphTable, 12);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinderType1(globalCtx, &this->collider, &this->dyna.actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinderType1(play, &this->collider, &this->dyna.actor, &sCylinderInit);
 
     for (i = 0; i < ARRAY_COUNT(sBottlesCylindersInit); i++) {
-        Collider_InitCylinder(globalCtx, &this->bottlesColliders[i]);
-        Collider_SetCylinderType1(globalCtx, &this->bottlesColliders[i], &this->dyna.actor, &sBottlesCylindersInit[i]);
+        Collider_InitCylinder(play, &this->bottlesColliders[i]);
+        Collider_SetCylinderType1(play, &this->bottlesColliders[i], &this->dyna.actor, &sBottlesCylindersInit[i]);
     }
 
-    this->light = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
+    this->light = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
                               this->dyna.actor.home.pos.z, 255, 255, 255, 200);
 
@@ -218,12 +218,12 @@ void EnGb_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = func_80A2F83C;
 }
 
-void EnGb_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGb_Destroy(Actor* thisx, PlayState* play) {
     EnGb* this = (EnGb*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->light);
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyCylinder(play, &this->collider);
+    LightContext_RemoveLight(play, &play->lightCtx, this->light);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 void func_80A2F608(EnGb* this) {
@@ -271,8 +271,8 @@ void func_80A2F7C0(EnGb* this) {
     this->actionFunc = func_80A2FC70;
 }
 
-void func_80A2F83C(EnGb* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80A2F83C(EnGb* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (!func_80A2F760(this)) {
         if (this->actionTimer != 0) {
@@ -282,8 +282,8 @@ void func_80A2F83C(EnGb* this, GlobalContext* globalCtx) {
             return;
         }
     }
-    if (Actor_ProcessTalkRequest(&this->dyna.actor, globalCtx)) {
-        switch (func_8002F368(globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->dyna.actor, play)) {
+        switch (func_8002F368(play)) {
             case EXCH_ITEM_NONE:
                 func_80A2F180(this);
                 this->actionFunc = func_80A2F94C;
@@ -300,12 +300,12 @@ void func_80A2F83C(EnGb* this, GlobalContext* globalCtx) {
         return;
     }
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
-        func_8002F298(&this->dyna.actor, globalCtx, 100.0f, EXCH_ITEM_POE);
+        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
     }
 }
 
-void func_80A2F94C(EnGb* this, GlobalContext* globalCtx) {
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
+void func_80A2F94C(EnGb* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         if (!(gSaveContext.infTable[0xB] & 0x40)) {
             gSaveContext.infTable[0xB] |= 0x40;
         }
@@ -314,25 +314,25 @@ void func_80A2F94C(EnGb* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80A2F9C0(EnGb* this, GlobalContext* globalCtx) {
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
+void func_80A2F9C0(EnGb* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         if (!(gSaveContext.infTable[0xB] & 0x40)) {
             gSaveContext.infTable[0xB] |= 0x40;
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(globalCtx, GET_PLAYER(globalCtx), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
         Rupees_ChangeBy(10);
         this->actionFunc = func_80A2F83C;
     }
 }
 
-void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
+void func_80A2FA50(EnGb* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         if (!(gSaveContext.infTable[0xB] & 0x40)) {
             gSaveContext.infTable[0xB] |= 0x40;
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(globalCtx, GET_PLAYER(globalCtx), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
         if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
@@ -341,51 +341,51 @@ void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
             }
             this->actionFunc = func_80A2F83C;
         } else {
-            Player* player = GET_PLAYER(globalCtx);
+            Player* player = GET_PLAYER(play);
 
             player->exchangeItemId = EXCH_ITEM_NONE;
             this->textId = 0x70F8;
-            Message_ContinueTextbox(globalCtx, this->textId);
+            Message_ContinueTextbox(play, this->textId);
             this->actionFunc = func_80A2FB40;
         }
     }
 }
 
-void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
+void func_80A2FB40(EnGb* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+            func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+            GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
         }
         this->actionFunc = func_80A2FBB0;
     }
 }
 
-void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->dyna.actor, globalCtx)) {
+void func_80A2FBB0(EnGb* this, PlayState* play) {
+    if (Actor_HasParent(&this->dyna.actor, play)) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+            func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            GiveItemEntryFromActor(&this->dyna.actor, globalCtx, getItemEntry, 100.0f, 10.0f);
+            GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
         }
     }
 }
 
-void func_80A2FC0C(EnGb* this, GlobalContext* globalCtx) {
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
-        Actor_ProcessTalkRequest(&this->dyna.actor, globalCtx);
+void func_80A2FC0C(EnGb* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
+        Actor_ProcessTalkRequest(&this->dyna.actor, play);
         func_80A2F180(this);
         this->actionFunc = func_80A2F83C;
     }
 }
 
-void func_80A2FC70(EnGb* this, GlobalContext* globalCtx) {
+void func_80A2FC70(EnGb* this, PlayState* play) {
     if (this->skelAnime.curFrame == Animation_GetLastFrame(&gPoeSellerSwingStickAnim)) {
         Animation_Change(&this->skelAnime, &gPoeSellerIdleAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gPoeSellerIdleAnim),
                          ANIMMODE_LOOP, 0.0f);
@@ -406,21 +406,21 @@ void func_80A2FC70(EnGb* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGb_Update(Actor* thisx, GlobalContext* globalCtx2) {
+void EnGb_Update(Actor* thisx, PlayState* play2) {
     EnGb* this = (EnGb*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     s32 i;
     f32 rand;
 
     this->frameTimer++;
     SkelAnime_Update(&this->skelAnime);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->dyna.actor.textId = this->textId;
     func_80A2F608(this);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 
     for (i = 0; i < ARRAY_COUNT(this->bottlesColliders); i++) {
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->bottlesColliders[i].base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->bottlesColliders[i].base);
     }
 
     rand = Rand_ZeroOne();
@@ -428,16 +428,16 @@ void EnGb_Update(Actor* thisx, GlobalContext* globalCtx2) {
     this->lightColor.g = (s8)(rand * 100.0f) + 155;
     this->lightColor.b = (s8)(rand * 160.0f) + 95;
     this->lightColor.a = 200;
-    EnGb_UpdateCagedSouls(this, globalCtx);
+    EnGb_UpdateCagedSouls(this, play);
 }
 
-void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnGb_Draw(Actor* thisx, PlayState* play) {
     EnGb* this = (EnGb*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);
@@ -445,13 +445,13 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                               this->dyna.actor.world.pos.z, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                               this->lightColor.a);
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->dyna.actor);
-    EnGb_DrawCagedSouls(this, globalCtx);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    EnGb_DrawCagedSouls(this, play);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx) {
+void EnGb_UpdateCagedSouls(EnGb* this, PlayState* play) {
     f32 temp_f20;
     s16 rot;
     s32 i;
@@ -525,20 +525,20 @@ void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
+void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     for (i = 0; i < 4; i++) {
         s32 idx = this->cagedSouls[i].infoIdx;
 
         FrameInterpolation_RecordOpenChild(&this->cagedSouls[i], this->cagedSouls[i].epoch);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128));
         gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sCagedSoulInfo[idx].texture));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, sCagedSoulInfo[idx].prim.r, sCagedSoulInfo[idx].prim.g,
@@ -549,14 +549,14 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         Matrix_Push();
         Matrix_Translate(this->cagedSouls[i].translation.x, this->cagedSouls[i].translation.y,
                          this->cagedSouls[i].translation.z, MTXMODE_NEW);
-        Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+        Matrix_ReplaceRotation(&play->billboardMtxF);
 
         if (this->cagedSouls[i].rotate180) {
             Matrix_RotateZYX(0, -0x8000, 0, MTXMODE_APPLY);
         }
         Matrix_Scale(0.007f, 0.007f, 1.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
@@ -564,5 +564,5 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         FrameInterpolation_RecordCloseChild();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

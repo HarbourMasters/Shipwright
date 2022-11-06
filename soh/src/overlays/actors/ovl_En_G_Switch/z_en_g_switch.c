@@ -21,23 +21,23 @@ typedef enum {
     /* 1 */ MOVE_HOME
 } GSwitchMoveState;
 
-void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGSwitch_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGSwitch_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx);
-void EnGSwitch_DrawPot(Actor* thisx, GlobalContext* globalCtx);
+void EnGSwitch_Init(Actor* thisx, PlayState* play);
+void EnGSwitch_Destroy(Actor* thisx, PlayState* play);
+void EnGSwitch_Update(Actor* thisx, PlayState* play);
+void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play);
+void EnGSwitch_DrawPot(Actor* thisx, PlayState* play);
 
-void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_WaitForObject(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_SilverRupeeCollected(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_GalleryRupee(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_ArcheryPot(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_Kill(EnGSwitch* this, GlobalContext* globalCtx);
+void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play);
+void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, PlayState* play);
+void EnGSwitch_WaitForObject(EnGSwitch* this, PlayState* play);
+void EnGSwitch_SilverRupeeCollected(EnGSwitch* this, PlayState* play);
+void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play);
+void EnGSwitch_ArcheryPot(EnGSwitch* this, PlayState* play);
+void EnGSwitch_Kill(EnGSwitch* this, PlayState* play);
 
 void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx);
-void EnGSwitch_UpdateEffects(EnGSwitch* this, GlobalContext* globalCtx);
-void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx);
+void EnGSwitch_UpdateEffects(EnGSwitch* this, PlayState* play);
+void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play);
 
 static s16 sCollectedCount = 0;
 
@@ -79,7 +79,7 @@ const ActorInit En_G_Switch_InitVars = {
     NULL,
 };
 
-void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnGSwitch_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
@@ -101,7 +101,7 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "maximum number of checks"
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 最大チェック数 ☆☆☆☆☆ %d\n" VT_RST, this->silverCount);
             osSyncPrintf("\n\n");
-            if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 // This is a reference to Hokuto no Ken
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
@@ -115,8 +115,8 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 子スイッチ発生 ☆☆☆☆☆ %x\n" VT_RST, this->actor.params);
             this->colorIdx = 5;
             this->numEffects = 20;
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
 
@@ -126,7 +126,7 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
                 this->actor.shape.yOffset = 700.0f;
             }
 
-            if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
@@ -144,14 +144,14 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ やぶさめぶち抜き壷 ☆☆☆☆☆ \n" VT_RST);
             this->actor.gravity = -3.0f;
             this->colorIdx = Rand_ZeroFloat(2.99f);
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.scale.x = 0.25f;
             this->actor.scale.y = 0.45f;
             this->actor.scale.z = 0.25f;
             this->collider.info.bumper.dmgFlags = 0x1F820;
             this->objId = OBJECT_TSUBO;
-            this->objIndex = Object_GetIndex(&globalCtx->objectCtx, this->objId);
+            this->objIndex = Object_GetIndex(&play->objectCtx, this->objId);
             if (this->objIndex < 0) {
                 Actor_Kill(&this->actor);
                 // "what?"
@@ -173,8 +173,8 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
                 Actor_SetScale(&this->actor, 0.05f);
             }
             
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
             this->collider.dim.radius = 20;
             this->collider.dim.height = 60;
@@ -184,14 +184,14 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGSwitch_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnGSwitch_Break(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_Break(EnGSwitch* this, PlayState* play) {
     Vec3f randPos;
     Vec3f hitPos;
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -204,10 +204,10 @@ void EnGSwitch_Break(EnGSwitch* this, GlobalContext* globalCtx) {
     hitPos.x = this->collider.info.bumper.hitPos.x;
     hitPos.y = this->collider.info.bumper.hitPos.y;
     hitPos.z = this->collider.info.bumper.hitPos.z;
-    EffectSsHitMark_SpawnCustomScale(globalCtx, EFFECT_HITMARK_WHITE, 700, &hitPos);
+    EffectSsHitMark_SpawnCustomScale(play, EFFECT_HITMARK_WHITE, 700, &hitPos);
     if (this->type == ENGSWITCH_ARCHERY_POT) {
         velocity.y = 15.0f;
-        EffectSsExtra_Spawn(globalCtx, &hitPos, &velocity, &accel, 5, 2);
+        EffectSsExtra_Spawn(play, &hitPos, &velocity, &accel, 5, 2);
     }
     if (this->type == ENGSWITCH_TARGET_RUPEE) {
         for (i = 0; i < this->numEffects; i++) {
@@ -216,16 +216,16 @@ void EnGSwitch_Break(EnGSwitch* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_WaitForObject(EnGSwitch* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->objIndex)) {
-        gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[this->objIndex].segment);
+void EnGSwitch_WaitForObject(EnGSwitch* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->objIndex)) {
+        gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->objIndex].segment);
         this->actor.objBankIndex = this->objIndex;
         this->actor.draw = EnGSwitch_DrawPot;
         this->actionFunc = EnGSwitch_ArcheryPot;
     }
 }
 
-void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
     static s8 majorScale[] = { 0, 2, 4, 5, 7 };
 
     if (this->noteIndex < sCollectedCount) {
@@ -242,19 +242,19 @@ void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, GlobalContext* globalCtx) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 時はまさに世紀末〜  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
         // "Last!"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ らすとぉ！          ☆☆☆☆☆ \n" VT_RST);
-        if ((globalCtx->sceneNum == SCENE_MEN) && (this->actor.room == 2)) {
-            Flags_SetTempClear(globalCtx, this->actor.room);
+        if ((play->sceneNum == SCENE_MEN) && (this->actor.room == 2)) {
+            Flags_SetTempClear(play, this->actor.room);
         } else {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
-            Flags_SetSwitch(globalCtx, this->switchFlag);
+            Flags_SetSwitch(play, this->switchFlag);
         }
         func_80078884(NA_SE_SY_GET_RUPY);
         Actor_Kill(&this->actor);
     }
 }
 
-void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     this->actor.shape.rot.y += 0x800;
     if (this->actor.xyzDistToPlayerSq < 900.0f) {
@@ -272,8 +272,8 @@ void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_SilverRupeeCollected(EnGSwitch* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnGSwitch_SilverRupeeCollected(EnGSwitch* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     this->actor.shape.rot.y += 0x3C0;
     if (this->killTimer == 0) {
@@ -288,7 +288,7 @@ void EnGSwitch_SilverRupeeCollected(EnGSwitch* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_GalleryRupee(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
     EnSyatekiItm* gallery;
 
     this->actor.shape.rot.y += 0x3C0;
@@ -366,7 +366,7 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, GlobalContext* globalCtx) {
                 func_80078884(NA_SE_SY_GET_RUPY);
                 // "Yeah !"
                 osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ いぇぇーす！ＨＩＴ！！ ☆☆☆☆☆ %d\n" VT_RST, gallery->hitCount);
-                EnGSwitch_Break(this, globalCtx);
+                EnGSwitch_Break(this, play);
                 this->killTimer = 50;
                 this->broken = true;
                 this->actionFunc = EnGSwitch_Kill;
@@ -375,7 +375,7 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_ArcheryPot(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_ArcheryPot(EnGSwitch* this, PlayState* play) {
     s32 i;
     s16 angle;
     Vec3f* thisPos = &this->actor.world.pos;
@@ -416,29 +416,29 @@ void EnGSwitch_ArcheryPot(EnGSwitch* this, GlobalContext* globalCtx) {
 
             scale = 30.0f + Rand_ZeroOne() * 130.0f;
 
-            EffectSsKakera_Spawn(globalCtx, &pos, &vel, thisPos, -240, phi_s0, 10, 10, 0, scale, 0, 0x20, 60,
+            EffectSsKakera_Spawn(play, &pos, &vel, thisPos, -240, phi_s0, 10, 10, 0, scale, 0, 0x20, 60,
                                  KAKERA_COLOR_NONE, OBJECT_TSUBO, object_tsubo_DL_001960);
         }
-        func_80033480(globalCtx, thisPos, 30.0f, 4, 20, 50, 0);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, thisPos, 40, NA_SE_EV_POT_BROKEN);
-        EnGSwitch_Break(this, globalCtx);
+        func_80033480(play, thisPos, 30.0f, 4, 20, 50, 0);
+        SoundSource_PlaySfxAtFixedWorldPos(play, thisPos, 40, NA_SE_EV_POT_BROKEN);
+        EnGSwitch_Break(this, play);
         this->killTimer = 50;
         this->broken = true;
         this->actionFunc = EnGSwitch_Kill;
     }
 }
 
-void EnGSwitch_Kill(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_Kill(EnGSwitch* this, PlayState* play) {
     if (this->killTimer == 0) {
         Actor_Kill(&this->actor);
     }
 }
 
-void EnGSwitch_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnGSwitch_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->killTimer != 0) {
         this->killTimer--;
     }
@@ -451,35 +451,35 @@ void EnGSwitch_Update(Actor* thisx, GlobalContext* globalCtx) {
     if ((this->type != ENGSWITCH_SILVER_TRACKER) && (this->type != ENGSWITCH_SILVER_RUPEE) &&
         (this->type != ENGSWITCH_TARGET_RUPEE)) {
         Actor_MoveForward(&this->actor);
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 50.0f, 50.0f, 100.0f, 0x1C);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 0x1C);
     }
     if (this->actor.draw != NULL) {
         if (this->type == ENGSWITCH_TARGET_RUPEE) {
-            EnGSwitch_UpdateEffects(this, globalCtx);
+            EnGSwitch_UpdateEffects(this, play);
         }
         if ((this->actionFunc != EnGSwitch_Kill) && (this->actionFunc != EnGSwitch_SilverRupeeIdle)) {
             Collider_UpdateCylinder(&this->actor, &this->collider);
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         }
     }
     if (BREG(0) && (this->type == ENGSWITCH_SILVER_TRACKER)) {
         DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 255, 0, 0, 255, 4, globalCtx->state.gfxCtx);
+                               1.0f, 255, 0, 0, 255, 4, play->state.gfxCtx);
     }
 }
 
-void EnGSwitch_DrawPot(Actor* thisx, GlobalContext* globalCtx) {
+void EnGSwitch_DrawPot(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
     if (!this->broken) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        OPEN_DISPS(play->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_tsubo_DL_0017C0);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }
 
@@ -489,26 +489,26 @@ static void* sRupeeTextures[] = {
 static void* sRupeeTexturesNew[] = {
     GID_RUPEE_GREEN, GID_RUPEE_BLUE, GID_RUPEE_RED, GID_RUPEE_PURPLE, GID_RUPEE_GOLD,
 };
-void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx) {
+void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
     if (!this->broken) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
-        func_80093D18(globalCtx->state.gfxCtx);
-        func_8002EBCC(&this->actor, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        OPEN_DISPS(play->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
+        func_8002EBCC(&this->actor, play, 0);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gNewDrops", 0) !=0) {
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
-                GetItem_Draw(globalCtx, sRupeeTexturesNew[this->colorIdx]);
+                GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
                 gsDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
                 gsSPGrayscale(POLY_OPA_DISP++, true);
-                func_80093D18(globalCtx->state.gfxCtx);
+                func_80093D18(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeInnerColorDL);
-                func_80093D84(globalCtx->state.gfxCtx);
+                func_80093D84(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeOuterDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeOuterColorDL);
                 gsSPGrayscale(POLY_OPA_DISP++, false);
@@ -517,10 +517,10 @@ void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
     if (this->type == ENGSWITCH_TARGET_RUPEE) {
-        EnGSwitch_DrawEffects(this, globalCtx);
+        EnGSwitch_DrawEffects(this, play);
     }
 }
 
@@ -553,7 +553,7 @@ void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx
     }
 }
 
-void EnGSwitch_UpdateEffects(EnGSwitch* this, GlobalContext* globalCtx) {
+void EnGSwitch_UpdateEffects(EnGSwitch* this, PlayState* play) {
     Vec3f temp;
     s16 i;
     EnGSwitchEffect* effect = this->effects;
@@ -581,15 +581,15 @@ void EnGSwitch_UpdateEffects(EnGSwitch* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     EnGSwitchEffect* effect = this->effects;
     s16 i;
     f32 scale;
     s32 pad;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
@@ -599,7 +599,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
             Matrix_RotateX(effect->rot.x, MTXMODE_APPLY);
             Matrix_RotateY(effect->rot.y, MTXMODE_APPLY);
             Matrix_RotateZ(effect->rot.z, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);

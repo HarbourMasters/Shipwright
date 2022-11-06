@@ -16,7 +16,7 @@ typedef struct {
 
 struct DoorKiller;
 
-typedef void (*DoorKillerActionFunc)(struct DoorKiller*, GlobalContext*);
+typedef void (*DoorKillerActionFunc)(struct DoorKiller*, PlayState*);
 
 typedef struct DoorKiller {
     /* 0x0000 */ Actor actor;

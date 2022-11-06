@@ -14,14 +14,14 @@ typedef struct {
     /* 0x6 */ u8 unk_6;
 } unk_D_80A69248; // size = 0x8
 
-void EnHorseGanon_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGanon_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGanon_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGanon_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHorseGanon_Init(Actor* thisx, PlayState* play);
+void EnHorseGanon_Destroy(Actor* thisx, PlayState* play);
+void EnHorseGanon_Update(Actor* thisx, PlayState* play);
+void EnHorseGanon_Draw(Actor* thisx, PlayState* play);
 
 void func_80A68AC4(EnHorseGanon* this);
-void func_80A68AF0(EnHorseGanon* this, GlobalContext* globalCtx);
-void func_80A68DB0(EnHorseGanon* this, GlobalContext* globalCtx);
+void func_80A68AF0(EnHorseGanon* this, PlayState* play);
+void func_80A68DB0(EnHorseGanon* this, PlayState* play);
 
 const ActorInit En_Horse_Ganon_InitVars = {
     ACTOR_EN_HORSE_GANON,
@@ -114,7 +114,7 @@ void func_80A68660(unk_D_80A69248* data, s32 index, Vec3f* vec) {
     vec->z = data[index].unk_0.z;
 }
 
-void func_80A686A8(EnHorseGanon* this, GlobalContext* globalCtx) {
+void func_80A686A8(EnHorseGanon* this, PlayState* play) {
     Vec3f* tempPos;
     Vec3f vec;
     s16 y;
@@ -139,7 +139,7 @@ void func_80A686A8(EnHorseGanon* this, GlobalContext* globalCtx) {
     }
     this->actor.shape.rot.y = this->actor.world.rot.y;
 
-    if (Actor_WorldDistXZToActor(&this->actor, &GET_PLAYER(globalCtx)->actor) <= 300.0f) {
+    if (Actor_WorldDistXZToActor(&this->actor, &GET_PLAYER(play)->actor) <= 300.0f) {
         if (this->actor.speedXZ < 12.0f) {
             this->actor.speedXZ += 1.0f;
         } else {
@@ -165,7 +165,7 @@ void func_80A68870(EnHorseGanon* this) {
     }
 }
 
-void EnHorseGanon_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGanon_Init(Actor* thisx, PlayState* play) {
     EnHorseGanon* this = (EnHorseGanon*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -178,25 +178,25 @@ void EnHorseGanon_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.focus.pos = this->actor.world.pos;
     this->action = 0;
     this->actor.focus.pos.y += 70.0f;
-    Skin_Init(globalCtx, &this->skin, &gHorseGanonSkel, &gHorseGanonIdleAnim);
+    Skin_Init(play, &this->skin, &gHorseGanonSkel, &gHorseGanonIdleAnim);
     this->currentAnimation = 0;
     Animation_PlayOnce(&this->skin.skelAnime, sAnimations[0]);
 
-    Collider_InitCylinder(globalCtx, &this->colliderBody);
-    Collider_SetCylinder(globalCtx, &this->colliderBody, &this->actor, &sCylinderInit);
-    Collider_InitJntSph(globalCtx, &this->colliderHead);
-    Collider_SetJntSph(globalCtx, &this->colliderHead, &this->actor, &sJntSphInit, this->headElements);
+    Collider_InitCylinder(play, &this->colliderBody);
+    Collider_SetCylinder(play, &this->colliderBody, &this->actor, &sCylinderInit);
+    Collider_InitJntSph(play, &this->colliderHead);
+    Collider_SetJntSph(play, &this->colliderHead, &this->actor, &sJntSphInit, this->headElements);
 
     CollisionCheck_SetInfo(&this->actor.colChkInfo, 0, &sColChkInfoInit);
     func_80A68AC4(this);
 }
 
-void EnHorseGanon_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGanon_Destroy(Actor* thisx, PlayState* play) {
     EnHorseGanon* this = (EnHorseGanon*)thisx;
 
-    Skin_Free(globalCtx, &this->skin);
-    Collider_DestroyCylinder(globalCtx, &this->colliderBody);
-    Collider_DestroyJntSph(globalCtx, &this->colliderHead);
+    Skin_Free(play, &this->skin);
+    Collider_DestroyCylinder(play, &this->colliderBody);
+    Collider_DestroyJntSph(play, &this->colliderHead);
 }
 
 void func_80A68AC4(EnHorseGanon* this) {
@@ -204,7 +204,7 @@ void func_80A68AC4(EnHorseGanon* this) {
     Animation_PlayLoop(&this->skin.skelAnime, sAnimations[4]);
 }
 
-void func_80A68AF0(EnHorseGanon* this, GlobalContext* globalCtx) {
+void func_80A68AF0(EnHorseGanon* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     SkelAnime_Update(&this->skin.skelAnime);
 }
@@ -255,19 +255,19 @@ void func_80A68B20(EnHorseGanon* this) {
     }
 }
 
-void func_80A68DB0(EnHorseGanon* this, GlobalContext* globalCtx) {
+void func_80A68DB0(EnHorseGanon* this, PlayState* play) {
     if (this->currentAnimation == 2) {
         func_80A68870(this);
     }
 
-    func_80A686A8(this, globalCtx);
+    func_80A686A8(this, play);
 
     if (SkelAnime_Update(&this->skin.skelAnime) != 0) {
         func_80A68B20(this);
     }
 }
 
-void func_80A68E14(EnHorseGanon* this, GlobalContext* globalCtx) {
+void func_80A68E14(EnHorseGanon* this, PlayState* play) {
     s32 pad;
     CollisionPoly* col;
     f32 temp_ret;
@@ -278,26 +278,26 @@ void func_80A68E14(EnHorseGanon* this, GlobalContext* globalCtx) {
     v.y = this->actor.world.pos.y + 60.0f;
     v.z = Math_CosS(this->actor.shape.rot.y) * 30.0f + this->actor.world.pos.z;
 
-    temp_ret = BgCheck_EntityRaycastFloor3(&globalCtx->colCtx, &col, &temp1, &v);
+    temp_ret = BgCheck_EntityRaycastFloor3(&play->colCtx, &col, &temp1, &v);
 
     this->unk_1F4 = temp_ret;
     this->actor.shape.rot.x = (0x8000 / M_PI) * Math_FAtan2F(this->actor.world.pos.y - temp_ret, 30.0f);
 }
 
-void EnHorseGanon_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGanon_Update(Actor* thisx, PlayState* play) {
     EnHorseGanon* this = (EnHorseGanon*)thisx;
     s32 pad;
 
-    sActionFuncs[this->action](this, globalCtx);
+    sActionFuncs[this->action](this, play);
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 55.0f, 100.0f, 29);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 29);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;
     Collider_UpdateCylinder(&this->actor, &this->colliderBody);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderBody.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderBody.base);
 }
 
-void EnHorseGanon_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* skin) {
+void EnHorseGanon_PostDraw(Actor* thisx, PlayState* play, Skin* skin) {
     Vec3f sp4C;
     Vec3f sp40;
     EnHorseGanon* this = (EnHorseGanon*)thisx;
@@ -319,13 +319,13 @@ void EnHorseGanon_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* skin) {
     }
 
     //! @bug see relevant comment in `EnHorse_SkinCallback1`
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderHead.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderHead.base);
 }
 
-void EnHorseGanon_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGanon_Draw(Actor* thisx, PlayState* play) {
     EnHorseGanon* this = (EnHorseGanon*)thisx;
 
-    func_80A68E14(this, globalCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
-    func_800A6330(&this->actor, globalCtx, &this->skin, EnHorseGanon_PostDraw, true);
+    func_80A68E14(this, play);
+    func_80093D18(play->state.gfxCtx);
+    func_800A6330(&this->actor, play, &this->skin, EnHorseGanon_PostDraw, true);
 }

@@ -250,7 +250,7 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
 )
@@ -397,7 +397,7 @@ set(Source_Files__soh__Enhancements__item_tables
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.cpp"
 )
@@ -1710,7 +1710,7 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
     find_package(SDL2_net)
     set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
 endif()
@@ -1741,6 +1741,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
+            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
             "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
@@ -1787,6 +1788,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
+        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -1984,7 +1986,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "SDL2_net::SDL2_net-static;"
+            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -2036,6 +2038,7 @@ else()
         "libultraship;"
         "ZAPDUtils;"
 		SDL2::SDL2
+        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
