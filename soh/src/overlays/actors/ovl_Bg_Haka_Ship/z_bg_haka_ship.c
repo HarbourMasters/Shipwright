@@ -9,17 +9,17 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void BgHakaShip_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaShip_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaShip_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaShip_Draw(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaShip_ChildUpdatePosition(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_WaitForSong(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_CutsceneStationary(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_Move(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_SetupCrash(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_CrashShake(BgHakaShip* this, GlobalContext* globalCtx);
-void BgHakaShip_CrashFall(BgHakaShip* this, GlobalContext* globalCtx);
+void BgHakaShip_Init(Actor* thisx, PlayState* play);
+void BgHakaShip_Destroy(Actor* thisx, PlayState* play);
+void BgHakaShip_Update(Actor* thisx, PlayState* play);
+void BgHakaShip_Draw(Actor* thisx, PlayState* play);
+void BgHakaShip_ChildUpdatePosition(BgHakaShip* this, PlayState* play);
+void BgHakaShip_WaitForSong(BgHakaShip* this, PlayState* play);
+void BgHakaShip_CutsceneStationary(BgHakaShip* this, PlayState* play);
+void BgHakaShip_Move(BgHakaShip* this, PlayState* play);
+void BgHakaShip_SetupCrash(BgHakaShip* this, PlayState* play);
+void BgHakaShip_CrashShake(BgHakaShip* this, PlayState* play);
+void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play);
 
 const ActorInit Bg_Haka_Ship_InitVars = {
     ACTOR_BG_HAKA_SHIP,
@@ -38,7 +38,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaShip_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaShip_Init(Actor* thisx, PlayState* play) {
     BgHakaShip* this = (BgHakaShip*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -56,25 +56,25 @@ void BgHakaShip_Init(Actor* thisx, GlobalContext* globalCtx) {
         CollisionHeader_GetVirtual(&object_haka_objects_Col_00ED7C, &colHeader);
         this->actionFunc = BgHakaShip_ChildUpdatePosition;
     }
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->dyna.actor.world.rot.y = this->dyna.actor.shape.rot.y - 0x4000;
     this->yOffset = 0;
     if (this->dyna.actor.params == 0 &&
-        Actor_SpawnAsChild(&globalCtx->actorCtx, &this->dyna.actor, globalCtx, ACTOR_BG_HAKA_SHIP,
+        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_BG_HAKA_SHIP,
                            this->dyna.actor.world.pos.x + -10.0f, this->dyna.actor.world.pos.y + 82.0f,
                            this->dyna.actor.world.pos.z, 0, 0, 0, 1) == NULL) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
-void BgHakaShip_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaShip_Destroy(Actor* thisx, PlayState* play) {
     BgHakaShip* this = (BgHakaShip*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     Audio_StopSfxByPos(&this->bellSoundPos);
 }
 
-void BgHakaShip_ChildUpdatePosition(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_ChildUpdatePosition(BgHakaShip* this, PlayState* play) {
     Actor* parent = this->dyna.actor.parent;
 
     if (parent != NULL && parent->update != NULL) {
@@ -86,8 +86,8 @@ void BgHakaShip_ChildUpdatePosition(BgHakaShip* this, GlobalContext* globalCtx) 
     }
 }
 
-void BgHakaShip_WaitForSong(BgHakaShip* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+void BgHakaShip_WaitForSong(BgHakaShip* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->switchFlag)) {
         if (this->counter) {
             this->counter--;
         }
@@ -95,12 +95,12 @@ void BgHakaShip_WaitForSong(BgHakaShip* this, GlobalContext* globalCtx) {
             this->counter = 130;
             this->actionFunc = BgHakaShip_CutsceneStationary;
             osSyncPrintf("シーン 外輪船 ...  アァクション！！\n");
-            OnePointCutscene_Init(globalCtx, 3390, 999, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3390, 999, &this->dyna.actor, MAIN_CAM);
         }
     }
 }
 
-void BgHakaShip_CutsceneStationary(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_CutsceneStationary(BgHakaShip* this, PlayState* play) {
     if (this->counter) {
         this->counter--;
     }
@@ -111,7 +111,7 @@ void BgHakaShip_CutsceneStationary(BgHakaShip* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaShip_Move(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_Move(BgHakaShip* this, PlayState* play) {
     f32 distanceFromHome;
     Actor* child;
 
@@ -128,10 +128,10 @@ void BgHakaShip_Move(BgHakaShip* this, GlobalContext* globalCtx) {
         this->dyna.actor.world.pos.x = this->dyna.actor.home.pos.x - 7650.0f;
         this->dyna.actor.speedXZ = 0.0f;
     }
-    if (distanceFromHome > 7600.0f && !Gameplay_InCsMode(globalCtx)) {
+    if (distanceFromHome > 7600.0f && !Play_InCsMode(play)) {
         this->counter = 40;
         this->dyna.actor.speedXZ = 0.0f;
-        Message_StartTextbox(globalCtx, 0x5071, NULL);
+        Message_StartTextbox(play, 0x5071, NULL);
         this->actionFunc = BgHakaShip_SetupCrash;
     } else {
         Math_StepToF(&this->dyna.actor.speedXZ, 4.0f, 0.2f);
@@ -145,7 +145,7 @@ void BgHakaShip_Move(BgHakaShip* this, GlobalContext* globalCtx) {
     this->yOffset = sinf(this->counter * (M_PI / 25)) * 6144.0f;
 }
 
-void BgHakaShip_SetupCrash(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_SetupCrash(BgHakaShip* this, PlayState* play) {
     if (this->counter) {
         this->counter--;
     }
@@ -156,7 +156,7 @@ void BgHakaShip_SetupCrash(BgHakaShip* this, GlobalContext* globalCtx) {
     Math_ScaledStepToS(&this->yOffset, 0, 128);
 }
 
-void BgHakaShip_CrashShake(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_CrashShake(BgHakaShip* this, PlayState* play) {
     if (this->counter != 0) {
         this->counter--;
     }
@@ -168,7 +168,7 @@ void BgHakaShip_CrashShake(BgHakaShip* this, GlobalContext* globalCtx) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
 }
 
-void BgHakaShip_CrashFall(BgHakaShip* this, GlobalContext* globalCtx) {
+void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play) {
     Actor* child;
 
     if (this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 2000.0f) {
@@ -180,47 +180,47 @@ void BgHakaShip_CrashFall(BgHakaShip* this, GlobalContext* globalCtx) {
     } else {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
         if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && func_8004356C(&this->dyna)) {
-            Gameplay_TriggerVoidOut(globalCtx);
+            Play_TriggerVoidOut(play);
         }
     }
 }
 
-void BgHakaShip_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaShip_Update(Actor* thisx, PlayState* play) {
     BgHakaShip* this = (BgHakaShip*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->dyna.actor.params == 0) {
         Actor_MoveForward(&this->dyna.actor);
     }
 }
 
-void BgHakaShip_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaShip_Draw(Actor* thisx, PlayState* play) {
     BgHakaShip* this = (BgHakaShip*)thisx;
     f32 angleTemp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     if (this->dyna.actor.params == 0) {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00D330);
         angleTemp = this->yOffset * (M_PI / 0x8000);
         Matrix_Translate(-3670.0f, 620.0f, 1150.0f, MTXMODE_APPLY);
         Matrix_RotateZ(angleTemp, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
         Matrix_Translate(0.0f, 0.0f, -2300.0f, MTXMODE_APPLY);
         Matrix_RotateZ(-(2.0f * angleTemp), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00E910);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
     if (this->actionFunc == BgHakaShip_CutsceneStationary || this->actionFunc == BgHakaShip_Move) {
         s32 pad;
         Vec3f sp2C;
@@ -229,7 +229,7 @@ void BgHakaShip_Draw(Actor* thisx, GlobalContext* globalCtx) {
         sp2C.y = this->dyna.actor.world.pos.y + 62.0f;
         sp2C.z = this->dyna.actor.world.pos.z;
 
-        SkinMatrix_Vec3fMtxFMultXYZ(&globalCtx->viewProjectionMtxF, &sp2C, &this->bellSoundPos);
+        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->bellSoundPos);
         func_80078914(&this->bellSoundPos, NA_SE_EV_SHIP_BELL - SFX_FLAG);
     }
 }

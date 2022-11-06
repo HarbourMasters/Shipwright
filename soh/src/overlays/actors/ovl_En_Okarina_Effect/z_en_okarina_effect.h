@@ -6,7 +6,7 @@
 
 struct EnOkarinaEffect;
 
-typedef void (*EnOkarinaEffectActionFunc)(struct EnOkarinaEffect*, GlobalContext*);
+typedef void (*EnOkarinaEffectActionFunc)(struct EnOkarinaEffect*, PlayState*);
 
 typedef struct EnOkarinaEffect {
     /* 0x0000 */ Actor actor;

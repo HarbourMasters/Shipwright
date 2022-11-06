@@ -6,25 +6,25 @@
 #include "vt.h"
 #include <libultraship/Vertex.h>
 
-extern "C" void Gameplay_InitScene(GlobalContext * globalCtx, s32 spawn);
-extern "C" void Gameplay_InitEnvironment(GlobalContext * globalCtx, s16 skyboxId);
-void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn);
-s32 OTRScene_ExecuteCommands(GlobalContext* globalCtx, Ship::Scene* sceneCmd);
+extern "C" void Play_InitScene(PlayState * play, s32 spawn);
+extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
+void OTRPlay_InitScene(PlayState* play, s32 spawn);
+s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* sceneCmd);
 
-//Ship::OTRResource* OTRGameplay_LoadFile(GlobalContext* globalCtx, RomFile* file) {
-Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName)
+//Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
-extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
+extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     SceneTableEntry* scene = &gSceneTable[sceneNum];
 
     scene->unk_13 = 0;
-    globalCtx->loadedScene = scene;
-    globalCtx->sceneNum = sceneNum;
-    globalCtx->sceneConfig = scene->config;
+    play->loadedScene = scene;
+    play->sceneNum = sceneNum;
+    play->sceneConfig = scene->config;
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
@@ -36,44 +36,44 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    globalCtx->sceneSegment = (Ship::Scene*)OTRGameplay_LoadFile(globalCtx, scenePath.c_str());
+    play->sceneSegment = (Ship::Scene*)OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
-    if (globalCtx->sceneSegment == nullptr) 
+    if (play->sceneSegment == nullptr) 
     {
         lusprintf(__FILE__, __LINE__, 2, "Unable to load scene %s... Defaulting to Doodong's Cavern!\n",
                   scenePath.c_str());
-        OTRGameplay_SpawnScene(globalCtx, 0x01, 0);
+        OTRPlay_SpawnScene(play, 0x01, 0);
         return;
     }
 
     scene->unk_13 = 0;
 
-    //ASSERT(globalCtx->sceneSegment != NULL);
-    //gSegments[2] = VIRTUAL_TO_PHYSICAL(globalCtx->sceneSegment);
+    //ASSERT(play->sceneSegment != NULL);
+    //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
-    OTRGameplay_InitScene(globalCtx, spawn);
+    OTRPlay_InitScene(play, spawn);
 
-    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(globalCtx, &globalCtx->roomCtx) / 1024.0f);
+    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(play, &play->roomCtx) / 1024.0f);
 }
 
-void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
-    globalCtx->curSpawn = spawn;
-    globalCtx->linkActorEntry = nullptr;
-    globalCtx->unk_11DFC = nullptr;
-    globalCtx->setupEntranceList = nullptr;
-    globalCtx->setupExitList = nullptr;
-    globalCtx->cUpElfMsgs = nullptr;
-    globalCtx->setupPathList = nullptr;
-    globalCtx->numSetupActors = 0;
-    Object_InitBank(globalCtx, &globalCtx->objectCtx);
-    LightContext_Init(globalCtx, &globalCtx->lightCtx);
-    TransitionActor_InitContext(&globalCtx->state, &globalCtx->transiActorCtx);
-    func_80096FD4(globalCtx, &globalCtx->roomCtx.curRoom);
+void OTRPlay_InitScene(PlayState* play, s32 spawn) {
+    play->curSpawn = spawn;
+    play->linkActorEntry = nullptr;
+    play->unk_11DFC = nullptr;
+    play->setupEntranceList = nullptr;
+    play->setupExitList = nullptr;
+    play->cUpElfMsgs = nullptr;
+    play->setupPathList = nullptr;
+    play->numSetupActors = 0;
+    Object_InitBank(play, &play->objectCtx);
+    LightContext_Init(play, &play->lightCtx);
+    TransitionActor_InitContext(&play->state, &play->transiActorCtx);
+    func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(globalCtx, globalCtx->sceneSegment);
-    Gameplay_InitEnvironment(globalCtx, globalCtx->skyboxId);
+    OTRScene_ExecuteCommands(play, play->sceneSegment);
+    Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")

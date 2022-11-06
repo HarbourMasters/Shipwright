@@ -6,7 +6,7 @@
 
 struct BgHidanFslift;
 
-typedef void (*BgHidanFsliftActionFunc)(struct BgHidanFslift*, GlobalContext*);
+typedef void (*BgHidanFsliftActionFunc)(struct BgHidanFslift*, PlayState*);
 
 typedef struct BgHidanFslift {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -73,7 +73,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_OKUTA,     // Octorok
     ACTOR_EN_WALLMAS,   // Wallmaster
     ACTOR_EN_DODONGO,   // Dodongo
-    ACTOR_EN_REEBA,     // Leever
+    // ACTOR_EN_REEBA,  // Leever (reliant on spawner (z_e_encount1.c)
     ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
     ACTOR_EN_ZF,        // Lizalfos, dinolfos
     ACTOR_EN_GOMA,      // Gohma larva (normal, eggs, gohma eggs)
@@ -115,7 +115,7 @@ extern "C" enemyEntry GetRandomizedEnemy(void) {
     return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId = 0, int param = 0, f32 posX = 0) {
+extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int param = 0, f32 posX = 0) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -131,10 +131,9 @@ extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (param == 0);
-                // Only randomize non-gohma initial egg spawn, not the enemy that comes out of the egg.
-                // Gohma's eggs are important to her own behaviour, so we don't randomize those either.
+                // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
-                    return (param == 8);
+                    return ((param >= 0 && param <= 6) || param == 8);
                 // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
                     return (param == 0);
@@ -154,17 +153,17 @@ extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId
                 // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
                 // down in the river.
                 case ACTOR_EN_TEST:
-                    return (param != 1 && !(globalCtx->sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
+                    return (param != 1 && !(play->sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
                 // Only randomize the enemy variant of Armos Statue.
                 // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
-                    return (param == -1 && !(globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141));
+                    return (param == -1 && !(play->sceneNum == SCENE_JYASINZOU && posX == 2141));
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
-                    return (globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
+                    return (play->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
                 case ACTOR_EN_NY:
-                    return (globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
+                    return (play->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
                 default:
                     return 1;
             }
@@ -175,11 +174,11 @@ extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId
     return 0;
 }
 
-extern "C" uint8_t IsEnemyAllowedToSpawn(GlobalContext* globalCtx, enemyEntry enemy) {
+extern "C" uint8_t IsEnemyAllowedToSpawn(PlayState* play, enemyEntry enemy) {
 
     // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
     // becoming impossible to kill
-    switch (globalCtx->sceneNum) {
+    switch (play->sceneNum) {
         case SCENE_GANON:
         case SCENE_GANON_SONOGO:
             return (enemy.enemyId != ACTOR_EN_CLEAR_TAG && enemy.enemyId != ACTOR_EN_VALI && !(enemy.enemyId == ACTOR_EN_ZF && enemy.enemyParam == -1));

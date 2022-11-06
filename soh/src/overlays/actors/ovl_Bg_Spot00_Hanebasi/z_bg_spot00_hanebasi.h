@@ -6,7 +6,7 @@
 
 struct BgSpot00Hanebasi;
 
-typedef void (*BgSpot00HanebasiActionFunc)(struct BgSpot00Hanebasi*, GlobalContext*);
+typedef void (*BgSpot00HanebasiActionFunc)(struct BgSpot00Hanebasi*, PlayState*);
 
 typedef struct BgSpot00Hanebasi {
     /* 0x0000 */ DynaPolyActor dyna;

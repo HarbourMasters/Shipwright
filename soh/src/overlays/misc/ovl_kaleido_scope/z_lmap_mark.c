@@ -35,7 +35,7 @@ static const u32 sLineBytesImageSizes[] = { 0, 1, 2, 2 };
 extern PauseMapMarksData gPauseMapMarkDataTable[];
 extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 
-void PauseMapMark_Init(GlobalContext* globalCtx) {
+void PauseMapMark_Init(PlayState* play) {
     gBossMarkState = 0;
     gBossMarkScale = 1.0f;
     if(ResourceMgr_IsGameMasterQuest()) {
@@ -45,11 +45,11 @@ void PauseMapMark_Init(GlobalContext* globalCtx) {
     }
 }
 
-void PauseMapMark_Clear(GlobalContext* globalCtx) {
+void PauseMapMark_Clear(PlayState* play) {
     gLoadedPauseMarkDataTable = NULL;
 }
 
-void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
+void PauseMapMark_DrawForDungeon(PlayState* play) {
     PauseMapMarkData* mapMarkData;
     PauseMapMarkPoint* markPoint;
     PauseMapMarkInfo* markInfo;
@@ -58,15 +58,15 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
 
     mapMarkData = &gLoadedPauseMarkDataTable[R_MAP_TEX_INDEX >> 1][i];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     while (true) {
         if (mapMarkData->markType == PAUSE_MAP_MARK_NONE) {
             break;
         }
 
-        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && (globalCtx->sceneNum >= SCENE_YDAN_BOSS) &&
-            (globalCtx->sceneNum <= SCENE_GANON_FINAL)) {
+        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && (play->sceneNum >= SCENE_YDAN_BOSS) &&
+            (play->sceneNum <= SCENE_GANON_FINAL)) {
             if (gBossMarkState == 0) {
                 Math_ApproachF(&gBossMarkScale, 1.5f, 1.0f, 0.041f);
                 if (gBossMarkScale == 1.5f) {
@@ -85,7 +85,7 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
 
         Matrix_Push();
 
-        if ((globalCtx->pauseCtx.state == 4) || (globalCtx->pauseCtx.state >= 0x12)) {
+        if ((play->pauseCtx.state == 4) || (play->pauseCtx.state >= 0x12)) {
             Matrix_Translate(-36.0f, 101.0f, 0.0f, MTXMODE_APPLY);
         } else {
             Matrix_Translate(-36.0f, 21.0f, 0.0f, MTXMODE_APPLY);
@@ -100,10 +100,10 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
             s32 display;
 
             if (mapMarkData->markType == PAUSE_MAP_MARK_CHEST) {
-                if (Flags_GetTreasure(globalCtx, markPoint->chestFlag)) {
+                if (Flags_GetTreasure(play, markPoint->chestFlag)) {
                     display = false;
                 } else {
-                    switch (globalCtx->sceneNum) {
+                    switch (play->sceneNum) {
                         case SCENE_YDAN_BOSS:
                         case SCENE_DDAN_BOSS:
                         case SCENE_BDAN_BOSS:
@@ -134,7 +134,7 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
                 Matrix_Push();
                 Matrix_Translate(GREG(92) + markPoint->x, GREG(93) + markPoint->y, 0.0f, MTXMODE_APPLY);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 Matrix_Pop();
 
@@ -149,13 +149,13 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
         Matrix_Pop();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void PauseMapMark_Draw(GlobalContext* globalCtx) {
-    PauseMapMark_Init(globalCtx);
+void PauseMapMark_Draw(PlayState* play) {
+    PauseMapMark_Init(play);
 
-    switch (globalCtx->sceneNum) {
+    switch (play->sceneNum) {
         case SCENE_YDAN:
         case SCENE_DDAN:
         case SCENE_BDAN:
@@ -166,9 +166,9 @@ void PauseMapMark_Draw(GlobalContext* globalCtx) {
         case SCENE_HAKADAN:
         case SCENE_HAKADANCH:
         case SCENE_ICE_DOUKUTO:
-            PauseMapMark_DrawForDungeon(globalCtx);
+            PauseMapMark_DrawForDungeon(play);
             break;
     }
 
-    PauseMapMark_Clear(globalCtx);
+    PauseMapMark_Clear(play);
 }

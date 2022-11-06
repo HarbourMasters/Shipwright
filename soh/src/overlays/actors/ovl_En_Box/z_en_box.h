@@ -9,7 +9,7 @@
 
 struct EnBox;
 
-typedef void (*EnBoxActionFunc)(struct EnBox*, GlobalContext*);
+typedef void (*EnBoxActionFunc)(struct EnBox*, PlayState*);
 
 typedef enum {
     /*

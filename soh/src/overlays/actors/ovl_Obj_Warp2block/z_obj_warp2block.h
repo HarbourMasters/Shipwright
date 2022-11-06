@@ -6,8 +6,8 @@
 
 struct ObjWarp2block;
 
-typedef void (*ObjWarp2blockActionFunc)(struct ObjWarp2block*, GlobalContext*);
-typedef s32 (*ObjWarp2blockFunc168)(struct ObjWarp2block*, GlobalContext*);
+typedef void (*ObjWarp2blockActionFunc)(struct ObjWarp2block*, PlayState*);
+typedef s32 (*ObjWarp2blockFunc168)(struct ObjWarp2block*, PlayState*);
 
 typedef struct ObjWarp2block {
     /* 0x0000 */ DynaPolyActor dyna;

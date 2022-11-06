@@ -20,18 +20,18 @@
 #define rObjBankIdx regs[11]
 #define rColorIdx regs[12]
 
-u32 EffectSsKakera_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsKakera_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsKakera_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsKakera_Update(PlayState* play, u32 index, EffectSs* this);
 
-void func_809A9BA8(EffectSs* this, GlobalContext* globalCtx);
+void func_809A9BA8(EffectSs* this, PlayState* play);
 
 EffectSsInit Effect_Ss_Kakera_InitVars = {
     EFFECT_SS_KAKERA,
     EffectSsKakera_Init,
 };
 
-u32 EffectSsKakera_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsKakera_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsKakeraInitParams* initParams = (EffectSsKakeraInitParams*)initParamsx;
     s32 objId;
 
@@ -49,7 +49,7 @@ u32 EffectSsKakera_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
             this->rObjId = KAKERA_OBJECT_DEFAULT;
         } else {
             this->rObjId = initParams->objId;
-            func_809A9BA8(this, globalCtx);
+            func_809A9BA8(this, play);
         }
 
     } else {
@@ -86,9 +86,9 @@ f32 func_809A9818(f32 arg0, f32 arg1) {
     return ((temp_f2 * 2.0f) - arg1) + arg0;
 }
 
-void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
     static Color_RGB8 colors[] = { { 255, 255, 255 }, { 235, 170, 130 } };
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32 pad;
     f32 scale;
     s32 colorIdx;
@@ -100,9 +100,9 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
     if (this->rObjId != KAKERA_OBJECT_DEFAULT) {
         if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
-            gSPSegment(POLY_XLU_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
+            gSPSegment(POLY_XLU_DISP++, 0x06, play->objectCtx.status[this->rObjBankIdx].segment);
         } else {
-            gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
+            gSPSegment(POLY_OPA_DISP++, 0x06, play->objectCtx.status[this->rObjBankIdx].segment);
         }
     }
 
@@ -114,7 +114,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, colors[colorIdx].r, colors[colorIdx].g, colors[colorIdx].b, 255);
@@ -124,7 +124,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     } else {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[colorIdx].r, colors[colorIdx].g, colors[colorIdx].b, 255);
@@ -136,10 +136,10 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_809A9BA8(EffectSs* this, GlobalContext* globalCtx) {
-    this->rObjBankIdx = Object_GetIndex(&globalCtx->objectCtx, this->rObjId);
+void func_809A9BA8(EffectSs* this, PlayState* play) {
+    this->rObjBankIdx = Object_GetIndex(&play->objectCtx, this->rObjId);
 
-    if ((this->rObjBankIdx < 0) || !Object_IsLoaded(&globalCtx->objectCtx, this->rObjBankIdx)) {
+    if ((this->rObjBankIdx < 0) || !Object_IsLoaded(&play->objectCtx, this->rObjBankIdx)) {
         this->life = 0;
         this->draw = NULL;
     }
@@ -346,9 +346,9 @@ s32 func_809AA0EC(EffectSs* this) {
     return true;
 }
 
-void func_809AA230(EffectSs* this, GlobalContext* globalCtx) {
+void func_809AA230(EffectSs* this, PlayState* play) {
     static f32 D_809AA5B0[] = { 10.0f, 20.0f, 40.0f };
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (this->rReg8 == 0) {
         if ((((this->rReg4 >> 4) & 1) * 0x10) == 0x10) {
@@ -373,7 +373,7 @@ void func_809AA230(EffectSs* this, GlobalContext* globalCtx) {
                 break;
             case 1:
                 if (this->velocity.y < 0.0f) {
-                    if (BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &this->pos, D_809AA5B0[(this->rReg4 >> 2) & 3])) {
+                    if (BgCheck_SphVsFirstPoly(&play->colCtx, &this->pos, D_809AA5B0[(this->rReg4 >> 2) & 3])) {
                         this->velocity.x *= func_809A9818(0.9f, 0.2f);
                         this->velocity.y *= -0.8f;
                         this->velocity.z *= func_809A9818(0.9f, 0.2f);
@@ -385,13 +385,13 @@ void func_809AA230(EffectSs* this, GlobalContext* globalCtx) {
                 }
                 break;
             case 2:
-                if (BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &this->pos, D_809AA5B0[(this->rReg4 >> 2) & 3])) {}
+                if (BgCheck_SphVsFirstPoly(&play->colCtx, &this->pos, D_809AA5B0[(this->rReg4 >> 2) & 3])) {}
                 break;
         }
     }
 }
 
-void EffectSsKakera_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsKakera_Update(PlayState* play, u32 index, EffectSs* this) {
     switch (((this->rReg4 >> 5) & 3) << 5) {
         case 0x20:
             this->rPitch += 0xB;
@@ -413,9 +413,9 @@ void EffectSsKakera_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         this->life = 0;
     }
 
-    func_809AA230(this, globalCtx);
+    func_809AA230(this, play);
 
     if (this->rObjId != KAKERA_OBJECT_DEFAULT) {
-        func_809A9BA8(this, globalCtx);
+        func_809A9BA8(this, play);
     }
 }

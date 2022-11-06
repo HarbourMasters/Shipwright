@@ -28,6 +28,10 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+#endif
+
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     UIWidgets::Spacer(3.0f); \
@@ -821,8 +825,10 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Instantly return the boomerang to Link by pressing its item button while it's in the air");
                     UIWidgets::PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
                     UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
-                    UIWidgets::PaddedEnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood", true, false);
-                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    UIWidgets::PaddedText("Bunny Hood Effect", true, false);
+                    const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
+                    UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 3, 0);
+                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.");
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -1664,10 +1670,20 @@ namespace GameMenuBar {
 
             UIWidgets::PaddedSeparator();
 
+        #ifdef ENABLE_CROWD_CONTROL
             UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
             UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
 
-            UIWidgets::PaddedEnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies", true, false);
+            if (CVar_GetS32("gCrowdControl", 0)) {
+                CrowdControl::Instance->Enable();
+            } else {
+                CrowdControl::Instance->Disable();
+            }
+
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        #endif
+
+            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
             UIWidgets::Tooltip(
                 "Randomizes regular enemy spawns everytime they're spawned.\n\n"
                 "WARNING: Potential to softlock rooms because you don't have the equipment to kill them. You can reload the room to get a new set of enemies to spawn."

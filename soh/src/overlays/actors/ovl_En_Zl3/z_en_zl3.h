@@ -8,8 +8,8 @@
 
 struct EnZl3;
 
-typedef void (*EnZl3ActionFunc)(struct EnZl3*, GlobalContext*);
-typedef void (*EnZl3DrawFunc)(struct EnZl3*, GlobalContext*);
+typedef void (*EnZl3ActionFunc)(struct EnZl3*, PlayState*);
+typedef void (*EnZl3DrawFunc)(struct EnZl3*, PlayState*);
 
 typedef struct EnZl3 {
     /* 0x0000 */ Actor actor;

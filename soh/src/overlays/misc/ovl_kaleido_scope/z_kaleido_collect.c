@@ -4,6 +4,7 @@
 
 extern const char* digitTextures[];
 
+<<<<<<< HEAD
 void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
@@ -33,6 +34,17 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
         cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton", cRightButtonColor);
     }
 
+=======
+void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
+    Color_RGB8 A_button_ori = {80, 255, 150};
+    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
+    Color_RGB8 C_button_ori = {255, 255, 50};
+    Color_RGB8 C_button_uni = CVar_GetRGB("gCCCBtnPrim", C_button_ori);
+    Color_RGB8 C_button_U = CVar_GetRGB("gCCCUBtnPrim", C_button_ori);
+    Color_RGB8 C_button_D = CVar_GetRGB("gCCCDBtnPrim", C_button_ori);
+    Color_RGB8 C_button_L = CVar_GetRGB("gCCCLBtnPrim", C_button_ori);
+    Color_RGB8 C_button_R = CVar_GetRGB("gCCCRBtnPrim", C_button_ori);
+>>>>>>> 4165e1007964f4fa54c8d36c053186ad425563e6
     static s16 D_8082A070[][4] = {
         { 255, 0, 0, 255 },
         { 255, 70, 0, 150 },
@@ -86,8 +98,8 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
         { 0x02, 0xFF, 0x13, 0xFE }, { 0xFF, 0x17, 0xFD, 0x16 }, { 0xFF, 0x17, 0x15, 0x18 }, { 0x15, 0x0C, 0xFD, 0x18 },
         { 0xFF, 0x10, 0x16, 0x04 }, { 0x00, 0x00, 0x00, 0x00 },
     };
-    PauseContext* pauseCtx = &globalCtx->pauseCtx;
-    Input* input = &globalCtx->state.input[0];
+    PauseContext* pauseCtx = &play->pauseCtx;
+    Input* input = &play->state.input[0];
     s16 sp226;
     s16 sp224;
     s16 sp222;
@@ -118,7 +130,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
             if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 phi_s0 = D_8082A1AC[phi_s3][2];
                 if (phi_s0 == -3) {
-                    KaleidoScope_MoveCursorToSpecialPos(globalCtx, PAUSE_CURSOR_PAGE_LEFT);
+                    KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_LEFT);
                     pauseCtx->unk_1E4 = 0;
                 } else {
                     while (phi_s0 >= 0) {
@@ -131,7 +143,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
             } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 phi_s0 = D_8082A1AC[phi_s3][3];
                 if (phi_s0 == -2) {
-                    KaleidoScope_MoveCursorToSpecialPos(globalCtx, PAUSE_CURSOR_PAGE_RIGHT);
+                    KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_RIGHT);
                     pauseCtx->unk_1E4 = 0;
                 } else {
                     while (phi_s0 >= 0) {

@@ -6,7 +6,7 @@
 
 struct EnTakaraMan;
 
-typedef void (*EnTakaraManActionFunc)(struct EnTakaraMan*, GlobalContext*);
+typedef void (*EnTakaraManActionFunc)(struct EnTakaraMan*, PlayState*);
 
 typedef struct EnTakaraMan {
     /* 0x0000 */ Actor actor;

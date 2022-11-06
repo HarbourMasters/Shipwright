@@ -9,16 +9,16 @@
 
 #define FLAGS 0
 
-void BgYdanMaruta_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanMaruta_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanMaruta_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgYdanMaruta_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgYdanMaruta_Init(Actor* thisx, PlayState* play);
+void BgYdanMaruta_Destroy(Actor* thisx, PlayState* play);
+void BgYdanMaruta_Update(Actor* thisx, PlayState* play);
+void BgYdanMaruta_Draw(Actor* thisx, PlayState* play);
 
-void func_808BEFF4(BgYdanMaruta* this, GlobalContext* globalCtx);
-void BgYdanMaruta_DoNothing(BgYdanMaruta* this, GlobalContext* globalCtx);
-void func_808BF078(BgYdanMaruta* this, GlobalContext* globalCtx);
-void func_808BF108(BgYdanMaruta* this, GlobalContext* globalCtx);
-void func_808BF1EC(BgYdanMaruta* this, GlobalContext* globalCtx);
+void func_808BEFF4(BgYdanMaruta* this, PlayState* play);
+void BgYdanMaruta_DoNothing(BgYdanMaruta* this, PlayState* play);
+void func_808BF078(BgYdanMaruta* this, PlayState* play);
+void func_808BF108(BgYdanMaruta* this, PlayState* play);
+void func_808BF1EC(BgYdanMaruta* this, PlayState* play);
 
 const ActorInit Bg_Ydan_Maruta_InitVars = {
     ACTOR_BG_YDAN_MARUTA,
@@ -75,7 +75,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgYdanMaruta_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanMaruta_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgYdanMaruta* this = (BgYdanMaruta*)thisx;
     Vec3f sp4C[3];
@@ -86,8 +86,8 @@ void BgYdanMaruta_Init(Actor* thisx, GlobalContext* globalCtx) {
     ColliderTrisElementInit* triInit;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-    Collider_InitTris(globalCtx, &this->collider);
-    Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInit, this->elements);
+    Collider_InitTris(play, &this->collider);
+    Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInit, this->elements);
 
     this->switchFlag = this->dyna.actor.params & 0xFFFF;
     thisx->params = (thisx->params >> 8) & 0xFF; // thisx is required to match here
@@ -99,9 +99,9 @@ void BgYdanMaruta_Init(Actor* thisx, GlobalContext* globalCtx) {
         triInit = &sTrisElementsInit[1];
         DynaPolyActor_Init(&this->dyna, DPM_UNK);
         CollisionHeader_GetVirtual(&gDTFallingLadderCol, &colHeader);
-        this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+        this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
         thisx->home.pos.y += -280.0f;
-        if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+        if (Flags_GetSwitch(play, this->switchFlag)) {
             thisx->world.pos.y = thisx->home.pos.y;
             this->actionFunc = BgYdanMaruta_DoNothing;
         } else {
@@ -127,37 +127,37 @@ void BgYdanMaruta_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetTrisVertices(&this->collider, 1, &sp4C[0], &sp4C[2], &sp4C[1]);
 }
 
-void BgYdanMaruta_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanMaruta_Destroy(Actor* thisx, PlayState* play) {
     BgYdanMaruta* this = (BgYdanMaruta*)thisx;
 
-    Collider_DestroyTris(globalCtx, &this->collider);
+    Collider_DestroyTris(play, &this->collider);
     if (this->dyna.actor.params == 1) {
-        DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     }
 }
 
-void func_808BEFF4(BgYdanMaruta* this, GlobalContext* globalCtx) {
+void func_808BEFF4(BgYdanMaruta* this, PlayState* play) {
     if (this->collider.base.atFlags & AT_HIT) {
-        func_8002F71C(globalCtx, &this->dyna.actor, 7.0f, this->dyna.actor.shape.rot.y, 6.0f);
+        func_8002F71C(play, &this->dyna.actor, 7.0f, this->dyna.actor.shape.rot.y, 6.0f);
     }
     this->dyna.actor.shape.rot.x += 0x360;
-    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     func_8002F974(&this->dyna.actor, NA_SE_EV_TOGE_STICK_ROLLING - SFX_FLAG);
 }
 
-void func_808BF078(BgYdanMaruta* this, GlobalContext* globalCtx) {
+void func_808BF078(BgYdanMaruta* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->unk_16A = 20;
-        Flags_SetSwitch(globalCtx, this->switchFlag);
+        Flags_SetSwitch(play, this->switchFlag);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_808BF108;
-        OnePointCutscene_Init(globalCtx, 3010, 50, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3010, 50, &this->dyna.actor, MAIN_CAM);
     } else {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void func_808BF108(BgYdanMaruta* this, GlobalContext* globalCtx) {
+void func_808BF108(BgYdanMaruta* this, PlayState* play) {
     s16 temp;
 
     if (this->unk_16A != 0) {
@@ -180,7 +180,7 @@ void func_808BF108(BgYdanMaruta* this, GlobalContext* globalCtx) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_TRAP_OBJ_SLIDE - SFX_FLAG);
 }
 
-void func_808BF1EC(BgYdanMaruta* this, GlobalContext* globalCtx) {
+void func_808BF1EC(BgYdanMaruta* this, PlayState* play) {
     this->dyna.actor.velocity.y += 1.0f;
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, this->dyna.actor.velocity.y)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_LADDER_DOUND);
@@ -188,21 +188,21 @@ void func_808BF1EC(BgYdanMaruta* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgYdanMaruta_DoNothing(BgYdanMaruta* this, GlobalContext* globalCtx) {
+void BgYdanMaruta_DoNothing(BgYdanMaruta* this, PlayState* play) {
 }
 
-void BgYdanMaruta_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanMaruta_Update(Actor* thisx, PlayState* play) {
     BgYdanMaruta* this = (BgYdanMaruta*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgYdanMaruta_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgYdanMaruta_Draw(Actor* thisx, PlayState* play) {
     BgYdanMaruta* this = (BgYdanMaruta*)thisx;
 
     if (this->dyna.actor.params == 0) {
-        Gfx_DrawDListOpa(globalCtx, gDTRollingSpikeTrapDL);
+        Gfx_DrawDListOpa(play, gDTRollingSpikeTrapDL);
     } else {
-        Gfx_DrawDListOpa(globalCtx, gDTFallingLadderDL);
+        Gfx_DrawDListOpa(play, gDTFallingLadderDL);
     }
 }

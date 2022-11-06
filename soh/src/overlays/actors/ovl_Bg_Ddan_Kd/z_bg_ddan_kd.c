@@ -9,15 +9,15 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgDdanKd_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgDdanKd_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgDdanKd_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgDdanKd_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgDdanKd_Init(Actor* thisx, PlayState* play);
+void BgDdanKd_Destroy(Actor* thisx, PlayState* play);
+void BgDdanKd_Update(Actor* thisx, PlayState* play);
+void BgDdanKd_Draw(Actor* thisx, PlayState* play);
 void BgDdanKd_Reset(void);
 
-void BgDdanKd_CheckForExplosions(BgDdanKd* this, GlobalContext* globalCtx);
-void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx);
-void BgDdanKd_DoNothing(BgDdanKd* this, GlobalContext* globalCtx);
+void BgDdanKd_CheckForExplosions(BgDdanKd* this, PlayState* play);
+void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play);
+void BgDdanKd_DoNothing(BgDdanKd* this, PlayState* play);
 
 const ActorInit Bg_Ddan_Kd_InitVars = {
     ACTOR_BG_DDAN_KD,
@@ -63,7 +63,7 @@ void BgDdanKd_SetupAction(BgDdanKd* this, BgDdanKdActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void BgDdanKd_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgDdanKd_Init(Actor* thisx, PlayState* play) {
     BgDdanKd* this = (BgDdanKd*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -72,13 +72,13 @@ void BgDdanKd_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->dyna.actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->dyna.actor, &sCylinderInit);
     CollisionHeader_GetVirtual(&gDodongoFallingStairsCol, &colHeader);
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-    if (!Flags_GetSwitch(globalCtx, this->dyna.actor.params)) {
+    if (!Flags_GetSwitch(play, this->dyna.actor.params)) {
         BgDdanKd_SetupAction(this, BgDdanKd_CheckForExplosions);
     } else {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 200.0f - 20.0f;
@@ -86,17 +86,17 @@ void BgDdanKd_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgDdanKd_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgDdanKd_Destroy(Actor* thisx, PlayState* play) {
     BgDdanKd* this = (BgDdanKd*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void BgDdanKd_CheckForExplosions(BgDdanKd* this, GlobalContext* globalCtx) {
+void BgDdanKd_CheckForExplosions(BgDdanKd* this, PlayState* play) {
     Actor* explosive;
 
-    explosive = Actor_GetCollidedExplosive(globalCtx, &this->collider.base);
+    explosive = Actor_GetCollidedExplosive(play, &this->collider.base);
     if (explosive != NULL) {
         osSyncPrintf("dam    %d\n", this->dyna.actor.colChkInfo.damage);
         explosive->params = 2;
@@ -105,7 +105,7 @@ void BgDdanKd_CheckForExplosions(BgDdanKd* this, GlobalContext* globalCtx) {
     if ((explosive != NULL) && (this->prevExplosive != NULL) && (explosive != this->prevExplosive) &&
         (Math_Vec3f_DistXZ(&this->prevExplosivePos, &explosive->world.pos) > 80.0f)) {
         BgDdanKd_SetupAction(this, BgDdanKd_LowerStairs);
-        OnePointCutscene_Init(globalCtx, 3050, 999, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3050, 999, &this->dyna.actor, MAIN_CAM);
     } else {
         if (this->timer != 0) {
             this->timer--;
@@ -117,14 +117,14 @@ void BgDdanKd_CheckForExplosions(BgDdanKd* this, GlobalContext* globalCtx) {
             }
         }
         Collider_UpdateCylinder(&this->dyna.actor, &this->collider);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
 Vec3f sBgDdanKdVelocity = { 0.0f, 5.0f, 0.0f };
 Vec3f sBgDdanKdAccel = { 0.0f, -0.45f, 0.0f };
 
-void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
+void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
     Vec3f pos1;
     Vec3f pos2;
     f32 effectStrength;
@@ -134,16 +134,16 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
 
     if (Math_SmoothStepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y - 200.0f - 20.0f, 0.075f,
                            this->dyna.actor.speedXZ, 0.0075f) == 0.0f) {
-        Flags_SetSwitch(globalCtx, this->dyna.actor.params);
+        Flags_SetSwitch(play, this->dyna.actor.params);
         BgDdanKd_SetupAction(this, BgDdanKd_DoNothing);
     } else {
         effectStrength =
             (this->dyna.actor.prevPos.y - this->dyna.actor.world.pos.y) + (this->dyna.actor.speedXZ * 0.25f);
 
-        if (globalCtx->state.frames & 1) {
+        if (play->state.frames & 1) {
             pos1 = pos2 = this->dyna.actor.world.pos;
 
-            if (globalCtx->state.frames & 2) {
+            if (play->state.frames & 2) {
                 pos1.z += 210.0f + Rand_ZeroOne() * 230.0f;
                 pos2.z += 210.0f + Rand_ZeroOne() * 230.0f;
             } else {
@@ -155,40 +155,40 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
             pos1.y = this->dyna.actor.floorHeight + 20.0f + Rand_ZeroOne();
             pos2.y = this->dyna.actor.floorHeight + 20.0f + Rand_ZeroOne();
 
-            func_80033480(globalCtx, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
-            func_80033480(globalCtx, &pos2, 20.0f, 1, effectStrength * 135.0f, 60, 1);
+            func_80033480(play, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
+            func_80033480(play, &pos2, 20.0f, 1, effectStrength * 135.0f, 60, 1);
 
             sBgDdanKdVelocity.x = Rand_CenteredFloat(3.0f);
             sBgDdanKdVelocity.z = Rand_CenteredFloat(3.0f);
 
-            func_8003555C(globalCtx, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
-            func_8003555C(globalCtx, &pos2, &sBgDdanKdVelocity, &sBgDdanKdAccel);
+            func_8003555C(play, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
+            func_8003555C(play, &pos2, &sBgDdanKdVelocity, &sBgDdanKdAccel);
 
             pos1 = this->dyna.actor.world.pos;
             pos1.z += 560.0f + Rand_ZeroOne() * 5.0f;
             pos1.x += (Rand_ZeroOne() - 0.5f) * 160.0f;
             pos1.y = Rand_ZeroOne() * 3.0f + (this->dyna.actor.floorHeight + 20.0f);
 
-            func_80033480(globalCtx, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
-            func_8003555C(globalCtx, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
+            func_80033480(play, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
+            func_8003555C(play, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
         }
-        Camera_AddQuake(&globalCtx->mainCamera, 0, effectStrength * 0.6f, 3);
+        Camera_AddQuake(&play->mainCamera, 0, effectStrength * 0.6f, 3);
         Audio_PlaySoundGeneral(NA_SE_EV_PILLAR_SINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4, &D_801333E0,
                                &D_801333E0, &D_801333E8);
     }
 }
 
-void BgDdanKd_DoNothing(BgDdanKd* this, GlobalContext* globalCtx) {
+void BgDdanKd_DoNothing(BgDdanKd* this, PlayState* play) {
 }
 
-void BgDdanKd_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgDdanKd_Update(Actor* thisx, PlayState* play) {
     BgDdanKd* this = (BgDdanKd*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgDdanKd_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, gDodongoFallingStairsDL);
+void BgDdanKd_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, gDodongoFallingStairsDL);
 }
 
 void BgDdanKd_Reset(void) {

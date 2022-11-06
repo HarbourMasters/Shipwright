@@ -516,15 +516,15 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-            "\x08%r{{item}}: {{price}} Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
-            "\x08%r{{item}}: {{price}} Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
-            "\x08%r{{item}}: {{price}} Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
+            "\x08%r{{item}}  {{price}} Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+            "\x08%r{{item}}  {{price}} Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
+            "\x08%r{{item}}  {{price}} Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
         });
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-            "\x08{{item}}: {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
-            "\x08{{item}}: {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
-            "\x08{{item}}: {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
+            "\x08{{item}}  {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+            "\x08{{item}}  {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+            "\x08{{item}}  {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
         });
 }
 
@@ -4595,3 +4595,4 @@ void Rando_Init(void) {
 }
 
 }
+

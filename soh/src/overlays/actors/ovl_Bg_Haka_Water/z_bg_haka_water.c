@@ -9,14 +9,14 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void BgHakaWater_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaWater_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaWater_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaWater_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHakaWater_Init(Actor* thisx, PlayState* play);
+void BgHakaWater_Destroy(Actor* thisx, PlayState* play);
+void BgHakaWater_Update(Actor* thisx, PlayState* play);
+void BgHakaWater_Draw(Actor* thisx, PlayState* play);
 
-void BgHakaWater_LowerWater(BgHakaWater* this, GlobalContext* globalCtx);
-void BgHakaWater_Wait(BgHakaWater* this, GlobalContext* globalCtx);
-void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, GlobalContext* globalCtx);
+void BgHakaWater_LowerWater(BgHakaWater* this, PlayState* play);
+void BgHakaWater_Wait(BgHakaWater* this, PlayState* play);
+void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, PlayState* play);
 
 const ActorInit Bg_Haka_Water_InitVars = {
     ACTOR_BG_HAKA_WATER,
@@ -35,35 +35,35 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaWater_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaWater_Init(Actor* thisx, PlayState* play) {
     BgHakaWater* this = (BgHakaWater*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    if (Flags_GetSwitch(globalCtx, this->actor.params)) {
+    if (Flags_GetSwitch(play, this->actor.params)) {
         this->isLowered = true;
         this->actor.home.pos.y -= 200.0f;
         this->actor.world.pos.y = this->actor.home.pos.y;
     } else {
         this->isLowered = false;
     }
-    BgHakaWater_LowerWater(this, globalCtx);
+    BgHakaWater_LowerWater(this, play);
     this->actionFunc = BgHakaWater_Wait;
 }
 
-void BgHakaWater_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaWater_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void BgHakaWater_LowerWater(BgHakaWater* this, GlobalContext* globalCtx) {
+void BgHakaWater_LowerWater(BgHakaWater* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 9; i++) {
-        globalCtx->colCtx.colHeader->waterBoxes[i].ySurface = (s16)this->actor.world.pos.y - 8;
+        play->colCtx.colHeader->waterBoxes[i].ySurface = (s16)this->actor.world.pos.y - 8;
     }
 }
 
-void BgHakaWater_Wait(BgHakaWater* this, GlobalContext* globalCtx) {
-    if ((!this->isLowered && Flags_GetSwitch(globalCtx, this->actor.params)) ||
-        (this->isLowered && !Flags_GetSwitch(globalCtx, this->actor.params))) {
+void BgHakaWater_Wait(BgHakaWater* this, PlayState* play) {
+    if ((!this->isLowered && Flags_GetSwitch(play, this->actor.params)) ||
+        (this->isLowered && !Flags_GetSwitch(play, this->actor.params))) {
         if (this->isLowered) {
             this->isLowered = false;
             this->actor.draw = BgHakaWater_Draw;
@@ -76,11 +76,11 @@ void BgHakaWater_Wait(BgHakaWater* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, GlobalContext* globalCtx) {
-    if (!this->isLowered && Flags_GetSwitch(globalCtx, this->actor.params)) {
+void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, PlayState* play) {
+    if (!this->isLowered && Flags_GetSwitch(play, this->actor.params)) {
         this->isLowered = true;
         this->actor.home.pos.y -= 200.0f;
-    } else if (this->isLowered && !Flags_GetSwitch(globalCtx, this->actor.params)) {
+    } else if (this->isLowered && !Flags_GetSwitch(play, this->actor.params)) {
         this->isLowered = false;
         this->actor.home.pos.y += 200.0f;
     }
@@ -97,23 +97,23 @@ void BgHakaWater_ChangeWaterLevel(BgHakaWater* this, GlobalContext* globalCtx) {
             this->actor.draw = NULL;
         }
     }
-    BgHakaWater_LowerWater(this, globalCtx);
+    BgHakaWater_LowerWater(this, play);
 }
 
-void BgHakaWater_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaWater_Update(Actor* thisx, PlayState* play) {
     BgHakaWater* this = (BgHakaWater*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHakaWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaWater_Draw(Actor* thisx, PlayState* play) {
     BgHakaWater* this = (BgHakaWater*)thisx;
     s32 pad;
     f32 temp;
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     if (this->isLowered) {
         temp = this->actor.world.pos.y - this->actor.home.pos.y;
@@ -123,11 +123,11 @@ void BgHakaWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (u8)(0.765f * temp));
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 128,
-                                globalCtx->gameplayFrames % 128, 32, 32, 1, 0, (0 - globalCtx->gameplayFrames) % 128,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128,
+                                play->gameplayFrames % 128, 32, 32, 1, 0, (0 - play->gameplayFrames) % 128,
                                 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBotwWaterRingDL);
 
@@ -140,9 +140,9 @@ void BgHakaWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (u8)(5.1f * temp));
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBotwWaterFallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
