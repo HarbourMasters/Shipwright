@@ -793,8 +793,8 @@ void Minimap_Draw(PlayState* play) {
                     }
                 }
 
-                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(play) && enableMapToggle) {
-                    osSyncPrintf("Game_play_demo_mode_check=%d\n", Gameplay_InCsMode(play));
+                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_L) && !Play_InCsMode(play) && enableMapToggle) {
+                    osSyncPrintf("Game_play_demo_mode_check=%d\n", Play_InCsMode(play));
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
                                                                       &D_801333E0, &D_801333E0, &D_801333E8); }
@@ -960,7 +960,7 @@ void Minimap_Draw(PlayState* play) {
                     Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
                 }
 
-                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(play) && enableMapToggle) {
+                if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_L) && !Play_InCsMode(play) && enableMapToggle) {
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
                                                                       &D_801333E0, &D_801333E0, &D_801333E8); }

@@ -117,7 +117,7 @@ void EnDntJiji_Wait(EnDntJiji* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     SkelAnime_Update(&this->skelAnime);
-    if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Gameplay_InCsMode(play) &&
+    if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Play_InCsMode(play) &&
         !(player->stateFlags1 & 0x800)) {
         OnePointCutscene_Init(play, 2230, -99, &this->actor, MAIN_CAM);
         this->timer = 0;

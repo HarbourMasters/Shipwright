@@ -124,7 +124,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
     if (gameStateInitFunc == Title_Init) {
         return &gGameStateOverlayTable[2];
     }
-    if (gameStateInitFunc == Gameplay_Init) {
+    if (gameStateInitFunc == Play_Init) {
         return &gGameStateOverlayTable[3];
     }
     if (gameStateInitFunc == Opening_Init) {

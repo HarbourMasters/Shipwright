@@ -469,7 +469,7 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
     if (this->timer == 0x1E) {
         func_80078884(NA_SE_OC_ABYSS);
-        Gameplay_TriggerRespawn(play);
+        Play_TriggerRespawn(play);
     }
 }
 

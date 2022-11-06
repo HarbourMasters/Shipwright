@@ -172,7 +172,7 @@ void BossFd_UpdateCamera(BossFd* this, PlayState* play) {
                        this->camData.atVel.z * this->camData.speedMod);
         Math_ApproachF(&this->camData.speedMod, 1.0f, 1.0f, this->camData.accel);
         this->camData.at.y += this->camData.yMod;
-        Gameplay_CameraSetAtEye(play, this->introCamera, &this->camData.at, &this->camData.eye);
+        Play_CameraSetAtEye(play, this->introCamera, &this->camData.at, &this->camData.eye);
         Math_ApproachZeroF(&this->camData.yMod, 1.0f, 0.1f);
     }
 }
@@ -307,7 +307,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
 
     if (this->introState != BFD_CS_NONE) {
         Player* player2 = GET_PLAYER(play);
-        Camera* mainCam = Gameplay_GetCamera(play, MAIN_CAM);
+        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
 
         switch (this->introState) {
             case BFD_CS_WAIT:
@@ -323,9 +323,9 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     this->introState = BFD_CS_START;
                     func_80064520(play, &play->csCtx);
                     func_8002DF54(play, &this->actor, 8);
-                    this->introCamera = Gameplay_CreateSubCamera(play);
-                    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-                    Gameplay_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
+                    this->introCamera = Play_CreateSubCamera(play);
+                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
                     player2->actor.world.pos.x = 380.0f;
                     player2->actor.world.pos.y = 100.0f;
                     player2->actor.world.pos.z = 0.0f;
@@ -1656,7 +1656,7 @@ void BossFd_Draw(Actor* thisx, PlayState* play) {
         }
 
         BossFd_DrawBody(play, this);
-        POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         CLOSE_DISPS(play->state.gfxCtx);
     }
 

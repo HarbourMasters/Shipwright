@@ -149,12 +149,12 @@ void func_800BC88C(PlayState* play) {
     play->transitionCtx.transitionType = -1;
 }
 
-Gfx* Gameplay_SetFog(PlayState* play, Gfx* gfx) {
+Gfx* Play_SetFog(PlayState* play, Gfx* gfx) {
     return Gfx_SetFog2(gfx, play->lightCtx.fogColor[0], play->lightCtx.fogColor[1],
                        play->lightCtx.fogColor[2], 0, play->lightCtx.fogNear, 1000);
 }
 
-void Gameplay_Destroy(GameState* thisx) {
+void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
@@ -388,7 +388,7 @@ void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
     }
 }
 
-void Gameplay_Init(GameState* thisx) {
+void Play_Init(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     enableBetaQuest();
@@ -508,7 +508,7 @@ void Gameplay_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
     }
 
-    Gameplay_SpawnScene(
+    Play_SpawnScene(
         play,
         gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
         gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
@@ -550,8 +550,8 @@ void Gameplay_Init(GameState* thisx) {
     FrameAdvance_Init(&play->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&play->state);
-    play->state.main = Gameplay_Main;
-    play->state.destroy = Gameplay_Destroy;
+    play->state.main = Play_Main;
+    play->state.destroy = Play_Destroy;
     play->sceneLoadFlag = -0x14;
     play->unk_11E16 = 0xFF;
     play->unk_11E18 = 0;
@@ -641,7 +641,7 @@ void Gameplay_Init(GameState* thisx) {
     #endif
 }
 
-void Gameplay_Update(PlayState* play) {
+void Play_Update(PlayState* play) {
     s32 pad1;
     s32 sp80;
     Input* input;
@@ -818,7 +818,7 @@ void Gameplay_Update(PlayState* play) {
                         } else if (play->sceneLoadFlag != -0x14) {
                             play->state.running = 0;
                             if (gSaveContext.gameMode != 2) {
-                                SET_NEXT_GAMESTATE(&play->state, Gameplay_Init, PlayState);
+                                SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                                 gSaveContext.entranceIndex = play->nextEntranceIndex;
                                 if (gSaveContext.minigameState == 1) {
                                     gSaveContext.minigameState = 3;
@@ -838,7 +838,7 @@ void Gameplay_Update(PlayState* play) {
 
                             // Don't autosave in grottos or cutscenes
                             if (CVar_GetS32("gAutosave", 0) && (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
-                                Gameplay_PerformSave(play);
+                                Play_PerformSave(play);
                             }
                         }
                         play->sceneLoadFlag = 0;
@@ -868,7 +868,7 @@ void Gameplay_Update(PlayState* play) {
                     play->envCtx.screenFillColor[3] = (D_801614C8 / 20.0f) * 255.0f;
                     if (D_801614C8 >= 20 && 1) {
                         play->state.running = 0;
-                        SET_NEXT_GAMESTATE(&play->state, Gameplay_Init, PlayState);
+                        SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
                         play->sceneLoadFlag = 0;
                         play->transitionMode = 0;
@@ -908,7 +908,7 @@ void Gameplay_Update(PlayState* play) {
                 case 10:
                     if (play->sceneLoadFlag != -0x14) {
                         play->state.running = 0;
-                        SET_NEXT_GAMESTATE(&play->state, Gameplay_Init, PlayState);
+                        SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
                         play->sceneLoadFlag = 0;
                         play->transitionMode = 0;
@@ -951,7 +951,7 @@ void Gameplay_Update(PlayState* play) {
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
                             play->state.running = 0;
-                            SET_NEXT_GAMESTATE(&play->state, Gameplay_Init, PlayState);
+                            SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
@@ -1289,7 +1289,7 @@ skip:
     }
 }
 
-void Gameplay_DrawOverlayElements(PlayState* play) {
+void Play_DrawOverlayElements(PlayState* play) {
     if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
         KaleidoScopeCall_Draw(play);
     }
@@ -1305,7 +1305,7 @@ void Gameplay_DrawOverlayElements(PlayState* play) {
     }
 }
 
-void Gameplay_Draw(PlayState* play) {
+void Play_Draw(PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     Lights* sp228;
     Vec3f sp21C;
@@ -1335,9 +1335,9 @@ void Gameplay_Draw(PlayState* play) {
     func_80095248(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
-        POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
-        POLY_XLU_DISP = Gameplay_SetFog(play, POLY_XLU_DISP);
-        POLY_KAL_DISP = Gameplay_SetFog(play, POLY_KAL_DISP);
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
+        POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
+        POLY_KAL_DISP = Play_SetFog(play, POLY_KAL_DISP);
 
         func_800AA460(&play->view, play->view.fovy, play->view.zNear, play->lightCtx.fogFar);
         func_800AAA50(&play->view, 15);
@@ -1397,7 +1397,7 @@ void Gameplay_Draw(PlayState* play) {
 
             TransitionUnk_Draw(&sTrnsnUnk, &sp88);
             POLY_OPA_DISP = sp88;
-            goto Gameplay_Draw_DrawOverlayElements;
+            goto Play_Draw_DrawOverlayElements;
         } else {
             PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, gfxCtx->curFrameBuffer,
                                 gZBuffer);
@@ -1416,7 +1416,7 @@ void Gameplay_Draw(PlayState* play) {
                 //func_800C24BC(&play->pauseBgPreRender, &sp84);
                 POLY_OPA_DISP = sp84;
 
-                //goto Gameplay_Draw_DrawOverlayElements;
+                //goto Play_Draw_DrawOverlayElements;
             }
             //else
             {
@@ -1494,7 +1494,7 @@ void Gameplay_Draw(PlayState* play) {
                 }
 
                 if ((play->pauseCtx.state != 0) && (HREG(80) != 10) || (HREG(89) != 0)) {
-                    Gameplay_DrawOverlayElements(play);
+                    Play_DrawOverlayElements(play);
                 }
 
                 if ((HREG(80) != 10) || (HREG(85) != 0)) {
@@ -1556,9 +1556,9 @@ void Gameplay_Draw(PlayState* play) {
                     play->unk_121C7 = 2;
                     SREG(33) |= 1;
                 } else if (R_PAUSE_MENU_MODE != 3) {
-                Gameplay_Draw_DrawOverlayElements:
+                Play_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
-                        Gameplay_DrawOverlayElements(play);
+                        Play_DrawOverlayElements(play);
                     }
                 }
             }
@@ -1589,7 +1589,7 @@ void Gameplay_Draw(PlayState* play) {
     CLOSE_DISPS(gfxCtx);
 }
 
-time_t Gameplay_GetRealTime() {
+time_t Play_GetRealTime() {
     time_t t1, t2;
     struct tm* tms;
     time(&t1);
@@ -1601,7 +1601,7 @@ time_t Gameplay_GetRealTime() {
     return t1 - t2;
 }
 
-void Gameplay_Main(GameState* thisx) {
+void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
     if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
@@ -1637,7 +1637,7 @@ void Gameplay_Main(GameState* thisx) {
     }
 
     if ((HREG(80) != 10) || (HREG(81) != 0)) {
-        Gameplay_Update(play);
+        Play_Update(play);
     }
 
     if (1 && HREG(63)) {
@@ -1645,7 +1645,7 @@ void Gameplay_Main(GameState* thisx) {
     }
 
     FrameInterpolation_StartRecord();
-    Gameplay_Draw(play);
+    Play_Draw(play);
     FrameInterpolation_StopRecord();
 
     if (1 && HREG(63)) {
@@ -1656,7 +1656,7 @@ void Gameplay_Main(GameState* thisx) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 
-        int secs = (int)Gameplay_GetRealTime();
+        int secs = (int)Play_GetRealTime();
         float percent = (float)secs / (float)maxRealDaySeconds;
 
         int newIngameTime = maxInGameDayTicks * percent;
@@ -1672,7 +1672,7 @@ u8 PlayerGrounded(Player* player) {
 }
 
 // original name: "Game_play_demo_mode_check"
-s32 Gameplay_InCsMode(PlayState* play) {
+s32 Play_InCsMode(PlayState* play) {
     return (play->csCtx.state != CS_STATE_IDLE) || Player_InCsMode(play);
 }
 
@@ -1742,7 +1742,7 @@ f32 func_800BFCB8(PlayState* play, MtxF* mf, Vec3f* vec) {
     return floorY;
 }
 
-void* Gameplay_LoadFile(PlayState* play, RomFile* file) {
+void* Play_LoadFile(PlayState* play, RomFile* file) {
     size_t size;
     void* allocp;
 
@@ -1753,12 +1753,12 @@ void* Gameplay_LoadFile(PlayState* play, RomFile* file) {
     return allocp;
 }
 
-void Gameplay_InitEnvironment(PlayState* play, s16 skyboxId) {
+void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
     Environment_Init(play, &play->envCtx, 0);
 }
 
-void Gameplay_InitScene(PlayState* play, s32 spawn)
+void Play_InitScene(PlayState* play, s32 spawn)
 {
     play->curSpawn = spawn;
     play->linkActorEntry = NULL;
@@ -1775,12 +1775,12 @@ void Gameplay_InitScene(PlayState* play, s32 spawn)
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     Scene_ExecuteCommands(play, play->sceneSegment);
-    Gameplay_InitEnvironment(play, play->skyboxId);
+    Play_InitEnvironment(play, play->skyboxId);
 }
 
-void Gameplay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
+void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
-    OTRGameplay_SpawnScene(play, sceneNum, spawn);
+    OTRPlay_SpawnScene(play, sceneNum, spawn);
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
@@ -1797,7 +1797,7 @@ void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
     dest->y = 120.0f + ((dest->y / temp) * 120.0f);
 }
 
-s16 Gameplay_CreateSubCamera(PlayState* play) {
+s16 Play_CreateSubCamera(PlayState* play) {
     s16 i;
 
     for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
@@ -1822,11 +1822,11 @@ s16 Gameplay_CreateSubCamera(PlayState* play) {
     return i;
 }
 
-s16 Gameplay_GetActiveCamId(PlayState* play) {
+s16 Play_GetActiveCamId(PlayState* play) {
     return play->activeCamera;
 }
 
-s16 Gameplay_ChangeCameraStatus(PlayState* play, s16 camId, s16 status) {
+s16 Play_ChangeCameraStatus(PlayState* play, s16 camId, s16 status) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
 
     if (status == CAM_STAT_ACTIVE) {
@@ -1836,7 +1836,7 @@ s16 Gameplay_ChangeCameraStatus(PlayState* play, s16 camId, s16 status) {
     return Camera_ChangeStatus(play->cameraPtrs[camIdx], status);
 }
 
-void Gameplay_ClearCamera(PlayState* play, s16 camId) {
+void Play_ClearCamera(PlayState* play, s16 camId) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
 
     if (camIdx == MAIN_CAM) {
@@ -1854,25 +1854,25 @@ void Gameplay_ClearCamera(PlayState* play, s16 camId) {
     }
 }
 
-void Gameplay_ClearAllSubCameras(PlayState* play) {
+void Play_ClearAllSubCameras(PlayState* play) {
     s16 i;
 
     for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
-            Gameplay_ClearCamera(play, i);
+            Play_ClearCamera(play, i);
         }
     }
 
     play->activeCamera = MAIN_CAM;
 }
 
-Camera* Gameplay_GetCamera(PlayState* play, s16 camId) {
+Camera* Play_GetCamera(PlayState* play, s16 camId) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
 
     return play->cameraPtrs[camIdx];
 }
 
-s32 Gameplay_CameraSetAtEye(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye) {
+s32 Play_CameraSetAtEye(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye) {
     s32 ret = 0;
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
     Camera* camera = play->cameraPtrs[camIdx];
@@ -1898,7 +1898,7 @@ s32 Gameplay_CameraSetAtEye(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye) {
     return ret;
 }
 
-s32 Gameplay_CameraSetAtEyeUp(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye, Vec3f* up) {
+s32 Play_CameraSetAtEyeUp(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye, Vec3f* up) {
     s32 ret = 0;
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
     Camera* camera = play->cameraPtrs[camIdx];
@@ -1926,13 +1926,13 @@ s32 Gameplay_CameraSetAtEyeUp(PlayState* play, s16 camId, Vec3f* at, Vec3f* eye,
     return ret;
 }
 
-s32 Gameplay_CameraSetFov(PlayState* play, s16 camId, f32 fov) {
+s32 Play_CameraSetFov(PlayState* play, s16 camId, f32 fov) {
     s32 ret = Camera_SetParam(play->cameraPtrs[camId], 0x20, &fov) & 1;
 
     return ret;
 }
 
-s32 Gameplay_SetCameraRoll(PlayState* play, s16 camId, s16 roll) {
+s32 Play_SetCameraRoll(PlayState* play, s16 camId, s16 roll) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
     Camera* camera = play->cameraPtrs[camIdx];
 
@@ -1941,7 +1941,7 @@ s32 Gameplay_SetCameraRoll(PlayState* play, s16 camId, s16 roll) {
     return 1;
 }
 
-void Gameplay_CopyCamera(PlayState* play, s16 camId1, s16 camId2) {
+void Play_CopyCamera(PlayState* play, s16 camId1, s16 camId2) {
     s16 camIdx2 = (camId2 == SUBCAM_ACTIVE) ? play->activeCamera : camId2;
     s16 camIdx1 = (camId1 == SUBCAM_ACTIVE) ? play->activeCamera : camId1;
 
@@ -1957,34 +1957,34 @@ s32 func_800C0808(PlayState* play, s16 camId, Player* player, s16 setting) {
     return Camera_ChangeSetting(camera, setting);
 }
 
-s32 Gameplay_CameraChangeSetting(PlayState* play, s16 camId, s16 setting) {
-    return Camera_ChangeSetting(Gameplay_GetCamera(play, camId), setting);
+s32 Play_CameraChangeSetting(PlayState* play, s16 camId, s16 setting) {
+    return Camera_ChangeSetting(Play_GetCamera(play, camId), setting);
 }
 
 void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
     s16 i;
 
-    Gameplay_ClearCamera(play, camIdx);
+    Play_ClearCamera(play, camIdx);
 
     for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
             osSyncPrintf(
                 VT_COL(RED, WHITE) "camera control: error: return to main, other camera left. %d cleared!!\n" VT_RST,
                 i);
-            Gameplay_ClearCamera(play, i);
+            Play_ClearCamera(play, i);
         }
     }
 
     if (arg2 <= 0) {
-        Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
         play->cameraPtrs[MAIN_CAM]->childCamIdx = play->cameraPtrs[MAIN_CAM]->parentCamIdx = SUBCAM_FREE;
     } else {
         OnePointCutscene_Init(play, 1020, arg2, NULL, MAIN_CAM);
     }
 }
 
-s16 Gameplay_CameraGetUID(PlayState* play, s16 camId) {
+s16 Play_CameraGetUID(PlayState* play, s16 camId) {
     Camera* camera = play->cameraPtrs[camId];
 
     if (camera != NULL) {
@@ -2008,7 +2008,7 @@ s16 func_800C09D8(PlayState* play, s16 camId, s16 arg2) {
     }
 }
 
-void Gameplay_SaveSceneFlags(PlayState* play) {
+void Play_SaveSceneFlags(PlayState* play) {
     SavedSceneFlags* savedSceneFlags = &gSaveContext.sceneFlags[play->sceneNum];
 
     savedSceneFlags->chest = play->actorCtx.flags.chest;
@@ -2017,7 +2017,7 @@ void Gameplay_SaveSceneFlags(PlayState* play) {
     savedSceneFlags->collect = play->actorCtx.flags.collect;
 }
 
-void Gameplay_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex, s32 roomIndex,
+void Play_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex, s32 roomIndex,
                              s32 playerParams, Vec3f* pos, s16 yaw) {
     RespawnData* respawnData = &gSaveContext.respawn[respawnMode];
 
@@ -2030,7 +2030,7 @@ void Gameplay_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex
     respawnData->tempCollectFlags = play->actorCtx.flags.tempCollect;
 }
 
-void Gameplay_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) {
+void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) {
     Player* player = GET_PLAYER(play);
     s32 entranceIndex;
     s8 roomIndex;
@@ -2038,12 +2038,12 @@ void Gameplay_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerPara
     if ((play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
         roomIndex = play->roomCtx.curRoom.num;
         entranceIndex = gSaveContext.entranceIndex;
-        Gameplay_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
+        Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
                                 &player->actor.world.pos, player->actor.shape.rot.y);
     }
 }
 
-void Gameplay_TriggerVoidOut(PlayState* play) {
+void Play_TriggerVoidOut(PlayState* play) {
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = play->actorCtx.flags.tempSwch;
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = play->actorCtx.flags.tempCollect;
     gSaveContext.respawnFlag = 1;
@@ -2052,7 +2052,7 @@ void Gameplay_TriggerVoidOut(PlayState* play) {
     play->fadeTransition = 2;
 }
 
-void Gameplay_LoadToLastEntrance(PlayState* play) {
+void Play_LoadToLastEntrance(PlayState* play) {
     gSaveContext.respawnFlag = -1;
     play->sceneLoadFlag = 0x14;
 
@@ -2070,9 +2070,9 @@ void Gameplay_LoadToLastEntrance(PlayState* play) {
     play->fadeTransition = 2;
 }
 
-void Gameplay_TriggerRespawn(PlayState* play) {
-    Gameplay_SetupRespawnPoint(play, RESPAWN_MODE_DOWN, 0xDFF);
-    Gameplay_LoadToLastEntrance(play);
+void Play_TriggerRespawn(PlayState* play) {
+    Play_SetupRespawnPoint(play, RESPAWN_MODE_DOWN, 0xDFF);
+    Play_LoadToLastEntrance(play);
 }
 
 s32 func_800C0CB8(PlayState* play) {
@@ -2126,9 +2126,9 @@ s32 func_800C0DB4(PlayState* play, Vec3f* pos) {
     }
 }
 
-void Gameplay_PerformSave(PlayState* play) {
+void Play_PerformSave(PlayState* play) {
     if (play != NULL && gSaveContext.fileNum != 0xFF) {
-        Gameplay_SaveSceneFlags(play);
+        Play_SaveSceneFlags(play);
         gSaveContext.savedSceneNum = play->sceneNum;
         if (gSaveContext.temporaryWeapon) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;

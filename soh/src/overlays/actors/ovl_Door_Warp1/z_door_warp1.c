@@ -622,10 +622,10 @@ void func_80999EE0(DoorWarp1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->rutoWarpState == WARP_BLUE_RUTO_STATE_3) {
-        Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-        sRutoWarpSubCamId = Gameplay_CreateSubCamera(play);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        sRutoWarpSubCamId = Play_CreateSubCamera(play);
 
-        Gameplay_ChangeCameraStatus(play, sRutoWarpSubCamId, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, sRutoWarpSubCamId, CAM_STAT_ACTIVE);
         at.x = this->actor.world.pos.x;
         at.y = 49.0f;
         at.z = this->actor.world.pos.z;
@@ -633,8 +633,8 @@ void func_80999EE0(DoorWarp1* this, PlayState* play) {
         eye.y = 43.0f;
         eye.z = player->actor.world.pos.z;
 
-        Gameplay_CameraSetAtEye(play, sRutoWarpSubCamId, &at, &eye);
-        Gameplay_CameraSetFov(play, sRutoWarpSubCamId, 90.0f);
+        Play_CameraSetAtEye(play, sRutoWarpSubCamId, &at, &eye);
+        Play_CameraSetFov(play, sRutoWarpSubCamId, 90.0f);
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_TALKING;
         if (!gSaveContext.n64ddFlag) {
             Message_StartTextbox(play, 0x4022, NULL);
@@ -647,8 +647,8 @@ void func_80999FE4(DoorWarp1* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
         Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         OnePointCutscene_Init(play, 0x25E9, 999, &this->actor, MAIN_CAM);
-        Gameplay_CopyCamera(play, -1, sRutoWarpSubCamId);
-        Gameplay_ChangeCameraStatus(play, sRutoWarpSubCamId, CAM_STAT_WAIT);
+        Play_CopyCamera(play, -1, sRutoWarpSubCamId);
+        Play_ChangeCameraStatus(play, sRutoWarpSubCamId, CAM_STAT_WAIT);
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_WARPING;
         DoorWarp1_SetupAction(this, DoorWarp1_RutoWarpOut);
     }

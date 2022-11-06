@@ -128,7 +128,7 @@ void BgHakaShip_Move(BgHakaShip* this, PlayState* play) {
         this->dyna.actor.world.pos.x = this->dyna.actor.home.pos.x - 7650.0f;
         this->dyna.actor.speedXZ = 0.0f;
     }
-    if (distanceFromHome > 7600.0f && !Gameplay_InCsMode(play)) {
+    if (distanceFromHome > 7600.0f && !Play_InCsMode(play)) {
         this->counter = 40;
         this->dyna.actor.speedXZ = 0.0f;
         Message_StartTextbox(play, 0x5071, NULL);
@@ -180,7 +180,7 @@ void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play) {
     } else {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
         if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && func_8004356C(&this->dyna)) {
-            Gameplay_TriggerVoidOut(play);
+            Play_TriggerVoidOut(play);
         }
     }
 }

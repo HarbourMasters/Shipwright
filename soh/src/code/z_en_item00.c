@@ -1396,7 +1396,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
         if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
             texIndex = 1;

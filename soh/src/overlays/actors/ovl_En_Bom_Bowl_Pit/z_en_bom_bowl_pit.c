@@ -71,9 +71,9 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 func_8002DF54(play, NULL, 8);
                 chu->timer = 1;
 
-                this->camId = Gameplay_CreateSubCamera(play);
-                Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-                Gameplay_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
+                this->camId = Play_CreateSubCamera(play);
+                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
                 this->unk_1C8.x = this->unk_1C8.y = this->unk_1C8.z = 0.1f;
                 this->unk_1A4.x = this->unk_1A4.y = this->unk_1A4.z = 0.1f;
@@ -102,7 +102,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 this->unk_1D4.y = fabsf(this->unk_180.y - this->unk_1BC.y) * 0.02f;
                 this->unk_1D4.z = fabsf(this->unk_180.z - this->unk_1BC.z) * 0.02f;
 
-                Gameplay_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
+                Play_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
                 this->actor.textId = 0xF;
                 Message_StartTextbox(play, this->actor.textId, NULL);
                 this->unk_154 = TEXT_STATE_EVENT;
@@ -128,7 +128,7 @@ void EnBomBowlPit_CameraDollyIn(EnBomBowlPit* this, PlayState* play) {
         Math_ApproachF(&this->unk_18C.z, this->unk_198.z, this->unk_1A4.z, this->unk_1B0.z);
     }
 
-    Gameplay_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
+    Play_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
 
     if ((this->unk_154 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
@@ -165,8 +165,8 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
                 break;
         }
 
-        Gameplay_ClearCamera(play, this->camId);
-        Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ClearCamera(play, this->camId);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
         func_8002DF54(play, NULL, 8);
         this->actionFunc = EnBomBowlPit_GivePrize;
     }

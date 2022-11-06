@@ -526,10 +526,10 @@ void func_80B14E28(EnTa* this, PlayState* play) {
     Vec3f b;
     Vec3f a;
 
-    this->unk_2D0 = Gameplay_CreateSubCamera(play);
+    this->unk_2D0 = Play_CreateSubCamera(play);
     this->unk_2D2 = play->activeCamera;
-    Gameplay_ChangeCameraStatus(play, this->unk_2D2, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->unk_2D0, CAM_STAT_ACTIVE);
+    Play_ChangeCameraStatus(play, this->unk_2D2, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->unk_2D0, CAM_STAT_ACTIVE);
 
     b.x = 1053.0f;
     b.y = 11.0f;
@@ -539,12 +539,12 @@ void func_80B14E28(EnTa* this, PlayState* play) {
     a.y = 45.0f;
     a.z = -40.0f;
 
-    Gameplay_CameraSetAtEye(play, this->unk_2D0, &a, &b);
+    Play_CameraSetAtEye(play, this->unk_2D0, &a, &b);
 }
 
 void func_80B14EDC(EnTa* this, PlayState* play) {
-    Gameplay_ChangeCameraStatus(play, this->unk_2D2, CAM_STAT_ACTIVE);
-    Gameplay_ClearCamera(play, this->unk_2D0);
+    Play_ChangeCameraStatus(play, this->unk_2D2, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->unk_2D0);
 }
 
 void func_80B14F20(EnTa* this, EnTaActionFunc arg1) {
@@ -741,7 +741,7 @@ void func_80B154FC(EnTa* this, PlayState* play) {
         func_800F5918();
     }
 
-    if (gSaveContext.timer1Value == 0 && !Gameplay_InCsMode(play)) {
+    if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
         func_80078884(NA_SE_SY_FOUND);

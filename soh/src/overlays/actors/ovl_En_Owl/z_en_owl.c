@@ -947,7 +947,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
     this->actor.shape.rot.y = this->actor.world.rot.y;
 
     if (this->actor.xzDistToPlayer < 50.0f) {
-        if (!Gameplay_InCsMode(play)) {
+        if (!Play_InCsMode(play)) {
             owlType = (this->actor.params & 0xFC0) >> 6;
             osSyncPrintf(VT_FGCOL(CYAN));
             osSyncPrintf("%dのフクロウ\n", owlType); // "%d owl"

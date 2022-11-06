@@ -169,17 +169,17 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_10B38, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gChildZelda1Anim_10B38), ANIMMODE_ONCE_INTERP, -10.0f);
-        this->unk_1E8 = Gameplay_CreateSubCamera(play);
-        Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-        Gameplay_ChangeCameraStatus(play, this->unk_1E8, CAM_STAT_ACTIVE);
+        this->unk_1E8 = Play_CreateSubCamera(play);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, this->unk_1E8, CAM_STAT_ACTIVE);
         func_800C0808(play, this->unk_1E8, player, CAM_SET_FREE0);
         play->envCtx.screenFillColor[0] = 255;
         play->envCtx.screenFillColor[1] = 255;
         play->envCtx.screenFillColor[2] = 255;
         play->envCtx.screenFillColor[3] = 24;
         play->envCtx.fillScreen = true;
-        Gameplay_CameraSetAtEye(play, this->unk_1E8, &vec1, &vec2);
-        Gameplay_CameraSetFov(play, this->unk_1E8, 30.0f);
+        Play_CameraSetAtEye(play, this->unk_1E8, &vec1, &vec2);
+        Play_CameraSetFov(play, this->unk_1E8, 30.0f);
         ShrinkWindow_SetVal(0x20);
         Interface_ChangeAlpha(2);
         player->actor.world.pos = playerPos;
@@ -231,8 +231,8 @@ void func_80B4B240(EnZl1* this, PlayState* play) {
         case 1:
             if ((Message_GetState(msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
                 play->envCtx.fillScreen = false;
-                Gameplay_CameraSetAtEye(play, this->unk_1E8, &sp74, &sp68);
-                Gameplay_CameraSetFov(play, this->unk_1E8, 25.0f);
+                Play_CameraSetAtEye(play, this->unk_1E8, &sp74, &sp68);
+                Play_CameraSetFov(play, this->unk_1E8, 25.0f);
                 player->actor.world.pos = sp58;
                 this->actor.textId = 0x702F;
                 Message_ContinueTextbox(play, this->actor.textId);
@@ -410,8 +410,8 @@ void func_80B4B8B4(EnZl1* this, PlayState* play) {
             this->actor.velocity.z = (sp68.z - sp74.z) / actionLength;
         }
         func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
-        Gameplay_CameraSetAtEye(play, this->unk_1E8, &sp98, &sp8C);
-        Gameplay_CameraSetFov(play, this->unk_1E8, 70.0f);
+        Play_CameraSetAtEye(play, this->unk_1E8, &sp98, &sp8C);
+        Play_CameraSetFov(play, this->unk_1E8, 70.0f);
     }
 }
 
@@ -519,9 +519,9 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             }
         case 2:
             if (Actor_HasParent(&this->actor, play)) {
-                Gameplay_CopyCamera(play, MAIN_CAM, this->unk_1E8);
-                Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-                Gameplay_ClearCamera(play, this->unk_1E8);
+                Play_CopyCamera(play, MAIN_CAM, this->unk_1E8);
+                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_ClearCamera(play, this->unk_1E8);
                 this->actor.parent = NULL;
                 this->unk_1E2++;
             } else {

@@ -1400,7 +1400,7 @@ void func_8002DE04(PlayState* play, Actor* actorA, Actor* actorB) {
 
 void func_8002DE74(PlayState* play, Player* player) {
     if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_4) && func_800C0CB8(play)) {
-        Camera_ChangeSetting(Gameplay_GetCamera(play, MAIN_CAM), CAM_SET_HORSE);
+        Camera_ChangeSetting(Play_GetCamera(play, MAIN_CAM), CAM_SET_HORSE);
     }
 }
 
@@ -3039,7 +3039,7 @@ void func_80031C3C(ActorContext* actorCtx, PlayState* play) {
         actorCtx->absoluteSpace = NULL;
     }
 
-    Gameplay_SaveSceneFlags(play);
+    Play_SaveSceneFlags(play);
     func_80030488(play);
     ActorOverlayTable_Cleanup();
 }
@@ -3363,7 +3363,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     if ((player != NULL) && (actor == player->unk_664)) {
         func_8008EDF0(player);
-        Camera_ChangeMode(Gameplay_GetCamera(play, Gameplay_GetActiveCamId(play)), 0);
+        Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
     }
 
     if (actor == actorCtx->targetCtx.arrowPointedActor) {

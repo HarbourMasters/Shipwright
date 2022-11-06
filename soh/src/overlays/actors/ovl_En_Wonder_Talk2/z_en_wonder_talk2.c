@@ -218,7 +218,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
         }
         if (((this->actor.xzDistToPlayer < (40.0f + this->triggerRange)) &&
              (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 100.0f)) &&
-            !Gameplay_InCsMode(play)) {
+            !Play_InCsMode(play)) {
             if (this->unk_158 >= 2) {
                 osSyncPrintf("\n\n");
                 // "Transparent Message Kimi Seto"

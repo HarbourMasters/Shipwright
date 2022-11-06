@@ -458,8 +458,8 @@ void func_8008EEAC(PlayState* play, Actor* actor) {
     this->unk_664 = actor;
     this->unk_684 = actor;
     this->stateFlags1 |= 0x10000;
-    Camera_SetParam(Gameplay_GetCamera(play, 0), 8, actor);
-    Camera_ChangeMode(Gameplay_GetCamera(play, 0), 2);
+    Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
+    Camera_ChangeMode(Play_GetCamera(play, 0), 2);
 }
 
 s32 func_8008EF30(PlayState* play) {
@@ -1679,7 +1679,7 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
         POLY_XLU_DISP = ohNo;
     }
 
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP++);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP++);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

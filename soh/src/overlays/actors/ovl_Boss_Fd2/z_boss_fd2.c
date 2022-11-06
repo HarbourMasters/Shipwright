@@ -638,7 +638,7 @@ void BossFd2_UpdateCamera(BossFd2* this, PlayState* play) {
                        this->camData.atVel.z * this->camData.speedMod);
         Math_ApproachF(&this->camData.speedMod, 1.0f, 1.0f, this->camData.accel);
         this->camData.at.y += this->camData.yMod;
-        Gameplay_CameraSetAtEye(play, this->deathCamera, &this->camData.at, &this->camData.eye);
+        Play_CameraSetAtEye(play, this->deathCamera, &this->camData.at, &this->camData.eye);
         Math_ApproachF(&this->camData.yMod, 0.0f, 1.0f, 0.1f);
     }
 }
@@ -648,7 +648,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
     Vec3f sp70;
     Vec3f sp64;
     BossFd* bossFd = (BossFd*)this->actor.parent;
-    Camera* mainCam = Gameplay_GetCamera(play, MAIN_CAM);
+    Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
     f32 pad3;
     f32 pad2;
     f32 pad1;
@@ -661,9 +661,9 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
             this->deathState = DEATH_RETREAT;
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 1);
-            this->deathCamera = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
+            this->deathCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
             this->camData.eye = mainCam->eye;
             this->camData.at = mainCam->at;
             this->camData.eyeVel.x = 100.0f;
@@ -1221,7 +1221,7 @@ void BossFd2_Draw(Actor* thisx, PlayState* play) {
         SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, BossFd2_OverrideLimbDraw, BossFd2_PostLimbDraw, &this->actor);
         BossFd2_DrawMane(this, play);
-        POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

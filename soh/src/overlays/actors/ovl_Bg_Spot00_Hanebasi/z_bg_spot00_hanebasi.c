@@ -219,7 +219,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
 
                 if ((player->actor.world.pos.x > -450.0f) && (player->actor.world.pos.x < 450.0f) &&
                     (player->actor.world.pos.z > 1080.0f) && (player->actor.world.pos.z < 1700.0f) &&
-                    (!(Gameplay_InCsMode(play)))) {
+                    (!(Play_InCsMode(play)))) {
                     gSaveContext.eventChkInf[8] |= 1;
                     Flags_SetEventChkInf(0x82);
                     this->actionFunc = BgSpot00Hanebasi_DoNothing;

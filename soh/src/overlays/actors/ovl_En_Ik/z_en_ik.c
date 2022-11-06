@@ -1418,7 +1418,7 @@ void func_80A78160(EnIk* this, PlayState* play) {
 void func_80A781CC(Actor* thisx, PlayState* play) {
     EnIk* this = (EnIk*)thisx;
 
-    if (!Gameplay_InCsMode(play)) {
+    if (!Play_InCsMode(play)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
         // Don't initiate nabooru defeat CS in rando

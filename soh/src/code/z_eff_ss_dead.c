@@ -52,7 +52,7 @@ void func_80026608(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -107,7 +107,7 @@ void func_80026A6C(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
-    POLY_XLU_DISP = Gameplay_SetFog(play, POLY_XLU_DISP);
+    POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

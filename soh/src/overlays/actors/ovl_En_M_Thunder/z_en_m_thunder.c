@@ -246,7 +246,7 @@ void func_80A9F408(EnMThunder* this, PlayState* play) {
         func_800F4254(&player->actor.projectedPos, 0);
     }
 
-    if (Gameplay_InCsMode(play)) {
+    if (Play_InCsMode(play)) {
         Actor_Kill(&this->actor);
     }
 }
@@ -296,7 +296,7 @@ void func_80A9F9B4(EnMThunder* this, PlayState* play) {
 
     func_80A9F938(this, play);
 
-    if (Gameplay_InCsMode(play)) {
+    if (Play_InCsMode(play)) {
         Actor_Kill(&this->actor);
     }
 }

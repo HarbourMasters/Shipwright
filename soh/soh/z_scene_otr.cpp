@@ -11,7 +11,7 @@
 #include <libultraship/Text.h>
 #include <libultraship/Blob.h>
 
-extern Ship::Resource* OTRGameplay_LoadFile(PlayState* play, const char* fileName);
+extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
@@ -267,7 +267,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 
     if (otrSpecial->elfMessage != 0)
     {
-        auto res = (Ship::Blob*)OTRGameplay_LoadFile(play, sNaviMsgFiles[otrSpecial->elfMessage - 1].fileName);
+        auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[otrSpecial->elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->data.data();
     }
 

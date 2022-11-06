@@ -2633,7 +2633,7 @@ u8 Item_CheckObtainability(u8 item) {
 void PerformAutosave(PlayState* play, u8 item) {
     if (CVar_GetS32("gAutosave", 0)) {
         if (CVar_GetS32("gAutosaveAllItems", 0)) {
-            Gameplay_PerformSave(play);
+            Play_PerformSave(play);
         } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
             switch (item) {
                 case ITEM_STICK:
@@ -2673,7 +2673,7 @@ void PerformAutosave(PlayState* play, u8 item) {
                         break;
                     }
                 default:
-                    Gameplay_PerformSave(play);
+                    Play_PerformSave(play);
                     break;
             }
         }
@@ -3352,7 +3352,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case 7:
             if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
-                (play->sceneLoadFlag == 0) && (play->transitionMode == 0) && !Gameplay_InCsMode(play)) {
+                (play->sceneLoadFlag == 0) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
                 bool hasLens = false;
                 for (int buttonIndex = 1; buttonIndex < (CVar_GetS32("gDpadEquips", 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
@@ -5580,7 +5580,7 @@ void Interface_Draw(PlayState* play) {
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
             (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (msgCtx->msgMode == MSGMODE_NONE) &&
             !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-            (play->transitionMode == 0) && !Gameplay_InCsMode(play) && (gSaveContext.minigameState != 1) &&
+            (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38))) {
             svar6 = 0;
@@ -6166,7 +6166,7 @@ void Interface_Update(PlayState* play) {
 
     if ((gSaveContext.timer1State >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
         (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-        (play->transitionMode == 0) && !Gameplay_InCsMode(play)) {}
+        (play->transitionMode == 0) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
         if (gSaveContext.rupeeAccumulator > 0) {

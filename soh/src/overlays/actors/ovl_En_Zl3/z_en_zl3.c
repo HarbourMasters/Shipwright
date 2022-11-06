@@ -1782,7 +1782,7 @@ void func_80B5764C(EnZl3* this, PlayState* play) {
     if ((sceneNum == SCENE_GANON_SONOGO) && (func_80B54DB4(this) == 0x26)) {
         s32 unk_314 = this->unk_314 + 1;
 
-        if ((unk_314 == 1) && !Gameplay_InCsMode(play)) {
+        if ((unk_314 == 1) && !Play_InCsMode(play)) {
             OnePointCutscene_Init(play, 1000, 40, &this->actor, MAIN_CAM);
         }
     }
@@ -2015,7 +2015,7 @@ void func_80B57F1C(EnZl3* this, PlayState* play) {
 }
 
 s32 func_80B57F84(EnZl3* this, PlayState* play) {
-    if (func_80B575D0(this, play) && func_80B57C7C(this, play) && !Gameplay_InCsMode(play)) {
+    if (func_80B575D0(this, play) && func_80B57C7C(this, play) && !Play_InCsMode(play)) {
         func_80B54E14(this, &gZelda2Anime2Anim_009FBC, 0, -8.0f, 0);
         this->action = 36;
         this->unk_2EC = 0.0f;
@@ -2037,7 +2037,7 @@ void func_80B58014(EnZl3* this, PlayState* play) {
     } else if (func_80B57C8C(this) && func_80B57F84(this, play)) {
         OnePointCutscene_Init(play, 4000, -99, &this->actor, MAIN_CAM);
         this->unk_3D0 = 0;
-    } else if (func_80B576C8(this, play) && func_80B575B0(this, play) && !Gameplay_InCsMode(play)) {
+    } else if (func_80B576C8(this, play) && func_80B575B0(this, play) && !Play_InCsMode(play)) {
         this->action = 0x1F;
         this->unk_3CC = 0.0f;
         func_80B537E8(this);
@@ -2112,7 +2112,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
     Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f);
 
     if (D_80B5A4BC == 0) {
-        if ((nearbyEnTest == NULL) && (!Gameplay_InCsMode(play))) {
+        if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
             this->action = 33;
             OnePointCutscene_Init(play, 4011, -99, &this->actor, MAIN_CAM);
         } else if (invincibilityTimer > 0) {
@@ -2121,7 +2121,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
             func_80B56DC8(this);
         }
     } else {
-        if ((nearbyEnTest == NULL) && (!Gameplay_InCsMode(play))) {
+        if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
             func_80B54E14(this, &gZelda2Anime2Anim_007664, 0, -12.0f, 0);
             D_80B5A4BC = 0;
             this->action = 33;

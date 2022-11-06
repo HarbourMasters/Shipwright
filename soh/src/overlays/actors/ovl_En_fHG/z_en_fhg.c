@@ -153,9 +153,9 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             }
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 8);
-            this->cutsceneCamera = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
+            this->cutsceneCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
             this->cutsceneState = INTRO_FENCE;
             this->timers[0] = 60;
             this->actor.world.pos.y = GND_BOSSROOM_CENTER_Y - 7.0f;
@@ -392,7 +392,7 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             Math_ApproachF(&this->cameraAt.y, (this->actor.world.pos.y + 70.0f) - 20.0f, 0.1f,
                            this->cameraSpeedMod * 10.0f);
             if (this->timers[1] == 0) {
-                Camera* camera = Gameplay_GetCamera(play, 0);
+                Camera* camera = Play_GetCamera(play, 0);
 
                 camera->eye = this->cameraEye;
                 camera->eyeNext = this->cameraEye;
@@ -406,7 +406,7 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             break;
     }
     if (this->cutsceneCamera != 0) {
-        Gameplay_CameraSetAtEye(play, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
+        Play_CameraSetAtEye(play, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
     }
 }
 
@@ -724,6 +724,6 @@ void EnfHG_Draw(Actor* thisx, PlayState* play) {
                                      (u32)this->warpColorFilterB, 0, (s32)this->warpColorFilterUnk1 + 995,
                                      (s32)this->warpColorFilterUnk2 + 1000);
     func_800A6330(&this->actor, play, &this->skin, EnfHG_PostDraw, SKIN_TRANSFORM_IS_FHG);
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -398,16 +398,16 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     Vec3f pos;
     Vec3f initPos;
 
-    this->cutsceneCamera = Gameplay_CreateSubCamera(play);
+    this->cutsceneCamera = Play_CreateSubCamera(play);
     this->gameplayCamera = play->activeCamera;
-    Gameplay_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
+    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
     pos = this->actor.world.pos;
     initPos = this->actor.home.pos;
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    Gameplay_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     func_8002DF54(play, &this->actor, 8);
     this->actor.speedXZ = 0.1f * CVar_GetS32("gMweepSpeed", 1);
     this->actionFunc = EnKz_Mweep;
@@ -423,7 +423,7 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    Gameplay_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     if ((EnKz_FollowPath(this, play) == 1) && (this->waypoint == 0)) {
         Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_1);
         Inventory_ReplaceItem(play, ITEM_LETTER_RUTO, ITEM_BOTTLE);
@@ -438,8 +438,8 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
 }
 
 void EnKz_StopMweep(EnKz* this, PlayState* play) {
-    Gameplay_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
-    Gameplay_ClearCamera(play, this->cutsceneCamera);
+    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->cutsceneCamera);
     func_8002DF54(play, &this->actor, 7);
     this->actionFunc = EnKz_Wait;
 }

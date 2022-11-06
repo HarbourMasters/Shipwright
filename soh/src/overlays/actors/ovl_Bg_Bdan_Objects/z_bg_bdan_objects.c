@@ -194,7 +194,7 @@ void func_8086C054(BgBdanObjects* this, PlayState* play) {
         }
     }
 
-    if (!Gameplay_InCsMode(play) && !BgBdanObjects_GetContactRu1(this, 0)) {
+    if (!Play_InCsMode(play) && !BgBdanObjects_GetContactRu1(this, 0)) {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + -79.0f;
     } else {
         this->dyna.actor.world.pos.y = (this->dyna.actor.home.pos.y + -79.0f) - 5.0f;
@@ -430,7 +430,7 @@ void func_8086CB8C(BgBdanObjects* this, PlayState* play) {
     if (this->timer == 0) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_U);
         this->actionFunc = BgBdanObjects_DoNothing;
-        Gameplay_CopyCamera(play, MAIN_CAM, SUBCAM_ACTIVE);
+        Play_CopyCamera(play, MAIN_CAM, SUBCAM_ACTIVE);
     } else {
         func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
     }

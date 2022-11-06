@@ -630,7 +630,7 @@ void GivePlayerRandoRewardSaria(EnSa* saria, PlayState* play, RandomizerCheck ch
 void func_80AF683C(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->actor.world.pos.z >= -2220.0f) && !Gameplay_InCsMode(play)) {
+    if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
         if (gSaveContext.n64ddFlag) {
             GivePlayerRandoRewardSaria(this, play, RC_SONG_FROM_SARIA);
             return;

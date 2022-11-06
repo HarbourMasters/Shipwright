@@ -554,9 +554,9 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 8);
-            this->csCamIndex = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
+            this->csCamIndex = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
             if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag) {
@@ -1119,7 +1119,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 120) {
-                mainCam = Gameplay_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, MAIN_CAM);
                 mainCam->eye = this->csCamEye;
                 mainCam->eyeNext = this->csCamEye;
                 mainCam->at = this->csCamAt;
@@ -1154,8 +1154,8 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                            this->csCamAtMaxStep.z * this->csCamMaxStepScale);
         }
 
-        Gameplay_CameraSetAtEye(play, this->csCamIndex, &this->csCamAt, &this->csCamEye);
-        Gameplay_CameraSetFov(play, this->csCamIndex, this->csCamFov);
+        Play_CameraSetAtEye(play, this->csCamIndex, &this->csCamAt, &this->csCamEye);
+        Play_CameraSetFov(play, this->csCamIndex, this->csCamFov);
     }
 }
 
@@ -1242,9 +1242,9 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
         case 0:
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 8);
-            this->csCamIndex = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
+            this->csCamIndex = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
 
             this->actor.world.pos.x = 0.0f;
             this->actor.world.pos.y = 70.0f;
@@ -1519,9 +1519,9 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
         case 100:
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 8);
-            this->csCamIndex = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
+            this->csCamIndex = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfCollapseAnim, 0.0f);
             this->fwork[1] = Animation_GetLastFrame(&gGanondorfDefeatedStartAnim);
             this->csState = 101;
@@ -1795,7 +1795,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             this->csCamAt.z = (sBossGanonZelda->actor.world.pos.z - 25.0f) + 80.0f;
 
             if (this->csTimer > 50) {
-                mainCam = Gameplay_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, MAIN_CAM);
 
                 mainCam->eye = this->csCamEye;
                 mainCam->eyeNext = this->csCamEye;
@@ -1837,7 +1837,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
         sp64 = this->csCamAt;
         sp64.y += this->unk_70C;
-        Gameplay_CameraSetAtEye(play, this->csCamIndex, &sp64, &this->csCamEye);
+        Play_CameraSetAtEye(play, this->csCamIndex, &sp64, &this->csCamEye);
     }
 }
 
@@ -3839,7 +3839,7 @@ void BossGanon_Draw(Actor* thisx, PlayState* play) {
     this->unk_2EC[0].y = this->unk_2EC[1].y + 30.0f;
     this->unk_2EC[0].z = this->unk_2EC[1].z;
 
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
     BossGanon_DrawEffects(play);
 
@@ -4740,7 +4740,7 @@ void BossGanon_UpdateEffects(PlayState* play) {
                 }
             } else if (eff->type == GDF_EFF_LIGHTNING) {
                 if (eff->unk_3C == 0.0f) {
-                    eff->unk_44 = BINANG_TO_RAD(Camera_GetInputDirYaw(Gameplay_GetCamera(play, MAIN_CAM)));
+                    eff->unk_44 = BINANG_TO_RAD(Camera_GetInputDirYaw(Play_GetCamera(play, MAIN_CAM)));
                 } else {
                     eff->unk_44 = M_PI / 2;
                 }

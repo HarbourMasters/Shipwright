@@ -234,7 +234,7 @@ void Scene_CommandSpecialFiles(PlayState* play, SceneCmd* cmd) {
     }
 
     if (cmd->specialFiles.cUpElfMsgNum != 0) {
-        play->cUpElfMsgs = Gameplay_LoadFile(play, &sNaviMsgFiles[cmd->specialFiles.cUpElfMsgNum - 1]);
+        play->cUpElfMsgs = Play_LoadFile(play, &sNaviMsgFiles[cmd->specialFiles.cUpElfMsgNum - 1]);
     }
 }
 

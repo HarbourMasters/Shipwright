@@ -3876,7 +3876,7 @@ void KaleidoScope_Update(PlayState* play)
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                    &D_801333E8);
-                            Gameplay_PerformSave(play);
+                            Play_PerformSave(play);
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = CVar_GetS32("gSkipSaveConfirmation", 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
                         }
@@ -4118,7 +4118,7 @@ void KaleidoScope_Update(PlayState* play)
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     pauseCtx->promptChoice = 0;
-                    Gameplay_SaveSceneFlags(play);
+                    Play_SaveSceneFlags(play);
                     gSaveContext.savedSceneNum = play->sceneNum;
                     Save_SaveFile();
                     pauseCtx->state = 0xF;
@@ -4145,7 +4145,7 @@ void KaleidoScope_Update(PlayState* play)
                 if (pauseCtx->promptChoice == 0) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    Gameplay_SaveSceneFlags(play);
+                    Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
                         case 0x0000:
@@ -4211,7 +4211,7 @@ void KaleidoScope_Update(PlayState* play)
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
                     if (pauseCtx->promptChoice == 0) {
-                        Gameplay_TriggerRespawn(play);
+                        Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         gSaveContext.nextTransition = 2;
                         gSaveContext.health = 0x30;

@@ -262,7 +262,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
     Vec3f sp48;
 
     player = GET_PLAYER(play);
-    camera = Gameplay_GetCamera(play, MAIN_CAM);
+    camera = Play_GetCamera(play, MAIN_CAM);
 
     if (this->unk_196 != 0) {
         this->unk_196--;
@@ -288,10 +288,10 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
         case 1:
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 1);
-            Gameplay_ClearAllSubCameras(play);
-            this->cutsceneCamera = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, 0, 1);
-            Gameplay_ChangeCameraStatus(play, this->cutsceneCamera, 7);
+            Play_ClearAllSubCameras(play);
+            this->cutsceneCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, 0, 1);
+            Play_ChangeCameraStatus(play, this->cutsceneCamera, 7);
             this->csState = 2;
             this->unk_196 = 0x3C;
             this->unk_198 = 160;
@@ -462,7 +462,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
         sp48.y = 1.0f;
         sp48.z = this->unk_20C;
 
-        Gameplay_CameraSetAtEyeUp(play, this->cutsceneCamera, &sp54, &sp60, &sp48);
+        Play_CameraSetAtEyeUp(play, this->cutsceneCamera, &sp54, &sp60, &sp48);
     }
 }
 
@@ -1152,7 +1152,7 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, BossDodongo_OverrideLimbDraw,
                       BossDodongo_PostLimbDraw, this);
 
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 
@@ -1320,10 +1320,10 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->csState = 5;
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 1);
-            this->cutsceneCamera = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_UNK3);
-            Gameplay_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
-            camera = Gameplay_GetCamera(play, MAIN_CAM);
+            this->cutsceneCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_UNK3);
+            Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
+            camera = Play_GetCamera(play, MAIN_CAM);
             this->cameraEye.x = camera->eye.x;
             this->cameraEye.y = camera->eye.y;
             this->cameraEye.z = camera->eye.z;
@@ -1620,7 +1620,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                             Math_CosS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.z, 0, 0, 0, 0);
             }
             if (this->unk_1DA == 600) {
-                camera = Gameplay_GetCamera(play, MAIN_CAM);
+                camera = Play_GetCamera(play, MAIN_CAM);
                 camera->eye = this->cameraEye;
                 camera->eyeNext = this->cameraEye;
                 camera->at = this->cameraAt;
@@ -1628,7 +1628,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 this->unk_1BC = 0;
                 this->cutsceneCamera = MAIN_CAM;
                 this->csState = 100;
-                Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
@@ -1651,7 +1651,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             break;
     }
     if (this->cutsceneCamera != MAIN_CAM) {
-        Gameplay_CameraSetAtEye(play, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
+        Play_CameraSetAtEye(play, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
     }
 }
 

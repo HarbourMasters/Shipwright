@@ -460,12 +460,12 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
     this->subCamAtTarget.y = this->subCamAt.y = this->actor.world.pos.y + 60.0f;
     this->subCamAtTarget.z = this->subCamAt.z = this->actor.world.pos.z;
 
-    this->subCamId = Gameplay_CreateSubCamera(play);
-    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
+    this->subCamId = Play_CreateSubCamera(play);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
 
-    Gameplay_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
-    Gameplay_CameraSetFov(play, this->subCamId, play->mainCamera.fov);
+    Play_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
+    Play_CameraSetFov(play, this->subCamId, play->mainCamera.fov);
     func_8002DF54(play, &this->actor, 1);
 }
 
@@ -480,7 +480,7 @@ void EnDaiku_UpdateSubCamera(EnDaiku* this, PlayState* play) {
     Math_SmoothStepToF(&this->subCamAt.y, this->subCamAtTarget.y, 1.0f, 1000.0f, 0.0f);
     Math_SmoothStepToF(&this->subCamAt.z, this->subCamAtTarget.z, 1.0f, 1000.0f, 0.0f);
 
-    Gameplay_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
+    Play_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
 }
 
 void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
@@ -488,8 +488,8 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     Actor* gerudoGuard;
     Vec3f vec;
 
-    Gameplay_ClearCamera(play, this->subCamId);
-    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->subCamId);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
     this->subCamActive = false;
 
     if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {

@@ -947,7 +947,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
     f32 camZ;
     f32 pad;
     Player* player = GET_PLAYER(play);
-    Camera* camera = Gameplay_GetCamera(play, 0);
+    Camera* camera = Play_GetCamera(play, 0);
 
     osSyncPrintf("PYP %f\n", player->actor.floorHeight);
     SkelAnime_Update(&this->skelAnime);
@@ -961,10 +961,10 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
         case DEATH_START:
             func_80064520(play, &play->csCtx);
             func_8002DF54(play, &this->actor, 1);
-            this->deathCamera = Gameplay_CreateSubCamera(play);
-            Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            this->deathCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             osSyncPrintf("7\n");
-            Gameplay_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
             osSyncPrintf("8\n");
             this->deathState = DEATH_THROES;
             player->actor.speedXZ = 0.0f;
@@ -1238,7 +1238,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
             Math_ApproachF(&this->cameraSpeedMod, 1.0f, 1.0f, this->cameraAccel);
         }
 
-        Gameplay_CameraSetAtEye(play, this->deathCamera, &this->cameraAt, &this->cameraEye);
+        Play_CameraSetAtEye(play, this->deathCamera, &this->cameraAt, &this->cameraEye);
     }
 }
 
@@ -1558,7 +1558,7 @@ void BossGanondrof_Draw(Actor* thisx, PlayState* play) {
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, BossGanondrof_OverrideLimbDraw,
                       BossGanondrof_PostLimbDraw, this);
     osSyncPrintf("DRAW 22\n");
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
     osSyncPrintf("DRAW END %d\n", this->actor.params);
 }

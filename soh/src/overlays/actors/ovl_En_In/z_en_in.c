@@ -448,16 +448,16 @@ void func_80A79C78(EnIn* this, PlayState* play) {
     Vec3f sp3C;
     Vec3s zeroVec = { 0, 0, 0 };
 
-    this->camId = Gameplay_CreateSubCamera(play);
-    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
+    this->camId = Play_CreateSubCamera(play);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
     sp48.x = this->actor.world.pos.x;
     sp48.y = this->actor.world.pos.y + 60.0f;
     sp48.z = this->actor.world.pos.z;
     sp3C.x = sp48.x;
     sp3C.y = sp48.y - 22.0f;
     sp3C.z = sp48.z + 40.0f;
-    Gameplay_CameraSetAtEye(play, this->camId, &sp48, &sp3C);
+    Play_CameraSetAtEye(play, this->camId, &sp48, &sp3C);
     this->actor.shape.rot.y = Math_Vec3f_Yaw(&this->actor.world.pos, &sp3C);
     this->unk_308.unk_08 = zeroVec;
     this->unk_308.unk_0E = zeroVec;
@@ -760,10 +760,10 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     Vec3f sp30;
     Vec3f sp24;
 
-    this->camId = Gameplay_CreateSubCamera(play);
+    this->camId = Play_CreateSubCamera(play);
     this->activeCamId = play->activeCamera;
-    Gameplay_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
+    Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
     this->unk_2F0 = 0.0f;
     this->unk_2F4 = 50.0f;
@@ -783,7 +783,7 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     sp24.y += this->unk_300;
     sp24.z += this->unk_304;
 
-    Gameplay_CameraSetAtEye(play, this->camId, &sp30, &sp24);
+    Play_CameraSetAtEye(play, this->camId, &sp30, &sp24);
     this->actor.textId = 0x203B;
     Message_StartTextbox(play, this->actor.textId, NULL);
     this->unk_308.unk_00 = 1;
@@ -847,13 +847,13 @@ void func_80A7ABD4(EnIn* this, PlayState* play) {
         sp3C.x += this->unk_2FC;
         sp3C.y += this->unk_300;
         sp3C.z += this->unk_304;
-        Gameplay_CameraSetAtEye(play, this->camId, &sp48, &sp3C);
+        Play_CameraSetAtEye(play, this->camId, &sp48, &sp3C);
     }
 }
 
 void func_80A7AE84(EnIn* this, PlayState* play) {
-    Gameplay_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_ACTIVE);
-    Gameplay_ClearCamera(play, this->camId);
+    Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->camId);
     func_8002DF54(play, &this->actor, 7);
     Interface_ChangeAlpha(0x32);
     this->actionFunc = func_80A7AEF0;

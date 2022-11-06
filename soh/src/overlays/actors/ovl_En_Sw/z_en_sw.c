@@ -991,7 +991,7 @@ void func_80B0EEA4(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    POLY_OPA_DISP = Gameplay_SetFog(play, POLY_OPA_DISP);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

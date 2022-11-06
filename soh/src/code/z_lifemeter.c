@@ -682,7 +682,7 @@ void HealthMeter_HandleCriticalAlarm(PlayState* play) {
             interfaceCtx->unk_22A = 0;
             interfaceCtx->unk_22C = 0;
             if (CVar_GetS32("gLowHpAlarm", 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
-            (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Gameplay_InCsMode(play)) {
+            (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Play_InCsMode(play)) {
                 func_80078884(NA_SE_SY_HITPOINT_ALARM);
             }
         }

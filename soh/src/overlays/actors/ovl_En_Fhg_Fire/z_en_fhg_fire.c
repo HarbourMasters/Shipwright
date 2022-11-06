@@ -178,7 +178,7 @@ void EnFhgFire_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnFhgFire_LightningStrike(EnFhgFire* this, PlayState* play) {
-    Camera* camera = Gameplay_GetCamera(play, 0);
+    Camera* camera = Play_GetCamera(play, 0);
     s16 i;
 
     switch (this->work[FHGFIRE_FIRE_MODE]) {

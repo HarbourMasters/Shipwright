@@ -632,7 +632,7 @@ s32 func_80AF383C(EnRu2* this, PlayState* play) {
 }
 
 void func_80AF3878(EnRu2* this, PlayState* play) {
-    if (func_80AF383C(this, play) && !Gameplay_InCsMode(play)) {
+    if (func_80AF383C(this, play) && !Play_InCsMode(play)) {
         this->action = 16;
         this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, MAIN_CAM);
     }

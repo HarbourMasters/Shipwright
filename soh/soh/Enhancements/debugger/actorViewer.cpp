@@ -99,7 +99,7 @@ std::map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_TP, "Electric Tailpasaran" },
     { ACTOR_EN_ST, "Skulltula" },
     { ACTOR_EN_BW, "Torch Slug" },
-    { ACTOR_EN_A_OBJ, "Gameplay_keep items" },
+    { ACTOR_EN_A_OBJ, "Play_keep items" },
     { ACTOR_EN_EIYER, "Stinger (Land)" },
     { ACTOR_EN_RIVER_SOUND, "Ambient Sound Effects" },
     { ACTOR_EN_HORSE_NORMAL, "Horse" },

@@ -52,7 +52,7 @@ void EnEg_Init(Actor* thisx, PlayState* play) {
 void func_809FFDC8(EnEg* this, PlayState* play) {
     if (!voided && (gSaveContext.timer2Value < 1) && Flags_GetSwitch(play, 0x36) && (kREG(0) == 0)) {
         // Void the player out
-        Gameplay_TriggerRespawn(play);
+        Play_TriggerRespawn(play);
         gSaveContext.respawnFlag = -2;
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         play->fadeTransition = 2;

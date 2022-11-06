@@ -1425,7 +1425,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (!Gameplay_InCsMode(play)) {
+        if (!Play_InCsMode(play)) {
             if (gSaveContext.naviTimer < 25800) {
                 gSaveContext.naviTimer++;
             } else if (!(this->fairyFlags & 0x80)) {

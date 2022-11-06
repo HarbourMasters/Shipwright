@@ -6201,7 +6201,7 @@ s32 Camera_Demo6(Camera* camera) {
     s16 stateTimers[4];
     Vec3f* at = &camera->at;
 
-    mainCam = Gameplay_GetCamera(camera->play, MAIN_CAM);
+    mainCam = Play_GetCamera(camera->play, MAIN_CAM);
     camFocus = camera->target;
     stateTimers[1] = 0x37;
     stateTimers[2] = 0x46;
@@ -6306,7 +6306,7 @@ s32 Camera_Demo9(Camera* camera) {
     f32* camFOV = &camera->fov;
     Demo9Anim* anim = &demo9->anim;
 
-    mainCam = Gameplay_GetCamera(camera->play, MAIN_CAM);
+    mainCam = Play_GetCamera(camera->play, MAIN_CAM);
     mainCamPlayerPosRot = &mainCam->playerPosRot;
     if (RELOAD_PARAMS) {
         values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
@@ -7712,7 +7712,7 @@ void Camera_Finish(Camera* camera) {
     Player* player = GET_PLAYER(camera->play);
 
     if (camera->timer == 0) {
-        Gameplay_ChangeCameraStatus(camera->play, camera->parentCamIdx, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(camera->play, camera->parentCamIdx, CAM_STAT_ACTIVE);
 
         if ((camera->parentCamIdx == MAIN_CAM) && (camera->csId != 0)) {
             player->actor.freezeTimer = 0;
@@ -7742,7 +7742,7 @@ void Camera_Finish(Camera* camera) {
         camera->timer = -1;
         camera->play->envCtx.fillScreen = false;
 
-        Gameplay_ClearCamera(camera->play, camera->thisIdx);
+        Play_ClearCamera(camera->play, camera->thisIdx);
     }
 }
 

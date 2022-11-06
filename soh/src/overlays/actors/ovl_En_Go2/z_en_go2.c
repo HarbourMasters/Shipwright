@@ -1533,9 +1533,9 @@ void EnGo2_GoronLinkAnimation(EnGo2* this, PlayState* play) {
 void EnGo2_GoronFireCamera(EnGo2* this, PlayState* play) {
     s16 yaw;
 
-    this->camId = Gameplay_CreateSubCamera(play);
-    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-    Gameplay_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
+    this->camId = Play_CreateSubCamera(play);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
     Path_CopyLastPoint(this->path, &this->at);
     yaw = Math_Vec3f_Yaw(&this->actor.world.pos, &this->at) + 0xE38;
     this->eye.x = Math_SinS(yaw) * 100.0f + this->actor.world.pos.x;
@@ -1544,12 +1544,12 @@ void EnGo2_GoronFireCamera(EnGo2* this, PlayState* play) {
     this->at.x = this->actor.world.pos.x;
     this->at.y = this->actor.world.pos.y + 40.0f;
     this->at.z = this->actor.world.pos.z;
-    Gameplay_CameraSetAtEye(play, this->camId, &this->at, &this->eye);
+    Play_CameraSetAtEye(play, this->camId, &this->at, &this->eye);
 }
 
 void EnGo2_GoronFireClearCamera(EnGo2* this, PlayState* play) {
-    Gameplay_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-    Gameplay_ClearCamera(play, this->camId);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->camId);
 }
 
 void EnGo2_BiggoronAnimation(EnGo2* this) {

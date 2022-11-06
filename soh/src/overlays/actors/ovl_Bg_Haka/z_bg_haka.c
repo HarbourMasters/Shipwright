@@ -72,7 +72,7 @@ void func_8087B7E8(BgHaka* this, PlayState* play) {
         if (play->sceneNum == SCENE_SPOT02 && !LINK_IS_ADULT && IS_DAY && !gSaveContext.n64ddFlag && !CVar_GetS32("gDayGravePull", 0)) {
             this->dyna.unk_150 = 0.0f;
             player->stateFlags2 &= ~0x10;
-            if (!Gameplay_InCsMode(play)) {
+            if (!Play_InCsMode(play)) {
                 Message_StartTextbox(play, 0x5073, NULL);
                 this->dyna.actor.params = 100;
                 this->actionFunc = func_8087BAE4;
