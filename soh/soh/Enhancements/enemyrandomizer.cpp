@@ -43,6 +43,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_RD, 1 },         // Redead (standing)
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
     { ACTOR_EN_FD, 0 },         // Flare Dancer
+    { ACTOR_EN_SB, 0 },         // Shell Blade
     { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
     { ACTOR_EN_RR, 0 },         // Like-Like
     { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
@@ -96,6 +97,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_RD,        // Redead, Gibdo
     ACTOR_EN_SW,        // Skullwalltula
     ACTOR_EN_FD,        // Flare Dancer
+    ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
     ACTOR_EN_NY,        // Spike (rolling enemy)
@@ -113,7 +115,7 @@ extern "C" enemyEntry GetRandomizedEnemy(void) {
     return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
+extern "C" uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId = 0, int param = 0, f32 posX = 0) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -149,11 +151,20 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
                 case ACTOR_EN_WF:
                     return (param != 7936);
                 // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't trigger the platform.
+                // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
+                // down in the river.
                 case ACTOR_EN_TEST:
-                    return (param != 1);
+                    return (param != 1 && !(globalCtx->sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
                 // Only randomize the enemy variant of Armos Statue.
+                // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
-                    return (param == -1);
+                    return (param == -1 && !(globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141));
+                // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
+                // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
+                case ACTOR_EN_SB:
+                    return (globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
+                case ACTOR_EN_NY:
+                    return (globalCtx->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
                 default:
                     return 1;
             }
@@ -162,4 +173,17 @@ extern "C" uint8_t IsEnemyFoundToRandomize(int actorId = 0, int param = 0) {
 
     // If no enemy is found, don't randomize the actor.
     return 0;
+}
+
+extern "C" uint8_t IsEnemyAllowedToSpawn(GlobalContext* globalCtx, enemyEntry enemy) {
+
+    // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
+    // becoming impossible to kill
+    switch (globalCtx->sceneNum) {
+        case SCENE_GANON:
+        case SCENE_GANON_SONOGO:
+            return (enemy.enemyId != ACTOR_EN_CLEAR_TAG && enemy.enemyId != ACTOR_EN_VALI && !(enemy.enemyId == ACTOR_EN_ZF && enemy.enemyParam == -1));
+        default:
+            return 1;
+    }
 }

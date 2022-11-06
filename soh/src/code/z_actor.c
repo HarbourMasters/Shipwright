@@ -3144,23 +3144,21 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
-    // Hack to remove bats and skulltulas that spawn in graveyard because of removing object dependency.
-    if ((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) {
+    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
+    // Remove bats and skulltulas from graveyard.
+    // Remove octorok in lost woods.
+    if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) ||
+        (actorId == ACTOR_EN_OKUTA && globalCtx->sceneNum == SCENE_SPOT10)) {
         return NULL;
     }
-
-    uint8_t excludedEnemiesToRandomize = 
-        // Always leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
-        actorId == ACTOR_EN_AM && globalCtx->sceneNum == SCENE_JYASINZOU && posX == 2141;
     
     uint8_t tryRandomizeEnemy = 
         CVar_GetS32("gRandomizedEnemies", 0) && 
-        gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 &&
-        !excludedEnemiesToRandomize;
+        gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
 
     if (tryRandomizeEnemy) {
 
-        if (IsEnemyFoundToRandomize(actorId, params)) {
+        if (IsEnemyFoundToRandomize(globalCtx, actorId, params, posX)) {
 
             // Do a raycast from the original position of the actor to find the ground below it, then try to place
             // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
@@ -3179,25 +3177,54 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
                 posY = raycastResult;
             }
 
-            // Get randomized enemy ID.
+            // Get randomized enemy ID and parameter.
             enemyEntry newEnemy = GetRandomizedEnemy();
+
+            // While randomized enemy isn't allowed in certain situations, randomize again.
+            while (!IsEnemyAllowedToSpawn(globalCtx, newEnemy)) {
+                newEnemy = GetRandomizedEnemy();
+            }
+
             actorId = newEnemy.enemyId;
             params = newEnemy.enemyParam;
 
             // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
             rotX = 0;
 
-            // When spawning big jellyfish, spawn it up high.
-            if (actorId == ACTOR_EN_VALI) {
-                posY = posY + 300;
-            // Spawn Peahat Larva slightly higher because they kill themselves instantly when they touch the ground while spawning
-            } else if (actorId == ACTOR_EN_PEEHAT && params == 1) {
-                posY = posY + 50;
+            switch (actorId) {
+                // When spawning big jellyfish, spawn it up high.
+                case ACTOR_EN_VALI: 
+                    posY = posY + 300;
+                    break;
+                // Spawn peahat off the ground, otherwise it kills itself by colliding with the ground.
+                case ACTOR_EN_PEEHAT:
+                    if (params == 1) {
+                        posY = posY + 100;
+                    }
+                    break;
+                // Spawn skulltulas off the ground.
+                case ACTOR_EN_ST:
+                    posY = posY + 200;
+                    break;
+                // Spawn flying enemies off the ground.
+                case ACTOR_EN_FIREFLY:
+                case ACTOR_EN_BILI:
+                case ACTOR_EN_BB:
+                case ACTOR_EN_CLEAR_TAG:
+                case ACTOR_EN_CROW:
+                    posY = posY + 75;
+                    break;
+                default:
+                    break;
             }
-
         }
     }
 
+    return Actor_Spawn_NoRandomize(actorCtx, globalCtx, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+}
+
+Actor* Actor_Spawn_NoRandomize(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY,
+                               f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;
@@ -3267,17 +3294,19 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             osSyncPrintf(VT_FGCOL(GREEN));
             osSyncPrintf("OVL(a):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", overlayEntry->vramStart,
                          overlayEntry->vramEnd, overlayEntry->loadedRamAddr,
-                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart,
+                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd -
+                             (uintptr_t)overlayEntry->vramStart,
                          (uintptr_t)overlayEntry->vramStart - (uintptr_t)overlayEntry->loadedRamAddr, name);
             osSyncPrintf(VT_RST);
 
             overlayEntry->numLoaded = 0;
         }
 
-        actorInit = (void*)(uintptr_t)((overlayEntry->initInfo != NULL)
-                                     ? (void*)((uintptr_t)overlayEntry->initInfo -
-                                               ((intptr_t)overlayEntry->vramStart - (intptr_t)overlayEntry->loadedRamAddr))
-                                     : NULL);
+        actorInit =
+            (void*)(uintptr_t)((overlayEntry->initInfo != NULL) ? (void*)((uintptr_t)overlayEntry->initInfo -
+                                                                          ((intptr_t)overlayEntry->vramStart -
+                                                                           (intptr_t)overlayEntry->loadedRamAddr))
+                                                                : NULL);
     }
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, actorInit->objectId);
