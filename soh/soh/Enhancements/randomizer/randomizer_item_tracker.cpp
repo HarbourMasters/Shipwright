@@ -700,8 +700,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     return false;
 }
 
+RandomizerCheckArea lastArea = RCAREA_INVALID;
 void DrawLocations() {
-    RandomizerCheckObjects::UpdateImGuiVisibility();
 
     if (ImGui::BeginTable("tableRandoChecks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("To Check", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -716,6 +716,10 @@ void DrawLocations() {
         locationSearch.Draw();
 
         bool lastItemFound = false;
+        bool doAreaScroll = false;
+        RandomizerCheckArea currentArea = RCAREA_INVALID;
+        if (gGlobalCtx != nullptr)
+            currentArea = RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)gGlobalCtx->sceneNum);
 
         ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
         for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
@@ -725,6 +729,7 @@ void DrawLocations() {
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                     hasItems = true;
+                    doAreaScroll = (currentArea != RCAREA_INVALID && currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
@@ -732,6 +737,10 @@ void DrawLocations() {
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                 if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                    if (doAreaScroll) {
+                        ImGui::SetScrollHereY(0.0f);
+                        doAreaScroll = false;
+                    }
                     for (auto& locationIt : rcObjects) {
                         // If the location has its scene flag set
                         if (HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
@@ -786,21 +795,27 @@ void DrawLocations() {
         ImGui::EndChild();
 
         // COLUMN 2 - CHECKED LOCATIONS
+        doAreaScroll = false;
         ImGui::TableNextColumn();
         ImGui::BeginChild("ChildCheckedLocations", ImVec2(0, -8));
-        for (auto& areaIt : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
-            for (auto& locationIt : areaIt.second) {
+            for (auto& locationIt : rcObjects) {
                 if (locationIt.second.visibleInImgui && checkedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
+                    doAreaScroll = (currentArea != RCAREA_INVALID && currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
 
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                    for (auto& locationIt : areaIt.second) {
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                    if (doAreaScroll) {
+                        ImGui::SetScrollHereY(0.0f);
+                        doAreaScroll = false;
+                    }
+                    for (auto& locationIt : rcObjects) {
                         auto elfound = checkedLocations.find(locationIt.second.rc);
                         if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
                             // If the location has its scene flag set
@@ -832,6 +847,8 @@ void DrawLocations() {
         }
         ImGui::EndChild();
         ImGui::EndTable();
+
+        lastArea = currentArea;
     }
 }
 

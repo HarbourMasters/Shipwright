@@ -92,5 +92,7 @@ namespace RandomizerCheckObjects {
     std::string GetRCAreaName(RandomizerCheckArea area);
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
+    std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
+    RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
 }

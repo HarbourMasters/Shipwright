@@ -894,6 +894,26 @@ std::map<RandomizerCheck, RandomizerCheckObject> RandomizerCheckObjects::GetAllR
     return rcObjects;
 }
 
+std::map<SceneID, RandomizerCheckArea> rcAreaBySceneID = {};
+std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySceneID() {
+    //memoize on first request
+    if (rcAreaBySceneID.size() == 0) {
+        for (auto& [randomizerCheck, rcObject] : rcObjects) {
+            rcAreaBySceneID[rcObject.sceneId] = rcObject.rcArea;
+        }
+    }
+    return rcAreaBySceneID;
+}
+
+RandomizerCheckArea RandomizerCheckObjects::GetRCAreaBySceneID(SceneID sceneId) {
+    std::map<SceneID, RandomizerCheckArea> areas = GetAllRCAreaBySceneID();
+    auto areaIt = areas.find(sceneId);
+    if (areaIt == areas.end())
+        return RCAREA_INVALID;
+    else
+        return areaIt->second;
+}
+
 void RandomizerCheckObjects::UpdateImGuiVisibility() {
     for (auto& [randomizerCheck, locationIt] : rcObjects) {
         locationIt.visibleInImgui = (
