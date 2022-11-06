@@ -1543,12 +1543,12 @@ namespace GameMenuBar {
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button(
-                    GetWindowButtonText("Randomizer Stats", CVar_GetS32("gRandoStatsEnabled", 0)).c_str(),
+                    GetWindowButtonText("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0)).c_str(),
                     buttonSize)) {
-                bool currentValue = CVar_GetS32("gRandoStatsEnabled", 0);
-                CVar_SetS32("gRandoStatsEnabled", !currentValue);
+                bool currentValue = CVar_GetS32("gGameplayStatsEnabled", 0);
+                CVar_SetS32("gGameplayStatsEnabled", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Randomizer Stats", CVar_GetS32("gRandoStatsEnabled", 0));
+                SohImGui::EnableWindow("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);

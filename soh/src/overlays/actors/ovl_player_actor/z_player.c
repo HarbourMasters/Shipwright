@@ -10510,9 +10510,9 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     sControlInput = input;
 
     if (gSaveContext.n64ddFlag) {
-        gSaveContext.randoStats.gameTimer++;
+        gSaveContext.randoStats.playTimer++;
         gSaveContext.randoStats.totalTimer =
-            gSaveContext.randoStats.gameTimer / 2 + gSaveContext.randoStats.pauseTimer / 3;
+            gSaveContext.randoStats.playTimer / 2 + gSaveContext.randoStats.pauseTimer / 3;
     }
 
     if (this->unk_A86 < 0) {

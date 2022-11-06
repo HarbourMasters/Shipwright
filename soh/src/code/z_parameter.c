@@ -1639,10 +1639,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if (gSaveContext.n64ddFlag) {
-        gSaveContext.randoStats.collectionCount++;
-    }
-
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
 
@@ -2309,10 +2305,6 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
         gSaveContext.magicLevel = 0;
         Magic_Fill(globalCtx);
         return RG_NONE;
-    }
-
-    if (gSaveContext.n64ddFlag) {
-        gSaveContext.randoStats.collectionCount++;
     }
 
     if (item == RG_MAGIC_BEAN_PACK) {
