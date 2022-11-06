@@ -4,8 +4,7 @@
 
 extern const char* digitTextures[];
 
-<<<<<<< HEAD
-void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
+void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton", aButtonColor);
@@ -34,17 +33,6 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
         cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton", cRightButtonColor);
     }
 
-=======
-void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
-    Color_RGB8 A_button_ori = {80, 255, 150};
-    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
-    Color_RGB8 C_button_ori = {255, 255, 50};
-    Color_RGB8 C_button_uni = CVar_GetRGB("gCCCBtnPrim", C_button_ori);
-    Color_RGB8 C_button_U = CVar_GetRGB("gCCCUBtnPrim", C_button_ori);
-    Color_RGB8 C_button_D = CVar_GetRGB("gCCCDBtnPrim", C_button_ori);
-    Color_RGB8 C_button_L = CVar_GetRGB("gCCCLBtnPrim", C_button_ori);
-    Color_RGB8 C_button_R = CVar_GetRGB("gCCCRBtnPrim", C_button_ori);
->>>>>>> 4165e1007964f4fa54c8d36c053186ad425563e6
     static s16 D_8082A070[][4] = {
         { 255, 0, 0, 255 },
         { 255, 70, 0, 150 },

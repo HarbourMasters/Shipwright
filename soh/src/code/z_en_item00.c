@@ -1351,8 +1351,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     }
     pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
 
-
-    EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
+    EffectSsKiraKira_SpawnFocused(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
 }
 
 /**

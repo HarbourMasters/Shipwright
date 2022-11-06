@@ -181,7 +181,6 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
     graveHue++;
     if (graveHue >= 360) graveHue = 0;
 
-
     OPEN_DISPS(play->state.gfxCtx);
 
     if (((BgHaka*)thisx)->state == 2) {
