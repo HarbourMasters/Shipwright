@@ -4,47 +4,47 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
 
-void EnFz_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnFz_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnFz_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnFz_Init(Actor* thisx, PlayState* play);
+void EnFz_Destroy(Actor* thisx, PlayState* play);
+void EnFz_Update(Actor* thisx, PlayState* play);
+void EnFz_Draw(Actor* thisx, PlayState* play);
 
-void EnFz_UpdateTargetPos(EnFz* this, GlobalContext* globalCtx);
+void EnFz_UpdateTargetPos(EnFz* this, PlayState* play);
 
 // Stationary Freezard
 void EnFz_SetupBlowSmokeStationary(EnFz* this);
-void EnFz_BlowSmokeStationary(EnFz* this, GlobalContext* globalCtx);
+void EnFz_BlowSmokeStationary(EnFz* this, PlayState* play);
 
 // Moving Freezard that can vanish and reappear
-void EnFz_Wait(EnFz* this, GlobalContext* globalCtx);
+void EnFz_Wait(EnFz* this, PlayState* play);
 void EnFz_SetupAppear(EnFz* this);
-void EnFz_Appear(EnFz* this, GlobalContext* globalCtx);
+void EnFz_Appear(EnFz* this, PlayState* play);
 void EnFz_SetupAimForMove(EnFz* this);
-void EnFz_AimForMove(EnFz* this, GlobalContext* globalCtx);
+void EnFz_AimForMove(EnFz* this, PlayState* play);
 void EnFz_SetupMoveTowardsPlayer(EnFz* this);
-void EnFz_MoveTowardsPlayer(EnFz* this, GlobalContext* globalCtx);
+void EnFz_MoveTowardsPlayer(EnFz* this, PlayState* play);
 void EnFz_SetupAimForFreeze(EnFz* this);
-void EnFz_AimForFreeze(EnFz* this, GlobalContext* globalCtx);
-void EnFz_SetupBlowSmoke(EnFz* this, GlobalContext* globalCtx);
-void EnFz_BlowSmoke(EnFz* this, GlobalContext* globalCtx);
+void EnFz_AimForFreeze(EnFz* this, PlayState* play);
+void EnFz_SetupBlowSmoke(EnFz* this, PlayState* play);
+void EnFz_BlowSmoke(EnFz* this, PlayState* play);
 void EnFz_SetupDisappear(EnFz* this);
-void EnFz_Disappear(EnFz* this, GlobalContext* globalCtx);
+void EnFz_Disappear(EnFz* this, PlayState* play);
 void EnFz_SetupWait(EnFz* this);
 
 // Killed with fire source
 void EnFz_SetupMelt(EnFz* this);
-void EnFz_Melt(EnFz* this, GlobalContext* globalCtx);
+void EnFz_Melt(EnFz* this, PlayState* play);
 
 // Death
-void EnFz_SetupDespawn(EnFz* this, GlobalContext* globalCtx);
-void EnFz_Despawn(EnFz* this, GlobalContext* globalCtx);
+void EnFz_SetupDespawn(EnFz* this, PlayState* play);
+void EnFz_Despawn(EnFz* this, PlayState* play);
 
 // Ice Smoke Effects
 void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 xyScale);
 void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 xyScale, f32 xyScaleTarget,
                               s16 primAlpha, u8 isTimerMod8);
-void EnFz_UpdateIceSmoke(EnFz* this, GlobalContext* globalCtx);
-void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx);
+void EnFz_UpdateIceSmoke(EnFz* this, PlayState* play);
+void EnFz_DrawIceSmoke(EnFz* this, PlayState* play);
 
 const ActorInit En_Fz_InitVars = {
     ACTOR_EN_FZ,
@@ -157,21 +157,21 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 30, ICHAIN_STOP),
 };
 
-void EnFz_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnFz_Init(Actor* thisx, PlayState* play) {
     EnFz* this = (EnFz*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.colChkInfo.damageTable = &sDamageTable;
     this->actor.colChkInfo.health = 6;
 
-    Collider_InitCylinder(globalCtx, &this->collider1);
-    Collider_SetCylinderType1(globalCtx, &this->collider1, &this->actor, &sCylinderInit1);
+    Collider_InitCylinder(play, &this->collider1);
+    Collider_SetCylinderType1(play, &this->collider1, &this->actor, &sCylinderInit1);
 
-    Collider_InitCylinder(globalCtx, &this->collider2);
-    Collider_SetCylinderType1(globalCtx, &this->collider2, &this->actor, &sCylinderInit2);
+    Collider_InitCylinder(play, &this->collider2);
+    Collider_SetCylinderType1(play, &this->collider2, &this->actor, &sCylinderInit2);
 
-    Collider_InitCylinder(globalCtx, &this->collider3);
-    Collider_SetCylinderType1(globalCtx, &this->collider3, &this->actor, &sCylinderInit3);
+    Collider_InitCylinder(play, &this->collider3);
+    Collider_SetCylinderType1(play, &this->collider3, &this->actor, &sCylinderInit3);
 
     Actor_SetScale(&this->actor, 0.008f);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
@@ -201,18 +201,18 @@ void EnFz_Init(Actor* thisx, GlobalContext* globalCtx) {
         EnFz_SetupBlowSmokeStationary(this);
     }
 
-    EnFz_UpdateTargetPos(this, globalCtx);
+    EnFz_UpdateTargetPos(this, play);
 }
 
-void EnFz_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnFz_Destroy(Actor* thisx, PlayState* play) {
     EnFz* this = (EnFz*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider1);
-    Collider_DestroyCylinder(globalCtx, &this->collider2);
-    Collider_DestroyCylinder(globalCtx, &this->collider3);
+    Collider_DestroyCylinder(play, &this->collider1);
+    Collider_DestroyCylinder(play, &this->collider2);
+    Collider_DestroyCylinder(play, &this->collider3);
 }
 
-void EnFz_UpdateTargetPos(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_UpdateTargetPos(EnFz* this, PlayState* play) {
     Vec3f pos;
     Vec3f hitPos;
     Vec3f vec1;
@@ -229,7 +229,7 @@ void EnFz_UpdateTargetPos(EnFz* this, GlobalContext* globalCtx) {
     vec1.z = 220.0f;
     Matrix_MultVec3f(&vec1, &this->wallHitPos);
 
-    if (BgCheck_EntityLineTest1(&globalCtx->colCtx, &pos, &this->wallHitPos, &hitPos, &hitPoly, true, false, false,
+    if (BgCheck_EntityLineTest1(&play->colCtx, &pos, &this->wallHitPos, &hitPos, &hitPoly, true, false, false,
                                 true, &bgId)) {
         Math_Vec3f_Copy(&this->wallHitPos, &hitPos);
     }
@@ -248,7 +248,7 @@ s32 EnFz_ReachedTarget(EnFz* this, Vec3f* vec) {
     }
 }
 
-void EnFz_Damaged(EnFz* this, GlobalContext* globalCtx, Vec3f* vec, s32 numEffects, f32 unkFloat) {
+void EnFz_Damaged(EnFz* this, PlayState* play, Vec3f* vec, s32 numEffects, f32 unkFloat) {
     s32 i;
     Vec3f pos;
     Vec3f vel;
@@ -277,10 +277,10 @@ void EnFz_Damaged(EnFz* this, GlobalContext* globalCtx, Vec3f* vec, s32 numEffec
         vel.x = Rand_CenteredFloat(10.0f);
         vel.y = Rand_ZeroFloat(10.0f) + 2.0f;
         vel.z = Rand_CenteredFloat(10.0f);
-        EffectSsEnIce_Spawn(globalCtx, &pos, scale, &vel, &accel, &primColor, &envColor, life);
+        EffectSsEnIce_Spawn(play, &pos, scale, &vel, &accel, &primColor, &envColor, life);
     }
 
-    CollisionCheck_SpawnShieldParticles(globalCtx, vec);
+    CollisionCheck_SpawnShieldParticles(play, vec);
 }
 
 void EnFz_SpawnIceSmokeHiddenState(EnFz* this) {
@@ -320,12 +320,12 @@ void EnFz_SpawnIceSmokeActiveState(EnFz* this) {
     }
 }
 
-void EnFz_ApplyDamage(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
     Vec3f vec;
 
     if (this->isMoving &&
         ((this->actor.bgCheckFlags & 8) ||
-         (Actor_TestFloorInDirection(&this->actor, globalCtx, 60.0f, this->actor.world.rot.y) == 0))) {
+         (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
         this->actor.bgCheckFlags &= ~8;
         this->isMoving = false;
         this->speedXZ = 0.0f;
@@ -353,7 +353,7 @@ void EnFz_ApplyDamage(EnFz* this, GlobalContext* globalCtx) {
                         vec.x = this->actor.world.pos.x;
                         vec.y = this->actor.world.pos.y;
                         vec.z = this->actor.world.pos.z;
-                        EnFz_Damaged(this, globalCtx, &vec, 10, 0.0f);
+                        EnFz_Damaged(this, play, &vec, 10, 0.0f);
                         this->unusedCounter++;
                     } else {
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_FREEZAD_DEAD);
@@ -361,8 +361,8 @@ void EnFz_ApplyDamage(EnFz* this, GlobalContext* globalCtx) {
                         vec.x = this->actor.world.pos.x;
                         vec.y = this->actor.world.pos.y;
                         vec.z = this->actor.world.pos.z;
-                        EnFz_Damaged(this, globalCtx, &vec, 30, 10.0f);
-                        EnFz_SetupDespawn(this, globalCtx);
+                        EnFz_Damaged(this, play, &vec, 30, 10.0f);
+                        EnFz_SetupDespawn(this, play);
                     }
                 }
             } else {
@@ -391,7 +391,7 @@ void EnFz_SetupDisappear(EnFz* this) {
     this->actionFunc = EnFz_Disappear;
 }
 
-void EnFz_Disappear(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_Disappear(EnFz* this, PlayState* play) {
     this->envAlpha -= 16;
 
     if (this->envAlpha > 255) {
@@ -414,7 +414,7 @@ void EnFz_SetupWait(EnFz* this) {
     this->actor.world.pos.z = this->posOrigin.z;
 }
 
-void EnFz_Wait(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_Wait(EnFz* this, PlayState* play) {
     if ((this->timer == 0) && (this->actor.xzDistToPlayer < 400.0f)) {
         EnFz_SetupAppear(this);
     }
@@ -427,7 +427,7 @@ void EnFz_SetupAppear(EnFz* this) {
     this->actionFunc = EnFz_Appear;
 }
 
-void EnFz_Appear(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_Appear(EnFz* this, PlayState* play) {
     if (this->timer == 0) {
         this->envAlpha += 8;
         if (this->envAlpha > 255) {
@@ -450,7 +450,7 @@ void EnFz_SetupAimForMove(EnFz* this) {
     this->actor.gravity = -1.0f;
 }
 
-void EnFz_AimForMove(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_AimForMove(EnFz* this, PlayState* play) {
     EnFz_SetYawTowardsPlayer(this);
 
     if (this->timer == 0) {
@@ -466,7 +466,7 @@ void EnFz_SetupMoveTowardsPlayer(EnFz* this) {
     this->speedXZ = 4.0f;
 }
 
-void EnFz_MoveTowardsPlayer(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_MoveTowardsPlayer(EnFz* this, PlayState* play) {
     if ((this->timer == 0) || !this->isMoving) {
         EnFz_SetupAimForFreeze(this);
     }
@@ -480,22 +480,22 @@ void EnFz_SetupAimForFreeze(EnFz* this) {
     this->actor.speedXZ = 0.0f;
 }
 
-void EnFz_AimForFreeze(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_AimForFreeze(EnFz* this, PlayState* play) {
     EnFz_SetYawTowardsPlayer(this);
 
     if (this->timer == 0) {
-        EnFz_SetupBlowSmoke(this, globalCtx);
+        EnFz_SetupBlowSmoke(this, play);
     }
 }
 
-void EnFz_SetupBlowSmoke(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_SetupBlowSmoke(EnFz* this, PlayState* play) {
     this->state = 1;
     this->timer = 80;
     this->actionFunc = EnFz_BlowSmoke;
-    EnFz_UpdateTargetPos(this, globalCtx);
+    EnFz_UpdateTargetPos(this, play);
 }
 
-void EnFz_BlowSmoke(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_BlowSmoke(EnFz* this, PlayState* play) {
     Vec3f vec1;
     Vec3f pos;
     Vec3f velocity;
@@ -543,7 +543,7 @@ void EnFz_BlowSmoke(EnFz* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnFz_SetupDespawn(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_SetupDespawn(EnFz* this, PlayState* play) {
     this->state = 0;
     this->updateBgInfo = true;
     this->isFreezing = false;
@@ -555,12 +555,12 @@ void EnFz_SetupDespawn(EnFz* this, GlobalContext* globalCtx) {
     this->actor.gravity = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.speedXZ = 0.0f;
-    Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_PROP);
-    Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x60);
+    Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
+    Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x60);
     this->actionFunc = EnFz_Despawn;
 }
 
-void EnFz_Despawn(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_Despawn(EnFz* this, PlayState* play) {
     if (this->timer == 0) {
         Actor_Kill(&this->actor);
     }
@@ -576,7 +576,7 @@ void EnFz_SetupMelt(EnFz* this) {
     this->speedXZ = 0.0f;
 }
 
-void EnFz_Melt(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_Melt(EnFz* this, PlayState* play) {
     Math_StepToF(&this->actor.scale.y, 0.0006f, 0.0002f);
 
     if (this->actor.scale.y < 0.006f) {
@@ -592,7 +592,7 @@ void EnFz_Melt(EnFz* this, GlobalContext* globalCtx) {
     }
 
     if (this->envAlpha == 0) {
-        EnFz_SetupDespawn(this, globalCtx);
+        EnFz_SetupDespawn(this, play);
     }
 }
 
@@ -606,7 +606,7 @@ void EnFz_SetupBlowSmokeStationary(EnFz* this) {
     this->actor.gravity = -1.0f;
 }
 
-void EnFz_BlowSmokeStationary(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_BlowSmokeStationary(EnFz* this, PlayState* play) {
     Vec3f vec1;
     Vec3f pos;
     Vec3f velocity;
@@ -616,7 +616,7 @@ void EnFz_BlowSmokeStationary(EnFz* this, GlobalContext* globalCtx) {
 
     if (this->counter & 0xC0) {
         EnFz_SetYawTowardsPlayer(this);
-        EnFz_UpdateTargetPos(this, globalCtx);
+        EnFz_UpdateTargetPos(this, play);
     } else {
         isTimerMod8 = false;
         primAlpha = 150;
@@ -662,7 +662,7 @@ static EnFzSpawnIceSmokeFunc iceSmokeSpawnFuncs[] = {
     EnFz_SpawnIceSmokeActiveState,
 };
 
-void EnFz_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnFz_Update(Actor* thisx, PlayState* play) {
     EnFz* this = (EnFz*)thisx;
     s32 pad;
 
@@ -681,17 +681,17 @@ void EnFz_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     Actor_SetFocus(&this->actor, 50.0f);
-    EnFz_ApplyDamage(this, globalCtx);
-    this->actionFunc(this, globalCtx);
+    EnFz_ApplyDamage(this, play);
+    this->actionFunc(this, play);
     if (this->isDespawning == false) {
         Collider_UpdateCylinder(&this->actor, &this->collider1);
         Collider_UpdateCylinder(&this->actor, &this->collider2);
         if (this->isFreezing) {
             if (this->actor.colorFilterTimer == 0) {
-                CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider1.base);
-                CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider2.base);
+                CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider1.base);
+                CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider2.base);
             }
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider1.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider1.base);
         }
     }
 
@@ -699,14 +699,14 @@ void EnFz_Update(Actor* thisx, GlobalContext* globalCtx) {
     Actor_MoveForward(&this->actor);
 
     if (this->updateBgInfo) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 20.0f, 5);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 20.0f, 5);
     }
 
     iceSmokeSpawnFuncs[this->state](this);
-    EnFz_UpdateIceSmoke(this, globalCtx);
+    EnFz_UpdateIceSmoke(this, play);
 }
 
-void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnFz_Draw(Actor* thisx, PlayState* play) {
     static Gfx* displayLists[] = {
         gFreezardIntactDL,              // Body fully intact           (5 or 6 health)
         gFreezardTopRightHornChippedDL, // Top right horn chipped off  (from Freezards perspective)   (3 or 4 health)
@@ -718,19 +718,19 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     index = (6 - this->actor.colChkInfo.health) >> 1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actor.colChkInfo.health == 0) {
         index = 2;
     }
 
     if (this->isActive) {
-        func_8002ED80(&this->actor, globalCtx, 0);
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_8002ED80(&this->actor, play, 0);
+        func_80093D84(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, globalCtx->state.frames & 0x7F, 32, 32, 1, 0,
-                                    (2 * globalCtx->state.frames) & 0x7F, 32, 32));
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
+                                    (2 * play->state.frames) & 0x7F, 32, 32));
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(POLY_XLU_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, ENVIRONMENT, 0);
@@ -739,8 +739,8 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, displayLists[index]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
-    EnFz_DrawIceSmoke(this, globalCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
+    EnFz_DrawIceSmoke(this, play);
 }
 
 void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 xyScale) {
@@ -790,7 +790,7 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
     }
 }
 
-void EnFz_UpdateIceSmoke(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_UpdateIceSmoke(EnFz* this, PlayState* play) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
     s16 i;
     Vec3f pos;
@@ -838,7 +838,7 @@ void EnFz_UpdateIceSmoke(EnFz* this, GlobalContext* globalCtx) {
                     this->collider3.dim.pos.x = (s16)iceSmoke->pos.x;
                     this->collider3.dim.pos.y = (s16)iceSmoke->pos.y;
                     this->collider3.dim.pos.z = (s16)iceSmoke->pos.z;
-                    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider3.base);
+                    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider3.base);
                 }
 
                 pos.x = iceSmoke->pos.x;
@@ -856,15 +856,15 @@ void EnFz_UpdateIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
+void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
     s16 i;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     u8 texLoaded = false;
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
         FrameInterpolation_RecordOpenChild(iceSmoke, iceSmoke->epoch);
@@ -879,10 +879,10 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, iceSmoke->primAlpha);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
                                         15 * (iceSmoke->timer + (3 * i)), 32, 64, 1, 0, 0, 32, 32));
             Matrix_Translate(iceSmoke->pos.x, iceSmoke->pos.y, iceSmoke->pos.z, MTXMODE_NEW);
-            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(iceSmoke->xyScale, iceSmoke->xyScale, 1.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

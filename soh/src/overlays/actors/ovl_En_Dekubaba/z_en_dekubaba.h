@@ -6,7 +6,7 @@
 
 struct EnDekubaba;
 
-typedef void (*EnDekubabaActionFunc)(struct EnDekubaba*, GlobalContext*);
+typedef void (*EnDekubabaActionFunc)(struct EnDekubaba*, PlayState*);
 
 typedef enum {
     /* 0 */ DEKUBABA_NORMAL,

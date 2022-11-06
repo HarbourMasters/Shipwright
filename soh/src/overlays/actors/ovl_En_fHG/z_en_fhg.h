@@ -6,7 +6,7 @@
 
 struct EnfHG;
 
-typedef void (*EnfHGActionFunc)(struct EnfHG*, GlobalContext*);
+typedef void (*EnfHGActionFunc)(struct EnfHG*, PlayState*);
 
 typedef enum {
     /*  0 */ FHG_NO_SIGNAL,

@@ -9,15 +9,15 @@
 
 #define FLAGS 0
 
-void BgIceObjects_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgIceObjects_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgIceObjects_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgIceObjects_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgIceObjects_Init(Actor* thisx, PlayState* play);
+void BgIceObjects_Destroy(Actor* thisx, PlayState* play);
+void BgIceObjects_Update(Actor* thisx, PlayState* play);
+void BgIceObjects_Draw(Actor* thisx, PlayState* play);
 
-void BgIceObjects_Idle(BgIceObjects* this, GlobalContext* globalCtx);
-void BgIceObjects_Slide(BgIceObjects* this, GlobalContext* globalCtx);
-void BgIceObjects_Reset(BgIceObjects* this, GlobalContext* globalCtx);
-void BgIceObjects_Stuck(BgIceObjects* this, GlobalContext* globalCtx);
+void BgIceObjects_Idle(BgIceObjects* this, PlayState* play);
+void BgIceObjects_Slide(BgIceObjects* this, PlayState* play);
+void BgIceObjects_Reset(BgIceObjects* this, PlayState* play);
+void BgIceObjects_Stuck(BgIceObjects* this, PlayState* play);
 
 static Color_RGBA8 sWhite = { 250, 250, 250, 255 };
 static Color_RGBA8 sGray = { 180, 180, 180, 255 };
@@ -40,7 +40,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgIceObjects_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceObjects_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgIceObjects* this = (BgIceObjects*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -50,15 +50,15 @@ void BgIceObjects_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionHeader_GetVirtual(&object_ice_objects_Col_0003F0, &colHeader);
     Math_Vec3f_Copy(&this->targetPos, &this->dyna.actor.home.pos);
     this->actionFunc = BgIceObjects_Idle;
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->dyna.actor.params = 0;
 }
 
-void BgIceObjects_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceObjects_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgIceObjects* this = (BgIceObjects*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 static s16 sXStarts[] = {
@@ -80,7 +80,7 @@ static s16 sXStops[7][2] = {
  * defaulting to the maximum x wall or minimum z wall. Each x and z position
  * has only one possible wall or pit on each side of it.
  */
-void BgIceObjects_SetNextTarget(BgIceObjects* this, GlobalContext* globalCtx) {
+void BgIceObjects_SetNextTarget(BgIceObjects* this, PlayState* play) {
     s16 x16;
     s16 z16 = 0; // needed to match
     s32 i;
@@ -111,7 +111,7 @@ void BgIceObjects_SetNextTarget(BgIceObjects* this, GlobalContext* globalCtx) {
 /*
  * Checks if the block has fallen into any of the pits.
  */
-void BgIceObjects_CheckPits(BgIceObjects* this, GlobalContext* globalCtx) {
+void BgIceObjects_CheckPits(BgIceObjects* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if ((thisx->velocity.y > 0.0f) || ((thisx->world.pos.x <= -1660.0f) && (thisx->world.pos.z <= -1060.0f)) ||
@@ -126,24 +126,24 @@ void BgIceObjects_CheckPits(BgIceObjects* this, GlobalContext* globalCtx) {
             thisx->world.pos.y = thisx->home.pos.y - 60.0f;
             thisx->world.pos.z = thisx->home.pos.z;
             if (thisx->params != 0) {
-                func_8002DF54(globalCtx, thisx, 7);
+                func_8002DF54(play, thisx, 7);
             }
             this->actionFunc = BgIceObjects_Reset;
         }
     }
 }
 
-void BgIceObjects_Idle(BgIceObjects* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgIceObjects_Idle(BgIceObjects* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Actor* thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
-        if ((this->dyna.unk_150 > 0.0f) && !Player_InCsMode(globalCtx)) {
-            BgIceObjects_SetNextTarget(this, globalCtx);
+        if ((this->dyna.unk_150 > 0.0f) && !Player_InCsMode(play)) {
+            BgIceObjects_SetNextTarget(this, play);
             if (Actor_WorldDistXZToPoint(thisx, &this->targetPos) > 1.0f) {
                 thisx->flags |= ACTOR_FLAG_4;
-                func_8002DF54(globalCtx, thisx, 8);
+                func_8002DF54(play, thisx, 8);
                 thisx->params = 1;
                 this->actionFunc = BgIceObjects_Slide;
             }
@@ -151,11 +151,11 @@ void BgIceObjects_Idle(BgIceObjects* this, GlobalContext* globalCtx) {
         this->dyna.unk_150 = 0.0f;
     }
     if (thisx->velocity.y > 0.0f) {
-        BgIceObjects_CheckPits(this, globalCtx);
+        BgIceObjects_CheckPits(this, play);
     }
 }
 
-void BgIceObjects_Slide(BgIceObjects* this, GlobalContext* globalCtx) {
+void BgIceObjects_Slide(BgIceObjects* this, PlayState* play) {
     s32 atTarget;
     Vec3f pos;
     Vec3f velocity;
@@ -173,7 +173,7 @@ void BgIceObjects_Slide(BgIceObjects* this, GlobalContext* globalCtx) {
             thisx->flags &= ~ACTOR_FLAG_4;
         }
         thisx->params = 0;
-        func_8002DF54(globalCtx, thisx, 7);
+        func_8002DF54(play, thisx, 7);
         Audio_PlayActorSound2(thisx, NA_SE_EV_BLOCK_BOUND);
         if ((fabsf(thisx->world.pos.x + 1387.0f) < 1.0f) && (fabsf(thisx->world.pos.z + 260.0f) < 1.0f)) {
             this->actionFunc = BgIceObjects_Stuck;
@@ -188,18 +188,18 @@ void BgIceObjects_Slide(BgIceObjects* this, GlobalContext* globalCtx) {
         pos.x = thisx->world.pos.x - (60.0f * Math_SinS(this->dyna.unk_158)) - (Math_CosS(this->dyna.unk_158) * spread);
         pos.z = thisx->world.pos.z - (60.0f * Math_CosS(this->dyna.unk_158)) + (Math_SinS(this->dyna.unk_158) * spread);
         pos.y = thisx->world.pos.y;
-        func_8002829C(globalCtx, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
+        func_8002829C(play, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
         spread = Rand_CenteredFloat(120.0f);
         pos.x = thisx->world.pos.x - (60.0f * Math_SinS(this->dyna.unk_158)) + (Math_CosS(this->dyna.unk_158) * spread);
         pos.z = thisx->world.pos.z - (60.0f * Math_CosS(this->dyna.unk_158)) - (Math_SinS(this->dyna.unk_158) * spread);
-        func_8002829C(globalCtx, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
+        func_8002829C(play, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
         func_8002F974(thisx, NA_SE_PL_SLIP_ICE_LEVEL - SFX_FLAG);
     }
-    BgIceObjects_CheckPits(this, globalCtx);
+    BgIceObjects_CheckPits(this, play);
 }
 
-void BgIceObjects_Reset(BgIceObjects* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgIceObjects_Reset(BgIceObjects* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Actor* thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
@@ -214,8 +214,8 @@ void BgIceObjects_Reset(BgIceObjects* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceObjects_Stuck(BgIceObjects* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgIceObjects_Stuck(BgIceObjects* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
@@ -223,16 +223,16 @@ void BgIceObjects_Stuck(BgIceObjects* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceObjects_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceObjects_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgIceObjects* this = (BgIceObjects*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgIceObjects_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceObjects_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     BgIceObjects* this = (BgIceObjects*)thisx;
 
-    Gfx_DrawDListOpa(globalCtx, object_ice_objects_DL_000190);
+    Gfx_DrawDListOpa(play, object_ice_objects_DL_000190);
 }

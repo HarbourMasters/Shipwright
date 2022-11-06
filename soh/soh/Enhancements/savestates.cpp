@@ -22,7 +22,7 @@
 #include "../../src/overlays/actors/ovl_En_Clear_Tag/z_en_clear_tag.h"
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 
-extern "C" GlobalContext* gGlobalCtx;
+extern "C" PlayState* gPlayState;
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
@@ -860,7 +860,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 }
 
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
-    if (gGlobalCtx == nullptr) {
+    if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
         SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;

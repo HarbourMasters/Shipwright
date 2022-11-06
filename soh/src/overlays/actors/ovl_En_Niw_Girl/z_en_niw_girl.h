@@ -7,7 +7,7 @@
 
 struct EnNiwGirl;
 
-typedef void (*EnNiwGirlActionFunc)(struct EnNiwGirl*, GlobalContext*);
+typedef void (*EnNiwGirlActionFunc)(struct EnNiwGirl*, PlayState*);
 
 typedef struct EnNiwGirl {
     /* 0x0000 */ Actor actor;

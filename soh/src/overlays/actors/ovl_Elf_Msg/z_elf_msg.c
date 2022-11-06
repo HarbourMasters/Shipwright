@@ -10,13 +10,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void ElfMsg_Init(Actor* thisx, GlobalContext* globalCtx);
-void ElfMsg_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ElfMsg_Update(Actor* thisx, GlobalContext* globalCtx);
-void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ElfMsg_Init(Actor* thisx, PlayState* play);
+void ElfMsg_Destroy(Actor* thisx, PlayState* play);
+void ElfMsg_Update(Actor* thisx, PlayState* play);
+void ElfMsg_Draw(Actor* thisx, PlayState* play);
 
-void ElfMsg_CallNaviCuboid(ElfMsg* this, GlobalContext* globalCtx);
-void ElfMsg_CallNaviCylinder(ElfMsg* this, GlobalContext* globalCtx);
+void ElfMsg_CallNaviCuboid(ElfMsg* this, PlayState* play);
+void ElfMsg_CallNaviCylinder(ElfMsg* this, PlayState* play);
 
 const ActorInit Elf_Msg_InitVars = {
     ACTOR_ELF_MSG,
@@ -44,32 +44,32 @@ void ElfMsg_SetupAction(ElfMsg* this, ElfMsgActionFunc actionFunc) {
  * Checks a scene flag - if flag is set, the actor is killed and function returns 1. Otherwise returns 0.
  * Can also set a switch flag from params while killing.
  */
-s32 ElfMsg_KillCheck(ElfMsg* this, GlobalContext* globalCtx) {
+s32 ElfMsg_KillCheck(ElfMsg* this, PlayState* play) {
     if ((this->actor.world.rot.y > 0) && (this->actor.world.rot.y < 0x41) &&
-        Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 1)) {
+        Flags_GetSwitch(play, this->actor.world.rot.y - 1)) {
         LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
-            Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
+            Flags_SetSwitch(play, (this->actor.params >> 8) & 0x3F);
         }
         Actor_Kill(&this->actor);
         return 1;
-    } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(globalCtx, this->actor.room)) {
+    } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(play, this->actor.room)) {
         LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
-            Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
+            Flags_SetSwitch(play, (this->actor.params >> 8) & 0x3F);
         }
         Actor_Kill(&this->actor);
         return 1;
     } else if (((this->actor.params >> 8) & 0x3F) == 0x3F) {
         return 0;
-    } else if (Flags_GetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F)) {
+    } else if (Flags_GetSwitch(play, (this->actor.params >> 8) & 0x3F)) {
         Actor_Kill(&this->actor);
         return 1;
     }
     return 0;
 }
 
-void ElfMsg_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ElfMsg_Init(Actor* thisx, PlayState* play) {
     ElfMsg* this = (ElfMsg*)thisx;
 
     // "Conditions for Elf Tag disappearing"
@@ -80,7 +80,7 @@ void ElfMsg_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_FGCOL(CYAN) "\nエルフ タグ 出現条件 %d" VT_RST "\n", thisx->shape.rot.y - 0x41);
     }
 
-    if (!ElfMsg_KillCheck(this, globalCtx)) {
+    if (!ElfMsg_KillCheck(this, play)) {
         Actor_ProcessInitChain(thisx, sInitChain);
         if (thisx->world.rot.x == 0) {
             thisx->scale.z = 0.4f;
@@ -105,7 +105,7 @@ void ElfMsg_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ElfMsg_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ElfMsg_Destroy(Actor* thisx, PlayState* play) {
 }
 
 s32 ElfMsg_GetMessageId(ElfMsg* this) {
@@ -117,8 +117,8 @@ s32 ElfMsg_GetMessageId(ElfMsg* this) {
     }
 }
 
-void ElfMsg_CallNaviCuboid(ElfMsg* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void ElfMsg_CallNaviCuboid(ElfMsg* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     EnElf* navi = (EnElf*)player->naviActor;
 
     if ((fabsf(player->actor.world.pos.x - this->actor.world.pos.x) < (100.0f * this->actor.scale.x)) &&
@@ -134,8 +134,8 @@ s32 ElfMsg_WithinXZDistance(Vec3f* pos1, Vec3f* pos2, f32 distance) {
     return (SQ(pos2->x - pos1->x) + SQ(pos2->z - pos1->z)) < SQ(distance);
 }
 
-void ElfMsg_CallNaviCylinder(ElfMsg* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void ElfMsg_CallNaviCylinder(ElfMsg* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     EnElf* navi = (EnElf*)player->naviActor;
 
     // This fixes a crash when using a grotto exit when you never properly entered
@@ -150,20 +150,20 @@ void ElfMsg_CallNaviCylinder(ElfMsg* this, GlobalContext* globalCtx) {
     }
 }
 
-void ElfMsg_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ElfMsg_Update(Actor* thisx, PlayState* play) {
     ElfMsg* this = (ElfMsg*)thisx;
 
-    if (!ElfMsg_KillCheck(this, globalCtx)) {
-        if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (!ElfMsg_KillCheck(this, play)) {
+        if (Actor_ProcessTalkRequest(&this->actor, play)) {
             if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
-                Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
+                Flags_SetSwitch(play, (this->actor.params >> 8) & 0x3F);
             }
             Actor_Kill(&this->actor);
             return;
         }
         if ((this->actor.world.rot.y <= 0x41) || (this->actor.world.rot.y > 0x80) ||
-            Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 0x41)) {
-            this->actionFunc(this, globalCtx);
+            Flags_GetSwitch(play, this->actor.world.rot.y - 0x41)) {
+            this->actionFunc(this, play);
         }
     }
 }
@@ -172,23 +172,23 @@ void ElfMsg_Update(Actor* thisx, GlobalContext* globalCtx) {
 #include "overlays/ovl_Elf_Msg/ovl_Elf_Msg.h"
 #endif
 
-void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx) 
+void ElfMsg_Draw(Actor* thisx, PlayState* play) 
 {
 #ifdef ZELDA_DEBUG
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (R_NAVI_MSG_REGION_ALPHA == 0) {
         return;
     }
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     if (thisx->params & 0x8000) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 100, 100, R_NAVI_MSG_REGION_ALPHA);
     } else {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, R_NAVI_MSG_REGION_ALPHA);
     }
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_809AD278);
 
@@ -198,6 +198,6 @@ void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx)
         gSPDisplayList(POLY_XLU_DISP++, sCylinderDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
     #endif
 }

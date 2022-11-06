@@ -6,7 +6,7 @@
 
 struct EnFu;
 
-typedef void (*EnFuActionFunc)(struct EnFu*, GlobalContext*);
+typedef void (*EnFuActionFunc)(struct EnFu*, PlayState*);
 
 typedef enum {
     /* 0x00 */ FU_LIMB_ROOT,

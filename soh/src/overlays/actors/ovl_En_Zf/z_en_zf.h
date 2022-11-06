@@ -6,7 +6,7 @@
 
 struct EnZf;
 
-typedef void (*EnZfActionFunc)(struct EnZf*, GlobalContext*);
+typedef void (*EnZfActionFunc)(struct EnZf*, PlayState*);
 
 typedef enum {
     /* -2 */ ENZF_TYPE_DINOLFOS = -2,

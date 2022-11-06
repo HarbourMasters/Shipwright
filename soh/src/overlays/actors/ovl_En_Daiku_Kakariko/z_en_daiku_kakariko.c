@@ -16,13 +16,13 @@ typedef enum {
     /* 0x3 */ CARPENTER_SHIRO    // Pink and purple pants, two-spiked hair
 } KakarikoCarpenterType;
 
-void EnDaikuKakariko_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnDaikuKakariko_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnDaikuKakariko_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnDaikuKakariko_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnDaikuKakariko_Init(Actor* thisx, PlayState* play);
+void EnDaikuKakariko_Destroy(Actor* thisx, PlayState* play);
+void EnDaikuKakariko_Update(Actor* thisx, PlayState* play);
+void EnDaikuKakariko_Draw(Actor* thisx, PlayState* play);
 
-void EnDaikuKakariko_Wait(EnDaikuKakariko* this, GlobalContext* globalCtx);
-void EnDaikuKakariko_Run(EnDaikuKakariko* this, GlobalContext* globalCtx);
+void EnDaikuKakariko_Wait(EnDaikuKakariko* this, PlayState* play);
+void EnDaikuKakariko_Run(EnDaikuKakariko* this, PlayState* play);
 
 const ActorInit En_Daiku_Kakariko_InitVars = {
     ACTOR_EN_DAIKU_KAKARIKO,
@@ -124,13 +124,13 @@ void EnDaikuKakariko_ChangeAnim(EnDaikuKakariko* this, s32 index, s32* currentIn
     *currentIndex = index;
 }
 
-void EnDaikuKakariko_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Init(Actor* thisx, PlayState* play) {
     static u16 initFlags[] = { 0x0080, 0x00B0, 0x0070, 0x0470 }; // List of inital values for this->flags
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
     s32 pad;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        switch (globalCtx->sceneNum) {
+        switch (play->sceneNum) {
             case SCENE_SPOT01:
                 if (IS_DAY) {
                     this->flags |= 1;
@@ -158,10 +158,10 @@ void EnDaikuKakariko_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
 
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
                        17);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInit);
 
@@ -169,7 +169,7 @@ void EnDaikuKakariko_Init(Actor* thisx, GlobalContext* globalCtx) {
                      Animation_GetLastFrame(sAnimationInfo[ENDAIKUKAKARIKO_ANIM_0].animation),
                      sAnimationInfo[ENDAIKUKAKARIKO_ANIM_0].mode, sAnimationInfo[ENDAIKUKAKARIKO_ANIM_0].morphFrames);
 
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
     this->actor.gravity = 0.0f;
     this->runSpeed = 3.0f;
@@ -204,16 +204,16 @@ void EnDaikuKakariko_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnDaikuKakariko_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Destroy(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, GlobalContext* globalCtx) {
+s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, PlayState* play) {
     s32 talkState = 2;
 
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         switch (this->actor.textId) {
             case 0x6061:
                 gSaveContext.infTable[23] |= 0x40;
@@ -227,21 +227,21 @@ s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, GlobalContext* globalCtx
     return talkState;
 }
 
-void EnDaikuKakariko_HandleTalking(EnDaikuKakariko* this, GlobalContext* globalCtx) {
+void EnDaikuKakariko_HandleTalking(EnDaikuKakariko* this, PlayState* play) {
     static s32 maskReactionSets[] = { 1, 2, 3, 4 };
     s16 sp26;
     s16 sp24;
 
     if (this->talkState == 2) {
-        this->talkState = EnDaikuKakariko_GetTalkState(this, globalCtx);
-    } else if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+        this->talkState = EnDaikuKakariko_GetTalkState(this, play);
+    } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->talkState = 2;
     } else {
-        Actor_GetScreenPos(globalCtx, &this->actor, &sp26, &sp24);
+        Actor_GetScreenPos(play, &this->actor, &sp26, &sp24);
 
         if ((sp26 >= 0) && (sp26 <= 320) && (sp24 >= 0) && (sp24 <= 240) && (this->talkState == 0) &&
-            (func_8002F2CC(&this->actor, globalCtx, 100.0f) == 1)) {
-            this->actor.textId = Text_GetFaceReaction(globalCtx, maskReactionSets[this->actor.params & 3]);
+            (func_8002F2CC(&this->actor, play, 100.0f) == 1)) {
+            this->actor.textId = Text_GetFaceReaction(play, maskReactionSets[this->actor.params & 3]);
 
             if (this->actor.textId == 0) {
                 switch (this->actor.params & 3) {
@@ -279,12 +279,12 @@ void EnDaikuKakariko_HandleTalking(EnDaikuKakariko* this, GlobalContext* globalC
     }
 }
 
-void EnDaikuKakariko_Talk(EnDaikuKakariko* this, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Talk(EnDaikuKakariko* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         EnDaikuKakariko_ChangeAnim(this, ENDAIKUKAKARIKO_ANIM_3, &this->currentAnimIndex);
     }
 
-    EnDaikuKakariko_HandleTalking(this, globalCtx);
+    EnDaikuKakariko_HandleTalking(this, play);
 
     if (this->talkState == 0) {
         if (this->flags & 0x10) {
@@ -307,8 +307,8 @@ void EnDaikuKakariko_Talk(EnDaikuKakariko* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDaikuKakariko_Wait(EnDaikuKakariko* this, GlobalContext* globalCtx) {
-    EnDaikuKakariko_HandleTalking(this, globalCtx);
+void EnDaikuKakariko_Wait(EnDaikuKakariko* this, PlayState* play) {
+    EnDaikuKakariko_HandleTalking(this, play);
 
     if (SkelAnime_Update(&this->skelAnime)) {
         EnDaikuKakariko_ChangeAnim(this, ENDAIKUKAKARIKO_ANIM_0, &this->currentAnimIndex);
@@ -328,7 +328,7 @@ void EnDaikuKakariko_Wait(EnDaikuKakariko* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDaikuKakariko_StopRunning(EnDaikuKakariko* this, GlobalContext* globalCtx) {
+void EnDaikuKakariko_StopRunning(EnDaikuKakariko* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->timer--;
 
@@ -340,7 +340,7 @@ void EnDaikuKakariko_StopRunning(EnDaikuKakariko* this, GlobalContext* globalCtx
         }
     }
 
-    EnDaikuKakariko_HandleTalking(this, globalCtx);
+    EnDaikuKakariko_HandleTalking(this, play);
 
     if (this->talkState != 0) {
         this->flags |= 0x200;
@@ -349,7 +349,7 @@ void EnDaikuKakariko_StopRunning(EnDaikuKakariko* this, GlobalContext* globalCtx
     }
 }
 
-void EnDaikuKakariko_Run(EnDaikuKakariko* this, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Run(EnDaikuKakariko* this, PlayState* play) {
     s32 pad;
     Path* path;
     Vec3s* pathPos;
@@ -361,7 +361,7 @@ void EnDaikuKakariko_Run(EnDaikuKakariko* this, GlobalContext* globalCtx) {
     s32 run;
 
     do {
-        path = &globalCtx->setupPathList[(this->actor.params >> 8) & 0xFF];
+        path = &play->setupPathList[(this->actor.params >> 8) & 0xFF];
         pathPos = &((Vec3s*)SEGMENTED_TO_VIRTUAL(path->points))[this->waypoint];
         xDist = pathPos->x - this->actor.world.pos.x;
         zDist = pathPos->z - this->actor.world.pos.z;
@@ -433,17 +433,17 @@ void EnDaikuKakariko_Run(EnDaikuKakariko* this, GlobalContext* globalCtx) {
     Actor_MoveForward(&this->actor);
 
     if (this->flags & 0x40) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     } else if (this->flags & 0x80) {
         this->runFlag |= 1;
         this->flags &= ~0x0080;
     } else if (this->runFlag & 1) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
         this->runFlag &= ~1;
     }
 
     SkelAnime_Update(&this->skelAnime);
-    EnDaikuKakariko_HandleTalking(this, globalCtx);
+    EnDaikuKakariko_HandleTalking(this, play);
 
     if (this->talkState != 0) {
         this->flags |= 0x200;
@@ -452,10 +452,10 @@ void EnDaikuKakariko_Run(EnDaikuKakariko* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDaikuKakariko_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Update(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
     s32 pad;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 pad2;
 
     if (this->currentAnimIndex == 3) {
@@ -472,9 +472,9 @@ void EnDaikuKakariko_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->collider.dim.radius = 63;
     }
 
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     this->npcInfo.unk_18.x = player->actor.focus.pos.x;
     this->npcInfo.unk_18.y = player->actor.focus.pos.y;
@@ -493,7 +493,7 @@ void EnDaikuKakariko_Update(Actor* thisx, GlobalContext* globalCtx) {
     Math_SmoothStepToS(&this->neckAngle.x, this->neckAngleTarget.x, 1, 1820, 0);
 }
 
-s32 EnDaikuKakariko_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                      void* thisx) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
     Vec3s angle;
@@ -524,28 +524,28 @@ s32 EnDaikuKakariko_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gf
     return 0;
 }
 
-void EnDaikuKakariko_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnDaikuKakariko_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Gfx* carpenterHeadDLists[] = { object_daiku_DL_005BD0, object_daiku_DL_005AC0, object_daiku_DL_005990,
                                           object_daiku_DL_005880 };
     static Vec3f unkVec = { 700.0f, 1100.0f, 0.0f };
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 15) {
         Matrix_MultVec3f(&unkVec, &this->actor.focus.pos);
         gSPDisplayList(POLY_OPA_DISP++, carpenterHeadDLists[this->actor.params & 3]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnDaikuKakariko_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnDaikuKakariko_Draw(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     if ((thisx->params & 3) == CARPENTER_ICHIRO) {
         gDPSetEnvColor(POLY_OPA_DISP++, 170, 10, 70, 255);
@@ -557,8 +557,8 @@ void EnDaikuKakariko_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetEnvColor(POLY_OPA_DISP++, 200, 0, 150, 255);
     }
 
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDaikuKakariko_OverrideLimbDraw, EnDaikuKakariko_PostLimbDraw, thisx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

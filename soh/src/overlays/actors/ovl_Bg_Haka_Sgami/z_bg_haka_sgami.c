@@ -18,13 +18,13 @@ typedef enum {
 
 #define SCYTHE_SPIN_TIME 32
 
-void BgHakaSgami_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaSgami_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaSgami_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaSgami_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHakaSgami_Init(Actor* thisx, PlayState* play);
+void BgHakaSgami_Destroy(Actor* thisx, PlayState* play);
+void BgHakaSgami_Update(Actor* thisx, PlayState* play);
+void BgHakaSgami_Draw(Actor* thisx, PlayState* play);
 
-void BgHakaSgami_SetupSpin(BgHakaSgami* this, GlobalContext* globalCtx);
-void BgHakaSgami_Spin(BgHakaSgami* this, GlobalContext* globalCtx);
+void BgHakaSgami_SetupSpin(BgHakaSgami* this, PlayState* play);
+void BgHakaSgami_Spin(BgHakaSgami* this, PlayState* play);
 
 const ActorInit Bg_Haka_Sgami_InitVars = {
     ACTOR_BG_HAKA_SGAMI,
@@ -127,7 +127,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaSgami_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaSgami_Init(Actor* thisx, PlayState* play) {
     static u8 sP1StartColor[] = { 250, 250, 250, 200 };
     static u8 sP2StartColor[] = { 200, 200, 200, 130 };
     static u8 sP1EndColor[] = { 200, 200, 200, 60 };
@@ -146,10 +146,10 @@ void BgHakaSgami_Init(Actor* thisx, GlobalContext* globalCtx) {
         thisx->flags |= ACTOR_FLAG_7;
     }
 
-    Collider_InitTris(globalCtx, colliderScythe);
-    Collider_SetTris(globalCtx, colliderScythe, thisx, &sTrisInit, this->colliderScytheItems);
-    Collider_InitCylinder(globalCtx, &this->colliderScytheCenter);
-    Collider_SetCylinder(globalCtx, &this->colliderScytheCenter, thisx, &sCylinderInit);
+    Collider_InitTris(play, colliderScythe);
+    Collider_SetTris(play, colliderScythe, thisx, &sTrisInit, this->colliderScytheItems);
+    Collider_InitCylinder(play, &this->colliderScytheCenter);
+    Collider_SetCylinder(play, &this->colliderScytheCenter, thisx, &sCylinderInit);
 
     this->colliderScytheCenter.dim.pos.x = thisx->world.pos.x;
     this->colliderScytheCenter.dim.pos.y = thisx->world.pos.y;
@@ -166,14 +166,14 @@ void BgHakaSgami_Init(Actor* thisx, GlobalContext* globalCtx) {
     blureInit.elemDuration = 10;
     blureInit.unkFlag = false;
     blureInit.calcMode = 2;
-    Effect_Add(globalCtx, &this->blureEffectIndex[0], EFFECT_BLURE1, 0, 0, &blureInit);
-    Effect_Add(globalCtx, &this->blureEffectIndex[1], EFFECT_BLURE1, 0, 0, &blureInit);
+    Effect_Add(play, &this->blureEffectIndex[0], EFFECT_BLURE1, 0, 0, &blureInit);
+    Effect_Add(play, &this->blureEffectIndex[1], EFFECT_BLURE1, 0, 0, &blureInit);
 
     if (thisx->params == SCYTHE_TRAP_SHADOW_TEMPLE) {
-        this->requiredObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_HAKA_OBJECTS);
+        this->requiredObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_HAKA_OBJECTS);
         thisx->flags &= ~ACTOR_FLAG_0;
     } else {
-        this->requiredObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_ICE_OBJECTS);
+        this->requiredObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_ICE_OBJECTS);
         this->colliderScytheCenter.dim.radius = 30;
         this->colliderScytheCenter.dim.height = 70;
         Actor_SetFocus(thisx, 40.0f);
@@ -187,17 +187,17 @@ void BgHakaSgami_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = BgHakaSgami_SetupSpin;
 }
 
-void BgHakaSgami_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaSgami_Destroy(Actor* thisx, PlayState* play) {
     BgHakaSgami* this = (BgHakaSgami*)thisx;
 
-    Effect_Delete(globalCtx, this->blureEffectIndex[0]);
-    Effect_Delete(globalCtx, this->blureEffectIndex[1]);
-    Collider_DestroyTris(globalCtx, &this->colliderScythe);
-    Collider_DestroyCylinder(globalCtx, &this->colliderScytheCenter);
+    Effect_Delete(play, this->blureEffectIndex[0]);
+    Effect_Delete(play, this->blureEffectIndex[1]);
+    Collider_DestroyTris(play, &this->colliderScythe);
+    Collider_DestroyCylinder(play, &this->colliderScytheCenter);
 }
 
-void BgHakaSgami_SetupSpin(BgHakaSgami* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->requiredObjBankIndex)) {
+void BgHakaSgami_SetupSpin(BgHakaSgami* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->requiredObjBankIndex)) {
         this->actor.objBankIndex = this->requiredObjBankIndex;
         this->actor.draw = BgHakaSgami_Draw;
         this->timer = SCYTHE_SPIN_TIME;
@@ -206,7 +206,7 @@ void BgHakaSgami_SetupSpin(BgHakaSgami* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaSgami_Spin(BgHakaSgami* this, GlobalContext* globalCtx) {
+void BgHakaSgami_Spin(BgHakaSgami* this, PlayState* play) {
     static Vec3f blureEffectVertices2[] = {
         { -20.0f, 50.0f, 130.0f },
         { -50.0f, 33.0f, 20.0f },
@@ -260,7 +260,7 @@ void BgHakaSgami_Spin(BgHakaSgami* this, GlobalContext* globalCtx) {
                                  &scytheVertices[2]);
     }
 
-    if ((this->unk_151 == 0) || globalCtx->actorCtx.lensActive) {
+    if ((this->unk_151 == 0) || play->actorCtx.lensActive) {
         scytheVertices[0].x = this->actor.world.pos.x + blureEffectVertices1[this->actor.params].z * actorRotYSin +
                               blureEffectVertices1[this->actor.params].x * actorRotYCos;
         scytheVertices[0].y = this->actor.world.pos.y + blureEffectVertices1[this->actor.params].y;
@@ -281,28 +281,28 @@ void BgHakaSgami_Spin(BgHakaSgami* this, GlobalContext* globalCtx) {
         EffectBlure_AddVertex(Effect_GetByIndex(this->blureEffectIndex[1]), &scytheVertices[0], &scytheVertices[1]);
     }
 
-    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colliderScythe.base);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderScytheCenter.base);
+    CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderScythe.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderScytheCenter.base);
     func_8002F974(&this->actor, NA_SE_EV_ROLLCUTTER_MOTOR - SFX_FLAG);
 }
 
-void BgHakaSgami_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaSgami_Update(Actor* thisx, PlayState* play) {
     BgHakaSgami* this = (BgHakaSgami*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & 0x300000C0) || (this->actionFunc == BgHakaSgami_SetupSpin)) {
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
     }
 }
 
-void BgHakaSgami_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaSgami_Draw(Actor* thisx, PlayState* play) {
     BgHakaSgami* this = (BgHakaSgami*)thisx;
 
     if (this->unk_151 != 0) {
-        Gfx_DrawDListXlu(globalCtx, object_haka_objects_DL_00BF20);
+        Gfx_DrawDListXlu(play, object_haka_objects_DL_00BF20);
     } else if (this->actor.params == SCYTHE_TRAP_SHADOW_TEMPLE) {
-        Gfx_DrawDListOpa(globalCtx, object_haka_objects_DL_00BF20);
+        Gfx_DrawDListOpa(play, object_haka_objects_DL_00BF20);
     } else {
-        Gfx_DrawDListOpa(globalCtx, object_ice_objects_DL_0021F0);
+        Gfx_DrawDListOpa(play, object_ice_objects_DL_0021F0);
     }
 }
