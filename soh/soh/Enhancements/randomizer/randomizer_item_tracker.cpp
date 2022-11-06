@@ -999,8 +999,6 @@ void UpdateVectors() {
     if  (!shouldUpdateVectors) {
         return;
     }
-
-    LocationTable_Init();
     dungeonRewards.clear();
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
@@ -1148,12 +1146,10 @@ void DrawItemTracker(bool& open) {
         }
 
         if (CVar_GetS32("gItemTrackerLocationDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
-            if (!ImGui::Begin("Location Checklist", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-                ImGui::End();
-            }
-            ImGui::SetNextWindowSize(ImVec2(400, 1000), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(600, 1000), ImGuiCond_FirstUseEver);
+            BeginFloatingWindows("Check Tracker", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawLocations();
-            ImGui::End();
+            EndFloatingWindows();
         }
     }
 }
@@ -1240,7 +1236,7 @@ void DrawItemTrackerOptions(bool& open) {
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
     }
-    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window (WIP)", "Separate" }, 0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -1276,4 +1272,6 @@ void InitItemTracker() {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         SohImGui::RequestCvarSaveOnNextTick();
     });
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+    LocationTable_Init();
 }
