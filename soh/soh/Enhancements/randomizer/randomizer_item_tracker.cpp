@@ -719,8 +719,11 @@ void DrawLocations() {
         bool doAreaScroll = false;
         bool inGame = gGlobalCtx != nullptr && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
         RandomizerCheckArea currentArea = RCAREA_INVALID;
-        if (gGlobalCtx != nullptr)
-            currentArea = RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)gGlobalCtx->sceneNum);
+        SceneID sceneId = SCENE_ID_MAX;
+        if (gGlobalCtx != nullptr) {
+            sceneId = (SceneID)gGlobalCtx->sceneNum;
+            currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(sceneId);
+        }
 
         ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
         for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
@@ -730,7 +733,9 @@ void DrawLocations() {
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                     hasItems = true;
-                    doAreaScroll = (currentArea != RCAREA_INVALID && currentArea != lastArea && currentArea == rcArea);
+                    doAreaScroll = 
+                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                         currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
@@ -804,7 +809,9 @@ void DrawLocations() {
             for (auto& locationIt : rcObjects) {
                 if (locationIt.second.visibleInImgui && checkedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
-                    doAreaScroll = (currentArea != RCAREA_INVALID && currentArea != lastArea && currentArea == rcArea);
+                    doAreaScroll =
+                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                         currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
@@ -849,7 +856,8 @@ void DrawLocations() {
         ImGui::EndChild();
         ImGui::EndTable();
 
-        lastArea = currentArea;
+        if (sceneId != SCENE_KAKUSIANA)
+            lastArea = currentArea;
     }
 }
 
