@@ -717,6 +717,7 @@ void DrawLocations() {
 
         bool lastItemFound = false;
         bool doAreaScroll = false;
+        bool inGame = gGlobalCtx != nullptr && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
         RandomizerCheckArea currentArea = RCAREA_INVALID;
         if (gGlobalCtx != nullptr)
             currentArea = RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)gGlobalCtx->sceneNum);
@@ -743,7 +744,7 @@ void DrawLocations() {
                     }
                     for (auto& locationIt : rcObjects) {
                         // If the location has its scene flag set
-                        if (HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
+                        if (inGame && HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
                             // show it as checked
                             checkedLocations.insert(locationIt.second.rc);
 
@@ -819,8 +820,8 @@ void DrawLocations() {
                         auto elfound = checkedLocations.find(locationIt.second.rc);
                         if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
                             // If the location has its scene flag set
-                            if (!HasItemBeenCollected(locationIt.second)) {
-                                // show it as checked
+                            if (!inGame || !HasItemBeenCollected(locationIt.second)) {
+                                // show it as unchecked
                                 checkedLocations.erase(locationIt.second.rc);
                             } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
                                 checkedLocations.erase(elfound);
