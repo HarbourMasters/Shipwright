@@ -16,7 +16,11 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+<<<<<<< HEAD
 extern GlobalContext* gGlobalCtx;
+=======
+extern PlayState* gPlayState;
+>>>>>>> a7256739f3b41ce43a528b6261f27b169f99c6f1
 
 #include "randomizer_entrance.h"
 }

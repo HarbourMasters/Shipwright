@@ -1762,7 +1762,7 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
     return allocp;
 }
 
-void Gameplay_InitEnvironment(PlayState* play, s16 skyboxId) {
+void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     // For entrance rando, ensure the correct weather state and sky mode is applied
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideWeatherState();
@@ -1793,7 +1793,7 @@ void Play_InitScene(PlayState* play, s32 spawn)
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
-    OTRGameplay_SpawnScene(play, sceneNum, spawn);
+    OTRPlay_SpawnScene(play, sceneNum, spawn);
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
