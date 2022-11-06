@@ -729,7 +729,10 @@ void DrawLocations() {
         for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
             for (auto& locationIt : rcObjects) {
-                if (locationIt.second.visibleInImgui && !checkedLocations.count(locationIt.second.rc) &&
+                if (!locationIt.second.visibleInImgui)
+                    continue;
+
+                if (!checkedLocations.count(locationIt.second.rc) &&
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                     hasItems = true;
@@ -748,6 +751,9 @@ void DrawLocations() {
                         doAreaScroll = false;
                     }
                     for (auto& locationIt : rcObjects) {
+                        if (!locationIt.second.visibleInImgui)
+                            continue;
+
                         // If the location has its scene flag set
                         if (inGame && HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
                             // show it as checked
@@ -807,10 +813,13 @@ void DrawLocations() {
         for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
             for (auto& locationIt : rcObjects) {
-                if (locationIt.second.visibleInImgui && checkedLocations.count(locationIt.second.rc)) {
+                if (!locationIt.second.visibleInImgui)
+                    continue;
+
+                if (checkedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
                     doAreaScroll =
-                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -824,6 +833,9 @@ void DrawLocations() {
                         doAreaScroll = false;
                     }
                     for (auto& locationIt : rcObjects) {
+                        if (!locationIt.second.visibleInImgui)
+                            continue;
+
                         auto elfound = checkedLocations.find(locationIt.second.rc);
                         if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
                             // If the location has its scene flag set
