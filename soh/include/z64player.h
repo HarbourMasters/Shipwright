@@ -451,9 +451,9 @@ typedef struct {
 #define PLAYER_STATE3_6 (1 << 6)
 #define PLAYER_STATE3_7 (1 << 7)
 
-typedef void (*PlayerFunc674)(struct Player*, struct GlobalContext*);
-typedef s32(*PlayerFunc82C)(struct Player*, struct GlobalContext*);
-typedef void (*PlayerFuncA74)(struct GlobalContext*, struct Player*);
+typedef void (*PlayerFunc674)(struct Player*, struct PlayState*);
+typedef s32(*PlayerFunc82C)(struct Player*, struct PlayState*);
+typedef void (*PlayerFuncA74)(struct PlayState*, struct Player*);
 
 typedef struct Player {
     /* 0x0000 */ Actor      actor;

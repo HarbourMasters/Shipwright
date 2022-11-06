@@ -6,7 +6,7 @@
 
 struct EnSsh;
 
-typedef void (*EnSshActionFunc)(struct EnSsh*, GlobalContext*);
+typedef void (*EnSshActionFunc)(struct EnSsh*, PlayState*);
 
 typedef struct EnSsh {
     /* 0x0000 */ Actor actor;

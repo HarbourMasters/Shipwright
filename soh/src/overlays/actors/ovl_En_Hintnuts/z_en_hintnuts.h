@@ -6,7 +6,7 @@
 
 struct EnHintnuts;
 
-typedef void (*EnHintnutsActionFunc)(struct EnHintnuts*, GlobalContext*);
+typedef void (*EnHintnutsActionFunc)(struct EnHintnuts*, PlayState*);
 
 typedef struct EnHintnuts {
     /* 0x0000 */ Actor actor;

@@ -95,7 +95,7 @@ typedef enum {
 
 struct BossTw;
 
-typedef void (*BossTwActionFunc)(struct BossTw*, GlobalContext* globalCtx);
+typedef void (*BossTwActionFunc)(struct BossTw*, PlayState* play);
 
 typedef struct BossTw {
     /* 0x0000 */ Actor actor;

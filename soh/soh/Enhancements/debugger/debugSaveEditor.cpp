@@ -17,7 +17,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -545,7 +545,7 @@ void DrawBGSItemFlag(uint8_t itemID) {
             }
         } else {
             gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
-            Inventory_ReplaceItem(gGlobalCtx, itemID, Randomizer_GetNextAdultTradeItem());
+            Inventory_ReplaceItem(gPlayState, itemID, Randomizer_GetNextAdultTradeItem());
         }
     }
 }
@@ -730,8 +730,8 @@ void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) 
 
 void DrawFlagsTab() {
     if (ImGui::TreeNode("Current Scene")) {
-        if (gGlobalCtx != nullptr) {
-            ActorContext* act = &gGlobalCtx->actorCtx;
+        if (gPlayState != nullptr) {
+            ActorContext* act = &gPlayState->actorCtx;
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
@@ -786,18 +786,18 @@ void DrawFlagsTab() {
             ImGui::BeginGroup();
 
             if (ImGui::Button("Reload Flags")) {
-                act->flags.swch = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].swch;
-                act->flags.clear = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].clear;
-                act->flags.collect = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].collect;
-                act->flags.chest = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest;
+                act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
+                act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
+                act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
+                act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
             }
             UIWidgets::SetLastItemHoverText("Load flags from saved scene flags. Normally happens on scene load");
 
             if (ImGui::Button("Save Flags")) {
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].swch = act->flags.swch;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].clear = act->flags.clear;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].collect = act->flags.collect;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest = act->flags.chest;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
             }
             UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
             
@@ -833,10 +833,10 @@ void DrawFlagsTab() {
         }
 
         // Don't show current scene button if there is no current scene
-        if (gGlobalCtx != nullptr) {
+        if (gPlayState != nullptr) {
             ImGui::SameLine();
             if (ImGui::Button("Current")) {
-                selectedSceneFlagMap = gGlobalCtx->sceneNum;
+                selectedSceneFlagMap = gPlayState->sceneNum;
             }
             UIWidgets::SetLastItemHoverText("Open flags for current scene");
         }
@@ -1316,8 +1316,8 @@ void DrawQuestStatusTab() {
 }
 
 void DrawPlayerTab() {
-    if (gGlobalCtx != nullptr) {
-        Player* player = GET_PLAYER(gGlobalCtx);
+    if (gPlayState != nullptr) {
+        Player* player = GET_PLAYER(gPlayState);
         const char* curSword;
         const char* curShield;
         const char* curTunic;
@@ -1434,12 +1434,12 @@ void DrawPlayerTab() {
         ImGui::InputScalar("Gravity", ImGuiDataType_Float, &player->actor.gravity);
         UIWidgets::InsertHelpHoverText("Rate at which Link falls. Default -4.0f");
 
-        if (ImGui::BeginCombo("Link Age on Load", gGlobalCtx->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
+        if (ImGui::BeginCombo("Link Age on Load", gPlayState->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
             if (ImGui::Selectable("Adult")) {
-                gGlobalCtx->linkAgeOnLoad = 0;
+                gPlayState->linkAgeOnLoad = 0;
             }
             if (ImGui::Selectable("Child")) {
-                gGlobalCtx->linkAgeOnLoad = 1;
+                gPlayState->linkAgeOnLoad = 1;
             }
             ImGui::EndCombo();
         }

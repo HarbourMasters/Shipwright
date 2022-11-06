@@ -6,7 +6,7 @@
 
 struct BgMoriHashigo;
 
-typedef void (*BgMoriHashigoActionFunc)(struct BgMoriHashigo*, GlobalContext*);
+typedef void (*BgMoriHashigoActionFunc)(struct BgMoriHashigo*, PlayState*);
 
 typedef struct BgMoriHashigo {
     /* 0x0000 */ DynaPolyActor dyna;

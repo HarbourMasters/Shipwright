@@ -8,7 +8,7 @@
 
 struct EnBomBowlMan;
 
-typedef void (*EnBomBowlManActionFunc)(struct EnBomBowlMan*, GlobalContext*);
+typedef void (*EnBomBowlManActionFunc)(struct EnBomBowlMan*, PlayState*);
 
 typedef struct EnBomBowlMan {
     /* 0x0000 */ Actor actor;

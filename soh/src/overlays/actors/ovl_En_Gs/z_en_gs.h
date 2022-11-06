@@ -6,7 +6,7 @@
 
 struct EnGs;
 
-typedef void (*EnGsActionFunc)(struct EnGs*, GlobalContext*);
+typedef void (*EnGsActionFunc)(struct EnGs*, PlayState*);
 
 typedef struct EnGs {
     /* 0x0000 */ Actor actor;

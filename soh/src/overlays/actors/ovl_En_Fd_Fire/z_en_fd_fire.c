@@ -3,14 +3,14 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
 
-void EnFdFire_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnFdFire_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnFdFire_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx);
-void EnFdFire_Disappear(EnFdFire* this, GlobalContext* globalCtx);
-void func_80A0E70C(EnFdFire* this, GlobalContext* globalCtx);
-void EnFdFire_DanceTowardsPlayer(EnFdFire* this, GlobalContext* globalCtx);
-void EnFdFire_WaitToDie(EnFdFire* this, GlobalContext* globalCtx);
+void EnFdFire_Init(Actor* thisx, PlayState* play);
+void EnFdFire_Destroy(Actor* thisx, PlayState* play);
+void EnFdFire_Update(Actor* thisx, PlayState* play);
+void EnFdFire_Draw(Actor* thisx, PlayState* play);
+void EnFdFire_Disappear(EnFdFire* this, PlayState* play);
+void func_80A0E70C(EnFdFire* this, PlayState* play);
+void EnFdFire_DanceTowardsPlayer(EnFdFire* this, PlayState* play);
+void EnFdFire_WaitToDie(EnFdFire* this, PlayState* play);
 
 const ActorInit En_Fd_Fire_InitVars = {
     ACTOR_EN_FD_FIRE,
@@ -103,7 +103,7 @@ void EnFdFire_UpdatePos(EnFdFire* this, Vec3f* targetPos) {
     }
 }
 
-s32 EnFdFire_CheckCollider(EnFdFire* this, GlobalContext* globalCtx) {
+s32 EnFdFire_CheckCollider(EnFdFire* this, PlayState* play) {
     if (this->actionFunc == EnFdFire_Disappear) {
         return false;
     }
@@ -120,14 +120,14 @@ s32 EnFdFire_CheckCollider(EnFdFire* this, GlobalContext* globalCtx) {
     return false;
 }
 
-void EnFdFire_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnFdFire_Init(Actor* thisx, PlayState* play) {
     EnFdFire* this = (EnFdFire*)thisx;
     s32 pad;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 20.0f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInit);
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->actor.gravity = -0.6f;
@@ -139,13 +139,13 @@ void EnFdFire_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = func_80A0E70C;
 }
 
-void EnFdFire_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnFdFire_Destroy(Actor* thisx, PlayState* play) {
     EnFdFire* this = (EnFdFire*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80A0E70C(EnFdFire* this, GlobalContext* globalCtx) {
+void func_80A0E70C(EnFdFire* this, PlayState* play) {
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f targetPos = this->actor.parent->world.pos;
 
@@ -166,21 +166,21 @@ void func_80A0E70C(EnFdFire* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnFdFire_WaitToDie(EnFdFire* this, GlobalContext* globalCtx) {
+void EnFdFire_WaitToDie(EnFdFire* this, PlayState* play) {
     if (DECR(this->deathTimer) == 0) {
         this->actionFunc = EnFdFire_Disappear;
     }
 }
 
-void EnFdFire_DanceTowardsPlayer(EnFdFire* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnFdFire_DanceTowardsPlayer(EnFdFire* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 angles[] = {
         0.0f, 210.0f, 60.0f, 270.0f, 120.0f, 330.0f, 180.0f, 30.0f, 240.0f, 90.0f, 300.0f, 150.0f,
     };
     Vec3f pos;
     s16 idx;
 
-    idx = ((globalCtx->state.frames / 10) + (this->actor.params & 0x7FFF)) % ARRAY_COUNT(angles);
+    idx = ((play->state.frames / 10) + (this->actor.params & 0x7FFF)) % ARRAY_COUNT(angles);
     pos = player->actor.world.pos;
     pos.x += 120.0f * sinf(angles[idx]);
     pos.z += 120.0f * cosf(angles[idx]);
@@ -197,7 +197,7 @@ void EnFdFire_DanceTowardsPlayer(EnFdFire* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnFdFire_Disappear(EnFdFire* this, GlobalContext* globalCtx) {
+void EnFdFire_Disappear(EnFdFire* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 0.6f, 9.0f, 0.0f);
     func_8002D868(&this->actor);
     Math_SmoothStepToF(&this->scale, 0.0f, 0.3f, 0.1f, 0.0f);
@@ -208,28 +208,28 @@ void EnFdFire_Disappear(EnFdFire* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnFdFire_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnFdFire_Update(Actor* thisx, PlayState* play) {
     EnFdFire* this = (EnFdFire*)thisx;
     s32 pad;
 
     if (this->actionFunc != EnFdFire_Disappear) {
-        if ((this->actor.parent->update == NULL) || EnFdFire_CheckCollider(this, globalCtx)) {
+        if ((this->actor.parent->update == NULL) || EnFdFire_CheckCollider(this, play)) {
             this->actionFunc = EnFdFire_Disappear;
         }
     }
 
     func_8002D7EC(&this->actor);
-    this->actionFunc(this, globalCtx);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 12.0f, 10.0f, 0.0f, 5);
+    this->actionFunc(this, play);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 12.0f, 10.0f, 0.0f, 5);
 
     if (this->actionFunc != EnFdFire_Disappear) {
         Collider_UpdateCylinder(&this->actor, &this->collider);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnFdFire_Draw(Actor* thisx, PlayState* play) {
     Color_RGBA8 primColors[] = {
         { 255, 255, 0, 255 },
         { 255, 255, 255, 255 },
@@ -247,14 +247,14 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 sp84;
     f32 sp80;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
-    sp8E = Math_Vec3f_Yaw(&scale, &this->actor.velocity) - Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx));
+    sp8E = Math_Vec3f_Yaw(&scale, &this->actor.velocity) - Camera_GetCamDirYaw(GET_ACTIVE_CAM(play));
     sp84 = fabsf(Math_CosS(sp8E));
     sp88 = Math_SinS(sp8E);
     sp80 = Math_Vec3f_DistXZ(&scale, &this->actor.velocity) / 1.5f;
-    Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
+    Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateZ(((sp88 * -10.0f) * sp80) * (M_PI / 180.0f), MTXMODE_APPLY);
     scale.x = scale.y = scale.z = this->scale * 0.001f;
     Matrix_Scale(scale.x, scale.y, scale.z, MTXMODE_APPLY);
@@ -263,12 +263,12 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x8,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                globalCtx->state.frames * this->tile2Y, 0x20, 0x80));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                                play->state.frames * this->tile2Y, 0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, primColors[((this->actor.params & 0x8000) >> 0xF)].r,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].g,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].b,
@@ -280,5 +280,5 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_XLU_DISP++);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

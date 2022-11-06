@@ -6,7 +6,7 @@
 
 struct BgJyaIronobj;
 
-typedef void (*BgJyaIronobjActionFunc)(struct BgJyaIronobj*, GlobalContext*);
+typedef void (*BgJyaIronobjActionFunc)(struct BgJyaIronobj*, PlayState*);
 
 typedef struct BgJyaIronobj {
     /* 0x0000 */ DynaPolyActor dyna;

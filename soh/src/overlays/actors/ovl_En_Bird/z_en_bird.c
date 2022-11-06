@@ -9,14 +9,14 @@
 
 #define FLAGS 0
 
-void EnBird_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnBird_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnBird_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnBird_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnBird_Init(Actor* thisx, PlayState* play);
+void EnBird_Destroy(Actor* thisx, PlayState* play);
+void EnBird_Update(Actor* thisx, PlayState* play);
+void EnBird_Draw(Actor* thisx, PlayState* play);
 
 void func_809C1E00(EnBird* this, s16 params);
-void func_809C1E40(EnBird* this, GlobalContext* globalCtx);
-void func_809C1D60(EnBird* this, GlobalContext* globalCtx);
+void func_809C1E40(EnBird* this, PlayState* play);
+void func_809C1D60(EnBird* this, PlayState* play);
 void func_809C1CAC(EnBird* this, s16 params);
 
 const ActorInit En_Bird_InitVars = {
@@ -40,12 +40,12 @@ void EnBird_SetupAction(EnBird* this, EnBirdActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void EnBird_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnBird_Init(Actor* thisx, PlayState* play) {
     EnBird* this = (EnBird*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Actor_SetScale(&this->actor, 0.01);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gBirdSkel, &gBirdFlyAnim, NULL, NULL, 0);
+    SkelAnime_Init(play, &this->skelAnime, &gBirdSkel, &gBirdFlyAnim, NULL, NULL, 0);
     ActorShape_Init(&this->actor.shape, 5500, ActorShadow_DrawCircle, 4);
     this->unk_194 = 0;
     this->unk_198 = 0;
@@ -61,7 +61,7 @@ void EnBird_Init(Actor* thisx, GlobalContext* globalCtx) {
     func_809C1CAC(this, this->actor.params);
 }
 
-void EnBird_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnBird_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_809C1CAC(EnBird* this, s16 params) {
@@ -74,7 +74,7 @@ void func_809C1CAC(EnBird* this, s16 params) {
     EnBird_SetupAction(this, func_809C1D60);
 }
 
-void func_809C1D60(EnBird* this, GlobalContext* globalCtx) {
+void func_809C1D60(EnBird* this, PlayState* play) {
     f32 fVar2 = sinf(this->unk_1B4);
 
     this->actor.shape.yOffset = this->actor.shape.yOffset + fVar2 * this->unk_1A0;
@@ -97,7 +97,7 @@ void func_809C1E00(EnBird* this, s16 params) {
     EnBird_SetupAction(this, func_809C1E40);
 }
 
-void func_809C1E40(EnBird* this, GlobalContext* globalCtx) {
+void func_809C1E40(EnBird* this, PlayState* play) {
     f32 fVar4 = sinf(this->unk_1B4);
 
     this->actor.shape.yOffset += fVar4 * this->unk_1A0;
@@ -119,15 +119,15 @@ void func_809C1E40(EnBird* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnBird_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnBird_Update(Actor* thisx, PlayState* play) {
     EnBird* this = (EnBird*)thisx;
 
     this->unk_1B4 += this->unk_1B8;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void EnBird_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnBird_Draw(Actor* thisx, PlayState* play) {
     EnBird* this = (EnBird*)thisx;
 
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
 }

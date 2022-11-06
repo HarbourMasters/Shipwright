@@ -6,7 +6,7 @@
 
 struct EnDivingGame;
 
-typedef void (*EnDivingGameActionFunc)(struct EnDivingGame*, GlobalContext*);
+typedef void (*EnDivingGameActionFunc)(struct EnDivingGame*, PlayState*);
 
 typedef struct EnDivingGame {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct EnFirefly;
 
-typedef void (*EnFireflyActionFunc)(struct EnFirefly*, GlobalContext*);
+typedef void (*EnFireflyActionFunc)(struct EnFirefly*, PlayState*);
 
 typedef struct EnFirefly {
     /* 0x0000 */ Actor actor;

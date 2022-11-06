@@ -6,7 +6,7 @@
 
 struct EnAnubiceFire;
 
-typedef void (*EnAnubiceFireActionFunc)(struct EnAnubiceFire*, GlobalContext*);
+typedef void (*EnAnubiceFireActionFunc)(struct EnAnubiceFire*, PlayState*);
 
 typedef struct EnAnubiceFire {
     /* 0x0000 */ Actor actor;

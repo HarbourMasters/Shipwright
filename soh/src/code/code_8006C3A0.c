@@ -1,33 +1,33 @@
 #include "global.h"
 
-void Flags_UnsetAllEnv(GlobalContext* globalCtx) {
+void Flags_UnsetAllEnv(PlayState* play) {
     u8 i;
 
     for (i = 0; i < 20; i++) {
-        globalCtx->envFlags[i] = 0;
+        play->envFlags[i] = 0;
     }
 }
 
-void Flags_SetEnv(GlobalContext* globalCtx, s16 flag) {
+void Flags_SetEnv(PlayState* play, s16 flag) {
     s16 index = flag / 16;
     s16 bit = flag % 16;
     s16 mask = 1 << bit;
 
-    globalCtx->envFlags[index] |= mask;
+    play->envFlags[index] |= mask;
 }
 
-void Flags_UnsetEnv(GlobalContext* globalCtx, s16 flag) {
+void Flags_UnsetEnv(PlayState* play, s16 flag) {
     s16 index = flag / 16;
     s16 bit = flag % 16;
     s16 mask = (1 << bit) ^ 0xFFFF;
 
-    globalCtx->envFlags[index] &= mask;
+    play->envFlags[index] &= mask;
 }
 
-s32 Flags_GetEnv(GlobalContext* globalCtx, s16 flag) {
+s32 Flags_GetEnv(PlayState* play, s16 flag) {
     s16 index = flag / 16;
     s16 bit = flag % 16;
     s16 mask = 1 << bit;
 
-    return globalCtx->envFlags[index] & mask;
+    return play->envFlags[index] & mask;
 }

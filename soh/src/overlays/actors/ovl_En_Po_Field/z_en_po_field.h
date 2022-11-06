@@ -6,7 +6,7 @@
 
 struct EnPoField;
 
-typedef void (*EnPoFieldActionFunc)(struct EnPoField*, GlobalContext*);
+typedef void (*EnPoFieldActionFunc)(struct EnPoField*, PlayState*);
 
 typedef enum {
     EN_PO_FIELD_SMALL,

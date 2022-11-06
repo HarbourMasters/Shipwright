@@ -4,12 +4,12 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_27)
 
-void EnEncount1_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnEncount1_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnEncount1_Init(Actor* thisx, PlayState* play);
+void EnEncount1_Update(Actor* thisx, PlayState* play);
 
-void EnEncount1_SpawnLeevers(EnEncount1* this, GlobalContext* globalCtx);
-void EnEncount1_SpawnTektites(EnEncount1* this, GlobalContext* globalCtx);
-void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCtx);
+void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play);
+void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play);
+void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play);
 
 static s16 sLeeverAngles[] = { 0x0000, 0x2710, 0x7148, 0x8EB8, 0xD8F0 };
 static f32 sLeeverDists[] = { 200.0f, 170.0f, 120.0f, 120.0f, 170.0f };
@@ -27,7 +27,7 @@ const ActorInit En_Encount1_InitVars = {
     NULL,
 };
 
-void EnEncount1_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnEncount1_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnEncount1* this = (EnEncount1*)thisx;
     f32 spawnRange;
@@ -70,7 +70,7 @@ void EnEncount1_Init(Actor* thisx, GlobalContext* globalCtx) {
         case SPAWNER_LEEVER:
             this->timer = 30;
             this->maxCurSpawns = 5;
-            if (globalCtx->sceneNum == SCENE_SPOT13) { // Haunted Wasteland
+            if (play->sceneNum == SCENE_SPOT13) { // Haunted Wasteland
                 this->reduceLeevers = true;
                 this->maxCurSpawns = 3;
             }
@@ -82,7 +82,7 @@ void EnEncount1_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case SPAWNER_STALCHILDREN:
         case SPAWNER_WOLFOS:
-            if (globalCtx->sceneNum == SCENE_SPOT00) { // Hyrule Field
+            if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
                 this->maxTotalSpawns = 10000;
             }
             this->updateFunc = EnEncount1_SpawnStalchildOrWolfos;
@@ -90,8 +90,8 @@ void EnEncount1_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnEncount1_SpawnLeevers(EnEncount1* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 floorType;
     f32 spawnDist;
     s32 spawnParams;
@@ -106,9 +106,9 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, GlobalContext* globalCtx) {
     this->outOfRangeTimer = 0;
     spawnPos = this->actor.world.pos;
 
-    if ((this->timer == 0) && (globalCtx->csCtx.state == CS_STATE_IDLE) && (this->curNumSpawn <= this->maxCurSpawns) &&
+    if ((this->timer == 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->curNumSpawn <= this->maxCurSpawns) &&
         (this->curNumSpawn < 5)) {
-        floorType = func_80041D4C(&globalCtx->colCtx, player->actor.floorPoly, player->actor.floorBgId);
+        floorType = func_80041D4C(&play->colCtx, player->actor.floorPoly, player->actor.floorBgId);
         if ((floorType != 4) && (floorType != 7) && (floorType != 12)) {
             this->numLeeverSpawns = 0;
         } else if (!(this->reduceLeevers && (this->actor.xzDistToPlayer > 1300.0f))) {
@@ -132,13 +132,13 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, GlobalContext* globalCtx) {
                 spawnPos.y = player->actor.floorHeight + 120.0f;
                 spawnPos.z = player->actor.world.pos.z + Math_CosS(spawnAngle) * spawnDist;
 
-                floorY = BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
+                floorY = BgCheck_EntityRaycastFloor4(&play->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
                 if (floorY <= BGCHECK_Y_MIN) {
                     break;
                 }
                 spawnPos.y = floorY;
 
-                leever = (EnReeba*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_REEBA,
+                leever = (EnReeba*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_REEBA,
                                                       spawnPos.x, spawnPos.y, spawnPos.z, 0, 0, 0, spawnParams);
 
                         if (leever != NULL) {
@@ -173,8 +173,8 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnEncount1_SpawnTektites(EnEncount1* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 bgId;
     CollisionPoly* floorPoly;
     Vec3f spawnPos;
@@ -191,12 +191,12 @@ void EnEncount1_SpawnTektites(EnEncount1* this, GlobalContext* globalCtx) {
                 spawnPos.x = this->actor.world.pos.x + Rand_CenteredFloat(50.0f);
                 spawnPos.y = this->actor.world.pos.y + 120.0f;
                 spawnPos.z = this->actor.world.pos.z + Rand_CenteredFloat(50.0f);
-                floorY = BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
+                floorY = BgCheck_EntityRaycastFloor4(&play->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
                 if (floorY <= BGCHECK_Y_MIN) {
                     return;
                 }
                 spawnPos.y = floorY;
-                if (Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_TITE, spawnPos.x,
+                if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_TITE, spawnPos.x,
                                        spawnPos.y, spawnPos.z, 0, 0, 0, TEKTITE_RED) != NULL) { // Red tektite
                     this->curNumSpawn++;
                     this->totalNumSpawn++;
@@ -211,8 +211,8 @@ void EnEncount1_SpawnTektites(EnEncount1* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 spawnDist;
     s16 spawnAngle;
     s16 spawnId;
@@ -224,13 +224,13 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCt
     s32 bgId;
     f32 floorY;
 
-    if (globalCtx->sceneNum != SCENE_SPOT00) {
+    if (play->sceneNum != SCENE_SPOT00) {
         if ((fabsf(player->actor.world.pos.y - this->actor.world.pos.y) > 100.0f) ||
             (this->actor.xzDistToPlayer > this->spawnRange)) {
             this->outOfRangeTimer++;
             return;
         }
-    } else if (IS_DAY || (Player_GetMask(globalCtx) == PLAYER_MASK_BUNNY)) {
+    } else if (IS_DAY || (Player_GetMask(play) == PLAYER_MASK_BUNNY)) {
         this->killCount = 0;
         return;
     }
@@ -239,7 +239,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCt
     spawnPos = this->actor.world.pos;
     if ((this->curNumSpawn < this->maxCurSpawns) && (this->totalNumSpawn < this->maxTotalSpawns)) {
         while ((this->curNumSpawn < this->maxCurSpawns) && (this->totalNumSpawn < this->maxTotalSpawns)) {
-            if (globalCtx->sceneNum == SCENE_SPOT00) {
+            if (play->sceneNum == SCENE_SPOT00) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
 
@@ -265,7 +265,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCt
                 spawnPos.y = player->actor.floorHeight + 120.0f;
                 spawnPos.z =
                     player->actor.world.pos.z + (Math_CosS(spawnAngle) * spawnDist) + Rand_CenteredFloat(40.0f);
-                floorY = BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
+                floorY = BgCheck_EntityRaycastFloor4(&play->colCtx, &floorPoly, &bgId, &this->actor, &spawnPos);
                 if (floorY <= BGCHECK_Y_MIN) {
                     break;
                 }
@@ -291,13 +291,13 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCt
                 }
                 this->killCount++;
             }
-            if (Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, spawnId, spawnPos.x, spawnPos.y,
+            if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y,
                                    spawnPos.z, 0, 0, 0, spawnParams) != NULL) {
                 this->curNumSpawn++;
                 if (this->curNumSpawn >= this->maxCurSpawns) {
                     this->fieldSpawnTimer = 100;
                 }
-                if (globalCtx->sceneNum != SCENE_SPOT00) {
+                if (play->sceneNum != SCENE_SPOT00) {
                     this->totalNumSpawn++;
                 }
             } else {
@@ -311,7 +311,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, GlobalContext* globalCt
     }
 }
 
-void EnEncount1_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnEncount1_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnEncount1* this = (EnEncount1*)thisx;
 
@@ -319,19 +319,19 @@ void EnEncount1_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->timer--;
     }
 
-    this->updateFunc(this, globalCtx);
+    this->updateFunc(this, play);
 
     if (BREG(0) != 0) {
         if (this->outOfRangeTimer != 0) {
             if ((this->outOfRangeTimer & 1) == 0) {
                 DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                        this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                       1.0f, 1.0f, 120, 120, 120, 255, 4, globalCtx->state.gfxCtx);
+                                       1.0f, 1.0f, 120, 120, 120, 255, 4, play->state.gfxCtx);
             }
         } else {
             DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                    this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                   1.0f, 1.0f, 255, 0, 255, 255, 4, globalCtx->state.gfxCtx);
+                                   1.0f, 1.0f, 255, 0, 255, 255, 4, play->state.gfxCtx);
         }
     }
 }

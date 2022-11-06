@@ -6,7 +6,7 @@
 
 struct EnOkarinaTag;
 
-typedef void (*EnOkarinaTagActionFunc)(struct EnOkarinaTag*, GlobalContext*);
+typedef void (*EnOkarinaTagActionFunc)(struct EnOkarinaTag*, PlayState*);
 
 typedef struct EnOkarinaTag {
     /* 0x0000 */ Actor actor;

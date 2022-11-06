@@ -4,24 +4,24 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgSpot18Basket_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Basket_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Basket_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Basket_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot18Basket_Init(Actor* thisx, PlayState* play);
+void BgSpot18Basket_Destroy(Actor* thisx, PlayState* play);
+void BgSpot18Basket_Update(Actor* thisx, PlayState* play);
+void BgSpot18Basket_Draw(Actor* thisx, PlayState* play);
 void BgSpot18Basket_Reset(void);
 
-void func_808B7BCC(BgSpot18Basket* this, GlobalContext* globalCtx);
+void func_808B7BCC(BgSpot18Basket* this, PlayState* play);
 void func_808B7AEC(BgSpot18Basket* this);
 void func_808B7B58(BgSpot18Basket* this);
 void func_808B7BB0(BgSpot18Basket* this);
 void func_808B7D38(BgSpot18Basket* this);
 void func_808B7F74(BgSpot18Basket* this);
 void func_808B818C(BgSpot18Basket* this);
-void func_808B7AFC(BgSpot18Basket* this, GlobalContext* globalCtx);
-void func_808B7B6C(BgSpot18Basket* this, GlobalContext* globalCtx);
-void func_808B7D50(BgSpot18Basket* this, GlobalContext* globalCtx);
-void func_808B7FC0(BgSpot18Basket* this, GlobalContext* globalCtx);
-void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx);
+void func_808B7AFC(BgSpot18Basket* this, PlayState* play);
+void func_808B7B6C(BgSpot18Basket* this, PlayState* play);
+void func_808B7D50(BgSpot18Basket* this, PlayState* play);
+void func_808B7FC0(BgSpot18Basket* this, PlayState* play);
+void func_808B81A0(BgSpot18Basket* this, PlayState* play);
 
 const ActorInit Bg_Spot18_Basket_InitVars = {
     ACTOR_BG_SPOT18_BASKET,
@@ -76,16 +76,16 @@ static ColliderJntSphInit sJntSphInit = {
 
 static s16 D_808B85C8[] = { 0x8000, 0x2AAA, 0xD555, 0x0000 };
 
-void func_808B7710(Actor* thisx, GlobalContext* globalCtx) {
+void func_808B7710(Actor* thisx, PlayState* play) {
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
 
-    Collider_InitJntSph(globalCtx, &this->colliderJntSph);
-    Collider_SetJntSph(globalCtx, &this->colliderJntSph, &this->dyna.actor, &sJntSphInit, this->ColliderJntSphElements);
+    Collider_InitJntSph(play, &this->colliderJntSph);
+    Collider_SetJntSph(play, &this->colliderJntSph, &this->dyna.actor, &sJntSphInit, this->ColliderJntSphElements);
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 }
 
 s16 D_808B85D0 = 0;
-void func_808B7770(BgSpot18Basket* this, GlobalContext* globalCtx, f32 arg2) {
+void func_808B7770(BgSpot18Basket* this, PlayState* play, f32 arg2) {
     Vec3f acceleration;
     Vec3f velocity;
     Vec3f position;
@@ -96,7 +96,7 @@ void func_808B7770(BgSpot18Basket* this, GlobalContext* globalCtx, f32 arg2) {
     s32 count;
 
     for (i = 0, count = 2; i != count; i++) {
-        if (globalCtx) {}
+        if (play) {}
         if (!(arg2 < Rand_ZeroOne())) {
             D_808B85D0 += 0x7530;
 
@@ -117,7 +117,7 @@ void func_808B7770(BgSpot18Basket* this, GlobalContext* globalCtx, f32 arg2) {
             acceleration.y = 0.5f;
             acceleration.z = 0.0f;
 
-            func_800286CC(globalCtx, &position, &velocity, &acceleration, ((Rand_ZeroOne() * 16) + 80),
+            func_800286CC(play, &position, &velocity, &acceleration, ((Rand_ZeroOne() * 16) + 80),
                           ((Rand_ZeroOne() * 30) + 80));
         }
     }
@@ -130,29 +130,29 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void BgSpot18Basket_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Basket_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK3);
-    func_808B7710(&this->dyna.actor, globalCtx);
+    func_808B7710(&this->dyna.actor, play);
     CollisionHeader_GetVirtual(&gGoronCityVaseCol, &colHeader);
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     ActorShape_Init(&this->dyna.actor.shape, 0.0f, ActorShadow_DrawCircle, 15.0f);
     this->dyna.actor.home.pos.y += 0.01f;
     this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
 
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0x3F)) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
         func_808B7BB0(this);
         return;
     }
 
     func_808B7AEC(this);
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->dyna.actor, globalCtx, ACTOR_BG_SPOT18_FUTA,
+    Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_BG_SPOT18_FUTA,
                        this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z,
                        this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y + 0x1555,
                        this->dyna.actor.shape.rot.z, -1);
@@ -165,20 +165,20 @@ void BgSpot18Basket_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot18Basket_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Basket_Destroy(Actor* thisx, PlayState* play) {
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyJntSph(globalCtx, &this->colliderJntSph);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyJntSph(play, &this->colliderJntSph);
 }
 
 void func_808B7AEC(BgSpot18Basket* this) {
     this->actionFunc = func_808B7AFC;
 }
 
-void func_808B7AFC(BgSpot18Basket* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0x3F)) {
-        OnePointCutscene_Init(globalCtx, 4220, 80, &this->dyna.actor, MAIN_CAM);
+void func_808B7AFC(BgSpot18Basket* this, PlayState* play) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
+        OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, MAIN_CAM);
         func_808B7B58(this);
     }
 }
@@ -188,7 +188,7 @@ void func_808B7B58(BgSpot18Basket* this) {
     this->unk_216 = 0;
 }
 
-void func_808B7B6C(BgSpot18Basket* this, GlobalContext* globalCtx) {
+void func_808B7B6C(BgSpot18Basket* this, PlayState* play) {
     if (this->unk_216 > 20) {
         func_808B7BB0(this);
         this->dyna.actor.child->parent = NULL;
@@ -201,7 +201,7 @@ void func_808B7BB0(BgSpot18Basket* this) {
     this->unk_210 = this->unk_20C = 0;
 }
 
-void func_808B7BCC(BgSpot18Basket* this, GlobalContext* globalCtx) {
+void func_808B7BCC(BgSpot18Basket* this, PlayState* play) {
     f32 positionDiff;
     Actor* colliderBaseAc;
 
@@ -226,9 +226,9 @@ void func_808B7BCC(BgSpot18Basket* this, GlobalContext* globalCtx) {
             if (positionDiff > 120.0f && positionDiff < 200.0f) {
                 if (Math3D_Dist2DSq(colliderBaseAc->world.pos.z, this->colliderJntSph.base.ac->world.pos.x,
                                     this->dyna.actor.world.pos.z, this->dyna.actor.world.pos.x) < SQ(32.0f)) {
-                    OnePointCutscene_Init(globalCtx, 4210, 240, &this->dyna.actor, MAIN_CAM);
+                    OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, MAIN_CAM);
                     func_808B7D38(this);
-                    func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+                    func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 }
             }
         }
@@ -242,7 +242,7 @@ void func_808B7D38(BgSpot18Basket* this) {
     this->unk_214 = 0;
 }
 
-void func_808B7D50(BgSpot18Basket* this, GlobalContext* globalCtx) {
+void func_808B7D50(BgSpot18Basket* this, PlayState* play) {
     f32 tempValue2;
     f32 tempValue;
 
@@ -279,9 +279,9 @@ void func_808B7D50(BgSpot18Basket* this, GlobalContext* globalCtx) {
     }
 
     if (this->unk_216 < 80) {
-        func_808B7770(this, globalCtx, 1.0f);
+        func_808B7770(this, play, 1.0f);
     } else {
-        func_808B7770(this, globalCtx, 0.8f);
+        func_808B7770(this, play, 0.8f);
     }
 
     tempValue2 = (this->unk_210 - 500) * 0.0006f;
@@ -308,7 +308,7 @@ void func_808B7F74(BgSpot18Basket* this) {
     this->unk_216 = 0;
 }
 
-void func_808B7FC0(BgSpot18Basket* this, GlobalContext* globalCtx) {
+void func_808B7FC0(BgSpot18Basket* this, PlayState* play) {
     s32 pad;
     s32 tempUnk214;
     f32 tempUnk210;
@@ -336,14 +336,14 @@ void func_808B7FC0(BgSpot18Basket* this, GlobalContext* globalCtx) {
             this->dyna.actor.shape.rot.y = arrayValue;
 
             func_808B818C(this);
-            func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
         }
     }
 
     if (this->unk_216 < 30) {
-        func_808B7770(this, globalCtx, 0.5f);
+        func_808B7770(this, play, 0.5f);
     } else {
-        func_808B7770(this, globalCtx, 0.3f);
+        func_808B7770(this, play, 0.3f);
     }
 
     tempUnk210 = (this->unk_210 - 500) * 0.0006f;
@@ -360,7 +360,7 @@ void func_808B818C(BgSpot18Basket* this) {
 
 static s16 D_808B85E4[] = { -0x0FA0, 0x0320, 0x0FA0 };
 
-void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx) {
+void func_808B81A0(BgSpot18Basket* this, PlayState* play) {
     s32 i;
     Actor* actor = &this->dyna.actor;
     Vec3f tempVector;
@@ -373,7 +373,7 @@ void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx) {
 
         if (this->unk_218 == 0) {
             for (i = 0; i < ARRAY_COUNT(D_808B85E4); i++) {
-                collectible = Item_DropCollectible(globalCtx, &tempVector, ITEM00_BOMBS_A);
+                collectible = Item_DropCollectible(play, &tempVector, ITEM00_BOMBS_A);
                 if (collectible != NULL) {
                     collectible->actor.velocity.y = 11.0f;
                     collectible->actor.world.rot.y = D_808B85E4[i];
@@ -381,22 +381,22 @@ void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx) {
             }
         } else if (this->unk_218 == 1) {
             for (i = 0; i < ARRAY_COUNT(D_808B85E4); i++) {
-                collectible = Item_DropCollectible(globalCtx, &tempVector, ITEM00_RUPEE_GREEN);
+                collectible = Item_DropCollectible(play, &tempVector, ITEM00_RUPEE_GREEN);
                 if (collectible != NULL) {
                     collectible->actor.velocity.y = 11.0f;
                     collectible->actor.world.rot.y = D_808B85E4[i];
                 }
             }
         } else if (this->unk_218 == 2) {
-            if ((this->unk_21A != 0) || Flags_GetCollectible(globalCtx, (actor->params & 0x3F))) {
-                collectible = Item_DropCollectible(globalCtx, &tempVector, ITEM00_RUPEE_PURPLE);
+            if ((this->unk_21A != 0) || Flags_GetCollectible(play, (actor->params & 0x3F))) {
+                collectible = Item_DropCollectible(play, &tempVector, ITEM00_RUPEE_PURPLE);
                 if (collectible != NULL) {
                     collectible->actor.velocity.y = 11.0f;
                     collectible->actor.world.rot.y = D_808B85E4[1];
                 }
             } else {
                 collectible =
-                    Item_DropCollectible(globalCtx, &tempVector, ((actor->params & 0x3F) << 8) | ITEM00_HEART_PIECE);
+                    Item_DropCollectible(play, &tempVector, ((actor->params & 0x3F) << 8) | ITEM00_HEART_PIECE);
                 if (collectible != NULL) {
                     collectible->actor.velocity.y = 11.0f;
                     collectible->actor.world.rot.y = D_808B85E4[1];
@@ -404,13 +404,13 @@ void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx) {
                 }
             }
 
-            collectible = Item_DropCollectible(globalCtx, &tempVector, ITEM00_RUPEE_RED);
+            collectible = Item_DropCollectible(play, &tempVector, ITEM00_RUPEE_RED);
             if (collectible != NULL) {
                 collectible->actor.velocity.y = 11.0f;
                 collectible->actor.world.rot.y = D_808B85E4[0];
             }
 
-            collectible = Item_DropCollectible(globalCtx, &tempVector, ITEM00_RUPEE_BLUE);
+            collectible = Item_DropCollectible(play, &tempVector, ITEM00_RUPEE_BLUE);
             if (collectible != NULL) {
                 collectible->actor.velocity.y = 11.0f;
                 collectible->actor.world.rot.y = D_808B85E4[2];
@@ -427,30 +427,30 @@ void func_808B81A0(BgSpot18Basket* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot18Basket_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Basket_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
     s32 bgId;
 
     this->unk_216++;
-    this->actionFunc(this, globalCtx);
-    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &this->dyna.actor.floorPoly, &bgId,
+    this->actionFunc(this, play);
+    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &bgId,
                                                                &this->dyna.actor, &this->dyna.actor.world.pos);
     if (this->actionFunc != func_808B7AFC) {
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderJntSph.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderJntSph.base);
         if (this->actionFunc != func_808B7B6C) {
             this->colliderJntSph.base.acFlags &= ~AC_HIT;
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderJntSph.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderJntSph.base);
         }
     }
 }
 
-void BgSpot18Basket_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Basket_Draw(Actor* thisx, PlayState* play) {
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
 
     Collider_UpdateSpheres(0, &this->colliderJntSph);
     Collider_UpdateSpheres(1, &this->colliderJntSph);
-    Gfx_DrawDListOpa(globalCtx, gGoronCityVaseDL);
+    Gfx_DrawDListOpa(play, gGoronCityVaseDL);
 }
 
 void BgSpot18Basket_Reset(void) {

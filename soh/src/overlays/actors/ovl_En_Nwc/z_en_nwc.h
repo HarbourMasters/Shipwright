@@ -7,8 +7,8 @@
 struct EnNwc;
 struct EnNwcChick;
 
-typedef void (*EnNwcUpdateFunc)(struct EnNwc*, GlobalContext*);
-typedef void (*EnNwcChickFunc)(struct EnNwcChick*, struct EnNwc*, GlobalContext*);
+typedef void (*EnNwcUpdateFunc)(struct EnNwc*, PlayState*);
+typedef void (*EnNwcChickFunc)(struct EnNwcChick*, struct EnNwc*, PlayState*);
 
 typedef struct EnNwcChick {
     /* 0x00 */ s8 type;

@@ -10,19 +10,19 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgTreemouth_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgTreemouth_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgTreemouth_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgTreemouth_Init(Actor* thisx, PlayState* play);
+void BgTreemouth_Destroy(Actor* thisx, PlayState* play);
+void BgTreemouth_Update(Actor* thisx, PlayState* play);
+void BgTreemouth_Draw(Actor* thisx, PlayState* play);
 
-void func_808BC65C(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BC6F8(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BC80C(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BC864(BgTreemouth* this, GlobalContext* globalCtx);
-void BgTreemouth_DoNothing(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BC8B8(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BC9EC(BgTreemouth* this, GlobalContext* globalCtx);
-void func_808BCAF0(BgTreemouth* this, GlobalContext* globalCtx);
+void func_808BC65C(BgTreemouth* this, PlayState* play);
+void func_808BC6F8(BgTreemouth* this, PlayState* play);
+void func_808BC80C(BgTreemouth* this, PlayState* play);
+void func_808BC864(BgTreemouth* this, PlayState* play);
+void BgTreemouth_DoNothing(BgTreemouth* this, PlayState* play);
+void func_808BC8B8(BgTreemouth* this, PlayState* play);
+void func_808BC9EC(BgTreemouth* this, PlayState* play);
+void func_808BCAF0(BgTreemouth* this, PlayState* play);
 
 extern CutsceneData D_808BCE20[];
 extern CutsceneData D_808BD2A0[];
@@ -59,7 +59,7 @@ void BgTreemouth_SetupAction(BgTreemouth* this, BgTreemouthActionFunc actionFunc
     this->actionFunc = actionFunc;
 }
 
-void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgTreemouth_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgTreemouth* this = (BgTreemouth*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -67,7 +67,7 @@ void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(thisx, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gDekuTreeMouthCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
     Actor_SetFocus(thisx, 50.0f);
 
@@ -84,17 +84,17 @@ void BgTreemouth_Init(Actor* thisx, GlobalContext* globalCtx) {
     thisx->textId = 0x905;
 }
 
-void BgTreemouth_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgTreemouth_Destroy(Actor* thisx, PlayState* play) {
     BgTreemouth* this = (BgTreemouth*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_808BC65C(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BC65C(BgTreemouth* this, PlayState* play) {
     CsCmdActorAction* npcAction;
 
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE)) {
-        npcAction = globalCtx->csCtx.npcActions[0];
+    if ((play->csCtx.state != CS_STATE_IDLE)) {
+        npcAction = play->csCtx.npcActions[0];
         if (npcAction != NULL) {
             if (npcAction->action == 2) {
                 BgTreemouth_SetupAction(this, func_808BC80C);
@@ -106,7 +106,7 @@ void func_808BC65C(BgTreemouth* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_808BC6F8(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BC6F8(BgTreemouth* this, PlayState* play) {
     Vec3f sp34;
 
     if (this->unk_168 < 1.0f) {
@@ -115,30 +115,30 @@ void func_808BC6F8(BgTreemouth* this, GlobalContext* globalCtx) {
         this->unk_168 = 1.0f;
     }
 
-    if ((gSaveContext.sceneSetupIndex == 6) && (globalCtx->csCtx.frames >= 0x2BD) &&
-        (globalCtx->state.frames % 8 == 0)) {
+    if ((gSaveContext.sceneSetupIndex == 6) && (play->csCtx.frames >= 0x2BD) &&
+        (play->state.frames % 8 == 0)) {
         sp34.x = (Rand_ZeroOne() * 1158.0f) + 3407.0f;
         sp34.y = 970.0f;
         sp34.z = (Rand_ZeroOne() * 2026.0f) + -2163.0f;
-        EffectSsHahen_SpawnBurst(globalCtx, &sp34, 0.8f, 0, 50, 30, 1, HAHEN_OBJECT_DEFAULT, 10, NULL);
+        EffectSsHahen_SpawnBurst(play, &sp34, 0.8f, 0, 50, 30, 1, HAHEN_OBJECT_DEFAULT, 10, NULL);
     }
 }
 
-void func_808BC80C(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BC80C(BgTreemouth* this, PlayState* play) {
     this->unk_168 += 0.05f;
     if (this->unk_168 >= 0.8f) {
         BgTreemouth_SetupAction(this, func_808BC864);
     }
 }
 
-void func_808BC864(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BC864(BgTreemouth* this, PlayState* play) {
     this->unk_168 -= 0.03f;
     if (this->unk_168 <= 0.0f) {
         BgTreemouth_SetupAction(this, func_808BC65C);
     }
 }
 
-void func_808BC8B8(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BC8B8(BgTreemouth* this, PlayState* play) {
     if ((!(Flags_GetEventChkInf(5))) || LINK_IS_ADULT) {
         if (!LINK_IS_ADULT) {
             if (Flags_GetEventChkInf(0xC)) {
@@ -146,14 +146,14 @@ void func_808BC8B8(BgTreemouth* this, GlobalContext* globalCtx) {
                     this->dyna.actor.flags |= ACTOR_FLAG_0;
                     if (this->dyna.actor.isTargeted) {
                         this->dyna.actor.flags &= ~ACTOR_FLAG_0;
-                        globalCtx->csCtx.segment = D_808BD2A0;
+                        play->csCtx.segment = D_808BD2A0;
                         gSaveContext.cutsceneTrigger = 1;
                         BgTreemouth_SetupAction(this, func_808BC9EC);
                     }
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
                 Flags_SetEventChkInf(0xC);
-                globalCtx->csCtx.segment = D_808BCE20;
+                play->csCtx.segment = D_808BCE20;
                 gSaveContext.cutsceneTrigger = 1;
                 BgTreemouth_SetupAction(this, func_808BC9EC);
             }
@@ -163,42 +163,42 @@ void func_808BC8B8(BgTreemouth* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_808BC9EC(BgTreemouth* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_808BC9EC(BgTreemouth* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (globalCtx->csCtx.state == CS_STATE_UNSKIPPABLE_INIT) {
+    if (play->csCtx.state == CS_STATE_UNSKIPPABLE_INIT) {
         if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 350.0f, 0x7530)) {
             player->actor.world.pos.x = 3827.0f;
             player->actor.world.pos.y = -161.0f;
             player->actor.world.pos.z = -1142.0f;
         }
 
-        globalCtx->csCtx.frames = 0;
-        globalCtx->csCtx.unk_18 = 0xFFFF;
+        play->csCtx.frames = 0;
+        play->csCtx.unk_18 = 0xFFFF;
         D_8015FCC0 = 0xFFFF;
         D_8015FCC2 = 0xFFFF;
         D_8015FCC4 = 0xFFFF;
-        globalCtx->csCtx.unk_1A = 0;
-        globalCtx->csCtx.unk_1B = 0;
-        globalCtx->csCtx.state = CS_STATE_SKIPPABLE_EXEC;
+        play->csCtx.unk_1A = 0;
+        play->csCtx.unk_1B = 0;
+        play->csCtx.state = CS_STATE_SKIPPABLE_EXEC;
 
-        if (globalCtx->msgCtx.choiceIndex == 0) {
-            globalCtx->csCtx.segment = D_808BD520;
+        if (play->msgCtx.choiceIndex == 0) {
+            play->csCtx.segment = D_808BD520;
             Flags_SetEventChkInf(5);
             BgTreemouth_SetupAction(this, func_808BCAF0);
         } else {
-            globalCtx->csCtx.segment = D_808BD790;
-            globalCtx->csCtx.frames = 0;
+            play->csCtx.segment = D_808BD790;
+            play->csCtx.frames = 0;
             BgTreemouth_SetupAction(this, func_808BC8B8);
         }
     }
 }
 
-void func_808BCAF0(BgTreemouth* this, GlobalContext* globalCtx) {
+void func_808BCAF0(BgTreemouth* this, PlayState* play) {
     CsCmdActorAction* npcAction;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        npcAction = globalCtx->csCtx.npcActions[0];
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        npcAction = play->csCtx.npcActions[0];
         if (npcAction != NULL) {
             if (npcAction->action == 2) {
                 BgTreemouth_SetupAction(this, func_808BC80C);
@@ -210,27 +210,27 @@ void func_808BCAF0(BgTreemouth* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgTreemouth_DoNothing(BgTreemouth* this, GlobalContext* globalCtx) {
+void BgTreemouth_DoNothing(BgTreemouth* this, PlayState* play) {
 }
 
-void BgTreemouth_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgTreemouth_Update(Actor* thisx, PlayState* play) {
     BgTreemouth* this = (BgTreemouth*)thisx;
     f32 unk_168;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     unk_168 = this->unk_168;
     thisx->world.pos.x = (unk_168 * -160.0f) + 4029.0f;
     thisx->world.pos.y = (unk_168 * -399.0f) + 136.0f;
     thisx->world.pos.z = (unk_168 * 92.0f) + -1255.0f;
 }
 
-void BgTreemouth_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgTreemouth_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     u16 alpha = 500;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     if ((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) {
         if (gSaveContext.eventChkInf[0] & 0x80) {
@@ -240,13 +240,13 @@ void BgTreemouth_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.sceneSetupIndex == 6) {
-        alpha = (globalCtx->roomCtx.unk_74[0] + 0x1F4);
+        alpha = (play->roomCtx.unk_74[0] + 0x1F4);
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, alpha * 0.1f);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuTreeMouthDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

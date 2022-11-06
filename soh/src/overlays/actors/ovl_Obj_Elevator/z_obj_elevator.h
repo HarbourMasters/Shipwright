@@ -6,7 +6,7 @@
 
 struct ObjElevator;
 
-typedef void (*ObjElevatorActionFunc)(struct ObjElevator*, GlobalContext*);
+typedef void (*ObjElevatorActionFunc)(struct ObjElevator*, PlayState*);
 
 typedef struct ObjElevator {
     /* 0x0000 */ DynaPolyActor dyna;

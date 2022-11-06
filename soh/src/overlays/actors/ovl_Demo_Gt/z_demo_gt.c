@@ -6,16 +6,16 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void DemoGt_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoGt_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoGt_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoGt_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoGt_Init(Actor* thisx, PlayState* play);
+void DemoGt_Destroy(Actor* thisx, PlayState* play);
+void DemoGt_Update(Actor* thisx, PlayState* play);
+void DemoGt_Draw(Actor* thisx, PlayState* play);
 
-void DemoGt_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGt_Destroy(Actor* thisx, PlayState* play) {
     DemoGt* this = (DemoGt*)thisx;
 
     if ((this->dyna.actor.params == 1) || (this->dyna.actor.params == 2)) {
-        DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     }
 }
 
@@ -23,32 +23,32 @@ void DemoGt_PlayEarthquakeSfx() {
     func_800788CC(NA_SE_EV_EARTHQUAKE - SFX_FLAG);
 }
 
-void DemoGt_PlayExplosion1Sfx(GlobalContext* globalCtx, Vec3f* pos) {
-    SoundSource_PlaySfxAtFixedWorldPos(globalCtx, pos, 60, NA_SE_IT_BOMB_EXPLOSION);
+void DemoGt_PlayExplosion1Sfx(PlayState* play, Vec3f* pos) {
+    SoundSource_PlaySfxAtFixedWorldPos(play, pos, 60, NA_SE_IT_BOMB_EXPLOSION);
 }
 
-void DemoGt_PlayExplosion2Sfx(GlobalContext* globalCtx, Vec3f* pos) {
-    SoundSource_PlaySfxAtFixedWorldPos(globalCtx, pos, 60, NA_SE_EV_GRAVE_EXPLOSION);
+void DemoGt_PlayExplosion2Sfx(PlayState* play, Vec3f* pos) {
+    SoundSource_PlaySfxAtFixedWorldPos(play, pos, 60, NA_SE_EV_GRAVE_EXPLOSION);
 }
 
-void DemoGt_Rumble(GlobalContext* globalCtx) {
+void DemoGt_Rumble(PlayState* play) {
     func_800AA000(0.0f, 0x32, 0xA, 5);
 }
 
-void DemoGt_SpawnDust(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale, s16 scaleStep,
+void DemoGt_SpawnDust(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale, s16 scaleStep,
                       s16 life) {
     static Color_RGBA8 brownPrim = { 100, 80, 100, 0 };
     static Color_RGBA8 redEnv = { 255, 110, 96, 0 };
 
-    func_8002843C(globalCtx, pos, velocity, accel, &brownPrim, &redEnv, ((Rand_ZeroOne() * (scale * 0.2f)) + scale),
+    func_8002843C(play, pos, velocity, accel, &brownPrim, &redEnv, ((Rand_ZeroOne() * (scale * 0.2f)) + scale),
                   scaleStep, life);
 }
 
-void func_8097D7D8(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velOffset, f32 scale, s32 arg4, s32 arg5, s16 life) {
+void func_8097D7D8(PlayState* play, Vec3f* pos, Vec3f* velOffset, f32 scale, s32 arg4, s32 arg5, s16 life) {
     s32 pad;
 
-    if (!FrameAdvance_IsEnabled(globalCtx)) {
-        s32 frames = globalCtx->gameplayFrames;
+    if (!FrameAdvance_IsEnabled(play)) {
+        s32 frames = play->gameplayFrames;
 
         if (ABS(frames % arg4) == arg5) {
             s32 pad[2];
@@ -67,30 +67,30 @@ void func_8097D7D8(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velOffset, f32 s
             accel.y *= scale;
             accel.z *= scale;
 
-            DemoGt_SpawnDust(globalCtx, pos, &velocity, &accel, (300.0f * scale), (15.0f * scale), life);
+            DemoGt_SpawnDust(play, pos, &velocity, &accel, (300.0f * scale), (15.0f * scale), life);
         }
     }
 }
 
-Actor* DemoGt_SpawnCloudRing(GlobalContext* globalCtx, Vec3f* pos, s16 params) {
-    return Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0,
+Actor* DemoGt_SpawnCloudRing(PlayState* play, Vec3f* pos, s16 params) {
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0,
                        params);
 }
 
-void DemoGt_SpawnExplosionWithSound(GlobalContext* globalCtx, Vec3f* pos, f32 scale) {
+void DemoGt_SpawnExplosionWithSound(PlayState* play, Vec3f* pos, f32 scale) {
     s32 pad;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
 
-    EffectSsBomb2_SpawnLayered(globalCtx, pos, &velocity, &accel, (100.0f * scale), (15.0f * scale));
-    DemoGt_PlayExplosion1Sfx(globalCtx, pos);
+    EffectSsBomb2_SpawnLayered(play, pos, &velocity, &accel, (100.0f * scale), (15.0f * scale));
+    DemoGt_PlayExplosion1Sfx(play, pos);
 }
 
-void DemoGt_SpawnExplosionNoSound(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale) {
-    EffectSsBomb2_SpawnLayered(globalCtx, pos, velocity, accel, (100.0f * scale), (25.0f * scale));
+void DemoGt_SpawnExplosionNoSound(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale) {
+    EffectSsBomb2_SpawnLayered(play, pos, velocity, accel, (100.0f * scale), (25.0f * scale));
 }
 
-void func_8097DAC8(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
+void func_8097DAC8(DemoGt* this, PlayState* play, Vec3f* spawnerPos) {
     Vec3f pos;
     Vec3f velocity;
     f32 temp_f0;
@@ -124,14 +124,14 @@ void func_8097DAC8(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
             phi_s0 = 32;
         }
 
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, spawnerPos, -247, phi_s0, 3, 0, 0,
+        EffectSsKakera_Spawn(play, &pos, &velocity, spawnerPos, -247, phi_s0, 3, 0, 0,
                              (s32)(Rand_ZeroOne() * 10.0f + 30.0f), 2, 300, (s32)(Rand_ZeroOne() * 0.0f) + 30,
                              KAKERA_COLOR_NONE, OBJECT_GEFF, gGanonRubbleDL);
         angle += 0x1555;
     }
 }
 
-void func_8097DD28(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
+void func_8097DD28(DemoGt* this, PlayState* play, Vec3f* spawnerPos) {
     Vec3f pos;
     Vec3f velocity;
     f32 temp_f0;
@@ -165,7 +165,7 @@ void func_8097DD28(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
             phi_s0 = 32;
         }
 
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, spawnerPos, -247, phi_s0, 3, 0, 0,
+        EffectSsKakera_Spawn(play, &pos, &velocity, spawnerPos, -247, phi_s0, 3, 0, 0,
                              (s32)((Rand_ZeroOne() * 10.0f) + 30.0f), 2, 300, (s32)(Rand_ZeroOne() * 0.0f) + 0x1E,
                              KAKERA_COLOR_NONE, OBJECT_GEFF, gGanonRubbleDL);
 
@@ -173,7 +173,7 @@ void func_8097DD28(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
     }
 }
 
-void func_8097DF70(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
+void func_8097DF70(DemoGt* this, PlayState* play, Vec3f* spawnerPos) {
     Vec3f pos;
     Vec3f velocity;
     f32 temp_f0;
@@ -207,14 +207,14 @@ void func_8097DF70(DemoGt* this, GlobalContext* globalCtx, Vec3f* spawnerPos) {
             phi_s0 = 33;
         }
 
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, spawnerPos, -200, phi_s0, 10, 10, 0,
+        EffectSsKakera_Spawn(play, &pos, &velocity, spawnerPos, -200, phi_s0, 10, 10, 0,
                              Rand_ZeroOne() * 30.0f + 30.0f, 2, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30,
                              KAKERA_COLOR_NONE, OBJECT_GEFF, gGanonRubbleDL);
         angle += 0x1555;
     }
 }
 
-void func_8097E1D4(GlobalContext* globalCtx, Vec3f* arg1, s16 arg2) {
+void func_8097E1D4(PlayState* play, Vec3f* arg1, s16 arg2) {
     Vec3f pos;
     Vec3f velocity;
     f32 temp_f0;
@@ -248,7 +248,7 @@ void func_8097E1D4(GlobalContext* globalCtx, Vec3f* arg1, s16 arg2) {
             phi_s0 = 33;
         }
 
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, arg1, -247, phi_s0, 3, 0, 0,
+        EffectSsKakera_Spawn(play, &pos, &velocity, arg1, -247, phi_s0, 3, 0, 0,
                              (s32)((Rand_ZeroOne() * 10.0f) + 30.0f), 2, 300, (s32)(Rand_ZeroOne() * 0.0f) + 30,
                              KAKERA_COLOR_NONE, OBJECT_GEFF, gGanonRubbleDL);
 
@@ -256,7 +256,7 @@ void func_8097E1D4(GlobalContext* globalCtx, Vec3f* arg1, s16 arg2) {
     }
 }
 
-void func_8097E454(GlobalContext* globalCtx, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* accel, f32 arg4, f32 scale,
+void func_8097E454(PlayState* play, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* accel, f32 arg4, f32 scale,
                    s32 arg6, s32 arg7, s16 life) {
     s32 pad2[3];
     s16 increment;
@@ -267,8 +267,8 @@ void func_8097E454(GlobalContext* globalCtx, Vec3f* spawnerPos, Vec3f* velocity,
     f32 dustScale = 300.0f * scale;
     Vec3f pos;
 
-    if ((!FrameAdvance_IsEnabled(globalCtx)) && (arg7 > 0) && (arg6 > 0)) {
-        frames = (ABS((s32)globalCtx->gameplayFrames) % arg7);
+    if ((!FrameAdvance_IsEnabled(play)) && (arg7 > 0) && (arg6 > 0)) {
+        frames = (ABS((s32)play->gameplayFrames) % arg7);
         phi_s0 = 0x10000 * frames / arg6;
         increment = 0x10000 / arg6;
 
@@ -278,10 +278,10 @@ void func_8097E454(GlobalContext* globalCtx, Vec3f* spawnerPos, Vec3f* velocity,
             pos.y = spawnerPos->y;
             pos.z = (Math_CosS(phi_s0) * arg4) + spawnerPos->z;
 
-            DemoGt_SpawnDust(globalCtx, &pos, velocity, accel, dustScale, dustScaleStep, life);
+            DemoGt_SpawnDust(play, &pos, velocity, accel, dustScale, dustScaleStep, life);
 
             if (Rand_ZeroOne() <= 0.05f) {
-                func_8097E1D4(globalCtx, &pos, phi_s0);
+                func_8097E1D4(play, &pos, phi_s0);
             }
 
             phi_s0 += increment;
@@ -289,27 +289,27 @@ void func_8097E454(GlobalContext* globalCtx, Vec3f* spawnerPos, Vec3f* velocity,
     }
 }
 
-u8 func_8097E69C(GlobalContext* globalCtx) {
-    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+u8 func_8097E69C(PlayState* play) {
+    if (play->csCtx.state == CS_STATE_IDLE) {
         return true;
     } else {
         return false;
     }
 }
 
-CsCmdActorAction* DemoGt_GetNpcAction(GlobalContext* globalCtx, u32 actionIdx) {
+CsCmdActorAction* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
     s32 pad[2];
     CsCmdActorAction* ret = NULL;
 
-    if (!func_8097E69C(globalCtx)) {
-        ret = globalCtx->csCtx.npcActions[actionIdx];
+    if (!func_8097E69C(play)) {
+        ret = play->csCtx.npcActions[actionIdx];
     }
 
     return ret;
 }
 
-u8 func_8097E704(GlobalContext* globalCtx, u16 arg1, s32 arg2) {
-    CsCmdActorAction* action = DemoGt_GetNpcAction(globalCtx, arg2);
+u8 func_8097E704(PlayState* play, u16 arg1, s32 arg2) {
+    CsCmdActorAction* action = DemoGt_GetNpcAction(play, arg2);
 
     if ((action != NULL) && (action->action == arg1)) {
         return true;
@@ -318,8 +318,8 @@ u8 func_8097E704(GlobalContext* globalCtx, u16 arg1, s32 arg2) {
     }
 }
 
-void func_8097E744(DemoGt* this, GlobalContext* globalCtx, u32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoGt_GetNpcAction(globalCtx, actionIdx);
+void func_8097E744(DemoGt* this, PlayState* play, u32 actionIdx) {
+    CsCmdActorAction* npcAction = DemoGt_GetNpcAction(play, actionIdx);
     Vec3f* pos = &this->dyna.actor.world.pos;
     f32 startX;
     f32 startY;
@@ -331,7 +331,7 @@ void func_8097E744(DemoGt* this, GlobalContext* globalCtx, u32 actionIdx) {
 
     if (npcAction != NULL) {
         someFloat =
-            Environment_LerpWeightAccelDecel(npcAction->endFrame, npcAction->startFrame, globalCtx->csCtx.frames, 8, 0);
+            Environment_LerpWeightAccelDecel(npcAction->endFrame, npcAction->startFrame, play->csCtx.frames, 8, 0);
         startX = npcAction->startPos.x;
         startY = npcAction->startPos.y;
         startZ = npcAction->startPos.z;
@@ -430,8 +430,8 @@ void func_8097E824(DemoGt* this, s32 arg1) {
     pos->z += tempf3;
 }
 
-void func_8097ED64(DemoGt* this, GlobalContext* globalCtx, s32 actionIdx) {
-    func_8097E744(this, globalCtx, actionIdx);
+void func_8097ED64(DemoGt* this, PlayState* play, s32 actionIdx) {
+    func_8097E744(this, play, actionIdx);
     func_8097E824(this, actionIdx);
 }
 
@@ -449,7 +449,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void func_8097EDD8(DemoGt* this, GlobalContext* globalCtx, CollisionHeader* collision) {
+void func_8097EDD8(DemoGt* this, PlayState* play, CollisionHeader* collision) {
     s32 pad[3];
     CollisionHeader* colHeader;
 
@@ -458,16 +458,16 @@ void func_8097EDD8(DemoGt* this, GlobalContext* globalCtx, CollisionHeader* coll
         DynaPolyActor_Init(&this->dyna, DPM_UNK);
         colHeader = NULL;
         CollisionHeader_GetVirtual(collision, &colHeader);
-        this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+        this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     }
 }
 
-u8 func_8097EE44(DemoGt* this, GlobalContext* globalCtx, s32 updateMode, s32 drawConfig, CollisionHeader* colHeader) {
+u8 func_8097EE44(DemoGt* this, PlayState* play, s32 updateMode, s32 drawConfig, CollisionHeader* colHeader) {
 
     if (func_8097ED94()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
-        func_8097EDD8(this, globalCtx, colHeader);
+        func_8097EDD8(this, play, colHeader);
         return true;
     } else {
         Actor_Kill(&this->dyna.actor);
@@ -475,27 +475,27 @@ u8 func_8097EE44(DemoGt* this, GlobalContext* globalCtx, s32 updateMode, s32 dra
     }
 }
 
-void func_8097EEA8_Init0(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097EEA8_Init0(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
 
-    func_8097EE44(this, globalCtx, 0, 1, NULL);
+    func_8097EE44(this, play, 0, 1, NULL);
 }
 
-void func_8097EF00(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_8097EF00(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 527) {
         func_800F3F3C(13);
     }
 }
 
-void func_8097EF34(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097EF34(DemoGt* this, PlayState* play) {
 }
 
-void func_8097EF40(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_8097EF40(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
     s32 pad1[3];
     Vec3f dustPos;
     Vec3f velocity = { 0.0f, -16.0f, 0.0f };
@@ -508,43 +508,43 @@ void func_8097EF40(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.y = pos->y + 679.0f;
         dustPos.z = pos->z + 82.0f;
 
-        DemoGt_SpawnDust(globalCtx, &dustPos, &velocity, &accel, 1700.0f, 15, 30);
+        DemoGt_SpawnDust(play, &dustPos, &velocity, &accel, 1700.0f, 15, 30);
 
         dustPos.x = pos->x + 256.0f;
         dustPos.y = pos->y + 679.0f;
         dustPos.z = pos->z - 60.0f;
 
-        DemoGt_SpawnDust(globalCtx, &dustPos, &velocity, &accel, 1700.0f, 15, 30);
+        DemoGt_SpawnDust(play, &dustPos, &velocity, &accel, 1700.0f, 15, 30);
     }
 }
 
-void func_8097F0AC(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097F0AC(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f sp38;
     s16 pad1[3];
     Vec3f sp24;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     s32 pad2;
 
     if ((frames == 140) || (kREG(1) == 19)) {
         sp38.x = this->dyna.actor.world.pos.x + 260.0f;
         sp38.y = this->dyna.actor.world.pos.y + 340.0f;
         sp38.z = this->dyna.actor.world.pos.z + 45.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &sp38, 2.0f);
+        DemoGt_SpawnExplosionWithSound(play, &sp38, 2.0f);
     }
 
     if (frames == 176) {
         sp24.x = this->dyna.actor.world.pos.x + 260.0f;
         sp24.y = this->dyna.actor.world.pos.y + 840.0f;
         sp24.z = this->dyna.actor.world.pos.z + 45.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &sp24, 2.0f);
+        DemoGt_SpawnExplosionWithSound(play, &sp24, 2.0f);
     }
 }
 
-void func_8097F19C(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097EF34(this, globalCtx);
-    func_8097EF40(this, globalCtx);
-    func_8097F0AC(this, globalCtx);
+void func_8097F19C(DemoGt* this, PlayState* play) {
+    func_8097EF34(this, play);
+    func_8097EF40(this, play);
+    func_8097F0AC(this, play);
 }
 
 void func_8097F1D8(DemoGt* this) {
@@ -558,13 +558,13 @@ void func_8097F1D8(DemoGt* this) {
     }
 }
 
-void func_8097F280(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097F280(DemoGt* this, PlayState* play) {
     s32* unk178 = this->unk_178;
     s32* unk188 = this->unk_188;
     s32* unk198 = this->unk_198;
     f32 temp_f0;
 
-    if (globalCtx->csCtx.frames < 160) {
+    if (play->csCtx.frames < 160) {
         unk178[0] = 100;
         unk178[1] = 255;
         unk178[2] = 200;
@@ -575,8 +575,8 @@ void func_8097F280(DemoGt* this, GlobalContext* globalCtx) {
 
         unk198[0]++;
         unk198[1]--;
-    } else if (globalCtx->csCtx.frames < 170) {
-        temp_f0 = Environment_LerpWeightAccelDecel(170, 160, globalCtx->csCtx.frames, 0, 0);
+    } else if (play->csCtx.frames < 170) {
+        temp_f0 = Environment_LerpWeightAccelDecel(170, 160, play->csCtx.frames, 0, 0);
 
         unk178[0] = (temp_f0 * -63.0f) + 163.0f;
         unk178[1] = (temp_f0 * -155.0f) + 255.0f;
@@ -596,36 +596,36 @@ void func_8097F280(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8097F3EC(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 1)) {
+void func_8097F3EC(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 1)) {
         this->updateMode = 8;
     }
 }
 
-void DemoGt_Update0(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097F280(this, globalCtx);
+void DemoGt_Update0(DemoGt* this, PlayState* play) {
+    func_8097F280(this, play);
     func_8097E824(this, 1);
-    func_8097F19C(this, globalCtx);
-    func_8097F3EC(this, globalCtx);
+    func_8097F19C(this, play);
+    func_8097F3EC(this, play);
     DemoGt_PlayEarthquakeSfx();
-    DemoGt_Rumble(globalCtx);
-    func_8097EF00(this, globalCtx);
+    DemoGt_Rumble(play);
+    func_8097EF00(this, play);
 }
 
-void DemoGt_Update8(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097F280(this, globalCtx);
+void DemoGt_Update8(DemoGt* this, PlayState* play) {
+    func_8097F280(this, play);
     func_8097F1D8(this);
-    func_8097ED64(this, globalCtx, 1);
-    func_8097F19C(this, globalCtx);
+    func_8097ED64(this, play, 1);
+    func_8097F19C(this, play);
     DemoGt_PlayEarthquakeSfx();
-    DemoGt_Rumble(globalCtx);
-    func_8097EF00(this, globalCtx);
+    DemoGt_Rumble(play);
+    func_8097EF00(this, play);
 }
 
-void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw1(DemoGt* this, PlayState* play) {
     s32 pad;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
-    u32 gameplayFrames = globalCtx->gameplayFrames;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
+    u32 gameplayFrames = play->gameplayFrames;
     s16 pad2[2];
     s16 spC6;
     f32 spC0;
@@ -689,22 +689,22 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_8097F904_Init1(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097F904_Init1(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
-    func_8097EE44(this, globalCtx, 1, 2, &gTowerCollapseCsCollapsedStructureInnerCol);
+    func_8097EE44(this, play, 1, 2, &gTowerCollapseCsCollapsedStructureInnerCol);
 }
 
-void func_8097F960(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097F960(DemoGt* this, PlayState* play) {
 }
 
-void func_8097F96C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097F96C(DemoGt* this, PlayState* play) {
     static Actor* cloudRing = NULL;
     s32 pad[4];
     Vec3f pos;
     Actor* actor;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if (((frames > 1059) && (frames < 1062)) || kREG(1) == 17) {
         pos.x = this->dyna.actor.world.pos.x;
@@ -712,7 +712,7 @@ void func_8097F96C(DemoGt* this, GlobalContext* globalCtx) {
         pos.z = this->dyna.actor.world.pos.z;
 
         if (cloudRing == NULL) {
-            cloudRing = DemoGt_SpawnCloudRing(globalCtx, &pos, 2);
+            cloudRing = DemoGt_SpawnCloudRing(play, &pos, 2);
         } else {
             actor = cloudRing;
             actor->world.pos.x = pos.x;
@@ -722,10 +722,10 @@ void func_8097F96C(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8097FA1C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097FA1C(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { -12.0f, -17.0, 5.0 };
     s32 pad1[3];
@@ -734,11 +734,11 @@ void func_8097FA1C(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = pos->x + 300.0f;
         dustPos.y = pos->y + 360.0f;
         dustPos.z = pos->z - 377.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 1, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 1, 35);
     }
 }
 
-void func_8097FAFC(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097FAFC(DemoGt* this, PlayState* play) {
     static Vec3f velocity = { 0.0f, 1.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static f32 arg4 = 280.0f;
@@ -747,7 +747,7 @@ void func_8097FAFC(DemoGt* this, GlobalContext* globalCtx) {
     static s32 arg7 = 1;
     static s16 life = 3;
     s32 pad[2];
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f pos;
     f32 new_var = -200.0;
 
@@ -761,14 +761,14 @@ void func_8097FAFC(DemoGt* this, GlobalContext* globalCtx) {
             accel.y += new_var;
         }
 
-        func_8097E454(globalCtx, &pos, &velocity, &accel, arg4, scale, arg6, arg7, life);
+        func_8097E454(play, &pos, &velocity, &accel, arg4, scale, arg6, arg7, life);
     }
 }
 
-void func_8097FC1C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097FC1C(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -16.0f, -16.0f };
     s32 pad1[3];
@@ -777,44 +777,44 @@ void func_8097FC1C(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = pos->x + 260.0f;
         dustPos.y = pos->y + 360.0f;
         dustPos.z = pos->z + 260.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 0, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 0, 35);
     }
 }
 
-void func_8097FCE4(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097FCE4(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f vec;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if (frames == 0x1F7 || kREG(1) == 4) {
         vec.x = this->dyna.actor.world.pos.x + 300.0f;
         vec.y = this->dyna.actor.world.pos.y + 560.0f;
         vec.z = this->dyna.actor.world.pos.z - 377.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &vec, 2.0f);
+        DemoGt_SpawnExplosionWithSound(play, &vec, 2.0f);
     }
 }
 
-void func_8097FD70(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097F960(this, globalCtx);
-    func_8097F96C(this, globalCtx);
-    func_8097FA1C(this, globalCtx);
-    func_8097FAFC(this, globalCtx);
-    func_8097FC1C(this, globalCtx);
-    func_8097FCE4(this, globalCtx);
+void func_8097FD70(DemoGt* this, PlayState* play) {
+    func_8097F960(this, play);
+    func_8097F96C(this, play);
+    func_8097FA1C(this, play);
+    func_8097FAFC(this, play);
+    func_8097FC1C(this, play);
+    func_8097FCE4(this, play);
 }
 
-void func_8097FDDC(DemoGt* this, GlobalContext* globalCtx) {
+void func_8097FDDC(DemoGt* this, PlayState* play) {
     s32* unk178 = this->unk_178;
     s32* unk198 = this->unk_198;
 
-    if (globalCtx->csCtx.frames < 610) {
+    if (play->csCtx.frames < 610) {
         unk178[0] = 163;
         unk178[1] = 193;
         unk178[2] = 193;
         unk198[0]++;
         unk198[1]--;
-    } else if (globalCtx->csCtx.frames < 620) {
-        f32 temp_f0 = Environment_LerpWeightAccelDecel(620, 610, globalCtx->csCtx.frames, 0, 0);
+    } else if (play->csCtx.frames < 620) {
+        f32 temp_f0 = Environment_LerpWeightAccelDecel(620, 610, play->csCtx.frames, 0, 0);
 
         unk178[0] = (temp_f0 * (-13.0f)) + 163.0f;
         unk178[1] = (temp_f0 * (-43.0f)) + 193.0f;
@@ -826,27 +826,27 @@ void func_8097FDDC(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8097FED8(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 2)) {
+void func_8097FED8(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 2)) {
         this->updateMode = 9;
     }
 }
 
-void DemoGt_Update1(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097FDDC(this, globalCtx);
+void DemoGt_Update1(DemoGt* this, PlayState* play) {
+    func_8097FDDC(this, play);
     func_8097E824(this, 2);
-    func_8097FD70(this, globalCtx);
-    func_8097FED8(this, globalCtx);
+    func_8097FD70(this, play);
+    func_8097FED8(this, play);
 }
 
-void DemoGt_Update9(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097FDDC(this, globalCtx);
-    func_8097ED64(this, globalCtx, 2);
-    func_8097FD70(this, globalCtx);
+void DemoGt_Update9(DemoGt* this, PlayState* play) {
+    func_8097FDDC(this, play);
+    func_8097ED64(this, play, 2);
+    func_8097FD70(this, play);
 }
 
-void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void DemoGt_Draw2(DemoGt* this, PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32* unk198;
     s32* unk178;
     s32 pad;
@@ -867,32 +867,32 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80980110_Init2(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980110_Init2(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
-    func_8097EE44(this, globalCtx, 2, 3, &gTowerCollapseCsCollapsedStructureOuterCol);
+    func_8097EE44(this, play, 2, 3, &gTowerCollapseCsCollapsedStructureOuterCol);
 }
 
-void func_8098016C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8098016C(DemoGt* this, PlayState* play) {
 }
 
-void func_80980178(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980178(DemoGt* this, PlayState* play) {
 }
 
-void func_80980184(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980184(DemoGt* this, PlayState* play) {
     static Actor* cloudRing = NULL;
     s32 pad[4];
     Vec3f pos;
     Actor* actor;
 
-    if ((globalCtx->csCtx.frames > 1027) && (globalCtx->csCtx.frames < 1031)) {
+    if ((play->csCtx.frames > 1027) && (play->csCtx.frames < 1031)) {
         pos.x = this->dyna.actor.world.pos.x;
         pos.y = this->dyna.actor.world.pos.y + 247.0f;
         pos.z = this->dyna.actor.world.pos.z;
 
         if (cloudRing == NULL) {
-            cloudRing = DemoGt_SpawnCloudRing(globalCtx, &pos, 3);
+            cloudRing = DemoGt_SpawnCloudRing(play, &pos, 3);
         } else {
             actor = cloudRing;
             actor->world.pos.x = pos.x;
@@ -902,19 +902,19 @@ void func_80980184(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80980218(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980218(DemoGt* this, PlayState* play) {
     static Actor* cloudRing = NULL;
     s32 pad[4];
     Vec3f pos;
     Actor* actor;
 
-    if ((globalCtx->csCtx.frames > 997) && (globalCtx->csCtx.frames < 1001)) {
+    if ((play->csCtx.frames > 997) && (play->csCtx.frames < 1001)) {
         pos.x = this->dyna.actor.home.pos.x;
         pos.y = this->dyna.actor.home.pos.y + 38.0f;
         pos.z = this->dyna.actor.home.pos.z;
 
         if (cloudRing == NULL) {
-            cloudRing = DemoGt_SpawnCloudRing(globalCtx, &pos, 4);
+            cloudRing = DemoGt_SpawnCloudRing(play, &pos, 4);
         } else {
             actor = cloudRing;
             actor->world.pos.x = pos.x;
@@ -924,10 +924,10 @@ void func_80980218(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_809802AC(DemoGt* this, GlobalContext* globalCtx) {
+void func_809802AC(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 0.0f, 0.0f, -10.0f };
     s32 pad1[3];
@@ -936,14 +936,14 @@ void func_809802AC(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = pos->x - 100.0f;
         dustPos.y = pos->y + 1260.0f;
         dustPos.z = pos->z - 323.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 4.0f, 3, 0, 20);
+        func_8097D7D8(play, &dustPos, &velOffset, 4.0f, 3, 0, 20);
     }
 }
 
-void func_8098036C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8098036C(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* world = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -3.0f, 0.0f };
     s32 pad1[3];
@@ -952,14 +952,14 @@ void func_8098036C(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = world->x + 760.0f;
         dustPos.y = world->y - 40.0f;
         dustPos.z = world->z - 240.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 1, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 1, 35);
     }
 }
 
-void func_80980430(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980430(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    s32 frames = globalCtx->csCtx.frames;
+    s32 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -3.0f, 0.0f };
     s32 pad1[3];
@@ -968,14 +968,14 @@ void func_80980430(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = pos->x + 760.0f;
         dustPos.y = pos->y - 40.0f;
         dustPos.z = pos->z - 240.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 1, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 1, 35);
     }
 }
 
-void func_80980504(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980504(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -16.0f, -16.0f };
     s32 pad1[3];
@@ -984,14 +984,14 @@ void func_80980504(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = pos->x + 830.0f;
         dustPos.y = pos->y + 60.0f;
         dustPos.z = pos->z + 390.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 2, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 2, 35);
     }
 }
 
-void func_809805D8(DemoGt* this, GlobalContext* globalCtx) {
+void func_809805D8(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* homePos = &this->dyna.actor.home.pos;
     Vec3f velOffset = { 15.0f, -26.0, 0.0f };
     s32 pad1[3];
@@ -1000,14 +1000,14 @@ void func_809805D8(DemoGt* this, GlobalContext* globalCtx) {
         dustPos.x = homePos->x + 550.0f;
         dustPos.y = homePos->y - 110.0f;
         dustPos.z = homePos->z + 50.0f;
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 6.0f, 6, 4, 35);
+        func_8097D7D8(play, &dustPos, &velOffset, 6.0f, 6, 4, 35);
     }
 }
 
-void func_809806B8(DemoGt* this, GlobalContext* globalContext) {
+void func_809806B8(DemoGt* this, PlayState* playState) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalContext->csCtx.frames;
+    u16 frames = playState->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -16.0f, -16.0f };
     s32 pad1[3];
@@ -1016,14 +1016,14 @@ void func_809806B8(DemoGt* this, GlobalContext* globalContext) {
         dustPos.x = pos->x + 460.0f;
         dustPos.y = pos->y + 60.0f;
         dustPos.z = pos->z + 760.0f;
-        func_8097D7D8(globalContext, &dustPos, &velOffset, 6.0f, 6, 3, 35);
+        func_8097D7D8(playState, &dustPos, &velOffset, 6.0f, 6, 3, 35);
     }
 }
 
-void func_8098078C(DemoGt* this, GlobalContext* globalContext) {
+void func_8098078C(DemoGt* this, PlayState* playState) {
     s32 pad[3];
     Vec3f dustPos;
-    u16 frames = globalContext->csCtx.frames;
+    u16 frames = playState->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
     Vec3f velOffset = { 5.0f, -16.0f, -16.0f };
     s32 pad1[3];
@@ -1032,39 +1032,39 @@ void func_8098078C(DemoGt* this, GlobalContext* globalContext) {
         dustPos.x = pos->x + 360.0f;
         dustPos.y = pos->y + 70.0f;
         dustPos.z = pos->z - 640.0f;
-        func_8097D7D8(globalContext, &dustPos, &velOffset, 6.0, 6, 0, 35);
+        func_8097D7D8(playState, &dustPos, &velOffset, 6.0, 6, 0, 35);
     }
 }
 
-void func_8098085C(DemoGt* this, GlobalContext* globalCtx) {
+void func_8098085C(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f sp28;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
     Vec3f* pos = &this->dyna.actor.world.pos;
 
     if ((frames == 58) || (kREG(1) == 1)) {
         sp28.x = pos->x + 900.0f;
         sp28.y = pos->y - 50.0f;
         sp28.z = pos->z + 93.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &sp28, 2.0f);
+        DemoGt_SpawnExplosionWithSound(play, &sp28, 2.0f);
     } else if (frames == 80) {
         sp28.x = pos->x + 810.0f;
         sp28.y = pos->y + 200.0f;
         sp28.z = pos->z - 37.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &sp28, 0.9f);
+        DemoGt_SpawnExplosionWithSound(play, &sp28, 0.9f);
     } else if (frames == 90) {
         sp28.x = pos->x - 220.0f;
         sp28.y = pos->y + 1350.0f;
         sp28.z = pos->z - 287.0f;
-        DemoGt_SpawnExplosionWithSound(globalCtx, &sp28, 2.0f);
+        DemoGt_SpawnExplosionWithSound(play, &sp28, 2.0f);
     }
 }
 
-void func_809809C0(DemoGt* this, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void func_809809C0(DemoGt* this, PlayState* play2) {
+    PlayState* play = play2;
     DemoGt* this2 = this;
-    s32 gameplayFrames = globalCtx->gameplayFrames;
-    u16 frames = globalCtx->csCtx.frames;
+    s32 gameplayFrames = play->gameplayFrames;
+    u16 frames = play->csCtx.frames;
     Vec3f sp54;
     s16 pad[3];
 
@@ -1078,93 +1078,93 @@ void func_809809C0(DemoGt* this, GlobalContext* globalCtx2) {
         sp54.z = this2->dyna.actor.world.pos.z + 23.0f;
 
         if (ABS(gameplayFrames % 12) == 0) {
-            DemoGt_SpawnExplosionNoSound(globalCtx, &sp54, &sp40, &sp34, 2.0f);
+            DemoGt_SpawnExplosionNoSound(play, &sp54, &sp40, &sp34, 2.0f);
         }
     }
 }
 
-void func_80980AD4(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980AD4(DemoGt* this, PlayState* play) {
     s32 pad[4];
     Vec3f pos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if ((frames == 477) || (kREG(2) == 1)) {
         pos.x = this->dyna.actor.world.pos.x + 790.0f;
         pos.y = this->dyna.actor.world.pos.y + 60.0f;
         pos.z = this->dyna.actor.world.pos.z + 23.0f;
 
-        func_8097DAC8(this, globalCtx, &pos);
-        DemoGt_PlayExplosion2Sfx(globalCtx, &pos);
+        func_8097DAC8(this, play, &pos);
+        DemoGt_PlayExplosion2Sfx(play, &pos);
     }
 }
 
-void func_80980B68(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980B68(DemoGt* this, PlayState* play) {
     s32 pad[4];
     Vec3f pos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if ((frames == 317) || (kREG(3) == 1)) {
         pos.x = this->dyna.actor.world.pos.x + 980.0f;
         pos.y = this->dyna.actor.world.pos.y + 410.0f;
         pos.z = this->dyna.actor.world.pos.z - 177.0f;
-        func_8097DD28(this, globalCtx, &pos);
-        DemoGt_PlayExplosion2Sfx(globalCtx, &pos);
+        func_8097DD28(this, play, &pos);
+        DemoGt_PlayExplosion2Sfx(play, &pos);
     }
 }
 
-void func_80980BFC(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980BFC(DemoGt* this, PlayState* play) {
     s32 pad[4];
     Vec3f pos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if ((frames == 740) || (kREG(4) == 1)) {
         pos.x = this->dyna.actor.world.pos.x + 790.0f;
         pos.y = this->dyna.actor.world.pos.y + 60.0f;
         pos.z = this->dyna.actor.world.pos.z + 23.0f;
 
-        func_8097DF70(this, globalCtx, &pos);
-        DemoGt_PlayExplosion2Sfx(globalCtx, &pos);
+        func_8097DF70(this, play, &pos);
+        DemoGt_PlayExplosion2Sfx(play, &pos);
     }
 }
 
-void func_80980C90(DemoGt* this, GlobalContext* globalCtx) {
-    func_8098016C(this, globalCtx);
-    func_80980178(this, globalCtx);
-    func_80980184(this, globalCtx);
-    func_80980218(this, globalCtx);
-    func_809802AC(this, globalCtx);
-    func_8098036C(this, globalCtx);
-    func_80980430(this, globalCtx);
-    func_80980504(this, globalCtx);
-    func_809805D8(this, globalCtx);
-    func_809806B8(this, globalCtx);
-    func_8098078C(this, globalCtx);
-    func_8098085C(this, globalCtx);
-    func_809809C0(this, globalCtx);
-    func_80980AD4(this, globalCtx);
-    func_80980B68(this, globalCtx);
-    func_80980BFC(this, globalCtx);
+void func_80980C90(DemoGt* this, PlayState* play) {
+    func_8098016C(this, play);
+    func_80980178(this, play);
+    func_80980184(this, play);
+    func_80980218(this, play);
+    func_809802AC(this, play);
+    func_8098036C(this, play);
+    func_80980430(this, play);
+    func_80980504(this, play);
+    func_809805D8(this, play);
+    func_809806B8(this, play);
+    func_8098078C(this, play);
+    func_8098085C(this, play);
+    func_809809C0(this, play);
+    func_80980AD4(this, play);
+    func_80980B68(this, play);
+    func_80980BFC(this, play);
 }
 
-void func_80980D74(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 3)) {
+void func_80980D74(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 3)) {
         this->updateMode = 10;
     }
 }
 
-void DemoGt_Update2(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update2(DemoGt* this, PlayState* play) {
     func_8097E824(this, 3);
-    func_80980C90(this, globalCtx);
-    func_80980D74(this, globalCtx);
+    func_80980C90(this, play);
+    func_80980D74(this, play);
 }
 
-void DemoGt_Update10(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097ED64(this, globalCtx, 3);
-    func_80980C90(this, globalCtx);
+void DemoGt_Update10(DemoGt* this, PlayState* play) {
+    func_8097ED64(this, play, 3);
+    func_80980C90(this, play);
 }
 
-void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void DemoGt_Draw3(DemoGt* this, PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1177,27 +1177,27 @@ void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80980F00_Init5(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980F00_Init5(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
 
-    func_8097EE44(this, globalCtx, 3, 4, NULL);
+    func_8097EE44(this, play, 3, 4, NULL);
 }
 
-void func_80980F58(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_80980F58(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 244) {
         func_80078914(&this->dyna.actor.projectedPos, NA_SE_EV_TOWER_PARTS_BROKEN - SFX_FLAG);
     }
 }
 
-void func_80980F8C(DemoGt* this, GlobalContext* globalCtx) {
+void func_80980F8C(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f sp58;
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if ((frames > 259) && (frames < 289)) {
         Vec3f velOfset = { 0.0f, -17.0f, 0.0f };
@@ -1208,30 +1208,30 @@ void func_80980F8C(DemoGt* this, GlobalContext* globalCtx) {
         sp58.z = -170.0f;
 
         Matrix_MultVec3f(&sp58, &dustPos);
-        func_8097D7D8(globalCtx, &dustPos, &velOfset, 3.0f, 5, 0, 30);
+        func_8097D7D8(play, &dustPos, &velOfset, 3.0f, 5, 0, 30);
     }
 }
 
-void func_8098103C(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 4)) {
+void func_8098103C(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 4)) {
         this->updateMode = 11;
-    } else if (func_8097E704(globalCtx, 3, 4)) {
+    } else if (func_8097E704(play, 3, 4)) {
         this->updateMode = 16;
     }
 }
 
-void DemoGt_Update3(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update3(DemoGt* this, PlayState* play) {
     func_8097E824(this, 4);
-    func_80980F58(this, globalCtx);
-    func_8098103C(this, globalCtx);
+    func_80980F58(this, play);
+    func_8098103C(this, play);
 }
 
-void DemoGt_Update11(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097ED64(this, globalCtx, 4);
-    func_80980F58(this, globalCtx);
+void DemoGt_Update11(DemoGt* this, PlayState* play) {
+    func_8097ED64(this, play, 4);
+    func_80980F58(this, play);
 }
 
-void DemoGt_Update16(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update16(DemoGt* this, PlayState* play) {
     f32 temp = this->unk_172;
 
     this->unk_174 = (temp * ((kREG(64) * 0.001f) + 0.048f)) + (kREG(65) + 98.0f);
@@ -1242,10 +1242,10 @@ void DemoGt_Update16(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
+void DemoGt_Draw4(DemoGt* this, PlayState* play2) {
     GraphicsContext* gfxCtx;
-    GlobalContext* globalCtx = globalCtx2;
-    u16 frames = globalCtx->csCtx.frames;
+    PlayState* play = play2;
+    u16 frames = play->csCtx.frames;
     s32 pad;
     s16 sp76;
     f32 sp70;
@@ -1265,7 +1265,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         sp6C = kREG(61);
         sp68 = (s16)((s32)kREG(58)) + 0x4000;
         sp6A = kREG(58);
-        gfxCtx = globalCtx->state.gfxCtx;
+        gfxCtx = play->state.gfxCtx;
         sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
         sp44 = 1.0f - Math_CosS(sp76);
 
@@ -1285,8 +1285,8 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
         MATRIX_TOMTX(sp60);
 
-        if (!FrameAdvance_IsEnabled(globalCtx)) {
-            func_80980F8C(this, globalCtx);
+        if (!FrameAdvance_IsEnabled(play)) {
+            func_80980F8C(this, play);
         }
 
         Matrix_Pop();
@@ -1300,27 +1300,27 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
     }
 }
 
-void func_809813CC_Init6(DemoGt* this, GlobalContext* globalCtx) {
+void func_809813CC_Init6(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
 
-    func_8097EE44(this, globalCtx, 4, 5, NULL);
+    func_8097EE44(this, play, 4, 5, NULL);
 }
 
-void func_80981424(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_80981424(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 789) {
         func_80078914(&this->dyna.actor.projectedPos, NA_SE_EV_TOWER_PARTS_BROKEN - SFX_FLAG);
     }
 }
 
-void func_80981458(DemoGt* this, GlobalContext* globalCtx) {
+void func_80981458(DemoGt* this, PlayState* play) {
     s32 pad[3];
     Vec3f sp58;
     Vec3f dustPos;
-    u16 frames = globalCtx->csCtx.frames;
+    u16 frames = play->csCtx.frames;
 
     if (((frames > 855) && (frames < 891)) || (kREG(1) == 13)) {
         Vec3f velOffset = { 0.0f, -30.0f, 0.0f };
@@ -1331,30 +1331,30 @@ void func_80981458(DemoGt* this, GlobalContext* globalCtx) {
         sp58.z = -1100.0f;
 
         Matrix_MultVec3f(&sp58, &dustPos);
-        func_8097D7D8(globalCtx, &dustPos, &velOffset, 7.1f, 5, 1, 30);
+        func_8097D7D8(play, &dustPos, &velOffset, 7.1f, 5, 1, 30);
     }
 }
 
-void func_80981524(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 5)) {
+void func_80981524(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 5)) {
         this->updateMode = 12;
-    } else if (func_8097E704(globalCtx, 3, 5)) {
+    } else if (func_8097E704(play, 3, 5)) {
         this->updateMode = 17;
     }
 }
 
-void DemoGt_Update4(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update4(DemoGt* this, PlayState* play) {
     func_8097E824(this, 5);
-    func_80981424(this, globalCtx);
-    func_80981524(this, globalCtx);
+    func_80981424(this, play);
+    func_80981524(this, play);
 }
 
-void DemoGt_Update12(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097ED64(this, globalCtx, 5);
-    func_80981424(this, globalCtx);
+void DemoGt_Update12(DemoGt* this, PlayState* play) {
+    func_8097ED64(this, play, 5);
+    func_80981424(this, play);
 }
 
-void DemoGt_Update17(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update17(DemoGt* this, PlayState* play) {
     f32 temp = this->unk_172;
 
     this->unk_174 = temp * ((kREG(66) * 0.001f) + 0.048f) + (kREG(67) + 50.0f);
@@ -1365,7 +1365,7 @@ void DemoGt_Update17(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw5(DemoGt* this, PlayState* play) {
     GraphicsContext* gfxCtx;
     s32 pad;
     s16 sp76;
@@ -1384,7 +1384,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     sp6C = kREG(62);
     sp6A = kREG(59) - 0x4000;
     sp68 = (s16)(kREG(59) - 0x4000) + 0x4000;
-    gfxCtx = globalCtx->state.gfxCtx;
+    gfxCtx = play->state.gfxCtx;
     sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp44 = 1 - Math_CosS(sp76);
 
@@ -1404,8 +1404,8 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
     MATRIX_TOMTX(sp60);
 
-    if (!FrameAdvance_IsEnabled(globalCtx)) {
-        func_80981458(this, globalCtx);
+    if (!FrameAdvance_IsEnabled(play)) {
+        func_80981458(this, play);
     }
 
     Matrix_Pop();
@@ -1418,40 +1418,40 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_809818A4_Init7(DemoGt* this, GlobalContext* globalCtx) {
+void func_809818A4_Init7(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
 
-    func_8097EE44(this, globalCtx, 5, 6, NULL);
+    func_8097EE44(this, play, 5, 6, NULL);
 }
 
-void func_809818FC(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_809818FC(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 845) {
         func_80078914(&this->dyna.actor.projectedPos, NA_SE_EV_TOWER_PARTS_BROKEN - SFX_FLAG);
     }
 }
-void func_80981930(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 6)) {
+void func_80981930(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 6)) {
         this->updateMode = 13;
-    } else if (func_8097E704(globalCtx, 3, 6)) {
+    } else if (func_8097E704(play, 3, 6)) {
         this->updateMode = 18;
     }
 }
-void DemoGt_Update5(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update5(DemoGt* this, PlayState* play) {
     func_8097E824(this, 6);
-    func_809818FC(this, globalCtx);
-    func_80981930(this, globalCtx);
+    func_809818FC(this, play);
+    func_80981930(this, play);
 }
 
-void DemoGt_Update13(DemoGt* this, GlobalContext* globalCtx) {
-    func_8097ED64(this, globalCtx, 6);
-    func_809818FC(this, globalCtx);
+void DemoGt_Update13(DemoGt* this, PlayState* play) {
+    func_8097ED64(this, play, 6);
+    func_809818FC(this, play);
 }
 
-void DemoGt_Update18(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update18(DemoGt* this, PlayState* play) {
     f32 temp = this->unk_172;
 
     this->unk_174 = (temp * ((kREG(68) * 0.001f) + 0.005f)) + (kREG(69) + 50.0f);
@@ -1462,7 +1462,7 @@ void DemoGt_Update18(DemoGt* this, GlobalContext* globalCtx) {
     }
 }
 
-void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw6(DemoGt* this, PlayState* play) {
     DemoGt* this2 = this;
     s16 sp78 = this2->unk_172;
     f32 sp74;
@@ -1480,7 +1480,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     sp6E = kREG(60) + 0x4000;
     sp6C = kREG(60) + 0x4000;
     sp6C += 0x4000;
-    gfxCtx = globalCtx->state.gfxCtx;
+    gfxCtx = play->state.gfxCtx;
     sp64 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp48 = 1.0f - Math_CosS(sp78);
 
@@ -1510,15 +1510,15 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80981C94_Init23(DemoGt* this, GlobalContext* globalCtx) {
+void func_80981C94_Init23(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
-    func_8097EE44(this, globalCtx, 6, 7, NULL);
+    func_8097EE44(this, play, 6, 7, NULL);
 }
 
-void func_80981CEC(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_80981CEC(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 183) {
         func_80078914(&this->dyna.actor.projectedPos, NA_SE_EV_TOWER_PARTS_BROKEN - SFX_FLAG);
@@ -1536,27 +1536,27 @@ void func_80981D20(DemoGt* this) {
     }
 }
 
-void func_80981DC8(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 7)) {
+void func_80981DC8(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 7)) {
         this->updateMode = 0xE;
     }
 }
 
-void DemoGt_Update6(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update6(DemoGt* this, PlayState* play) {
     func_8097E824(this, 7);
-    func_80981CEC(this, globalCtx);
-    func_80981DC8(this, globalCtx);
+    func_80981CEC(this, play);
+    func_80981DC8(this, play);
 }
 
-void DemoGt_Update14(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update14(DemoGt* this, PlayState* play) {
     func_80981D20(this);
-    func_8097ED64(this, globalCtx, 7);
-    func_80981CEC(this, globalCtx);
+    func_8097ED64(this, play, 7);
+    func_80981CEC(this, play);
 }
 
-void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw7(DemoGt* this, PlayState* play) {
     DemoGt* this2 = this;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s16 sp6E;
     f32 sp68;
     f32 sp64;
@@ -1601,15 +1601,15 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80982054_Init24(DemoGt* this, GlobalContext* globalCtx) {
+void func_80982054_Init24(DemoGt* this, PlayState* play) {
     this->dyna.actor.scale.x *= 10.0f;
     this->dyna.actor.scale.y *= 10.0f;
     this->dyna.actor.scale.z *= 10.0f;
-    func_8097EE44(this, globalCtx, 7, 8, NULL);
+    func_8097EE44(this, play, 7, 8, NULL);
 }
 
-void func_809820AC(DemoGt* this, GlobalContext* globalCtx) {
-    u16 frames = globalCtx->csCtx.frames;
+void func_809820AC(DemoGt* this, PlayState* play) {
+    u16 frames = play->csCtx.frames;
 
     if (frames == 154) {
         func_80078914(&this->dyna.actor.projectedPos, NA_SE_EV_TOWER_PARTS_BROKEN - SFX_FLAG);
@@ -1627,27 +1627,27 @@ void func_809820E0(DemoGt* this) {
     }
 }
 
-void func_80982188(DemoGt* this, GlobalContext* globalCtx) {
-    if (func_8097E704(globalCtx, 2, 9) != 0) {
+void func_80982188(DemoGt* this, PlayState* play) {
+    if (func_8097E704(play, 2, 9) != 0) {
         this->updateMode = 15;
     }
 }
 
-void DemoGt_Update7(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update7(DemoGt* this, PlayState* play) {
     func_8097E824(this, 9);
-    func_809820AC(this, globalCtx);
-    func_80982188(this, globalCtx);
+    func_809820AC(this, play);
+    func_80982188(this, play);
 }
 
-void DemoGt_Update15(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Update15(DemoGt* this, PlayState* play) {
     func_809820E0(this);
-    func_8097ED64(this, globalCtx, 9);
-    func_809820AC(this, globalCtx);
+    func_8097ED64(this, play, 9);
+    func_809820AC(this, play);
 }
 
-void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw8(DemoGt* this, PlayState* play) {
     DemoGt* this2 = this;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s16 sp6E;
     f32 sp68;
     f32 sp64;
@@ -1699,7 +1699,7 @@ static DemoGtUpdateFunc sUpdateFuncs[] = {
     DemoGt_Update15, DemoGt_Update16, DemoGt_Update17, DemoGt_Update18,
 };
 
-void DemoGt_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGt_Update(Actor* thisx, PlayState* play) {
     DemoGt* this = (DemoGt*)thisx;
     DemoGtUpdateFunc updateFunc;
 
@@ -1709,36 +1709,36 @@ void DemoGt_Update(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    updateFunc(this, globalCtx);
+    updateFunc(this, play);
 }
 
-void DemoGt_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGt_Init(Actor* thisx, PlayState* play) {
     DemoGt* this = (DemoGt*)thisx;
 
     switch (this->dyna.actor.params) {
         case 0:
-            func_8097EEA8_Init0(this, globalCtx);
+            func_8097EEA8_Init0(this, play);
             break;
         case 1:
-            func_8097F904_Init1(this, globalCtx);
+            func_8097F904_Init1(this, play);
             break;
         case 2:
-            func_80980110_Init2(this, globalCtx);
+            func_80980110_Init2(this, play);
             break;
         case 5:
-            func_80980F00_Init5(this, globalCtx);
+            func_80980F00_Init5(this, play);
             break;
         case 6:
-            func_809813CC_Init6(this, globalCtx);
+            func_809813CC_Init6(this, play);
             break;
         case 7:
-            func_809818A4_Init7(this, globalCtx);
+            func_809818A4_Init7(this, play);
             break;
         case 23:
-            func_80981C94_Init23(this, globalCtx);
+            func_80981C94_Init23(this, play);
             break;
         case 24:
-            func_80982054_Init24(this, globalCtx);
+            func_80982054_Init24(this, play);
             break;
         default:
             // "Demo_Gt_Actor_ct There is no such argument !"
@@ -1747,7 +1747,7 @@ void DemoGt_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void DemoGt_Draw0(DemoGt* this, GlobalContext* globalCtx) {
+void DemoGt_Draw0(DemoGt* this, PlayState* play) {
 }
 
 static DemoGtDrawFunc sDrawFuncs[] = {
@@ -1755,7 +1755,7 @@ static DemoGtDrawFunc sDrawFuncs[] = {
     DemoGt_Draw5, DemoGt_Draw6, DemoGt_Draw7, DemoGt_Draw8,
 };
 
-void DemoGt_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGt_Draw(Actor* thisx, PlayState* play) {
     DemoGt* this = (DemoGt*)thisx;
     DemoGtDrawFunc drawFunc;
 
@@ -1765,7 +1765,7 @@ void DemoGt_Draw(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    drawFunc(this, globalCtx);
+    drawFunc(this, play);
 }
 
 const ActorInit Demo_Gt_InitVars = {
