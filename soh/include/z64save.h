@@ -93,7 +93,7 @@ typedef struct {
     u16 rupeesSpent;
     u16 iceTrapCount;
     u8  songsFound;
-} RandoGameStats;
+} GamePlayStats;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -206,7 +206,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
-    RandoGameStats randoStats;
+    GamePlayStats gamePlayStats;
     SohStats sohStats;
 } SaveContext; // size = 0x1428
 

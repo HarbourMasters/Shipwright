@@ -6230,7 +6230,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
         // Rando stats: Increment Ice Trap count
         if (gSaveContext.n64ddFlag) {
-            gSaveContext.randoStats.iceTrapCount++;
+            gSaveContext.gamePlayStats.iceTrapCount++;
         }
         return 1;
     }
@@ -10509,11 +10509,10 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     sControlInput = input;
 
-    if (gSaveContext.n64ddFlag) {
-        gSaveContext.randoStats.playTimer++;
-        gSaveContext.randoStats.totalTimer =
-            gSaveContext.randoStats.playTimer / 2 + gSaveContext.randoStats.pauseTimer / 3;
-    }
+    // Gameplay stat tracking
+    gSaveContext.gamePlayStats.playTimer++;
+    gSaveContext.gamePlayStats.totalTimer =
+        gSaveContext.gamePlayStats.playTimer / 2 + gSaveContext.gamePlayStats.pauseTimer / 3;
 
     if (this->unk_A86 < 0) {
         this->unk_A86++;
@@ -12609,9 +12608,9 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     gSaveContext.swordHealth = 8;
                 }
                 if (gSaveContext.n64ddFlag) {
-                    gSaveContext.randoStats.itemGetTime[giEntry.itemId] = gSaveContext.randoStats.totalTimer;
+                    gSaveContext.gamePlayStats.itemGetTime[giEntry.itemId] = gSaveContext.gamePlayStats.totalTimer;
                     if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
-                        gSaveContext.randoStats.songsFound++;
+                        gSaveContext.gamePlayStats.songsFound++;
                     }
                 }
                 Item_Give(globalCtx, giEntry.itemId);
@@ -12875,7 +12874,7 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     // Rando stats: Increment Ice Trap count
                     if (gSaveContext.n64ddFlag) {
-                        gSaveContext.randoStats.iceTrapCount++;
+                        gSaveContext.gamePlayStats.iceTrapCount++;
                     }
                 }
                 return;

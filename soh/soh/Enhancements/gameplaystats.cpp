@@ -1,9 +1,6 @@
 #include "gameplaystats.h"
 
-//#include "../../util.h"
-//#include "../../OTRGlobals.h"
 #include "libultraship/ImGuiImpl.h"
-//#include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
@@ -63,9 +60,9 @@ void DrawStatsTracker(bool& open) {
         return;
     }
 
-    DisplayTimeHHMMSS(gSaveContext.randoStats.totalTimer, "Total game Time: ");
-    DisplayTimeHHMMSS(gSaveContext.randoStats.playTimer / 2, "Gameplay Time:   ");
-    DisplayTimeHHMMSS(gSaveContext.randoStats.pauseTimer / 3, "Pause Menu Time: ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.totalTimer, "Total game Time: ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.playTimer / 2, "Gameplay Time:   ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.pauseTimer / 3, "Pause Menu Time: ");
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("randoStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
@@ -76,17 +73,17 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
 
-    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SWORD_KOKIRI], "Kokiri Sword:        ");
-    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_BOOMERANG], "Boomerang:           ");
-    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SONG_LULLABY], "Zelda's Lullaby:     ");
-    DisplayTimeHHMMSS(gSaveContext.randoStats.itemGetTime[ITEM_SONG_SARIA], "Saria's Song:        ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SWORD_KOKIRI], "Kokiri Sword:        ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_BOOMERANG], "Boomerang:           ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SONG_LULLABY], "Zelda's Lullaby:     ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SONG_SARIA], "Saria's Song:        ");
 
     ImGui::TableNextColumn();
 
-    ImGui::Text("Rupees Collected:        %d", gSaveContext.randoStats.rupeesCollected);
-    ImGui::Text("Rupees Spent:            %d", gSaveContext.randoStats.rupeesSpent);
-    ImGui::Text("Songs Found:             %d", gSaveContext.randoStats.songsFound);
-    ImGui::Text("Ice Traps:               %d", gSaveContext.randoStats.iceTrapCount);
+    ImGui::Text("Rupees Collected:        %d", gSaveContext.gamePlayStats.rupeesCollected);
+    ImGui::Text("Rupees Spent:            %d", gSaveContext.gamePlayStats.rupeesSpent);
+    ImGui::Text("Songs Found:             %d", gSaveContext.gamePlayStats.songsFound);
+    ImGui::Text("Ice Traps:               %d", gSaveContext.gamePlayStats.iceTrapCount);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

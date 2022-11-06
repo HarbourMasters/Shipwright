@@ -1000,7 +1000,6 @@ void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
- //   gSaveContext.randoStats.locationCheckCount++;
 }
 
 void EnGirlA_Noop(EnGirlA* this, GlobalContext* globalCtx) {
