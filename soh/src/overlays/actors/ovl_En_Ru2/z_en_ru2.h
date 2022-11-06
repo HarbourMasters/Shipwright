@@ -6,8 +6,8 @@
 
 struct EnRu2;
 
-typedef void (*EnRu2ActionFunc)(struct EnRu2*, GlobalContext*);
-typedef void (*EnRu2DrawFunc)(struct EnRu2*, GlobalContext*);
+typedef void (*EnRu2ActionFunc)(struct EnRu2*, PlayState*);
+typedef void (*EnRu2DrawFunc)(struct EnRu2*, PlayState*);
 
 typedef struct EnRu2 {
     /* 0x0000 */ Actor actor;

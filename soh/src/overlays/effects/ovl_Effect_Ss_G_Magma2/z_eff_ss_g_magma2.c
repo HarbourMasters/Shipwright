@@ -20,9 +20,9 @@
 #define rObjBankIdx regs[10]
 #define rScale regs[11]
 
-u32 EffectSsGMagma2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsGMagma2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsGMagma2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsGMagma2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsGMagma2_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsGMagma2_Update(PlayState* play, u32 index, EffectSs* this);
 
 static void* sTextures[] = {
     object_kingdodongo_Tex_02E4E0, object_kingdodongo_Tex_02E8E0, object_kingdodongo_Tex_02ECE0,
@@ -37,15 +37,15 @@ EffectSsInit Effect_Ss_G_Magma2_InitVars = {
     EffectSsGMagma2_Init,
 };
 
-u32 EffectSsGMagma2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
-    s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_KINGDODONGO);
+u32 EffectSsGMagma2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
+    s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_KINGDODONGO);
     s32 pad;
 
-    if ((objBankIndex >= 0) && Object_IsLoaded(&globalCtx->objectCtx, objBankIndex)) {
+    if ((objBankIndex >= 0) && Object_IsLoaded(&play->objectCtx, objBankIndex)) {
         Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
         EffectSsGMagma2InitParams* initParams = (EffectSsGMagma2InitParams*)initParamsx;
 
-        gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[objBankIndex].segment);
+        gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[objBankIndex].segment);
         this->rObjBankIdx = objBankIndex;
         this->pos = initParams->pos;
         this->velocity = zeroVec;
@@ -71,14 +71,14 @@ u32 EffectSsGMagma2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, vo
     return 0;
 }
 
-void EffectSsGMagma2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsGMagma2_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32 pad;
     f32 scale;
     void* object;
 
     scale = this->rScale / 100.0f;
-    object = globalCtx->objectCtx.status[this->rObjBankIdx].segment;
+    object = play->objectCtx.status[this->rObjBankIdx].segment;
 
     OPEN_DISPS(gfxCtx);
 
@@ -103,7 +103,7 @@ void EffectSsGMagma2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsGMagma2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGMagma2_Update(PlayState* play, u32 index, EffectSs* this) {
     this->rTimer += this->rUpdateRate;
 
     if (this->rTimer >= 10) {

@@ -11,16 +11,16 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void EnOkarinaTag_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnOkarinaTag_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnOkarinaTag_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnOkarinaTag_Init(Actor* thisx, PlayState* play);
+void EnOkarinaTag_Destroy(Actor* thisx, PlayState* play);
+void EnOkarinaTag_Update(Actor* thisx, PlayState* play);
 
-void func_80ABEF2C(EnOkarinaTag* this, GlobalContext* globalCtx);
-void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx);
-void func_80ABF28C(EnOkarinaTag* this, GlobalContext* globalCtx);
-void func_80ABF0CC(EnOkarinaTag* this, GlobalContext* globalCtx);
-void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx);
-void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx);
+void func_80ABEF2C(EnOkarinaTag* this, PlayState* play);
+void func_80ABF708(EnOkarinaTag* this, PlayState* play);
+void func_80ABF28C(EnOkarinaTag* this, PlayState* play);
+void func_80ABF0CC(EnOkarinaTag* this, PlayState* play);
+void func_80ABF4C8(EnOkarinaTag* this, PlayState* play);
+void func_80ABF7CC(EnOkarinaTag* this, PlayState* play);
 
 const ActorInit En_Okarina_Tag_InitVars = {
     ACTOR_EN_OKARINA_TAG,
@@ -38,10 +38,10 @@ const ActorInit En_Okarina_Tag_InitVars = {
 extern CutsceneData D_80ABF9D0[];
 extern CutsceneData D_80ABFB40[];
 
-void EnOkarinaTag_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkarinaTag_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnOkarinaTag_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkarinaTag_Init(Actor* thisx, PlayState* play) {
     EnOkarinaTag* this = (EnOkarinaTag*)thisx;
 
     osSyncPrintf("\n\n");
@@ -77,7 +77,7 @@ void EnOkarinaTag_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 当り？\t\t ☆☆☆☆☆ %d\n" VT_RST, this->unk_158);
     osSyncPrintf("\n\n");
 
-    if ((this->switchFlag >= 0) && (Flags_GetSwitch(globalCtx, this->switchFlag))) {
+    if ((this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))) {
         Actor_Kill(&this->actor);
     } else {
         switch (this->type) {
@@ -105,13 +105,13 @@ void EnOkarinaTag_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ABEF2C(EnOkarinaTag* this, GlobalContext* globalCtx) {
+void func_80ABEF2C(EnOkarinaTag* this, PlayState* play) {
     Player* player;
     u16 ocarinaSong;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     this->unk_15A++;
-    if ((this->switchFlag >= 0) && (Flags_GetSwitch(globalCtx, this->switchFlag))) {
+    if ((this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))) {
         this->actor.flags &= ~ACTOR_FLAG_0;
     } else {
         if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
@@ -127,7 +127,7 @@ void func_80ABEF2C(EnOkarinaTag* this, GlobalContext* globalCtx) {
                         ocarinaSong = 0xA;
                     }
                     player->stateFlags2 |= 0x800000;
-                    func_8010BD58(globalCtx, ocarinaSong + OCARINA_ACTION_CHECK_SARIA);
+                    func_8010BD58(play, ocarinaSong + OCARINA_ACTION_CHECK_SARIA);
                     this->actionFunc = func_80ABF0CC;
                 } else if ((this->actor.xzDistToPlayer < (50.0f + this->interactRange) &&
                             ((fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 40.0f)))) {
@@ -139,58 +139,58 @@ void func_80ABEF2C(EnOkarinaTag* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ABF0CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+    if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABEF2C;
     } else {
-        if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
+        if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
             if (this->switchFlag >= 0) {
-                Flags_SetSwitch(globalCtx, this->switchFlag);
+                Flags_SetSwitch(play, this->switchFlag);
             }
-            if (globalCtx->sceneNum == SCENE_MIZUSIN) {
-                globalCtx->msgCtx.msgMode = MSGMODE_PAUSED;
+            if (play->sceneNum == SCENE_MIZUSIN) {
+                play->msgCtx.msgMode = MSGMODE_PAUSED;
             }
-            if ((globalCtx->sceneNum != SCENE_DAIYOUSEI_IZUMI) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_YOKO)) {
-                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+            if ((play->sceneNum != SCENE_DAIYOUSEI_IZUMI) && (play->sceneNum != SCENE_YOUSEI_IZUMI_YOKO)) {
+                play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
             func_80078884(NA_SE_SY_CORRECT_CHIME);
             this->actionFunc = func_80ABEF2C;
             return;
         }
         if (this->unk_158 != 0) {
-            if ((globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_05) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_07) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_09) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
-                (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_0D)) {
+            if ((play->msgCtx.ocarinaMode == OCARINA_MODE_05) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_07) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_09) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_0D)) {
                 if (this->switchFlag >= 0) {
-                    Flags_SetSwitch(globalCtx, this->switchFlag);
+                    Flags_SetSwitch(play, this->switchFlag);
                 }
-                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+                play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 this->actionFunc = func_80ABEF2C;
                 return;
             }
         }
-        if ((globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_05) && (globalCtx->msgCtx.ocarinaMode < OCARINA_MODE_0E)) {
-            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        if ((play->msgCtx.ocarinaMode >= OCARINA_MODE_05) && (play->msgCtx.ocarinaMode < OCARINA_MODE_0E)) {
+            play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             this->actionFunc = func_80ABEF2C;
-        } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_01) {
+        } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
             player->stateFlags2 |= 0x800000;
         }
     }
 }
 
-void func_80ABF28C(EnOkarinaTag* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     this->unk_15A++;
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
-        if ((this->switchFlag >= 0) && Flags_GetSwitch(globalCtx, this->switchFlag)) {
+        if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
             this->actor.flags &= ~ACTOR_FLAG_0;
         } else if (((this->type != 4) || !(gSaveContext.eventChkInf[4] & 0x800)) &&
                    ((this->type != 6) || !(gSaveContext.eventChkInf[1] & 0x2000)) &&
@@ -199,16 +199,16 @@ void func_80ABF28C(EnOkarinaTag* this, GlobalContext* globalCtx) {
             if (player->stateFlags2 & 0x1000000) {
                 switch (this->type) {
                     case 1:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        func_8010BD58(play, OCARINA_ACTION_CHECK_LULLABY);
                         break;
                     case 2:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_STORMS);
+                        func_8010BD58(play, OCARINA_ACTION_CHECK_STORMS);
                         break;
                     case 4:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_TIME);
+                        func_8010BD58(play, OCARINA_ACTION_CHECK_TIME);
                         break;
                     case 6:
-                        func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_LULLABY);
+                        func_8010BD58(play, OCARINA_ACTION_CHECK_LULLABY);
                         break;
                     default:
                         // "Ocarina Invisible-kun demo start check error source"
@@ -228,26 +228,26 @@ void func_80ABF28C(EnOkarinaTag* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+    if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
-    } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
+    } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != 2)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (this->switchFlag >= 0) {
-            Flags_SetSwitch(globalCtx, this->switchFlag);
+            Flags_SetSwitch(play, this->switchFlag);
         }
         switch (this->type) {
             case 1:
-                Flags_SetSwitch(globalCtx, this->switchFlag);
+                Flags_SetSwitch(play, this->switchFlag);
                 gSaveContext.eventChkInf[3] |= 0x200;
                 break;
             case 2:
                 if (!gSaveContext.n64ddFlag) {
-                    globalCtx->csCtx.segment = D_80ABF9D0;
+                    play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 } else {
                     gSaveContext.eventChkInf[6] |= 0x80;
@@ -265,16 +265,18 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
                         func_80078884(NA_SE_SY_OCARINA_ERROR);
                         break;
                     } else {
+                        Flags_SetEnv(play, 2);
                         func_80078884(NA_SE_SY_CORRECT_CHIME);
                     }
+                } else {
+                    play->csCtx.segment = D_80ABFB40;
+                    gSaveContext.cutsceneTrigger = 1;
                 }
-                globalCtx->csCtx.segment = D_80ABFB40;
-                gSaveContext.cutsceneTrigger = 1;
                 break;
             case 6:
                 // Don't start the cutscene in a rando save.
                 if (!(gSaveContext.n64ddFlag)) {
-                    globalCtx->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
+                    play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
@@ -284,27 +286,27 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
             default:
                 break;
         }
-        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         this->actionFunc = func_80ABF28C;
     } else {
-        if (globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_05) {
-            if (globalCtx->msgCtx.ocarinaMode < OCARINA_MODE_0E) {
-                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        if (play->msgCtx.ocarinaMode >= OCARINA_MODE_05) {
+            if (play->msgCtx.ocarinaMode < OCARINA_MODE_0E) {
+                play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                 this->actionFunc = func_80ABF28C;
                 return;
             }
         }
-        if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_01) {
+        if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
             player->stateFlags2 |= 0x800000;
         }
     }
 }
 
-void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
+void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
     s16 yawDiff;
     s16 yawDiffNew;
 
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80ABF7CC;
     } else {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.world.rot.y;
@@ -316,49 +318,49 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
             yawDiffNew = ABS(yawDiff);
             if (yawDiffNew < 0x4300) {
                 this->unk_15A = 0;
-                func_8002F2CC(&this->actor, globalCtx, 70.0f);
+                func_8002F2CC(&this->actor, play, 70.0f);
             }
         }
     }
 }
 
-void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, RandomizerCheck check) {
-    Flags_SetTreasure(globalCtx, 0x1F);
+void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play, RandomizerCheck check) {
+    Flags_SetTreasure(play, 0x1F);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-    GiveItemEntryFromActor(&song->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
+    GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f);
 }
 
-void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
+void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
     // "Open sesame sesame!"
-    osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 開けゴマゴマゴマ！ ☆☆☆☆☆ %d\n" VT_RST, Message_GetState(&globalCtx->msgCtx));
+    osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 開けゴマゴマゴマ！ ☆☆☆☆☆ %d\n" VT_RST, Message_GetState(&play->msgCtx));
 
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        Message_CloseTextbox(globalCtx);
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
         if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
+            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
-            GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
+        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1F)) {
+            GivePlayerRandoRewardSunSong(this, play, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
         this->actionFunc = func_80ABF708;
     }
 }
 
-void EnOkarinaTag_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkarinaTag_Update(Actor* thisx, PlayState* play) {
     EnOkarinaTag* this = (EnOkarinaTag*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (BREG(0) != 0) {
         if (this->unk_15A != 0) {
             if (!(this->unk_15A & 1)) {
                 DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                        this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                       1.0f, 1.0f, 120, 120, 120, 255, 4, globalCtx->state.gfxCtx);
+                                       1.0f, 1.0f, 120, 120, 120, 255, 4, play->state.gfxCtx);
             }
         } else {
             DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                    this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f,
-                                   1.0f, 1.0f, 255, 0, 0, 255, 4, globalCtx->state.gfxCtx);
+                                   1.0f, 1.0f, 255, 0, 0, 255, 4, play->state.gfxCtx);
         }
     }
 }

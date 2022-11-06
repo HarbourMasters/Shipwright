@@ -20,16 +20,16 @@
 #define rPlaySound regs[10]
 #define rReg11 regs[11]
 
-u32 EffectSsDeadDb_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsDeadDb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsDeadDb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsDeadDb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsDeadDb_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsDeadDb_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Dead_Db_InitVars = {
     EFFECT_SS_DEAD_DB,
     EffectSsDeadDb_Init,
 };
 
-u32 EffectSsDeadDb_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsDeadDb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDeadDbInitParams* initParams = (EffectSsDeadDbInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -62,8 +62,8 @@ static void* sTextures[] = {
     gEffEnemyDeathFlame9Tex, gEffEnemyDeathFlame10Tex,
 };
 
-void EffectSsDeadDb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsDeadDb_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     MtxF mfTrans;
     MtxF mfScale;
     MtxF mfResult;
@@ -93,7 +93,7 @@ void EffectSsDeadDb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsDeadDb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDeadDb_Update(PlayState* play, u32 index, EffectSs* this) {
     f32 w;
     f32 pad;
 
@@ -131,7 +131,7 @@ void EffectSsDeadDb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     }
 
     if (this->rPlaySound && (this->rTextIdx == 1)) {
-        SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &this->pos, &this->vec, &w);
+        SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->pos, &this->vec, &w);
         Audio_PlaySoundGeneral(NA_SE_EN_EXTINCT, &this->vec, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 }

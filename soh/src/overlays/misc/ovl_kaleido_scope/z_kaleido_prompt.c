@@ -2,9 +2,9 @@
 
 static s16 D_8082A6E0[] = { 100, 255 };
 
-void KaleidoScope_UpdatePrompt(GlobalContext* globalCtx) {
-    PauseContext* pauseCtx = &globalCtx->pauseCtx;
-    Input* input = &globalCtx->state.input[0];
+void KaleidoScope_UpdatePrompt(PlayState* play) {
+    PauseContext* pauseCtx = &play->pauseCtx;
+    Input* input = &play->state.input[0];
     s8 relStickX = input->rel.stick_x;
     s16 step;
     bool dpad = CVar_GetS32("gDpadPause", 0);

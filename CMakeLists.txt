@@ -14,6 +14,10 @@ set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
+if (CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
+    set(BUILD_CROWD_CONTROL ON)
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(CMake/automate-vcpkg.cmake)
 

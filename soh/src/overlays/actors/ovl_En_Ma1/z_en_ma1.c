@@ -9,23 +9,23 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
-void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnMa1_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnMa1_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnMa1_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnMa1_Init(Actor* thisx, PlayState* play);
+void EnMa1_Destroy(Actor* thisx, PlayState* play);
+void EnMa1_Update(Actor* thisx, PlayState* play);
+void EnMa1_Draw(Actor* thisx, PlayState* play);
 
-u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* this);
-s16 func_80AA0778(GlobalContext* globalCtx, Actor* this);
+u16 EnMa1_GetText(PlayState* play, Actor* this);
+s16 func_80AA0778(PlayState* play, Actor* this);
 
-void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA106C(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx);
-void func_80AA1150(EnMa1* this, GlobalContext* globalCtx);
-void EnMa1_DoNothing(EnMa1* this, GlobalContext* globalCtx);
-void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx);
+void func_80AA0D88(EnMa1* this, PlayState* play);
+void func_80AA0EA0(EnMa1* this, PlayState* play);
+void func_80AA0EFC(EnMa1* this, PlayState* play);
+void func_80AA0F44(EnMa1* this, PlayState* play);
+void func_80AA106C(EnMa1* this, PlayState* play);
+void func_80AA10EC(EnMa1* this, PlayState* play);
+void func_80AA1150(EnMa1* this, PlayState* play);
+void EnMa1_DoNothing(EnMa1* this, PlayState* play);
+void EnMa1_WaitForSongGive(EnMa1* this, PlayState* play);
 
 const ActorInit En_Ma1_InitVars = {
     ACTOR_EN_MA1,
@@ -94,13 +94,13 @@ bool Randomizer_ObtainedMalonHCReward() {
     return Flags_GetEventChkInf(0x12);
 }
 
-u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* thisx) {
+u16 EnMa1_GetText(PlayState* play, Actor* thisx) {
     // Special case for Malon Hyrule Castle Text. Placing it here at the beginning
     // has the added benefit of circumventing mask text if wearing bunny hood.
-    if (gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_SPOT15) {
+    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_SPOT15) {
         return Randomizer_ObtainedMalonHCReward() ? 0x2044 : 0x2043;
     }
-    u16 faceReaction = Text_GetFaceReaction(globalCtx, 0x17);
+    u16 faceReaction = Text_GetFaceReaction(play, 0x17);
 
     if (faceReaction != 0) {
         return faceReaction;
@@ -136,10 +136,10 @@ u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* thisx) {
     return 0x2041;
 }
 
-s16 func_80AA0778(GlobalContext* globalCtx, Actor* thisx) {
+s16 func_80AA0778(PlayState* play, Actor* thisx) {
     s16 ret = 1;
 
-    switch (Message_GetState(&globalCtx->msgCtx)) {
+    switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_CLOSING:
             switch (thisx->textId) {
                 case 0x2041:
@@ -172,12 +172,12 @@ s16 func_80AA0778(GlobalContext* globalCtx, Actor* thisx) {
             break;
         case TEXT_STATE_CHOICE:
         case TEXT_STATE_EVENT:
-            if (Message_ShouldAdvance(globalCtx)) {
+            if (Message_ShouldAdvance(play)) {
                 ret = 2;
             }
             break;
         case TEXT_STATE_DONE:
-            if (Message_ShouldAdvance(globalCtx)) {
+            if (Message_ShouldAdvance(play)) {
                 ret = 3;
             }
             break;
@@ -193,7 +193,7 @@ s16 func_80AA0778(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
-s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
+s32 func_80AA08C4(EnMa1* this, PlayState* play) {
     if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneSetupIndex == 5)) {
         return 1;
     }
@@ -201,11 +201,11 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
         return 0;
     }
     // Causes Malon to appear in the market if you haven't met her yet.
-    if (((globalCtx->sceneNum == SCENE_MARKET_NIGHT) || (globalCtx->sceneNum == SCENE_MARKET_DAY)) &&
+    if (((play->sceneNum == SCENE_MARKET_NIGHT) || (play->sceneNum == SCENE_MARKET_DAY)) &&
         !(gSaveContext.eventChkInf[1] & 0x10) && !(gSaveContext.infTable[8] & 0x800)) {
         return 1;
     }
-    if ((globalCtx->sceneNum == SCENE_SPOT15) &&  // if we're at hyrule castle
+    if ((play->sceneNum == SCENE_SPOT15) &&  // if we're at hyrule castle
         (!(gSaveContext.eventChkInf[1] & 0x10) || // and talon hasn't left
          (gSaveContext.n64ddFlag &&
           !Randomizer_ObtainedMalonHCReward()))) { // or we're rando'd and haven't gotten malon's HC check
@@ -217,11 +217,11 @@ s32 func_80AA08C4(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
     // Malon asleep in her bed if Talon has left Hyrule Castle and it is nighttime.
-    if ((globalCtx->sceneNum == SCENE_SOUKO) && IS_NIGHT && (gSaveContext.eventChkInf[1] & 0x10)) {
+    if ((play->sceneNum == SCENE_SOUKO) && IS_NIGHT && (gSaveContext.eventChkInf[1] & 0x10)) {
         return 1;
     }
     // Don't spawn Malon if none of the above are true and we are not in Lon Lon Ranch.
-    if (globalCtx->sceneNum != SCENE_SPOT20) {
+    if (play->sceneNum != SCENE_SPOT20) {
         return 0;
     }
     // If we've gotten this far, we're in Lon Lon Ranch. Spawn Malon if it is daytime, Talon has left Hyrule Castle, and
@@ -250,8 +250,8 @@ void EnMa1_ChangeAnim(EnMa1* this, s32 index) {
                      sAnimationInfo[index].mode, sAnimationInfo[index].morphFrames);
 }
 
-void func_80AA0AF4(EnMa1* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AA0AF4(EnMa1* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s16 phi_a3;
 
     if ((this->unk_1E8.unk_00 == 0) && (this->skelAnime.animation == &gMalonChildSingAnim)) {
@@ -282,14 +282,14 @@ void func_80AA0B74(EnMa1* this) {
     }
 }
 
-void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnMa1_Init(Actor* thisx, PlayState* play) {
     EnMa1* this = (EnMa1*)thisx;
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 18.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gMalonChildSkel, NULL, NULL, NULL, 0);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gMalonChildSkel, NULL, NULL, NULL, 0);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
     if (gSaveContext.n64ddFlag) { // Skip Malon's multiple textboxes before getting an item
@@ -298,12 +298,12 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
         gSaveContext.eventChkInf[1] |= 1;
     }
 
-    if (!func_80AA08C4(this, globalCtx)) {
+    if (!func_80AA08C4(this, play)) {
         Actor_Kill(&this->actor);
         return;
     }
 
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
@@ -314,7 +314,7 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
    // 2. We are Randomized and have not obtained Malon's Weird Egg Check.
    // 3. We are not Randomized and have obtained Epona's Song
     if (!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward()) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
-        (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
+        (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     // If none of the above conditions were true, set Malon up to teach Epona's Song.
@@ -328,14 +328,14 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnMa1_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnMa1_Destroy(Actor* thisx, PlayState* play) {
     EnMa1* this = (EnMa1*)thisx;
 
-    SkelAnime_Free(&this->skelAnime, globalCtx);
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    SkelAnime_Free(&this->skelAnime, play);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
+void func_80AA0D88(EnMa1* this, PlayState* play) {
     if (this->unk_1E8.unk_00 != 0) {
         if (this->skelAnime.animation != &gMalonChildIdleAnim) {
             EnMa1_ChangeAnim(this, ENMA1_ANIM_1);
@@ -349,7 +349,7 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
     // We want to Kill Malon's Actor outside of randomizer when Talon is freed. In Randomizer we don't kill Malon's
     // Actor here, otherwise if we wake up Talon first and then get her check she will spontaneously
     // disappear.
-    if ((globalCtx->sceneNum == SCENE_SPOT15) && (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10)) {
+    if ((play->sceneNum == SCENE_SPOT15) && (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x10)) {
         Actor_Kill(&this->actor);
     // We want Malon to give the Weird Egg Check (see function below) in the following situations:
     // 1. Talon as not left Hyrule Castle (Vanilla) OR
@@ -358,55 +358,55 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
     } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
-            globalCtx->msgCtx.stateTimer = 4;
-            globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
+            play->msgCtx.stateTimer = 4;
+            play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
         }
     }
 }
 
-void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void func_80AA0EA0(EnMa1* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+            func_8002F434(&this->actor, play, GI_WEIRD_EGG, 120.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 120.0f, 10.0f);
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 10.0f);
         }
     }
 }
 
-void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
+void func_80AA0EFC(EnMa1* this, PlayState* play) {
     if (this->unk_1E8.unk_00 == 3) {
         this->unk_1E8.unk_00 = 0;
         this->actionFunc = func_80AA0D88;
         gSaveContext.eventChkInf[1] |= 4;
-        globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
+        play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     }
 }
 
-void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
+void GivePlayerRandoRewardMalon(EnMa1* malon, PlayState* play, RandomizerCheck check) {
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_EPONAS_SONG);
     // Prevents flag from getting set if we weren't able to get the item (i.e. Player is holding shield
     // when closing the textbox).
-    if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
-        !Flags_GetTreasure(globalCtx, 0x1F)) {
-        Flags_SetTreasure(globalCtx, 0x1F);
+    if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(play)->actor.id &&
+        !Flags_GetTreasure(play, 0x1F)) {
+        Flags_SetTreasure(play, 0x1F);
         // puts malon in the action that vanilla has her in after learning the song
         // (confirmed via breakpoints in a vanilla save).
         malon->actionFunc = func_80AA0D88;
-    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-        GiveItemEntryFromActor(&malon->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
+    } else if (!Flags_GetTreasure(play, 0x1F)) {
+        GiveItemEntryFromActor(&malon->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
     // make malon sing again after giving the item.
     malon->unk_1E8.unk_00 = 0;
     malon->unk_1E0 = 1;
 }
 
-void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AA0F44(EnMa1* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->unk_1E8.unk_00 != 0) {
         if (this->skelAnime.animation != &gMalonChildIdleAnim) {
@@ -424,7 +424,7 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
             this->actor.textId = 0x2061;
-            Message_StartTextbox(globalCtx, this->actor.textId, NULL);
+            Message_StartTextbox(play, this->actor.textId, NULL);
             this->unk_1E8.unk_00 = 1;
             this->actor.flags |= ACTOR_FLAG_16;
             // when rando'ed, skip to the Item Giving. Otherwise go to the song teaching code.
@@ -436,42 +436,42 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
         }
         // If rando'ed, a textbox is closing, it's malon's 'my mom wrote this song' text, AND we do have an ocarina
         // in our inventory. This allows us to grant the check when talking to malon with the ocarina in our inventory.
-        if (gSaveContext.n64ddFlag && (Actor_TextboxIsClosing(&this->actor, globalCtx) && globalCtx->msgCtx.textId == 0x2049) &&
+        if (gSaveContext.n64ddFlag && (Actor_TextboxIsClosing(&this->actor, play) && play->msgCtx.textId == 0x2049) &&
             (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
             this->actionFunc = EnMa1_WaitForSongGive;
         }
     }
 }
 
-void func_80AA106C(EnMa1* this, GlobalContext* globalCtx) {
-    GET_PLAYER(globalCtx)->stateFlags2 |= 0x800000;
+void func_80AA106C(EnMa1* this, PlayState* play) {
+    GET_PLAYER(play)->stateFlags2 |= 0x800000;
     if (this->unk_1E8.unk_00 == 2) {
         Audio_OcaSetInstrument(2);
-        func_8010BD58(globalCtx, OCARINA_ACTION_TEACH_EPONA);
+        func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
         this->actor.flags &= ~ACTOR_FLAG_16;
         this->actionFunc = func_80AA10EC;
     }
 }
 
-void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx) {
-    GET_PLAYER(globalCtx)->stateFlags2 |= 0x800000;
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
-        func_8010BD58(globalCtx, OCARINA_ACTION_PLAYBACK_EPONA);
+void func_80AA10EC(EnMa1* this, PlayState* play) {
+    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
+        func_8010BD58(play, OCARINA_ACTION_PLAYBACK_EPONA);
         this->actionFunc = func_80AA1150;
     }
 }
 
-void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx) {
+void EnMa1_WaitForSongGive(EnMa1* this, PlayState* play) {
     // Actually give the song check.
-    GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
+    GivePlayerRandoRewardMalon(this, play, RC_SONG_FROM_MALON);
 }
 
 // Sets an Ocarina State necessary to not softlock in rando.
 // This function should only be called in rando.
-void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
-    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+void EnMa1_EndTeachSong(EnMa1* this, PlayState* play) {
+    if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = func_80AA0F44;
-        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     }
 
     if (gSaveContext.n64ddFlag) {
@@ -480,20 +480,20 @@ void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
-    GET_PLAYER(globalCtx)->stateFlags2 |= 0x800000;
+void func_80AA1150(EnMa1* this, PlayState* play) {
+    GET_PLAYER(play)->stateFlags2 |= 0x800000;
 
     // When rando'ed, trigger the "song learned" Ocarina mode.
-    if (gSaveContext.n64ddFlag && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING)) {
-        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+    if (gSaveContext.n64ddFlag && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
+        play->msgCtx.ocarinaMode = OCARINA_MODE_03;
     }
 
-    if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
+    if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         if (!gSaveContext.n64ddFlag) {
-            globalCtx->nextEntranceIndex = 0x157;
+            play->nextEntranceIndex = 0x157;
             gSaveContext.nextCutsceneIndex = 0xFFF1;
-            globalCtx->fadeTransition = 42;
-            globalCtx->sceneLoadFlag = 0x14;
+            play->fadeTransition = 42;
+            play->sceneLoadFlag = 0x14;
             this->actionFunc = EnMa1_DoNothing;
         } else {
             // When rando'ed, skip the cutscene, play the chime, reset some flags,
@@ -501,32 +501,32 @@ void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
             this->actionFunc = EnMa1_EndTeachSong;
             this->actor.flags &= ~ACTOR_FLAG_16;
-            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
+            play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         }
     }
 }
 
-void EnMa1_DoNothing(EnMa1* this, GlobalContext* globalCtx) {
+void EnMa1_DoNothing(EnMa1* this, PlayState* play) {
 }
 
-void EnMa1_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnMa1_Update(Actor* thisx, PlayState* play) {
     EnMa1* this = (EnMa1*)thisx;
     s32 pad;
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     SkelAnime_Update(&this->skelAnime);
     EnMa1_UpdateEyes(this);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->actionFunc != EnMa1_DoNothing) {
-        func_800343CC(globalCtx, &this->actor, &this->unk_1E8.unk_00, (f32)this->collider.dim.radius + 30.0f,
+        func_800343CC(play, &this->actor, &this->unk_1E8.unk_00, (f32)this->collider.dim.radius + 30.0f,
                       EnMa1_GetText, func_80AA0778);
     }
     func_80AA0B74(this);
-    func_80AA0AF4(this, globalCtx);
+    func_80AA0AF4(this, play);
 }
 
-s32 EnMa1_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnMa1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnMa1* this = (EnMa1*)thisx;
     Vec3s vec;
 
@@ -548,7 +548,7 @@ s32 EnMa1_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
     return false;
 }
 
-void EnMa1_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnMa1_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     EnMa1* this = (EnMa1*)thisx;
     Vec3f vec = D_80AA16B8;
 
@@ -557,24 +557,24 @@ void EnMa1_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     }
 }
 
-void EnMa1_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnMa1_Draw(Actor* thisx, PlayState* play) {
     EnMa1* this = (EnMa1*)thisx;
     Camera* camera;
     f32 distFromCamera;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    camera = GET_ACTIVE_CAM(globalCtx);
+    camera = GET_ACTIVE_CAM(play);
     distFromCamera = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
     func_800F6268(distFromCamera, NA_BGM_LONLON);
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
 
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnMa1_OverrideLimbDraw, EnMa1_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

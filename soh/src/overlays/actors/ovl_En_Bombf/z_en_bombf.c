@@ -10,15 +10,15 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4)
 
-void EnBombf_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnBombf_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnBombf_Init(Actor* thisx, PlayState* play);
+void EnBombf_Destroy(Actor* thisx, PlayState* play);
+void EnBombf_Update(Actor* thisx, PlayState* play);
+void EnBombf_Draw(Actor* thisx, PlayState* play);
 
-void EnBombf_Move(EnBombf* this, GlobalContext* globalCtx);
-void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx);
-void EnBombf_WaitForRelease(EnBombf* this, GlobalContext* globalCtx);
-void EnBombf_Explode(EnBombf* this, GlobalContext* globalCtx);
+void EnBombf_Move(EnBombf* this, PlayState* play);
+void EnBombf_GrowBomb(EnBombf* this, PlayState* play);
+void EnBombf_WaitForRelease(EnBombf* this, PlayState* play);
+void EnBombf_Explode(EnBombf* this, PlayState* play);
 void EnBombf_SetupGrowBomb(EnBombf* this, s16 params);
 
 const ActorInit En_Bombf_InitVars = {
@@ -85,17 +85,17 @@ void EnBombf_SetupAction(EnBombf* this, EnBombfActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void EnBombf_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnBombf_Init(Actor* thisx, PlayState* play) {
     f32 shapeUnk10 = 0.0f;
     s32 pad;
     EnBombf* this = (EnBombf*)thisx;
 
     Actor_SetScale(thisx, 0.01f);
     this->unk_200 = 1;
-    Collider_InitCylinder(globalCtx, &this->bombCollider);
-    Collider_InitJntSph(globalCtx, &this->explosionCollider);
-    Collider_SetCylinder(globalCtx, &this->bombCollider, thisx, &sCylinderInit);
-    Collider_SetJntSph(globalCtx, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
+    Collider_InitCylinder(play, &this->bombCollider);
+    Collider_InitJntSph(play, &this->explosionCollider);
+    Collider_SetCylinder(play, &this->bombCollider, thisx, &sCylinderInit);
+    Collider_SetJntSph(play, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
 
     if (thisx->params == BOMBFLOWER_BODY) {
         shapeUnk10 = 1000.0f;
@@ -104,7 +104,7 @@ void EnBombf_Init(Actor* thisx, GlobalContext* globalCtx) {
     ActorShape_Init(&thisx->shape, shapeUnk10, ActorShadow_DrawCircle, 12.0f);
     thisx->focus.pos = thisx->world.pos;
 
-    if (Actor_FindNearby(globalCtx, thisx, ACTOR_BG_DDAN_KD, ACTORCAT_BG, 10000.0f) != NULL) {
+    if (Actor_FindNearby(play, thisx, ACTOR_BG_DDAN_KD, ACTORCAT_BG, 10000.0f) != NULL) {
         thisx->flags |= ACTOR_FLAG_5;
     }
 
@@ -116,7 +116,7 @@ void EnBombf_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->timer = 140;
         this->flashSpeedScale = 15;
         thisx->gravity = -1.5f;
-        Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, thisx, ACTORCAT_EXPLOSIVE);
+        Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_EXPLOSIVE);
         thisx->colChkInfo.mass = 200;
         thisx->flags &= ~ACTOR_FLAG_0;
         EnBombf_SetupAction(this, EnBombf_Move);
@@ -131,30 +131,30 @@ void EnBombf_Init(Actor* thisx, GlobalContext* globalCtx) {
     thisx->uncullZoneForward += 31000.0f;
 }
 
-void EnBombf_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnBombf_Destroy(Actor* thisx, PlayState* play) {
     EnBombf* this = (EnBombf*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->bombCollider);
-    Collider_DestroyJntSph(globalCtx, &this->explosionCollider);
+    Collider_DestroyCylinder(play, &this->bombCollider);
+    Collider_DestroyJntSph(play, &this->explosionCollider);
 }
 
 void EnBombf_SetupGrowBomb(EnBombf* this, s16 params) {
     EnBombf_SetupAction(this, EnBombf_GrowBomb);
 }
 
-void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
+void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
     EnBombf* bombFlower;
     s32 pad;
     s32 pad1;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 pad2;
 
     if (this->flowerBombScale >= 1.0f) {
-        if (Actor_HasParent(&this->actor, globalCtx)) {
-            bombFlower = (EnBombf*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOMBF, this->actor.world.pos.x,
+        if (Actor_HasParent(&this->actor, play)) {
+            bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
                                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
             if (bombFlower != NULL) {
-                func_8002F5C4(&this->actor, &bombFlower->actor, globalCtx);
+                func_8002F5C4(&this->actor, &bombFlower->actor, play);
                 this->timer = 180;
                 this->flowerBombScale = 0.0f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_PL_PULL_UP_ROCK);
@@ -171,7 +171,7 @@ void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
 
             if (this->bombCollider.base.ac->category != ACTORCAT_BOSS) {
                 bombFlower =
-                    (EnBombf*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOMBF, this->actor.world.pos.x,
+                    (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
                                           this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 if (bombFlower != NULL) {
                     bombFlower->unk_200 = 1;
@@ -182,9 +182,9 @@ void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if (Player_IsBurningStickInRange(globalCtx, &this->actor.world.pos, 30.0f, 50.0f)) {
+            if (Player_IsBurningStickInRange(play, &this->actor.world.pos, 30.0f, 50.0f)) {
                 bombFlower =
-                    (EnBombf*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOMBF, this->actor.world.pos.x,
+                    (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
                                           this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 if (bombFlower != NULL) {
                     bombFlower->timer = 100;
@@ -193,8 +193,8 @@ void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
                     this->flowerBombScale = 0.0f;
                 }
             } else {
-                if (!Actor_HasParent(&this->actor, globalCtx)) {
-                    func_8002F580(&this->actor, globalCtx);
+                if (!Actor_HasParent(&this->actor, play)) {
+                    func_8002F580(&this->actor, play);
                 } else {
                     player->actor.child = NULL;
                     player->heldActor = NULL;
@@ -213,7 +213,7 @@ void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
             }
         }
 
-        if (Actor_HasParent(&this->actor, globalCtx)) {
+        if (Actor_HasParent(&this->actor, play)) {
             player->actor.child = NULL;
             player->heldActor = NULL;
             player->interactRangeActor = NULL;
@@ -224,8 +224,8 @@ void EnBombf_GrowBomb(EnBombf* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnBombf_Move(EnBombf* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void EnBombf_Move(EnBombf* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         // setting flowerBombScale does not do anything in the context of a bomb that link picks up
         // this and the assignment below are probably left overs
         this->flowerBombScale = 0.0f;
@@ -241,25 +241,25 @@ void EnBombf_Move(EnBombf* this, GlobalContext* globalCtx) {
     } else {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.5f, 0.0f);
         if ((this->actor.bgCheckFlags & 2) && (this->actor.velocity.y < -6.0f)) {
-            func_8002F850(globalCtx, &this->actor);
+            func_8002F850(play, &this->actor);
             this->actor.velocity.y *= -0.5f;
         } else if (this->timer >= 4) {
-            func_8002F580(&this->actor, globalCtx);
+            func_8002F580(&this->actor, play);
         }
     }
 }
 
-void EnBombf_WaitForRelease(EnBombf* this, GlobalContext* globalCtx) {
+void EnBombf_WaitForRelease(EnBombf* this, PlayState* play) {
     // if parent is NULL bomb has been released
-    if (Actor_HasNoParent(&this->actor, globalCtx)) {
+    if (Actor_HasNoParent(&this->actor, play)) {
         EnBombf_SetupAction(this, EnBombf_Move);
-        EnBombf_Move(this, globalCtx);
+        EnBombf_Move(this, play);
     } else {
         this->actor.velocity.y = 0.0f;
     }
 }
 
-void EnBombf_Explode(EnBombf* this, GlobalContext* globalCtx) {
+void EnBombf_Explode(EnBombf* this, PlayState* play) {
     Player* player;
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
@@ -272,35 +272,35 @@ void EnBombf_Explode(EnBombf* this, GlobalContext* globalCtx) {
         this->explosionCollider.elements[0].dim.modelSphere.radius;
 
     if (this->actor.params == BOMBFLOWER_EXPLOSION) {
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->explosionCollider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->explosionCollider.base);
     }
 
-    if (globalCtx->envCtx.adjLight1Color[0] != 0) {
-        globalCtx->envCtx.adjLight1Color[0] -= 25;
+    if (play->envCtx.adjLight1Color[0] != 0) {
+        play->envCtx.adjLight1Color[0] -= 25;
     }
 
-    if (globalCtx->envCtx.adjLight1Color[1] != 0) {
-        globalCtx->envCtx.adjLight1Color[1] -= 25;
+    if (play->envCtx.adjLight1Color[1] != 0) {
+        play->envCtx.adjLight1Color[1] -= 25;
     }
 
-    if (globalCtx->envCtx.adjLight1Color[2] != 0) {
-        globalCtx->envCtx.adjLight1Color[2] -= 25;
+    if (play->envCtx.adjLight1Color[2] != 0) {
+        play->envCtx.adjLight1Color[2] -= 25;
     }
 
-    if (globalCtx->envCtx.adjAmbientColor[0] != 0) {
-        globalCtx->envCtx.adjAmbientColor[0] -= 25;
+    if (play->envCtx.adjAmbientColor[0] != 0) {
+        play->envCtx.adjAmbientColor[0] -= 25;
     }
 
-    if (globalCtx->envCtx.adjAmbientColor[1] != 0) {
-        globalCtx->envCtx.adjAmbientColor[1] -= 25;
+    if (play->envCtx.adjAmbientColor[1] != 0) {
+        play->envCtx.adjAmbientColor[1] -= 25;
     }
 
-    if (globalCtx->envCtx.adjAmbientColor[2] != 0) {
-        globalCtx->envCtx.adjAmbientColor[2] -= 25;
+    if (play->envCtx.adjAmbientColor[2] != 0) {
+        play->envCtx.adjAmbientColor[2] -= 25;
     }
 
     if (this->timer == 0) {
-        player = GET_PLAYER(globalCtx);
+        player = GET_PLAYER(play);
 
         if ((player->stateFlags1 & 0x800) && (player->heldActor == &this->actor)) {
             player->actor.child = NULL;
@@ -313,7 +313,7 @@ void EnBombf_Explode(EnBombf* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnBombf_Update(Actor* thisx, PlayState* play) {
     Vec3f effVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f bomb2Accel = { 0.0f, 0.1f, 0.0f };
     Vec3f effAccel = { 0.0f, 0.0f, 0.0f };
@@ -327,12 +327,12 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->timer--;
     }
 
-    if ((!this->bumpOn) && (!Actor_HasParent(thisx, globalCtx)) &&
+    if ((!this->bumpOn) && (!Actor_HasParent(thisx, play)) &&
         ((thisx->xzDistToPlayer >= 20.0f) || (ABS(thisx->yDistToPlayer) >= 80.0f))) {
         this->bumpOn = true;
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (thisx->params == BOMBFLOWER_BODY) {
         Actor_MoveForward(thisx);
@@ -340,7 +340,7 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (thisx->gravity != 0.0f) {
         DREG(6) = 1;
-        Actor_UpdateBgCheckInfo(globalCtx, thisx, 5.0f, 10.0f, 0.0f, 0x1F);
+        Actor_UpdateBgCheckInfo(play, thisx, 5.0f, 10.0f, 0.0f, 0x1F);
         DREG(6) = 0;
     }
 
@@ -359,7 +359,7 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
             Audio_PlayActorSound2(thisx, NA_SE_EV_BOMB_BOUND);
             Actor_MoveForward(thisx);
             DREG(6) = 1;
-            Actor_UpdateBgCheckInfo(globalCtx, thisx, 5.0f, 10.0f, 0.0f, 0x1F);
+            Actor_UpdateBgCheckInfo(play, thisx, 5.0f, 10.0f, 0.0f, 0x1F);
             DREG(6) = 0;
             thisx->speedXZ *= 0.7f;
             thisx->bgCheckFlags &= ~8;
@@ -371,7 +371,7 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
             this->timer = 0;
         } else {
             // if a lit stick touches the bomb, set timer to 100
-            if ((this->timer > 100) && Player_IsBurningStickInRange(globalCtx, &thisx->world.pos, 30.0f, 50.0f)) {
+            if ((this->timer > 100) && Player_IsBurningStickInRange(play, &thisx->world.pos, 30.0f, 50.0f)) {
                 this->timer = 100;
             }
         }
@@ -382,13 +382,13 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
             effPos.y += 25.0f;
             if (this->timer < 127) {
                 // spawn spark effect on even frames
-                if ((globalCtx->gameplayFrames % 2) == 0) {
-                    EffectSsGSpk_SpawnFuse(globalCtx, thisx, &effPos, &effVelocity, &effAccel);
+                if ((play->gameplayFrames % 2) == 0) {
+                    EffectSsGSpk_SpawnFuse(play, thisx, &effPos, &effVelocity, &effAccel);
                 }
                 Audio_PlayActorSound2(thisx, NA_SE_IT_BOMB_IGNIT - SFX_FLAG);
 
                 effPos.y += 3.0f;
-                func_8002829C(globalCtx, &effPos, &effVelocity, &dustAccel, &dustColor, &dustColor, 50, 5);
+                func_8002829C(play, &effPos, &effVelocity, &dustAccel, &dustColor, &dustColor, 50, 5);
             }
 
             // double bomb flash speed and adjust red color at certain times during the countdown
@@ -411,23 +411,23 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
 
                 effPos.y += 10.0f;
 
-                if (Actor_HasParent(thisx, globalCtx)) {
+                if (Actor_HasParent(thisx, play)) {
                     effPos.y += 30.0f;
                 }
 
-                EffectSsBomb2_SpawnLayered(globalCtx, &effPos, &effVelocity, &bomb2Accel, 100, 19);
+                EffectSsBomb2_SpawnLayered(play, &effPos, &effVelocity, &bomb2Accel, 100, 19);
 
                 effPos.y = thisx->floorHeight;
                 if (thisx->floorHeight > BGCHECK_Y_MIN) {
-                    EffectSsBlast_SpawnWhiteShockwave(globalCtx, &effPos, &effVelocity, &effAccel);
+                    EffectSsBlast_SpawnWhiteShockwave(play, &effPos, &effVelocity, &effAccel);
                 }
 
                 Audio_PlayActorSound2(thisx, NA_SE_IT_BOMB_EXPLOSION);
-                globalCtx->envCtx.adjLight1Color[0] = globalCtx->envCtx.adjLight1Color[1] =
-                    globalCtx->envCtx.adjLight1Color[2] = 250;
-                globalCtx->envCtx.adjAmbientColor[0] = globalCtx->envCtx.adjAmbientColor[1] =
-                    globalCtx->envCtx.adjAmbientColor[2] = 250;
-                Camera_AddQuake(&globalCtx->mainCamera, 2, 0xB, 8);
+                play->envCtx.adjLight1Color[0] = play->envCtx.adjLight1Color[1] =
+                    play->envCtx.adjLight1Color[2] = 250;
+                play->envCtx.adjAmbientColor[0] = play->envCtx.adjAmbientColor[1] =
+                    play->envCtx.adjAmbientColor[2] = 250;
+                Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
                 thisx->params = BOMBFLOWER_EXPLOSION;
                 this->timer = 10;
                 thisx->flags |= ACTOR_FLAG_5;
@@ -444,15 +444,15 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
         Collider_UpdateCylinder(thisx, &this->bombCollider);
 
         if ((this->flowerBombScale >= 1.0f) && (this->bumpOn)) {
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->bombCollider.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->bombCollider.base);
         }
 
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->bombCollider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->bombCollider.base);
     }
 
     if ((thisx->scale.x >= 0.01f) && (thisx->params != BOMBFLOWER_EXPLOSION)) {
         if (thisx->yDistToWater >= 20.0f) {
-            EffectSsDeadSound_SpawnStationary(globalCtx, &thisx->projectedPos, NA_SE_IT_BOMB_UNEXPLOSION, true,
+            EffectSsDeadSound_SpawnStationary(play, &thisx->projectedPos, NA_SE_IT_BOMB_UNEXPLOSION, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 10);
             Actor_Kill(thisx);
             return;
@@ -464,30 +464,30 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-Gfx* EnBombf_NewMtxDList(GraphicsContext* gfxCtx, GlobalContext* globalCtx) {
+Gfx* EnBombf_NewMtxDList(GraphicsContext* gfxCtx, PlayState* play) {
     Gfx* displayList;
     Gfx* displayListHead;
 
     displayList = Graph_Alloc(gfxCtx, 5 * sizeof(Gfx));
     displayListHead = displayList;
-    Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+    Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(displayListHead++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPEndDisplayList(displayListHead);
     return displayList;
 }
 
-void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnBombf_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnBombf* this = (EnBombf*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (thisx->params <= BOMBFLOWER_BODY) {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
 
         if (thisx->params != BOMBFLOWER_BODY) {
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerLeavesDL);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBaseLeavesDL);
@@ -499,14 +499,14 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 200, 255, 200, 255);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 20, 10, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(globalCtx->state.gfxCtx, globalCtx)));
+                   SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(play->state.gfxCtx, play)));
         gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBombAndSparkDL);
     } else {
         Collider_UpdateSpheres(0, &this->explosionCollider);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

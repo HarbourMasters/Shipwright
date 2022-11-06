@@ -12,16 +12,16 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void BgBowlWall_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgBowlWall_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgBowlWall_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgBowlWall_Init(Actor* thisx, PlayState* play);
+void BgBowlWall_Destroy(Actor* thisx, PlayState* play);
+void BgBowlWall_Update(Actor* thisx, PlayState* play);
+void BgBowlWall_Draw(Actor* thisx, PlayState* play);
 
-void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx);
-void BgBowlWall_WaitForHit(BgBowlWall* this, GlobalContext* globalCtx);
-void BgBowlWall_FallDoEffects(BgBowlWall* this, GlobalContext* globalCtx);
-void BgBowlWall_FinishFall(BgBowlWall* this, GlobalContext* globalCtx);
-void BgBowlWall_Reset(BgBowlWall* this, GlobalContext* globalCtx);
+void BgBowlWall_SpawnBullseyes(BgBowlWall* this, PlayState* play);
+void BgBowlWall_WaitForHit(BgBowlWall* this, PlayState* play);
+void BgBowlWall_FallDoEffects(BgBowlWall* this, PlayState* play);
+void BgBowlWall_FinishFall(BgBowlWall* this, PlayState* play);
+void BgBowlWall_Reset(BgBowlWall* this, PlayState* play);
 
 const ActorInit Bg_Bowl_Wall_InitVars = {
     ACTOR_BG_BOWL_WALL,
@@ -45,7 +45,7 @@ static Vec3f sBullseyeOffset[] = {
 
 static s16 sTargetRot[] = { 0x0000, 0x0000, 0x3FFF, -0x3FFF };
 
-void BgBowlWall_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgBowlWall_Init(Actor* thisx, PlayState* play) {
     BgBowlWall* this = (BgBowlWall*)thisx;
     s32 pad1;
     s32 pad2;
@@ -59,7 +59,7 @@ void BgBowlWall_Init(Actor* thisx, GlobalContext* globalCtx) {
         CollisionHeader_GetVirtual(&gBowlingSecondRoundCol, &colHeader);
     }
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->initPos = this->dyna.actor.world.pos;
     osSyncPrintf("\n\n");
     osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ ボーリングおじゃま壁発生 ☆☆☆☆☆ %d\n" VT_RST, this->dyna.actor.params);
@@ -67,13 +67,13 @@ void BgBowlWall_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.scale.x = this->dyna.actor.scale.y = this->dyna.actor.scale.z = 1.0f;
 }
 
-void BgBowlWall_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgBowlWall_Destroy(Actor* thisx, PlayState* play) {
     BgBowlWall* this = (BgBowlWall*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
+void BgBowlWall_SpawnBullseyes(BgBowlWall* this, PlayState* play) {
     s32 pad;
     EnWallTubo* bullseye;
     Actor* lookForGirl;
@@ -88,7 +88,7 @@ void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
     this->bullseyeCenter.x = sBullseyeOffset[type].x + this->dyna.actor.world.pos.x;
     this->bullseyeCenter.y = sBullseyeOffset[type].y + this->dyna.actor.world.pos.y;
     this->bullseyeCenter.z = sBullseyeOffset[type].z + this->dyna.actor.world.pos.z;
-    bullseye = (EnWallTubo*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->dyna.actor, globalCtx, ACTOR_EN_WALL_TUBO,
+    bullseye = (EnWallTubo*)Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_WALL_TUBO,
                                                this->bullseyeCenter.x, this->bullseyeCenter.y, this->bullseyeCenter.z,
                                                0, 0, 0, this->dyna.actor.params);
     if (bullseye != NULL) {
@@ -97,7 +97,7 @@ void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
             bullseye->explosionCenter = this->bullseyeCenter = this->dyna.actor.world.pos;
         }
         if (this->chuGirl == NULL) {
-            lookForGirl = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+            lookForGirl = play->actorCtx.actorLists[ACTORCAT_NPC].head;
             while (lookForGirl != NULL) {
                 if (lookForGirl->id != ACTOR_EN_BOM_BOWL_MAN) {
                     lookForGirl = lookForGirl->next;
@@ -111,13 +111,13 @@ void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgBowlWall_WaitForHit(BgBowlWall* this, GlobalContext* globalCtx) {
+void BgBowlWall_WaitForHit(BgBowlWall* this, PlayState* play) {
     if (this->isHit) {
         this->actionFunc = BgBowlWall_FallDoEffects;
     }
 }
 
-void BgBowlWall_FallDoEffects(BgBowlWall* this, GlobalContext* globalCtx) {
+void BgBowlWall_FallDoEffects(BgBowlWall* this, PlayState* play) {
     s16 pad;
     Vec3f effectAccel = { 0.0f, 0.1f, 0.0f };
     Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
@@ -146,12 +146,12 @@ void BgBowlWall_FallDoEffects(BgBowlWall* this, GlobalContext* globalCtx) {
             effectPos.x = Rand_CenteredFloat(300.0f) + this->bullseyeCenter.x;
             effectPos.y = -100.0f;
             effectPos.z = Rand_CenteredFloat(400.0f) + this->bullseyeCenter.z;
-            EffectSsBomb2_SpawnLayered(globalCtx, &effectPos, &effectVelocity, &effectAccel, 100, 30);
+            EffectSsBomb2_SpawnLayered(play, &effectPos, &effectVelocity, &effectAccel, 100, 30);
             effectPos.y = -50.0f;
-            EffectSsHahen_SpawnBurst(globalCtx, &effectPos, 10.0f, 0, 50, 15, 3, HAHEN_OBJECT_DEFAULT, 10, NULL);
+            EffectSsHahen_SpawnBurst(play, &effectPos, 10.0f, 0, 50, 15, 3, HAHEN_OBJECT_DEFAULT, 10, NULL);
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_IT_BOMB_EXPLOSION);
         }
-        quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 1);
+        quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 1);
         Quake_SetSpeed(quakeIndex, 0x7FFF);
         Quake_SetQuakeValues(quakeIndex, 300, 0, 0, 0);
         Quake_SetCountdown(quakeIndex, 30);
@@ -160,7 +160,7 @@ void BgBowlWall_FallDoEffects(BgBowlWall* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgBowlWall_FinishFall(BgBowlWall* this, GlobalContext* globalCtx) {
+void BgBowlWall_FinishFall(BgBowlWall* this, PlayState* play) {
     if (this->timer >= 2) {
         if (this->dyna.actor.params == 0) {
             Math_SmoothStepToS(&this->dyna.actor.shape.rot.x, -0x3E80, 1, 200, 0);
@@ -175,7 +175,7 @@ void BgBowlWall_FinishFall(BgBowlWall* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgBowlWall_Reset(BgBowlWall* this, GlobalContext* globalCtx) {
+void BgBowlWall_Reset(BgBowlWall* this, PlayState* play) {
     if (this->chuGirl->wallStatus[this->dyna.actor.params] != 2) {
         Math_ApproachF(&this->dyna.actor.world.pos.y, this->initPos.y, 0.3f, 50.0f);
         if (fabsf(this->dyna.actor.world.pos.y - this->initPos.y) <= 10.0f) {
@@ -186,28 +186,28 @@ void BgBowlWall_Reset(BgBowlWall* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgBowlWall_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgBowlWall_Update(Actor* thisx, PlayState* play) {
     BgBowlWall* this = (BgBowlWall*)thisx;
 
     if (this->timer != 0) {
         this->timer--;
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void BgBowlWall_Draw(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     BgBowlWall* this = (BgBowlWall*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x8,
-               Gfx_TexScroll(globalCtx->state.gfxCtx, 0, -2 * (frames = globalCtx->state.frames), 16, 16));
+               Gfx_TexScroll(play->state.gfxCtx, 0, -2 * (frames = play->state.frames), 16, 16));
     gDPPipeSync(POLY_OPA_DISP++);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->dyna.actor.params == 0) {
@@ -216,5 +216,5 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gBowlingRound2WallDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
