@@ -73,7 +73,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_OKUTA,     // Octorok
     ACTOR_EN_WALLMAS,   // Wallmaster
     ACTOR_EN_DODONGO,   // Dodongo
-    ACTOR_EN_REEBA,     // Leever
+    // ACTOR_EN_REEBA,  // Leever (reliant on spawner (z_e_encount1.c)
     ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
     ACTOR_EN_ZF,        // Lizalfos, dinolfos
     ACTOR_EN_GOMA,      // Gohma larva (normal, eggs, gohma eggs)
