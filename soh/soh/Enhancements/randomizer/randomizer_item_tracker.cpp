@@ -718,9 +718,9 @@ void DrawLocations() {
         bool lastItemFound = false;
 
         ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
-        for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
-            for (auto locationIt : rcObjects) {
+            for (auto& locationIt : rcObjects) {
                 if (locationIt.second.visibleInImgui && !checkedLocations.count(locationIt.second.rc) &&
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
@@ -732,7 +732,7 @@ void DrawLocations() {
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                 if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                    for (auto locationIt : rcObjects) {
+                    for (auto& locationIt : rcObjects) {
                         // If the location has its scene flag set
                         if (HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
                             // show it as checked
@@ -788,9 +788,9 @@ void DrawLocations() {
         // COLUMN 2 - CHECKED LOCATIONS
         ImGui::TableNextColumn();
         ImGui::BeginChild("ChildCheckedLocations", ImVec2(0, -8));
-        for (auto areaIt : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+        for (auto& areaIt : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
-            for (auto locationIt : areaIt.second) {
+            for (auto& locationIt : areaIt.second) {
                 if (locationIt.second.visibleInImgui && checkedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
                     break;
@@ -800,29 +800,28 @@ void DrawLocations() {
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                 if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                    for (auto locationIt : areaIt.second) {
+                    for (auto& locationIt : areaIt.second) {
                         auto elfound = checkedLocations.find(locationIt.second.rc);
                         if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
                             // If the location has its scene flag set
                             if (!HasItemBeenCollected(locationIt.second)) {
                                 // show it as checked
                                 checkedLocations.erase(locationIt.second.rc);
-                            } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(),
-                                                          ImGuiDir_Left)) {
+                            } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
                                 checkedLocations.erase(elfound);
                             }
                             ImGui::SameLine();
                             std::string txt =
-                                (lastLocationChecked == locationIt.second.rc
-                                     ? "* "
-                                     : "") + // Indicate the last location checked (before app reset at least)
-                                locationIt.second.rcShortName +
-                                " - ";
-                            txt += OTRGlobals::Instance->gRandomizer
-                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc]
-                                                                      .get.rgID]
-                                                                 [LANGUAGE_ENG]; // TODO Language
+                                (lastLocationChecked == locationIt.second.rc ? "* " : "") + // Indicate the last location checked (before app reset at least)
+                                locationIt.second.rcShortName;
                             ImGui::Text(txt.c_str());
+                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
+
+                            txt = OTRGlobals::Instance->gRandomizer
+                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][LANGUAGE_ENG]; // TODO Language
+                            ImGui::SameLine();
+                            ImGui::Text("(%s)", txt.c_str());
+                            ImGui::PopStyleColor();
                             // TODO GetItemObtainabilityFromRandomizerGet(rgData.rgID).CAN_OBTAIN or something to
                             // determine if it should say blue rupee
                         }
