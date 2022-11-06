@@ -237,8 +237,10 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
 
     this->outOfRangeTimer = 0;
     spawnPos = this->actor.world.pos;
-    if ((this->curNumSpawn < this->maxCurSpawns) && (this->totalNumSpawn < this->maxTotalSpawns)) {
-        while ((this->curNumSpawn < this->maxCurSpawns) && (this->totalNumSpawn < this->maxTotalSpawns)) {
+    // With Enemy Randomizer on, keep spawning enemies regardless of enemies spawned so enemies keep spawning.
+    // Instead, it relies on the timer to spawn an enemy every once in a while.
+    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
+        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
             if (play->sceneNum == SCENE_SPOT00) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
