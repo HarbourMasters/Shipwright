@@ -3041,13 +3041,11 @@ void Health_RemoveHearts(s16 hearts) {
 void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 
-    if (gSaveContext.n64ddFlag) {
-        if (rupeeChange > 0) {
-            gSaveContext.randoStats.rupeesCollected += rupeeChange;
-        }
-        if (rupeeChange < 0) {
-            gSaveContext.randoStats.rupeesSpent += -rupeeChange;
-        }
+    if (rupeeChange > 0) {
+        gSaveContext.gamePlayStats.rupeesCollected += rupeeChange;
+    }
+    if (rupeeChange < 0) {
+        gSaveContext.gamePlayStats.rupeesSpent += -rupeeChange;
     }
 }
 

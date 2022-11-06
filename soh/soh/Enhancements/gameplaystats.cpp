@@ -35,16 +35,16 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text) {
     ImGui::SameLine();
 
     if (mm < 10 && ss < 10) {
-        ImGui::Text(" %d:0%d:0%d:%d", hh, mm, ss, ds);
+        ImGui::Text(" %d:0%d:0%d.%d", hh, mm, ss, ds);
     }
     if (mm < 10 && ss >= 10) {
-        ImGui::Text(" %d:0%d:%d:%d", hh, mm, ss, ds);
+        ImGui::Text(" %d:0%d:%d.%d", hh, mm, ss, ds);
     }
     if (mm >= 10 && ss < 10) {
-        ImGui::Text(" %d:%d:0%d:%d", hh, mm, ss, ds);
+        ImGui::Text(" %d:%d:0%d.%d", hh, mm, ss, ds);
     }
     if (mm >= 10 && ss >= 10) {
-        ImGui::Text(" %d:%d:%d:%d", hh, mm, ss, ds);
+        ImGui::Text(" %d:%d:%d.%d", hh, mm, ss, ds);
     }
 }
 

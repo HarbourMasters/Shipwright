@@ -137,7 +137,7 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadStruct("randoStats", [&]() {
+    SaveManager::Instance->LoadStruct("gamePlayStats", [&]() {
         SaveManager::Instance->LoadData("playTimer", gSaveContext.gamePlayStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gamePlayStats.pauseTimer);
         SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gamePlayStats.itemGetTime), [](size_t i) {
@@ -221,7 +221,7 @@ void SaveManager::SaveRandomizer() {
         });
     });
 
-    SaveManager::Instance->SaveStruct("randoStats", [&]() {
+    SaveManager::Instance->SaveStruct("gamePlayStats", [&]() {
         SaveManager::Instance->SaveData("playTimer", gSaveContext.gamePlayStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gamePlayStats.pauseTimer);
         SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gamePlayStats.itemGetTime), [](size_t i) {
@@ -384,7 +384,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.playerName[i] = 0x3E;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.randoStats = { 0 };
+    gSaveContext.gamePlayStats = { 0 };
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;

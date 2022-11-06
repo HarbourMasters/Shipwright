@@ -6228,10 +6228,8 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
         func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
-        // Rando stats: Increment Ice Trap count
-        if (gSaveContext.n64ddFlag) {
-            gSaveContext.gamePlayStats.iceTrapCount++;
-        }
+        // Gameplay stats: Increment Ice Trap count
+        gSaveContext.gamePlayStats.iceTrapCount++;
         return 1;
     }
 
@@ -12607,11 +12605,9 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     gSaveContext.bgsFlag = true;
                     gSaveContext.swordHealth = 8;
                 }
-                if (gSaveContext.n64ddFlag) {
-                    gSaveContext.gamePlayStats.itemGetTime[giEntry.itemId] = gSaveContext.gamePlayStats.totalTimer;
-                    if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
-                        gSaveContext.gamePlayStats.songsFound++;
-                    }
+                gSaveContext.gamePlayStats.itemGetTime[giEntry.itemId] = gSaveContext.gamePlayStats.totalTimer;
+                if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
+                    gSaveContext.gamePlayStats.songsFound++;
                 }
                 Item_Give(globalCtx, giEntry.itemId);
             } else {
@@ -12872,10 +12868,8 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                    // Rando stats: Increment Ice Trap count
-                    if (gSaveContext.n64ddFlag) {
-                        gSaveContext.gamePlayStats.iceTrapCount++;
-                    }
+                    // Gameplay stats: Increment Ice Trap count
+                    gSaveContext.gamePlayStats.iceTrapCount++;
                 }
                 return;
             }
