@@ -1630,7 +1630,7 @@ s32 func_80091880(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
     dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
     if (type == 11 || type == 12) {
-        &sPlayerDListGroups[type][Player_HoldsSlingshot(GET_PLAYER(globalCtx))];
+        &sPlayerDListGroups[type][Player_HoldsSlingshot(GET_PLAYER(play))];
     }
     *dList = dLists[dListOffset];
 
