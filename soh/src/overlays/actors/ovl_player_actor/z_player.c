@@ -9045,7 +9045,7 @@ s32 func_80845964(PlayState* play, Player* this, CsCmdActorAction* arg2, f32 arg
     return 0;
 }
 
-s32 func_80845BA0(PlayState* arg0, Player* arg1, f32* arg2, s32 arg3) {
+s32 func_80845BA0(PlayState* play, Player* arg1, f32* arg2, s32 arg3) {
     f32 dx = arg1->unk_450.x - arg1->actor.world.pos.x;
     f32 dz = arg1->unk_450.z - arg1->actor.world.pos.z;
     s32 sp2C = sqrtf(SQ(dx) + SQ(dz));
@@ -9056,7 +9056,7 @@ s32 func_80845BA0(PlayState* arg0, Player* arg1, f32* arg2, s32 arg3) {
         yaw = arg1->actor.shape.rot.y;
     }
 
-    if (func_80845964(arg0, arg1, NULL, *arg2, yaw, 2)) {
+    if (func_80845964(play, arg1, NULL, *arg2, yaw, 2)) {
         return 0;
     }
 

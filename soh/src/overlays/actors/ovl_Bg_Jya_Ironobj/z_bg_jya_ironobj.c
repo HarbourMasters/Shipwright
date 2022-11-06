@@ -20,7 +20,7 @@ void func_808992D8(BgJyaIronobj* this);
 void func_808992E8(BgJyaIronobj* this, PlayState* play);
 
 void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk* enIk);
-void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* arg1, EnIk* enIk);
+void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* play, EnIk* enIk);
 
 static int sUnused = 0;
 
@@ -158,7 +158,7 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk
 /*
  * Spawns particles for the destroyed throne
  */
-void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* arg1, EnIk* enIk) {
+void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* play, EnIk* enIk) {
     s32 i;
     s32 j;
     s16 unkArg5;
@@ -178,7 +178,7 @@ void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* arg1, EnIk*
     rotY = Actor_WorldYawTowardActor(&this->dyna.actor, &enIk->actor) + D_808994D8[enIk->unk_2FF - 1];
     for (i = 0; i < 8; i++) {
         Actor* actor =
-            Actor_Spawn(&arg1->actorCtx, arg1, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
                         (Rand_ZeroOne() * 80.0f) + this->dyna.actor.world.pos.y + 10.0f, this->dyna.actor.world.pos.z,
                         0, ((s16)(s32)(Rand_ZeroOne() * 0x4000) + rotY) - 0x2000, 0, 0);
         if (actor != NULL) {
@@ -206,10 +206,10 @@ void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* arg1, EnIk*
         vel.x = 2.0f * (Rand_ZeroOne() * 6.0f - 3.0f) + (Rand_ZeroOne() * sins * 8.0f * temp_f22);
         vel.y = Rand_ZeroOne() * 8.0f - 3.0f;
         vel.z = 2.0f * (Rand_ZeroOne() * 6.0f - 3.0f) + (Rand_ZeroOne() * coss * 8.0f * temp_f22);
-        EffectSsKakera_Spawn(arg1, &pos, &vel, &pos, -350, unkArg5, D_80899530[j & 7], 4, 0, D_80899510[j & 7], 0, 5,
+        EffectSsKakera_Spawn(play, &pos, &vel, &pos, -350, unkArg5, D_80899530[j & 7], 4, 0, D_80899510[j & 7], 0, 5,
                              D_80899520[j & 7], -1, OBJECT_JYA_IRON, gObjectJyaIronDL_000880);
         if (Rand_ZeroOne() < 0.26f) {
-            func_80033480(arg1, &pos, 200.0f, 1, D_80899510[j & 7] * 4 + 60, D_80899510[j & 7] * 4 + 80, 1);
+            func_80033480(play, &pos, 200.0f, 1, D_80899510[j & 7] * 4 + 60, D_80899510[j & 7] * 4 + 80, 1);
         }
     }
 }

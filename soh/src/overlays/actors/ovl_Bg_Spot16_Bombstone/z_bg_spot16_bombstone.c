@@ -189,7 +189,7 @@ s32 func_808B4D9C(BgSpot16Bombstone* this, PlayState* play) {
     return true;
 }
 
-s32 func_808B4E58(BgSpot16Bombstone* this, PlayState* globalctx) {
+s32 func_808B4E58(BgSpot16Bombstone* this, PlayState* play) {
     Actor* actor = &this->actor;
     f32 scaleFactor = 1.0f / 600.0f;
     f32 sinCosPosFactor = 50.0f;
@@ -220,7 +220,7 @@ s32 func_808B4E58(BgSpot16Bombstone* this, PlayState* globalctx) {
     actor->shape.rot.z = D_808B5DD8[actor->params][9];
 
     this->dList = object_bombiwa_DL_0009E0;
-    this->bombiwaBankIndex = Object_GetIndex(&globalctx->objectCtx, OBJECT_BOMBIWA);
+    this->bombiwaBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_BOMBIWA);
 
     if (this->bombiwaBankIndex < 0) {
         osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", actor->params, __FILE__,
