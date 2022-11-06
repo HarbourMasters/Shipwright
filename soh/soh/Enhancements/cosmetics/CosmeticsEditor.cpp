@@ -14,7 +14,7 @@
 extern "C" {
 #include <z64.h>
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_gi_shield_3/object_gi_shield_3.h"
@@ -824,9 +824,9 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,          164, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
 
-    if (gGlobalCtx != nullptr) {
+    if (gPlayState != nullptr) {
         if (CVar_GetS32("gCosmetics.Link_BodyScale.Changed", 0)) {
-            Player* player = GET_PLAYER(gGlobalCtx);
+            Player* player = GET_PLAYER(gPlayState);
             float scale = CVar_GetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
             player->actor.scale.x = scale;
             player->actor.scale.y = scale;

@@ -104,7 +104,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         this->state = 1;
         u8 allPulled = 1;
-        Actor* actor = globalCtx->actorCtx.actorLists[ACTORCAT_BG].head;
+        Actor* actor = play->actorCtx.actorLists[ACTORCAT_BG].head;
 
         while (actor != NULL) {
             if (actor->id == ACTOR_BG_HAKA && ((BgHaka*)actor)->state == 0) {
