@@ -1469,7 +1469,7 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
         Vec3f sp24;
         sp24 = this->actor.world.pos;
         sp24.y += 30.0f;
-        func_8003424C(globalCtx, &sp24);
+        func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
         func_800F5ACC(NA_BGM_MINI_BOSS);
     }

@@ -10,7 +10,7 @@ typedef struct enemyEntry {
 #define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 50
 
 #ifndef __cplusplus
-uint8_t IsEnemyFoundToRandomize(GlobalContext* globalCtx, int actorId, int param, f32 posX);
+uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId, int param, f32 posX);
 enemyEntry GetRandomizedEnemy(void);
-uint8_t IsEnemyAllowedToSpawn(GlobalContext* globalCtx, enemyEntry newEnemy);
+uint8_t IsEnemyAllowedToSpawn(PlayState* play, enemyEntry newEnemy);
 #endif

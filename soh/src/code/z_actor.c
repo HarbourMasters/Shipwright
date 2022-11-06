@@ -3147,8 +3147,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
     // Remove bats and skulltulas from graveyard.
     // Remove octorok in lost woods.
-    if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && globalCtx->sceneNum == SCENE_SPOT02) ||
-        (actorId == ACTOR_EN_OKUTA && globalCtx->sceneNum == SCENE_SPOT10)) {
+    if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && play->sceneNum == SCENE_SPOT02) ||
+        (actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
         return NULL;
     }
     
@@ -3158,7 +3158,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     if (tryRandomizeEnemy) {
 
-        if (IsEnemyFoundToRandomize(globalCtx, actorId, params, posX)) {
+        if (IsEnemyFoundToRandomize(play, actorId, params, posX)) {
 
             // Do a raycast from the original position of the actor to find the ground below it, then try to place
             // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
@@ -3170,7 +3170,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
             pos.x = posX;
             pos.y = posY + 50;
             pos.z = posZ;
-            raycastResult = BgCheck_AnyRaycastFloor1(&globalCtx->colCtx, &poly, &pos);
+            raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
 
             // If ground is found below actor, move actor to that height.
             if (raycastResult > BGCHECK_Y_MIN) {
@@ -3181,7 +3181,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
             enemyEntry newEnemy = GetRandomizedEnemy();
 
             // While randomized enemy isn't allowed in certain situations, randomize again.
-            while (!IsEnemyAllowedToSpawn(globalCtx, newEnemy)) {
+            while (!IsEnemyAllowedToSpawn(play, newEnemy)) {
                 newEnemy = GetRandomizedEnemy();
             }
 
@@ -3220,10 +3220,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         }
     }
 
-    return Actor_Spawn_NoRandomize(actorCtx, globalCtx, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+    return Actor_Spawn_NoRandomize(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 }
 
-Actor* Actor_Spawn_NoRandomize(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId, f32 posX, f32 posY,
+Actor* Actor_Spawn_NoRandomize(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY,
                                f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     s32 pad;
     Actor* actor;
