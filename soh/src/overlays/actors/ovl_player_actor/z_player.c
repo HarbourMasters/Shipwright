@@ -4214,7 +4214,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
 
                 // Main override for entrance rando and entrance skips
                 if (gSaveContext.n64ddFlag) {
-                    globalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(globalCtx->nextEntranceIndex);
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
                 }
 
                 if (play->nextEntranceIndex == 0x7FFF) {
@@ -4225,7 +4225,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
                     if (gSaveContext.n64ddFlag) {
-                        globalCtx->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[globalCtx->nextEntranceIndex - 0x7FF9] + globalCtx->curSpawn);
+                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
                     } else {
                         play->nextEntranceIndex =
                             D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];

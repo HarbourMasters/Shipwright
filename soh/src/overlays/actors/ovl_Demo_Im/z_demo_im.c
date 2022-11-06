@@ -869,7 +869,7 @@ void func_80986B2C(PlayState* play) {
 
         // In entrance rando have impa bring link back to the front of castle grounds
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            globalCtx->nextEntranceIndex = 0x0138;
+            play->nextEntranceIndex = 0x0138;
         } else {
             play->nextEntranceIndex = 0xCD;
         }
@@ -918,7 +918,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         gSaveContext.nextTransition = 3;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            globalCtx->nextEntranceIndex = 0x0138;
+            play->nextEntranceIndex = 0x0138;
         } else {
             play->nextEntranceIndex = 0x0594;
         }

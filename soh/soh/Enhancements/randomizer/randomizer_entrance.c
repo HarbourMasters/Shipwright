@@ -1,6 +1,6 @@
 /*
  * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/entrance.c
- * It's been adapted for SoH to use our gGlobalCtx with slightly different named properties, and our enums for some scenes/entrances.
+ * It's been adapted for SoH to use our gPlayState vs their gGlobalContext with slightly different named properties, and our enums for some scenes/entrances.
  * 
  * Unlike 3DS rando, we need to be able to support the user loading up vanilla and rando saves, so the logic around
  * modifying the entrance table requires that we save the original table and reset whenever loading a vanilla save.
@@ -13,7 +13,7 @@
 
 #include "global.h"
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
 //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
@@ -181,14 +181,14 @@ s16 Entrance_GetOverride(s16 index) {
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
     if (nextEntranceIndex == 0x0082 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
-        gGlobalCtx != NULL) {
-        gGlobalCtx->actorCtx.flags.tempSwch = 0;
-        gGlobalCtx->actorCtx.flags.tempCollect = 0;
+        gPlayState != NULL) {
+        gPlayState->actorCtx.flags.tempSwch = 0;
+        gPlayState->actorCtx.flags.tempCollect = 0;
     }
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
-    if (gGlobalCtx->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+    if (gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
@@ -288,30 +288,30 @@ void Entrance_SetSavewarpEntrance(void) {
 }
 
 void Entrance_OverrideBlueWarp(void) {
-    switch (gGlobalCtx->sceneNum) {
+    switch (gPlayState->sceneNum) {
         case SCENE_YDAN_BOSS: // Ghoma boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
             return;
         case SCENE_DDAN_BOSS: // King Dodongo boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
             return;
         case SCENE_BDAN_BOSS: // Barinade boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
             return;
         case SCENE_MORIBOSSROOM: // Phantom Ganon boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
             return;
         case SCENE_FIRE_BS: // Volvagia boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
             return;
         case SCENE_MIZUSIN_BS: // Morpha boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
             return;
         case SCENE_JYASINBOSS: // Bongo-Bongo boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
             return;
         case SCENE_HAKADAN_BS: // Twinrova boss room
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
             return;
     }
 }
@@ -319,21 +319,21 @@ void Entrance_OverrideBlueWarp(void) {
 void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     switch (cutsceneCmd) {
         case 24: // Dropping a fish for Jabu Jabu
-            gGlobalCtx->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
-            gGlobalCtx->sceneLoadFlag = 0x14;
-            gGlobalCtx->fadeTransition = 2;
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 2;
             break;
     }
 }
 
 void Entrance_EnableFW(void) {
-    Player* player = GET_PLAYER(gGlobalCtx);
+    Player* player = GET_PLAYER(gPlayState);
     // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,
     // Grottos area, Fishing Pond, Ganon Battle and for states that disable buttons.
     if (!false /* farores wind anywhere */ ||
-        gGlobalCtx->sceneNum == 14 || gGlobalCtx->sceneNum == 15 || (gGlobalCtx->sceneNum == 16 && !false /* shuffled chest mini game */) ||
-        gGlobalCtx->sceneNum == 26 || gGlobalCtx->sceneNum == 62 || gGlobalCtx->sceneNum == 73 ||
-        gGlobalCtx->sceneNum == 79 ||
+        gPlayState->sceneNum == 14 || gPlayState->sceneNum == 15 || (gPlayState->sceneNum == 16 && !false /* shuffled chest mini game */) ||
+        gPlayState->sceneNum == 26 || gPlayState->sceneNum == 62 || gPlayState->sceneNum == 73 ||
+        gPlayState->sceneNum == 79 ||
         gSaveContext.eventInf[0] & 0x1 ||   // Ingo's Minigame state
         player->stateFlags1 & 0x08A02000 || // Swimming, riding horse, Down A, hanging from a ledge
         player->stateFlags2 & 0x00040000    // Blank A
@@ -351,8 +351,8 @@ void Entrance_EnableFW(void) {
 
 // Check if Link should still be riding epona after changing entrances
 void Entrance_HandleEponaState(void) {
-    s32 entrance = gGlobalCtx->nextEntranceIndex;
-    Player* player = GET_PLAYER(gGlobalCtx);
+    s32 entrance = gPlayState->nextEntranceIndex;
+    Player* player = GET_PLAYER(gPlayState);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
@@ -408,7 +408,7 @@ void Entrance_HandleEponaState(void) {
 // the correct weather state based on the current entrance and scene
 void Entrance_OverrideWeatherState() {
     gWeatherMode = 0;
-    gGlobalCtx->envCtx.gloomySkyMode = 0;
+    gPlayState->envCtx.gloomySkyMode = 0;
 
     // Weather only applyies to adult link
     if (LINK_IS_CHILD || gSaveContext.sceneSetupIndex >= 4) {
@@ -438,7 +438,7 @@ void Entrance_OverrideWeatherState() {
                 gWeatherMode = 3;
                 return;
         }
-        switch (gGlobalCtx->sceneNum) {
+        switch (gPlayState->sceneNum) {
             case 88: // Zora's Domain
             case 89: // Zora's Fountain
                 gWeatherMode = 3;
@@ -448,10 +448,10 @@ void Entrance_OverrideWeatherState() {
     // Kakariko Thunderstorm
     if (((gSaveContext.inventory.questItems & 0x7) == 0x7) && // Have forest, fire, and water medallion
         !(gSaveContext.sceneFlags[24].clear & 0x02)) { // have not beaten Bongo Bongo
-        switch (gGlobalCtx->sceneNum) {
+        switch (gPlayState->sceneNum) {
             case 82: // Kakariko
             case 83: // Graveyard
-                gGlobalCtx->envCtx.gloomySkyMode = 2;
+                gPlayState->envCtx.gloomySkyMode = 2;
                 switch (gSaveContext.entranceIndex) {
                     case 0x00DB: // Kakariko from HF
                     case 0x0191: // Kakariko from Death Mountain Trail
@@ -465,17 +465,17 @@ void Entrance_OverrideWeatherState() {
     }
     // Death Mountain Cloudy
     if (!(gSaveContext.eventChkInf[4] & 0x0200)) { // have not beaten Fire Temple
-        if (gGlobalCtx->nextEntranceIndex == 0x04D6) { // Lost Woods Goron City Shortcut
+        if (gPlayState->nextEntranceIndex == 0x04D6) { // Lost Woods Goron City Shortcut
             gWeatherMode = 2;
             return;
         }
-        switch (gGlobalCtx->sceneNum) {
+        switch (gPlayState->sceneNum) {
             case 82: // Kakariko
             case 83: // Graveyard
             case 96: // Death Mountain Trail
             case 97: // Death Mountain Crater
-                if (!gGlobalCtx->envCtx.gloomySkyMode) {
-                    gGlobalCtx->envCtx.gloomySkyMode = 1;
+                if (!gPlayState->envCtx.gloomySkyMode) {
+                    gPlayState->envCtx.gloomySkyMode = 1;
                 }
                 switch (gSaveContext.entranceIndex) {
                     case 0x00DB: // Kakariko from HF
@@ -494,13 +494,13 @@ void Entrance_OverrideWeatherState() {
 // Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
 void Entrance_OverrideGeurdoGuardCapture(void) {
     if (LINK_IS_CHILD) {
-        gGlobalCtx->nextEntranceIndex = 0x1A5;
+        gPlayState->nextEntranceIndex = 0x1A5;
     }
 
     if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
-        gGlobalCtx->nextEntranceIndex == 0x1A5) { // Geurdo Valley thrown out
-        if (gGlobalCtx->sceneNum != 0x5A) { // Geurdo Valley
-            gGlobalCtx->nextEntranceIndex = 0x129; // Gerudo Fortress
+        gPlayState->nextEntranceIndex == 0x1A5) { // Geurdo Valley thrown out
+        if (gPlayState->sceneNum != 0x5A) { // Geurdo Valley
+            gPlayState->nextEntranceIndex = 0x129; // Gerudo Fortress
         }
     }
 }
@@ -509,18 +509,18 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == 2) { // Shuffle Ganon's Castle
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
         if (sceneNum == 95 && spawn == 1) {
-            gGlobalCtx->linkActorEntry->pos.x = 0x033A;
-            gGlobalCtx->linkActorEntry->pos.y = 0x0623;
-            gGlobalCtx->linkActorEntry->pos.z = 0xFF22;
+            gPlayState->linkActorEntry->pos.x = 0x033A;
+            gPlayState->linkActorEntry->pos.y = 0x0623;
+            gPlayState->linkActorEntry->pos.z = 0xFF22;
         }
 
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
         if (sceneNum == 100 && spawn == 1) {
-            gGlobalCtx->linkActorEntry->pos.x = 0xFEA8;
-            gGlobalCtx->linkActorEntry->pos.y = 0x065C;
-            gGlobalCtx->linkActorEntry->pos.z = 0x0290;
-            gGlobalCtx->linkActorEntry->rot.y = 0x0700;
-            gGlobalCtx->linkActorEntry->params = 0x0DFF; // stationary spawn
+            gPlayState->linkActorEntry->pos.x = 0xFEA8;
+            gPlayState->linkActorEntry->pos.y = 0x065C;
+            gPlayState->linkActorEntry->pos.z = 0x0290;
+            gPlayState->linkActorEntry->rot.y = 0x0700;
+            gPlayState->linkActorEntry->params = 0x0DFF; // stationary spawn
         }
     }
 }

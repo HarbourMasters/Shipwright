@@ -1,13 +1,13 @@
 /*
  * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/grotto.c
- * It's been adapted for SoH to use our gGlobalCtx and slightly different named properties.
+ * It's been adapted for SoH to use our gPlayState vs their gGlobalContext and slightly different named properties.
  */
 
 #include "randomizer_grotto.h"
 
 #include "global.h"
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 // Information necessary for entering each grotto
 static const GrottoLoadInfo grottoLoadTable[NUM_GROTTOS] = {
@@ -159,10 +159,10 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
         // When the nextEntranceIndex is determined by a dynamic exit, we have
         // to set the respawn information and nextEntranceIndex manually
-        if (gGlobalCtx != NULL && gGlobalCtx->nextEntranceIndex != -1) {
+        if (gPlayState != NULL && gPlayState->nextEntranceIndex != -1) {
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
-            gGlobalCtx->fadeTransition = 3;
+            gPlayState->fadeTransition = 3;
             gSaveContext.nextTransition = 3;
         // Otherwise return 0x7FFF and let the game handle it
         } else {
@@ -203,14 +203,14 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
     // on content and scene
     for (s16 index = 0; index < NUM_GROTTOS; index++) {
 
-        if (grottoContent == grottoLoadTable[index].content && gGlobalCtx->sceneNum == grottoLoadTable[index].scene) {
+        if (grottoContent == grottoLoadTable[index].content && gPlayState->sceneNum == grottoLoadTable[index].scene) {
             // Find the override for the matching index from the grotto Load List
             // SaveFile_SetEntranceDiscovered(0x0700 + index);
             index = grottoLoadList[index];
 
             // Run the index through the special entrances override check
             lastEntranceType = GROTTO_LOAD;
-            gGlobalCtx->nextEntranceIndex = Grotto_OverrideSpecialEntrance(index);
+            gPlayState->nextEntranceIndex = Grotto_OverrideSpecialEntrance(index);
             return;
         }
     }
@@ -224,8 +224,8 @@ void Grotto_ForceGrottoReturn(void) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
         //Save the current temp flags in the grotto return point, so they'll properly keep their values.
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
+        gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
+        gSaveContext.respawn[RESPAWN_MODE_RETURN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
     }
 }
 

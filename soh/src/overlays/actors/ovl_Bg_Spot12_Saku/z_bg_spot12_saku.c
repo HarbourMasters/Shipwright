@@ -133,8 +133,8 @@ void BgSpot12Saku_Update(Actor* thisx, PlayState* play) {
 
     // If ER is on, when the guard opens the GtG gate its permanent flag will be set.
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) &&
-        Flags_GetSwitch(globalCtx, 0x3A)) {
-        Flags_SetSwitch(globalCtx, 0x2);
+        Flags_GetSwitch(play, 0x3A)) {
+        Flags_SetSwitch(play, 0x2);
     }
 
     if (this->timer > 0) {
