@@ -874,7 +874,7 @@ void GenerateItemPool() {
   //Keys
 
   //For key rings, need to add as many junk items as "missing" keys
-  if (KeyRings) {
+  if (KeyRings.IsNot(KEYRINGS_OFF)) {
     uint8_t ringJunkAmt = 0;
     for (auto dungeon : dungeonList) {
       if (dungeon->HasKeyRing()) {

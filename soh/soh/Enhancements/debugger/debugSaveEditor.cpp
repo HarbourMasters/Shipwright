@@ -134,6 +134,7 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
     ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
+    ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
 };
@@ -799,6 +800,15 @@ void DrawFlagsTab() {
                 gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest = act->flags.chest;
             }
             UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
+            
+            if (ImGui::Button("Clear Flags")) {
+                act->flags.swch = 0;
+                act->flags.clear = 0;
+                act->flags.collect = 0;
+                act->flags.chest = 0;
+            }
+            UIWidgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
+
 
             ImGui::EndGroup();
         } else {
@@ -1293,7 +1303,9 @@ void DrawQuestStatusTab() {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(SohImGui::GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
-            ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene);
+            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
+                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
+            };
         } else {
             // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)
             ImGui::Text("Barinade's Lair does not have small keys");
@@ -1552,6 +1564,27 @@ void DrawPlayerTab() {
                 ImGui::SameLine();
                 ImGui::InputScalar("D-pad Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &one, NULL);
             }
+        });
+
+        ImGui::Text("Player State");
+        uint8_t bit[32] = {};
+        uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+
+        for (int j = 0; j <= 2; j++) {
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("State Flags %d", j + 1);
+                for (int i = 0; i <= 31; i++) {
+                    bit[i] = ((flags[j] >> i) & 1);
+                    if (bit[i] != 0) {
+                        ImGui::Text("Flag %d", i);
+                    }
+                }
+            });
+            ImGui::SameLine();
+        }
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Sword");
+            ImGui::Text("  %d", player->swordState);
         });
 
     } else {

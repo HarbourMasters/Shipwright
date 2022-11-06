@@ -4118,7 +4118,7 @@ u32 SurfaceType_GetEcho(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId)
  * SurfaceType Is Hookshot Surface
  */
 u32 SurfaceType_IsHookshotSurface(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    return SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1;
+    return CVar_GetS32("gHookshotEverything", 0) || SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1;
 }
 
 /**

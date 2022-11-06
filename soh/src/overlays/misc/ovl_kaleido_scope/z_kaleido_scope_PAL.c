@@ -1527,6 +1527,10 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
             POLY_KAL_DISP =
                 KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
+        } else if (((pauseCtx->state == 7 && pauseCtx->unk_1EC >= 4) || pauseCtx->state == 0xF) &&
+                   !CVar_GetS32("gSkipSaveConfirmation", 0)) {
+            POLY_KAL_DISP =
+                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSaveConfirmationTexs[gSaveContext.language], 152, 16, 0);
         } else if ((pauseCtx->state != 7) || (pauseCtx->unk_1EC < 4)) {
             if ((pauseCtx->state != 0xF) && ((pauseCtx->state == 0x10) || (pauseCtx->state == 0x11))) {
                 POLY_KAL_DISP =
@@ -3874,7 +3878,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_PerformSave(globalCtx);
                             pauseCtx->unk_1EC = 4;
-                            D_8082B25C = 3;
+                            D_8082B25C = CVar_GetS32("gSkipSaveConfirmation", 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
                         }
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                                CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -4118,7 +4122,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     gSaveContext.savedSceneNum = globalCtx->sceneNum;
                     Save_SaveFile();
                     pauseCtx->state = 0xF;
-                    D_8082B25C = 3;
+                    D_8082B25C = CVar_GetS32("gSkipSaveConfirmation", 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
                 }
             }
             break;

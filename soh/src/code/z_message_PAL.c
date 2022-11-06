@@ -1748,6 +1748,19 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, __FILE__, __LINE__);
+
+    } else if (CVar_GetS32("gAskToEquip", 0) &&
+               (((LINK_IS_ADULT || CVar_GetS32("gTimelessEquipment", 0)) &&
+                 // 0C = Biggoron, 4B = Giant's, 4E = Mirror Shield, 50-51 = Tunics
+                 (textId == 0x0C || textId == 0x4B || textId == 0x4E ||
+                  textId == 0x50 || textId == 0x51)) ||
+                ((!LINK_IS_ADULT || CVar_GetS32("gTimelessEquipment", 0)) &&
+                // 4C = Deku Shield, A4 = Kokiri Sword
+                 (textId == 0x4C || textId == 0xA4)) ||
+                // 4D == Hylian Shield
+                textId == 0x4D)) {
+        Message_FindMessage(globalCtx, textId);
+        msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, font->msgOffset, sizeof(font->msgBuf));
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;

@@ -208,7 +208,8 @@ namespace Settings {
   Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 9)},                                                        {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
   Option LACSDungeonCount    = Option::U8  ("Dungeon Count",           {NumOpts(0, 8)},                                                        {lacsDungeonCountDesc},                                                                                           OptionCategory::Setting,    1,                          true);
   Option LACSTokenCount      = Option::U8  ("Token Count",             {NumOpts(0, 100)},                                                      {lacsTokenCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
-  Option KeyRings            = Option::Bool("Key Rings",                 {"Off", "On"},                                                          {keyRingDesc});
+  Option KeyRings            = Option::U8  ("Key Rings",               {"Off", "Random", "Count", "Selection"},                                {keyRingDesc});
+  Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 8)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
   Option RingFortress        = Option::Bool("Gerudo Fortress",         {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingForest          = Option::Bool("Forest Temple",           {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingFire            = Option::Bool("Fire Temple",             {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
@@ -232,6 +233,7 @@ namespace Settings {
     &LACSDungeonCount,
     &LACSTokenCount,
     &KeyRings,
+    &KeyRingsRandomCount,
     &RingFortress,
     &RingForest,
     &RingFire,
@@ -1860,6 +1862,16 @@ namespace Settings {
         StartingAge.Unlock();
       }
 
+      //Adult is also not compatible with the following combination:
+      //DoT:Intended, ShuffleOcarinas:false, Logic:Glitchless
+      if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED) && !ShuffleOcarinas &&
+        Logic.Is(LOGIC_GLITCHLESS)) {
+          StartingAge.SetSelectedIndex(AGE_CHILD);
+          StartingAge.Lock();
+        } else {
+          StartingAge.Unlock();
+        }
+
       //Only show stone count option if Stones is selected
       if (Bridge.Is(RAINBOWBRIDGE_STONES)) {
         BridgeStoneCount.Unhide();
@@ -2003,7 +2015,7 @@ namespace Settings {
         LACSTokenCount.Hide();
       }
 
-      if (KeyRings) {
+      if (KeyRings.IsNot(KEYRINGS_OFF)) {
         for (Option *option : keyRingOptions) {
           option->Unhide();
         }
@@ -2535,6 +2547,13 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+        MQDungeonCount.SetSelectedIndex(13);
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+        MQDungeonCount.SetSelectedIndex(0);
+    } else {
+        MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
+    }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
@@ -2591,6 +2610,22 @@ namespace Settings {
     GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
     BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    LACSStoneCount.SetSelectedIndex(cvarSettings[RSK_LACS_STONE_COUNT]);
+    LACSMedallionCount.SetSelectedIndex(cvarSettings[RSK_LACS_MEDALLION_COUNT]);
+    LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
+    LACSDungeonCount.SetSelectedIndex(cvarSettings[RSK_LACS_DUNGEON_COUNT]);
+    LACSTokenCount.SetSelectedIndex(cvarSettings[RSK_LACS_TOKEN_COUNT]);
+
+    KeyRings.SetSelectedIndex(cvarSettings[RSK_KEYRINGS]);
+    KeyRingsRandomCount.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_RANDOM_COUNT]);
+    RingForest.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE]);
+    RingFire.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE]);
+    RingWater.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_WATER_TEMPLE]);
+    RingSpirit.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_SPIRIT_TEMPLE]);
+    RingShadow.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_SHADOW_TEMPLE]);
+    RingWell.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL]);
+    RingGtg.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_GTG]);
+    RingCastle.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_GANONS_CASTLE]);
 
     NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
     BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
@@ -2677,11 +2712,22 @@ namespace Settings {
       }
     }
 
+    std::vector<uint8_t> randKeyRingDungeons = {};
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {
       dungeons[i]->ClearKeyRing();
+      if (dungeons[i]->GetSmallKeyCount() > 0) {
+        randKeyRingDungeons.push_back(i);
+      }
     }
-    if (KeyRings) {
+    if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
+      int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, randKeyRingDungeons.size());
+      Shuffle(randKeyRingDungeons);
+
+      for (uint8_t i = 0; i < keyRingCount; i++) {
+        dungeons[randKeyRingDungeons[i]]->SetKeyRing();
+      }
+    } else if (KeyRings.Is(KEYRINGS_SELECTION)) {
       if (RingWell) {
         BottomOfTheWell.SetKeyRing();
       }
@@ -2729,9 +2775,11 @@ namespace Settings {
       int choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
         ResolvedStartingAge = AGE_CHILD;
+        StartingAge.SetSelectedIndex(AGE_CHILD);
       }
       else {
         ResolvedStartingAge = AGE_ADULT;
+        StartingAge.SetSelectedIndex(AGE_ADULT);
       }
     }
     else {

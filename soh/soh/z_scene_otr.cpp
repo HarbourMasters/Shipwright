@@ -16,6 +16,20 @@ extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(GlobalContext* globalCtx, Ship::Scene* scene);
 
+std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
+    std::string Path = path;
+    if (IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(Path.c_str());
+}
+
+// Forward Declaration of function declared in OTRGlobals.cpp
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
+
 bool Scene_CommandSpawnList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetStartPositionList* cmdStartPos = (Ship::SetStartPositionList*)cmd;
@@ -103,7 +117,7 @@ bool Scene_CommandCollisionHeader(GlobalContext* globalCtx, Ship::SceneCommand* 
 {
     Ship::SetCollisionHeader* cmdCol = (Ship::SetCollisionHeader*)cmd;
 
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdCol->filePath));
+    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(cmdCol->filePath.c_str()));
 
     CollisionHeader* colHeader = nullptr;
 
@@ -298,7 +312,8 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].opa != "")
                 {
-                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].opa));
+                    auto opaFile =
+                        std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].opa.c_str()));
 
                     dlist->opaDL = opaFile.get();
                     dlist->opa = (Gfx*)&dlist->opaDL->instructions[0];
@@ -310,7 +325,8 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].xlu != "")
                 {
-                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].xlu));
+                    auto xluFile =
+                        std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].xlu.c_str()));
 
                     dlist->xluDL = xluFile.get();
                     dlist->xlu = (Gfx*)&dlist->xluDL->instructions[0];
@@ -330,12 +346,12 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                 PolygonDlist* pType = (PolygonDlist*)malloc(sizeof(PolygonDlist));
 
                 if (otrMesh->meshes[0].imgOpa != "")
-                    pType->opa = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[0].imgOpa))->instructions[0];
+                    pType->opa = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[0].imgOpa.c_str()))->instructions[0];
                 else
                     pType->opa = 0;
 
                 if (otrMesh->meshes[0].imgXlu != "")
-                    pType->xlu = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[0].imgXlu))->instructions[0];
+                    pType->xlu = (Gfx*)&std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[0].imgXlu.c_str()))->instructions[0];
                 else
                     pType->xlu = 0;
 
@@ -347,8 +363,7 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                 {
                     globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.fmt = otrMesh->meshes[0].images[0].fmt;
                     globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.source =
-                        (void*)(OTRGlobals::Instance->context->GetResourceManager()->LoadFile(
-                            otrMesh->meshes[0].images[0].sourceBackground))
+                        (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[0].sourceBackground.c_str()))
                         .get()
                         ->buffer.get();
                     globalCtx->roomCtx.curRoom.meshHeader->polygon1.single.siz = otrMesh->meshes[0].images[0].siz;
@@ -368,8 +383,7 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
                     {
                         globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].fmt = otrMesh->meshes[0].images[i].fmt;
                         globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].source =
-                            (void*)(OTRGlobals::Instance->context->GetResourceManager()->LoadFile(
-                                otrMesh->meshes[0].images[i].sourceBackground))
+                            (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[i].sourceBackground.c_str()))
                             .get()
                             ->buffer.get();
                         globalCtx->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].siz = otrMesh->meshes[0].images[i].siz;
@@ -395,7 +409,7 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].opa != "")
                 {
-                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].opa));
+                    auto opaFile = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].opa.c_str()));
 
                     dlist->opaDL = opaFile.get();
                     dlist->opa = (Gfx*)&dlist->opaDL->instructions[0];
@@ -405,7 +419,7 @@ bool Scene_CommandMeshHeader(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 
                 if (otrMesh->meshes[i].xlu != "")
                 {
-                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(otrMesh->meshes[i].xlu));
+                    auto xluFile = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(otrMesh->meshes[i].xlu.c_str()));
 
                     dlist->xluDL = xluFile.get();
                     dlist->xlu = (Gfx*)&dlist->xluDL->instructions[0];
@@ -515,7 +529,7 @@ bool Scene_CommandPathList(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetPathways* cmdPath = (Ship::SetPathways*)cmd;
 
-    Ship::Path* path = (Ship::Path*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdPath->paths[0]).get();
+    Ship::Path* path = (Ship::Path*)ResourceMgr_LoadResource(cmdPath->paths[0].c_str()).get();
     globalCtx->setupPathList = (Path*)malloc(path->paths.size() * sizeof(Path));
 
     //for (int i = 0; i < cmdPath->paths.size(); i++)
@@ -740,8 +754,7 @@ bool Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, Ship::SceneComma
         std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1];
         Ship::Scene* headerData = nullptr;
         if (desiredHeader != "") {
-            headerData =
-                (Ship::Scene*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(desiredHeader).get();
+            headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
         }
 
         if (headerData != nullptr)
@@ -759,9 +772,7 @@ bool Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, Ship::SceneComma
                 std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2];
                 Ship::Scene* headerData = nullptr;
                 if (desiredHeader != "") {
-                    headerData = (Ship::Scene*)OTRGlobals::Instance->context->GetResourceManager()
-                                     ->LoadResource(desiredHeader)
-                                     .get();
+                    headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
                 }
 
                 // "Using adult day data there!"
@@ -782,7 +793,7 @@ bool Scene_CommandCutsceneData(GlobalContext* globalCtx, Ship::SceneCommand* cmd
 {
     Ship::SetCutscenes* cmdCS = (Ship::SetCutscenes*)cmd;
 
-    Ship::Cutscene* csData = (Ship::Cutscene*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(cmdCS->cutscenePath).get();
+    Ship::Cutscene* csData = (Ship::Cutscene*)ResourceMgr_LoadResource(cmdCS->cutscenePath.c_str()).get();
     globalCtx->csCtx.segment = csData->commands.data();
 
     //osSyncPrintf("\ngame_play->demo_play.data=[%x]", globalCtx->csCtx.segment);
@@ -921,7 +932,7 @@ extern "C" s32 OTRfunc_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, 
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, globalCtx->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(globalCtx->roomList[roomNum].fileName);
+        auto roomData = ResourceMgr_LoadResource(globalCtx->roomList[roomNum].fileName);
         roomCtx->status = 1;
         roomCtx->roomToLoad = (Ship::Scene*)roomData.get();
 

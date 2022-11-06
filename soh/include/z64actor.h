@@ -5,6 +5,7 @@
 #include "z64animation.h"
 #include "z64math.h"
 #include "z64collision_check.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define ACTOR_NUMBER_MAX 2000
 #define INVISIBLE_ACTOR_MAX 20
@@ -291,6 +292,7 @@ typedef struct EnItem00 {
     /* 0x15C */ f32 scale;
     /* 0x160 */ ColliderCylinder collider;
     s16 ogParams;
+    GetItemEntry randoGiEntry;
 } EnItem00; // size = 0x1AC
 
 // Only A_OBJ_SIGNPOST_OBLONG and A_OBJ_SIGNPOST_ARROW are used in room files.
@@ -348,10 +350,14 @@ typedef enum {
 #define DEFINE_ACTOR_UNSET(enum) enum,
 #define DEFINE_ACTOR(_0, enum, _2) DEFINE_ACTOR_INTERNAL(_0, enum, _2)
 
-typedef enum {
+#ifdef __cplusplus
+enum ActorID : int {
+#else
+enum ActorID {
+#endif
     #include "tables/actor_table.h"
     /* 0x0192 */ ACTOR_ID_MAX // originally "ACTOR_DLF_MAX"
-} ActorID;
+};
 
 #undef DEFINE_ACTOR
 #undef DEFINE_ACTOR_INTERNAL

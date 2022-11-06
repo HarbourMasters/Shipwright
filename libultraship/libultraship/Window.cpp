@@ -232,11 +232,11 @@ namespace Ship {
         return Context.lock();
     }
 
-    std::shared_ptr<Window> Window::CreateInstance(const std::string Name) {
+    std::shared_ptr<Window> Window::CreateInstance(const std::string Name, const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         if (Context.expired()) {
             auto Shared = std::make_shared<Window>(Name);
             Context = Shared;
-            Shared->Initialize();
+            Shared->Initialize(OTRFiles, ValidHashes);
             return Shared;
         }
 
@@ -261,7 +261,7 @@ namespace Ship {
         if (GetConfig()->isNewInstance) {
             GetConfig()->setInt("Window.Width", 640);
             GetConfig()->setInt("Window.Height", 480);
-            GetConfig()->setBool("Window.Options", false);
+
             GetConfig()->setString("Window.GfxBackend", "");
             GetConfig()->setString("Window.AudioBackend", "");
 
@@ -279,10 +279,10 @@ namespace Ship {
         }
     }
 
-    void Window::Initialize() {
+    void Window::Initialize(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
         InitializeLogging();
         InitializeConfiguration();
-        InitializeResourceManager();
+        InitializeResourceManager(OTRFiles, ValidHashes);
         CreateDefaults();
         InitializeControlDeck();
 
@@ -295,8 +295,6 @@ namespace Ship {
             dwWidth = GetConfig()->getInt("Window.Width", 640);
             dwHeight = GetConfig()->getInt("Window.Height", 480);
         }
-
-        dwMenubar = GetConfig()->getBool("Window.Options", false);
 
         gfxBackend = GetConfig()->getString("Window.GfxBackend");
         InitializeWindowManager();
@@ -363,13 +361,8 @@ namespace Ship {
         WmApi->set_fullscreen(bIsFullscreen);
     }
 
-    void Window::ShowCursor(bool hide) {
-        if (!this->bIsFullscreen || this->dwMenubar) {
-            WmApi->show_cursor(true);
-        }
-        else {
-            WmApi->show_cursor(hide);
-        }
+    void Window::SetCursorVisibility(bool visible) {
+        WmApi->set_cursor_visibility(visible);
     }
 
     void Window::MainLoop(void (*MainFunction)(void)) {
@@ -425,7 +418,12 @@ namespace Ship {
 
         Window::GetInstance()->bIsFullscreen = bIsFullscreen;
         pConf->setBool("Window.Fullscreen.Enabled", bIsFullscreen);
-        Window::GetInstance()->ShowCursor(!bIsFullscreen);
+        if (bIsFullscreen) {
+            bool menuBarOpen = Window::GetInstance()->GetMenuBar();
+            Window::GetInstance()->SetCursorVisibility(menuBarOpen);
+        } else if (!bIsFullscreen) {
+            Window::GetInstance()->SetCursorVisibility(true);
+        }
     }
 
     uint32_t Window::GetCurrentWidth() {
@@ -579,10 +577,14 @@ namespace Ship {
         }
     }
 
-    void Window::InitializeResourceManager() {
-        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+    void Window::InitializeResourceManager(const std::vector<std::string>& OTRFiles, const std::unordered_set<uint32_t>& ValidHashes) {
+        MainPath = Config->getString("Game.Main Archive", GetAppDirectoryPath());
         PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
-        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        if (OTRFiles.empty()) {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath, ValidHashes);
+        } else {
+            ResMan = std::make_shared<ResourceMgr>(GetInstance(), OTRFiles, ValidHashes);
+        }
 
         if (!ResMan->DidLoadSuccessfully())
         {

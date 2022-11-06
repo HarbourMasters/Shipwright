@@ -81,92 +81,6 @@ u8 CheckPlayerPosition(Player* player, GlobalContext* globalCtx) {
            (player->actor.world.pos.z < 1662.0f) && !Gameplay_InCsMode(globalCtx);
 }
 
-u8 CheckStoneCount() {
-    u8 stoneCount = 0;
-
-    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        stoneCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
-        stoneCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
-        stoneCount++;
-    }
-
-    return stoneCount;
-}
-
-u8 CheckMedallionCount() {
-    u8 medallionCount = 0;
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-        medallionCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-        medallionCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-        medallionCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-        medallionCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-        medallionCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-        medallionCount++;
-    }
-
-    return medallionCount;
-}
-
-u8 CheckDungeonCount() {
-    u8 dungeonCount = 0;
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
-        dungeonCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
-        dungeonCount++;
-    }
-
-    return dungeonCount;
-}
-
 void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -183,46 +97,50 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
         int bridgeDungeonCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
         int bridgeTokenCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
 
-        if (CheckPlayerPosition(player, globalCtx)) {
-            switch (bridge) {
-                case 1:
-                    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 2:
-                    if (CheckStoneCount() >= bridgeStoneCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 3:
-                    if (CheckMedallionCount() >= bridgeMedallionCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 4:
-                    if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 5:
-                    if (CheckDungeonCount() >= bridgeDungeonCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-                case 6:
-                    if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
-                        LaunchBridgeCutscene(this, globalCtx);
-                    }
-                    break;
-            }
+        switch (bridge) {
+            case 1:
+                if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                    (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 2:
+                if (CheckStoneCount() >= bridgeStoneCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 3:
+                if (CheckMedallionCount() >= bridgeMedallionCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 4:
+                if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 5:
+                if (CheckDungeonCount() >= bridgeDungeonCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
+            case 6:
+                if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
         }
     }
 }
 
 void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, GlobalContext* globalCtx) {
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[2] != NULL) &&
+    if (gSaveContext.n64ddFlag || (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[2] != NULL) &&
         (globalCtx->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
