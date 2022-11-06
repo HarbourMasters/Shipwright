@@ -12605,10 +12605,6 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     gSaveContext.bgsFlag = true;
                     gSaveContext.swordHealth = 8;
                 }
-                gSaveContext.gamePlayStats.itemGetTime[giEntry.itemId] = gSaveContext.gamePlayStats.totalTimer;
-                if (giEntry.itemId >= ITEM_SONG_MINUET && giEntry.itemId <= ITEM_SONG_STORMS) {
-                    gSaveContext.gamePlayStats.songsFound++;
-                }
                 Item_Give(globalCtx, giEntry.itemId);
             } else {
                 Randomizer_Item_Give(globalCtx, giEntry);

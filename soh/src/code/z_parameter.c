@@ -1613,6 +1613,35 @@ void func_80084BF4(GlobalContext* globalCtx, u16 flag) {
     }
 }
 
+void GameplayStats_UpdateItemGetTime(u8 item) {
+    u32 time = gSaveContext.gamePlayStats.totalTimer;
+    u32 bottleGetTime = gSaveContext.gamePlayStats.itemGetTime[ITEM_BOTTLE];
+
+    // Count any bottled item as a bottle, and don't update on subsequent bottles
+    if (item >= ITEM_BOTTLE && item <= ITEM_POE && bottleGetTime == 0) {
+        gSaveContext.gamePlayStats.itemGetTime[ITEM_BOTTLE] = time;
+        return;
+    }
+    gSaveContext.gamePlayStats.itemGetTime[item] = time;
+}
+
+void Randomizer_GameplayStats_UpdateItemGetTime(u8 item) {
+    u32 time = gSaveContext.gamePlayStats.totalTimer;
+    u32 bottleGetTime = gSaveContext.gamePlayStats.itemGetTime[ITEM_BOTTLE];
+
+    // Count any bottled item as a bottle, and don't update on subsequent bottles
+    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE && bottleGetTime == 0) {
+        gSaveContext.gamePlayStats.itemGetTime[ITEM_BOTTLE] = time;
+        return;
+    }
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.gamePlayStats.itemGetTime[ITEM_SINGLE_MAGIC] = time;
+    }
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.gamePlayStats.itemGetTime[ITEM_DOUBLE_DEFENSE] = time;
+    }
+}
+
 /**
  * @brief Adds the given item to Link's inventory.
  * 
@@ -1629,6 +1658,9 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     s16 i;
     s16 slot;
     s16 temp;
+
+    // Gameplay stats: Update the time the item was obtained
+    GameplayStats_UpdateItemGetTime(item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2289,6 +2321,9 @@ u16 Randomizer_Item_Give(GlobalContext* globalCtx, GetItemEntry giEntry) {
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
+
+    // Gameplay stats: Update the time the item was obtained
+    Randomizer_GameplayStats_UpdateItemGetTime(item);
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {

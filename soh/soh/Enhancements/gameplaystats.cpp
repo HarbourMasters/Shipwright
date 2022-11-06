@@ -60,8 +60,8 @@ void DrawStatsTracker(bool& open) {
         return;
     }
 
-    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.totalTimer, "Total game Time: ");
-    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.playTimer / 2, "Gameplay Time:   ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.totalTimer,     "Total game Time: ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.playTimer / 2,  "Gameplay Time:   ");
     DisplayTimeHHMMSS(gSaveContext.gamePlayStats.pauseTimer / 3, "Pause Menu Time: ");
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
@@ -74,9 +74,12 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableNextColumn();
 
     DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SWORD_KOKIRI], "Kokiri Sword:        ");
-    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_BOOMERANG], "Boomerang:           ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_BOOMERANG],    "Boomerang:           ");
     DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SONG_LULLABY], "Zelda's Lullaby:     ");
-    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SONG_SARIA], "Saria's Song:        ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SONG_SARIA],   "Saria's Song:        ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_BOMB_BAG_20],  "Bomb Bag:            ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_SINGLE_MAGIC], "Magic:               ");
+    DisplayTimeHHMMSS(gSaveContext.gamePlayStats.itemGetTime[ITEM_BOTTLE],       "Bottle:              ");
 
     ImGui::TableNextColumn();
 
