@@ -72,6 +72,12 @@ typedef enum {
 #define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
     { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
 
+#define RC_IS_CARPENTER(a) \
+    (a == RC_GF_NORTH_F1_CARPENTER || \
+    a == RC_GF_NORTH_F2_CARPENTER || \
+    a == RC_GF_SOUTH_F1_CARPENTER || \
+    a == RC_GF_SOUTH_F2_CARPENTER)
+
 typedef struct {
     RandomizerCheck rc;
     RandomizerCheckVanillaOrMQ vOrMQ;
@@ -92,5 +98,7 @@ namespace RandomizerCheckObjects {
     std::string GetRCAreaName(RandomizerCheckArea area);
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
+    std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
+    RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
 }

@@ -893,6 +893,26 @@ std::map<RandomizerCheck, RandomizerCheckObject> RandomizerCheckObjects::GetAllR
     return rcObjects;
 }
 
+std::map<SceneID, RandomizerCheckArea> rcAreaBySceneID = {};
+std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySceneID() {
+    //memoize on first request
+    if (rcAreaBySceneID.size() == 0) {
+        for (auto& [randomizerCheck, rcObject] : rcObjects) {
+            rcAreaBySceneID[rcObject.sceneId] = rcObject.rcArea;
+        }
+    }
+    return rcAreaBySceneID;
+}
+
+RandomizerCheckArea RandomizerCheckObjects::GetRCAreaBySceneID(SceneID sceneId) {
+    std::map<SceneID, RandomizerCheckArea> areas = GetAllRCAreaBySceneID();
+    auto areaIt = areas.find(sceneId);
+    if (areaIt == areas.end())
+        return RCAREA_INVALID;
+    else
+        return areaIt->second;
+}
+
 void RandomizerCheckObjects::UpdateImGuiVisibility() {
     for (auto& [randomizerCheck, locationIt] : rcObjects) {
         locationIt.visibleInImgui = (
@@ -916,7 +936,12 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", 0) != 1) && // 1 is the value for "vanilla" small keys
             ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("randoShuffleGerudoFortressKeys", 0) != 0) && // 0 is the value for "vanilla" gf keys
             ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
-            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) // 0 is the value for "vanilla" ganon's boss key
+            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) && // 0 is the value for "vanilla" ganon's boss key
+            ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && locationIt.rc == RC_GF_NORTH_F1_CARPENTER) || //1 is the value for "fast" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
+            )
         );
     }
 }

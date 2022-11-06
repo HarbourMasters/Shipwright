@@ -700,8 +700,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     return false;
 }
 
+RandomizerCheckArea lastArea = RCAREA_INVALID;
 void DrawLocations() {
-    RandomizerCheckObjects::UpdateImGuiVisibility();
 
     if (ImGui::BeginTable("tableRandoChecks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("To Check", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -716,15 +716,29 @@ void DrawLocations() {
         locationSearch.Draw();
 
         bool lastItemFound = false;
+        bool doAreaScroll = false;
+        bool inGame = gPlayState != nullptr && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+        RandomizerCheckArea currentArea = RCAREA_INVALID;
+        SceneID sceneId = SCENE_ID_MAX;
+        if (gPlayState != nullptr) {
+            sceneId = (SceneID)gPlayState->sceneNum;
+            currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(sceneId);
+        }
 
         ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
-        for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
-            for (auto locationIt : rcObjects) {
-                if (locationIt.second.visibleInImgui && !checkedLocations.count(locationIt.second.rc) &&
+            for (auto& locationIt : rcObjects) {
+                if (!locationIt.second.visibleInImgui)
+                    continue;
+
+                if (!checkedLocations.count(locationIt.second.rc) &&
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                     hasItems = true;
+                    doAreaScroll = 
+                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                         currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
@@ -732,9 +746,16 @@ void DrawLocations() {
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                 if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                    for (auto locationIt : rcObjects) {
+                    if (doAreaScroll) {
+                        ImGui::SetScrollHereY(0.0f);
+                        doAreaScroll = false;
+                    }
+                    for (auto& locationIt : rcObjects) {
+                        if (!locationIt.second.visibleInImgui)
+                            continue;
+
                         // If the location has its scene flag set
-                        if (HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
+                        if (inGame && HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
                             // show it as checked
                             checkedLocations.insert(locationIt.second.rc);
 
@@ -786,43 +807,56 @@ void DrawLocations() {
         ImGui::EndChild();
 
         // COLUMN 2 - CHECKED LOCATIONS
+        doAreaScroll = false;
         ImGui::TableNextColumn();
         ImGui::BeginChild("ChildCheckedLocations", ImVec2(0, -8));
-        for (auto areaIt : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
-            for (auto locationIt : areaIt.second) {
-                if (locationIt.second.visibleInImgui && checkedLocations.count(locationIt.second.rc)) {
+            for (auto& locationIt : rcObjects) {
+                if (!locationIt.second.visibleInImgui)
+                    continue;
+
+                if (checkedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
+                    doAreaScroll =
+                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
+                         currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
             }
 
             if (hasItems) {
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(areaIt.first).c_str())) {
-                    for (auto locationIt : areaIt.second) {
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                    if (doAreaScroll) {
+                        ImGui::SetScrollHereY(0.0f);
+                        doAreaScroll = false;
+                    }
+                    for (auto& locationIt : rcObjects) {
+                        if (!locationIt.second.visibleInImgui)
+                            continue;
+
                         auto elfound = checkedLocations.find(locationIt.second.rc);
                         if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
                             // If the location has its scene flag set
-                            if (!HasItemBeenCollected(locationIt.second)) {
-                                // show it as checked
+                            if (!inGame || !HasItemBeenCollected(locationIt.second)) {
+                                // show it as unchecked
                                 checkedLocations.erase(locationIt.second.rc);
-                            } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(),
-                                                          ImGuiDir_Left)) {
+                            } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
                                 checkedLocations.erase(elfound);
                             }
                             ImGui::SameLine();
                             std::string txt =
-                                (lastLocationChecked == locationIt.second.rc
-                                     ? "* "
-                                     : "") + // Indicate the last location checked (before app reset at least)
-                                locationIt.second.rcShortName +
-                                " - ";
-                            txt += OTRGlobals::Instance->gRandomizer
-                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc]
-                                                                      .get.rgID]
-                                                                 [LANGUAGE_ENG]; // TODO Language
+                                (lastLocationChecked == locationIt.second.rc ? "* " : "") + // Indicate the last location checked (before app reset at least)
+                                locationIt.second.rcShortName;
                             ImGui::Text(txt.c_str());
+                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
+
+                            txt = OTRGlobals::Instance->gRandomizer
+                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][LANGUAGE_ENG]; // TODO Language
+                            ImGui::SameLine();
+                            ImGui::Text("(%s)", txt.c_str());
+                            ImGui::PopStyleColor();
                             // TODO GetItemObtainabilityFromRandomizerGet(rgData.rgID).CAN_OBTAIN or something to
                             // determine if it should say blue rupee
                         }
@@ -833,6 +867,9 @@ void DrawLocations() {
         }
         ImGui::EndChild();
         ImGui::EndTable();
+
+        if (sceneId != SCENE_KAKUSIANA)
+            lastArea = currentArea;
     }
 }
 
@@ -1000,8 +1037,6 @@ void UpdateVectors() {
     if  (!shouldUpdateVectors) {
         return;
     }
-
-    LocationTable_Init();
     dungeonRewards.clear();
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
@@ -1149,12 +1184,10 @@ void DrawItemTracker(bool& open) {
         }
 
         if (CVar_GetS32("gItemTrackerLocationDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
-            if (!ImGui::Begin("Location Checklist", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-                ImGui::End();
-            }
-            ImGui::SetNextWindowSize(ImVec2(400, 1000), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(600, 1000), ImGuiCond_FirstUseEver);
+            BeginFloatingWindows("Check Tracker", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawLocations();
-            ImGui::End();
+            EndFloatingWindows();
         }
     }
 }
@@ -1241,7 +1274,7 @@ void DrawItemTrackerOptions(bool& open) {
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
     }
-    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
+    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window (WIP)", "Separate" }, 0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -1277,4 +1310,6 @@ void InitItemTracker() {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         SohImGui::RequestCvarSaveOnNextTick();
     });
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+    LocationTable_Init();
 }
