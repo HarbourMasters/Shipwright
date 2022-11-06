@@ -6,7 +6,7 @@
 
 struct EnDaiku;
 
-typedef void (*EnDaikuActionFunc)(struct EnDaiku*, GlobalContext*);
+typedef void (*EnDaikuActionFunc)(struct EnDaiku*, PlayState*);
 
 typedef struct EnDaiku {
     /* 0x0000 */ Actor actor;

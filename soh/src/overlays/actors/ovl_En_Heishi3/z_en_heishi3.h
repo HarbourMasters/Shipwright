@@ -6,7 +6,7 @@
 
 struct EnHeishi3;
 
-typedef void (*EnHeishi3ActionFunc)(struct EnHeishi3*, GlobalContext*);
+typedef void (*EnHeishi3ActionFunc)(struct EnHeishi3*, PlayState*);
 
 typedef struct EnHeishi3 {
     /* 0x0000 */ Actor actor;

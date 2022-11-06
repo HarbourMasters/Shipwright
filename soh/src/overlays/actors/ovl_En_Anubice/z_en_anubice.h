@@ -7,7 +7,7 @@
 
 struct EnAnubice;
 
-typedef void (*EnAnubiceActionFunc)(struct EnAnubice*, struct GlobalContext*);
+typedef void (*EnAnubiceActionFunc)(struct EnAnubice*, struct PlayState*);
 
 typedef enum {
     /*  0 */ ANUBICE_LIMB_NONE,

@@ -6,7 +6,7 @@
 
 struct BossGanondrof;
 
-typedef void (*BossGanondrofActionFunc)(struct BossGanondrof*, GlobalContext*);
+typedef void (*BossGanondrofActionFunc)(struct BossGanondrof*, PlayState*);
 
 #define GND_REAL_BOSS 1
 #define GND_FAKE_BOSS 10

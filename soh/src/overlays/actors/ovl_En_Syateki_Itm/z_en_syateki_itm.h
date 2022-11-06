@@ -6,7 +6,7 @@
 
 struct EnSyatekiItm;
 
-typedef void (*EnSyatekiItmActionFunc)(struct EnSyatekiItm*, GlobalContext*);
+typedef void (*EnSyatekiItmActionFunc)(struct EnSyatekiItm*, PlayState*);
 
 typedef enum {
     /* 0 */ ENSYATEKI_NONE,

@@ -15,13 +15,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnNutsball_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnNutsball_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnNutsball_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnNutsball_Init(Actor* thisx, PlayState* play);
+void EnNutsball_Destroy(Actor* thisx, PlayState* play);
+void EnNutsball_Update(Actor* thisx, PlayState* play);
+void EnNutsball_Draw(Actor* thisx, PlayState* play);
 
-void func_80ABBB34(EnNutsball* this, GlobalContext* globalCtx);
-void func_80ABBBA8(EnNutsball* this, GlobalContext* globalCtx);
+void func_80ABBB34(EnNutsball* this, PlayState* play);
+void func_80ABBBA8(EnNutsball* this, PlayState* play);
 
 const ActorInit En_Nutsball_InitVars = {
     ACTOR_EN_NUTSBALL,
@@ -68,14 +68,14 @@ static Gfx* sDLists[] = {
     gDekuNutsDekuNutDL, gHintNutsNutDL, gBusinessScrubDekuNutDL, gDntJijiNutDL, gDntStageNutDL,
 };
 
-void EnNutsball_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnNutsball_Init(Actor* thisx, PlayState* play) {
     EnNutsball* this = (EnNutsball*)thisx;
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 400.0f, ActorShadow_DrawCircle, 13.0f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
-    this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIDs[this->actor.params]);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
+    this->objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIDs[this->actor.params]);
 
     if (this->objBankIndex < 0) {
         Actor_Kill(&this->actor);
@@ -84,14 +84,14 @@ void EnNutsball_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnNutsball_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnNutsball_Destroy(Actor* thisx, PlayState* play) {
     EnNutsball* this = (EnNutsball*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80ABBB34(EnNutsball* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->objBankIndex)) {
+void func_80ABBB34(EnNutsball* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.objBankIndex = this->objBankIndex;
         this->actor.draw = EnNutsball_Draw;
         this->actor.shape.rot.y = 0;
@@ -101,8 +101,8 @@ void func_80ABBB34(EnNutsball* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ABBBA8(EnNutsball* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80ABBBA8(EnNutsball* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Vec3s sp4C;
     Vec3f sp40;
 
@@ -137,8 +137,8 @@ void func_80ABBBA8(EnNutsball* this, GlobalContext* globalCtx) {
         sp40.y = this->actor.world.pos.y + 4;
         sp40.z = this->actor.world.pos.z;
 
-        EffectSsHahen_SpawnBurst(globalCtx, &sp40, 6.0f, 0, 7, 3, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
+        EffectSsHahen_SpawnBurst(play, &sp40, 6.0f, 0, 7, 3, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
         Actor_Kill(&this->actor);
     } else {
         if (this->timer == -300) {
@@ -147,51 +147,51 @@ void func_80ABBBA8(EnNutsball* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnNutsball_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnNutsball_Update(Actor* thisx, PlayState* play) {
     EnNutsball* this = (EnNutsball*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 pad;
 
     if (!(player->stateFlags1 & 0x300000C0) || (this->actionFunc == func_80ABBB34)) {
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
 
         Actor_MoveForward(&this->actor);
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10, sCylinderInit.dim.radius, sCylinderInit.dim.height, 5);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 10, sCylinderInit.dim.radius, sCylinderInit.dim.height, 5);
         Collider_UpdateCylinder(&this->actor, &this->collider);
 
         this->actor.flags |= ACTOR_FLAG_24;
 
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnNutsball_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (CVar_GetS32("gNewDrops", 0) != 0) {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),
-                                    1 * (globalCtx->state.frames * 6), 32, 32, 1, 1 * (globalCtx->state.frames * 6),
-                                    1 * (globalCtx->state.frames * 6), 32, 32));
+                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                                    1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                    1 * (play->state.frames * 6), 32, 32));
         Matrix_Scale(25.0f,25.0f,25.0f,MTXMODE_APPLY);
         Matrix_RotateX(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
     } else {
-        func_80093D18(globalCtx->state.gfxCtx);
-        Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
+        func_80093D18(play->state.gfxCtx);
+        Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
         
         Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

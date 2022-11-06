@@ -11,10 +11,10 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void DemoGj_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoGj_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoGj_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoGj_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoGj_Init(Actor* thisx, PlayState* play);
+void DemoGj_Destroy(Actor* thisx, PlayState* play);
+void DemoGj_Update(Actor* thisx, PlayState* play);
+void DemoGj_Draw(Actor* thisx, PlayState* play);
 
 static ColliderCylinderInitType1 sCylinderInit1 = {
     {
@@ -73,8 +73,8 @@ static ColliderCylinderInitType1 sCylinderInit3 = {
     { 25, 200, 0, { 0, 0, 0 } },
 };
 
-typedef void (*DemoGjUpdateFunc)(DemoGj*, GlobalContext*);
-typedef void (*DemoGjDrawFunc)(DemoGj*, GlobalContext*);
+typedef void (*DemoGjUpdateFunc)(DemoGj*, PlayState*);
+typedef void (*DemoGjDrawFunc)(DemoGj*, PlayState*);
 
 // bits 11-15
 s32 DemoGj_GetCollectibleType(DemoGj* this) {
@@ -97,72 +97,72 @@ s32 DemoGj_GetType(DemoGj* this) {
     return params & 0xFF;
 }
 
-void DemoGj_InitCylinder(DemoGj* this, GlobalContext* globalCtx, ColliderCylinder* cylinder,
+void DemoGj_InitCylinder(DemoGj* this, PlayState* play, ColliderCylinder* cylinder,
                          ColliderCylinderInitType1* cylinderInit) {
-    Collider_InitCylinder(globalCtx, cylinder);
-    Collider_SetCylinderType1(globalCtx, cylinder, &this->dyna.actor, cylinderInit);
+    Collider_InitCylinder(play, cylinder);
+    Collider_SetCylinderType1(play, cylinder, &this->dyna.actor, cylinderInit);
 }
 
-s32 DemoGj_HitByExplosion(DemoGj* this, GlobalContext* globalCtx, ColliderCylinder* cylinder) {
-    if (Actor_GetCollidedExplosive(globalCtx, &cylinder->base) != NULL) {
+s32 DemoGj_HitByExplosion(DemoGj* this, PlayState* play, ColliderCylinder* cylinder) {
+    if (Actor_GetCollidedExplosive(play, &cylinder->base) != NULL) {
         return true;
     }
     return false;
 }
 
-void DemoGj_DestroyCylinder(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DestroyCylinder(DemoGj* this, PlayState* play) {
     switch (DemoGj_GetType(this)) {
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_1:
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[0]);
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[1]);
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[2]);
+            Collider_DestroyCylinder(play, &this->cylinders[0]);
+            Collider_DestroyCylinder(play, &this->cylinders[1]);
+            Collider_DestroyCylinder(play, &this->cylinders[2]);
             break;
 
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_2:
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[0]);
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[1]);
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[2]);
+            Collider_DestroyCylinder(play, &this->cylinders[0]);
+            Collider_DestroyCylinder(play, &this->cylinders[1]);
+            Collider_DestroyCylinder(play, &this->cylinders[2]);
             break;
 
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_TALL:
-            Collider_DestroyCylinder(globalCtx, &this->cylinders[0]);
+            Collider_DestroyCylinder(play, &this->cylinders[0]);
             break;
     }
 }
 
-void DemoGj_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGj_Destroy(Actor* thisx, PlayState* play) {
     DemoGj* this = (DemoGj*)thisx;
 
-    DemoGj_DestroyCylinder(this, globalCtx);
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DemoGj_DestroyCylinder(this, play);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void DemoGj_PlayExplosionSfx(DemoGj* this, GlobalContext* globalCtx) {
-    SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 50, NA_SE_EV_GRAVE_EXPLOSION);
+void DemoGj_PlayExplosionSfx(DemoGj* this, PlayState* play) {
+    SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 50, NA_SE_EV_GRAVE_EXPLOSION);
 }
 
-void DemoGj_SpawnSmoke(GlobalContext* globalCtx, Vec3f* pos, f32 arg2) {
+void DemoGj_SpawnSmoke(PlayState* play, Vec3f* pos, f32 arg2) {
     static Vec3f velocity = { 0.0f, 6.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 0, 0, 0, 0 };
     static Color_RGBA8 envColor = { 0, 0, 0, 0 };
     f32 temp = arg2 * 0.2f;
 
-    func_800283D4(globalCtx, pos, &velocity, &accel, &primColor, &envColor, temp * Rand_ZeroOne() + arg2, 15, 90);
+    func_800283D4(play, pos, &velocity, &accel, &primColor, &envColor, temp * Rand_ZeroOne() + arg2, 15, 90);
 }
 
-void DemoGj_DropCollectible(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DropCollectible(DemoGj* this, PlayState* play) {
     Vec3f* pos = &this->dyna.actor.world.pos;
     s16 collectible = DemoGj_GetCollectibleType(this);
     s32 amount = DemoGj_GetCollectibleAmount(this);
     s32 i;
 
     for (i = 0; i < amount; i++) {
-        Item_DropCollectible(globalCtx, pos, collectible);
+        Item_DropCollectible(play, pos, collectible);
     }
 }
 
-void DemoGj_Explode(DemoGj* this, GlobalContext* globalCtx, Vec3f* initialPos, Vec3f* direction) {
+void DemoGj_Explode(DemoGj* this, PlayState* play, Vec3f* initialPos, Vec3f* direction) {
     Vec3f explosionPos;
     Vec3f velocity;
     s32 phi_s0;
@@ -194,14 +194,14 @@ void DemoGj_Explode(DemoGj* this, GlobalContext* globalCtx, Vec3f* initialPos, V
 
         Gfx* gfx = ResourceMgr_LoadGfxByName(gGanonRubbleDL);
 
-        EffectSsKakera_Spawn(globalCtx, &explosionPos, &velocity, initialPos, -200, phi_s0, 10, 10, 0,
+        EffectSsKakera_Spawn(play, &explosionPos, &velocity, initialPos, -200, phi_s0, 10, 10, 0,
                              Rand_ZeroOne() * 20.0f + 20.0f, 20, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30, -1,
                              OBJECT_GEFF, gfx);
 
         theta += 0x2AAA;
     }
 
-    DemoGj_PlayExplosionSfx(this, globalCtx);
+    DemoGj_PlayExplosionSfx(this, play);
 }
 
 s32 DemoGj_IsSceneInvalid(void) {
@@ -211,11 +211,11 @@ s32 DemoGj_IsSceneInvalid(void) {
     return true;
 }
 
-s32 DemoGj_FindGanon(DemoGj* this, GlobalContext* globalCtx) {
+s32 DemoGj_FindGanon(DemoGj* this, PlayState* play) {
     Actor* actor;
 
     if (this->ganon == NULL) {
-        actor = globalCtx->actorCtx.actorLists[ACTORCAT_BOSS].head;
+        actor = play->actorCtx.actorLists[ACTORCAT_BOSS].head;
 
         while (actor != NULL) {
             if (actor->id == ACTOR_BOSS_GANON2) {
@@ -239,7 +239,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void DemoGj_InitCommon(DemoGj* this, GlobalContext* globalCtx, CollisionHeader* header) {
+void DemoGj_InitCommon(DemoGj* this, PlayState* play, CollisionHeader* header) {
     s32 pad[3];
     CollisionHeader* newHeader;
 
@@ -248,26 +248,26 @@ void DemoGj_InitCommon(DemoGj* this, GlobalContext* globalCtx, CollisionHeader* 
         DynaPolyActor_Init(&this->dyna, DPM_UNK);
         newHeader = NULL;
         CollisionHeader_GetVirtual(header, &newHeader);
-        this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, newHeader);
+        this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, newHeader);
     }
 }
 
 // TODO: find a better name
-s32 DemoGj_InitSetIndexes(DemoGj* this, GlobalContext* globalCtx, s32 updateMode, s32 drawConfig,
+s32 DemoGj_InitSetIndexes(DemoGj* this, PlayState* play, s32 updateMode, s32 drawConfig,
                           CollisionHeader* header) {
     if (!DemoGj_IsSceneInvalid()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
-        DemoGj_InitCommon(this, globalCtx, header);
+        DemoGj_InitCommon(this, play, header);
         return true;
     }
     Actor_Kill(&this->dyna.actor);
     return false;
 }
 
-void DemoGj_DrawCommon(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList) {
+void DemoGj_DrawCommon(DemoGj* this, PlayState* play, Gfx* displayList) {
     if (kREG(0) == 0) {
-        GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+        GraphicsContext* gfxCtx = play->state.gfxCtx;
 
         OPEN_DISPS(gfxCtx);
 
@@ -283,7 +283,7 @@ void DemoGj_DrawCommon(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList)
     }
 }
 
-void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList) {
+void DemoGj_DrawRotated(DemoGj* this, PlayState* play, Gfx* displayList) {
     s32 pad;
     GraphicsContext* gfxCtx;
     s16 x = this->rotationVec.x;
@@ -292,7 +292,7 @@ void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList
     s32 pad2;
     Mtx* matrix;
 
-    gfxCtx = globalCtx->state.gfxCtx;
+    gfxCtx = play->state.gfxCtx;
     matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
 
     OPEN_DISPS(gfxCtx);
@@ -311,7 +311,7 @@ void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList
     CLOSE_DISPS(gfxCtx);
 }
 
-void DemoGj_SetupRotation(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SetupRotation(DemoGj* this, PlayState* play) {
     f32 yPosition = this->dyna.actor.world.pos.y;
     f32* yVelocity = &this->dyna.actor.velocity.y;
     f32* speedXZ = &this->dyna.actor.speedXZ;
@@ -446,16 +446,16 @@ s32 func_809797E4(DemoGj* this, u8 arg1) {
     return false;
 }
 
-s32 DemoGj_IsGanondorfRisingFromRubble(DemoGj* this, GlobalContext* globalCtx) {
+s32 DemoGj_IsGanondorfRisingFromRubble(DemoGj* this, PlayState* play) {
     return func_809797E4(this, 1);
 }
 
 // Ganondorf has stopped rising into the air and is just floating. Just before he transforms.
-s32 DemoGj_IsGanondorfFloatingInAir(DemoGj* this, GlobalContext* globalCtx) {
+s32 DemoGj_IsGanondorfFloatingInAir(DemoGj* this, PlayState* play) {
     return func_809797E4(this, 2);
 }
 
-void DemoGj_SetupMovement(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SetupMovement(DemoGj* this, PlayState* play) {
     Actor* actor = &this->dyna.actor;
     Player* player;
     Vec3f* pos = &actor->world.pos;
@@ -547,7 +547,7 @@ void DemoGj_SetupMovement(DemoGj* this, GlobalContext* globalCtx) {
         }
 
         if (xDistance == 0.0f && zDistance == 0.0f) {
-            player = GET_PLAYER(globalCtx);
+            player = GET_PLAYER(play);
             xDistance = player->actor.world.pos.x - pos->x;
             zDistance = player->actor.world.pos.z - pos->z;
 
@@ -566,422 +566,422 @@ void DemoGj_CheckIfTransformedIntoGanon(DemoGj* this) {
     }
 }
 
-void DemoGj_InitRubblePile1(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 1, 2, &gGanonsCastleRubble2Col);
+void DemoGj_InitRubblePile1(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 1, 2, &gGanonsCastleRubble2Col);
 }
 
-void func_8097A000(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A000(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(18));
     this->rotationVec.y += (s16)(kREG(19) + 1000);
     this->rotationVec.z += (s16)(kREG(20) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void DemoGj_SpawnSmokePreBattle1(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SpawnSmokePreBattle1(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -371.0f, 1188.0f, -303.0f };
     u32 gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
-        gameplayFrames = globalCtx->gameplayFrames % 3;
+        gameplayFrames = play->gameplayFrames % 3;
 
         if (gameplayFrames == 0) {
-            if (!globalCtx->gameplayFrames) {}
-            DemoGj_SpawnSmoke(globalCtx, &pos, 300.0f);
+            if (!play->gameplayFrames) {}
+            DemoGj_SpawnSmoke(play, &pos, 300.0f);
         }
 
         DemoGj_CheckIfTransformedIntoGanon(this);
     }
 }
 
-void func_8097A0E4(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097A0E4(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 8;
         this->drawConfig = 9;
     }
 }
 
-void func_8097A130(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097A130(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097A160
-void DemoGj_Update01(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097A0E4(this, globalCtx);
+void DemoGj_Update01(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097A0E4(this, play);
 }
 
 // func_8097A190
-void DemoGj_Update08(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A000(this, globalCtx);
-    func_8097A130(this, globalCtx);
+void DemoGj_Update08(DemoGj* this, PlayState* play) {
+    func_8097A000(this, play);
+    func_8097A130(this, play);
 }
 
-void DemoGj_DrawRubble2(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble2DL);
+void DemoGj_DrawRubble2(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble2DL);
 }
 
-void DemoGj_DrawRotatedRubble2(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble2DL);
+void DemoGj_DrawRotatedRubble2(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble2DL);
 }
 
-void DemoGj_InitRubblePile2(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 2, 3, &gGanonsCastleRubble3Col);
+void DemoGj_InitRubblePile2(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 2, 3, &gGanonsCastleRubble3Col);
 }
 
-void func_8097A238(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A238(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(31));
     this->rotationVec.y += (s16)(kREG(32) + 1000);
     this->rotationVec.z += (s16)(kREG(33) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void DemoGj_SpawnSmokePreBattle2(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SpawnSmokePreBattle2(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -119.0f, 1056.0f, -147.0f };
     u32 gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
-        gameplayFrames = globalCtx->gameplayFrames % 3;
+        gameplayFrames = play->gameplayFrames % 3;
 
         if (gameplayFrames == 1) {
-            if (!globalCtx->gameplayFrames) {}
-            DemoGj_SpawnSmoke(globalCtx, &pos, 300.0f);
+            if (!play->gameplayFrames) {}
+            DemoGj_SpawnSmoke(play, &pos, 300.0f);
         }
 
         DemoGj_CheckIfTransformedIntoGanon(this);
     }
 }
 
-void func_8097A320(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097A320(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 9;
         this->drawConfig = 10;
     }
 }
 
-void func_8097A36C(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097A36C(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097A39C
-void DemoGj_Update02(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097A320(this, globalCtx);
+void DemoGj_Update02(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097A320(this, play);
 }
 
 // func_8097A3CC
-void DemoGj_Update09(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A238(this, globalCtx);
-    func_8097A36C(this, globalCtx);
+void DemoGj_Update09(DemoGj* this, PlayState* play) {
+    func_8097A238(this, play);
+    func_8097A36C(this, play);
 }
 
-void DemoGj_DrawRubble3(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble3DL);
+void DemoGj_DrawRubble3(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble3DL);
 }
 
-void DemoGj_DrawRotatedRubble3(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble3DL);
+void DemoGj_DrawRotatedRubble3(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble3DL);
 }
 
-void DemoGj_InitRubblePile3(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 3, 4, &gGanonsCastleRubble4Col);
+void DemoGj_InitRubblePile3(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 3, 4, &gGanonsCastleRubble4Col);
 }
 
-void func_8097A474(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A474(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(44));
     this->rotationVec.y += (s16)(kREG(45) + 1000);
     this->rotationVec.z += (s16)(kREG(46) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void func_8097A4F0(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097A4F0(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 10;
         this->drawConfig = 11;
     }
 }
 
-void func_8097A53C(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097A53C(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097A56C
-void DemoGj_Update03(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097A4F0(this, globalCtx);
+void DemoGj_Update03(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097A4F0(this, play);
 }
 
 // func_8097A59C
-void DemoGj_Update10(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A474(this, globalCtx);
-    func_8097A53C(this, globalCtx);
+void DemoGj_Update10(DemoGj* this, PlayState* play) {
+    func_8097A474(this, play);
+    func_8097A53C(this, play);
 }
 
-void DemoGj_DrawRubble4(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble4DL);
+void DemoGj_DrawRubble4(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble4DL);
 }
 
-void DemoGj_DrawRotatedRubble4(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble4DL);
+void DemoGj_DrawRotatedRubble4(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble4DL);
 }
 
-void DemoGj_InitRubblePile4(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 4, 5, &gGanonsCastleRubble5Col);
+void DemoGj_InitRubblePile4(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 4, 5, &gGanonsCastleRubble5Col);
 }
 
-void func_8097A644(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A644(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(57));
     this->rotationVec.y += (s16)(kREG(58) + 1000);
     this->rotationVec.z += (s16)(kREG(59) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void func_8097A6C0(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097A6C0(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 11;
         this->drawConfig = 12;
     }
 }
 
-void func_8097A70C(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097A70C(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097A73C
-void DemoGj_Update04(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097A6C0(this, globalCtx);
+void DemoGj_Update04(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097A6C0(this, play);
 }
 
 // func_8097A76C
-void DemoGj_Update11(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A644(this, globalCtx);
-    func_8097A70C(this, globalCtx);
+void DemoGj_Update11(DemoGj* this, PlayState* play) {
+    func_8097A644(this, play);
+    func_8097A70C(this, play);
 }
 
-void DemoGj_DrawRubble5(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble5DL);
+void DemoGj_DrawRubble5(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble5DL);
 }
 
-void DemoGj_DrawRotatedRubble5(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble5DL);
+void DemoGj_DrawRotatedRubble5(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble5DL);
 }
 
-void DemoGj_InitRubblePile5(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 5, 6, &gGanonsCastleRubble6Col);
+void DemoGj_InitRubblePile5(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 5, 6, &gGanonsCastleRubble6Col);
 }
 
-void func_8097A814(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A814(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(70));
     this->rotationVec.y += (s16)(kREG(71) + 1000);
     this->rotationVec.z += (s16)(kREG(72) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void func_8097A890(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097A890(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 12;
         this->drawConfig = 13;
     }
 }
 
-void func_8097A8DC(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097A8DC(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097A90C
-void DemoGj_Update05(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097A890(this, globalCtx);
+void DemoGj_Update05(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097A890(this, play);
 }
 
 // func_8097A93C
-void DemoGj_Update12(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A814(this, globalCtx);
-    func_8097A8DC(this, globalCtx);
+void DemoGj_Update12(DemoGj* this, PlayState* play) {
+    func_8097A814(this, play);
+    func_8097A8DC(this, play);
 }
 
-void DemoGj_DrawRubble6(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble6DL);
+void DemoGj_DrawRubble6(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble6DL);
 }
 
-void DemoGj_DrawRotatedRubble6(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble6DL);
+void DemoGj_DrawRotatedRubble6(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble6DL);
 }
 
-void DemoGj_InitRubblePile6(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 6, 7, &gGanonsCastleRubble7Col);
+void DemoGj_InitRubblePile6(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 6, 7, &gGanonsCastleRubble7Col);
 }
 
-void func_8097A9E4(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097A9E4(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(83));
     this->rotationVec.y += (s16)(kREG(84) + 1000);
     this->rotationVec.z += (s16)(kREG(85) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void func_8097AA60(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097AA60(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 13;
         this->drawConfig = 14;
     }
 }
 
-void func_8097AAAC(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097AAAC(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097AADC
-void DemoGj_Update06(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097AA60(this, globalCtx);
+void DemoGj_Update06(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097AA60(this, play);
 }
 
 // func_8097AB0C
-void DemoGj_Update13(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097A9E4(this, globalCtx);
-    func_8097AAAC(this, globalCtx);
+void DemoGj_Update13(DemoGj* this, PlayState* play) {
+    func_8097A9E4(this, play);
+    func_8097AAAC(this, play);
 }
 
-void DemoGj_DrawRubble7(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble7DL);
+void DemoGj_DrawRubble7(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble7DL);
 }
 
-void DemoGj_DrawRotatedRubble7(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubble7DL);
+void DemoGj_DrawRotatedRubble7(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubble7DL);
 }
 
-void DemoGj_InitRubblePile7(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 7, 8, &gGanonsCastleRubbleTallCol);
+void DemoGj_InitRubblePile7(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 7, 8, &gGanonsCastleRubbleTallCol);
 }
 
-void func_8097ABB4(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097ABB4(DemoGj* this, PlayState* play) {
     Actor_MoveForward(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(15));
     this->rotationVec.y += (s16)(kREG(14) + 1000);
     this->rotationVec.z += (s16)(kREG(13) + 3000);
 
-    DemoGj_SetupRotation(this, globalCtx);
+    DemoGj_SetupRotation(this, play);
 }
 
-void DemoGj_SpawnSmokePreBattle3(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SpawnSmokePreBattle3(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -6.0f, 1053.0f, -473.0f };
     u32 gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
-        gameplayFrames = globalCtx->gameplayFrames % 3;
+        gameplayFrames = play->gameplayFrames % 3;
 
         if (gameplayFrames == 2) {
-            if (!globalCtx->gameplayFrames) {}
-            DemoGj_SpawnSmoke(globalCtx, &pos, 300.0f);
+            if (!play->gameplayFrames) {}
+            DemoGj_SpawnSmoke(play, &pos, 300.0f);
         }
 
         DemoGj_CheckIfTransformedIntoGanon(this);
     }
 }
 
-void func_8097AC9C(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfRisingFromRubble(this, globalCtx)) {
-        DemoGj_SetupMovement(this, globalCtx);
+void func_8097AC9C(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfRisingFromRubble(this, play)) {
+        DemoGj_SetupMovement(this, play);
         this->updateMode = 14;
         this->drawConfig = 15;
     }
 }
 
-void func_8097ACE8(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097ACE8(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 // func_8097AD18
-void DemoGj_Update07(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097AC9C(this, globalCtx);
+void DemoGj_Update07(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097AC9C(this, play);
 }
 
 // func_8097AD48
-void DemoGj_Update14(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097ABB4(this, globalCtx);
-    func_8097ACE8(this, globalCtx);
+void DemoGj_Update14(DemoGj* this, PlayState* play) {
+    func_8097ABB4(this, play);
+    func_8097ACE8(this, play);
 }
 
-void DemoGj_DrawRubbleTall(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubbleTallDL);
+void DemoGj_DrawRubbleTall(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubbleTallDL);
 }
 
-void DemoGj_DrawRotatedRubbleTall(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawRotated(this, globalCtx, gGanonsCastleRubbleTallDL);
+void DemoGj_DrawRotatedRubbleTall(DemoGj* this, PlayState* play) {
+    DemoGj_DrawRotated(this, play, gGanonsCastleRubbleTallDL);
 }
 
-void DemoGj_InitRubbleAroundArena(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 0, 1, &gGanonsCastleRubbleAroundArenaCol);
+void DemoGj_InitRubbleAroundArena(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 0, 1, &gGanonsCastleRubbleAroundArenaCol);
 }
 
 // func_8097ADF0
-void DemoGj_UpdateRubbleAroundArena(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    DemoGj_SpawnSmokePreBattle1(this, globalCtx);
-    DemoGj_SpawnSmokePreBattle2(this, globalCtx);
-    DemoGj_SpawnSmokePreBattle3(this, globalCtx);
+void DemoGj_UpdateRubbleAroundArena(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    DemoGj_SpawnSmokePreBattle1(this, play);
+    DemoGj_SpawnSmokePreBattle2(this, play);
+    DemoGj_SpawnSmokePreBattle3(this, play);
 }
 
-void DemoGj_DrawRubbleAroundArena(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubbleAroundArenaDL);
+void DemoGj_DrawRubbleAroundArena(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubbleAroundArenaDL);
 }
 
 // Inits the three cylinders with `sCylinderInit1`
-void DemoGj_InitDestructableRubble1(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 15, 0, NULL);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[0], &sCylinderInit1);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[1], &sCylinderInit1);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[2], &sCylinderInit1);
+void DemoGj_InitDestructableRubble1(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 15, 0, NULL);
+    DemoGj_InitCylinder(this, play, &this->cylinders[0], &sCylinderInit1);
+    DemoGj_InitCylinder(this, play, &this->cylinders[1], &sCylinderInit1);
+    DemoGj_InitCylinder(this, play, &this->cylinders[2], &sCylinderInit1);
 }
 
-void DemoGj_DoNothing1(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DoNothing1(DemoGj* this, PlayState* play) {
 }
 
 /*
  * Moves the ColliderCylinder's relative to the actor's position.
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_1
  */
-void func_8097AEE8(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097AEE8(DemoGj* this, PlayState* play) {
     ColliderCylinder* cylinder0 = &this->cylinders[0];
     ColliderCylinder* cylinder1 = &this->cylinders[1];
     ColliderCylinder* cylinder2 = &this->cylinders[2];
@@ -1004,33 +1004,33 @@ void func_8097AEE8(DemoGj* this, GlobalContext* globalCtx) {
     cylinder2->dim.pos.y = actorPos->y;
 }
 
-void DemoGj_SetCylindersAsAC(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SetCylindersAsAC(DemoGj* this, PlayState* play) {
     s32 pad[2];
     Collider* cylinder0 = &this->cylinders[0].base;
     Collider* cylinder1 = &this->cylinders[1].base;
     Collider* cylinder2 = &this->cylinders[2].base;
     s32 pad2[3];
 
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder0);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder1);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder2);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder0);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder1);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder2);
 }
 
-void DemoGj_DirectedExplosion(DemoGj* this, GlobalContext* globalCtx, Vec3f* direction) {
+void DemoGj_DirectedExplosion(DemoGj* this, PlayState* play, Vec3f* direction) {
     Vec3f pos;
 
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y;
     pos.z = this->dyna.actor.world.pos.z;
 
-    DemoGj_Explode(this, globalCtx, &pos, direction);
+    DemoGj_Explode(this, play, &pos, direction);
 }
 
-void func_8097B128(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097B128(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Vec3f* scale = &this->dyna.actor.scale;
 
-        DemoGj_InitCommon(this, globalCtx, &gGanonsCastleRubble2Col);
+        DemoGj_InitCommon(this, play, &gGanonsCastleRubble2Col);
         this->updateMode = 18;
         this->drawConfig = 16;
         scale->x *= 0.8f;
@@ -1039,14 +1039,14 @@ void func_8097B128(DemoGj* this, GlobalContext* globalCtx) {
     }
 }
 
-s32 DemoGj_HasCylinderAnyExploded(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[0])) {
+s32 DemoGj_HasCylinderAnyExploded(DemoGj* this, PlayState* play) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[0])) {
         return true;
     }
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[1])) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[1])) {
         return true;
     }
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[2])) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[2])) {
         return true;
     }
     return false;
@@ -1057,61 +1057,61 @@ s32 DemoGj_HasCylinderAnyExploded(DemoGj* this, GlobalContext* globalCtx) {
  * Kills the actor if ganon->unk_314==4 (Ganon killed), this rubble was hit by an explosion or killFlag==true
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_1
  */
-void func_8097B22C(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097B22C(DemoGj* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (func_809797E4(this, 4)) {
         Actor_Kill(thisx);
-    } else if (DemoGj_HasCylinderAnyExploded(this, globalCtx)) {
+    } else if (DemoGj_HasCylinderAnyExploded(this, play)) {
         Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedExplosion(this, globalCtx, &vec1);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedExplosion(this, play, &vec1);
 
         Actor_Kill(thisx);
     } else if (this->killFlag) {
         Vec3f vec2 = this->unk_26C;
         vec2.y = 0.0f;
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedExplosion(this, globalCtx, &vec2);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedExplosion(this, play, &vec2);
 
         Actor_Kill(thisx);
     }
 
-    func_8097AEE8(this, globalCtx);
-    DemoGj_SetCylindersAsAC(this, globalCtx);
+    func_8097AEE8(this, play);
+    DemoGj_SetCylindersAsAC(this, play);
 }
 
 // func_8097B340
-void DemoGj_Update15(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097B128(this, globalCtx);
+void DemoGj_Update15(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097B128(this, play);
 }
 
 // func_8097B370
-void DemoGj_Update18(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097B22C(this, globalCtx);
-    DemoGj_DoNothing1(this, globalCtx);
+void DemoGj_Update18(DemoGj* this, PlayState* play) {
+    func_8097B22C(this, play);
+    DemoGj_DoNothing1(this, play);
 }
 
-void DemoGj_DrawDestructableRubble1(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble2DL);
+void DemoGj_DrawDestructableRubble1(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble2DL);
 }
 
 // Inits the three cylinders with `sCylinderInit2`
-void DemoGj_InitDestructableRubble2(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 16, 0, NULL);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[0], &sCylinderInit2);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[1], &sCylinderInit2);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[2], &sCylinderInit2);
+void DemoGj_InitDestructableRubble2(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 16, 0, NULL);
+    DemoGj_InitCylinder(this, play, &this->cylinders[0], &sCylinderInit2);
+    DemoGj_InitCylinder(this, play, &this->cylinders[1], &sCylinderInit2);
+    DemoGj_InitCylinder(this, play, &this->cylinders[2], &sCylinderInit2);
 }
 
-void DemoGj_DoNothing2(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DoNothing2(DemoGj* this, PlayState* play) {
 }
 
 // Moves the ColliderCylinder's relative to the actor's position.
-void func_8097B450(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097B450(DemoGj* this, PlayState* play) {
     ColliderCylinder* cylinder0 = &this->cylinders[0];
     ColliderCylinder* cylinder1 = &this->cylinders[1];
     ColliderCylinder* cylinder2 = &this->cylinders[2];
@@ -1134,47 +1134,47 @@ void func_8097B450(DemoGj* this, GlobalContext* globalCtx) {
     cylinder2->dim.pos.y = actorPos->y;
 }
 
-void DemoGj_SetCylindersAsAC2(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_SetCylindersAsAC2(DemoGj* this, PlayState* play) {
     s32 pad[2];
     Collider* cylinder0 = &this->cylinders[0].base;
     Collider* cylinder1 = &this->cylinders[1].base;
     Collider* cylinder2 = &this->cylinders[2].base;
     s32 pad2[3];
 
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder0);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder1);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, cylinder2);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder0);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder1);
+    CollisionCheck_SetAC(play, &play->colChkCtx, cylinder2);
 }
 
 // Does the same as `DemoGj_HasCylinderAnyExploded`
-s32 DemoGj_HasCylinderAnyExploded2(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[0])) {
+s32 DemoGj_HasCylinderAnyExploded2(DemoGj* this, PlayState* play) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[0])) {
         return true;
     }
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[1])) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[1])) {
         return true;
     }
-    if (DemoGj_HitByExplosion(this, globalCtx, &this->cylinders[2])) {
+    if (DemoGj_HitByExplosion(this, play, &this->cylinders[2])) {
         return true;
     }
     return false;
 }
 
-void DemoGj_DirectedExplosion2(DemoGj* this, GlobalContext* globalCtx, Vec3f* direction) {
+void DemoGj_DirectedExplosion2(DemoGj* this, PlayState* play, Vec3f* direction) {
     Vec3f pos;
 
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y;
     pos.z = this->dyna.actor.world.pos.z;
 
-    DemoGj_Explode(this, globalCtx, &pos, direction);
+    DemoGj_Explode(this, play, &pos, direction);
 }
 
-void func_8097B6C4(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097B6C4(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Vec3f* scale = &this->dyna.actor.scale;
 
-        DemoGj_InitCommon(this, globalCtx, &gGanonsCastleRubble3Col);
+        DemoGj_InitCommon(this, play, &gGanonsCastleRubble3Col);
         this->updateMode = 19;
         this->drawConfig = 17;
         scale->x *= 0.8f;
@@ -1188,76 +1188,76 @@ void func_8097B6C4(DemoGj* this, GlobalContext* globalCtx) {
  * Kills the actor if ganon->unk_314==4 (Ganon killed), this rubble was hit by an explosion or killFlag==true
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_2
  */
-void func_8097B750(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097B750(DemoGj* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (func_809797E4(this, 4)) {
         Actor_Kill(thisx);
-    } else if (DemoGj_HasCylinderAnyExploded2(this, globalCtx)) {
+    } else if (DemoGj_HasCylinderAnyExploded2(this, play)) {
         Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedExplosion2(this, globalCtx, &vec1);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedExplosion2(this, play, &vec1);
 
         Actor_Kill(thisx);
     } else if (this->killFlag) {
         Vec3f vec2 = this->unk_26C;
         vec2.y = 0.0f;
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedExplosion2(this, globalCtx, &vec2);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedExplosion2(this, play, &vec2);
 
         Actor_Kill(thisx);
     }
 
-    func_8097B450(this, globalCtx);
-    DemoGj_SetCylindersAsAC2(this, globalCtx);
+    func_8097B450(this, play);
+    DemoGj_SetCylindersAsAC2(this, play);
 }
 
 // func_8097B864
-void DemoGj_Update16(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097B6C4(this, globalCtx);
+void DemoGj_Update16(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097B6C4(this, play);
 }
 
 // func_8097B894
-void DemoGj_Update19(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097B750(this, globalCtx);
-    DemoGj_DoNothing2(this, globalCtx);
+void DemoGj_Update19(DemoGj* this, PlayState* play) {
+    func_8097B750(this, play);
+    DemoGj_DoNothing2(this, play);
 }
 
-void DemoGj_DemoGj_InitDestructableRubble2(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubble3DL);
+void DemoGj_DemoGj_InitDestructableRubble2(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubble3DL);
 }
 
 // Inits the first cylinder (only that one) with `sCylinderInit3`
-void DemoGj_InitDestructableRubbleTall(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_InitSetIndexes(this, globalCtx, 17, 0, NULL);
-    DemoGj_InitCylinder(this, globalCtx, &this->cylinders[0], &sCylinderInit3);
+void DemoGj_InitDestructableRubbleTall(DemoGj* this, PlayState* play) {
+    DemoGj_InitSetIndexes(this, play, 17, 0, NULL);
+    DemoGj_InitCylinder(this, play, &this->cylinders[0], &sCylinderInit3);
 }
 
-void DemoGj_DoNothing3(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DoNothing3(DemoGj* this, PlayState* play) {
 }
 
-void DemoGj_DirectedDoubleExplosion(DemoGj* this, GlobalContext* globalCtx, Vec3f* direction) {
+void DemoGj_DirectedDoubleExplosion(DemoGj* this, PlayState* play, Vec3f* direction) {
     Vec3f pos;
 
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y;
     pos.z = this->dyna.actor.world.pos.z;
-    DemoGj_Explode(this, globalCtx, &pos, direction);
+    DemoGj_Explode(this, play, &pos, direction);
 
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y + 100.0f;
     pos.z = this->dyna.actor.world.pos.z;
-    DemoGj_Explode(this, globalCtx, &pos, direction);
+    DemoGj_Explode(this, play, &pos, direction);
 }
 
-void func_8097B9BC(DemoGj* this, GlobalContext* globalCtx) {
-    if (DemoGj_IsGanondorfFloatingInAir(this, globalCtx)) {
+void func_8097B9BC(DemoGj* this, PlayState* play) {
+    if (DemoGj_IsGanondorfFloatingInAir(this, play)) {
         Vec3f* scale = &this->dyna.actor.scale;
 
-        DemoGj_InitCommon(this, globalCtx, &gGanonsCastleRubbleTallCol);
+        DemoGj_InitCommon(this, play, &gGanonsCastleRubbleTallCol);
         this->updateMode = 20;
         this->drawConfig = 18;
         scale->x *= 0.8f;
@@ -1271,48 +1271,48 @@ void func_8097B9BC(DemoGj* this, GlobalContext* globalCtx) {
  * Kills the actor if ganon->unk_314==4 (Ganon killed), this rubble was hit by an explosion or killFlag==true
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_TALL
  */
-void func_8097BA48(DemoGj* this, GlobalContext* globalCtx) {
+void func_8097BA48(DemoGj* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
     ColliderCylinder* cylinder = &this->cylinders[0];
     s32 pad[2];
 
     if (func_809797E4(this, 4)) {
         Actor_Kill(thisx);
-    } else if (DemoGj_HitByExplosion(this, globalCtx, cylinder)) {
+    } else if (DemoGj_HitByExplosion(this, play, cylinder)) {
         Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedDoubleExplosion(this, globalCtx, &vec1);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedDoubleExplosion(this, play, &vec1);
 
         Actor_Kill(thisx);
     } else if (this->killFlag) {
         Vec3f vec2 = this->unk_26C;
         vec2.y = 0.0f;
 
-        DemoGj_DropCollectible(this, globalCtx);
-        DemoGj_DirectedDoubleExplosion(this, globalCtx, &vec2);
+        DemoGj_DropCollectible(this, play);
+        DemoGj_DirectedDoubleExplosion(this, play, &vec2);
 
         Actor_Kill(thisx);
     }
 
     Collider_UpdateCylinder(thisx, cylinder);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &cylinder->base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &cylinder->base);
 }
 
 // func_8097BB78
-void DemoGj_Update17(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_FindGanon(this, globalCtx);
-    func_8097B9BC(this, globalCtx);
+void DemoGj_Update17(DemoGj* this, PlayState* play) {
+    DemoGj_FindGanon(this, play);
+    func_8097B9BC(this, play);
 }
 
 // func_8097BBA8
-void DemoGj_Update20(DemoGj* this, GlobalContext* globalCtx) {
-    func_8097BA48(this, globalCtx);
-    DemoGj_DoNothing3(this, globalCtx);
+void DemoGj_Update20(DemoGj* this, PlayState* play) {
+    func_8097BA48(this, play);
+    DemoGj_DoNothing3(this, play);
 }
 
-void DemoGj_DemoGj_InitDestructableRubbleTall(DemoGj* this, GlobalContext* globalCtx) {
-    DemoGj_DrawCommon(this, globalCtx, gGanonsCastleRubbleTallDL);
+void DemoGj_DemoGj_InitDestructableRubbleTall(DemoGj* this, PlayState* play) {
+    DemoGj_DrawCommon(this, play, gGanonsCastleRubbleTallDL);
 }
 
 static DemoGjUpdateFunc sUpdateFuncs[] = {
@@ -1339,7 +1339,7 @@ static DemoGjUpdateFunc sUpdateFuncs[] = {
     DemoGj_Update20,
 };
 
-void DemoGj_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGj_Update(Actor* thisx, PlayState* play) {
     DemoGj* this = (DemoGj*)thisx;
 
     if (this->updateMode < 0 || this->updateMode >= ARRAY_COUNT(sUpdateFuncs) ||
@@ -1349,66 +1349,66 @@ void DemoGj_Update(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    sUpdateFuncs[this->updateMode](this, globalCtx);
+    sUpdateFuncs[this->updateMode](this, play);
 }
 
-void DemoGj_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGj_Init(Actor* thisx, PlayState* play) {
     DemoGj* this = (DemoGj*)thisx;
 
     switch (DemoGj_GetType(this)) {
         case DEMOGJ_TYPE_AROUNDARENA:
-            DemoGj_InitRubbleAroundArena(this, globalCtx);
+            DemoGj_InitRubbleAroundArena(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_1:
-            DemoGj_InitRubblePile1(this, globalCtx);
+            DemoGj_InitRubblePile1(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_2:
-            DemoGj_InitRubblePile2(this, globalCtx);
+            DemoGj_InitRubblePile2(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_3:
-            DemoGj_InitRubblePile3(this, globalCtx);
+            DemoGj_InitRubblePile3(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_4:
-            DemoGj_InitRubblePile4(this, globalCtx);
+            DemoGj_InitRubblePile4(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_5:
-            DemoGj_InitRubblePile5(this, globalCtx);
+            DemoGj_InitRubblePile5(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_6:
-            DemoGj_InitRubblePile6(this, globalCtx);
+            DemoGj_InitRubblePile6(this, play);
             break;
 
         case DEMOGJ_TYPE_RUBBLE_PILE_7:
-            DemoGj_InitRubblePile7(this, globalCtx);
+            DemoGj_InitRubblePile7(this, play);
             break;
 
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_1:
-            DemoGj_InitDestructableRubble1(this, globalCtx);
+            DemoGj_InitDestructableRubble1(this, play);
             break;
 
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_2:
-            DemoGj_InitDestructableRubble2(this, globalCtx);
+            DemoGj_InitDestructableRubble2(this, play);
             break;
 
         case DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_TALL:
-            DemoGj_InitDestructableRubbleTall(this, globalCtx);
+            DemoGj_InitDestructableRubbleTall(this, play);
             break;
 
         default:
             // "Demo_Gj_Actor_ct There is no such argument!!!!!!!!!!!!!!!!!!!!!!"
-            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, globalCtx,
+            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, play,
                          this);
             Actor_Kill(&this->dyna.actor);
     }
 }
 
-void DemoGj_DrawNothing(DemoGj* this, GlobalContext* globalCtx) {
+void DemoGj_DrawNothing(DemoGj* this, PlayState* play) {
 }
 
 static DemoGjDrawFunc sDrawFuncs[] = {
@@ -1433,7 +1433,7 @@ static DemoGjDrawFunc sDrawFuncs[] = {
     DemoGj_DemoGj_InitDestructableRubbleTall,
 };
 
-void DemoGj_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoGj_Draw(Actor* thisx, PlayState* play) {
     DemoGj* this = (DemoGj*)thisx;
 
     if (this->drawConfig < 0 || this->drawConfig >= ARRAY_COUNT(sDrawFuncs) || sDrawFuncs[this->drawConfig] == NULL) {
@@ -1442,7 +1442,7 @@ void DemoGj_Draw(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    sDrawFuncs[this->drawConfig](this, globalCtx);
+    sDrawFuncs[this->drawConfig](this, play);
 }
 
 const ActorInit Demo_Gj_InitVars = {

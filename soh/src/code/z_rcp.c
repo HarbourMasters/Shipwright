@@ -1007,12 +1007,12 @@ void func_80093C14(GraphicsContext* gfxCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093C80(GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void func_80093C80(PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     func_80093D18(gfxCtx);
 
-    if (globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_3) {
+    if (play->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_3) {
         OPEN_DISPS(gfxCtx);
 
         gDPSetColorDither(POLY_OPA_DISP++, G_CD_DISABLE);

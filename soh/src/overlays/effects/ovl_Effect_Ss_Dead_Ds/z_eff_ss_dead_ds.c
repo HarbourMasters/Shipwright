@@ -17,16 +17,16 @@
 #define rAlphaStep regs[10]
 #define rHalfOfLife regs[11]
 
-u32 EffectSsDeadDs_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsDeadDs_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsDeadDs_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsDeadDs_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsDeadDs_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsDeadDs_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Dead_Ds_InitVars = {
     EFFECT_SS_DEAD_DS,
     EffectSsDeadDs_Init,
 };
 
-u32 EffectSsDeadDs_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsDeadDs_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDeadDsInitParams* initParams = (EffectSsDeadDsInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -45,7 +45,7 @@ u32 EffectSsDeadDs_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
     return 1;
 }
 
-void EffectSsDeadDs_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDeadDs_Draw(PlayState* play, u32 index, EffectSs* this) {
     s32 pad;
     f32 scale;
     s32 pad1;
@@ -55,10 +55,10 @@ void EffectSsDeadDs_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Vec3f pos;
     CollisionPoly* floorPoly;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     scale = this->rScale * 0.01f;
-    func_80094BC4(globalCtx->state.gfxCtx);
+    func_80094BC4(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, this->rAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 0);
     pos = this->pos;
@@ -71,12 +71,12 @@ void EffectSsDeadDs_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         sp44.y = pos.y - this->velocity.y;
         sp44.z = pos.z - this->velocity.z;
 
-        if (BgCheck_EntitySphVsWall1(&globalCtx->colCtx, &this->pos, &pos, &sp44, 1.5f, &floorPoly, 1.0f)) {
+        if (BgCheck_EntitySphVsWall1(&play->colCtx, &this->pos, &pos, &sp44, 1.5f, &floorPoly, 1.0f)) {
             func_80038A28(floorPoly, this->pos.x, this->pos.y, this->pos.z, &mf);
             Matrix_Put(&mf);
         } else {
             pos.y++;
-            temp = BgCheck_EntityRaycastFloor1(&globalCtx->colCtx, &floorPoly, &pos);
+            temp = BgCheck_EntityRaycastFloor1(&play->colCtx, &floorPoly, &pos);
 
             if (floorPoly != NULL) {
                 func_80038A28(floorPoly, this->pos.x, temp + 1.5f, this->pos.z, &mf);
@@ -99,16 +99,16 @@ void EffectSsDeadDs_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_RotateZYX(this->rRoll, this->rPitch, this->rYaw, MTXMODE_APPLY);
     Matrix_RotateX(1.57f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetCombineLERP(POLY_XLU_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                       PRIMITIVE, 0);
     gSPDisplayList(POLY_XLU_DISP++, gLensFlareCircleDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EffectSsDeadDs_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDeadDs_Update(PlayState* play, u32 index, EffectSs* this) {
     if (this->life < this->rHalfOfLife) {
 
         this->rScale += this->rScaleStep;

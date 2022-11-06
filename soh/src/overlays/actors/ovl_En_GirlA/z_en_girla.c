@@ -9,66 +9,66 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
-void EnGirlA_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGirlA_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGirlA_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnGirlA_Init(Actor* thisx, PlayState* play);
+void EnGirlA_Destroy(Actor* thisx, PlayState* play);
+void EnGirlA_Update(Actor* thisx, PlayState* play);
 
-void EnGirlA_SetItemOutOfStock(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx);
-void EnGirlA_Update2(EnGirlA* this, GlobalContext* globalCtx);
-void func_80A3C498(Actor* thisx, GlobalContext* globalCtx, s32 flags);
-void EnGirlA_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnGirlA_SetItemOutOfStock(PlayState* play, EnGirlA* this);
+void EnGirlA_UpdateStockedItem(PlayState* play, EnGirlA* this);
+void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play);
+void EnGirlA_Update2(EnGirlA* this, PlayState* play);
+void func_80A3C498(Actor* thisx, PlayState* play, s32 flags);
+void EnGirlA_Draw(Actor* thisx, PlayState* play);
 
-s32 EnGirlA_CanBuy_Arrows(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Bombs(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_DekuNuts(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_DekuSticks(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Fish(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_RedPotion(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_GreenPotion(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_BluePotion(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Longsword(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_HylianShield(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Health(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_MilkBottle(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_WeirdEgg(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Unk19(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Unk20(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Bombchus(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_SoldOut(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_BlueFire(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Bugs(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Poe(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this);
-s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this);
+s32 EnGirlA_CanBuy_Arrows(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Bombs(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_DekuSticks(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Fish(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_RedPotion(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_GreenPotion(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_BluePotion(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Health(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_MilkBottle(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_WeirdEgg(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Unk19(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Unk20(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Bombchus(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_DekuSeeds(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_SoldOut(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_BlueFire(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Bugs(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Poe(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Fairy(PlayState* play, EnGirlA* this);
+s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this);
 
-void EnGirlA_ItemGive_DekuNuts(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Arrows(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Bombs(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_DekuSticks(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Longsword(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_HylianShield(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_DekuShield(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_GoronTunic(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Health(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_MilkBottle(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_WeirdEgg(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Unk19(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Unk20(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_BuyEvent_ShieldDiscount(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_BuyEvent_GoronTunic(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_BuyEvent_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this);
-void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this);
+void EnGirlA_ItemGive_DekuNuts(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Arrows(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Bombs(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_DekuSticks(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_BottledItem(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Longsword(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_HylianShield(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_DekuShield(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_GoronTunic(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_ZoraTunic(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Health(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_MilkBottle(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_WeirdEgg(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Unk19(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Unk20(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_DekuSeeds(PlayState* play, EnGirlA* this);
+void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this);
+void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this);
+void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this);
+void EnGirlA_BuyEvent_GoronTunic(PlayState* play, EnGirlA* this);
+void EnGirlA_BuyEvent_ZoraTunic(PlayState* play, EnGirlA* this);
+void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this);
 
 const ActorInit En_GirlA_InitVars = {
     ACTOR_EN_GIRLA,
@@ -147,15 +147,15 @@ static u16 sMaskShopFreeToBorrowTextIds[5] = { 0x70B6, 0x70B5, 0x70B4, 0x70B7, 0
 typedef struct {
     /* 0x00 */ s16 objID;
     /* 0x02 */ s16 giDrawId;
-    /* 0x04 */ void (*hiliteFunc)(Actor*, GlobalContext*, s32);
+    /* 0x04 */ void (*hiliteFunc)(Actor*, PlayState*, s32);
     /* 0x08 */ s16 price;
     /* 0x0A */ s16 count;
     /* 0x0C */ u16 itemDescTextId;
     /* 0x0C */ u16 itemBuyPromptTextId;
     /* 0x10 */ s32 getItemId;
-    /* 0x14 */ s32 (*canBuyFunc)(GlobalContext*, EnGirlA*);
-    /* 0x18 */ void (*itemGiveFunc)(GlobalContext*, EnGirlA*);
-    /* 0x1C */ void (*buyEventFunc)(GlobalContext*, EnGirlA*);
+    /* 0x14 */ s32 (*canBuyFunc)(PlayState*, EnGirlA*);
+    /* 0x18 */ void (*itemGiveFunc)(PlayState*, EnGirlA*);
+    /* 0x1C */ void (*buyEventFunc)(PlayState*, EnGirlA*);
 } ShopItemEntry; // size = 0x20
 
 static ShopItemEntry shopItemEntries[] = {
@@ -321,7 +321,7 @@ void EnGirlA_SetupAction(EnGirlA* this, EnGirlAActionFunc func) {
     this->actionFunc = func;
 }
 
-s32 EnGirlA_TryChangeShopItem(EnGirlA* this, GlobalContext* globalCtx) {
+s32 EnGirlA_TryChangeShopItem(EnGirlA* this, PlayState* play) {
     switch (this->actor.params) {
         case SI_MILK_BOTTLE:
             if (gSaveContext.itemGetInf[0] & 0x4) {
@@ -378,7 +378,7 @@ s32 EnGirlA_TryChangeShopItem(EnGirlA* this, GlobalContext* globalCtx) {
             }
             break;
         case SI_RANDOMIZED_ITEM: {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
             if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
                 this->actor.params = SI_SOLD_OUT;
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
@@ -396,7 +396,7 @@ s32 EnGirlA_TryChangeShopItem(EnGirlA* this, GlobalContext* globalCtx) {
     return false;
 }
 
-void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
+void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
     s16 params = this->actor.params;
 
     osSyncPrintf("%s(%2d)初期設定\n", sShopItemDescriptions[params], params);
@@ -411,22 +411,22 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
     }
 
     if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
-        this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, shopItemEntries[params].objID);
+        this->objBankIndex = Object_GetIndex(&play->objectCtx, shopItemEntries[params].objID);
     } else {
         s16 objectId = shopItemEntries[params].objID;
 
         if (params == SI_RANDOMIZED_ITEM) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
             objectId = getItemEntry.objectId;
         }
 
         // Weird edge case here, sold out object reports as loaded for Kokiri shop but doesn't render so we force it to load here
-        if (Object_IsLoaded(&globalCtx->objectCtx, objectId) && (params != SI_SOLD_OUT && globalCtx->sceneNum == SCENE_KOKIRI_SHOP)) {
-            this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, objectId);
+        if (Object_IsLoaded(&play->objectCtx, objectId) && (params != SI_SOLD_OUT && play->sceneNum == SCENE_KOKIRI_SHOP)) {
+            this->objBankIndex = Object_GetIndex(&play->objectCtx, objectId);
         } else {
-            this->objBankIndex = Object_Spawn(&globalCtx->objectCtx, objectId);
+            this->objBankIndex = Object_Spawn(&play->objectCtx, objectId);
         }
     }
 
@@ -443,23 +443,23 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
     this->actionFunc2 = EnGirlA_InitializeItemAction;
 }
 
-void EnGirlA_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnGirlA_Init(Actor* thisx, PlayState* play) {
     EnGirlA* this = (EnGirlA*)thisx;
 
-    EnGirlA_TryChangeShopItem(this, globalCtx);
-    EnGirlA_InitItem(this, globalCtx);
+    EnGirlA_TryChangeShopItem(this, play);
+    EnGirlA_InitItem(this, play);
     osSyncPrintf("%s(%2d)初期設定\n", sShopItemDescriptions[this->actor.params], this->actor.params);
 }
 
-void EnGirlA_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGirlA_Destroy(Actor* thisx, PlayState* play) {
     EnGirlA* this = (EnGirlA*)thisx;
 
     if (this->isInitialized) {
-        SkelAnime_Free(&this->skelAnime, globalCtx);
+        SkelAnime_Free(&this->skelAnime, play);
     }
 }
 
-s32 EnGirlA_CanBuy_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Arrows(PlayState* play, EnGirlA* this) {
     if (Item_CheckObtainability(ITEM_BOW) == ITEM_NONE) {
         return CANBUY_RESULT_CANT_GET_NOW_5;
     }
@@ -472,7 +472,7 @@ s32 EnGirlA_CanBuy_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Bombs(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Bombs(PlayState* play, EnGirlA* this) {
     if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -485,7 +485,7 @@ s32 EnGirlA_CanBuy_Bombs(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_DekuNuts(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this) {
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -498,7 +498,7 @@ s32 EnGirlA_CanBuy_DekuNuts(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_DekuSticks(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_DekuSticks(PlayState* play, EnGirlA* this) {
     if ((CUR_CAPACITY(UPG_STICKS) != 0) && (AMMO(ITEM_STICK) >= CUR_CAPACITY(UPG_STICKS))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -511,7 +511,7 @@ s32 EnGirlA_CanBuy_DekuSticks(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Fish(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Fish(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -524,7 +524,7 @@ s32 EnGirlA_CanBuy_Fish(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_RedPotion(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_RedPotion(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -537,7 +537,7 @@ s32 EnGirlA_CanBuy_RedPotion(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_GreenPotion(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_GreenPotion(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -550,7 +550,7 @@ s32 EnGirlA_CanBuy_GreenPotion(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_BluePotion(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_BluePotion(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -563,7 +563,7 @@ s32 EnGirlA_CanBuy_BluePotion(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Longsword(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this) {
     if ((gBitFlags[2] & gSaveContext.inventory.equipment) && !(gBitFlags[3] & gSaveContext.inventory.equipment)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -576,7 +576,7 @@ s32 EnGirlA_CanBuy_Longsword(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_HylianShield(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
     if (gBitFlags[5] & gSaveContext.inventory.equipment) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -589,7 +589,7 @@ s32 EnGirlA_CanBuy_HylianShield(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
     if (gBitFlags[4] & gSaveContext.inventory.equipment) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -602,7 +602,7 @@ s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -618,7 +618,7 @@ s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD && (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHOPSANITY))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -634,7 +634,7 @@ s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Health(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Health(PlayState* play, EnGirlA* this) {
     if (gSaveContext.healthCapacity == gSaveContext.health) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -644,7 +644,7 @@ s32 EnGirlA_CanBuy_Health(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_MilkBottle(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_MilkBottle(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
@@ -654,7 +654,7 @@ s32 EnGirlA_CanBuy_MilkBottle(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_WeirdEgg(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_WeirdEgg(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
@@ -664,15 +664,15 @@ s32 EnGirlA_CanBuy_WeirdEgg(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Unk19(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Unk19(PlayState* play, EnGirlA* this) {
     return CANBUY_RESULT_NEED_RUPEES;
 }
 
-s32 EnGirlA_CanBuy_Unk20(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Unk20(PlayState* play, EnGirlA* this) {
     return CANBUY_RESULT_NEED_RUPEES;
 }
 
-s32 EnGirlA_CanBuy_Bombchus(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Bombchus(PlayState* play, EnGirlA* this) {
     // When in rando, don't allow buying bombchus when the player doesn't have required explosives
     // If bombchus are in logic, the player needs to have bombchus; otherwise they need a bomb bag
     if (gSaveContext.n64ddFlag) {
@@ -694,7 +694,7 @@ s32 EnGirlA_CanBuy_Bombchus(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_DekuSeeds(PlayState* play, EnGirlA* this) {
     if (AMMO(ITEM_SLINGSHOT) >= CUR_CAPACITY(UPG_BULLET_BAG)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -707,11 +707,11 @@ s32 EnGirlA_CanBuy_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_SoldOut(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_SoldOut(PlayState* play, EnGirlA* this) {
     return CANBUY_RESULT_CANT_GET_NOW_5;
 }
 
-s32 EnGirlA_CanBuy_BlueFire(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_BlueFire(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -724,7 +724,7 @@ s32 EnGirlA_CanBuy_BlueFire(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Bugs(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Bugs(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -737,7 +737,7 @@ s32 EnGirlA_CanBuy_Bugs(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Poe(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Poe(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -750,7 +750,7 @@ s32 EnGirlA_CanBuy_Poe(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
+s32 EnGirlA_CanBuy_Fairy(PlayState* play, EnGirlA* this) {
     if (!Inventory_HasEmptyBottle()) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
@@ -763,8 +763,8 @@ s32 EnGirlA_CanBuy_Fairy(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS;
 }
 
-s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
     ItemObtainability itemObtainability = Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
 
@@ -791,128 +791,128 @@ s32 EnGirlA_CanBuy_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
     return CANBUY_RESULT_SUCCESS_FANFARE;
 }
 
-void EnGirlA_ItemGive_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_Arrows(PlayState* play, EnGirlA* this) {
     Inventory_ChangeAmmo(ITEM_BOW, this->itemCount);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_Bombs(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_Bombs(PlayState* play, EnGirlA* this) {
     switch (this->itemCount) {
         case 5:
-            Item_Give(globalCtx, ITEM_BOMBS_5);
+            Item_Give(play, ITEM_BOMBS_5);
             break;
         case 10:
-            Item_Give(globalCtx, ITEM_BOMBS_10);
+            Item_Give(play, ITEM_BOMBS_10);
             break;
         case 20:
-            Item_Give(globalCtx, ITEM_BOMBS_20);
+            Item_Give(play, ITEM_BOMBS_20);
             break;
         case 30:
-            Item_Give(globalCtx, ITEM_BOMBS_30);
+            Item_Give(play, ITEM_BOMBS_30);
             break;
     }
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_DekuNuts(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_DekuNuts(PlayState* play, EnGirlA* this) {
     switch (this->itemCount) {
         case 5:
-            Item_Give(globalCtx, ITEM_NUTS_5);
+            Item_Give(play, ITEM_NUTS_5);
             break;
         case 10:
-            Item_Give(globalCtx, ITEM_NUTS_10);
+            Item_Give(play, ITEM_NUTS_10);
             break;
     }
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_DekuSticks(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_STICK);
+void EnGirlA_ItemGive_DekuSticks(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_STICK);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_Longsword(GlobalContext* globalCtx, EnGirlA* this) {
-    func_800849EC(globalCtx);
+void EnGirlA_ItemGive_Longsword(PlayState* play, EnGirlA* this) {
+    func_800849EC(play);
     gSaveContext.swordHealth = 8;
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_HylianShield(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_SHIELD_HYLIAN);
+void EnGirlA_ItemGive_HylianShield(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_SHIELD_HYLIAN);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_SHIELD_DEKU);
+void EnGirlA_ItemGive_DekuShield(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_SHIELD_DEKU);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_TUNIC_GORON);
+void EnGirlA_ItemGive_GoronTunic(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_TUNIC_GORON);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_TUNIC_ZORA);
+void EnGirlA_ItemGive_ZoraTunic(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_TUNIC_ZORA);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_Health(GlobalContext* globalCtx, EnGirlA* this) {
-    Health_ChangeBy(globalCtx, this->itemCount);
+void EnGirlA_ItemGive_Health(PlayState* play, EnGirlA* this) {
+    Health_ChangeBy(play, this->itemCount);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_MilkBottle(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_MILK_BOTTLE);
+void EnGirlA_ItemGive_MilkBottle(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_MILK_BOTTLE);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_WeirdEgg(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_WEIRD_EGG);
+void EnGirlA_ItemGive_WeirdEgg(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_WEIRD_EGG);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_Unk19(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_Unk19(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_Unk20(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_Unk20(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this) {
-    Item_Give(globalCtx, ITEM_SEEDS_30);
+void EnGirlA_ItemGive_DekuSeeds(PlayState* play, EnGirlA* this) {
+    Item_Give(play, ITEM_SEEDS_30);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_ItemGive_BottledItem(PlayState* play, EnGirlA* this) {
     switch (this->actor.params) {
         case SI_FISH:
-            Item_Give(globalCtx, ITEM_FISH);
+            Item_Give(play, ITEM_FISH);
             break;
         case SI_RED_POTION_R30:
-            Item_Give(globalCtx, ITEM_POTION_RED);
+            Item_Give(play, ITEM_POTION_RED);
             break;
         case SI_GREEN_POTION:
-            Item_Give(globalCtx, ITEM_POTION_GREEN);
+            Item_Give(play, ITEM_POTION_GREEN);
             break;
         case SI_BLUE_POTION:
-            Item_Give(globalCtx, ITEM_POTION_BLUE);
+            Item_Give(play, ITEM_POTION_BLUE);
             break;
         case SI_BLUE_FIRE:
-            Item_Give(globalCtx, ITEM_BLUE_FIRE);
+            Item_Give(play, ITEM_BLUE_FIRE);
             break;
         case SI_BUGS:
-            Item_Give(globalCtx, ITEM_BUG);
+            Item_Give(play, ITEM_BUG);
             break;
         case SI_BIG_POE:
-            Item_Give(globalCtx, ITEM_BIG_POE);
+            Item_Give(play, ITEM_BIG_POE);
             break;
         case SI_POE:
-            Item_Give(globalCtx, ITEM_POE);
+            Item_Give(play, ITEM_POE);
             break;
         case SI_FAIRY:
-            Item_Give(globalCtx, ITEM_FAIRY);
+            Item_Give(play, ITEM_FAIRY);
             break;
     }
     Rupees_ChangeBy(-this->basePrice);
@@ -920,9 +920,9 @@ void EnGirlA_ItemGive_BottledItem(GlobalContext* globalCtx, EnGirlA* this) {
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS
 // The giving of the item is handled here, and no fanfare is played
-void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    Player* player = GET_PLAYER(globalCtx);
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
+    Player* player = GET_PLAYER(play);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     if (getItemEntry.modIndex == MOD_NONE) {
@@ -930,16 +930,16 @@ void EnGirlA_ItemGive_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        Item_Give(globalCtx, getItemEntry.itemId);
+        Item_Give(play, getItemEntry.itemId);
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
-        Randomizer_Item_Give(globalCtx, getItemEntry);
+        Randomizer_Item_Give(play, getItemEntry);
     }
 
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_BuyEvent_ShieldDiscount(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this) {
     if (this->actor.params == SI_HYLIAN_SHIELD) {
         if (gSaveContext.infTable[7] & 0x40) {
             Rupees_ChangeBy(-(this->basePrice - sShieldDiscounts[(s32)Rand_ZeroFloat(7.9f)]));
@@ -949,15 +949,15 @@ void EnGirlA_BuyEvent_ShieldDiscount(GlobalContext* globalCtx, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_BuyEvent_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_BuyEvent_GoronTunic(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_BuyEvent_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_BuyEvent_ZoraTunic(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
@@ -996,16 +996,16 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(GlobalContext* globalCtx, EnGirlA* this)
 
 // This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS_FANFARE
 // The giving of the item is handled in ossan.c, and a fanfare is played
-void EnGirlA_BuyEvent_Randomizer(GlobalContext* globalCtx, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this) {
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
 
-void EnGirlA_Noop(EnGirlA* this, GlobalContext* globalCtx) {
+void EnGirlA_Noop(EnGirlA* this, PlayState* play) {
 }
 
-void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_SetItemDescription(PlayState* play, EnGirlA* this) {
     ShopItemEntry* tmp = &shopItemEntries[this->actor.params];
     s32 params = this->actor.params;
     s32 maskId;
@@ -1051,7 +1051,7 @@ void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
     }
 
     if (params == SI_RANDOMIZED_ITEM) {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
         this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
     }
 
@@ -1059,7 +1059,7 @@ void EnGirlA_SetItemDescription(GlobalContext* globalCtx, EnGirlA* this) {
     this->actor.draw = EnGirlA_Draw;
 }
 
-void EnGirlA_SetItemOutOfStock(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_SetItemOutOfStock(PlayState* play, EnGirlA* this) {
     this->isInvisible = true;
     this->actor.draw = NULL;
     if (((this->actor.params >= SI_KEATON_MASK) && (this->actor.params <= SI_GERUDO_MASK)) || this->actor.params == SI_RANDOMIZED_ITEM) {
@@ -1067,15 +1067,15 @@ void EnGirlA_SetItemOutOfStock(GlobalContext* globalCtx, EnGirlA* this) {
     }
 }
 
-void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this) {
+void EnGirlA_UpdateStockedItem(PlayState* play, EnGirlA* this) {
     ShopItemEntry* itemEntry;
 
-    if (EnGirlA_TryChangeShopItem(this, globalCtx)) {
-        EnGirlA_InitItem(this, globalCtx);
+    if (EnGirlA_TryChangeShopItem(this, play)) {
+        EnGirlA_InitItem(this, play);
         itemEntry = &shopItemEntries[this->actor.params];
 
         if (this->actor.params == SI_RANDOMIZED_ITEM) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
             this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
         } else {
             this->actor.textId = itemEntry->itemDescTextId;
@@ -1086,26 +1086,26 @@ void EnGirlA_UpdateStockedItem(GlobalContext* globalCtx, EnGirlA* this) {
     }
 }
 
-s32 EnGirlA_TrySetMaskItemDescription(EnGirlA* this, GlobalContext* globalCtx) {
+s32 EnGirlA_TrySetMaskItemDescription(EnGirlA* this, PlayState* play) {
     s32 params;
 
     if ((this->actor.params >= SI_KEATON_MASK) && (this->actor.params <= SI_GERUDO_MASK)) {
         params = this->actor.params - SI_KEATON_MASK;
         if (INV_CONTENT(ITEM_TRADE_CHILD) == sMaskShopItems[params]) {
-            EnGirlA_SetItemOutOfStock(globalCtx, this);
+            EnGirlA_SetItemOutOfStock(play, this);
         } else {
-            EnGirlA_SetItemDescription(globalCtx, this);
+            EnGirlA_SetItemDescription(play, this);
         }
         return true;
     }
     return false;
 }
 
-void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
+void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
     s16 params = this->actor.params;
     ShopItemEntry* itemEntry = &shopItemEntries[params];
 
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->objBankIndex)) {
+    if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.flags &= ~ACTOR_FLAG_4;
         this->actor.objBankIndex = this->objBankIndex;
         switch (this->actor.params) {
@@ -1167,8 +1167,8 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
         }
-        if (!EnGirlA_TrySetMaskItemDescription(this, globalCtx)) {
-            EnGirlA_SetItemDescription(globalCtx, this);
+        if (!EnGirlA_TrySetMaskItemDescription(this, play)) {
+            EnGirlA_SetItemDescription(play, this);
         }
 
         this->setOutOfStockFunc = EnGirlA_SetItemOutOfStock;
@@ -1202,7 +1202,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
         this->yRotationInit = this->actor.shape.rot.y;
 
         if (params == SI_RANDOMIZED_ITEM) {
-            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+            ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
             this->itemBuyPromptTextId = 0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
@@ -1218,12 +1218,12 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGirlA_Update2(EnGirlA* this, GlobalContext* globalCtx) {
+void EnGirlA_Update2(EnGirlA* this, PlayState* play) {
     Actor_SetScale(&this->actor, 0.25f);
     this->actor.shape.yOffset = 24.0f;
     this->actor.shape.shadowScale = 4.0f;
-    EnGirlA_TrySetMaskItemDescription(this, globalCtx);
-    this->actionFunc(this, globalCtx);
+    EnGirlA_TrySetMaskItemDescription(this, play);
+    this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 5.0f);
     this->actor.shape.rot.x = 0.0f;
     if (this->actor.params != SI_SOLD_OUT) {
@@ -1235,33 +1235,33 @@ void EnGirlA_Update2(EnGirlA* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGirlA_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnGirlA_Update(Actor* thisx, PlayState* play) {
     EnGirlA* this = (EnGirlA*)thisx;
 
-    this->actionFunc2(this, globalCtx);
+    this->actionFunc2(this, play);
 }
 
-void func_80A3C498(Actor* thisx, GlobalContext* globalCtx, s32 flags) {
-    func_8002EBCC(thisx, globalCtx, 0);
-    func_8002ED80(thisx, globalCtx, 0);
+void func_80A3C498(Actor* thisx, PlayState* play, s32 flags) {
+    func_8002EBCC(thisx, play, 0);
+    func_8002ED80(thisx, play, 0);
 }
 
-void EnGirlA_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnGirlA_Draw(Actor* thisx, PlayState* play) {
     EnGirlA* this = (EnGirlA*)thisx;
 
     Matrix_RotateY(((this->yRotation * 360.0f) / 65536.0f) * (M_PI / 180.0f), MTXMODE_APPLY);
     if (this->hiliteFunc != NULL) {
-        this->hiliteFunc(thisx, globalCtx, 0);
+        this->hiliteFunc(thisx, play, 0);
     }
 
     if (this->actor.params == SI_RANDOMIZED_ITEM) {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(globalCtx->sceneNum, this->randoSlotIndex);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
-        EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemEntry);
-        GetItemEntry_Draw(globalCtx, getItemEntry);
+        EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);
+        GetItemEntry_Draw(play, getItemEntry);
         return;
     }
 
-    GetItem_Draw(globalCtx, this->giDrawId);
+    GetItem_Draw(play, this->giDrawId);
 }

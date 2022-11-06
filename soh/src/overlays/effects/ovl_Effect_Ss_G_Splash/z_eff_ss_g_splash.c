@@ -11,16 +11,16 @@
 // this ends up having no effect because the texture provided does not use segment 6
 #define rType regs[11]
 
-u32 EffectSsGSplash_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParams);
-void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsGSplash_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsGSplash_Init(PlayState* play, u32 index, EffectSs* this, void* initParams);
+void EffectSsGSplash_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsGSplash_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_G_Splash_InitVars = {
     EFFECT_SS_G_SPLASH,
     EffectSsGSplash_Init,
 };
 
-u32 EffectSsGSplash_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsGSplash_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGSplashInitParams* initParams = (EffectSsGSplashInitParams*)initParamsx;
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
@@ -89,7 +89,7 @@ u32 EffectSsGSplash_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, vo
     return 1;
 }
 
-void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGSplash_Draw(PlayState* play, u32 index, EffectSs* this) {
     static void* waterSplashTextures[] = {
         gEffWaterSplash1Tex, gEffWaterSplash2Tex, gEffWaterSplash3Tex, gEffWaterSplash4Tex,
         gEffWaterSplash5Tex, gEffWaterSplash6Tex, gEffWaterSplash7Tex, gEffWaterSplash8Tex,
@@ -102,7 +102,7 @@ void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
             if (texIdx > 7) {
                 texIdx = 7;
             }
-            EffectSs_DrawGEffect(globalCtx, this, waterSplashTextures[texIdx]);
+            EffectSs_DrawGEffect(play, this, waterSplashTextures[texIdx]);
             break;
 
         case 1:
@@ -110,7 +110,7 @@ void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
             if (texIdx > 7) {
                 texIdx = 7;
             }
-            EffectSs_DrawGEffect(globalCtx, this, waterSplashTextures[texIdx]);
+            EffectSs_DrawGEffect(play, this, waterSplashTextures[texIdx]);
             break;
 
         case 2:
@@ -118,7 +118,7 @@ void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
             if (texIdx > 7) {
                 texIdx = 7;
             }
-            EffectSs_DrawGEffect(globalCtx, this, waterSplashTextures[texIdx]);
+            EffectSs_DrawGEffect(play, this, waterSplashTextures[texIdx]);
             break;
 
         default:
@@ -126,13 +126,13 @@ void EffectSsGSplash_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     }
 }
 
-void EffectSsGSplash_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGSplash_Update(PlayState* play, u32 index, EffectSs* this) {
     Vec3f newSplashPos;
 
     if ((this->rType == 1) && (this->life == 5)) {
         newSplashPos = this->pos;
         newSplashPos.y += ((this->rgScale * 20) * 0.002f);
-        EffectSsGSplash_Spawn(globalCtx, &newSplashPos, 0, 0, 2, this->rgScale / 2);
+        EffectSsGSplash_Spawn(play, &newSplashPos, 0, 0, 2, this->rgScale / 2);
     }
 
     this->rgTexIdx += this->rgTexIdxStep;

@@ -6,7 +6,7 @@
 
 struct EnWonderItem;
 
-typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, GlobalContext*);
+typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, PlayState*);
 
 typedef struct EnWonderItem {
     /* 0x0000 */ Actor actor;

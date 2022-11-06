@@ -6,7 +6,7 @@
 
 struct EnWeatherTag;
 
-typedef void (*EnWeatherTagActionFunc)(struct EnWeatherTag*, GlobalContext*);
+typedef void (*EnWeatherTagActionFunc)(struct EnWeatherTag*, PlayState*);
 
 typedef struct EnWeatherTag {
     /* 0x0000 */ Actor actor;

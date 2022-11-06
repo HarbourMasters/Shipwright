@@ -469,8 +469,8 @@ static void RunFrame()
         // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
         // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
         if (!hasSetupSkybox) {
-            GlobalContext* globalCtx = (GlobalContext*)runFrameContext.gameState;
-            Skybox_Setup(globalCtx, &globalCtx->skyboxCtx, SKYBOX_NORMAL_SKY);
+            PlayState* play = (PlayState*)runFrameContext.gameState;
+            Skybox_Setup(play, &play->skyboxCtx, SKYBOX_NORMAL_SKY);
             hasSetupSkybox = true;
         }
 
