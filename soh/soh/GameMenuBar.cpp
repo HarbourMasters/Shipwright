@@ -1603,9 +1603,11 @@ namespace GameMenuBar {
             } else {
                 CrowdControl::Instance->Disable();
             }
+
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
         #endif
 
-            UIWidgets::PaddedEnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies", true, false);
+            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
             UIWidgets::Tooltip(
                 "Randomizes regular enemy spawns everytime they're spawned.\n\n"
                 "WARNING: Potential to softlock rooms because you don't have the equipment to kill them. You can reload the room to get a new set of enemies to spawn."
