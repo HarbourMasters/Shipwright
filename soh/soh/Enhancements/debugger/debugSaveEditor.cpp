@@ -516,6 +516,75 @@ void DrawInfoTab() {
     
     if (ImGui::TreeNode("Minigames")) {
         for (int i = 0; i < 7; i++) {
+            if(i == 2 && ImGui::TreeNode("Fishing") ){ //fishing has a few more flags to it
+                u8 fishSize = gSaveContext.highScores[i] & 0x7F;
+                if(ImGui::InputScalar("Child Size Record",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0x7F;
+                    gSaveContext.highScores[i]|=fishSize & 0x7F;
+                }
+                char fishMsg[64];
+                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                UIWidgets::InsertHelpHoverText(fishMsg);
+                bool FishBool = gSaveContext.highScores[i]&0x80;
+                if (ImGui::Checkbox("Cheated as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x80;
+                        gSaveContext.highScores[i] |= (0x80 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
+                fishSize=(gSaveContext.highScores[i] & 0x7F000000)>>0x18;
+                if(ImGui::InputScalar("Adult Size Record",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0x7F000000;
+                    gSaveContext.highScores[i]|=(fishSize & 0x7F) << 0x18;
+                }
+                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                UIWidgets::InsertHelpHoverText(fishMsg);
+                FishBool = gSaveContext.highScores[i] & 0x80000000;
+                if (ImGui::Checkbox("Cheated as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x80000000;
+                        gSaveContext.highScores[i] |= (0x80000000 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
+                FishBool = gSaveContext.highScores[i]&0x100;
+                if (ImGui::Checkbox("Played as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x100;
+                        gSaveContext.highScores[i] |= (0x100 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Played at least one game as a child");
+                FishBool = gSaveContext.highScores[i]&0x200;
+                if (ImGui::Checkbox("Played as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x200;
+                        gSaveContext.highScores[i] |= (0x200 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Played at least one game as an adult");
+                FishBool = gSaveContext.highScores[i]&0x400;
+                if (ImGui::Checkbox("Got Prize as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x400;
+                        gSaveContext.highScores[i] |= (0x400 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link.");
+                FishBool = gSaveContext.highScores[i]&0x800;
+                if (ImGui::Checkbox("Got Prize as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x800;
+                        gSaveContext.highScores[i] |= (0x800 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link.");
+                FishBool = gSaveContext.highScores[i] & 0x1000;
+                if (ImGui::Checkbox("Stole Owner's Hat", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x1000;
+                        gSaveContext.highScores[i] |= (0x1000 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("The owner's now visibly bald when Adult Link.");
+                fishSize=(gSaveContext.highScores[i] & 0xFF0000)>>16;
+                if(ImGui::InputScalar("Times Played",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0xFF0000;
+                    gSaveContext.highScores[i]|=(fishSize) << 16;
+                }
+                UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
+                
+                ImGui::TreePop();
+                continue;
+            }
+            
             if (i == 5) { //HS_UNK_05 is unused
                 continue;
             }

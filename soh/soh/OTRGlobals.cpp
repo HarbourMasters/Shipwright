@@ -451,12 +451,15 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->InitCrowdControl();
+    CrowdControl::Instance->Init();
 #endif
 }
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Shutdown();
+#endif
 }
 
 #ifdef _WIN32

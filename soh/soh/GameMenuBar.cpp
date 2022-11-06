@@ -28,6 +28,10 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+#endif
+
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     UIWidgets::Spacer(3.0f); \
@@ -1590,8 +1594,16 @@ namespace GameMenuBar {
 
             UIWidgets::PaddedSeparator();
 
+        #ifdef ENABLE_CROWD_CONTROL
             UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
             UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
+
+            if (CVar_GetS32("gCrowdControl", 0)) {
+                CrowdControl::Instance->Enable();
+            } else {
+                CrowdControl::Instance->Disable();
+            }
+        #endif
 
             UIWidgets::PaddedEnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies", true, false);
             UIWidgets::Tooltip(
