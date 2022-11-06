@@ -112,11 +112,11 @@ void CrowdControl::ListenToServer() {
             }
         }
 
+        auto socketSet = SDLNet_AllocSocketSet(1);
+        SDLNet_TCP_AddSocket(socketSet, tcpsock);
+
         // Listen to socket messages
         while (connected && tcpsock && isEnabled) {
-            auto socketSet = SDLNet_AllocSocketSet(1);
-            SDLNet_TCP_AddSocket(socketSet, tcpsock);
-
             // we check first if socket has data, to not block in the TCP_Recv
             int socketsReady = SDLNet_CheckSockets(socketSet, 0);
 
@@ -135,43 +135,44 @@ void CrowdControl::ListenToServer() {
                 break;
             }
 
-            try {
-                Effect* incomingEffect = ParseMessage(received);
+            Effect* incomingEffect = ParseMessage(received);
+            if (!incomingEffect) {
+                continue;
+            }
 
-                // If effect is a one off run, let's execute
-                if (!incomingEffect->timeRemaining) {
-                    EffectResult result =
-                        ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, false);
-                    EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-                } else {
-                    // check if a conflicting event is already active
-                    bool isConflictingEffectActive = false;
-                    for (Effect* pack : activeEffects) {
-                        if (pack != incomingEffect && pack->category == incomingEffect->category &&
-                            pack->id < incomingEffect->id) {
-                            isConflictingEffectActive = true;
-                            EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining,
-                                        EffectResult::Retry);
+            // If effect is a one off run, let's execute
+            if (!incomingEffect->timeRemaining) {
+                EffectResult result =
+                ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, false);
+                EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
+            } else {
+                // check if a conflicting event is already active
+                bool isConflictingEffectActive = false;
+                for (Effect* pack : activeEffects) {
+                    if (pack != incomingEffect && pack->category == incomingEffect->category &&
+                        pack->id < incomingEffect->id) {
+                        isConflictingEffectActive = true;
+                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining,
+                                    EffectResult::Retry);
 
-                            break;
-                        }
-                    }
-
-                    // check if effect can be executed
-                    EffectResult result =
-                        ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, true);
-                    if (result == EffectResult::Retry || result == EffectResult::Failure) {
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-                        continue;
-                    }
-
-                    if (!isConflictingEffectActive) {
-                        activeEffectsMutex.lock();
-                        activeEffects.push_back(incomingEffect);
-                        activeEffectsMutex.unlock();
+                        break;
                     }
                 }
-            } catch (nlohmann::json::parse_error& e) { SPDLOG_ERROR("Error parsing JSON: {}", e.what()); }
+
+                // check if effect can be executed
+                EffectResult result =
+                ExecuteEffect(incomingEffect->type.c_str(), incomingEffect->value, true);
+                if (result == EffectResult::Retry || result == EffectResult::Failure) {
+                    EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
+                    continue;
+                }
+
+                if (!isConflictingEffectActive) {
+                    activeEffectsMutex.lock();
+                    activeEffects.push_back(incomingEffect);
+                    activeEffectsMutex.unlock();
+                }
+            }
         }
 
         if (connected) {
@@ -247,9 +248,13 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
 }
 
 CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
-    nlohmann::json dataReceived = nlohmann::json::parse(payload);
-    Effect* effect = new Effect();
+    nlohmann::json dataReceived = nlohmann::json::parse(payload, nullptr, false);
+    if (dataReceived.is_discarded()) {
+        SPDLOG_ERROR("Error parsing JSON");
+        return nullptr;
+    }
 
+    Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
     auto parameters = dataReceived["parameters"];
@@ -257,7 +262,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->value = dataReceived["parameters"][0];
     }
     effect->type = dataReceived["code"].get<std::string>();
-
 
     if (effect->type == EFFECT_HIGH_GRAVITY || effect->type == EFFECT_LOW_GRAVITY) {
         effect->category = "gravity";
