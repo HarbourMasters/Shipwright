@@ -212,23 +212,13 @@ void SaveManager::SaveRandomizer() {
 
     if(!gSaveContext.n64ddFlag) return;
 
-/*<<<<<<< HEAD
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
-        SaveManager::Instance->SaveStruct("get" + std::to_string(i), [&]() {
-=======*/
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-//>>>>>>> mouse
             SaveManager::Instance->SaveData("rgID", gSaveContext.itemLocations[i].get.rgID);
             SaveManager::Instance->SaveData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
             SaveManager::Instance->SaveData("trickName", gSaveContext.itemLocations[i].get.trickName);
         });
-/*<<<<<<< HEAD
-        SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
-    }
-=======*/
     });
-//>>>>>>> mouse
 
     SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {

@@ -98,7 +98,7 @@ void EnBoom_Init(Actor* thisx, PlayState* play) {
 
     EnBoom_SetupAction(this, EnBoom_Fly);
 
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     if(player->boomSpawnGrab){
         this->grabbed = player->boomSpawnGrab;
     }

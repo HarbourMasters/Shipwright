@@ -18,7 +18,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 }

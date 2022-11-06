@@ -108,7 +108,7 @@ void Controller_UnblockGameInput();
 void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
-u8 GetNextChildTradeItem(GlobalContext* globalCtx, u8 forward);
+u8 GetNextChildTradeItem(PlayState* play, u8 forward);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
 void Randomizer_LoadSettings(const char* spoilerFileName);
