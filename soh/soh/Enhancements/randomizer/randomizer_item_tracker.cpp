@@ -677,7 +677,10 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
             return GET_GS_FLAGS(scene) & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
-            return gSaveContext.infTable[scene] & (0x01 << flag);
+            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
+            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
+            mask = 0x8000 >> shift;
+            return gSaveContext.infTable[scene] & mask;
         case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
             // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
             shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
