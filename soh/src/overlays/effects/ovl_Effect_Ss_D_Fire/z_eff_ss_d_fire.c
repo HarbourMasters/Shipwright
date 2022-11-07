@@ -18,18 +18,18 @@
 #define rObjBankIdx regs[10]
 #define rYAccelStep regs[11] // has no effect due to how it's implemented
 
-u32 EffectSsDFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsDFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsDFire_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsDFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsDFire_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsDFire_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_D_Fire_InitVars = {
     EFFECT_SS_D_FIRE,
     EffectSsDFire_Init,
 };
 
-u32 EffectSsDFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsDFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDFireInitParams* initParams = (EffectSsDFireInitParams*)initParamsx;
-    s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_DODONGO);
+    s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_DODONGO);
 
     if (objBankIndex >= 0) {
         this->pos = initParams->pos;
@@ -43,7 +43,7 @@ u32 EffectSsDFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
         this->rObjBankIdx = objBankIndex;
         this->draw = EffectSsDFire_Draw;
         this->update = EffectSsDFire_Update;
-        this->rTexIdx = ((s16)(globalCtx->state.frames % 4) ^ 3);
+        this->rTexIdx = ((s16)(play->state.frames % 4) ^ 3);
         this->rPrimColorR = 255;
         this->rPrimColorG = 255;
         this->rPrimColorB = 50;
@@ -58,8 +58,8 @@ u32 EffectSsDFire_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
 
 static void* sTextures[] = { gDodongoFire0Tex, gDodongoFire1Tex, gDodongoFire2Tex, gDodongoFire3Tex };
 
-void EffectSsDFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsDFire_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     MtxF mfTrans;
     MtxF mfScale;
     MtxF mfResult;
@@ -69,17 +69,17 @@ void EffectSsDFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Mtx* mtx;
     f32 scale;
 
-    object = globalCtx->objectCtx.status[this->rObjBankIdx].segment;
+    object = play->objectCtx.status[this->rObjBankIdx].segment;
 
     OPEN_DISPS(gfxCtx);
 
-    if (Object_GetIndex(&globalCtx->objectCtx, OBJECT_DODONGO) > -1) {
+    if (Object_GetIndex(&play->objectCtx, OBJECT_DODONGO) > -1) {
         gSegments[6] = VIRTUAL_TO_PHYSICAL(object);
         gSPSegment(POLY_XLU_DISP++, 0x06, object);
         scale = this->rScale / 100.0f;
         SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
         SkinMatrix_SetScale(&mfScale, scale, scale, 1.0f);
-        SkinMatrix_MtxFMtxFMult(&mfTrans, &globalCtx->billboardMtxF, &mfTrans11DA0);
+        SkinMatrix_MtxFMtxFMult(&mfTrans, &play->billboardMtxF, &mfTrans11DA0);
         SkinMatrix_MtxFMtxFMult(&mfTrans11DA0, &mfScale, &mfResult);
 
         mtx = SkinMatrix_MtxFToNewMtx(gfxCtx, &mfResult);
@@ -99,7 +99,7 @@ void EffectSsDFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsDFire_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDFire_Update(PlayState* play, u32 index, EffectSs* this) {
     this->rTexIdx++;
     this->rTexIdx &= 3;
     this->rScale += this->rScaleStep;

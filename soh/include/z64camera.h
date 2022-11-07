@@ -18,8 +18,8 @@
 #define SUBCAM_ACTIVE -1
 
 #define ONEPOINT_CS_INFO(camera) ((Unique9OnePointCs*)camera->paramData)
-#define PARENT_CAM(cam) ((cam)->globalCtx->cameraPtrs[(cam)->parentCamIdx])
-#define CHILD_CAM(cam) ((cam)->globalCtx->cameraPtrs[(cam)->childCamIdx])
+#define PARENT_CAM(cam) ((cam)->play->cameraPtrs[(cam)->parentCamIdx])
+#define CHILD_CAM(cam) ((cam)->play->cameraPtrs[(cam)->childCamIdx])
 
 typedef enum {
     /* 0x00 */ CAM_SET_NONE,
@@ -1163,7 +1163,7 @@ typedef struct {
     /* 0x068 */ Vec3f up;
     /* 0x074 */ Vec3f eyeNext;
     /* 0x080 */ Vec3f skyboxOffset;
-    /* 0x08C */ struct GlobalContext* globalCtx;
+    /* 0x08C */ struct PlayState* play;
     /* 0x090 */ struct Player* player;
     /* 0x094 */ PosRot playerPosRot;
     /* 0x0A8 */ struct Actor* target;

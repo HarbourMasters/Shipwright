@@ -9,14 +9,14 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnBdfire_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnBdfire_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnBdfire_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnBdfire_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnBdfire_Init(Actor* thisx, PlayState* play);
+void EnBdfire_Destroy(Actor* thisx, PlayState* play);
+void EnBdfire_Update(Actor* thisx, PlayState* play);
+void EnBdfire_Draw(Actor* thisx, PlayState* play);
 
-void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx);
-void func_809BC2A4(EnBdfire* this, GlobalContext* globalCtx);
-void func_809BC598(EnBdfire* this, GlobalContext* globalCtx);
+void EnBdfire_DrawFire(EnBdfire* this, PlayState* play);
+void func_809BC2A4(EnBdfire* this, PlayState* play);
+void func_809BC598(EnBdfire* this, PlayState* play);
 
 const ActorInit En_Bdfire_InitVars = {
     0,
@@ -39,7 +39,7 @@ void EnbdFire_SetupDraw(EnBdfire* this, EnBdfireDrawFunc drawFunc) {
     this->drawFunc = drawFunc;
 }
 
-void EnBdfire_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnBdfire_Init(Actor* thisx, PlayState* play) {
     EnBdfire* this = (EnBdfire*)thisx;
     s32 pad;
 
@@ -51,7 +51,7 @@ void EnBdfire_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->unk_154 = 90;
         Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
                                   this->actor.world.pos.z, 255, 255, 255, 300);
-        this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfoNoGlow);
+        this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfoNoGlow);
     } else {
         EnBdfire_SetupAction(this, func_809BC598);
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 0.0f);
@@ -73,15 +73,15 @@ void EnBdfire_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnBdfire_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnBdfire_Destroy(Actor* thisx, PlayState* play) {
     EnBdfire* this = (EnBdfire*)thisx;
 
     if (this->actor.params < 0) {
-        LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode);
+        LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     }
 }
 
-void func_809BC2A4(EnBdfire* this, GlobalContext* globalCtx) {
+void func_809BC2A4(EnBdfire* this, PlayState* play) {
     BossDodongo* kingDodongo;
     s32 temp;
 
@@ -119,9 +119,9 @@ void func_809BC2A4(EnBdfire* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_809BC598(EnBdfire* this, GlobalContext* globalCtx) {
+void func_809BC598(EnBdfire* this, PlayState* play) {
     s16 phi_v1_2;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     f32 distToBurn;
     BossDodongo* bossDodongo;
     s16 i;
@@ -181,21 +181,21 @@ void func_809BC598(EnBdfire* this, GlobalContext* globalCtx) {
                 player->flameTimers[i] = Rand_S16Offset(0, 200);
             }
             player->isBurning = true;
-            func_8002F6D4(globalCtx, &this->actor, 20.0f, this->actor.world.rot.y, 0.0f, 8);
+            func_8002F6D4(play, &this->actor, 20.0f, this->actor.world.rot.y, 0.0f, 8);
             osSyncPrintf("POWER\n");
         }
     }
 }
 
-void EnBdfire_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnBdfire_Update(Actor* thisx, PlayState* play) {
     EnBdfire* this = (EnBdfire*)thisx;
 
     this->unk_156++;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
 }
 
-void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
+void EnBdfire_DrawFire(EnBdfire* this, PlayState* play) {
     static void* D_809BCB10[] = {
         object_kingdodongo_Tex_0264E0, object_kingdodongo_Tex_0274E0, object_kingdodongo_Tex_0284E0,
         object_kingdodongo_Tex_0294E0, object_kingdodongo_Tex_02A4E0, object_kingdodongo_Tex_02B4E0,
@@ -204,10 +204,10 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     s16 temp;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     temp = this->unk_156 & 7;
-    Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-    func_80094BC4(globalCtx->state.gfxCtx);
+    Matrix_ReplaceRotation(&play->billboardMtxF);
+    func_80094BC4(play->state.gfxCtx);
     POLY_XLU_DISP = func_80094968(POLY_XLU_DISP);
     gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0,
                       ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0,
@@ -217,14 +217,14 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 0);
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(D_809BCB10[temp]));
     Matrix_Translate(0.0f, 11.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_01D950);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnBdfire_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnBdfire_Draw(Actor* thisx, PlayState* play) {
     EnBdfire* this = (EnBdfire*)thisx;
 
-    this->drawFunc(this, globalCtx);
+    this->drawFunc(this, play);
 }

@@ -6,7 +6,7 @@
 
 struct BgMoriKaitenkabe;
 
-typedef void (*BgMoriKaitenkabeActionFunc)(struct BgMoriKaitenkabe*, GlobalContext*);
+typedef void (*BgMoriKaitenkabeActionFunc)(struct BgMoriKaitenkabe*, PlayState*);
 
 typedef struct BgMoriKaitenkabe {
     /* 0x0000 */ DynaPolyActor dyna;

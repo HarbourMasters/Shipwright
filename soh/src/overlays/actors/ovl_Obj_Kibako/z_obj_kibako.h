@@ -6,7 +6,7 @@
 
 struct ObjKibako;
 
-typedef void (*ObjKibakoActionFunc)(struct ObjKibako*, GlobalContext*);
+typedef void (*ObjKibakoActionFunc)(struct ObjKibako*, PlayState*);
 
 typedef struct ObjKibako {
     /* 0x0000 */ Actor actor;

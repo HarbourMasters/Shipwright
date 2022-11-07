@@ -6,7 +6,7 @@
 
 struct EnIn;
 
-typedef void (*EnInActionFunc)(struct EnIn*, GlobalContext*);
+typedef void (*EnInActionFunc)(struct EnIn*, PlayState*);
 
 typedef enum {
     /* 0x00 */ INGO_LIMB_NONE,

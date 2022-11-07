@@ -6,7 +6,7 @@
 
 struct BgBombwall;
 
-typedef void (*BgBombwallActionFunc)(struct BgBombwall*, GlobalContext*);
+typedef void (*BgBombwallActionFunc)(struct BgBombwall*, PlayState*);
 
 typedef struct BgBombwall {
     /* 0x0000 */ DynaPolyActor dyna;

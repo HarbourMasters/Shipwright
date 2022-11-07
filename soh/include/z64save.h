@@ -26,6 +26,12 @@ typedef struct {
 } Inventory; // size = 0x5E
 
 typedef struct {
+    /*      */ u8 heartPieces;
+    /*      */ u8 heartContainers;
+    /*      */ u8 dungeonKeys[19];
+} SohStats;
+
+typedef struct {
     /* 0x00 */ u32 chest;
     /* 0x04 */ u32 swch;
     /* 0x08 */ u32 clear;
@@ -184,11 +190,12 @@ typedef struct {
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[8];
+    u16 randomizerInf[9];
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
+    SohStats sohStats;
 } SaveContext; // size = 0x1428
 
 typedef enum {

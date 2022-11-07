@@ -6,7 +6,7 @@
 
 struct EnWonderTalk;
 
-typedef void (*EnWonderTalkFunc)(struct EnWonderTalk*, GlobalContext*);
+typedef void (*EnWonderTalkFunc)(struct EnWonderTalk*, PlayState*);
 
 typedef struct EnWonderTalk {
     /* 0x0000 */ Actor actor;

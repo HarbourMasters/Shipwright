@@ -6,7 +6,7 @@
 
 struct EnOwl;
 
-typedef void (*EnOwlActionFunc)(struct EnOwl*, GlobalContext*);
+typedef void (*EnOwlActionFunc)(struct EnOwl*, PlayState*);
 typedef void (*OwlFunc)(struct EnOwl*);
 
 typedef struct EnOwl {

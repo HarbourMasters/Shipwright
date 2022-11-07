@@ -6,7 +6,7 @@
 
 struct EnYukabyun;
 
-typedef void (*EnYukabyunActionFunc)(struct EnYukabyun*, GlobalContext*);
+typedef void (*EnYukabyunActionFunc)(struct EnYukabyun*, PlayState*);
 
 typedef struct EnYukabyun {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct BgHakaShip;
 
-typedef void (*BgHakaShipActionFunc)(struct BgHakaShip*, GlobalContext*);
+typedef void (*BgHakaShipActionFunc)(struct BgHakaShip*, PlayState*);
 
 typedef struct BgHakaShip {
     /* 0x0000 */ DynaPolyActor dyna;

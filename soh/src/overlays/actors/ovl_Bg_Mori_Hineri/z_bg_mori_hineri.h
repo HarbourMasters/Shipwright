@@ -6,7 +6,7 @@
 
 struct BgMoriHineri;
 
-typedef void (*BgMoriHineriActionFunc)(struct BgMoriHineri*, GlobalContext*);
+typedef void (*BgMoriHineriActionFunc)(struct BgMoriHineri*, PlayState*);
 
 typedef struct BgMoriHineri {
     /* 0x0000 */ DynaPolyActor dyna;

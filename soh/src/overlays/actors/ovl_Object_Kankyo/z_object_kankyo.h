@@ -6,7 +6,7 @@
 
 struct ObjectKankyo;
 
-typedef void (*ObjectKankyoActionFunc)(struct ObjectKankyo*, GlobalContext*);
+typedef void (*ObjectKankyoActionFunc)(struct ObjectKankyo*, PlayState*);
 
 typedef struct ObjectKankyoEffect {
     /* 0x00 */ u8 state;

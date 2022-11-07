@@ -9,13 +9,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnAnubiceTag_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnAnubiceTag_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnAnubiceTag_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnAnubiceTag_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnAnubiceTag_Init(Actor* thisx, PlayState* play);
+void EnAnubiceTag_Destroy(Actor* thisx, PlayState* play);
+void EnAnubiceTag_Update(Actor* thisx, PlayState* play);
+void EnAnubiceTag_Draw(Actor* thisx, PlayState* play);
 
-void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, GlobalContext* globalCtx);
-void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, GlobalContext* globalCtx);
+void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, PlayState* play);
+void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, PlayState* play);
 
 const ActorInit En_Anubice_Tag_InitVars = {
     ACTOR_EN_ANUBICE_TAG,
@@ -30,7 +30,7 @@ const ActorInit En_Anubice_Tag_InitVars = {
     NULL,
 };
 
-void EnAnubiceTag_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnAnubiceTag_Init(Actor* thisx, PlayState* play) {
     EnAnubiceTag* this = (EnAnubiceTag*)thisx;
 
     osSyncPrintf("\n\n");
@@ -46,11 +46,11 @@ void EnAnubiceTag_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = EnAnubiceTag_SpawnAnubis;
 }
 
-void EnAnubiceTag_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnAnubiceTag_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, GlobalContext* globalCtx) {
-    this->anubis = (EnAnubice*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ANUBICE,
+void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, PlayState* play) {
+    this->anubis = (EnAnubice*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ANUBICE,
                                                   this->actor.world.pos.x, this->actor.world.pos.y,
                                                   this->actor.world.pos.z, 0, this->actor.yawTowardsPlayer, 0, 0);
 
@@ -59,7 +59,7 @@ void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, GlobalContext* globalCtx) {
+void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, PlayState* play) {
     EnAnubice* anubis;
     Vec3f offset;
 
@@ -96,18 +96,18 @@ void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnAnubiceTag_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnAnubiceTag_Update(Actor* thisx, PlayState* play) {
     EnAnubiceTag* this = (EnAnubiceTag*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void EnAnubiceTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnAnubiceTag_Draw(Actor* thisx, PlayState* play) {
     EnAnubiceTag* this = (EnAnubiceTag*)thisx;
 
     if (BREG(0) != 0) {
         DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 0xFF, 0, 0, 0xFF, 4, globalCtx->state.gfxCtx);
+                               1.0f, 0xFF, 0, 0, 0xFF, 4, play->state.gfxCtx);
     }
 }

@@ -9,9 +9,9 @@
 
 struct EnRu1;
 
-typedef void (*EnRu1ActionFunc)(struct EnRu1*, GlobalContext*);
-typedef void (*EnRu1DrawFunc)(struct EnRu1*, GlobalContext*);
-typedef void (*EnRu1PreLimbDrawFunc)(struct EnRu1*, GlobalContext*, s32, Vec3s*);
+typedef void (*EnRu1ActionFunc)(struct EnRu1*, PlayState*);
+typedef void (*EnRu1DrawFunc)(struct EnRu1*, PlayState*);
+typedef void (*EnRu1PreLimbDrawFunc)(struct EnRu1*, PlayState*, s32, Vec3s*);
 
 typedef struct EnRu1 {
     /* 0x0000 */ Actor actor;

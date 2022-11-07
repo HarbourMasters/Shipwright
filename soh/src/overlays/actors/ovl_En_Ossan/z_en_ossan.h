@@ -8,28 +8,11 @@
 
 struct EnOssan;
 
-typedef void (*EnOssanActionFunc)(struct EnOssan*, GlobalContext*);
-typedef void (*EnOssanTalkOwnerFunc)(GlobalContext*);
-typedef void (*EnOssanInitFunc)(struct EnOssan*, GlobalContext*);
+typedef void (*EnOssanActionFunc)(struct EnOssan*, PlayState*);
+typedef void (*EnOssanTalkOwnerFunc)(PlayState*);
+typedef void (*EnOssanInitFunc)(struct EnOssan*, PlayState*);
 typedef s16 (*EnOssanGetGirlAParamsFunc)(s16);
-typedef void (*EnOssanStateFunc)(struct EnOssan*, GlobalContext*, Player*);
-
-typedef struct {
-    /* 0x00 */ u32 stickColorR;
-    /* 0x04 */ u32 stickColorG;
-    /* 0x08 */ u32 stickColorB;
-    /* 0x0C */ u32 stickColorA;
-    /* 0x10 */ f32 stickTexX;
-    /* 0x14 */ f32 stickTexY;
-    /* 0x18 */ u32 arrowColorR;
-    /* 0x1C */ u32 arrowColorG;
-    /* 0x20 */ u32 arrowColorB;
-    /* 0x24 */ u32 arrowColorA;
-    /* 0x28 */ f32 arrowTexX;
-    /* 0x2C */ f32 arrowTexY;
-    /* 0x30 */ f32 z;
-    /* 0x34 */ s32 isEnabled;
-} StickDirectionPrompt; // size = 0x38
+typedef void (*EnOssanStateFunc)(struct EnOssan*, PlayState*, Player*);
 
 #define ColChanMix(c1, c2, m) (c1 - (s32)(c2 * m)) & 0xFF
 
@@ -37,7 +20,7 @@ typedef struct EnOssan {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnOssanActionFunc actionFunc;
-    /* 0x0194 */ void (*obj3ToSeg6Func)(struct EnOssan*, GlobalContext*);
+    /* 0x0194 */ void (*obj3ToSeg6Func)(struct EnOssan*, PlayState*);
     /* 0x0198 */ ColliderCylinder collider; // unused
     /* 0x01E4 */ s16 timer;
     /* 0x01E6 */ s16 delayTimer;
