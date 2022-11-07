@@ -27,7 +27,10 @@ namespace UIWidgets {
     char* WrappedText(const std::string& text, unsigned int charactersPerLine);
 
     void SetLastItemHoverText(const std::string& text);
+    void SetLastItemHoverText(const char* text);
+
     void InsertHelpHoverText(const std::string& text);
+    void InsertHelpHoverText(const char* text);
 
     void Tooltip(const char* text);
     void Spacer(float height);
