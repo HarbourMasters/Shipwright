@@ -6,7 +6,7 @@
 
 struct EnHorseZelda;
 
-typedef void (*EnHorseZeldaActionFunc)(struct EnHorseZelda*, GlobalContext*);
+typedef void (*EnHorseZeldaActionFunc)(struct EnHorseZelda*, PlayState*);
 
 typedef struct EnHorseZelda {
     /* 0x0000 */ Actor actor;

@@ -53,7 +53,7 @@ bool CreatePresetDirectories() {
 std::vector<std::string> GetSettingsPresets() {
   std::vector<std::string> presetEntries = {};
   for (const auto& entry : fs::directory_iterator(GetBasePath(OptionCategory::Setting))) {
-    if(entry.path().stem().string() != CACHED_SETTINGS_FILENAME) {
+    if(entry.is_regular_file() && entry.path().stem().string() != CACHED_SETTINGS_FILENAME) {
       presetEntries.push_back(entry.path().stem().string());
     }
   }

@@ -15,7 +15,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -556,7 +556,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data)) {
+    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_MEN || item.data == SCENE_GANONTIKA)) {
         dungeonColor = IM_COL_PURPLE;
     }
 
@@ -862,7 +862,7 @@ void DrawItemTracker(bool& open) {
     int comboButton1Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton1", 6)];
     int comboButton2Mask = buttonMap[CVar_GetS32("gItemTrackerComboButton2", 8)];
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
-    bool isPaused = CVar_GetS32("gItemTrackerShowOnlyPaused", 0) == 0 || gGlobalCtx != nullptr && gGlobalCtx->pauseCtx.state > 0;
+    bool isPaused = CVar_GetS32("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
     if (CVar_GetS32("gItemTrackerWindowType", 0) == 1 || isPaused && (CVar_GetS32("gItemTrackerDisplayType", 0) == 0 ? CVar_GetS32("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
         if (

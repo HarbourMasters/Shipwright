@@ -6,7 +6,7 @@
 
 struct EnNy;
 
-typedef void (*EnNyActionFunc)(struct EnNy*, GlobalContext*);
+typedef void (*EnNyActionFunc)(struct EnNy*, PlayState*);
 
 typedef struct EnNy {
     /* 0x0000 */ Actor actor;

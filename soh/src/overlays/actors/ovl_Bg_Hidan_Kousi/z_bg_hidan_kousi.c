@@ -9,17 +9,17 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgHidanKousi_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKousi_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKousi_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKousi_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanKousi_Init(Actor* thisx, PlayState* play);
+void BgHidanKousi_Destroy(Actor* thisx, PlayState* play);
+void BgHidanKousi_Update(Actor* thisx, PlayState* play);
+void BgHidanKousi_Draw(Actor* thisx, PlayState* play);
 
 void func_80889ACC(BgHidanKousi* this);
-void func_80889B5C(BgHidanKousi* this, GlobalContext* globalCtx);
-void func_80889BC0(BgHidanKousi* this, GlobalContext* globalCtx);
-void func_80889C18(BgHidanKousi* this, GlobalContext* globalCtx);
-void func_80889C90(BgHidanKousi* this, GlobalContext* globalCtx);
-void func_80889D28(BgHidanKousi* this, GlobalContext* globalCtx);
+void func_80889B5C(BgHidanKousi* this, PlayState* play);
+void func_80889BC0(BgHidanKousi* this, PlayState* play);
+void func_80889C18(BgHidanKousi* this, PlayState* play);
+void func_80889C90(BgHidanKousi* this, PlayState* play);
+void func_80889D28(BgHidanKousi* this, PlayState* play);
 
 static f32 D_80889E40[] = { 120.0f, 150.0f, 150.0f };
 
@@ -63,7 +63,7 @@ void BgHidanKousi_SetupAction(BgHidanKousi* this, BgHidanKousiActionFunc actionF
     this->actionFunc = actionFunc;
 }
 
-void BgHidanKousi_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKousi_Init(Actor* thisx, PlayState* play) {
     BgHidanKousi* this = (BgHidanKousi*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -79,9 +79,9 @@ void BgHidanKousi_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     CollisionHeader_GetVirtual(sMetalFencesCollisions[thisx->params & 0xFF], &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
     thisx->world.rot.y = D_80889E7C[this->dyna.actor.params & 0xFF] + thisx->shape.rot.y;
-    if (Flags_GetSwitch(globalCtx, (thisx->params >> 8) & 0xFF)) {
+    if (Flags_GetSwitch(play, (thisx->params >> 8) & 0xFF)) {
         func_80889ACC(this);
         BgHidanKousi_SetupAction(this, func_80889D28);
     } else {
@@ -89,9 +89,9 @@ void BgHidanKousi_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanKousi_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKousi_Destroy(Actor* thisx, PlayState* play) {
     BgHidanKousi* this = (BgHidanKousi*)thisx;
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 void func_80889ACC(BgHidanKousi* this) {
@@ -104,22 +104,22 @@ void func_80889ACC(BgHidanKousi* this) {
     this->dyna.actor.world.pos.z = this->dyna.actor.home.pos.z + temp2;
 }
 
-void func_80889B5C(BgHidanKousi* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0xFF)) {
+void func_80889B5C(BgHidanKousi* this, PlayState* play) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0xFF)) {
         BgHidanKousi_SetupAction(this, func_80889BC0);
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         this->unk_168 = 0xC8;
     }
 }
 
-void func_80889BC0(BgHidanKousi* this, GlobalContext* globalCtx) {
+void func_80889BC0(BgHidanKousi* this, PlayState* play) {
     this->unk_168 -= 1;
     if (this->dyna.actor.category == func_8005B198() || (this->unk_168 <= 0)) {
         BgHidanKousi_SetupAction(this, func_80889C18);
     }
 }
 
-void func_80889C18(BgHidanKousi* this, GlobalContext* globalCtx) {
+void func_80889C18(BgHidanKousi* this, PlayState* play) {
     this->dyna.actor.speedXZ += 0.2f;
     if (this->dyna.actor.speedXZ > 2.0f) {
         this->dyna.actor.speedXZ = 2.0f;
@@ -129,7 +129,7 @@ void func_80889C18(BgHidanKousi* this, GlobalContext* globalCtx) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
 }
 
-void func_80889C90(BgHidanKousi* this, GlobalContext* globalCtx) {
+void func_80889C90(BgHidanKousi* this, PlayState* play) {
     func_8002D7EC(&this->dyna.actor);
     if (D_80889E40[this->dyna.actor.params & 0xFF] <
         Math_Vec3f_DistXYZ(&this->dyna.actor.home.pos, &this->dyna.actor.world.pos)) {
@@ -141,23 +141,23 @@ void func_80889C90(BgHidanKousi* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80889D28(BgHidanKousi* this, GlobalContext* globalCtx) {
+void func_80889D28(BgHidanKousi* this, PlayState* play) {
 }
 
-void BgHidanKousi_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKousi_Update(Actor* thisx, PlayState* play) {
     BgHidanKousi* this = (BgHidanKousi*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHidanKousi_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+void BgHidanKousi_Draw(Actor* thisx, PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, sMetalFencesDLs[thisx->params & 0xFF]);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

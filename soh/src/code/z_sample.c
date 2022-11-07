@@ -2,7 +2,7 @@
 
 void Sample_HandleStateChange(SampleContext* this) {
     if (CHECK_BTN_ALL(this->state.input[0].press.button, BTN_START)) {
-        SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+        SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
         this->state.running = false;
     }
 }

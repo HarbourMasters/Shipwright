@@ -3,13 +3,13 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void ArmsHook_Init(Actor* thisx, GlobalContext* globalCtx);
-void ArmsHook_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ArmsHook_Update(Actor* thisx, GlobalContext* globalCtx);
-void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ArmsHook_Init(Actor* thisx, PlayState* play);
+void ArmsHook_Destroy(Actor* thisx, PlayState* play);
+void ArmsHook_Update(Actor* thisx, PlayState* play);
+void ArmsHook_Draw(Actor* thisx, PlayState* play);
 
-void ArmsHook_Wait(ArmsHook* this, GlobalContext* globalCtx);
-void ArmsHook_Shoot(ArmsHook* this, GlobalContext* globalCtx);
+void ArmsHook_Wait(ArmsHook* this, PlayState* play);
+void ArmsHook_Shoot(ArmsHook* this, PlayState* play);
 
 const ActorInit Arms_Hook_InitVars = {
     ACTOR_ARMS_HOOK,
@@ -63,33 +63,33 @@ void ArmsHook_SetupAction(ArmsHook* this, ArmsHookActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void ArmsHook_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ArmsHook_Init(Actor* thisx, PlayState* play) {
     ArmsHook* this = (ArmsHook*)thisx;
 
-    Collider_InitQuad(globalCtx, &this->collider);
-    Collider_SetQuad(globalCtx, &this->collider, &this->actor, &sQuadInit);
+    Collider_InitQuad(play, &this->collider);
+    Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     ArmsHook_SetupAction(this, ArmsHook_Wait);
     this->unk_1E8 = this->actor.world.pos;
 }
 
-void ArmsHook_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ArmsHook_Destroy(Actor* thisx, PlayState* play) {
     ArmsHook* this = (ArmsHook*)thisx;
 
     if (this->grabbed != NULL) {
         this->grabbed->flags &= ~ACTOR_FLAG_13;
     }
-    Collider_DestroyQuad(globalCtx, &this->collider);
+    Collider_DestroyQuad(play, &this->collider);
 }
 
-void ArmsHook_Wait(ArmsHook* this, GlobalContext* globalCtx) {
+void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
-        Player* player = GET_PLAYER(globalCtx);
+        Player* player = GET_PLAYER(play);
         // get correct timer length for hookshot or longshot
         s32 length = (player->heldItemActionParam == PLAYER_AP_HOOKSHOT) ? 13 : 26;
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
         func_8002D9A4(&this->actor, 20.0f);
-        this->actor.parent = &GET_PLAYER(globalCtx)->actor;
+        this->actor.parent = &GET_PLAYER(play)->actor;
         this->timer = length;
     }
 }
@@ -138,8 +138,8 @@ void ArmsHook_AttachHookToActor(ArmsHook* this, Actor* actor) {
     Math_Vec3f_Diff(&actor->world.pos, &this->actor.world.pos, &this->grabbedDistDiff);
 }
 
-void ArmsHook_Shoot(ArmsHook* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Actor* touchedActor;
     Actor* grabbed;
     Vec3f bodyDistDiffVec;
@@ -257,18 +257,18 @@ void ArmsHook_Shoot(ArmsHook* this, GlobalContext* globalCtx) {
         sp60.x = this->unk_1F4.x - (this->unk_1E8.x - this->unk_1F4.x);
         sp60.y = this->unk_1F4.y - (this->unk_1E8.y - this->unk_1F4.y);
         sp60.z = this->unk_1F4.z - (this->unk_1E8.z - this->unk_1F4.z);
-        if (BgCheck_EntityLineTest1(&globalCtx->colCtx, &sp60, &this->unk_1E8, &sp78, &poly, true, true, true, true,
+        if (BgCheck_EntityLineTest1(&play->colCtx, &sp60, &this->unk_1E8, &sp78, &poly, true, true, true, true,
                                     &bgId) &&
-            !func_8002F9EC(globalCtx, &this->actor, poly, bgId, &sp78)) {
+            !func_8002F9EC(play, &this->actor, poly, bgId, &sp78)) {
             sp5C = COLPOLY_GET_NORMAL(poly->normal.x);
             sp58 = COLPOLY_GET_NORMAL(poly->normal.z);
             Math_Vec3f_Copy(&this->actor.world.pos, &sp78);
             this->actor.world.pos.x += 10.0f * sp5C;
             this->actor.world.pos.z += 10.0f * sp58;
             this->timer = 0;
-            if (SurfaceType_IsHookshotSurface(&globalCtx->colCtx, poly, bgId)) {
+            if (SurfaceType_IsHookshotSurface(&play->colCtx, poly, bgId)) {
                 if (bgId != BGCHECK_SCENE) {
-                    dynaPolyActor = DynaPoly_GetActor(&globalCtx->colCtx, bgId);
+                    dynaPolyActor = DynaPoly_GetActor(&play->colCtx, bgId);
                     if (dynaPolyActor != NULL) {
                         ArmsHook_AttachHookToActor(this, &dynaPolyActor->actor);
                     }
@@ -277,28 +277,28 @@ void ArmsHook_Shoot(ArmsHook* this, GlobalContext* globalCtx) {
                 Audio_PlaySoundGeneral(NA_SE_IT_HOOKSHOT_STICK_OBJ, &this->actor.projectedPos, 4, &D_801333E0,
                                        &D_801333E0, &D_801333E8);
             } else {
-                CollisionCheck_SpawnShieldParticlesMetal(globalCtx, &this->actor.world.pos);
+                CollisionCheck_SpawnShieldParticlesMetal(play, &this->actor.world.pos);
                 Audio_PlaySoundGeneral(NA_SE_IT_HOOKSHOT_REFLECT, &this->actor.projectedPos, 4, &D_801333E0,
                                        &D_801333E0, &D_801333E8);
             }
-        } else if (CHECK_BTN_ANY(globalCtx->state.input[0].press.button,
+        } else if (CHECK_BTN_ANY(play->state.input[0].press.button,
                                  (BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN))) {
             this->timer = 0;
         }
     }
 }
 
-void ArmsHook_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ArmsHook_Update(Actor* thisx, PlayState* play) {
     ArmsHook* this = (ArmsHook*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->unk_1F4 = this->unk_1E8;
 }
 
-void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ArmsHook_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     ArmsHook* this = (ArmsHook*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     Vec3f sp78;
     Vec3f sp6C;
     Vec3f sp60;
@@ -306,7 +306,7 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 sp58;
 
     if ((player->actor.draw != NULL) && (player->rightHandType == 15)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
         if ((ArmsHook_Shoot != this->actionFunc) || (this->timer <= 0)) {
             Matrix_MultVec3f(&D_80865B70, &this->unk_1E8);
@@ -319,9 +319,9 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_MultVec3f(&D_80865BAC, &sp60);
         }
 
-        func_80090480(globalCtx, &this->collider, &this->hookInfo, &sp6C, &sp60);
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        func_80090480(play, &this->collider, &this->hookInfo, &sp6C, &sp60);
+        func_80093D18(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
         Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
@@ -331,10 +331,10 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateY(Math_FAtan2F(sp78.x, sp78.z), MTXMODE_APPLY);
         Matrix_RotateX(Math_FAtan2F(-sp78.y, sp5C), MTXMODE_APPLY);
         Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

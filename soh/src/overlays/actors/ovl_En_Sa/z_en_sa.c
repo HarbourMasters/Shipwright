@@ -6,16 +6,16 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void EnSa_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSa_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSa_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnSa_Init(Actor* thisx, PlayState* play);
+void EnSa_Destroy(Actor* thisx, PlayState* play);
+void EnSa_Update(Actor* thisx, PlayState* play);
+void EnSa_Draw(Actor* thisx, PlayState* play);
 
-void func_80AF6448(EnSa* this, GlobalContext* globalCtx);
-void func_80AF67D0(EnSa* this, GlobalContext* globalCtx);
-void func_80AF683C(EnSa* this, GlobalContext* globalCtx);
-void func_80AF68E4(EnSa* this, GlobalContext* globalCtx);
-void func_80AF6B20(EnSa* this, GlobalContext* globalCtx);
+void func_80AF6448(EnSa* this, PlayState* play);
+void func_80AF67D0(EnSa* this, PlayState* play);
+void func_80AF683C(EnSa* this, PlayState* play);
+void func_80AF68E4(EnSa* this, PlayState* play);
+void func_80AF6B20(EnSa* this, PlayState* play);
 
 typedef enum {
     /* 0 */ SARIA_EYE_OPEN,
@@ -126,8 +126,8 @@ static AnimationInfo sAnimationInfo2[] = {
     { &gSariaWaitArmsToSideAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
 };
 
-s16 func_80AF5560(EnSa* this, GlobalContext* globalCtx) {
-    s16 textState = Message_GetState(&globalCtx->msgCtx);
+s16 func_80AF5560(EnSa* this, PlayState* play) {
+    s16 textState = Message_GetState(&play->msgCtx);
 
     if (this->unk_209 == TEXT_STATE_AWAITING_NEXT || this->unk_209 == TEXT_STATE_EVENT ||
         this->unk_209 == TEXT_STATE_CLOSING || this->unk_209 == TEXT_STATE_DONE_HAS_NEXT) {
@@ -139,9 +139,9 @@ s16 func_80AF5560(EnSa* this, GlobalContext* globalCtx) {
     return textState;
 }
 
-u16 func_80AF55E0(GlobalContext* globalCtx, Actor* thisx) {
+u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     EnSa* this = (EnSa*)thisx;
-    u16 reaction = Text_GetFaceReaction(globalCtx, 0x10);
+    u16 reaction = Text_GetFaceReaction(play, 0x10);
 
     if (reaction != 0) {
         return reaction;
@@ -179,11 +179,11 @@ u16 func_80AF55E0(GlobalContext* globalCtx, Actor* thisx) {
     return 0x1001;
 }
 
-s16 func_80AF56F4(GlobalContext* globalCtx, Actor* thisx) {
+s16 func_80AF56F4(PlayState* play, Actor* thisx) {
     s16 ret = 1;
     EnSa* this = (EnSa*)thisx;
 
-    switch (func_80AF5560(this, globalCtx)) {
+    switch (func_80AF5560(this, play)) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1002:
@@ -217,10 +217,10 @@ s16 func_80AF56F4(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
-void func_80AF57D8(EnSa* this, GlobalContext* globalCtx) {
-    if (globalCtx->sceneNum != SCENE_SPOT05 ||
+void func_80AF57D8(EnSa* this, PlayState* play) {
+    if (play->sceneNum != SCENE_SPOT05 ||
         ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 || this->unk_1E0.unk_00 != 0) {
-        func_800343CC(globalCtx, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 30.0f, func_80AF55E0,
+        func_800343CC(play, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 30.0f, func_80AF55E0,
                       func_80AF56F4);
     }
 }
@@ -373,26 +373,26 @@ void EnSa_ChangeAnim(EnSa* this, s32 index) {
                      sAnimationInfo1[index].morphFrames);
 }
 
-s32 func_80AF5DFC(EnSa* this, GlobalContext* globalCtx) {
+s32 func_80AF5DFC(EnSa* this, PlayState* play) {
     if (gSaveContext.cutsceneIndex >= 0xFFF0 && gSaveContext.cutsceneIndex != 0xFFFD) {
-        if (globalCtx->sceneNum == SCENE_SPOT04) {
+        if (play->sceneNum == SCENE_SPOT04) {
             return 4;
         }
-        if (globalCtx->sceneNum == SCENE_SPOT05) {
+        if (play->sceneNum == SCENE_SPOT05) {
             return 5;
         }
     }
-    if (globalCtx->sceneNum == SCENE_KOKIRI_HOME5 && !LINK_IS_ADULT &&
+    if (play->sceneNum == SCENE_KOKIRI_HOME5 && !LINK_IS_ADULT &&
         INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY && !(gSaveContext.eventChkInf[4] & 1)) {
         return 1;
     }
-    if (globalCtx->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
+    if (play->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
         if (gSaveContext.n64ddFlag) {
             return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
     }
-    if (globalCtx->sceneNum == SCENE_SPOT04 && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+    if (play->sceneNum == SCENE_SPOT04 && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
         if (gSaveContext.infTable[0] & 1) {
             return 1;
         }
@@ -401,21 +401,21 @@ s32 func_80AF5DFC(EnSa* this, GlobalContext* globalCtx) {
     return 0;
 }
 
-void func_80AF5F34(EnSa* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AF5F34(EnSa* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s16 phi_a3 = 0;
 
-    if (globalCtx->sceneNum == SCENE_SPOT04) {
+    if (play->sceneNum == SCENE_SPOT04) {
         phi_a3 = (this->actionFunc == func_80AF68E4) ? 1 : 4;
     }
-    if (globalCtx->sceneNum == SCENE_SPOT05) {
+    if (play->sceneNum == SCENE_SPOT05) {
         phi_a3 = (this->skelAnime.animation == &gSariaPlayingOcarinaAnim) ? 1 : 3;
     }
-    if (globalCtx->sceneNum == SCENE_SPOT05 && this->actionFunc == func_80AF6448 &&
+    if (play->sceneNum == SCENE_SPOT05 && this->actionFunc == func_80AF6448 &&
         this->skelAnime.animation == &gSariaStopPlayingOcarinaAnim) {
         phi_a3 = 1;
     }
-    if (globalCtx->sceneNum == SCENE_SPOT05 && this->actionFunc == func_80AF68E4 &&
+    if (play->sceneNum == SCENE_SPOT05 && this->actionFunc == func_80AF68E4 &&
         this->skelAnime.animation == &gSariaOcarinaToMouthAnim) {
         phi_a3 = 1;
     }
@@ -474,17 +474,17 @@ void func_80AF6170(CsCmdActorAction* csAction, Vec3f* dst) {
     dst->z = csAction->endPos.z;
 }
 
-void EnSa_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnSa_Init(Actor* thisx, PlayState* play) {
     EnSa* this = (EnSa*)thisx;
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 12.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gSariaSkel, NULL, this->jointTable, this->morphTable, 17);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, NULL, this->jointTable, this->morphTable, 17);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    switch (func_80AF5DFC(this, globalCtx)) {
+    switch (func_80AF5DFC(this, play)) {
         case 2:
             EnSa_ChangeAnim(this, ENSA_ANIM1_11);
             this->actionFunc = func_80AF6448;
@@ -501,7 +501,7 @@ void EnSa_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 4:
             this->unk_210 = 0;
             this->actor.gravity = -1.0f;
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSpot04Cs_10E20);
+            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSpot04Cs_10E20);
             gSaveContext.cutsceneTrigger = 1;
             EnSa_ChangeAnim(this, ENSA_ANIM1_4);
             this->actionFunc = func_80AF68E4;
@@ -524,18 +524,18 @@ void EnSa_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->alpha = 255;
     this->unk_21A = this->actor.shape.rot;
 
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ELF, this->actor.world.pos.x,
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, FAIRY_KOKIRI);
 }
 
-void EnSa_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSa_Destroy(Actor* thisx, PlayState* play) {
     EnSa* this = (EnSa*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80AF6448(EnSa* this, GlobalContext* globalCtx) {
-    if (globalCtx->sceneNum == SCENE_SPOT04) {
+void func_80AF6448(EnSa* this, PlayState* play) {
+    if (play->sceneNum == SCENE_SPOT04) {
         if (this->unk_1E0.unk_00 != 0) {
             switch (this->actor.textId) {
                 case 0x1002:
@@ -604,45 +604,45 @@ void func_80AF6448(EnSa* this, GlobalContext* globalCtx) {
             EnSa_ChangeAnim(this, ENSA_ANIM1_6);
         }
     }
-    if (this->unk_1E0.unk_00 != 0 && globalCtx->sceneNum == SCENE_SPOT05) {
+    if (this->unk_1E0.unk_00 != 0 && play->sceneNum == SCENE_SPOT05) {
         Animation_Change(&this->skelAnime, &gSariaStopPlayingOcarinaAnim, 1.0f, 0.0f, 10.0f, ANIMMODE_ONCE, -10.0f);
         this->actionFunc = func_80AF67D0;
     }
 }
 
-void func_80AF67D0(EnSa* this, GlobalContext* globalCtx) {
+void func_80AF67D0(EnSa* this, PlayState* play) {
     if (this->unk_1E0.unk_00 == 0) {
         Animation_Change(&this->skelAnime, &gSariaStopPlayingOcarinaAnim, 0.0f, 10.0f, 0.0f, ANIMMODE_ONCE, -10.0f);
         this->actionFunc = func_80AF6448;
     }
 }
 
-void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, RandomizerCheck check) {
+void GivePlayerRandoRewardSaria(EnSa* saria, PlayState* play, RandomizerCheck check) {
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SARIAS_SONG);
-    if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
-        !Flags_GetTreasure(globalCtx, 0x1F)) {
-        Flags_SetTreasure(globalCtx, 0x1F);
-    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-        GiveItemEntryFromActor(&saria->actor, globalCtx, getItemEntry, 10000.0f, 100.0f);
+    if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(play)->actor.id &&
+        !Flags_GetTreasure(play, 0x1F)) {
+        Flags_SetTreasure(play, 0x1F);
+    } else if (!Flags_GetTreasure(play, 0x1F)) {
+        GiveItemEntryFromActor(&saria->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
 }
 
-void func_80AF683C(EnSa* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AF683C(EnSa* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (!(player->actor.world.pos.z >= -2220.0f) && !Gameplay_InCsMode(globalCtx)) {
+    if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardSaria(this, globalCtx, RC_SONG_FROM_SARIA);
+            GivePlayerRandoRewardSaria(this, play, RC_SONG_FROM_SARIA);
             return;
         }
 
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(spot05_scene_Cs_005730);
+        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(spot05_scene_Cs_005730);
         gSaveContext.cutsceneTrigger = 1;
         this->actionFunc = func_80AF68E4;
     }
 }
 
-void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
+void func_80AF68E4(EnSa* this, PlayState* play) {
     s16 phi_v0;
     Vec3f startPos;
     Vec3f endPos;
@@ -651,11 +651,11 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
     f32 temp_f0;
     f32 gravity;
 
-    if ((gSaveContext.cutsceneTrigger != 1) && (globalCtx->csCtx.state == CS_STATE_IDLE)) {
+    if ((gSaveContext.cutsceneTrigger != 1) && (play->csCtx.state == CS_STATE_IDLE)) {
         this->actionFunc = func_80AF6B20;
         return;
     }
-    csAction = globalCtx->csCtx.npcActions[1];
+    csAction = play->csCtx.npcActions[1];
     if (csAction != NULL) {
         func_80AF6130(csAction, &startPos);
         func_80AF6170(csAction, &endPos);
@@ -697,12 +697,12 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
         this->actor.shape.rot.z = csAction->urot.z;
         this->actor.velocity = D_80AF7448;
 
-        if (globalCtx->csCtx.frames < csAction->endFrame) {
+        if (play->csCtx.frames < csAction->endFrame) {
             temp_f0 = csAction->endFrame - csAction->startFrame;
             this->actor.velocity.x = (endPos.x - startPos.x) / temp_f0;
             this->actor.velocity.y = (endPos.y - startPos.y) / temp_f0;
             gravity = this->actor.gravity;
-            if (globalCtx->sceneNum == SCENE_SPOT05) {
+            if (play->sceneNum == SCENE_SPOT05) {
                 gravity = 0.0f;
             }
             this->actor.velocity.y += gravity;
@@ -714,13 +714,13 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AF6B20(EnSa* this, GlobalContext* globalCtx) {
-    if (globalCtx->sceneNum == SCENE_SPOT05) {
-        Item_Give(globalCtx, ITEM_SONG_SARIA);
+void func_80AF6B20(EnSa* this, PlayState* play) {
+    if (play->sceneNum == SCENE_SPOT05) {
+        Item_Give(play, ITEM_SONG_SARIA);
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);
     }
 
-    if (globalCtx->sceneNum == SCENE_SPOT04) {
+    if (play->sceneNum == SCENE_SPOT04) {
         EnSa_ChangeAnim(this, ENSA_ANIM1_4);
         this->actor.world.pos = this->actor.home.pos;
         this->actor.world.rot = this->unk_21A;
@@ -731,12 +731,12 @@ void func_80AF6B20(EnSa* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80AF6448;
 }
 
-void EnSa_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSa_Update(Actor* thisx, PlayState* play) {
     EnSa* this = (EnSa*)thisx;
     s32 pad;
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     SkelAnime_Update(&this->skelAnime);
 
     if (this->skelAnime.animation == &gSariaOcarinaToMouthAnim &&
@@ -746,10 +746,10 @@ void EnSa_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->actionFunc != func_80AF68E4) {
         if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
-            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 32767);
+            this->alpha = func_80034DD4(&this->actor, play, this->alpha, 32767);
         }
         else {
-            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 400.0f);
+            this->alpha = func_80034DD4(&this->actor, play, this->alpha, 400.0f);
         }
     } else {
         this->alpha = 255;
@@ -765,17 +765,17 @@ void EnSa_Update(Actor* thisx, GlobalContext* globalCtx) {
         func_8002D7EC(&this->actor);
     }
 
-    if (globalCtx->sceneNum != SCENE_SPOT05) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+    if (play->sceneNum != SCENE_SPOT05) {
+        Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     }
 
     func_80AF609C(this);
-    this->actionFunc(this, globalCtx);
-    func_80AF57D8(this, globalCtx);
-    func_80AF5F34(this, globalCtx);
+    this->actionFunc(this, play);
+    func_80AF57D8(this, play);
+    func_80AF5F34(this, play);
 }
 
-s32 EnSa_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+s32 EnSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
                           Gfx** gfx) {
     EnSa* this = (EnSa*)thisx;
     s32 pad;
@@ -795,14 +795,14 @@ s32 EnSa_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
         Matrix_RotateX(BINANG_TO_RAD(sp18.x), MTXMODE_APPLY);
     }
 
-    if (globalCtx->sceneNum == SCENE_SPOT05 && limbIndex == 15) {
+    if (play->sceneNum == SCENE_SPOT05 && limbIndex == 15) {
         *dList = gSariaRightHandAndOcarinaDL;
     }
 
     return 0;
 }
 
-void EnSa_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
+void EnSa_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnSa* this = (EnSa*)thisx;
     Vec3f D_80AF7454 = { 400.0, 0.0f, 0.0f };
 
@@ -811,7 +811,7 @@ void EnSa_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
     }
 }
 
-void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnSa_Draw(Actor* thisx, PlayState* play) {
     static void* mouthTextures[] = {
         gSariaMouthClosed2Tex,  gSariaMouthSmilingOpenTex, gSariaMouthFrowningTex,
         gSariaMouthSuprisedTex, gSariaMouthClosedTex,
@@ -821,19 +821,19 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnSa* this = (EnSa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->rightEyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTextures[this->leftEyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(mouthTextures[this->mouthIndex]));
-        func_80034BA0(globalCtx, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
+        func_80034BA0(play, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
     } else if (this->alpha != 0) {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->rightEyeIndex]));
         gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTextures[this->leftEyeIndex]));
         gSPSegment(POLY_XLU_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(mouthTextures[this->mouthIndex]));
-        func_80034CC4(globalCtx, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
+        func_80034CC4(play, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

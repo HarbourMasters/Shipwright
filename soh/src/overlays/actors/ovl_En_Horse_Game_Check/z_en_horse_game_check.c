@@ -43,10 +43,10 @@ typedef enum {
     /* 4 */ MALONRACE_FAILURE
 } HorseGameMalonRaceResult;
 
-void EnHorseGameCheck_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGameCheck_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGameCheck_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnHorseGameCheck_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHorseGameCheck_Init(Actor* thisx, PlayState* play);
+void EnHorseGameCheck_Destroy(Actor* thisx, PlayState* play);
+void EnHorseGameCheck_Update(Actor* thisx, PlayState* play);
+void EnHorseGameCheck_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Horse_Game_Check_InitVars = {
     ACTOR_EN_HORSE_GAME_CHECK,
@@ -79,7 +79,7 @@ static Vec3f sFencePos[] = {
     { -939.0f, 1.0f, 455.0f },    { -1644.0f, -21.0f, -1035.0f },
 };
 
-s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckIngoRace* this = (EnHorseGameCheckIngoRace*)base;
     s32 i;
 
@@ -89,7 +89,7 @@ s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, GlobalContext* glo
         this->playerCheck[i] = 0;
     }
     this->ingoHorse =
-        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003);
 
     if (this->ingoHorse == NULL) {
         LOG_HUNGUP_THREAD();
@@ -103,39 +103,39 @@ s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, GlobalContext* glo
     return true;
 }
 
-s32 EnHorseGameCheck_DestroyIngoRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_DestroyIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
     return true;
 }
 
-void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, GlobalContext* globalCtx) {
+void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, PlayState* play) {
     gSaveContext.cutsceneIndex = 0;
     if (this->result == INGORACE_PLAYER_WIN) {
-        globalCtx->nextEntranceIndex = 0x4CE;
+        play->nextEntranceIndex = 0x4CE;
         if (gSaveContext.eventInf[0] & 0x40) {
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 6;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
-            globalCtx->fadeTransition = 3;
+            play->fadeTransition = 3;
             Environment_ForcePlaySequence(NA_BGM_INGO);
         } else {
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 4;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             Environment_ForcePlaySequence(NA_BGM_INGO);
-            globalCtx->fadeTransition = 0x2E;
+            play->fadeTransition = 0x2E;
         }
     } else {
-        globalCtx->nextEntranceIndex = 0x558;
+        play->nextEntranceIndex = 0x558;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 3;
-        globalCtx->fadeTransition = 0x20;
+        play->fadeTransition = 0x20;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
     }
     DREG(25) = 0;
-    globalCtx->sceneLoadFlag = 0x14;
+    play->sceneLoadFlag = 0x14;
     gSaveContext.timer1State = 0;
 }
 
-s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckIngoRace* this = (EnHorseGameCheckIngoRace*)base;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 i;
     EnHorse* ingoHorse;
     EnHorse* horse;
@@ -219,13 +219,13 @@ s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, GlobalContext* g
         if (this->finishTimer > 0) {
             this->finishTimer--;
         } else {
-            EnHorseGameCheck_FinishIngoRace(this, globalCtx);
+            EnHorseGameCheck_FinishIngoRace(this, play);
         }
     }
     return true;
 }
 
-s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
 
     this->base.type = HORSEGAME_GERUDO_ARCHERY;
@@ -234,13 +234,13 @@ s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, GlobalContext
     return true;
 }
 
-s32 EnHorseGameCheck_DestroyGerudoArchery(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_DestroyGerudoArchery(EnHorseGameCheckBase* base, PlayState* play) {
     return true;
 }
 
-s32 EnHorseGameCheck_UpdateGerudoArchery(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_UpdateGerudoArchery(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     EnHorse* horse = (EnHorse*)player->rideActor;
 
     if (horse == NULL) {
@@ -248,14 +248,14 @@ s32 EnHorseGameCheck_UpdateGerudoArchery(EnHorseGameCheckBase* base, GlobalConte
     }
 
     if (this->startTimer > 90) {
-        if (globalCtx) {}
+        if (play) {}
         horse->hbaStarted = 1;
     }
     this->startTimer++;
     return true;
 }
 
-s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheck3* this = (EnHorseGameCheck3*)base;
 
     this->base.type = HORSEGAME_TYPE3;
@@ -263,15 +263,15 @@ s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, GlobalContext* global
     return true;
 }
 
-s32 EnHorseGameCheck_DestroyType3(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_DestroyType3(EnHorseGameCheckBase* base, PlayState* play) {
     return true;
 }
 
-s32 EnHorseGameCheck_UpdateType3(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_UpdateType3(EnHorseGameCheckBase* base, PlayState* play) {
     return true;
 }
 
-s32 EnHorseGameCheck_InitMalonRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_InitMalonRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckMalonRace* this = (EnHorseGameCheckMalonRace*)base;
     s32 i;
 
@@ -286,37 +286,37 @@ s32 EnHorseGameCheck_InitMalonRace(EnHorseGameCheckBase* base, GlobalContext* gl
     return true;
 }
 
-s32 EnHorseGameCheck_DestroyMalonRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_DestroyMalonRace(EnHorseGameCheckBase* base, PlayState* play) {
     return true;
 }
 
-void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, GlobalContext* globalCtx) {
+void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, PlayState* play) {
     if ((this->result == MALONRACE_SUCCESS) || (this->result == MALONRACE_TIME_UP)) {
         gSaveContext.cutsceneIndex = 0;
-        globalCtx->nextEntranceIndex = 0x4CE;
-        globalCtx->fadeTransition = 0x2E;
-        globalCtx->sceneLoadFlag = 0x14;
+        play->nextEntranceIndex = 0x4CE;
+        play->fadeTransition = 0x2E;
+        play->sceneLoadFlag = 0x14;
     } else if (this->result == MALONRACE_FAILURE) {
         gSaveContext.timer1Value = 240;
         gSaveContext.timer1State = 0xF;
         gSaveContext.cutsceneIndex = 0;
-        globalCtx->nextEntranceIndex = 0x4CE;
-        globalCtx->fadeTransition = 0x2E;
-        globalCtx->sceneLoadFlag = 0x14;
+        play->nextEntranceIndex = 0x4CE;
+        play->fadeTransition = 0x2E;
+        play->sceneLoadFlag = 0x14;
     } else {
         // "not supported"
         osSyncPrintf("En_HGC_Spot20_Ta_end():対応せず\n");
         gSaveContext.cutsceneIndex = 0;
-        globalCtx->nextEntranceIndex = 0x157;
-        globalCtx->fadeTransition = 0x2E;
-        globalCtx->sceneLoadFlag = 0x14;
+        play->nextEntranceIndex = 0x157;
+        play->fadeTransition = 0x2E;
+        play->sceneLoadFlag = 0x14;
     }
 }
 
-s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, GlobalContext* globalCtx) {
+s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckMalonRace* this = (EnHorseGameCheckMalonRace*)base;
     s32 i;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     EnHorse* horse;
 
     if (!(this->raceFlags & MALONRACE_PLAYER_ON_MARK) && AT_FINISH_LINE(player->rideActor)) {
@@ -360,7 +360,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, GlobalContext* 
 
                     if ((this->fenceCheck[i - 1] == 0) && !(this->raceFlags & MALONRACE_BROKE_RULE)) {
                         this->raceFlags |= MALONRACE_BROKE_RULE;
-                        Message_StartTextbox(globalCtx, 0x208C, NULL);
+                        Message_StartTextbox(play, 0x208C, NULL);
                         this->result = 4;
                         this->finishTimer = 30;
                     }
@@ -371,7 +371,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, GlobalContext* 
             AT_FINISH_LINE(player2->rideActor)) {
             if ((this->lapCount == 1) && (this->fenceCheck[15] == 0) && (player2->rideActor->prevPos.x < -200.0f)) {
                 this->raceFlags |= MALONRACE_BROKE_RULE;
-                Message_StartTextbox(globalCtx, 0x208C, NULL);
+                Message_StartTextbox(play, 0x208C, NULL);
                 this->result = MALONRACE_FAILURE;
                 this->finishTimer = 30;
             } else if (this->fenceCheck[15] == 1) {
@@ -384,15 +384,15 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, GlobalContext* 
             } else if ((this->fenceCheck[7] == 1) && !(this->raceFlags & MALONRACE_SECOND_LAP)) {
                 this->lapCount = 1;
                 this->raceFlags |= MALONRACE_SECOND_LAP;
-                Message_StartTextbox(globalCtx, 0x208D, NULL);
+                Message_StartTextbox(play, 0x208D, NULL);
             } else if (this->fenceCheck[7] == 0) {
                 this->raceFlags |= MALONRACE_BROKE_RULE;
-                Message_StartTextbox(globalCtx, 0x208C, NULL);
+                Message_StartTextbox(play, 0x208C, NULL);
                 this->result = MALONRACE_FAILURE;
                 this->finishTimer = 30;
             } else if (player2->rideActor->prevPos.x > 80.0f) {
                 this->raceFlags |= MALONRACE_BROKE_RULE;
-                Message_StartTextbox(globalCtx, 0x208C, NULL);
+                Message_StartTextbox(play, 0x208C, NULL);
                 this->result = MALONRACE_FAILURE;
                 this->finishTimer = 30;
             }
@@ -407,7 +407,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, GlobalContext* 
         if (this->finishTimer > 0) {
             this->finishTimer--;
         } else {
-            EnHorseGameCheck_FinishMalonRace(this, globalCtx);
+            EnHorseGameCheck_FinishMalonRace(this, play);
         }
     }
     return true;
@@ -437,35 +437,35 @@ static EnHorseGameCheckFunc sUpdateFuncs[] = {
     EnHorseGameCheck_UpdateMalonRace,
 };
 
-void EnHorseGameCheck_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGameCheck_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnHorseGameCheckBase* this = (EnHorseGameCheckBase*)thisx;
 
-    if ((globalCtx->sceneNum == SCENE_SPOT20) && (Flags_GetEventChkInf(0x18) || DREG(1))) {
+    if ((play->sceneNum == SCENE_SPOT20) && (Flags_GetEventChkInf(0x18) || DREG(1))) {
         this->actor.params = HORSEGAME_MALON_RACE;
     }
     if (sInitFuncs[this->actor.params] != NULL) {
-        sInitFuncs[this->actor.params](this, globalCtx);
+        sInitFuncs[this->actor.params](this, play);
     }
 }
 
-void EnHorseGameCheck_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGameCheck_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnHorseGameCheckBase* this = (EnHorseGameCheckBase*)thisx;
 
     if (sDestroyFuncs[this->actor.params] != NULL) {
-        sDestroyFuncs[this->actor.params](this, globalCtx);
+        sDestroyFuncs[this->actor.params](this, play);
     }
 }
 
-void EnHorseGameCheck_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGameCheck_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnHorseGameCheckBase* this = (EnHorseGameCheckBase*)thisx;
 
     if (sUpdateFuncs[this->type] != NULL) {
-        sUpdateFuncs[this->type](this, globalCtx);
+        sUpdateFuncs[this->type](this, play);
     }
 }
 
-void EnHorseGameCheck_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnHorseGameCheck_Draw(Actor* thisx, PlayState* play) {
 }

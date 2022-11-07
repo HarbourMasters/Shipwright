@@ -6,7 +6,7 @@
 
 struct EfcErupc;
 
-typedef void (*EfcErupcActionFunc)(struct EfcErupc*, GlobalContext*);
+typedef void (*EfcErupcActionFunc)(struct EfcErupc*, PlayState*);
 
 typedef struct {
     /* 0x00 */ Vec3f pos;

@@ -6,7 +6,7 @@
 
 struct BossGanon;
 
-typedef void (*BossGanonActionFunc)(struct BossGanon*, GlobalContext*);
+typedef void (*BossGanonActionFunc)(struct BossGanon*, PlayState*);
 
 typedef enum {
     /*  0 */ GDF_FWORK_0,
