@@ -213,6 +213,7 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
                 gSaveContext.infTable[11] |= 2;
                 if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
                     !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+                        //Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
                         gSaveContext.infTable[11] &= ~2;
                     }
             case 2:
