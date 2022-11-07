@@ -131,7 +131,7 @@ void func_80A89160(EnJs* this, PlayState* play) {
     } else {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && 
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
-            GiveItemEntryFromActor(&this->actor, globalCtx,
+            GiveItemEntryFromActor(&this->actor, play,
                 Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10), 90.0f, 10.0f);
                 Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
         } else {
