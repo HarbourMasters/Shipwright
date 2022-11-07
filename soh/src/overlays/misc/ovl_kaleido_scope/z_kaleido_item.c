@@ -369,11 +369,11 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
                              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
                             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            INV_CONTENT(ITEM_TRADE_CHILD) = GetNextChildTradeItem(globalCtx, 1);
+                            INV_CONTENT(ITEM_TRADE_CHILD) = GetNextChildTradeItem(1);
                         } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
                                     dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
                             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            INV_CONTENT(ITEM_TRADE_CHILD) = GetNextChildTradeItem(globalCtx, 0);
+                            INV_CONTENT(ITEM_TRADE_CHILD) = GetNextChildTradeItem(0);
                         }
                         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
                             if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD) {

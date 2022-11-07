@@ -1809,7 +1809,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
-extern "C" u8 GetNextChildTradeItem(GlobalContext* globalCtx, u8 forward) {
+extern "C" u8 GetNextChildTradeItem(u8 forward) {
     std::vector<u8> possibleItems;
 
     if (gSaveContext.sohStats.weirdEggHasHatched) {
