@@ -307,15 +307,19 @@ namespace SohImGui {
         }
     }
 
-    bool UseViewports() {
+    bool SupportsViewports() {
         switch (impl.backend) {
         case Backend::DX11:
-            return CVar_GetS32("gEnableMultiViewports", 1);
+            return true;
         case Backend::SDL:
-            return CVar_GetS32("gEnableMultiViewports", 1);
+            return true;
         default:
             return false;
         }
+    }
+
+    bool UseViewports() {
+        return SupportsViewports() && CVar_GetS32("gEnableMultiViewports", 1);
     }
 
     void LoadTexture(const std::string& name, const std::string& path) {

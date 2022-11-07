@@ -658,12 +658,12 @@ namespace GameMenuBar {
                     ImGui::EndCombo();
                 }
 
-            #ifndef __WIIU__
-                UIWidgets::Spacer(0);
+                if (SohImGui::SupportsViewports()) {
+                    UIWidgets::Spacer(0);
 
-                UIWidgets::EnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports");
-                UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
-            #endif
+                    UIWidgets::EnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports");
+                    UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
+                }
 
                 EXPERIMENTAL();
 
