@@ -668,10 +668,7 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
             return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]);
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
-            // Magic to flip an index `flag` to a lookup for 16bit little endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + (1 - ((flag % 16) / 8) * 8);
-            mask = 0x8000 >> shift;
-            return gSaveContext.eventChkInf[flag / 16] & mask;
+            return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
         case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
             return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
         case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
