@@ -189,6 +189,7 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
@@ -1816,32 +1817,41 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
-extern "C" u8 GetNextChildTradeItem(PlayState* play, u8 forward) {
+extern "C" u8 GetNextChildTradeItem(u8 forward) {
     std::vector<u8> possibleItems;
 
-    if (gSaveContext.sohStats.weirdEggHasHatched) {
-        possibleItems.push_back(ITEM_CHICKEN);
-    // If weird egg hasn't hatched yet but been obtained
-    } else if (gSaveContext.eventChkInf[1] & 0x4) {
-        possibleItems.push_back(ITEM_WEIRD_EGG);
+    // If talon has not be woken up
+    if (!(gSaveContext.eventChkInf[1] & 0x8)) {
+        if (gSaveContext.sohStats.weirdEggHasHatched) {
+            possibleItems.push_back(ITEM_CHICKEN);
+        // If weird egg hasn't hatched yet but been obtained
+        } else if (gSaveContext.sohStats.hasObtainedWeirdEgg) {
+            possibleItems.push_back(ITEM_WEIRD_EGG);
+        }
     }
 
     // Obtained Zelda's Letter
     if (gSaveContext.eventChkInf[4] & 1) possibleItems.push_back(ITEM_LETTER_ZELDA);
-    // Obtained Keaton Mask
-    if (gSaveContext.itemGetInf[2] & 0x8) possibleItems.push_back(ITEM_MASK_KEATON);
-    // Obtained Skull Mask
-    if (gSaveContext.itemGetInf[2] & 0x10) possibleItems.push_back(ITEM_MASK_SKULL);
-    // Obtained Spooky Mask
-    if (gSaveContext.itemGetInf[2] & 0x20) possibleItems.push_back(ITEM_MASK_SPOOKY);
-    // Obtained Bunny Hood
-    if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
-    // Sold All Masks
-    if (gSaveContext.itemGetInf[3] & 0x8000) {
-        possibleItems.push_back(ITEM_MASK_GORON);
-        possibleItems.push_back(ITEM_MASK_ZORA);
-        possibleItems.push_back(ITEM_MASK_GERUDO);
-        possibleItems.push_back(ITEM_MASK_TRUTH);
+    // If Zelda's letter has been shown to Kak guard or Complete Mask Quest is enabled
+    if (gSaveContext.infTable[7] & 0x80 || Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+        // Obtained Keaton Mask
+        if (gSaveContext.itemGetInf[2] & 0x8) possibleItems.push_back(ITEM_MASK_KEATON);
+        // Obtained Skull Mask
+        if (gSaveContext.itemGetInf[2] & 0x10) possibleItems.push_back(ITEM_MASK_SKULL);
+        // Obtained Spooky Mask
+        if (gSaveContext.itemGetInf[2] & 0x20) possibleItems.push_back(ITEM_MASK_SPOOKY);
+        // Obtained Bunny Hood
+        if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
+        // Sold All Masks
+        if (gSaveContext.itemGetInf[3] & 0x8000) {
+            possibleItems.push_back(ITEM_MASK_GORON);
+            possibleItems.push_back(ITEM_MASK_ZORA);
+            possibleItems.push_back(ITEM_MASK_GERUDO);
+            possibleItems.push_back(ITEM_MASK_TRUTH);
+        }
+    // Special case for bunny hood, if we want to start with it we don't care about happy mask shop status
+    } else if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
+        if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
     }
 
     if (possibleItems.size() == 0) {
