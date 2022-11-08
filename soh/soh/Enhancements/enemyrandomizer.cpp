@@ -176,9 +176,15 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
 
 extern "C" uint8_t IsEnemyAllowedToSpawn(PlayState* play, enemyEntry enemy) {
 
-    // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
-    // becoming impossible to kill
     switch (play->sceneNum) {
+        // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
+        // Shadow Temple, Gerudo Training Ground and Death Mountain Crater. 
+        case SCENE_HAKADAN:
+        case SCENE_MEN:
+        case SCENE_SPOT17:
+            return (enemy.enemyId != ACTOR_EN_TORCH2);
+        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
+        // becoming impossible to kill
         case SCENE_GANON:
         case SCENE_GANON_SONOGO:
             return (enemy.enemyId != ACTOR_EN_CLEAR_TAG && enemy.enemyId != ACTOR_EN_VALI && !(enemy.enemyId == ACTOR_EN_ZF && enemy.enemyParam == -1));
