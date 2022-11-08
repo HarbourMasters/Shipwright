@@ -699,6 +699,8 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Accesibility")) {
+                UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera", "gDisableIdleCam", true, false);
+                UIWidgets::Tooltip("Disables the automatic movement of the camera when idle.");
                 UIWidgets::PaddedEnhancementCheckbox("Easier Interactions", "gAccessibleInteraction", true, false);
                 UIWidgets::Tooltip("Makes it easier to interact with objects by allowing you to interact from any direction.");
                 UIWidgets::PaddedEnhancementCheckbox("Target More Actors", "gMoreTargets", true, false);
