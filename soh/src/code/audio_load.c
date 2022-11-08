@@ -5,6 +5,7 @@
 #include "ultra64.h"
 #include "global.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/sfx-editor/SfxEditor.h"
 
 #define MK_ASYNC_MSG(retData, tableType, id, status) (((retData) << 24) | ((tableType) << 16) | ((id) << 8) | (status))
 #define ASYNC_TBLTYPE(v) ((u8)(v >> 16))
@@ -1313,6 +1314,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         int j = i - startingSeqNum;
+        SfxEditor_AddSequence(customSeqList[j], i);
         SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
         sDat.seqNumber = i;
 

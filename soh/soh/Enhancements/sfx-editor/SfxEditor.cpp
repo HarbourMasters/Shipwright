@@ -356,16 +356,19 @@ void DrawSfxEditor(bool& open) {
 }
 
 void InitSfxEditor() {
-    uint16_t startingSeqNum = 110;
-    auto customSeqList = OTRGlobals::Instance->ListFiles("assets/audio/sequences/*");
-
-    for (auto customSeq : *customSeqList) {
-        const uint16_t seqNum = startingSeqNum;
-        std::vector<std::string> splitName = StringHelper::Split(customSeq, "/");
-        auto tuple = std::make_tuple(splitName[splitName.size() - 1], splitName[splitName.size() - 1], SEQ_BGM_WORLD);
-        sequenceMap.emplace(seqNum, tuple);
-        startingSeqNum += 1;
-    }
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
+}
+
+extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
+    std::vector<std::string> splitName = StringHelper::Split(otrPath, "/");
+    std::string fileName = splitName[splitName.size() - 2] + "/" + splitName[splitName.size() - 1];
+    std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
+    std::string sequenceName = splitFileName[0];
+    SeqType type = SEQ_BGM_WORLD;
+    if (splitFileName[splitFileName.size() - 1] == "fanfare") {
+        type = SEQ_FANFARE;
+    }
+    auto tuple = std::make_tuple(sequenceName, splitName[splitName.size() - 1], type);
+    sequenceMap.emplace(seqNum, tuple);
 }
