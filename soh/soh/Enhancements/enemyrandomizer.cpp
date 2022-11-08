@@ -42,7 +42,6 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_FLOORMAS, 0 },   // Floormaster
     { ACTOR_EN_RD, 1 },         // Redead (standing)
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
-    { ACTOR_EN_FD, 0 },         // Flare Dancer
     { ACTOR_EN_SB, 0 },         // Shell Blade
     { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
     { ACTOR_EN_RR, 0 },         // Like-Like
@@ -63,6 +62,7 @@ static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     // Doesn't work {ACTOR_EN_POH, 3}, // Poe (composer Flat) (Seems to rely on other objects?)
     // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping up)
     // Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a leever spawner, kills itself too quickly otherwise)
+    // Kinda doesn't work { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps out of bounds a lot, and possible cause of crashes because of spawning a ton of flame actors)
 };
 
 static int enemiesToRandomize[] = {
@@ -96,7 +96,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_FLOORMAS,  // Floormaster
     ACTOR_EN_RD,        // Redead, Gibdo
     ACTOR_EN_SW,        // Skullwalltula
-    ACTOR_EN_FD,        // Flare Dancer
+    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations means it atleast shows up in the game
     ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
