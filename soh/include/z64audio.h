@@ -913,7 +913,7 @@ typedef struct {
     /* 0x342C */ AudioPoolSplit3 temporaryCommonPoolSplit;
     /* 0x3438 */ u8 sampleFontLoadStatus[0x30];
     /* 0x3468 */ u8 fontLoadStatus[0x30];
-    /* 0x3498 */ u8 seqLoadStatus[0x80];
+    /* 0x3498 */ u8 seqLoadStatus[1024];
     /* 0x3518 */ volatile u8 resetStatus;
     /* 0x3519 */ u8 audioResetSpecIdToLoad;
     /* 0x351C */ s32 audioResetFadeOutFramesLeft;
@@ -1105,7 +1105,7 @@ typedef enum {
 typedef struct {
     char* seqData;
     int32_t seqDataSize;
-    uint8_t seqNumber;
+    uint16_t seqNumber;
     uint8_t medium;
     uint8_t cachePolicy;
     int32_t numFonts;

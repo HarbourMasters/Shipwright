@@ -6,13 +6,15 @@
 #include <libultraship/ImGuiImpl.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
+#include "../../OTRGlobals.h"
+#include <Utils/StringHelper.h>
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
 s8 reverbAdd = 0;
 
 //  {originalSequenceId,           {label,                                  sfxKey,                          category},
-const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
+std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
     {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC",             SEQ_BGM_WORLD}},
     {NA_BGM_DUNGEON,               {"Dodongo's Cavern",                    "NA_BGM_DUNGEON",                 SEQ_BGM_WORLD}},
     {NA_BGM_KAKARIKO_ADULT,        {"Kakariko Village (Adult)",            "NA_BGM_KAKARIKO_ADULT",          SEQ_BGM_WORLD}},
@@ -354,6 +356,16 @@ void DrawSfxEditor(bool& open) {
 }
 
 void InitSfxEditor() {
+    uint16_t startingSeqNum = 110;
+    auto customSeqList = OTRGlobals::Instance->ListFiles("assets/audio/sequences/*");
+
+    for (auto customSeq : *customSeqList) {
+        const uint16_t seqNum = startingSeqNum;
+        std::vector<std::string> splitName = StringHelper::Split(customSeq, "/");
+        auto tuple = std::make_tuple(splitName[splitName.size() - 1], splitName[splitName.size() - 1], SEQ_BGM_WORLD);
+        sequenceMap.emplace(seqNum, tuple);
+        startingSeqNum += 1;
+    }
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
 }

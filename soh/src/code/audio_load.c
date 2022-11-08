@@ -76,7 +76,7 @@ void* sUnusedHandler = NULL;
 
 s32 gAudioContextInitalized = false;
 
-char* sequenceMap[256];
+char* sequenceMap[1024];
 char* fontMap[256];
 
 uintptr_t fontStart;
@@ -1306,6 +1306,23 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     }
 
     free(seqList);
+
+    int customSeqListSize = 0;
+    int startingSeqNum = 110; // 109 is the highest vanilla sequence
+    char** customSeqList = ResourceMgr_ListFiles("assets/audio/sequences/*", &customSeqListSize);
+
+    for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
+        int j = i - startingSeqNum;
+        SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
+        sDat.seqNumber = i;
+
+        char* str = malloc(strlen(customSeqList[j]) + 1);
+        strcpy(str, customSeqList[j]);
+
+        sequenceMap[sDat.seqNumber] = str;
+    }
+
+    free(customSeqList);
 
     int fntListSize = 0;
     char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);

@@ -138,8 +138,7 @@ static void ExporterProgramEnd()
                     std::getline(metaFile, metaName);
                     std::string metaFontIdx;
                     if (std::getline(metaFile, metaFontIdx)) {
-                        std::istringstream fontIdxStream(metaFontIdx);
-                        fontIdxStream >> fontIdx;
+                        fontIdx = stoi(metaFontIdx, nullptr, 0);
                     }
                     std::string type;
                     if (!std::getline(metaFile, type)) {
@@ -149,6 +148,10 @@ static void ExporterProgramEnd()
                     auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx);
                     printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
                     otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+                } else if (extension == "otf" || extension == "ttf" || extension == "png") {
+                    auto fileData = File::ReadAllBytes(item);
+                    printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
+                    otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
                 }
             } else {
                 auto fileData = File::ReadAllBytes(item);
