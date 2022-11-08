@@ -6,7 +6,7 @@
 
 struct EnIceHono;
 
-typedef void (*EnIceHonoActionFunc)(struct EnIceHono*, GlobalContext*);
+typedef void (*EnIceHonoActionFunc)(struct EnIceHono*, PlayState*);
 
 typedef struct EnIceHono {
     /* 0x0000 */ Actor actor;

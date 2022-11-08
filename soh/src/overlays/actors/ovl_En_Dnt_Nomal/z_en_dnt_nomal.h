@@ -6,7 +6,7 @@
 
 struct EnDntNomal;
 
-typedef void (*EnDntNomalActionFunc)(struct EnDntNomal*, GlobalContext*);
+typedef void (*EnDntNomalActionFunc)(struct EnDntNomal*, PlayState*);
 
 typedef struct EnDntNomal {
     /* 0x0000 */ Actor actor;

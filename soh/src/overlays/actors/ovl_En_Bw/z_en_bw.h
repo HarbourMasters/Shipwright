@@ -5,7 +5,7 @@
 #include "global.h"
 
 struct EnBw;
-typedef void (*EnBwActionFunc)(struct EnBw*, GlobalContext*);
+typedef void (*EnBwActionFunc)(struct EnBw*, PlayState*);
 
 typedef struct EnBw {
     /* 0x0000 */ Actor actor;

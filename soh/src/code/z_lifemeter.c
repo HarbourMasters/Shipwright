@@ -123,8 +123,8 @@ s16 sBeatingHeartsDDEnv[3];
 s16 sHeartsDDPrim[2][3];
 s16 sHeartsDDEnv[2][3];
 
-void HealthMeter_Init(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+void HealthMeter_Init(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
     if (CVar_GetS32("gHudColors", 1) == 2) {
         HeartInner = CVar_GetRGB("gCCHeartsPrim", HeartInner_ori);
         HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
@@ -169,8 +169,8 @@ void HealthMeter_Init(GlobalContext* globalCtx) {
     sHeartsDDEnv[0][2] = sHeartsDDEnv[1][2] = HeartDDInner.b;
 }
 
-void HealthMeter_Update(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+void HealthMeter_Update(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
     f32 factor = interfaceCtx->unk_1FE * 0.1f;
     f32 ddFactor;
     s32 type = 0;
@@ -328,13 +328,13 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
 
 }
 
-s32 func_80078E18(GlobalContext* globalCtx) {
-    gSaveContext.health = globalCtx->interfaceCtx.unk_226;
+s32 func_80078E18(PlayState* play) {
+    gSaveContext.health = play->interfaceCtx.unk_226;
     return 1;
 }
 
-s32 func_80078E34(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+s32 func_80078E34(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     interfaceCtx->unk_228 = 0x140;
     interfaceCtx->unk_226 += 0x10;
@@ -347,8 +347,8 @@ s32 func_80078E34(GlobalContext* globalCtx) {
     return 0;
 }
 
-s32 func_80078E84(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+s32 func_80078E84(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     if (interfaceCtx->unk_228 != 0) {
         interfaceCtx->unk_228--;
@@ -357,7 +357,7 @@ s32 func_80078E84(GlobalContext* globalCtx) {
         interfaceCtx->unk_226 -= 0x10;
         if (interfaceCtx->unk_226 <= 0) {
             interfaceCtx->unk_226 = 0;
-            globalCtx->damagePlayer(globalCtx, -(gSaveContext.health + 1));
+            play->damagePlayer(play, -(gSaveContext.health + 1));
             return 1;
         }
     }
@@ -419,7 +419,7 @@ s16 getHealthMeterYOffset() {
     }
 }
 
-void HealthMeter_Draw(GlobalContext* globalCtx) {
+void HealthMeter_Draw(PlayState* play) {
     s32 pad[5];
     void* heartBgImg;
     u32 curColorSet;
@@ -431,8 +431,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     f32 temp2;
     f32 temp3;
     f32 temp4;
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     Vtx* sp154 = interfaceCtx->beatingHeartVtx;
     s32 curHeartFraction = gSaveContext.health % 0x10;
     s16 totalHeartCount = gSaveContext.healthCapacity / 0x10;
@@ -673,16 +673,16 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void HealthMeter_HandleCriticalAlarm(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
+void HealthMeter_HandleCriticalAlarm(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     if (interfaceCtx->unk_22C != 0) {
         interfaceCtx->unk_22A--;
         if (interfaceCtx->unk_22A <= 0) {
             interfaceCtx->unk_22A = 0;
             interfaceCtx->unk_22C = 0;
-            if (CVar_GetS32("gLowHpAlarm", 0) == 0 && !Player_InCsMode(globalCtx) && (globalCtx->pauseCtx.state == 0) &&
-            (globalCtx->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Gameplay_InCsMode(globalCtx)) {
+            if (CVar_GetS32("gLowHpAlarm", 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
+            (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Play_InCsMode(play)) {
                 func_80078884(NA_SE_SY_HITPOINT_ALARM);
             }
         }

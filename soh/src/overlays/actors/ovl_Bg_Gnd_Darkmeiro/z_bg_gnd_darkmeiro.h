@@ -6,7 +6,7 @@
 
 struct BgGndDarkmeiro;
 
-typedef void (*BgGndDarkmeiroUpdateFunc)(struct BgGndDarkmeiro*, GlobalContext*);
+typedef void (*BgGndDarkmeiroUpdateFunc)(struct BgGndDarkmeiro*, PlayState*);
 
 typedef struct BgGndDarkmeiro {
     /* 0x0000 */ DynaPolyActor dyna;

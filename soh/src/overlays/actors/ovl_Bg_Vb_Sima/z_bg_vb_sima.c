@@ -10,10 +10,10 @@
 
 #define FLAGS 0
 
-void BgVbSima_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgVbSima_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgVbSima_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgVbSima_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgVbSima_Init(Actor* thisx, PlayState* play);
+void BgVbSima_Destroy(Actor* thisx, PlayState* play);
+void BgVbSima_Update(Actor* thisx, PlayState* play);
+void BgVbSima_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Vb_Sima_InitVars = {
     ACTOR_BG_VB_SIMA,
@@ -32,7 +32,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgVbSima_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgVbSima_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgVbSima* this = (BgVbSima*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -40,14 +40,14 @@ void BgVbSima_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     CollisionHeader_GetVirtual(&gVolvagiaPlatformCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 }
 
-void BgVbSima_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgVbSima_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgVbSima* this = (BgVbSima*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 void BgVbSima_SpawnEmber(BossFdEffect* effect, Vec3f* position, Vec3f* velocity, Vec3f* acceleration, f32 scale) {
@@ -67,7 +67,7 @@ void BgVbSima_SpawnEmber(BossFdEffect* effect, Vec3f* position, Vec3f* velocity,
     }
 }
 
-void BgVbSima_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgVbSima_Update(Actor* thisx, PlayState* play) {
     static Color_RGBA8 colorYellow = { 255, 255, 0, 255 };
     static Color_RGBA8 colorRed = { 255, 10, 0, 255 };
     s32 pad;
@@ -76,7 +76,7 @@ void BgVbSima_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 minus1 = -1.0f;
 
     this->shakeTimer++;
-    if (!Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num)) {
+    if (!Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         s32 signal = bossFd->platformSignal;
 
         if (signal == VBSIMA_COLLAPSE) {
@@ -125,7 +125,7 @@ void BgVbSima_Update(Actor* thisx, GlobalContext* globalCtx) {
                 splashPos.y = -80.0f;
                 splashPos.z = this->dyna.actor.world.pos.z + edgeZ;
 
-                func_8002836C(globalCtx, &splashPos, &splashVel, &splashAcc, &colorYellow, &colorRed,
+                func_8002836C(play, &splashPos, &splashVel, &splashAcc, &colorYellow, &colorRed,
                               (s16)Rand_ZeroFloat(100.0f) + 500, 10, 20);
 
                 for (i2 = 0; i2 < 3; i2++) {
@@ -149,11 +149,11 @@ void BgVbSima_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgVbSima_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+void BgVbSima_Draw(Actor* thisx, PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gVolvagiaPlatformDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

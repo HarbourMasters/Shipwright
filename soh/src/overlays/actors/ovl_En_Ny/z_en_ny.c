@@ -4,24 +4,24 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
 
-void EnNy_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnNy_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnNy_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnNy_Init(Actor* thisx, PlayState* play);
+void EnNy_Destroy(Actor* thisx, PlayState* play);
+void EnNy_Update(Actor* thisx, PlayState* play);
+void EnNy_Draw(Actor* thisx, PlayState* play);
 
-void EnNy_UpdateUnused(Actor* thisx, GlobalContext* globalCtx);
-void EnNy_Move(EnNy* this, GlobalContext* globalCtx);
-void EnNy_Die(EnNy* this, GlobalContext* globalCtx);
+void EnNy_UpdateUnused(Actor* thisx, PlayState* play);
+void EnNy_Move(EnNy* this, PlayState* play);
+void EnNy_Die(EnNy* this, PlayState* play);
 void func_80ABCD40(EnNy* this);
 void func_80ABCDBC(EnNy* this);
-void EnNy_TurnToStone(EnNy* this, GlobalContext* globalCtx);
-void func_80ABD11C(EnNy* this, GlobalContext* globalCtx);
-void func_80ABCE50(EnNy* this, GlobalContext* globalCtx);
-void func_80ABCE90(EnNy* this, GlobalContext* globalCtx);
-void func_80ABCEEC(EnNy* this, GlobalContext* globalCtx);
-void EnNy_UpdateDeath(Actor* thisx, GlobalContext* GlobalContext);
-void EnNy_SetupDie(EnNy* this, GlobalContext* globalCtx);
-void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* GlobalContext);
+void EnNy_TurnToStone(EnNy* this, PlayState* play);
+void func_80ABD11C(EnNy* this, PlayState* play);
+void func_80ABCE50(EnNy* this, PlayState* play);
+void func_80ABCE90(EnNy* this, PlayState* play);
+void func_80ABCEEC(EnNy* this, PlayState* play);
+void EnNy_UpdateDeath(Actor* thisx, PlayState* PlayState);
+void EnNy_SetupDie(EnNy* this, PlayState* play);
+void EnNy_DrawDeathEffect(Actor* thisx, PlayState* PlayState);
 void func_80ABD3B8(EnNy* this, f32, f32);
 
 const ActorInit En_Ny_InitVars = {
@@ -105,15 +105,15 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 30, ICHAIN_STOP),
 };
 
-void EnNy_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_Init(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
 
     this->epoch++;
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.colChkInfo.damageTable = &sDamageTable;
     this->actor.colChkInfo.health = 2;
-    Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sColliderInit, this->elements);
+    Collider_InitJntSph(play, &this->collider);
+    Collider_SetJntSph(play, &this->collider, &this->actor, &sColliderInit, this->elements);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 20.0f);
     this->unk_1CA = 0;
     this->unk_1D0 = 0;
@@ -147,9 +147,9 @@ void EnNy_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnNy_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_Destroy(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
-    Collider_DestroyJntSph(globalCtx, &this->collider);
+    Collider_DestroyJntSph(play, &this->collider);
 }
 
 void func_80ABCD40(EnNy* this) {
@@ -190,13 +190,13 @@ void func_80ABCE38(EnNy* this) {
     this->actionFunc = func_80ABD11C;
 }
 
-void func_80ABCE50(EnNy* this, GlobalContext* globalCtx) {
+void func_80ABCE50(EnNy* this, PlayState* play) {
     if (this->actor.xyzDistToPlayerSq <= 25600.0f) {
         func_80ABCD94(this);
     }
 }
 
-void func_80ABCE90(EnNy* this, GlobalContext* globalCtx) {
+void func_80ABCE90(EnNy* this, PlayState* play) {
     s32 phi_v1;
     s32 phi_v0;
 
@@ -211,7 +211,7 @@ void func_80ABCE90(EnNy* this, GlobalContext* globalCtx) {
     this->unk_1D8 = phi_v0;
 }
 
-void func_80ABCEEC(EnNy* this, GlobalContext* globalCtx) {
+void func_80ABCEEC(EnNy* this, PlayState* play) {
     f32 phi_f0;
 
     phi_f0 = this->unk_1E0;
@@ -223,7 +223,7 @@ void func_80ABCEEC(EnNy* this, GlobalContext* globalCtx) {
     this->unk_1E0 = phi_f0;
 }
 
-void EnNy_Move(EnNy* this, GlobalContext* globalCtx) {
+void EnNy_Move(EnNy* this, PlayState* play) {
     f32 yawDiff;
     s32 stoneTimer;
 
@@ -247,7 +247,7 @@ void EnNy_Move(EnNy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnNy_TurnToStone(EnNy* this, GlobalContext* globalCtx) {
+void EnNy_TurnToStone(EnNy* this, PlayState* play) {
     f32 phi_f0;
 
     phi_f0 = this->unk_1E0;
@@ -267,7 +267,7 @@ void EnNy_TurnToStone(EnNy* this, GlobalContext* globalCtx) {
     this->unk_1E0 = phi_f0;
 }
 
-void func_80ABD11C(EnNy* this, GlobalContext* globalCtx) {
+void func_80ABD11C(EnNy* this, PlayState* play) {
     s32 phi_v0;
     s32 phi_v1;
 
@@ -288,7 +288,7 @@ void func_80ABD11C(EnNy* this, GlobalContext* globalCtx) {
     this->unk_1D8 = phi_v1;
 }
 
-s32 EnNy_CollisionCheck(EnNy* this, GlobalContext* globalCtx) {
+s32 EnNy_CollisionCheck(EnNy* this, PlayState* play) {
     u8 sp3F;
     Vec3f effectPos;
 
@@ -335,10 +335,10 @@ s32 EnNy_CollisionCheck(EnNy* this, GlobalContext* globalCtx) {
                 this->actor.shape.shadowAlpha = 0;
                 this->actor.flags &= ~ACTOR_FLAG_0;
                 this->unk_1D0 = sp3F;
-                Enemy_StartFinishingBlow(globalCtx, &this->actor);
+                Enemy_StartFinishingBlow(play, &this->actor);
                 return 1;
             }
-            EffectSsHitMark_SpawnFixedScale(globalCtx, 0, &effectPos);
+            EffectSsHitMark_SpawnFixedScale(play, 0, &effectPos);
             return 0;
         }
     }
@@ -366,7 +366,7 @@ void func_80ABD3B8(EnNy* this, f32 arg1, f32 arg2) {
     }
 }
 
-void EnNy_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_Update(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
     f32 temp_f20;
     f32 temp_f22;
@@ -385,13 +385,13 @@ void EnNy_Update(Actor* thisx, GlobalContext* globalCtx) {
     func_80ABD3B8(this, temp_f22 + 10.0f, temp_f22 - 10.0f);
     Actor_MoveForward(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->actor.prevPos.y -= temp_f22;
     this->actor.world.pos.y -= temp_f22;
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 60.0f, 7);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 7);
     this->unk_1F0 = temp_f22;
     this->actor.world.pos.y += temp_f22;
-    if (EnNy_CollisionCheck(this, globalCtx) != 0) {
+    if (EnNy_CollisionCheck(this, play) != 0) {
         for (i = 0; i < 8; i++) {
             this->unk_1F8[i].x = (Rand_CenteredFloat(20.0f) + this->actor.world.pos.x);
             this->unk_1F8[i].y = (Rand_CenteredFloat(20.0f) + this->actor.world.pos.y);
@@ -404,13 +404,13 @@ void EnNy_Update(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
     if (this->unk_1E0 > 0.25f) {
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-void EnNy_SetupDie(EnNy* this, GlobalContext* globalCtx) {
+void EnNy_SetupDie(EnNy* this, PlayState* play) {
     s32 effectScale;
     s32 i;
     Vec3f effectPos;
@@ -424,14 +424,14 @@ void EnNy_SetupDie(EnNy* this, GlobalContext* globalCtx) {
                 effectPos.y = Rand_CenteredFloat(30.0f) + this->actor.world.pos.y;
                 effectPos.z = Rand_CenteredFloat(30.0f) + this->actor.world.pos.z;
                 effectScale = Rand_S16Offset(0x50, 0x64);
-                EffectSsDtBubble_SpawnColorProfile(globalCtx, &effectPos, &effectVelocity, &effectAccel, effectScale,
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
                                                    25, 0, 1);
             }
             for (i = 0; i < 0x14; i++) {
                 effectPos.x = Rand_CenteredFloat(30.0f) + this->actor.world.pos.x;
                 effectPos.y = Rand_CenteredFloat(30.0f) + this->actor.world.pos.y;
                 effectPos.z = Rand_CenteredFloat(30.0f) + this->actor.world.pos.z;
-                EffectSsBubble_Spawn(globalCtx, &effectPos, 10.0f, 10.0f, 30.0f, 0.25f);
+                EffectSsBubble_Spawn(play, &effectPos, 10.0f, 10.0f, 30.0f, 0.25f);
             }
         }
         for (i = 0; i < 8; i++) {
@@ -441,16 +441,16 @@ void EnNy_SetupDie(EnNy* this, GlobalContext* globalCtx) {
         }
         this->timer = 0;
         if (this->unk_1D0 == 0) {
-            Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0xA0);
+            Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xA0);
         } else {
-            Item_DropCollectible(globalCtx, &this->actor.world.pos, 8);
+            Item_DropCollectible(play, &this->actor.world.pos, 8);
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NYU_DEAD);
         this->actionFunc = EnNy_Die;
     }
 }
 
-void EnNy_Die(EnNy* this, GlobalContext* globalCtx) {
+void EnNy_Die(EnNy* this, PlayState* play) {
     s32 i;
 
     if (this->actor.yDistToWater > 0.0f) {
@@ -482,19 +482,19 @@ void EnNy_Die(EnNy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnNy_UpdateDeath(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_UpdateDeath(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
 
     this->timer++;
     if (this->unk_1CA != 0) {
         this->unk_1CA--;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void EnNy_UpdateUnused(Actor* thisx, GlobalContext* globalCtx2) {
+void EnNy_UpdateUnused(Actor* thisx, PlayState* play2) {
     EnNy* this = (EnNy*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     f32 sp3C;
     f32 temp_f0;
 
@@ -506,12 +506,12 @@ void EnNy_UpdateUnused(Actor* thisx, GlobalContext* globalCtx2) {
     this->actor.prevPos.y -= temp_f0;
     this->actor.world.pos.y -= temp_f0;
 
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 60.0f, 7);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 7);
     this->unk_1F0 = temp_f0;
     this->actor.world.pos.y += temp_f0;
 
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     Actor_MoveForward(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
 }
@@ -522,15 +522,15 @@ static Vec3f sFireOffsets[] = {
     { 0.0f, 0.0f, -5.0f },
 };
 
-void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnNy* this = (EnNy*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     Collider_UpdateSpheres(0, &this->collider);
-    func_8002ED80(&this->actor, globalCtx, 1);
-    func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    func_8002ED80(&this->actor, play, 1);
+    func_80093D84(play->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetRenderMode(POLY_XLU_DISP++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
@@ -542,13 +542,13 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, gEnNyRockBodyDL);
     if (this->unk_1E0 > 0.25f) {
         Matrix_Scale(this->unk_1E0, this->unk_1E0, this->unk_1E0, MTXMODE_APPLY);
-        func_8002EBCC(&this->actor, globalCtx, 1);
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        func_8002EBCC(&this->actor, play, 1);
+        func_80093D18(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gEnNySpikeDL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;
@@ -561,19 +561,19 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
             tempVec.x = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.x + fireOffset->x);
             tempVec.y = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.y + fireOffset->y);
             tempVec.z = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.z + fireOffset->z);
-            EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &tempVec, 100, 0, 0, -1);
+            EffectSsEnFire_SpawnVec3f(play, &this->actor, &tempVec, 100, 0, 0, -1);
         }
     }
 }
 
-void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
+void EnNy_DrawDeathEffect(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
     Vec3f* temp;
     f32 scale;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0x00, 0x00, 0x00, 0xFF);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2);
     gDPPipeSync(POLY_OPA_DISP++);
@@ -584,13 +584,13 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;
@@ -603,7 +603,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             tempVec.x = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.x + fireOffset->x);
             tempVec.y = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.y + fireOffset->y);
             tempVec.z = Rand_CenteredFloat(5.0f) + (this->actor.world.pos.z + fireOffset->z);
-            EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &tempVec, 100, 0, 0, -1);
+            EffectSsEnFire_SpawnVec3f(play, &this->actor, &tempVec, 100, 0, 0, -1);
         }
     }
 }

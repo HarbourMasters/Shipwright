@@ -7,7 +7,7 @@
 struct EnGe1;
 
 typedef void (*EnGe1AnimFunc)(struct EnGe1*);
-typedef void (*EnGe1ActionFunc)(struct EnGe1*, GlobalContext*);
+typedef void (*EnGe1ActionFunc)(struct EnGe1*, PlayState*);
 
 typedef enum {
     /* 0x00 */ GE1_TYPE_GATE_GUARD,

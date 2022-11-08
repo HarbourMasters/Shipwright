@@ -8,12 +8,12 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void MagicFire_Init(Actor* thisx, GlobalContext* globalCtx);
-void MagicFire_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx);
-void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx);
+void MagicFire_Init(Actor* thisx, PlayState* play);
+void MagicFire_Destroy(Actor* thisx, PlayState* play);
+void MagicFire_Update(Actor* thisx, PlayState* play);
+void MagicFire_Draw(Actor* thisx, PlayState* play);
 
-void MagicFire_UpdateBeforeCast(Actor* thisx, GlobalContext* globalCtx);
+void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play);
 
 typedef enum {
     /* 0x00 */ DF_ACTION_INITIALIZE,
@@ -75,7 +75,7 @@ static u8 sVertexIndices[] = {
     14, 20, 21, 23, 28, 30, 33, 34, 40, 41, 43, 48, 50, 55, 57, 62, 64, 65, 73, 74,
 };
 
-void MagicFire_Init(Actor* thisx, GlobalContext* globalCtx) {
+void MagicFire_Init(Actor* thisx, PlayState* play) {
     MagicFire* this = (MagicFire*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -84,24 +84,24 @@ void MagicFire_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionTimer = 0;
     this->alphaMultiplier = -3.0f;
     Actor_SetScale(&this->actor, 0.0f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     this->actor.update = MagicFire_UpdateBeforeCast;
     this->actionTimer = 20;
     this->actor.room = -1;
 }
 
-void MagicFire_Destroy(Actor* thisx, GlobalContext* globalCtx) {
-    func_800876C8(globalCtx);
+void MagicFire_Destroy(Actor* thisx, PlayState* play) {
+    func_800876C8(play);
 }
 
-void MagicFire_UpdateBeforeCast(Actor* thisx, GlobalContext* globalCtx) {
+void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {
     MagicFire* this = (MagicFire*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
-    if ((globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
-        (globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
+    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
+        (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -114,14 +114,14 @@ void MagicFire_UpdateBeforeCast(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.world.pos = player->actor.world.pos;
 }
 
-void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx) {
+void MagicFire_Update(Actor* thisx, PlayState* play) {
     MagicFire* this = (MagicFire*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 pad;
 
     this->actor.world.pos = player->actor.world.pos;
-    if ((globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
-        (globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
+    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
+        (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -134,7 +134,7 @@ void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->collider.dim.radius = (this->actor.scale.x * 325.0f);
     this->collider.dim.height = (this->actor.scale.y * 450.0f);
     this->collider.dim.yShift = (this->actor.scale.y * -225.0f);
-    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
 
     switch (this->action) {
         case DF_ACTION_INITIALIZE:
@@ -209,10 +209,10 @@ void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void MagicFire_Draw(Actor* thisx, PlayState* play) {
     MagicFire* this = (MagicFire*)thisx;
     s32 pad1;
-    u32 gameplayFrames = globalCtx->gameplayFrames;
+    u32 gameplayFrames = play->gameplayFrames;
     s32 pad2;
     s32 i;
     u8 alpha;
@@ -222,7 +222,7 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGB8 Spell_col = CVar_GetRGB("gDF_Col", Spell_col_ori);
 
     if (this->action > 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
         POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (u8)(s32)(60 * this->screenTintIntensity),
                         (u8)(s32)(20 * this->screenTintIntensity), (u8)(s32)(0 * this->screenTintIntensity),
@@ -230,7 +230,7 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
         if (CVar_GetS32("gUseSpellsCol",0)) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
@@ -239,7 +239,7 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env_ori.r, Spell_env_ori.g, Spell_env_ori.b, (u8)(this->alphaMultiplier * 255));
         }
         Matrix_Scale(0.15f, 0.15f, 0.15f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_XLU_DISP++);
         gSPTexture(POLY_XLU_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
@@ -251,11 +251,11 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetTileSize(POLY_XLU_DISP++, 1, 0, 0, 252, 252);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (gameplayFrames * 2) % 512,
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, (gameplayFrames * 2) % 512,
                                         511 - ((gameplayFrames * 5) % 512), 64, 64, 1, (gameplayFrames * 2) % 256,
                                         255 - ((gameplayFrames * 20) % 256), 32, 32));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
 
         alpha = (s32)(this->alphaMultiplier * 255);
         Vtx* vertices = ResourceMgr_LoadVtxByName(sSphereVtx);

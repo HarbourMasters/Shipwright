@@ -6,7 +6,7 @@
 
 struct BgMizuBwall;
 
-typedef void (*BgMizuBwallActionFunc)(struct BgMizuBwall*, GlobalContext*);
+typedef void (*BgMizuBwallActionFunc)(struct BgMizuBwall*, PlayState*);
 
 typedef struct BgMizuBwall {
     /* 0x0000 */ DynaPolyActor dyna;

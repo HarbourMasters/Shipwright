@@ -7,16 +7,16 @@
 #include "z_eff_ss_g_magma.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-u32 EffectSsGMagma_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsGMagma_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsGMagma_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsGMagma_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsGMagma_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsGMagma_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_G_Magma_InitVars = {
     EFFECT_SS_G_MAGMA,
     EffectSsGMagma_Init,
 };
 
-u32 EffectSsGMagma_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsGMagma_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGMagmaInitParams* initParams = (EffectSsGMagmaInitParams*)initParamsx;
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
@@ -46,16 +46,16 @@ static void* sTextures[] = {
     gEffMagmaBubble5Tex, gEffMagmaBubble6Tex, gEffMagmaBubble7Tex, gEffMagmaBubble8Tex,
 };
 
-void EffectSsGMagma_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGMagma_Draw(PlayState* play, u32 index, EffectSs* this) {
     s16 texIdx = this->rgTexIdx / 100;
 
     if (texIdx > 7) {
         texIdx = 7;
     }
 
-    EffectSs_DrawGEffect(globalCtx, this, sTextures[texIdx]);
+    EffectSs_DrawGEffect(play, this, sTextures[texIdx]);
 }
 
-void EffectSsGMagma_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsGMagma_Update(PlayState* play, u32 index, EffectSs* this) {
     this->rgTexIdx += this->rgTexIdxStep;
 }

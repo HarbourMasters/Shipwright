@@ -11,10 +11,10 @@
 
 #define FLAGS 0
 
-void BgJyaBombiwa_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaBombiwa_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaBombiwa_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaBombiwa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgJyaBombiwa_Init(Actor* thisx, PlayState* play);
+void BgJyaBombiwa_Destroy(Actor* thisx, PlayState* play);
+void BgJyaBombiwa_Update(Actor* thisx, PlayState* play);
+void BgJyaBombiwa_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Jya_Bombiwa_InitVars = {
     ACTOR_BG_JYA_BOMBIWA,
@@ -63,14 +63,14 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void BgJyaBombiwa_SetupDynaPoly(BgJyaBombiwa* this, GlobalContext* globalCtx, CollisionHeader* collision, s32 flag) {
+void BgJyaBombiwa_SetupDynaPoly(BgJyaBombiwa* this, PlayState* play, CollisionHeader* collision, s32 flag) {
     s16 pad1;
     CollisionHeader* colHeader = NULL;
     s16 pad2;
 
     DynaPolyActor_Init(&this->dyna, flag);
     CollisionHeader_GetVirtual(collision, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
 
         // "Warning: move BG registration failed"
@@ -79,14 +79,14 @@ void BgJyaBombiwa_SetupDynaPoly(BgJyaBombiwa* this, GlobalContext* globalCtx, Co
     }
 }
 
-void BgJyaBombiwa_InitCollider(BgJyaBombiwa* this, GlobalContext* globalCtx) {
+void BgJyaBombiwa_InitCollider(BgJyaBombiwa* this, PlayState* play) {
     s32 pad;
 
-    Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->dyna.actor, &sJntSphInit, this->colliderItems);
+    Collider_InitJntSph(play, &this->collider);
+    Collider_SetJntSph(play, &this->collider, &this->dyna.actor, &sJntSphInit, this->colliderItems);
 }
 
-void BgJyaBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaBombiwa_Init(Actor* thisx, PlayState* play) {
     BgJyaBombiwa* this = (BgJyaBombiwa*)thisx;
 
     if ((this->dyna.actor.params & 0x3F) != 0x29) {
@@ -97,9 +97,9 @@ void BgJyaBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
                      this->dyna.actor.params & 0x3F);
         osSyncPrintf(VT_RST);
     }
-    BgJyaBombiwa_SetupDynaPoly(this, globalCtx, &gBombiwaCol, DPM_UNK);
-    BgJyaBombiwa_InitCollider(this, globalCtx);
-    if (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) {
+    BgJyaBombiwa_SetupDynaPoly(this, play, &gBombiwaCol, DPM_UNK);
+    BgJyaBombiwa_InitCollider(this, play);
+    if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
         Actor_Kill(&this->dyna.actor);
     } else {
         Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -109,14 +109,14 @@ void BgJyaBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgJyaBombiwa_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaBombiwa_Destroy(Actor* thisx, PlayState* play) {
     BgJyaBombiwa* this = (BgJyaBombiwa*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyJntSph(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyJntSph(play, &this->collider);
 }
 
-void BgJyaBombiwa_Break(BgJyaBombiwa* this, GlobalContext* globalCtx) {
+void BgJyaBombiwa_Break(BgJyaBombiwa* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
     s16 arg5;
@@ -151,31 +151,31 @@ void BgJyaBombiwa_Break(BgJyaBombiwa* this, GlobalContext* globalCtx) {
                 arg7 = 80;
             }
         }
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &pos, -400, arg5, arg6, arg7, 0, scale, 1, 20, 80,
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -400, arg5, arg6, arg7, 0, scale, 1, 20, 80,
                              KAKERA_COLOR_NONE, OBJECT_JYA_OBJ, gBombiwaEffectDL);
     }
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y + 70.0f;
     pos.z = this->dyna.actor.world.pos.z;
-    func_80033480(globalCtx, &pos, 100.0f, 0xA, 0x64, 0xA0, 1);
+    func_80033480(play, &pos, 100.0f, 0xA, 0x64, 0xA0, 1);
 }
 
-void BgJyaBombiwa_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaBombiwa_Update(Actor* thisx, PlayState* play) {
     BgJyaBombiwa* this = (BgJyaBombiwa*)thisx;
 
     if (this->collider.base.acFlags & AC_HIT) {
-        BgJyaBombiwa_Break(this, globalCtx);
-        Flags_SetSwitch(globalCtx, this->dyna.actor.params & 0x3F);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
+        BgJyaBombiwa_Break(this, play);
+        Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
         Actor_Kill(&this->dyna.actor);
     } else {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void BgJyaBombiwa_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaBombiwa_Draw(Actor* thisx, PlayState* play) {
     BgJyaBombiwa* this = (BgJyaBombiwa*)thisx;
 
-    Gfx_DrawDListOpa(globalCtx, gBombiwaDL);
+    Gfx_DrawDListOpa(play, gBombiwaDL);
     Collider_UpdateSpheres(0, &this->collider);
 }

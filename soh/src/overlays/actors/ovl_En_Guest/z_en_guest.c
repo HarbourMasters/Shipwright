@@ -11,14 +11,14 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
-void EnGuest_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGuest_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGuest_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnGuest_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnGuest_Init(Actor* thisx, PlayState* play);
+void EnGuest_Destroy(Actor* thisx, PlayState* play);
+void EnGuest_Update(Actor* thisx, PlayState* play);
+void EnGuest_Draw(Actor* thisx, PlayState* play);
 
-void func_80A50518(EnGuest* this, GlobalContext* globalCtx);
-void func_80A5057C(EnGuest* this, GlobalContext* globalCtx);
-void func_80A505CC(Actor* thisx, GlobalContext* globalCtx);
+void func_80A50518(EnGuest* this, PlayState* play);
+void func_80A5057C(EnGuest* this, PlayState* play);
+void func_80A505CC(Actor* thisx, PlayState* play);
 
 const ActorInit En_Guest_InitVars = {
     ACTOR_EN_GUEST,
@@ -50,13 +50,13 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 500, ICHAIN_STOP),
 };
 
-void EnGuest_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnGuest_Init(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
     if (gSaveContext.infTable[7] & 0x40) {
         Actor_Kill(&this->actor);
     } else {
-        this->osAnimeBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_OS_ANIME);
+        this->osAnimeBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_OS_ANIME);
         if (this->osAnimeBankIndex < 0) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "No such bank!!"
@@ -67,30 +67,30 @@ void EnGuest_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnGuest_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGuest_Destroy(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnGuest_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnGuest_Update(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
     s32 pad;
 
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->osAnimeBankIndex)) {
+    if (Object_IsLoaded(&play->objectCtx, this->osAnimeBankIndex)) {
         this->actor.flags &= ~ACTOR_FLAG_4;
         Actor_ProcessInitChain(&this->actor, sInitChain);
 
-        SkelAnime_InitFlex(globalCtx, &this->skelAnime, &object_boj_Skel_0000F0, NULL, this->jointTable, this->morphTable, 16);
-        gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[this->osAnimeBankIndex].segment);
+        SkelAnime_InitFlex(play, &this->skelAnime, &object_boj_Skel_0000F0, NULL, this->jointTable, this->morphTable, 16);
+        gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->osAnimeBankIndex].segment);
         Animation_Change(&this->skelAnime, &gObjOsAnim_42AC, 1.0f, 0.0f, Animation_GetLastFrame(&gObjOsAnim_42AC),
                          ANIMMODE_LOOP, 0.0f);
 
         this->actor.draw = EnGuest_Draw;
         this->actor.update = func_80A505CC;
 
-        Collider_InitCylinder(globalCtx, &this->collider);
-        Collider_SetCylinderType1(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+        Collider_InitCylinder(play, &this->collider);
+        Collider_SetCylinderType1(play, &this->collider, &this->actor, &sCylinderInit);
 
         Actor_SetFocus(&this->actor, 60.0f);
 
@@ -125,30 +125,30 @@ void func_80A5046C(EnGuest* this) {
     }
 }
 
-void func_80A50518(EnGuest* this, GlobalContext* globalCtx) {
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+void func_80A50518(EnGuest* this, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80A5057C;
     } else if (this->actor.xzDistToPlayer < 100.0f) {
-        func_8002F2CC(&this->actor, globalCtx, 100.0f);
+        func_8002F2CC(&this->actor, play, 100.0f);
     }
 }
 
-void func_80A5057C(EnGuest* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+void func_80A5057C(EnGuest* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->actionFunc = func_80A50518;
     }
 }
 
-void func_80A505CC(Actor* thisx, GlobalContext* globalCtx) {
+void func_80A505CC(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
     s32 pad;
     Player* player;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     this->unk_2C8++;
 
     func_80A5046C(this);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     this->unk_2A0.unk_18 = player->actor.world.pos;
     if (LINK_IS_ADULT) {
@@ -158,15 +158,15 @@ void func_80A505CC(Actor* thisx, GlobalContext* globalCtx) {
     }
     func_80034A14(&this->actor, &this->unk_2A0, 6, 2);
 
-    func_80034F54(globalCtx, this->unk_2CC, this->unk_2EC, 16);
+    func_80034F54(play, this->unk_2CC, this->unk_2EC, 16);
 
-    gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[this->osAnimeBankIndex].segment);
+    gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->osAnimeBankIndex].segment);
 
     SkelAnime_Update(&this->skelAnime);
     Actor_SetFocus(&this->actor, 60.0f);
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
 Gfx* func_80A50708(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b, u8 a) {
@@ -179,12 +179,12 @@ Gfx* func_80A50708(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b, u8 a) {
     return dlist;
 }
 
-s32 EnGuest_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnGuest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                              void* thisx) {
     EnGuest* this = (EnGuest*)thisx;
     Vec3s sp3C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 15) {
         *dList = object_boj_DL_0059B0;
@@ -206,12 +206,12 @@ s32 EnGuest_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         rot->z += Math_CosS(this->unk_2EC[limbIndex]) * 200.0f;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 
     return false;
 }
 
-void EnGuest_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnGuest_Draw(Actor* thisx, PlayState* play) {
     static void* D_80A50BA4[] = {
         object_boj_Tex_0005FC,
         object_boj_Tex_0006FC,
@@ -220,16 +220,16 @@ void EnGuest_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGuest* this = (EnGuest*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, func_80A50708(globalCtx->state.gfxCtx, 255, 255, 255, 255));
-    gSPSegment(POLY_OPA_DISP++, 0x09, func_80A50708(globalCtx->state.gfxCtx, 160, 60, 220, 255));
+    gSPSegment(POLY_OPA_DISP++, 0x08, func_80A50708(play->state.gfxCtx, 255, 255, 255, 255));
+    gSPSegment(POLY_OPA_DISP++, 0x09, func_80A50708(play->state.gfxCtx, 160, 60, 220, 255));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(D_80A50BA4[this->unk_30E]));
 
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGuest_OverrideLimbDraw, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

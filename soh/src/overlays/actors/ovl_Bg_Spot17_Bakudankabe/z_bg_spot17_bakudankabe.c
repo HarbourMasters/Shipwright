@@ -11,10 +11,10 @@
 
 #define FLAGS 0
 
-void BgSpot17Bakudankabe_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot17Bakudankabe_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot17Bakudankabe_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot17Bakudankabe_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot17Bakudankabe_Init(Actor* thisx, PlayState* play);
+void BgSpot17Bakudankabe_Destroy(Actor* thisx, PlayState* play);
+void BgSpot17Bakudankabe_Update(Actor* thisx, PlayState* play);
+void BgSpot17Bakudankabe_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Spot17_Bakudankabe_InitVars = {
     ACTOR_BG_SPOT17_BAKUDANKABE,
@@ -36,7 +36,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void func_808B6BC0(BgSpot17Bakudankabe* this, GlobalContext* globalCtx) {
+void func_808B6BC0(BgSpot17Bakudankabe* this, PlayState* play) {
     s32 pad[2];
     s32 i;
     Vec3f burstDepthY;
@@ -80,59 +80,59 @@ void func_808B6BC0(BgSpot17Bakudankabe* this, GlobalContext* globalCtx) {
         } else {
             rotationSpeed = 33;
         }
-        EffectSsKakera_Spawn(globalCtx, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E,
+        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E,
                              4, 0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
     }
     Math_Vec3f_Copy(&burstDepthY, &this->dyna.actor.world.pos);
-    func_80033480(globalCtx, &burstDepthY, 60.0f, 4, 110, 160, 1);
+    func_80033480(play, &burstDepthY, 60.0f, 4, 110, 160, 1);
     burstDepthY.y += 40.0f;
-    func_80033480(globalCtx, &burstDepthY, 60.0f, 4, 120, 160, 1);
+    func_80033480(play, &burstDepthY, 60.0f, 4, 120, 160, 1);
     burstDepthY.y += 40.0f;
-    func_80033480(globalCtx, &burstDepthY, 60.0f, 4, 110, 160, 1);
+    func_80033480(play, &burstDepthY, 60.0f, 4, 110, 160, 1);
 }
 
-void BgSpot17Bakudankabe_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot17Bakudankabe_Init(Actor* thisx, PlayState* play) {
     BgSpot17Bakudankabe* this = (BgSpot17Bakudankabe*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params & 0x3F))) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params & 0x3F))) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
 
     CollisionHeader_GetVirtual(&gCraterBombableWallCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
 }
 
-void BgSpot17Bakudankabe_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot17Bakudankabe_Destroy(Actor* thisx, PlayState* play) {
     BgSpot17Bakudankabe* this = (BgSpot17Bakudankabe*)thisx;
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgSpot17Bakudankabe_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot17Bakudankabe_Update(Actor* thisx, PlayState* play) {
     BgSpot17Bakudankabe* this = (BgSpot17Bakudankabe*)thisx;
-    if (this->dyna.actor.xzDistToPlayer < 650.0f && func_80033684(globalCtx, &this->dyna.actor) != NULL) {
-        func_808B6BC0(this, globalCtx);
-        Flags_SetSwitch(globalCtx, (this->dyna.actor.params & 0x3F));
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
+    if (this->dyna.actor.xzDistToPlayer < 650.0f && func_80033684(play, &this->dyna.actor) != NULL) {
+        func_808B6BC0(this, play);
+        Flags_SetSwitch(play, (this->dyna.actor.params & 0x3F));
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         Actor_Kill(&this->dyna.actor);
     }
 }
 
-void BgSpot17Bakudankabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot17Bakudankabe_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
-    s8 r = coss(globalCtx->gameplayFrames * 1500) >> 8;
-    s8 g = coss(globalCtx->gameplayFrames * 1500) >> 8;
+    s8 r = coss(play->gameplayFrames * 1500) >> 8;
+    s8 g = coss(play->gameplayFrames * 1500) >> 8;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     r = (r >> 1) + 0xC0;
@@ -142,15 +142,15 @@ void BgSpot17Bakudankabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_OPA_DISP++, gCraterBombableWallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCraterBombableWallCracksDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

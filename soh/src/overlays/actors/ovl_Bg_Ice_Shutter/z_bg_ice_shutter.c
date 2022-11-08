@@ -9,14 +9,14 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgIceShutter_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShutter_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShutter_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShutter_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgIceShutter_Init(Actor* thisx, PlayState* play);
+void BgIceShutter_Destroy(Actor* thisx, PlayState* play);
+void BgIceShutter_Update(Actor* thisx, PlayState* play);
+void BgIceShutter_Draw(Actor* thisx, PlayState* play);
 
-void func_80891CF4(BgIceShutter* thisx, GlobalContext* globalCtx);
-void func_80891D6C(BgIceShutter* thisx, GlobalContext* globalCtx);
-void func_80891DD4(BgIceShutter* thisx, GlobalContext* globalCtx);
+void func_80891CF4(BgIceShutter* thisx, PlayState* play);
+void func_80891D6C(BgIceShutter* thisx, PlayState* play);
+void func_80891DD4(BgIceShutter* thisx, PlayState* play);
 
 const ActorInit Bg_Ice_Shutter_InitVars = {
     ACTOR_BG_ICE_SHUTTER,
@@ -45,7 +45,7 @@ void func_80891AC0(BgIceShutter* this) {
     this->dyna.actor.world.pos.z = (Math_CosS(this->dyna.actor.shape.rot.y) * sp24) + this->dyna.actor.home.pos.z;
 }
 
-void BgIceShutter_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShutter_Init(Actor* thisx, PlayState* play) {
     BgIceShutter* this = (BgIceShutter*)thisx;
     f32 sp24;
     CollisionHeader* colHeader;
@@ -58,20 +58,20 @@ void BgIceShutter_Init(Actor* thisx, GlobalContext* globalCtx) {
     sp28 = this->dyna.actor.params & 0xFF;
     this->dyna.actor.params = (this->dyna.actor.params >> 8) & 0xFF;
     CollisionHeader_GetVirtual(&object_ice_objects_Col_002854, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (sp28 == 2) {
         this->dyna.actor.shape.rot.x = -0x4000;
     }
 
     if (sp28 != 1) {
-        if (Flags_GetClear(globalCtx, this->dyna.actor.room)) {
+        if (Flags_GetClear(play, this->dyna.actor.room)) {
             Actor_Kill(&this->dyna.actor);
         } else {
             this->actionFunc = func_80891CF4;
         }
 
     } else {
-        if (Flags_GetSwitch(globalCtx, this->dyna.actor.params)) {
+        if (Flags_GetSwitch(play, this->dyna.actor.params)) {
             Actor_Kill(&this->dyna.actor);
         } else {
             this->actionFunc = func_80891D6C;
@@ -90,31 +90,31 @@ void BgIceShutter_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceShutter_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShutter_Destroy(Actor* thisx, PlayState* play) {
     BgIceShutter* this = (BgIceShutter*)thisx;
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_80891CF4(BgIceShutter* this, GlobalContext* globalCtx) {
-    if (Flags_GetTempClear(globalCtx, this->dyna.actor.room)) {
-        Flags_SetClear(globalCtx, this->dyna.actor.room);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 30, NA_SE_EV_SLIDE_DOOR_OPEN);
+void func_80891CF4(BgIceShutter* this, PlayState* play) {
+    if (Flags_GetTempClear(play, this->dyna.actor.room)) {
+        Flags_SetClear(play, this->dyna.actor.room);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30, NA_SE_EV_SLIDE_DOOR_OPEN);
         this->actionFunc = func_80891DD4;
         if (this->dyna.actor.shape.rot.x == 0) {
-            OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+            OnePointCutscene_Attention(play, &this->dyna.actor);
         }
     }
 }
 
-void func_80891D6C(BgIceShutter* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->dyna.actor.params)) {
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 30, NA_SE_EV_SLIDE_DOOR_OPEN);
+void func_80891D6C(BgIceShutter* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->dyna.actor.params)) {
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30, NA_SE_EV_SLIDE_DOOR_OPEN);
         this->actionFunc = func_80891DD4;
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+        OnePointCutscene_Attention(play, &this->dyna.actor);
     }
 }
 
-void func_80891DD4(BgIceShutter* this, GlobalContext* globalCtx) {
+void func_80891DD4(BgIceShutter* this, PlayState* play) {
     Math_StepToF(&this->dyna.actor.speedXZ, 30.0f, 2.0f);
     if (Math_StepToF(&this->dyna.actor.velocity.y, 210.0f, this->dyna.actor.speedXZ)) {
         Actor_Kill(&this->dyna.actor);
@@ -124,12 +124,12 @@ void func_80891DD4(BgIceShutter* this, GlobalContext* globalCtx) {
     func_80891AC0(this);
 }
 
-void BgIceShutter_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShutter_Update(Actor* thisx, PlayState* play) {
     BgIceShutter* this = (BgIceShutter*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgIceShutter_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, object_ice_objects_DL_002740);
+void BgIceShutter_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, object_ice_objects_DL_002740);
 }

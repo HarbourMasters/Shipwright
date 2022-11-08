@@ -6,7 +6,7 @@
 
 struct BgJyaHaheniron;
 
-typedef void (*BgJyaHahenironActionFunc)(struct BgJyaHaheniron*, GlobalContext*);
+typedef void (*BgJyaHahenironActionFunc)(struct BgJyaHaheniron*, PlayState*);
 
 typedef struct BgJyaHaheniron {
     /* 0x0000 */ Actor actor;
