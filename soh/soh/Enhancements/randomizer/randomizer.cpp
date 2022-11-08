@@ -2209,9 +2209,11 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 case 15362:
                 case 14594:
                     specialRc = RC_JABU_GOSSIP_STONE;
+                    break;
                 case 14849:
                 case 14337:
                     specialRc = RC_FAIRY_GOSSIP_STONE;
+                    break;
             }
             break;
         case SCENE_DDAN:

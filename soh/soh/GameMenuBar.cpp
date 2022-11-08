@@ -147,6 +147,8 @@ namespace GameMenuBar {
         CVar_SetS32("gFastChests", 0);
         // Chest size & texture matches contents
         CVar_SetS32("gChestSizeAndTextureMatchesContents", 0);
+        // Chest size & texture matches contents only with agony
+        CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
         // Fast Drops
         CVar_SetS32("gFastDrops", 0);
         // Better Owl
@@ -163,6 +165,11 @@ namespace GameMenuBar {
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
         CVar_SetS32("gRememberSaveLocation", 0);
+        // Skip Magic Arrow Equip Animation
+        CVar_SetS32("gSkipArrowAnimation", 0);
+
+        // Equip arrows on multiple slots
+        CVar_SetS32("gSeparateArrows", 0);
 
         // Damage Multiplier (0 to 8)
         CVar_SetS32("gDamageMul", 0);
@@ -426,6 +433,11 @@ namespace GameMenuBar {
         CVar_SetS32("gGoronPot", 1);
         // Always Win Dampe Digging
         CVar_SetS32("gDampeWin", 1);
+        // Skip Magic Arrow Equip Animation
+        CVar_SetS32("gSkipArrowAnimation", 1);
+
+        // Equip arrows on multiple slots
+        CVar_SetS32("gSeparateArrows", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
@@ -776,7 +788,6 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Kick open every chest");
                     UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
                     const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
-                    UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0);
                     UIWidgets::Tooltip(
                         "Chest sizes and textures are changed to help identify the item inside.\n"
                         " - Major items: Large gold chests\n"
@@ -786,6 +797,15 @@ namespace GameMenuBar {
                         " - Boss keys: Vanilla size and texture\n"
                         " - Skulltula Tokens: Small skulltula chest\n"
                     );
+                    if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0)) {
+                        if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) == 0) {
+                            CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
+                        }
+                    }
+                    if (CVar_GetS32("gChestSizeAndTextureMatchesContents", 0) > 0) {
+                        UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
+                        UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
+                    }
                     UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
                     UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                     UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
@@ -804,6 +824,7 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                     UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                     UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                     ImGui::EndMenu();
@@ -829,6 +850,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Allows Deku Seeds and Arrows to drop for both ages.");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
+                    UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
+                    UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
                     ImGui::EndMenu();
                 }
 
@@ -1291,11 +1314,13 @@ namespace GameMenuBar {
             }
             UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false);
+            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
+                if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
+                    CVar_SetS32("gDisableKokiriDrawDistance", 0);
+                }
+            }
             UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
-                CVar_SetS32("gDisableKokiriDrawDistance", 0);
-            } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
+            if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
                 UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
             }
