@@ -4586,7 +4586,6 @@ s32 func_800F5A58(u8 arg0) {
  */
 void func_800F5ACC(u16 seqId) {
     u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
-    curSeqId = SfxEditor_GetReverseReplacementSeq(curSeqId);
 
     if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
         Audio_SetSequenceMode(SEQ_MODE_IGNORE);

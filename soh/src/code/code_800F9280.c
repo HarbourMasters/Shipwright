@@ -33,7 +33,7 @@ u8 D_80133418 = 0;
 #define Audio_SetVolScaleNow(playerIdx, volFadeTimer, volScale) \
     Audio_ProcessSeqCmd(0x40000000 | ((u8)playerIdx << 24) | ((u8)volFadeTimer << 16) | ((u8)(volScale * 127.0f)));
 
-void func_800F9280(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
+void func_800F9280(u8 playerIdx, u16 seqId, u8 arg2, u16 fadeTimer) {
     u8 i;
     u16 dur;
     s32 pad;
@@ -106,7 +106,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     u8 op;
     u8 subOp;
     u8 playerIdx;
-    u8 seqId;
+    u16 seqId;
     u8 seqArgs;
     u8 found;
     u8 port;
@@ -128,6 +128,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
         case 0x0:
             // play sequence immediately
             seqId = cmd & 0xFF;
+            seqId = SfxEditor_GetReplacementSeq(seqId);
             seqArgs = (cmd & 0xFF00) >> 8;
             fadeTimer = (cmd & 0xFF0000) >> 13;
             if ((D_8016E750[playerIdx].unk_260 == 0) && (seqArgs < 0x80)) {
@@ -144,6 +145,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
         case 0x2:
             // queue sequence
             seqId = cmd & 0xFF;
+            seqId = SfxEditor_GetReplacementSeq(seqId);
             seqArgs = (cmd & 0xFF00) >> 8;
             fadeTimer = (cmd & 0xFF0000) >> 13;
             new_var = seqArgs;
@@ -370,12 +372,8 @@ void Audio_QueueSeqCmd(u32 cmd)
 {
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12){
-        u16 oldSeqId = cmd & 0xFFFF;
-        u16 newSeqId = SfxEditor_GetReplacementSeq(oldSeqId);
-        if (newSeqId != oldSeqId) {
-            cmd &= ~0xFFFF;
-            cmd |= newSeqId;
-        }
+        u16 seqId = cmd & 0xFFFF;
+        cmd |= seqId;
     }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
