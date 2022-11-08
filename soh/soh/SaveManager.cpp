@@ -137,16 +137,19 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadStruct("gamePlayStats", [&]() {
-        SaveManager::Instance->LoadData("playTimer", gSaveContext.gamePlayStats.playTimer);
-        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gamePlayStats.pauseTimer);
-        SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gamePlayStats.itemGetTime), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gamePlayStats.itemGetTime[i]);
+    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
+        SaveManager::Instance->LoadData("ganonDefeated", gSaveContext.gameplayStats.ganonDefeated);
+        SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.itemGetTime[i]);
         });
-        SaveManager::Instance->LoadData("songsFound", gSaveContext.gamePlayStats.songsFound);
-        SaveManager::Instance->LoadData("rupeesCollected", gSaveContext.gamePlayStats.rupeesCollected);
-        SaveManager::Instance->LoadData("rupeesSpent", gSaveContext.gamePlayStats.rupeesSpent);
-        SaveManager::Instance->LoadData("iceTrapCount", gSaveContext.gamePlayStats.iceTrapCount);
+        SaveManager::Instance->LoadData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
+        SaveManager::Instance->LoadData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
+        SaveManager::Instance->LoadData("damageTaken", gSaveContext.gameplayStats.damageTaken);
+        SaveManager::Instance->LoadData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
+        SaveManager::Instance->LoadData("rolls", gSaveContext.gameplayStats.rollCount);
+        SaveManager::Instance->LoadData("bonks", gSaveContext.gameplayStats.bonkCount);
     });
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
@@ -221,16 +224,19 @@ void SaveManager::SaveRandomizer() {
         });
     });
 
-    SaveManager::Instance->SaveStruct("gamePlayStats", [&]() {
-        SaveManager::Instance->SaveData("playTimer", gSaveContext.gamePlayStats.playTimer);
-        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gamePlayStats.pauseTimer);
-        SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gamePlayStats.itemGetTime), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.gamePlayStats.itemGetTime[i]);
+    SaveManager::Instance->SaveStruct("gameplayStats", [&]() {
+        SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
+        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
+        SaveManager::Instance->SaveData("ganonDefeated", gSaveContext.gameplayStats.ganonDefeated);
+        SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.itemGetTime[i]);
         });
-        SaveManager::Instance->SaveData("songsFound", gSaveContext.gamePlayStats.songsFound);
-        SaveManager::Instance->SaveData("rupeesCollected", gSaveContext.gamePlayStats.rupeesCollected);
-        SaveManager::Instance->SaveData("rupeesSpent", gSaveContext.gamePlayStats.rupeesSpent);
-        SaveManager::Instance->SaveData("iceTrapCount", gSaveContext.gamePlayStats.iceTrapCount);
+        SaveManager::Instance->SaveData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
+        SaveManager::Instance->SaveData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
+        SaveManager::Instance->SaveData("damageTaken", gSaveContext.gameplayStats.damageTaken);
+        SaveManager::Instance->SaveData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
+        SaveManager::Instance->SaveData("rolls", gSaveContext.gameplayStats.rollCount);
+        SaveManager::Instance->SaveData("bonks", gSaveContext.gameplayStats.bonkCount);
     });
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
@@ -384,7 +390,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.playerName[i] = 0x3E;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.gamePlayStats = { 0 };
+    gSaveContext.gameplayStats = { 0 };
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;

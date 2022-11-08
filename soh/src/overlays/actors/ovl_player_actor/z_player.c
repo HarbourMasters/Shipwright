@@ -5255,6 +5255,7 @@ void func_8083BC04(Player* this, GlobalContext* globalCtx) {
     func_80835C58(globalCtx, this, func_80844708, 0);
     LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, D_80853914[PLAYER_ANIMGROUP_16][this->modelAnimType],
                                    1.25f * D_808535E8);
+    gSaveContext.gameplayStats.rollCount++;
 }
 
 s32 func_8083BC7C(Player* this, GlobalContext* globalCtx) {
@@ -6229,7 +6230,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
         // Gameplay stats: Increment Ice Trap count
-        gSaveContext.gamePlayStats.iceTrapCount++;
+        gSaveContext.gameplayStats.iceTrapCount++;
         return 1;
     }
 
@@ -8620,6 +8621,7 @@ void func_80844708(Player* this, GlobalContext* globalCtx) {
                     func_8002F7DC(&this->actor, NA_SE_PL_BODY_HIT);
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
+                    gSaveContext.gameplayStats.bonkCount++;
                     return;
                 }
             }
@@ -10508,9 +10510,11 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     sControlInput = input;
 
     // Gameplay stat tracking
-    gSaveContext.gamePlayStats.playTimer++;
-    gSaveContext.gamePlayStats.totalTimer =
-        gSaveContext.gamePlayStats.playTimer / 2 + gSaveContext.gamePlayStats.pauseTimer / 3;
+    if (!gSaveContext.gameplayStats.ganonDefeated) {
+        gSaveContext.gameplayStats.playTimer++;
+        gSaveContext.gameplayStats.totalTimer =
+            gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
+    }
 
     if (this->unk_A86 < 0) {
         this->unk_A86++;
@@ -12865,7 +12869,7 @@ void func_8084E6D4(Player* this, GlobalContext* globalCtx) {
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     // Gameplay stats: Increment Ice Trap count
-                    gSaveContext.gamePlayStats.iceTrapCount++;
+                    gSaveContext.gameplayStats.iceTrapCount++;
                 }
                 return;
             }

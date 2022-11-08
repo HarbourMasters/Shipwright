@@ -88,12 +88,15 @@ typedef struct {
     u32 playTimer;
     u32 pauseTimer;
     u32 totalTimer;
+    bool ganonDefeated;
     u32 itemGetTime[ITEM_LAST_USED];
     u16 rupeesCollected;
     u16 rupeesSpent;
+    u16 damageTaken;
     u16 iceTrapCount;
-    u8  songsFound;
-} GamePlayStats;
+    u16 rollCount;
+    u16 bonkCount;
+} GameplayStats;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -206,7 +209,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
-    GamePlayStats gamePlayStats;
+    GameplayStats gameplayStats;
     SohStats sohStats;
 } SaveContext; // size = 0x1428
 

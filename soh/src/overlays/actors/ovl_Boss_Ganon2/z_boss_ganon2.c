@@ -1671,6 +1671,7 @@ void func_8090120C(BossGanon2* this, GlobalContext* globalCtx) {
                 (player->swordState != 0) && (player->heldItemActionParam == PLAYER_AP_SWORD_MASTER)) {
                 func_80064520(globalCtx, &globalCtx->csCtx);
                 this->unk_39E = Gameplay_CreateSubCamera(globalCtx);
+                gSaveContext.gameplayStats.ganonDefeated = true;
                 Gameplay_ChangeCameraStatus(globalCtx, MAIN_CAM, CAM_STAT_WAIT);
                 Gameplay_ChangeCameraStatus(globalCtx, this->unk_39E, CAM_STAT_ACTIVE);
                 this->unk_39C = 7;
