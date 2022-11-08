@@ -1063,6 +1063,9 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
 
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
+                            seqPlayer->seqId = gAudioContext.seqToPlay != 0
+                                                   ? gAudioContext.seqToPlay
+                                                   : seqPlayer->seqId;
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
                             command = sDat.fonts[sDat.numFonts - result - 1];
                         }
@@ -1175,6 +1178,9 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
 
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
+                            seqPlayer->seqId = gAudioContext.seqToPlay != 0
+                                                   ? gAudioContext.seqToPlay
+                                                   : seqPlayer->seqId;
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
 
                             // The game apparantely would sometimes do negative array lookups, the result of which would get rejected by AudioHeap_SearchCaches, never

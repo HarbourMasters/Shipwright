@@ -482,9 +482,10 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-    if (seqId == 255)
-        return NULL;
+    // if (seqId == 255)
+    //     return NULL;
 
+    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
     SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
     if (sDat.numFonts == 0)
@@ -572,6 +573,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
     //numFonts = gAudioContext.sequenceFontTable[index++];
 
+    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
     for (int i = 0; i < seqData2.numFonts; i++)
@@ -1224,6 +1226,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     gAudioContext.resetTimer = 0;
 
     memset(&gAudioContext, 0, sizeof(gAudioContext));
+    gAudioContext.seqToPlay = 0;
 
     switch (osTvType) {
         case OS_TV_PAL:
@@ -1527,6 +1530,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
 
+    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;

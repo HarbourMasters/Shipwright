@@ -259,7 +259,7 @@ typedef struct {
     /* 0x001 */ u8 state;
     /* 0x002 */ u8 noteAllocPolicy;
     /* 0x003 */ u8 muteBehavior;
-    /* 0x004 */ u8 seqId;
+    /* 0x004 */ u16 seqId;
     /* 0x005 */ u8 defaultFont;
     /* 0x006 */ u8 unk_06[1];
     /* 0x007 */ s8 playerIdx;
@@ -941,6 +941,7 @@ typedef struct {
     /* 0x5C3C */ OSMesg audioResetMesgs[1];
     /* 0x5C40 */ OSMesg cmdProcMsgs[4];
     /* 0x5C50 */ AudioCmd cmdBuf[0x100];
+    u16 seqToPlay;
 } AudioContext; // size = 0x6450
 
 typedef struct {

@@ -128,7 +128,6 @@ void Audio_ProcessSeqCmd(u32 cmd) {
         case 0x0:
             // play sequence immediately
             seqId = cmd & 0xFF;
-            seqId = SfxEditor_GetReplacementSeq(seqId);
             seqArgs = (cmd & 0xFF00) >> 8;
             fadeTimer = (cmd & 0xFF0000) >> 13;
             if ((D_8016E750[playerIdx].unk_260 == 0) && (seqArgs < 0x80)) {
@@ -145,7 +144,6 @@ void Audio_ProcessSeqCmd(u32 cmd) {
         case 0x2:
             // queue sequence
             seqId = cmd & 0xFF;
-            seqId = SfxEditor_GetReplacementSeq(seqId);
             seqArgs = (cmd & 0xFF00) >> 8;
             fadeTimer = (cmd & 0xFF0000) >> 13;
             new_var = seqArgs;
@@ -372,8 +370,14 @@ void Audio_QueueSeqCmd(u32 cmd)
 {
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12){
-        u16 seqId = cmd & 0xFFFF;
-        cmd |= seqId;
+        u8 seqId = cmd & 0xFF;
+        u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+        if (newSeqId > 255) {
+            gAudioContext.seqToPlay = newSeqId;
+        } else {
+            gAudioContext.seqToPlay = 0;
+        }
+        cmd |= newSeqId;
     }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;

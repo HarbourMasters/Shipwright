@@ -207,6 +207,9 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType == type) {
+                if ((seqType == SEQ_BGM_WORLD || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+                    continue;
+                }
                 const int randomValue = values.back();
                 CVar_SetS32(cvarKey.c_str(), randomValue);
                 values.pop_back();
@@ -223,6 +226,9 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         const auto& [name, sfxKey, seqType] = seqData;
 
         if (seqType != type) {
+            continue;
+        }
+        if ((seqType == SEQ_BGM_WORLD || seqType == SEQ_FANFARE) && defaultValue >= 110) {
             continue;
         }
 
@@ -297,7 +303,6 @@ extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
     const auto& [name, sfxKey, seqType] = sequenceMap.at(seqId);
     const std::string cvarKey = "gSfxEditor_" + sfxKey;
     const int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
-
     return static_cast<u16>(replacementSeq);
 }
 
@@ -366,7 +371,7 @@ extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
     SeqType type = SEQ_BGM_WORLD;
-    if (splitFileName[splitFileName.size() - 1] == "fanfare") {
+    if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
         type = SEQ_FANFARE;
     }
     auto tuple = std::make_tuple(sequenceName, splitName[splitName.size() - 1], type);
