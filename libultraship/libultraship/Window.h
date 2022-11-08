@@ -76,7 +76,7 @@ namespace Ship {
 			std::shared_ptr<ResourceMgr> ResMan;
 			std::shared_ptr<AudioPlayer> APlayer;
 			std::shared_ptr<ControlDeck> ControllerApi;
-            std::shared_ptr<SpeechSynthesizer> SpeechSynthesizer;
+            std::shared_ptr<SpeechSynthesizer> SpeechSynth;
 
 			std::string gfxBackend;
 			std::string audioBackend;

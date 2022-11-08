@@ -337,7 +337,7 @@ namespace Ship {
     void Window::ReadText(const char* text) {
     #if defined(_WIN32) || defined(__APPLE__)
         if (text == nullptr) return;
-        SpeechSynthesizer->Speak(std::string(text));
+        SpeechSynth->Speak(std::string(text));
     #endif
     }
 
@@ -472,12 +472,12 @@ namespace Ship {
 
     void Window::InitializeSpeechSynthesis() {
 #ifdef _WIN32
-        SpeechSynthesizer = std::make_shared<SAPISpeechSynthesizer>();
-        SpeechSynthesizer->Init();
+        SpeechSynth = std::make_shared<SAPISpeechSynthesizer>();
+        SpeechSynth->Init();
 #endif
 #ifdef __APPLE__
-        SpeechSynthesizer = std::make_shared<DarwinSpeechSynthesizer>();
-        SpeechSynthesizer->Init();
+        SpeechSynth = std::make_shared<DarwinSpeechSynthesizer>();
+        SpeechSynth->Init();
 #endif
     }
 

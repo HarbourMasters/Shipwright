@@ -52,6 +52,26 @@ set(Header_Files__Resources__Files
 )
 source_group("Header Files\\Resources\\Files" FILES ${Header_Files__Resources__Files})
 
+set(Source_Files__Speech
+    "SpeechSynthesizer.h"
+)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__Speech__extra
+    "SAPISpeechSynthesizer.cpp"
+    "SAPISpeechSynthesizer.h"
+)
+endif ()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(Source_Files__Speech__extra
+    "DarwinSpeechSynthesizer.mm"
+    "DarwinSpeechSynthesizer.h"
+)
+endif ()
+
+source_group("Source Files\\SpeechSynthesis" FILES ${Source_Files__Speech} ${Source_Files__Speech__extra})
+
 set(Source_Files__Audio
     "abi.h"
     "AudioPlayer.h"
@@ -391,6 +411,8 @@ set(ALL_FILES
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
     ${Source_Files__Audio__extra}
+    ${Source_Files__Speech}
+    ${Source_Files__Speech__extra}
     ${Source_Files__BinaryTools}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
@@ -696,6 +718,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_package(GLEW)
     find_package(OpenGL QUIET)
     find_Library(OSX_FOUNDATION Foundation)
+    find_Library(OSX_AVFOUNDATION AVFoundation)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     target_link_libraries(${PROJECT_NAME}
@@ -706,6 +729,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         ${CMAKE_DL_LIBS}
         Threads::Threads
 	${OSX_FOUNDATION}
+    ${OSX_AVFOUNDATION}
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     set(THREADS_PREFER_PTHREAD_FLAG ON)
