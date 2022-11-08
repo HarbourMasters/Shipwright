@@ -11,12 +11,6 @@
 extern "C" {
 #include <z64.h>
 #include "variables.h"
-#include "functions.h"
-#include "macros.h"
-extern GlobalContext* gGlobalCtx;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 char itemDisplayName[ITEM_LAST_USED][23] = { "" };
@@ -135,6 +129,7 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Rolls:                  ", gSaveContext.gameplayStats.rollCount);
     DisplayStat("Bonks:                  ", gSaveContext.gameplayStats.bonkCount);
     DisplayStat("Ice Traps:              ", gSaveContext.gameplayStats.iceTrapCount);
+    DisplayStat("Pauses:                 ", gSaveContext.gameplayStats.pauseCount);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

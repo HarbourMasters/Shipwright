@@ -140,7 +140,7 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
         SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->LoadData("ganonDefeated", gSaveContext.gameplayStats.ganonDefeated);
+        SaveManager::Instance->LoadData("pauseCount", gSaveContext.gameplayStats.pauseCount);
         SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.itemGetTime[i]);
         });
@@ -148,8 +148,8 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
         SaveManager::Instance->LoadData("damageTaken", gSaveContext.gameplayStats.damageTaken);
         SaveManager::Instance->LoadData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
-        SaveManager::Instance->LoadData("rolls", gSaveContext.gameplayStats.rollCount);
-        SaveManager::Instance->LoadData("bonks", gSaveContext.gameplayStats.bonkCount);
+        SaveManager::Instance->LoadData("rollCount", gSaveContext.gameplayStats.rollCount);
+        SaveManager::Instance->LoadData("bonkCount", gSaveContext.gameplayStats.bonkCount);
     });
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
@@ -227,7 +227,7 @@ void SaveManager::SaveRandomizer() {
     SaveManager::Instance->SaveStruct("gameplayStats", [&]() {
         SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->SaveData("ganonDefeated", gSaveContext.gameplayStats.ganonDefeated);
+        SaveManager::Instance->SaveData("pauseCount", gSaveContext.gameplayStats.pauseCount);
         SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.itemGetTime[i]);
         });
@@ -235,8 +235,8 @@ void SaveManager::SaveRandomizer() {
         SaveManager::Instance->SaveData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
         SaveManager::Instance->SaveData("damageTaken", gSaveContext.gameplayStats.damageTaken);
         SaveManager::Instance->SaveData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
-        SaveManager::Instance->SaveData("rolls", gSaveContext.gameplayStats.rollCount);
-        SaveManager::Instance->SaveData("bonks", gSaveContext.gameplayStats.bonkCount);
+        SaveManager::Instance->SaveData("rollCount", gSaveContext.gameplayStats.rollCount);
+        SaveManager::Instance->SaveData("bonkCount", gSaveContext.gameplayStats.bonkCount);
     });
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {

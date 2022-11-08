@@ -96,6 +96,7 @@ typedef struct {
     u16 iceTrapCount;
     u16 rollCount;
     u16 bonkCount;
+    u16 pauseCount;
 } GameplayStats;
 
 typedef struct {
