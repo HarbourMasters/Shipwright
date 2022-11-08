@@ -627,7 +627,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             
             if (CVar_GetS32("gMessageTTS", 0)) {
-                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
                     pauseCtx->cursorItem[PAUSE_EQUIP], NULL));
             }
         }

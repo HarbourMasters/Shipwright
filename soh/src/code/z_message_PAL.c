@@ -3397,7 +3397,7 @@ void Message_TTS_Update(PlayState* play) {
 
             u32 size = msgCtx->decodedTextLen;
             Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, 0, size);
-            OTRTextToSpeechCallback(sTtsMessageBuf);
+            OTRSpeakText(sTtsMessageBuf);
         } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 &&
                    msgCtx->choiceIndex != sTtsCurrentChoice) {
             sTtsCurrentChoice = msgCtx->choiceIndex;
@@ -3433,7 +3433,7 @@ void Message_TTS_Update(PlayState* play) {
                 if (startOffset < msgCtx->decodedTextLen && startOffset != endOffset) {
                     u32 size = endOffset - startOffset;
                     Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, startOffset, size);
-                    OTRTextToSpeechCallback(sTtsMessageBuf);
+                    OTRSpeakText(sTtsMessageBuf);
                 }
             }
         }
@@ -3442,7 +3442,7 @@ void Message_TTS_Update(PlayState* play) {
         sTtsHasNewMessage = 0;
         if (msgCtx->decodedTextLen < 3 || (msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 2] != MESSAGE_FADE &&
                                            msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 3] != MESSAGE_FADE2)) {
-            OTRTextToSpeechCallback(""); // cancel current speech (except for faded out messages)
+            OTRSpeakText(""); // cancel current speech (except for faded out messages)
         }
     }
 }

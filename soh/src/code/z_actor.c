@@ -1113,7 +1113,7 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (titleCtx->durationTimer == 80 && CVar_GetS32("gMessageTTS", 0)) {
-            OTRTextToSpeechCallback(sTitleCardText);
+            OTRSpeakText(sTitleCardText);
         }
 
         if (DECR(titleCtx->durationTimer) == 0) {

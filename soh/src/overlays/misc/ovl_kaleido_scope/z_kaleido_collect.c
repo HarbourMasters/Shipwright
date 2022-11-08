@@ -190,7 +190,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     default:
                         arg[0] = '\0';
                 }
-                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
                                                                         pauseCtx->cursorItem[PAUSE_QUEST], NULL),
                                                                         arg);
             }

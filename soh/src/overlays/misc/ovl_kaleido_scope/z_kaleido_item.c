@@ -471,7 +471,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                     default:
                         arg[0] = '\0';
                 }
-                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
                     pauseCtx->cursorItem[PAUSE_ITEM], NULL), arg);
             }
         }

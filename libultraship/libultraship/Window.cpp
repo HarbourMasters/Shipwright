@@ -334,7 +334,7 @@ namespace Ship {
         return GetAppDirectoryPath() + "/" + path;
     }
 
-    void Window::ReadText(const char* text) {
+    void Window::SpeakText(const char* text) {
     #if defined(_WIN32) || defined(__APPLE__)
         if (text == nullptr) return;
         SpeechSynth->Speak(std::string(text));

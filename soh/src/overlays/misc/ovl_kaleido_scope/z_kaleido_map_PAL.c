@@ -221,7 +221,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_MAP]) {
         if (CVar_GetS32("gMessageTTS", 0)) {
             if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
-                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText(
+                OTRSpeakText(OTRMessage_GetAccessibilityText(
                     "text/accessibility_text/accessibility_text_eng", pauseCtx->cursorItem[PAUSE_MAP], NULL));
             }
         }
@@ -509,7 +509,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
             if (CVar_GetS32("gMessageTTS", 0)) {
-                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText(
+                OTRSpeakText(OTRMessage_GetAccessibilityText(
                     "text/accessibility_text/accessibility_text_eng", 0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP], NULL));
             }
         }

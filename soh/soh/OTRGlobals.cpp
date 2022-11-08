@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -1682,8 +1682,8 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
-extern "C" void OTRTextToSpeechCallback(char* text) {
-    OTRGlobals::Instance->context->ReadText(text);
+extern "C" void OTRSpeakText(char* text) {
+    OTRGlobals::Instance->context->SpeakText(text);
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {

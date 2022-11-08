@@ -346,7 +346,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
-        OTRTextToSpeechCallback("File 1");
+        OTRSpeakText("File 1");
     }
 }
 
@@ -585,22 +585,22 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         if (lastButtonIndex != this->buttonIndex) {
             switch (this->buttonIndex) {
                 case FS_BTN_MAIN_FILE_1:
-                    OTRTextToSpeechCallback("File 1");
+                    OTRSpeakText("File 1");
                     break;
                 case FS_BTN_MAIN_FILE_2:
-                    OTRTextToSpeechCallback("File 2");
+                    OTRSpeakText("File 2");
                     break;
                 case FS_BTN_MAIN_FILE_3:
-                    OTRTextToSpeechCallback("File 3");
+                    OTRSpeakText("File 3");
                     break;
                 case FS_BTN_MAIN_OPTIONS:
-                    OTRTextToSpeechCallback("Options");
+                    OTRSpeakText("Options");
                     break;
                 case FS_BTN_MAIN_COPY:
-                    OTRTextToSpeechCallback("Copy");
+                    OTRSpeakText("Copy");
                     break;
                 case FS_BTN_MAIN_ERASE:
-                    OTRTextToSpeechCallback("Erase");
+                    OTRSpeakText("Erase");
                     break;
                 default:
                     break;
@@ -2045,9 +2045,9 @@ void FileChoose_ConfirmFile(GameState* thisx) {
 
     if (lastConfirmButtonIndex != this->confirmButtonIndex) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
-            OTRTextToSpeechCallback("Yes");
+            OTRSpeakText("Yes");
         } else {
-            OTRTextToSpeechCallback("Quit");
+            OTRSpeakText("Quit");
         }
 
         lastConfirmButtonIndex = this->confirmButtonIndex;
