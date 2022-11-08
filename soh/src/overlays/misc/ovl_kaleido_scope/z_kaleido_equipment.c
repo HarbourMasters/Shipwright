@@ -625,6 +625,11 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_EQUIP]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            
+            if (CVar_GetS32("gMessageTTS", 0)) {
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                    pauseCtx->cursorItem[PAUSE_EQUIP], NULL));
+            }
         }
     } else if ((pauseCtx->unk_1E4 == 7) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
         KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_EQUIP] * 4, pauseCtx->equipVtx);

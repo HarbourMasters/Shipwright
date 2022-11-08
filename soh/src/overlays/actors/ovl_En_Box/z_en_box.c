@@ -452,10 +452,16 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
             }
         }
     } else {
-        player = GET_PLAYER(play);
-        func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
-        if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
-            Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
+        bool isPlayerInFrontOfActor;
+        if (CVar_GetS32("gAccessibleInteraction", 0)) {
+            isPlayerInFrontOfActor = true;
+        } else {
+            player = GET_PLAYER(play);
+            func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
+            isPlayerInFrontOfActor = sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f;
+        }
+
+        if (isPlayerInFrontOfActor && Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
             sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             

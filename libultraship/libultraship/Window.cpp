@@ -302,6 +302,8 @@ namespace Ship {
         audioBackend = GetConfig()->getString("Window.AudioBackend");
         InitializeAudioPlayer();
 
+        InitializeSpeechSynthesis();
+
         gfx_init(WmApi, RenderingApi, GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
@@ -330,6 +332,13 @@ namespace Ship {
 
     std::string Window::GetPathRelativeToAppDirectory(const char* path) {
         return GetAppDirectoryPath() + "/" + path;
+    }
+
+    void Window::ReadText(const char* text) {
+    #if defined(_WIN32) || defined(__APPLE__)
+        if (text == nullptr) return;
+        SpeechSynthesizer->Speak(std::string(text));
+    #endif
     }
 
     void Window::StartFrame() {
@@ -459,6 +468,17 @@ namespace Ship {
         if (audioBackend == "sdl") {
             APlayer = std::make_shared<SDLAudioPlayer>();
         }
+    }
+
+    void Window::InitializeSpeechSynthesis() {
+#ifdef _WIN32
+        SpeechSynthesizer = std::make_shared<SAPISpeechSynthesizer>();
+        SpeechSynthesizer->Init();
+#endif
+#ifdef __APPLE__
+        SpeechSynthesizer = std::make_shared<DarwinSpeechSynthesizer>();
+        SpeechSynthesizer->Init();
+#endif
     }
 
     void Window::InitializeWindowManager() {

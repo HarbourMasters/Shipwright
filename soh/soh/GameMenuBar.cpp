@@ -694,6 +694,24 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementRadioButton("French", "gLanguages", 2);
                 ImGui::EndMenu();
             }
+
+        #if defined(_WIN32) || defined(__APPLE__)
+            UIWidgets::Spacer(0);
+
+            if (ImGui::BeginMenu("Accesibility")) {
+                UIWidgets::PaddedEnhancementCheckbox("Easier Interactions", "gAccessibleInteraction", true, false);
+                UIWidgets::Tooltip("Makes it easier to interact with objects by allowing you to interact from any direction.");
+                UIWidgets::PaddedEnhancementCheckbox("Target More Actors", "gMoreTargets", true, false);
+                UIWidgets::Tooltip("Allows targeting more game actor types.");
+                UIWidgets::PaddedEnhancementCheckbox("Message Text to Speech", "gMessageTTS", true, false);
+                UIWidgets::Tooltip("Enables text to speech for game dialogue.");
+                UIWidgets::PaddedEnhancementCheckbox("D-Pad Directional Look Controls", "gDPadLook", true, false);
+                UIWidgets::Tooltip("Enables DPad directional look controls while in C-up mode.");
+                UIWidgets::PaddedEnhancementCheckbox("Aim Audio Cues", "gAimAudioCues", true, false);
+                UIWidgets::Tooltip("Enables audio cues to assist with ranged aiming.");
+                ImGui::EndMenu();
+            }
+        #endif
             ImGui::EndMenu();
         }
 

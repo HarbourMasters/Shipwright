@@ -9537,6 +9537,10 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     Collider_SetQuad(play, &this->swordQuads[1], &this->actor, &D_80854650);
     Collider_InitQuad(play, &this->shieldQuad);
     Collider_SetQuad(play, &this->shieldQuad, &this->actor, &D_808546A0);
+
+    if (CVar_GetS32("gAimAudioCues", 0)) {
+        Player_InitAimCueCollision(this, play);
+    }
 }
 
 static void (*D_80854738[])(PlayState* play, Player* this) = {
@@ -9740,6 +9744,8 @@ static f32 D_80854784[] = { 120.0f, 240.0f, 360.0f };
 static u8 sDiveDoActions[] = { DO_ACTION_1, DO_ACTION_2, DO_ACTION_3, DO_ACTION_4,
                                DO_ACTION_5, DO_ACTION_6, DO_ACTION_7, DO_ACTION_8 };
 
+int32_t lastAction;
+
 void func_808473D4(PlayState* play, Player* this) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) && (this->actor.category == ACTORCAT_PLAYER)) {
         Actor* heldActor = this->heldActor;
@@ -9761,12 +9767,23 @@ void func_808473D4(PlayState* play, Player* this) {
                     (!(this->stateFlags1 & PLAYER_STATE1_11) ||
                      ((heldActor != NULL) && (heldActor->id == ACTOR_EN_RU1)))) {
                     doAction = DO_ACTION_OPEN;
+
+                    if (lastAction != doAction) {
+                        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        lastAction = doAction;
+                    }
                 } else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                            (interactRangeActor != NULL) &&
                            ((!sp1C && (this->getItemId == GI_NONE)) ||
                             (this->getItemId < 0 && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
                     if (this->getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
+                        if (lastAction != doAction) {
+                            Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                   &D_801333E8);
+                            lastAction = doAction;
+                        }
                     } else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
                         doAction = DO_ACTION_DROP;
                     } else {
@@ -9782,6 +9799,11 @@ void func_808473D4(PlayState* play, Player* this) {
                     if ((this->stateFlags2 & PLAYER_STATE2_1) && (this->targetActor != NULL)) {
                         if (this->targetActor->category == ACTORCAT_NPC) {
                             doAction = DO_ACTION_SPEAK;
+                            if (lastAction != doAction) {
+                                Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_0, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                       &D_801333E8);
+                                lastAction = doAction;
+                            }
                         } else {
                             doAction = DO_ACTION_CHECK;
                         }
@@ -9799,6 +9821,11 @@ void func_808473D4(PlayState* play, Player* this) {
                     doAction = DO_ACTION_DOWN;
                 } else if (this->stateFlags2 & PLAYER_STATE2_16) {
                     doAction = DO_ACTION_ENTER;
+                    if (lastAction != doAction) {
+                        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        lastAction = doAction;
+                    }
                 } else if ((this->stateFlags1 & PLAYER_STATE1_11) && (this->getItemId == GI_NONE) &&
                            (heldActor != NULL)) {
                     if ((this->actor.bgCheckFlags & 1) || (heldActor->id == ACTOR_EN_NIW)) {
@@ -9859,6 +9886,10 @@ void func_808473D4(PlayState* play, Player* this) {
             Interface_SetNaviCall(play, 0x1E);
         } else {
             Interface_SetNaviCall(play, 0x1F);
+        }
+
+        if (doAction == DO_ACTION_NONE) {
+            lastAction = NULL;
         }
     }
 }
@@ -10906,6 +10937,10 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
     Collider_ResetQuadAC(play, &this->shieldQuad.base);
     Collider_ResetQuadAT(play, &this->shieldQuad.base);
+
+    if (CVar_GetS32("gAimAudioCues", 0)) {
+        Player_UpdateAimCue(this, play);
+    }
 }
 
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
@@ -11234,6 +11269,14 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     gSaveContext.linkAge = play->linkAgeOnLoad;
 }
 
+static s16 sDPadRotationLUT[3][3] = {
+    { -8000, 0, 8000 },
+    { -16000, 0, 16000 },
+    { -24000, 32000, 24000 }
+};
+static Vec3f sRelativeNorthPos;
+static f32 sLookNoisePitch;
+
 s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
@@ -11247,6 +11290,23 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
             temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             temp2 = CLAMP(temp2, -3000, 3000);
             this->actor.focus.rot.y += temp2;
+
+            if (CVar_GetS32("gDPadLook", 0) && (sControlInput->press.button & (BTN_DUP | BTN_DRIGHT | BTN_DDOWN | BTN_DLEFT))) {
+                s16 x = !!(sControlInput->cur.button & BTN_DRIGHT) - !!(sControlInput->cur.button & BTN_DLEFT);
+                s16 y = !!(sControlInput->cur.button & BTN_DUP) - !!(sControlInput->cur.button & BTN_DDOWN);
+                s16 rot = sDPadRotationLUT[y + 1][x + 1];
+
+                this->actor.shape.rot.y = rot;
+                this->actor.focus.rot.y = rot;
+
+                sRelativeNorthPos.x = Math_SinS(rot) * -100.0f;
+                sRelativeNorthPos.y = 0;
+                sRelativeNorthPos.z = Math_CosS(rot) * 100.0f;
+
+                sLookNoisePitch = 1.5f;
+
+                Audio_PlaySoundGeneral(NA_SE_OC_REVENGE, &sRelativeNorthPos, 4, &sLookNoisePitch, &D_801333E0, &D_801333E8);
+            }
         } else {
             temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
             temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *

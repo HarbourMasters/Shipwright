@@ -27,7 +27,13 @@ void BootCommands_Init()
     CVar_RegisterS32("gHudColors", 0); //0 = N64 / 1 = NGC / 2 = Custom
 	CVar_RegisterS32("gInvertYAxis", 1);
     CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
-#if defined(__SWITCH__) || defined(__WIIU__)
+#if defined(_WIN32) || defined(__APPLE__)
+    CVar_RegisterS32("gAccessibleInteraction", 0);
+    CVar_RegisterS32("gMoreTargets", 0);
+    CVar_RegisterS32("gMessageTTS", 0);
+    CVar_RegisterS32("gDPadLook", 0);
+    CVar_RegisterS32("gAimAudioCues", 0);
+#elif defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif
 }

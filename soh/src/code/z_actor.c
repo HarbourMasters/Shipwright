@@ -566,6 +566,46 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
         targetCtx->arrowPointedActor = unkActor;
         targetCtx->activeCategory = actorCategory;
         targetCtx->unk_40 = 1.0f;
+
+        /*
+        if (CVar_GetS32("gBlindMode", 0)) {
+            u16 targetSound;
+
+            if (targetCtx->arrowPointedActor != NULL) {
+                switch (targetCtx->activeCategory) {
+                    case ACTORCAT_PROP:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_EXPLOSIVE:
+                        targetSound = NA_SE_VO_NA_HELLO_3;
+                        break;
+                    case ACTORCAT_DOOR:
+                        targetSound = NA_SE_VO_NA_HELLO_2;
+                        break;
+                    case ACTORCAT_CHEST:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_SWITCH:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_NPC:
+                        targetSound = NA_SE_VO_NA_HELLO_3;
+                        break;
+                    case ACTORCAT_ENEMY:
+                        targetSound = NA_SE_VO_NA_HELLO_0;
+                        break;
+                    case ACTORCAT_BOSS:
+                        targetSound = NA_SE_VO_NA_HELLO_0;
+                        break;
+                    default:
+                        targetSound = NA_SE_VO_NA_HELLO_2;
+                        break;
+                }
+
+                Audio_PlaySoundGeneral(targetSound, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
+        */
     }
 
     if (unkActor == NULL) {
@@ -777,8 +817,45 @@ void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
     titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensityB = titleCtx->alpha = 0;
 }
 
+static char* sTitleCardText;
+
 void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height, s16 hasTranslation) {
+
+    //TODO: improve
+    char* texturePath = (char*)texture;
+    s16 bossActorId = 0;
+    if (!strcmp(texturePath, "__OTR__objects/object_kingdodongo/gKingDodongoTitleCardTex")) {
+        // gKingDodongoTitleCardTex
+        bossActorId = ACTOR_EN_DODONGO;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_fd/gVolvagiaBossTitleCardTex")) {
+        // gVolvagiaTitleCardTex
+        bossActorId = ACTOR_BOSS_FD;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_ganon/gDorfTitleCardTex")) {
+        // gDorfTitleCardTex
+        bossActorId = ACTOR_BOSS_GANON;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_ganon2/object_ganon2_Tex_021A90")) {
+        // object_ganon2_Tex_021A90
+        bossActorId = ACTOR_BOSS_GANON2;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_goma/gGohmaTitleCardTex")) {
+        // gGohmaTitleCardTex
+        bossActorId = ACTOR_BOSS_GOMA;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_mo/gMorphaTitleCardTex")) {
+        // gMorphaTitleCardTex
+        bossActorId = ACTOR_BOSS_MO;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_sst/gBongoTitleCardTex")) {
+        // gBongoTitleCardTex
+        bossActorId = ACTOR_BOSS_SST;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_tw/gTwinrovaTitleCardTex")) {
+        // gTwinrovaTitleCardTex
+        bossActorId = ACTOR_BOSS_TW;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_bv/gBarinadeTitleCardTex")) {
+        // gBarinadeTitleCardTex
+        bossActorId = ACTOR_BOSS_VA;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_fhg/gPhantomGanonTitleCardTex")) {
+        // gPhantomGanonTitleCardTex
+        bossActorId = ACTOR_EN_FHG;
+    }
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
@@ -792,6 +869,11 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = 0;
+
+    if (bossActorId != 0 && CVar_GetS32("gMessageTTS", 0)) {
+        sTitleCardText = OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                         0x1000 + bossActorId, NULL);
+    }
 }
 
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
@@ -1014,6 +1096,10 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = delay;
+
+    if (CVar_GetS32("gMessageTTS", 0)) {
+        sTitleCardText = OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", 0x0300 + play->sceneNum, NULL);
+    }
 }
 
 void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
@@ -1028,6 +1114,10 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
     }
 
     if (DECR(titleCtx->delayTimer) == 0) {
+        if (titleCtx->durationTimer == 80 && CVar_GetS32("gMessageTTS", 0)) {
+            OTRTextToSpeechCallback(sTitleCardText);
+        }
+
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
             Math_StepToS(&titleCtx->intensityR, 0, 70);
@@ -1865,8 +1955,33 @@ u32 func_8002F090(Actor* actor, f32 arg1) {
     return arg1 < D_80115FF8[actor->targetMode].rangeSq;
 }
 
+s32 Actor_IsTargetable(Actor* actor, Player* player) {
+    s32 targetMode = CVar_GetS32("gMoreTargets", 0);
+
+    if ((actor->update == NULL) || ((Player*)actor == player)) {
+        return false;
+    }
+
+    if (targetMode == 99) {
+        return true;
+    } else if (targetMode == 2) {
+        return CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_0) ||
+            actor->category == ACTORCAT_CHEST ||
+            actor->category == ACTORCAT_SWITCH ||
+            actor->id == ACTOR_EN_SW || actor->id == ACTOR_BOSS_GANON ||
+            actor->id == ACTOR_OBJ_HSBLOCK || actor->id == ACTOR_OBJ_SYOKUDAI;
+    } else if (targetMode == 1) {
+        return CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_0) ||
+            actor->category == ACTORCAT_CHEST ||
+            actor->category == ACTORCAT_SWITCH;
+    } else {
+        //original/default
+        return CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_0);
+    }
+}
+
 s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
-    if ((actor->update == NULL) || !(actor->flags & ACTOR_FLAG_0)) {
+    if (!Actor_IsTargetable(actor, player)) {
         return true;
     }
 
@@ -3427,7 +3542,7 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
     sp84 = player->unk_664;
 
     while (actor != NULL) {
-        if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_0)) {
+        if (Actor_IsTargetable(actor, player)) {
 
             // This block below is for determining the closest actor to player in determining the volume
             // used while playing enemy bgm music

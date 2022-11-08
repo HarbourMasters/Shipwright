@@ -150,6 +150,11 @@ void Message_SetCustomOcarinaNoteColor(Color_RGB8* color, s32 btnMap, CustomNote
     }
 }
 
+static u8 sTtsHasNewMessage;
+static u8 sTtsHasMessage;
+static s8 sTtsCurrentChoice;
+static u8 sTtsMessageBuf[256];
+
 void Message_ResetOcarinaNoteState(void) {
     R_OCARINA_NOTES_YPOS(0) = 189;
     R_OCARINA_NOTES_YPOS(1) = 184;
@@ -1217,7 +1222,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
             default:
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING && i + 1 == msgCtx->textDrawPos &&
                     msgCtx->textDelayTimer == msgCtx->textDelay) {
-                    Audio_PlaySoundGeneral(0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                           &D_801333E8);
                 }
                 Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
@@ -3329,6 +3335,118 @@ void Message_Draw(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void Message_TTS_Decode(u8* srcBuf, u8* dstBuf, u32 srcOffset, u32 size) {
+    u32 dstIdx = 0;
+    bool isListingChoices = false;
+
+    for (u32 i = 0; i < size; i++) {
+        u8 currChar = srcBuf[i + srcOffset];
+
+        if (currChar < ' ') {
+            switch (currChar) {
+                case MESSAGE_NEWLINE:
+                    dstBuf[dstIdx++] = (isListingChoices) ? '\n' : ' ';
+                    break;
+                case MESSAGE_THREE_CHOICE:
+                case MESSAGE_TWO_CHOICE:
+                    dstBuf[dstIdx++] = '\n';
+                    isListingChoices = true;
+                    break;
+                case MESSAGE_COLOR:
+                case MESSAGE_SHIFT:
+                case MESSAGE_TEXT_SPEED:
+                case MESSAGE_BOX_BREAK_DELAYED:
+                case MESSAGE_FADE:
+                case MESSAGE_ITEM_ICON:
+                    i++;
+                    break;
+                case MESSAGE_FADE2:
+                case MESSAGE_SFX:
+                case MESSAGE_TEXTID:
+                    i += 2;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            dstBuf[dstIdx++] = currChar;
+        }
+    }
+
+    dstBuf[dstIdx] = 0;
+}
+
+void Message_TTS_Update(PlayState* play) {
+    MessageContext* msgCtx = &play->msgCtx;
+
+    if (msgCtx->msgMode == MSGMODE_TEXT_NEXT_MSG || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT_BEGIN ||
+        (msgCtx->msgMode == MSGMODE_TEXT_CONTINUING && msgCtx->stateTimer == 1)) {
+        sTtsHasNewMessage = 1;
+    } else if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING || msgCtx->msgMode == MSGMODE_OCARINA_STARTING ||
+               msgCtx->msgMode == MSGMODE_OCARINA_PLAYING || msgCtx->msgMode == MSGMODE_TEXT_AWAIT_NEXT ||
+               msgCtx->msgMode == MSGMODE_TEXT_DONE || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT ||
+               msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT_BEGIN ||
+               msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK_STARTING ||
+               msgCtx->msgMode == MSGMODE_SONG_PLAYBACK || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_STARTING ||
+               msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_SELECT_INSTRUMENT ||
+               msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION) {
+        if (sTtsHasNewMessage == 1) {
+            sTtsHasNewMessage = 0;
+            sTtsHasMessage = 1;
+            sTtsCurrentChoice = 0;
+
+            u32 size = msgCtx->decodedTextLen;
+            Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, 0, size);
+            OTRTextToSpeechCallback(sTtsMessageBuf);
+        } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 &&
+                   msgCtx->choiceIndex != sTtsCurrentChoice) {
+            sTtsCurrentChoice = msgCtx->choiceIndex;
+            u32 startOffset = 0;
+            u32 endOffset = 0;
+            while (startOffset < msgCtx->decodedTextLen) {
+                if (msgCtx->msgBufDecoded[startOffset] == MESSAGE_TWO_CHOICE ||
+                    msgCtx->msgBufDecoded[startOffset] == MESSAGE_THREE_CHOICE) {
+                    startOffset++;
+                    break;
+                }
+                startOffset++;
+            }
+            if (startOffset < msgCtx->decodedTextLen) {
+                u8 i = msgCtx->choiceIndex;
+                while (i-- > 0) {
+                    while (startOffset < msgCtx->decodedTextLen) {
+                        if (msgCtx->msgBufDecoded[startOffset] == MESSAGE_NEWLINE) {
+                            startOffset++;
+                            break;
+                        }
+                        startOffset++;
+                    }
+                }
+                endOffset = startOffset;
+                while (endOffset < msgCtx->decodedTextLen) {
+                    if (msgCtx->msgBufDecoded[endOffset] == MESSAGE_NEWLINE) {
+                        break;
+                    }
+                    endOffset++;
+                }
+
+                if (startOffset < msgCtx->decodedTextLen && startOffset != endOffset) {
+                    u32 size = endOffset - startOffset;
+                    Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, startOffset, size);
+                    OTRTextToSpeechCallback(sTtsMessageBuf);
+                }
+            }
+        }
+    } else if (sTtsHasMessage == 1) {
+        sTtsHasMessage = 0;
+        sTtsHasNewMessage = 0;
+        if (msgCtx->decodedTextLen < 3 || (msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 2] != MESSAGE_FADE &&
+                                           msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 3] != MESSAGE_FADE2)) {
+            OTRTextToSpeechCallback(""); // cancel current speech (except for faded out messages)
+        }
+    }
+}
+
 void Message_Update(PlayState* play) {
     static s16 sTextboxXPositions[] = {
         34, 34, 34, 34, 34, 34,
@@ -3390,6 +3508,10 @@ void Message_Update(PlayState* play) {
 
     if (msgCtx->msgLength == 0) {
         return;
+    }
+
+    if (CVar_GetS32("gMessageTTS", 0) != 0) {
+        Message_TTS_Update(play);
     }
 
     bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped

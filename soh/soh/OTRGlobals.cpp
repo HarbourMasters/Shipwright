@@ -1682,6 +1682,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
+extern "C" void OTRTextToSpeechCallback(char* text) {
+    OTRGlobals::Instance->context->ReadText(text);
+}
+
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 

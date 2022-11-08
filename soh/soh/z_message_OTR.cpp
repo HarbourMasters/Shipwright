@@ -1,4 +1,5 @@
 #include "OTRGlobals.h"
+#include <unordered_map>
 #include <libultraship/ResourceMgr.h>
 #include <libultraship/Scene.h>
 #include <Utils/StringHelper.h>
@@ -77,6 +78,37 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
 	return table;
 }
 
+static std::unordered_map<u16, std::string> sAccessibilityText;
+static std::string sTextInterpolated;
+extern "C" void OTRMessage_InitAccessibilityText()
+{
+    auto file = std::static_pointer_cast<Ship::Text>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/accessibility_text/accessibility_text_eng"));
+
+    for (size_t i = 0; i < file->messages.size(); i++) {
+        sAccessibilityText[file->messages[i].id] = file->messages[i].msg;
+    }
+}
+
+extern "C" const char* OTRMessage_GetAccessibilityText(const char* textResourcePath, u16 textId, const char* arg) {
+    auto it = sAccessibilityText.find(textId);
+ 	if (it == sAccessibilityText.end()) {
+        return nullptr;
+	}
+
+	if (arg != nullptr) {
+        sTextInterpolated = it->second;
+        std::string searchString = "$0";
+        size_t index = sTextInterpolated.find(searchString);
+		if (index != std::string::npos) {
+            sTextInterpolated.replace(index, searchString.size(), std::string(arg));
+            return strdup(sTextInterpolated.c_str());
+		}
+	}
+
+	return strdup(it->second.c_str());
+}
+
 extern "C" void OTRMessage_Init()
 {
     sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", true);
@@ -132,6 +164,8 @@ extern "C" void OTRMessage_Init()
           "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w",
         }
     );
+
+    OTRMessage_InitAccessibilityText();
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
         {

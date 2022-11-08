@@ -6,6 +6,7 @@
 #include "spdlog/spdlog.h"
 #include "ControlDeck.h"
 #include "AudioPlayer.h"
+#include "SpeechSynthesizer.h"
 #include "Lib/Fast3D/gfx_window_manager_api.h"
 #include "Lib/Mercury/Mercury.h"
 
@@ -36,6 +37,7 @@ namespace Ship {
 			uint16_t GetPixelDepth(float x, float y);
 			void ToggleFullscreen();
 			void SetFullscreen(bool bIsFullscreen);
+			void ReadText(const char* text);
 			void SetCursorVisibility(bool visible);
 			uint32_t GetCurrentWidth();
 			uint32_t GetCurrentHeight();
@@ -64,6 +66,7 @@ namespace Ship {
 			void InitializeConfiguration();
 			void InitializeControlDeck();
 			void InitializeAudioPlayer();
+            void InitializeSpeechSynthesis();
 			void InitializeLogging();
 			void InitializeResourceManager(const std::vector<std::string>& OTRFiles = {}, const std::unordered_set<uint32_t>& ValidHashes = {});
 			void InitializeWindowManager();
@@ -73,6 +76,7 @@ namespace Ship {
 			std::shared_ptr<ResourceMgr> ResMan;
 			std::shared_ptr<AudioPlayer> APlayer;
 			std::shared_ptr<ControlDeck> ControllerApi;
+            std::shared_ptr<SpeechSynthesizer> SpeechSynthesizer;
 
 			std::string gfxBackend;
 			std::string audioBackend;

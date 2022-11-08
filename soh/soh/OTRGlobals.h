@@ -96,6 +96,7 @@ float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
 char* ResourceMgr_LoadFileRaw(const char* resName);
+const char* OTRMessage_GetAccessibilityText(const char* textResourcePath, u16 textId, const char* arg);
 bool AudioPlayer_Init(void);
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);

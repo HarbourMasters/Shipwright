@@ -178,6 +178,23 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
             pauseCtx->cursorItem[pauseCtx->pageIndex] = phi_s0_2;
             pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
 
+            if (CVar_GetS32("gMessageTTS", 0)) {
+                u8 arg[8]; // at least big enough where no s8 string will overflow
+                switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
+                    case ITEM_SKULL_TOKEN:
+                        sprintf(arg, "%d", gSaveContext.inventory.gsTokens);
+                        break;
+                    case ITEM_HEART_CONTAINER:
+                        sprintf(arg, "%d of 4", (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C));
+                        break;
+                    default:
+                        arg[0] = '\0';
+                }
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                                        pauseCtx->cursorItem[PAUSE_QUEST], NULL),
+                                                                        arg);
+            }
+
             KaleidoScope_SetCursorVtx(pauseCtx, sp216 * 4, pauseCtx->questVtx);
 
             if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->cursorSpecialPos == 0)) {
