@@ -9,17 +9,17 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnSt_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSt_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSt_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnSt_Draw(Actor* thisx, GlobalContext* globalCtx);
-void EnSt_ReturnToCeiling(EnSt* this, GlobalContext* globalCtx);
-void EnSt_MoveToGround(EnSt* this, GlobalContext* globalCtx);
-void EnSt_StartOnCeilingOrGround(EnSt* this, GlobalContext* globalCtx);
-void EnSt_WaitOnGround(EnSt* this, GlobalContext* globalCtx);
-void EnSt_Die(EnSt* this, GlobalContext* globalCtx);
-void EnSt_BounceAround(EnSt* this, GlobalContext* globalCtx);
-void EnSt_FinishBouncing(EnSt* this, GlobalContext* globalCtx);
+void EnSt_Init(Actor* thisx, PlayState* play);
+void EnSt_Destroy(Actor* thisx, PlayState* play);
+void EnSt_Update(Actor* thisx, PlayState* play);
+void EnSt_Draw(Actor* thisx, PlayState* play);
+void EnSt_ReturnToCeiling(EnSt* this, PlayState* play);
+void EnSt_MoveToGround(EnSt* this, PlayState* play);
+void EnSt_StartOnCeilingOrGround(EnSt* this, PlayState* play);
+void EnSt_WaitOnGround(EnSt* this, PlayState* play);
+void EnSt_Die(EnSt* this, PlayState* play);
+void EnSt_BounceAround(EnSt* this, PlayState* play);
+void EnSt_FinishBouncing(EnSt* this, PlayState* play);
 
 #include "overlays/ovl_En_St/ovl_En_St.h"
 
@@ -134,7 +134,7 @@ void EnSt_SetupAction(EnSt* this, EnStActionFunc actionFunc) {
 /**
  * Spawns `dustCnt` dust particles in a random pattern around the Skulltula
  */
-void EnSt_SpawnDust(EnSt* this, GlobalContext* globalCtx, s32 dustCnt) {
+void EnSt_SpawnDust(EnSt* this, PlayState* play, s32 dustCnt) {
     Color_RGBA8 primColor = { 170, 130, 90, 255 };
     Color_RGBA8 envColor = { 100, 60, 20, 0 };
     Vec3f dustVel = { 0.0f, 0.0f, 0.0f };
@@ -150,11 +150,11 @@ void EnSt_SpawnDust(EnSt* this, GlobalContext* globalCtx, s32 dustCnt) {
         dustAccel.z = (Rand_ZeroOne() - 0.5f) * 4.0f;
         dustPos.x = this->actor.world.pos.x + (Math_SinS(yAngle) * 22.0f);
         dustPos.z = this->actor.world.pos.z + (Math_CosS(yAngle) * 22.0f);
-        func_8002836C(globalCtx, &dustPos, &dustVel, &dustAccel, &primColor, &envColor, 120, 40, 10);
+        func_8002836C(play, &dustPos, &dustVel, &dustAccel, &primColor, &envColor, 120, 40, 10);
     }
 }
 
-void EnSt_SpawnBlastEffect(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_SpawnBlastEffect(EnSt* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f blastPos;
 
@@ -162,20 +162,20 @@ void EnSt_SpawnBlastEffect(EnSt* this, GlobalContext* globalCtx) {
     blastPos.y = this->actor.floorHeight;
     blastPos.z = this->actor.world.pos.z;
 
-    EffectSsBlast_SpawnWhiteCustomScale(globalCtx, &blastPos, &zeroVec, &zeroVec, 100, 220, 8);
+    EffectSsBlast_SpawnWhiteCustomScale(play, &blastPos, &zeroVec, &zeroVec, 100, 220, 8);
 }
 
-void EnSt_SpawnDeadEffect(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_SpawnDeadEffect(EnSt* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f firePos;
 
     firePos.x = this->actor.world.pos.x + ((Rand_ZeroOne() - 0.5f) * 60.0f);
     firePos.y = (this->actor.world.pos.y + 10.0f) + ((Rand_ZeroOne() - 0.5f) * 45.0f);
     firePos.z = this->actor.world.pos.z + ((Rand_ZeroOne() - 0.5f) * 60.0f);
-    EffectSsDeadDb_Spawn(globalCtx, &firePos, &zeroVec, &zeroVec, 100, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
+    EffectSsDeadDb_Spawn(play, &firePos, &zeroVec, &zeroVec, 100, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
 }
 
-s32 EnSt_CreateBlureEffect(GlobalContext* globalCtx) {
+s32 EnSt_CreateBlureEffect(PlayState* play) {
     EffectBlureInit1 blureInit;
     u8 p1StartColor[] = { 255, 255, 255, 75 };
     u8 p2StartColor[] = { 255, 255, 255, 75 };
@@ -195,7 +195,7 @@ s32 EnSt_CreateBlureEffect(GlobalContext* globalCtx) {
     blureInit.unkFlag = 0;
     blureInit.calcMode = 3;
 
-    Effect_Add(globalCtx, &blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
+    Effect_Add(play, &blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     return blureIdx;
 }
 
@@ -203,7 +203,7 @@ s32 EnSt_CreateBlureEffect(GlobalContext* globalCtx) {
  * Checks for the position of the ceiling above the Skulltula.
  * If no ceiling is found it is set to 1000 units above the Skulltula
  */
-s32 EnSt_CheckCeilingPos(EnSt* this, GlobalContext* globalCtx) {
+s32 EnSt_CheckCeilingPos(EnSt* this, PlayState* play) {
     CollisionPoly* poly;
     s32 bgId;
     Vec3f checkPos;
@@ -211,7 +211,7 @@ s32 EnSt_CheckCeilingPos(EnSt* this, GlobalContext* globalCtx) {
     checkPos.x = this->actor.world.pos.x;
     checkPos.y = this->actor.world.pos.y + 1000.0f;
     checkPos.z = this->actor.world.pos.z;
-    if (!BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &checkPos, &this->ceilingPos, &poly, false,
+    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &checkPos, &this->ceilingPos, &poly, false,
                                  false, true, true, &bgId)) {
         return false;
     }
@@ -273,7 +273,7 @@ void EnSt_SetDropAnimAndVel(EnSt* this) {
 /**
  * Initalizes the Skulltula's 6 cylinders, and sphere collider.
  */
-void EnSt_InitColliders(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_InitColliders(EnSt* this, PlayState* play) {
     ColliderCylinderInit* cylinders[6] = {
         &sCylinderInit, &sCylinderInit, &sCylinderInit, &sCylinderInit2, &sCylinderInit2, &sCylinderInit2,
     };
@@ -282,8 +282,8 @@ void EnSt_InitColliders(EnSt* this, GlobalContext* globalCtx) {
     s32 pad;
 
     for (i = 0; i < ARRAY_COUNT(cylinders); i++) {
-        Collider_InitCylinder(globalCtx, &this->colCylinder[i]);
-        Collider_SetCylinder(globalCtx, &this->colCylinder[i], &this->actor, cylinders[i]);
+        Collider_InitCylinder(play, &this->colCylinder[i]);
+        Collider_SetCylinder(play, &this->colCylinder[i], &this->actor, cylinders[i]);
     }
 
     this->colCylinder[0].info.bumper.dmgFlags = 0x0003F8F9;
@@ -295,13 +295,13 @@ void EnSt_InitColliders(EnSt* this, GlobalContext* globalCtx) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(2), &sColChkInit);
 
-    Collider_InitJntSph(globalCtx, &this->colSph);
-    Collider_SetJntSph(globalCtx, &this->colSph, &this->actor, &sJntSphInit, this->colSphItems);
+    Collider_InitJntSph(play, &this->colSph);
+    Collider_SetJntSph(play, &this->colSph, &this->actor, &sJntSphInit, this->colSphItems);
 }
 
-void EnSt_CheckBodyStickHit(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_CheckBodyStickHit(EnSt* this, PlayState* play) {
     ColliderInfo* body = &this->colCylinder[0].info;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (player->unk_860 != 0) {
         body->bumper.dmgFlags |= 2;
@@ -314,24 +314,24 @@ void EnSt_CheckBodyStickHit(EnSt* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSt_SetBodyCylinderAC(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_SetBodyCylinderAC(EnSt* this, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->colCylinder[0]);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[0].base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[0].base);
 }
 
-void EnSt_SetLegsCylinderAC(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_SetLegsCylinderAC(EnSt* this, PlayState* play) {
     s16 angleTowardsLink = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y));
 
     if (angleTowardsLink < 0x3FFC) {
         Collider_UpdateCylinder(&this->actor, &this->colCylinder[2]);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[2].base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[2].base);
     } else {
         Collider_UpdateCylinder(&this->actor, &this->colCylinder[1]);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[1].base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[1].base);
     }
 }
 
-s32 EnSt_SetCylinderOC(EnSt* this, GlobalContext* globalCtx) {
+s32 EnSt_SetCylinderOC(EnSt* this, PlayState* play) {
     Vec3f cyloffsets[] = {
         { 40.0f, 0.0f, 0.0f },
         { 0.0f, 0.0f, 0.0f },
@@ -353,30 +353,30 @@ s32 EnSt_SetCylinderOC(EnSt* this, GlobalContext* globalCtx) {
         this->colCylinder[i + 3].dim.pos.x = cylPos.x;
         this->colCylinder[i + 3].dim.pos.y = cylPos.y;
         this->colCylinder[i + 3].dim.pos.z = cylPos.z;
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[i + 3].base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->colCylinder[i + 3].base);
     }
 
     return true;
 }
 
-void EnSt_UpdateCylinders(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_UpdateCylinders(EnSt* this, PlayState* play) {
     if ((this->actor.colChkInfo.health != 0) || (this->actionFunc == EnSt_FinishBouncing)) {
         if (DECR(this->gaveDamageSpinTimer) == 0) {
-            EnSt_SetCylinderOC(this, globalCtx);
+            EnSt_SetCylinderOC(this, play);
         }
 
         DECR(this->invulnerableTimer);
         DECR(this->takeDamageSpinTimer);
 
         if (this->invulnerableTimer == 0 && this->takeDamageSpinTimer == 0) {
-            EnSt_SetBodyCylinderAC(this, globalCtx);
-            EnSt_SetLegsCylinderAC(this, globalCtx);
+            EnSt_SetBodyCylinderAC(this, play);
+            EnSt_SetLegsCylinderAC(this, play);
         }
     }
 }
 
-s32 EnSt_CheckHitLink(EnSt* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+s32 EnSt_CheckHitLink(EnSt* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 hit;
     s32 i;
 
@@ -397,9 +397,9 @@ s32 EnSt_CheckHitLink(EnSt* this, GlobalContext* globalCtx) {
     }
 
     this->gaveDamageSpinTimer = 30;
-    globalCtx->damagePlayer(globalCtx, -8);
+    play->damagePlayer(play, -8);
     Audio_PlayActorSound2(&player->actor, NA_SE_PL_BODY_HIT);
-    func_8002F71C(globalCtx, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
+    func_8002F71C(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
     return true;
 }
 
@@ -418,7 +418,7 @@ s32 EnSt_CheckHitFrontside(EnSt* this) {
     }
 }
 
-s32 EnSt_CheckHitBackside(EnSt* this, GlobalContext* globalCtx) {
+s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
     ColliderCylinder* cyl = &this->colCylinder[0];
     s32 flags = 0; // ac hit flags from colliders 0 and 1
     s32 hit = false;
@@ -459,7 +459,7 @@ s32 EnSt_CheckHitBackside(EnSt* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALTU_DAMAGE);
         return false;
     }
-    Enemy_StartFinishingBlow(globalCtx, &this->actor);
+    Enemy_StartFinishingBlow(play, &this->actor);
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->groundBounces = 3;
     this->deathTimer = 20;
@@ -481,24 +481,24 @@ s32 EnSt_CheckHitBackside(EnSt* this, GlobalContext* globalCtx) {
 /**
  * Checks if the Skulltula's colliders have been hit, returns true if the hit has dealt damage to the Skulltula
  */
-s32 EnSt_CheckColliders(EnSt* this, GlobalContext* globalCtx) {
+s32 EnSt_CheckColliders(EnSt* this, PlayState* play) {
     if (EnSt_CheckHitFrontside(this)) {
         // player has hit the front shield area of the Skulltula
         return false;
     }
 
-    if (globalCtx->actorCtx.unk_02 != 0) {
+    if (play->actorCtx.unk_02 != 0) {
         return true;
     }
 
-    if (EnSt_CheckHitBackside(this, globalCtx)) {
+    if (EnSt_CheckHitBackside(this, play)) {
         // player has hit the backside of the Skulltula
         return true;
     }
 
     if (this->stunTimer == 0 && this->takeDamageSpinTimer == 0) {
         // check if the Skulltula has hit link.
-        EnSt_CheckHitLink(this, globalCtx);
+        EnSt_CheckHitLink(this, play);
     }
     return false;
 }
@@ -566,7 +566,7 @@ s32 EnSt_DecrStunTimer(EnSt* this) {
  * turning, and the actual turning to face away from the player, and then back to
  * face the player
  */
-void EnSt_UpdateYaw(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_UpdateYaw(EnSt* this, PlayState* play) {
     u16 yawDir = 0;
     Vec3s rot;
     s16 yawDiff;
@@ -649,7 +649,7 @@ void EnSt_UpdateYaw(EnSt* this, GlobalContext* globalCtx) {
  * Checks to see if the Skulltula is done bouncing on the ground,
  * spawns dust particles as the Skulltula hits the ground
  */
-s32 EnSt_IsDoneBouncing(EnSt* this, GlobalContext* globalCtx) {
+s32 EnSt_IsDoneBouncing(EnSt* this, PlayState* play) {
     if (this->actor.velocity.y > 0.0f || this->groundBounces == 0) {
         // the Skulltula is moving upwards or the groundBounces is 0
         return false;
@@ -661,7 +661,7 @@ s32 EnSt_IsDoneBouncing(EnSt* this, GlobalContext* globalCtx) {
     }
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
-    EnSt_SpawnDust(this, globalCtx, 10);
+    EnSt_SpawnDust(this, play, 10);
     // creates an elastic bouncing effect, boucing up less for each hit on the ground.
     this->actor.velocity.y = 6.0f / (4 - this->groundBounces);
     this->groundBounces--;
@@ -674,17 +674,17 @@ s32 EnSt_IsDoneBouncing(EnSt* this, GlobalContext* globalCtx) {
     return true;
 }
 
-void EnSt_Bob(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_Bob(EnSt* this, PlayState* play) {
     f32 ySpeedTarget = 0.5f;
 
-    if ((globalCtx->state.frames & 8) != 0) {
+    if ((play->state.frames & 8) != 0) {
         ySpeedTarget *= -1.0f;
     }
     Math_SmoothStepToF(&this->actor.velocity.y, ySpeedTarget, 0.4f, 1000.0f, 0.0f);
 }
 
-s32 EnSt_IsCloseToPlayer(EnSt* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+s32 EnSt_IsCloseToPlayer(EnSt* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 yDist;
 
     if (this->takeDamageSpinTimer != 0) {
@@ -775,15 +775,15 @@ void EnSt_Sway(EnSt* this) {
     }
 }
 
-void EnSt_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnSt_Init(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 14.0f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &object_st_Skel_005298, NULL, this->jointTable, this->morphTable, 30);
+    SkelAnime_Init(play, &this->skelAnime, &object_st_Skel_005298, NULL, this->jointTable, this->morphTable, 30);
     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENST_ANIM_0);
-    this->blureIdx = EnSt_CreateBlureEffect(globalCtx);
-    EnSt_InitColliders(this, globalCtx);
+    this->blureIdx = EnSt_CreateBlureEffect(play);
+    EnSt_InitColliders(this, play);
     if (thisx->params == 2) {
         this->actor.flags |= ACTOR_FLAG_7;
     }
@@ -792,7 +792,7 @@ void EnSt_Init(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         this->actor.naviEnemyId = 0x04;
     }
-    EnSt_CheckCeilingPos(this, globalCtx);
+    EnSt_CheckCeilingPos(this, play);
     this->actor.flags |= ACTOR_FLAG_14;
     this->actor.flags |= ACTOR_FLAG_24;
     EnSt_SetColliderScale(this);
@@ -801,23 +801,23 @@ void EnSt_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnSt_SetupAction(this, EnSt_StartOnCeilingOrGround);
 }
 
-void EnSt_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSt_Destroy(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
     s32 i;
 
-    Effect_Delete(globalCtx, this->blureIdx);
+    Effect_Delete(play, this->blureIdx);
     for (i = 0; i < 6; i++) {
-        Collider_DestroyCylinder(globalCtx, &this->colCylinder[i]);
+        Collider_DestroyCylinder(play, &this->colCylinder[i]);
     }
-    Collider_DestroyJntSph(globalCtx, &this->colSph);
+    Collider_DestroyJntSph(play, &this->colSph);
 }
 
-void EnSt_WaitOnCeiling(EnSt* this, GlobalContext* globalCtx) {
-    if (EnSt_IsCloseToPlayer(this, globalCtx)) {
+void EnSt_WaitOnCeiling(EnSt* this, PlayState* play) {
+    if (EnSt_IsCloseToPlayer(this, play)) {
         EnSt_SetDropAnimAndVel(this);
         EnSt_SetupAction(this, EnSt_MoveToGround);
     } else {
-        EnSt_Bob(this, globalCtx);
+        EnSt_Bob(this, play);
     }
 }
 
@@ -825,7 +825,7 @@ void EnSt_WaitOnCeiling(EnSt* this, GlobalContext* globalCtx) {
  * Skulltula is waiting on the ground for the player to move away, or for
  * a collider to have contact
  */
-void EnSt_WaitOnGround(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_WaitOnGround(EnSt* this, PlayState* play) {
     if (this->takeDamageSpinTimer != 0) {
         this->takeDamageSpinTimer--;
         if (this->takeDamageSpinTimer == 0) {
@@ -840,7 +840,7 @@ void EnSt_WaitOnGround(EnSt* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (!EnSt_IsCloseToPlayer(this, globalCtx)) {
+    if (!EnSt_IsCloseToPlayer(this, play)) {
         // Player is no longer within range, return to ceiling.
         EnSt_SetReturnToCeilingAnimation(this);
         EnSt_SetupAction(this, EnSt_ReturnToCeiling);
@@ -854,10 +854,10 @@ void EnSt_WaitOnGround(EnSt* this, GlobalContext* globalCtx) {
     }
 
     // simply bob up and down.
-    EnSt_Bob(this, globalCtx);
+    EnSt_Bob(this, play);
 }
 
-void EnSt_LandOnGround(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_LandOnGround(EnSt* this, PlayState* play) {
     if (this->animFrames != 0) {
         this->animFrames--;
         if (this->animFrames == 0) {
@@ -887,7 +887,7 @@ void EnSt_LandOnGround(EnSt* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSt_MoveToGround(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_MoveToGround(EnSt* this, PlayState* play) {
     if (this->takeDamageSpinTimer != 0) {
         this->takeDamageSpinTimer--;
         if (this->takeDamageSpinTimer == 0) {
@@ -895,13 +895,13 @@ void EnSt_MoveToGround(EnSt* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (!EnSt_IsCloseToPlayer(this, globalCtx)) {
+    if (!EnSt_IsCloseToPlayer(this, play)) {
         // the player moved out of range, return to the ceiling.
         EnSt_SetReturnToCeilingAnimation(this);
         EnSt_SetupAction(this, EnSt_ReturnToCeiling);
     } else if (EnSt_IsCloseToGround(this)) {
         // The Skulltula has become close to the ground.
-        EnSt_SpawnBlastEffect(this, globalCtx);
+        EnSt_SpawnBlastEffect(this, play);
         EnSt_SetLandAnimation(this);
         EnSt_SetupAction(this, EnSt_LandOnGround);
     } else if (DECR(this->sfxTimer) == 0) {
@@ -910,14 +910,14 @@ void EnSt_MoveToGround(EnSt* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSt_ReturnToCeiling(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_ReturnToCeiling(EnSt* this, PlayState* play) {
     f32 animPctDone = this->skelAnime.curFrame / (this->skelAnime.animLength - 1.0f);
 
     if (animPctDone == 1.0f) {
         EnSt_SetReturnToCeilingAnimation(this);
     }
 
-    if (EnSt_IsCloseToPlayer(this, globalCtx)) {
+    if (EnSt_IsCloseToPlayer(this, play)) {
         // player came back into range
         EnSt_SetDropAnimAndVel(this);
         EnSt_SetupAction(this, EnSt_MoveToGround);
@@ -934,13 +934,13 @@ void EnSt_ReturnToCeiling(EnSt* this, GlobalContext* globalCtx) {
 /**
  * The Skulltula has been killed, bounce around
  */
-void EnSt_BounceAround(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_BounceAround(EnSt* this, PlayState* play) {
     this->actor.colorFilterTimer = this->deathTimer;
     func_8002D868(&this->actor);
     this->actor.world.rot.x += 0x800;
     this->actor.world.rot.z -= 0x800;
     this->actor.shape.rot = this->actor.world.rot;
-    if (EnSt_IsDoneBouncing(this, globalCtx)) {
+    if (EnSt_IsDoneBouncing(this, play)) {
         this->actor.shape.yOffset = 400.0f;
         this->actor.speedXZ = 1.0f;
         this->actor.gravity = -2.0f;
@@ -953,7 +953,7 @@ void EnSt_BounceAround(EnSt* this, GlobalContext* globalCtx) {
 /**
  * Finish up the bouncing animation, and rotate towards the final position
  */
-void EnSt_FinishBouncing(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_FinishBouncing(EnSt* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
     if (DECR(this->deathTimer) == 0) {
@@ -976,41 +976,41 @@ void EnSt_FinishBouncing(EnSt* this, GlobalContext* globalCtx) {
 
     func_8002D868(&this->actor);
     this->groundBounces = 2;
-    EnSt_IsDoneBouncing(this, globalCtx);
+    EnSt_IsDoneBouncing(this, play);
 }
 
 /**
  * Spawn the enemy dying effects, and drop a random item
  */
-void EnSt_Die(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_Die(EnSt* this, PlayState* play) {
     if (DECR(this->finishDeathTimer) != 0) {
-        EnSt_SpawnDeadEffect(this, globalCtx);
+        EnSt_SpawnDeadEffect(this, play);
     } else {
-        Item_DropCollectibleRandom(globalCtx, NULL, &this->actor.world.pos, 0xE0);
+        Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, 0xE0);
         Actor_Kill(&this->actor);
     }
 }
 
-void EnSt_StartOnCeilingOrGround(EnSt* this, GlobalContext* globalCtx) {
+void EnSt_StartOnCeilingOrGround(EnSt* this, PlayState* play) {
     if (!EnSt_IsCloseToGround(this)) {
         this->rotAwayTimer = 60;
         EnSt_SetupAction(this, EnSt_WaitOnCeiling);
-        EnSt_WaitOnCeiling(this, globalCtx);
+        EnSt_WaitOnCeiling(this, play);
     } else {
         EnSt_SetLandAnimation(this);
         EnSt_SetupAction(this, EnSt_LandOnGround);
-        EnSt_LandOnGround(this, globalCtx);
+        EnSt_LandOnGround(this, play);
     }
 }
 
-void EnSt_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSt_Update(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
     s32 pad;
     Color_RGBA8 color = { 0, 0, 0, 0 };
 
     if (this->actor.flags & ACTOR_FLAG_15) {
         SkelAnime_Update(&this->skelAnime);
-    } else if (!EnSt_CheckColliders(this, globalCtx)) {
+    } else if (!EnSt_CheckColliders(this, play)) {
         // no collision has been detected.
 
         if (this->stunTimer == 0) {
@@ -1021,12 +1021,12 @@ void EnSt_Update(Actor* thisx, GlobalContext* globalCtx) {
             func_8002D7EC(&this->actor);
         }
 
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
         if ((this->stunTimer == 0) && (this->swayTimer == 0)) {
             // run the current action if the Skulltula isn't stunned
             // or swaying.
-            this->actionFunc(this, globalCtx);
+            this->actionFunc(this, play);
         } else if (this->stunTimer != 0) {
             // decrement the stun timer.
             EnSt_DecrStunTimer(this);
@@ -1035,24 +1035,24 @@ void EnSt_Update(Actor* thisx, GlobalContext* globalCtx) {
             EnSt_Sway(this);
         }
 
-        EnSt_UpdateYaw(this, globalCtx);
+        EnSt_UpdateYaw(this, play);
 
         if (this->actionFunc == EnSt_WaitOnGround) {
-            if ((globalCtx->state.frames & 0x10) != 0) {
+            if ((play->state.frames & 0x10) != 0) {
                 color.r = 255;
             }
         }
 
         EnSt_SetTeethColor(this, color.r, color.g, color.b, 8);
-        EnSt_UpdateCylinders(this, globalCtx);
+        EnSt_UpdateCylinders(this, play);
         Actor_SetFocus(&this->actor, 0.0f);
     }
 }
 
-s32 EnSt_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dListP, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnSt_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dListP, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSt* this = (EnSt*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     switch (limbIndex) {
         case 1:
             if (this->gaveDamageSpinTimer != 0 && this->swayTimer == 0) {
@@ -1069,21 +1069,21 @@ s32 EnSt_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dListP,
             gDPSetEnvColor(POLY_OPA_DISP++, this->teethR, this->teethG, this->teethB, 0);
             break;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
     return false;
 }
 
-void EnSt_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dListP, Vec3s* rot, void* thisx) {
+void EnSt_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dListP, Vec3s* rot, void* thisx) {
     EnSt* this = (EnSt*)thisx;
 
     Collider_UpdateSpheres(limbIndex, &this->colSph);
 }
 
-void EnSt_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnSt_Draw(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
 
-    EnSt_CheckBodyStickHit(this, globalCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSt_OverrideLimbDraw,
+    EnSt_CheckBodyStickHit(this, play);
+    func_80093D18(play->state.gfxCtx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSt_OverrideLimbDraw,
                       EnSt_PostLimbDraw, this);
 }

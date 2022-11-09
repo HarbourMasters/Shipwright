@@ -9,21 +9,21 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
 
-void ObjTimeblock_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjTimeblock_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjTimeblock_Update(Actor* thisx, GlobalContext* globalCtx);
-void ObjTimeblock_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ObjTimeblock_Init(Actor* thisx, PlayState* play);
+void ObjTimeblock_Destroy(Actor* thisx, PlayState* play);
+void ObjTimeblock_Update(Actor* thisx, PlayState* play);
+void ObjTimeblock_Draw(Actor* thisx, PlayState* play);
 
 void ObjTimeblock_SetupNormal(ObjTimeblock* this);
 void ObjTimeblock_SetupAltBehaviorVisible(ObjTimeblock* this);
 void ObjTimeblock_SetupAltBehaviourNotVisible(ObjTimeblock* this);
 
-s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, GlobalContext* globalCtx);
-s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, GlobalContext* globalCtx);
-void ObjTimeblock_DoNothing(ObjTimeblock* this, GlobalContext* globalCtx);
-void ObjTimeblock_Normal(ObjTimeblock* this, GlobalContext* globalCtx);
-void ObjTimeblock_AltBehaviorVisible(ObjTimeblock* this, GlobalContext* globalCtx);
-void ObjTimeblock_AltBehaviourNotVisible(ObjTimeblock* this, GlobalContext* globalCtx);
+s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, PlayState* play);
+s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, PlayState* play);
+void ObjTimeblock_DoNothing(ObjTimeblock* this, PlayState* play);
+void ObjTimeblock_Normal(ObjTimeblock* this, PlayState* play);
+void ObjTimeblock_AltBehaviorVisible(ObjTimeblock* this, PlayState* play);
+void ObjTimeblock_AltBehaviourNotVisible(ObjTimeblock* this, PlayState* play);
 
 const ActorInit Obj_Timeblock_InitVars = {
     ACTOR_OBJ_TIMEBLOCK,
@@ -83,21 +83,21 @@ u32 ObjTimeblock_CalculateIsVisible(ObjTimeblock* this) {
     }
 }
 
-void ObjTimeblock_SpawnDemoEffect(ObjTimeblock* this, GlobalContext* globalCtx) {
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x,
+void ObjTimeblock_SpawnDemoEffect(ObjTimeblock* this, PlayState* play) {
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x,
                 this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0,
                 sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams);
 }
 
-void ObjTimeblock_ToggleSwitchFlag(GlobalContext* globalCtx, s32 flag) {
-    if (Flags_GetSwitch(globalCtx, flag)) {
-        Flags_UnsetSwitch(globalCtx, flag);
+void ObjTimeblock_ToggleSwitchFlag(PlayState* play, s32 flag) {
+    if (Flags_GetSwitch(play, flag)) {
+        Flags_UnsetSwitch(play, flag);
     } else {
-        Flags_SetSwitch(globalCtx, flag);
+        Flags_SetSwitch(play, flag);
     }
 }
 
-void ObjTimeblock_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjTimeblock_Init(Actor* thisx, PlayState* play) {
     ObjTimeblock* this = (ObjTimeblock*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -107,7 +107,7 @@ void ObjTimeblock_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     CollisionHeader_GetVirtual(&gSongOfTimeBlockCol, &colHeader);
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     Actor_SetScale(&this->dyna.actor, sSizeOptions[(this->dyna.actor.params >> 8) & 1].scale);
@@ -122,7 +122,7 @@ void ObjTimeblock_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     Actor_SetFocus(&this->dyna.actor, sSizeOptions[(this->dyna.actor.params >> 8) & 1].height);
 
-    this->unk_174 = (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) ? true : false;
+    this->unk_174 = (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) ? true : false;
     this->unk_175 = ((this->dyna.actor.params >> 15) & 1) ? true : false;
     this->isVisible = ObjTimeblock_CalculateIsVisible(this);
 
@@ -140,14 +140,14 @@ void ObjTimeblock_Init(Actor* thisx, GlobalContext* globalCtx) {
                  (this->dyna.actor.params >> 10) & 1);
 }
 
-void ObjTimeblock_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ObjTimeblock_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     ObjTimeblock* this = (ObjTimeblock*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* this, GlobalContext* globalCtx) {
+u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* this, PlayState* play) {
     if (this->isVisible && func_80043590(&this->dyna)) {
         return false;
     }
@@ -156,7 +156,7 @@ u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* this, GlobalContext* globalCtx) {
         Vec3f distance;
         f32 blockSize;
 
-        func_8002DBD0(&this->dyna.actor, &distance, &GET_PLAYER(globalCtx)->actor.world.pos);
+        func_8002DBD0(&this->dyna.actor, &distance, &GET_PLAYER(play)->actor.world.pos);
         blockSize = this->dyna.actor.scale.x * 50.0f + 6.0f;
         // Return true if player's xz position is not inside the block
         if (blockSize < fabsf(distance.x) || blockSize < fabsf(distance.z)) {
@@ -167,12 +167,12 @@ u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* this, GlobalContext* globalCtx) {
     return false;
 }
 
-s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (ObjTimeblock_PlayerIsInRange(this, globalCtx)) {
+    if (ObjTimeblock_PlayerIsInRange(this, play)) {
         if (player->stateFlags2 & 0x1000000) {
-            func_8010BD58(globalCtx, OCARINA_ACTION_FREE_PLAY);
+            func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
             this->songObserverFunc = ObjTimeblock_WaitForSong;
         } else {
             player->stateFlags2 |= 0x800000;
@@ -181,11 +181,11 @@ s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, GlobalContext* globalCtx) {
     return false;
 }
 
-s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, GlobalContext* globalCtx) {
-    if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+s32 ObjTimeblock_WaitForSong(ObjTimeblock* this, PlayState* play) {
+    if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->songObserverFunc = ObjTimeblock_WaitForOcarina;
     }
-    if (globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
+    if (play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
         if (this->unk_172 == 254) {
             this->songEndTimer = 110;
         } else {
@@ -202,42 +202,42 @@ void ObjTimeblock_SetupDoNothing(ObjTimeblock* this) {
     this->actionFunc = ObjTimeblock_DoNothing;
 }
 
-void ObjTimeblock_DoNothing(ObjTimeblock* this, GlobalContext* globalCtx) {
+void ObjTimeblock_DoNothing(ObjTimeblock* this, PlayState* play) {
 }
 
 void ObjTimeblock_SetupNormal(ObjTimeblock* this) {
     this->actionFunc = ObjTimeblock_Normal;
 }
 
-void ObjTimeblock_Normal(ObjTimeblock* this, GlobalContext* globalCtx) {
+void ObjTimeblock_Normal(ObjTimeblock* this, PlayState* play) {
     u32 newIsVisible;
 
-    if (this->songObserverFunc(this, globalCtx) && this->demoEffectTimer <= 0) {
-        ObjTimeblock_SpawnDemoEffect(this, globalCtx);
+    if (this->songObserverFunc(this, play) && this->demoEffectTimer <= 0) {
+        ObjTimeblock_SpawnDemoEffect(this, play);
         this->demoEffectTimer = 160;
 
         // Possibly points the camera to this actor
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         // "◯◯◯◯ Time Block Attention Camera (frame counter  %d)\n"
-        osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", globalCtx->state.frames);
+        osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", play->state.frames);
 
         this->demoEffectFirstPartTimer = 12;
 
         if (this->unk_177 == 0) {
             this->dyna.actor.params ^= 0x8000;
         } else {
-            ObjTimeblock_ToggleSwitchFlag(globalCtx, this->dyna.actor.params & 0x3F);
+            ObjTimeblock_ToggleSwitchFlag(play, this->dyna.actor.params & 0x3F);
         }
     }
 
-    this->unk_172 = globalCtx->msgCtx.lastPlayedSong;
+    this->unk_172 = play->msgCtx.lastPlayedSong;
     if (this->demoEffectFirstPartTimer > 0) {
         this->demoEffectFirstPartTimer--;
         if (this->demoEffectFirstPartTimer == 0) {
             if (this->unk_177 == 0) {
                 this->unk_175 = ((this->dyna.actor.params >> 15) & 1) ? true : false;
             } else {
-                this->unk_174 = (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) ? true : false;
+                this->unk_174 = (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) ? true : false;
             }
         }
     }
@@ -253,35 +253,35 @@ void ObjTimeblock_Normal(ObjTimeblock* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80BA06AC(ObjTimeblock* this, GlobalContext* globalCtx) {
+void func_80BA06AC(ObjTimeblock* this, PlayState* play) {
     s32 switchFlag = this->dyna.actor.params & 0x3F;
 
-    this->unk_172 = globalCtx->msgCtx.lastPlayedSong;
+    this->unk_172 = play->msgCtx.lastPlayedSong;
 
     if (this->demoEffectFirstPartTimer > 0 && --this->demoEffectFirstPartTimer == 0) {
-        this->unk_174 = (Flags_GetSwitch(globalCtx, switchFlag)) ? true : false;
+        this->unk_174 = (Flags_GetSwitch(play, switchFlag)) ? true : false;
     }
 
     this->isVisible = ObjTimeblock_CalculateIsVisible(this);
-    this->unk_176 = (Flags_GetSwitch(globalCtx, switchFlag)) ? true : false;
+    this->unk_176 = (Flags_GetSwitch(play, switchFlag)) ? true : false;
 }
 
 void ObjTimeblock_SetupAltBehaviorVisible(ObjTimeblock* this) {
     this->actionFunc = ObjTimeblock_AltBehaviorVisible;
 }
 
-void ObjTimeblock_AltBehaviorVisible(ObjTimeblock* this, GlobalContext* globalCtx) {
-    if (this->songObserverFunc(this, globalCtx) && this->demoEffectTimer <= 0) {
+void ObjTimeblock_AltBehaviorVisible(ObjTimeblock* this, PlayState* play) {
+    if (this->songObserverFunc(this, play) && this->demoEffectTimer <= 0) {
         this->demoEffectFirstPartTimer = 12;
-        ObjTimeblock_SpawnDemoEffect(this, globalCtx);
+        ObjTimeblock_SpawnDemoEffect(this, play);
         this->demoEffectTimer = 160;
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         // "Time Block Attention Camera (frame counter)"
-        osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", globalCtx->state.frames);
-        ObjTimeblock_ToggleSwitchFlag(globalCtx, this->dyna.actor.params & 0x3F);
+        osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", play->state.frames);
+        ObjTimeblock_ToggleSwitchFlag(play, this->dyna.actor.params & 0x3F);
     }
 
-    func_80BA06AC(this, globalCtx);
+    func_80BA06AC(this, play);
 
     if (this->demoEffectTimer == 50) {
         func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
@@ -296,53 +296,53 @@ void ObjTimeblock_SetupAltBehaviourNotVisible(ObjTimeblock* this) {
     this->actionFunc = ObjTimeblock_AltBehaviourNotVisible;
 }
 
-void ObjTimeblock_AltBehaviourNotVisible(ObjTimeblock* this, GlobalContext* globalCtx) {
+void ObjTimeblock_AltBehaviourNotVisible(ObjTimeblock* this, PlayState* play) {
     s32 switchFlag = this->dyna.actor.params & 0x3F;
-    s8 switchFlagIsSet = (Flags_GetSwitch(globalCtx, switchFlag)) ? true : false;
+    s8 switchFlagIsSet = (Flags_GetSwitch(play, switchFlag)) ? true : false;
 
     if (this->unk_176 ^ switchFlagIsSet && switchFlagIsSet ^ (((this->dyna.actor.params >> 15) & 1) ? true : false)) {
         if (this->demoEffectTimer <= 0) {
-            ObjTimeblock_SpawnDemoEffect(this, globalCtx);
+            ObjTimeblock_SpawnDemoEffect(this, play);
             this->demoEffectTimer = 160;
         }
         this->demoEffectFirstPartTimer = 12;
     }
 
-    func_80BA06AC(this, globalCtx);
+    func_80BA06AC(this, play);
 
     if (this->isVisible && this->demoEffectTimer <= 0) {
         ObjTimeblock_SetupAltBehaviorVisible(this);
     }
 }
 
-void ObjTimeblock_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjTimeblock_Update(Actor* thisx, PlayState* play) {
     ObjTimeblock* this = (ObjTimeblock*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (this->demoEffectTimer > 0) {
         this->demoEffectTimer--;
     }
 
     if (this->isVisible) {
-        func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
     } else {
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
     }
 }
 
-void ObjTimeblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ObjTimeblock_Draw(Actor* thisx, PlayState* play) {
     if (((ObjTimeblock*)thisx)->isVisible) {
         Color_RGB8* primColor = &sPrimColors[thisx->home.rot.z & 7];
 
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        func_80093D18(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
         gSPDisplayList(POLY_OPA_DISP++, gSongOfTimeBlockDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

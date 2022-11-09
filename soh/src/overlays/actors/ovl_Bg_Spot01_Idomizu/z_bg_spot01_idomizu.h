@@ -6,7 +6,7 @@
 
 struct BgSpot01Idomizu;
 
-typedef void (*BgSpot01IdomizuActionFunc)(struct BgSpot01Idomizu*, GlobalContext*);
+typedef void (*BgSpot01IdomizuActionFunc)(struct BgSpot01Idomizu*, PlayState*);
 
 typedef struct BgSpot01Idomizu {
     /* 0x0000 */ Actor actor;

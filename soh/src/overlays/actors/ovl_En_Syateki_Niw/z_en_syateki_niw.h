@@ -6,7 +6,7 @@
 
 struct EnSyatekiNiw;
 
-typedef void (*EnSyatekiNiwActionFunc)(struct EnSyatekiNiw*, GlobalContext*);
+typedef void (*EnSyatekiNiwActionFunc)(struct EnSyatekiNiw*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8    unk_00;

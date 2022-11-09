@@ -6,7 +6,7 @@
 
 struct BgSpot12Saku;
 
-typedef void (*BgSpot12SakuActionFunc)(struct BgSpot12Saku*, GlobalContext*);
+typedef void (*BgSpot12SakuActionFunc)(struct BgSpot12Saku*, PlayState*);
 
 typedef struct BgSpot12Saku {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -8,20 +8,20 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx);
-void ItemEtcetera_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ItemEtcetera_Update(Actor* thisx, GlobalContext* globalCtx);
-void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx);
-void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ItemEtcetera_Init(Actor* thisx, PlayState* play);
+void ItemEtcetera_Destroy(Actor* thisx, PlayState* play);
+void ItemEtcetera_Update(Actor* thisx, PlayState* play);
+void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play);
+void ItemEtcetera_Draw(Actor* thisx, PlayState* play);
 
-void func_80B857D0(ItemEtcetera* this, GlobalContext* globalCtx);
-void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx);
-void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx);
-void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx);
-void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, GlobalContext* globalCtx);
-void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx);
-void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, GlobalContext* globalCtx);
+void func_80B857D0(ItemEtcetera* this, PlayState* play);
+void func_80B85824(ItemEtcetera* this, PlayState* play);
+void func_80B858B4(ItemEtcetera* this, PlayState* play);
+void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
+void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play);
+void func_80B85B28(ItemEtcetera* this, PlayState* play);
+void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -58,7 +58,7 @@ void ItemEtcetera_SetupAction(ItemEtcetera* this, ItemEtceteraActionFunc actionF
     this->actionFunc = actionFunc;
 }
 
-void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 pad;
     s32 type;
@@ -66,7 +66,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     type = this->actor.params & 0xFF;
     osSyncPrintf("no = %d\n", type);
-    objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIds[type]);
+    objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
         ASSERT(objBankIndex < 0);
@@ -84,7 +84,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
             if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
-                (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1E))) {
+                (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1E))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -108,48 +108,48 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ItemEtcetera_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ItemEtcetera_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void func_80B857D0(ItemEtcetera* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->objBankIndex)) {
+void func_80B857D0(ItemEtcetera* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.objBankIndex = this->objBankIndex;
         this->actor.draw = this->drawFunc;
         this->actionFunc = this->futureActionFunc;
     }
 }
 
-void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void func_80B85824(ItemEtcetera* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         if ((this->actor.params & 0xFF) == 7) {
             if (gSaveContext.n64ddFlag) {
-                Flags_SetTreasure(globalCtx, 0x1F);
+                Flags_SetTreasure(play, 0x1F);
             }
         }
 
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
-            Flags_SetSwitch(globalCtx, 0xB);
+            Flags_SetSwitch(play, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+            func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
     }
 }
 
-void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void func_80B858B4(ItemEtcetera* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
-            Flags_SetSwitch(globalCtx, 0xB);
+            Flags_SetSwitch(play, 0xB);
 
             if (gSaveContext.n64ddFlag) {
-                Flags_SetTreasure(globalCtx, 0x1E);
+                Flags_SetTreasure(play, 0x1E);
             }
         }
         Actor_Kill(&this->actor);
@@ -157,19 +157,19 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         if (0) {} // Necessary to match
 
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+            func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 30.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 
-        if ((globalCtx->gameplayFrames & 0xD) == 0) {
-            EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
+        if ((play->gameplayFrames & 0xD) == 0) {
+            EffectSsBubble_Spawn(play, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
         }
     }
 }
 
-void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx) {
+void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play) {
     static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
     static Vec3f accel = { 0.0f, 0.05f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 0 };
@@ -183,29 +183,29 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, GlobalContext* globalCtx) {
     pos.x = Rand_CenteredFloat(12.0f) + this->actor.world.pos.x;
     pos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y;
     pos.z = Rand_CenteredFloat(12.0f) + this->actor.world.pos.z;
-    EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 5000, 16);
+    EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, 5000, 16);
 }
 
-void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, GlobalContext* globalCtx) {
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10.0f, 10.0f, 0.0f, 5);
+void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play) {
+    Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
     Actor_MoveForward(&this->actor);
     if (!(this->actor.bgCheckFlags & 1)) {
-        ItemEtcetera_SpawnSparkles(this, globalCtx);
+        ItemEtcetera_SpawnSparkles(this, play);
     }
     this->actor.shape.rot.y += 0x400;
-    func_80B85824(this, globalCtx);
+    func_80B85824(this, play);
 }
 
-void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx) {
-    if (Flags_GetTreasure(globalCtx, (this->actor.params >> 8) & 0x1F)) {
+void func_80B85B28(ItemEtcetera* this, PlayState* play) {
+    if (Flags_GetTreasure(play, (this->actor.params >> 8) & 0x1F)) {
         Actor_Kill(&this->actor);
     }
 }
 
-void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) {
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[0] != NULL)) {
-        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action);
-        if (globalCtx->csCtx.npcActions[0]->action == 2) {
+void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play) {
+    if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[0] != NULL)) {
+        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", play->csCtx.npcActions[0]->action);
+        if (play->csCtx.npcActions[0]->action == 2) {
             this->actor.draw = ItemEtcetera_Draw;
             this->actor.gravity = -0.1f;
             this->actor.minVelocityY = -4.0f;
@@ -218,31 +218,31 @@ void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) 
     }
 }
 
-void ItemEtcetera_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ItemEtcetera_Update(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
+void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    if (globalCtx->actorCtx.lensActive) {
-        func_8002EBCC(&this->actor, globalCtx, 0);
-        func_8002ED80(&this->actor, globalCtx, 0);
+    if (play->actorCtx.lensActive) {
+        func_8002EBCC(&this->actor, play, 0);
+        func_8002ED80(&this->actor, play, 0);
 
-        if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
-            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, globalCtx);
-            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        if(gSaveContext.n64ddFlag && play->sceneNum == 16) {
+            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
+            EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
             if (randoGetItem.itemId != ITEM_NONE) {
-                GetItemEntry_Draw(globalCtx, randoGetItem);
+                GetItemEntry_Draw(play, randoGetItem);
                 return;
             }
         }
         
-        GetItem_Draw(globalCtx, this->giDrawId);
+        GetItem_Draw(play, this->giDrawId);
     }
 }
 
-void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
@@ -254,17 +254,17 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
             randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
-        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItem);
+        EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
 
         if (randoGetItem.itemId != ITEM_NONE) {
-            func_8002EBCC(&this->actor, globalCtx, 0);
-            func_8002ED80(&this->actor, globalCtx, 0);
-            GetItemEntry_Draw(globalCtx, randoGetItem);
+            func_8002EBCC(&this->actor, play, 0);
+            func_8002ED80(&this->actor, play, 0);
+            GetItemEntry_Draw(play, randoGetItem);
             return;
         }
     }
 
-    func_8002EBCC(&this->actor, globalCtx, 0);
-    func_8002ED80(&this->actor, globalCtx, 0);
-    GetItem_Draw(globalCtx, this->giDrawId);
+    func_8002EBCC(&this->actor, play, 0);
+    func_8002ED80(&this->actor, play, 0);
+    GetItem_Draw(play, this->giDrawId);
 }

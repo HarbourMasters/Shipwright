@@ -35,10 +35,10 @@ typedef enum GetItemCategory {
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
 
-typedef struct GlobalContext GlobalContext;
+typedef struct PlayState PlayState;
 typedef struct GetItemEntry GetItemEntry;
 
-typedef void (*CustomDrawFunc)(GlobalContext* globalCtx, GetItemEntry* getItemEntry);
+typedef void (*CustomDrawFunc)(PlayState* play, GetItemEntry* getItemEntry);
 
 typedef struct GetItemEntry {
     /* 0x00 */ uint16_t itemId;

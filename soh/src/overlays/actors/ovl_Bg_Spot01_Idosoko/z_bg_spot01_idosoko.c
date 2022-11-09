@@ -9,12 +9,12 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgSpot01Idosoko_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idosoko_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idosoko_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot01Idosoko_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play);
+void BgSpot01Idosoko_Destroy(Actor* thisx, PlayState* play);
+void BgSpot01Idosoko_Update(Actor* thisx, PlayState* play);
+void BgSpot01Idosoko_Draw(Actor* thisx, PlayState* play);
 
-void func_808ABF54(BgSpot01Idosoko* this, GlobalContext* globalCtx);
+void func_808ABF54(BgSpot01Idosoko* this, PlayState* play);
 
 const ActorInit Bg_Spot01_Idosoko_InitVars = {
     ACTOR_BG_SPOT01_IDOSOKO,
@@ -37,7 +37,7 @@ void BgSpot01Idosoko_SetupAction(BgSpot01Idosoko* this, BgSpot01IdosokoActionFun
     this->actionFunc = actionFunc;
 }
 
-void BgSpot01Idosoko_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot01Idosoko* this = (BgSpot01Idosoko*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -46,7 +46,7 @@ void BgSpot01Idosoko_Init(Actor* thisx, GlobalContext* globalCtx) {
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     CollisionHeader_GetVirtual(&gKakarikoBOTWStoneCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (!LINK_IS_ADULT) {
         Actor_Kill(&this->dyna.actor);
     } else {
@@ -54,29 +54,29 @@ void BgSpot01Idosoko_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot01Idosoko_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idosoko_Destroy(Actor* thisx, PlayState* play) {
     BgSpot01Idosoko* this = (BgSpot01Idosoko*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_808ABF54(BgSpot01Idosoko* this, GlobalContext* globalCtx) {
+void func_808ABF54(BgSpot01Idosoko* this, PlayState* play) {
 }
 
-void BgSpot01Idosoko_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot01Idosoko_Update(Actor* thisx, PlayState* play) {
     BgSpot01Idosoko* this = (BgSpot01Idosoko*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgSpot01Idosoko_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+void BgSpot01Idosoko_Draw(Actor* thisx, PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoBOTWStoneDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

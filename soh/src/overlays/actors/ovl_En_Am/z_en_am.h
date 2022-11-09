@@ -6,7 +6,7 @@
 
 struct EnAm;
 
-typedef void (*EnAmActionFunc)(struct EnAm*, GlobalContext*);
+typedef void (*EnAmActionFunc)(struct EnAm*, PlayState*);
 
 typedef struct EnAm {
     /* 0x0000 */ DynaPolyActor dyna;

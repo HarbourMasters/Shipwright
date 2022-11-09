@@ -6,7 +6,7 @@
 
 struct EnIk;
 
-typedef void (*EnIkActionFunc)(struct EnIk*, GlobalContext*);
+typedef void (*EnIkActionFunc)(struct EnIk*, PlayState*);
 
 typedef struct EnIk {
     /* 0x0000 */ Actor actor;

@@ -6,8 +6,8 @@
 
 struct BgZg;
 
-typedef void (*BgZgActionFunc)(struct BgZg*, GlobalContext*);
-typedef void (*BgZgDrawFunc)(struct BgZg*, GlobalContext*);
+typedef void (*BgZgActionFunc)(struct BgZg*, PlayState*);
+typedef void (*BgZgDrawFunc)(struct BgZg*, PlayState*);
 
 typedef struct BgZg {
     /* 0x0000 */ DynaPolyActor dyna;

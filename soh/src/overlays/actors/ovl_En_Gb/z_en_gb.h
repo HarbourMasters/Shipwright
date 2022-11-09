@@ -6,7 +6,7 @@
 
 struct EnGb;
 
-typedef void (*EnGbActionFunc)(struct EnGb*, GlobalContext*);
+typedef void (*EnGbActionFunc)(struct EnGb*, PlayState*);
 
 typedef struct {
     /* 0x00 */ Color_RGBA8 prim;

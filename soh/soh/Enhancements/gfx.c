@@ -3,13 +3,13 @@
 #include "global.h"
 #include "z64.h"
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 /**
  * Simple wrapper to load a texture to be drawn.
  */
 void sprite_load(sprite_t* sprite) {
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
+    OPEN_DISPS(gPlayState->state.gfxCtx);
 
     if (sprite->im_siz == G_IM_SIZ_16b) {
         gDPLoadTextureBlock(
@@ -37,7 +37,7 @@ void sprite_load(sprite_t* sprite) {
         );
     }
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
 }
 
 /**
@@ -48,7 +48,7 @@ void sprite_draw(sprite_t* sprite, int left, int top, int width, int height) {
     int width_factor = (1 << 10) * sprite->width / width;
     int height_factor = (1 << 10) * sprite->height / height;
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
+    OPEN_DISPS(gPlayState->state.gfxCtx);
 
     gSPWideTextureRectangle(
         OVERLAY_DISP++,
@@ -59,5 +59,5 @@ void sprite_draw(sprite_t* sprite, int left, int top, int width, int height) {
         width_factor, height_factor
     );
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
 }

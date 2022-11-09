@@ -10,16 +10,16 @@
 
 #define rUnused regs[1]
 
-u32 EffectSsSolderSrchBall_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsSolderSrchBall_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsSolderSrchBall_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsSolderSrchBall_Update(PlayState* play, u32 index, EffectSs* this);
+void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Solder_Srch_Ball_InitVars = {
     EFFECT_SS_SOLDER_SRCH_BALL,
     EffectSsSolderSrchBall_Init,
 };
 
-u32 EffectSsSolderSrchBall_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsSolderSrchBall_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsSolderSrchBallInitParams* initParams = (EffectSsSolderSrchBallInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -33,13 +33,13 @@ u32 EffectSsSolderSrchBall_Init(GlobalContext* globalCtx, u32 index, EffectSs* t
     return 1;
 }
 
-void EffectSsSolderSrchBall_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsSolderSrchBall_Update(PlayState* play, u32 index, EffectSs* this) {
     s32 pad;
     f32 playerPosDiffX;
     f32 playerPosDiffY;
     f32 playerPosDiffZ;
     s16* linkDetected;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     linkDetected = this->actor;
 
@@ -47,7 +47,7 @@ void EffectSsSolderSrchBall_Update(GlobalContext* globalCtx, u32 index, EffectSs
     playerPosDiffY = player->actor.world.pos.y - this->pos.y;
     playerPosDiffZ = player->actor.world.pos.z - this->pos.z;
 
-    if (!BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &this->pos, 30.0f)) {
+    if (!BgCheck_SphVsFirstPoly(&play->colCtx, &this->pos, 30.0f)) {
         if (sqrtf(SQ(playerPosDiffX) + SQ(playerPosDiffY) + SQ(playerPosDiffZ)) < 70.0f) {
             *linkDetected = true;
         }
@@ -221,18 +221,18 @@ static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, Grap
     Matrix_Pop();
 }
 
-void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
     if (CVar_GetS32("gGuardVision", 0) == 0) {
         return;
     }
     
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     u32 rm;
     u32 blc1;
     u32 blc2;
     s16* seenLink = this->actor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL | ZMODE_XLU;
     blc1 = GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
     blc2 = GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
@@ -250,5 +250,5 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     }
     draw_ico_sphere(&POLY_XLU_DISP, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

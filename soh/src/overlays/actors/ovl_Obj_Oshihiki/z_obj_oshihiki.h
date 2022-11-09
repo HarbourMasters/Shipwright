@@ -27,7 +27,7 @@ typedef enum {
 #define PUSHBLOCK_SETUP_FALL     (1 << 7)
 #define PUSHBLOCK_MOVE_UNDER     (1 << 8)
 
-typedef void (*ObjOshihikiActionFunc)(struct ObjOshihiki*, GlobalContext*);
+typedef void (*ObjOshihikiActionFunc)(struct ObjOshihiki*, PlayState*);
 
 typedef struct ObjOshihiki {
     /* 0x0000 */ DynaPolyActor dyna;

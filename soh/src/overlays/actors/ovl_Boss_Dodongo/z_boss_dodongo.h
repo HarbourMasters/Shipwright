@@ -6,7 +6,7 @@
 
 struct BossDodongo;
 
-typedef void (*BossDodongoActionFunc)(struct BossDodongo*, GlobalContext*);
+typedef void (*BossDodongoActionFunc)(struct BossDodongo*, PlayState*);
 
 typedef struct {
     /* 0x00 */ Vec3f unk_00;

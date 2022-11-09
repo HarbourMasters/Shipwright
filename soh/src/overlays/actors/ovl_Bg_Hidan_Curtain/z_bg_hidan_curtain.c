@@ -9,17 +9,17 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgHidanCurtain_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanCurtain_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanCurtain_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanCurtain_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanCurtain_Init(Actor* thisx, PlayState* play);
+void BgHidanCurtain_Destroy(Actor* thisx, PlayState* play);
+void BgHidanCurtain_Update(Actor* thisx, PlayState* play);
+void BgHidanCurtain_Draw(Actor* thisx, PlayState* play);
 
-void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, GlobalContext* globalCtx);
-void BgHidanCurtain_WaitForCutscene(BgHidanCurtain* this, GlobalContext* globalCtx);
-void BgHidanCurtain_WaitForClear(BgHidanCurtain* this, GlobalContext* globalCtx);
-void BgHidanCurtain_TurnOn(BgHidanCurtain* this, GlobalContext* globalCtx);
-void BgHidanCurtain_TurnOff(BgHidanCurtain* this, GlobalContext* globalCtx);
-void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, GlobalContext* globalCtx);
+void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, PlayState* play);
+void BgHidanCurtain_WaitForCutscene(BgHidanCurtain* this, PlayState* play);
+void BgHidanCurtain_WaitForClear(BgHidanCurtain* this, PlayState* play);
+void BgHidanCurtain_TurnOn(BgHidanCurtain* this, PlayState* play);
+void BgHidanCurtain_TurnOff(BgHidanCurtain* this, PlayState* play);
+void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, PlayState* play);
 
 typedef struct {
     /* 0x00 */ s16 radius;
@@ -66,7 +66,7 @@ const ActorInit Bg_Hidan_Curtain_InitVars = {
     NULL,
 };
 
-void BgHidanCurtain_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanCurtain_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHidanCurtain* this = (BgHidanCurtain*)thisx;
     BgHidanCurtainParams* hcParams;
@@ -93,8 +93,8 @@ void BgHidanCurtain_Init(Actor* thisx, GlobalContext* globalCtx) {
                      __FILE__, __LINE__, this->actor.params);
     }
     Actor_SetScale(&this->actor, hcParams->scale);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->collider.dim.pos.x = this->actor.world.pos.x;
     this->collider.dim.pos.y = this->actor.world.pos.y;
     this->collider.dim.pos.z = this->actor.world.pos.z;
@@ -110,29 +110,29 @@ void BgHidanCurtain_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actor.world.pos.y = this->actor.home.pos.y - hcParams->riseDist;
         }
     }
-    if (((this->type == 1) && Flags_GetTreasure(globalCtx, this->treasureFlag)) ||
-        (((this->type == 0) || (this->type == 6)) && Flags_GetClear(globalCtx, this->actor.room))) {
+    if (((this->type == 1) && Flags_GetTreasure(play, this->treasureFlag)) ||
+        (((this->type == 0) || (this->type == 6)) && Flags_GetClear(play, this->actor.room))) {
         Actor_Kill(&this->actor);
     }
     this->texScroll = Rand_ZeroOne() * 15.0f;
 }
 
-void BgHidanCurtain_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanCurtain_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHidanCurtain* this = (BgHidanCurtain*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->actor.params)) {
+void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->actor.params)) {
         if (this->type == 1) {
             this->actionFunc = BgHidanCurtain_WaitForCutscene;
-            OnePointCutscene_Init(globalCtx, 3350, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3350, -99, &this->actor, MAIN_CAM);
             this->timer = 50;
         } else if (this->type == 3) {
             this->actionFunc = BgHidanCurtain_WaitForCutscene;
-            OnePointCutscene_Init(globalCtx, 3360, 60, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3360, 60, &this->actor, MAIN_CAM);
             this->timer = 30;
         } else {
             this->actionFunc = BgHidanCurtain_TurnOff;
@@ -140,34 +140,34 @@ void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, GlobalContext* globalC
     }
 }
 
-void BgHidanCurtain_WaitForCutscene(BgHidanCurtain* this, GlobalContext* globalCtx) {
+void BgHidanCurtain_WaitForCutscene(BgHidanCurtain* this, PlayState* play) {
     if (this->timer-- == 0) {
         this->actionFunc = BgHidanCurtain_TurnOff;
     }
 }
 
-void BgHidanCurtain_WaitForClear(BgHidanCurtain* this, GlobalContext* globalCtx) {
-    if (Flags_GetClear(globalCtx, this->actor.room)) {
+void BgHidanCurtain_WaitForClear(BgHidanCurtain* this, PlayState* play) {
+    if (Flags_GetClear(play, this->actor.room)) {
         this->actionFunc = BgHidanCurtain_TurnOff;
     }
 }
 
-void BgHidanCurtain_WaitForSwitchOff(BgHidanCurtain* this, GlobalContext* globalCtx) {
-    if (!Flags_GetSwitch(globalCtx, this->actor.params)) {
+void BgHidanCurtain_WaitForSwitchOff(BgHidanCurtain* this, PlayState* play) {
+    if (!Flags_GetSwitch(play, this->actor.params)) {
         this->actionFunc = BgHidanCurtain_TurnOn;
     }
 }
 
-void BgHidanCurtain_TurnOn(BgHidanCurtain* this, GlobalContext* globalCtx) {
+void BgHidanCurtain_TurnOn(BgHidanCurtain* this, PlayState* play) {
     f32 riseSpeed = sHCParams[this->size].riseSpeed;
 
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y, riseSpeed)) {
-        Flags_UnsetSwitch(globalCtx, this->actor.params);
+        Flags_UnsetSwitch(play, this->actor.params);
         this->actionFunc = BgHidanCurtain_WaitForSwitchOn;
     }
 }
 
-void BgHidanCurtain_TurnOff(BgHidanCurtain* this, GlobalContext* globalCtx) {
+void BgHidanCurtain_TurnOff(BgHidanCurtain* this, PlayState* play) {
     BgHidanCurtainParams* hcParams = &sHCParams[this->size];
 
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y - hcParams->riseDist, hcParams->riseSpeed)) {
@@ -190,7 +190,7 @@ void BgHidanCurtain_TurnOff(BgHidanCurtain* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, GlobalContext* globalCtx) {
+void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, PlayState* play) {
     DECR(this->timer);
     if (this->timer == 0) {
         this->actionFunc = BgHidanCurtain_TurnOn;
@@ -200,25 +200,25 @@ void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, GlobalContext* globalCtx)
     }
 }
 
-void BgHidanCurtain_Update(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void BgHidanCurtain_Update(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     BgHidanCurtain* this = (BgHidanCurtain*)thisx;
     BgHidanCurtainParams* hcParams = &sHCParams[this->size];
     f32 riseProgress;
 
-    if ((globalCtx->cameraPtrs[MAIN_CAM]->setting == CAM_SET_SLOW_CHEST_CS) ||
-        (globalCtx->cameraPtrs[MAIN_CAM]->setting == CAM_SET_TURN_AROUND)) {
+    if ((play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_SLOW_CHEST_CS) ||
+        (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_TURN_AROUND)) {
         this->collider.base.atFlags &= ~AT_HIT;
     } else {
         if (this->collider.base.atFlags & AT_HIT) {
             this->collider.base.atFlags &= ~AT_HIT;
-            func_8002F71C(globalCtx, &this->actor, 5.0f, this->actor.yawTowardsPlayer, 1.0f);
+            func_8002F71C(play, &this->actor, 5.0f, this->actor.yawTowardsPlayer, 1.0f);
         }
         if ((this->type == 4) || (this->type == 5)) {
             this->actor.world.pos.y = (2.0f * this->actor.home.pos.y) - hcParams->riseDist - this->actor.world.pos.y;
         }
 
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
 
         if ((this->type == 4) || (this->type == 5)) {
             this->actor.world.pos.y = (2.0f * this->actor.home.pos.y) - hcParams->riseDist - this->actor.world.pos.y;
@@ -227,36 +227,36 @@ void BgHidanCurtain_Update(Actor* thisx, GlobalContext* globalCtx2) {
         this->alpha = 255.0f * riseProgress;
         if (this->alpha > 50) {
             this->collider.dim.height = hcParams->height * riseProgress;
-            CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
             if (gSaveContext.sceneSetupIndex <= 3) {
                 func_8002F974(&this->actor, NA_SE_EV_FIRE_PILLAR_S - SFX_FLAG);
             }
-        } else if ((this->type == 1) && Flags_GetTreasure(globalCtx, this->treasureFlag)) {
+        } else if ((this->type == 1) && Flags_GetTreasure(play, this->treasureFlag)) {
             Actor_Kill(&this->actor);
         }
         this->texScroll++;
     }
 }
 
-void BgHidanCurtain_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanCurtain_Draw(Actor* thisx, PlayState* play) {
     BgHidanCurtain* this = (BgHidanCurtain*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 220, 0, this->alpha);
 
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, this->texScroll & 0x7F, 0, 0x20, 0x40, 1, 0,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->texScroll & 0x7F, 0, 0x20, 0x40, 1, 0,
                                 (this->texScroll * -0xF) & 0xFF, 0x20, 0x40));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gEffFireCircleDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

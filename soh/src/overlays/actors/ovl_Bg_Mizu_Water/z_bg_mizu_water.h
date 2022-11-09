@@ -6,7 +6,7 @@
 
 struct BgMizuWater;
 
-typedef void (*BgMizuWaterActionFunc)(struct BgMizuWater*, GlobalContext*);
+typedef void (*BgMizuWaterActionFunc)(struct BgMizuWater*, PlayState*);
 
 typedef struct BgMizuWater {
     /* 0x0000 */ Actor actor;

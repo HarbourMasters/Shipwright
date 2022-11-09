@@ -1,7 +1,7 @@
 #ifndef Z_BGCHECK_H
 #define Z_BGCHECK_H
 
-struct GlobalContext;
+struct PlayState;
 struct Actor;
 struct DynaPolyActor;
 
@@ -166,7 +166,7 @@ typedef struct CollisionContext {
 } CollisionContext; // size = 0x1464
 
 typedef struct {
-    /* 0x00 */ struct GlobalContext* globalCtx;
+    /* 0x00 */ struct PlayState* play;
     /* 0x04 */ struct CollisionContext* colCtx;
     /* 0x08 */ u16 xpFlags;
     /* 0x0C */ CollisionPoly** resultPoly;

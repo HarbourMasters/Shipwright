@@ -11,19 +11,19 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnSyatekiNiw_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSyatekiNiw_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnSyatekiNiw_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnSyatekiNiw_Init(Actor* thisx, PlayState* play);
+void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play);
+void EnSyatekiNiw_Update(Actor* thisx, PlayState* play);
+void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play);
 
-void func_80B11DEC(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B132A8(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B129EC(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B123A8(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B11E78(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B12460(EnSyatekiNiw* this, GlobalContext* globalCtx);
-void func_80B128D8(EnSyatekiNiw* this, GlobalContext* globalCtx);
+void func_80B11DEC(EnSyatekiNiw* this, PlayState* play);
+void func_80B132A8(EnSyatekiNiw* this, PlayState* play);
+void func_80B129EC(EnSyatekiNiw* this, PlayState* play);
+void func_80B13464(EnSyatekiNiw* this, PlayState* play);
+void func_80B123A8(EnSyatekiNiw* this, PlayState* play);
+void func_80B11E78(EnSyatekiNiw* this, PlayState* play);
+void func_80B12460(EnSyatekiNiw* this, PlayState* play);
+void func_80B128D8(EnSyatekiNiw* this, PlayState* play);
 
 void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4);
 
@@ -66,21 +66,21 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 0, ICHAIN_STOP),
 };
 
-void EnSyatekiNiw_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiNiw_Init(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.flags &= ~ACTOR_FLAG_0;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 
     this->unk_29E = this->actor.params;
     if (this->unk_29E < 0) {
         this->unk_29E = 0;
     }
 
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     if (this->unk_29E == 0) {
         osSyncPrintf("\n\n");
         // "Archery range chicken"
@@ -99,13 +99,13 @@ void EnSyatekiNiw_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc = func_80B11DEC;
 }
 
-void EnSyatekiNiw_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80B11A94(EnSyatekiNiw* this, GlobalContext* globalCtx, s16 arg2) {
+void func_80B11A94(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
     if (this->unk_254 == 0) {
         if (arg2 == 0) {
             this->unk_264 = 0.0f;
@@ -208,7 +208,7 @@ void func_80B11A94(EnSyatekiNiw* this, GlobalContext* globalCtx, s16 arg2) {
     }
 }
 
-void func_80B11DEC(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B11DEC(EnSyatekiNiw* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gCuccoAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gCuccoAnim), ANIMMODE_LOOP,
                      -10.0f);
     if (this->unk_29E != 0) {
@@ -218,7 +218,7 @@ void func_80B11DEC(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80B11E78;
 }
 
-void func_80B11E78(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
     Vec3f dustVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f dustAccel = { 0.0f, 0.2f, 0.0f };
     Color_RGBA8 dustPrimColor = { 0, 0, 0, 255 };
@@ -336,19 +336,19 @@ void func_80B11E78(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     }
 
     if (this->unk_260 == 0) {
-        func_80B11A94(this, globalCtx, sp4A);
+        func_80B11A94(this, play, sp4A);
         return;
     }
 
-    if ((globalCtx->gameplayFrames % 4) == 0) {
+    if ((play->gameplayFrames % 4) == 0) {
         dustVelocity.y = Rand_CenteredFloat(5.0f);
         dustAccel.y = 0.2f;
         dustPos = this->actor.world.pos;
-        func_8002836C(globalCtx, &dustPos, &dustVelocity, &dustAccel, &dustPrimColor, &dustEnvColor, 600, 40, 30);
+        func_8002836C(play, &dustPos, &dustVelocity, &dustAccel, &dustPrimColor, &dustEnvColor, 600, 40, 30);
     }
 }
 
-void func_80B123A8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B123A8(EnSyatekiNiw* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gCuccoAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gCuccoAnim), ANIMMODE_LOOP,
                      -10.0f);
     this->unk_27C = 6000.0f;
@@ -365,8 +365,8 @@ void func_80B123A8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     this->unk_26C = -10000.0f;
 }
 
-void func_80B12460(EnSyatekiNiw* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 phi_f16 = 0.0f;
 
     player->actor.freezeTimer = 10;
@@ -466,9 +466,9 @@ void func_80B12460(EnSyatekiNiw* this, GlobalContext* globalCtx) {
 
         case 6:
             if (this->unk_25E == 1) {
-                globalCtx->sceneLoadFlag = 0x14;
-                globalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
-                globalCtx->shootingGalleryStatus = 0;
+                play->sceneLoadFlag = 0x14;
+                play->nextEntranceIndex = gSaveContext.entranceIndex;
+                play->shootingGalleryStatus = 0;
                 player->actor.freezeTimer = 20;
                 this->unk_25E = 0x14;
                 this->actionFunc = func_80B128D8;
@@ -488,21 +488,21 @@ void func_80B12460(EnSyatekiNiw* this, GlobalContext* globalCtx) {
         this->unk_254 = this->unk_256;
     }
 
-    func_80B11A94(this, globalCtx, this->unk_296);
+    func_80B11A94(this, play, this->unk_296);
 }
 
-void func_80B128D8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B128D8(EnSyatekiNiw* this, PlayState* play) {
     if (this->unk_25E == 1) {
         gSaveContext.timer1State = 0;
     }
 }
 
-void func_80B128F8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B128F8(EnSyatekiNiw* this, PlayState* play) {
     s16 sp26;
     s16 sp24;
 
     Actor_SetFocus(&this->actor, this->unk_2D4);
-    Actor_GetScreenPos(globalCtx, &this->actor, &sp26, &sp24);
+    Actor_GetScreenPos(play, &this->actor, &sp26, &sp24);
     if ((this->actor.projectedPos.z > 200.0f) && (this->actor.projectedPos.z < 800.0f) && (sp26 > 0) &&
         (sp26 < SCREEN_WIDTH) && (sp24 > 0) && (sp24 < SCREEN_HEIGHT)) {
         this->actor.speedXZ = 5.0f;
@@ -514,7 +514,7 @@ void func_80B128F8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B129EC(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B129EC(EnSyatekiNiw* this, PlayState* play) {
     s32 pad;
     f32 phi_f2;
     s16 sp2E;
@@ -522,7 +522,7 @@ void func_80B129EC(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     f32 tmpf2;
 
     Actor_SetFocus(&this->actor, this->unk_2D4);
-    Actor_GetScreenPos(globalCtx, &this->actor, &sp2E, &sp2C);
+    Actor_GetScreenPos(play, &this->actor, &sp2E, &sp2C);
     if ((this->unk_25E == 0) || (this->actor.projectedPos.z < -70.0f) || (sp2E < 0) || (sp2E > SCREEN_WIDTH) ||
         (sp2C < 0) || (sp2C > SCREEN_HEIGHT)) {
         Actor_Kill(&this->actor);
@@ -543,10 +543,10 @@ void func_80B129EC(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     tmpf2 = this->unk_2D8 + phi_f2;
     Math_SmoothStepToS(&this->actor.world.rot.y, tmpf2, 3, this->unk_2C8.y, 0);
     Math_ApproachF(&this->unk_2C8.y, 3000.0f, 1.0f, 500.0f);
-    func_80B11A94(this, globalCtx, 2);
+    func_80B11A94(this, play, 2);
 }
 
-void func_80B12BA4(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B12BA4(EnSyatekiNiw* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
         switch (this->unk_29E) {
@@ -573,7 +573,7 @@ void func_80B12BA4(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     s32 pad;
     s16 i;
@@ -583,7 +583,7 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp6C;
     Vec3f sp60;
 
-    func_80B132A8(this, globalCtx);
+    func_80B132A8(this, play);
     this->unk_28C++;
     if (this->unk_254 != 0) {
         this->unk_254--;
@@ -616,9 +616,9 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.shape.rot = this->actor.world.rot;
     this->actor.shape.shadowScale = 15.0f;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
 
     if (this->unk_2A0 != 0) {
         for (i = 0; i < 20; i++) {
@@ -636,7 +636,7 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->unk_2A0 = 0;
     }
 
-    func_80B12BA4(this, globalCtx);
+    func_80B12BA4(this, play);
     if (this->unk_262 == 0) {
         if (this->actionFunc == func_80B11E78) {
             this->unk_262 = 0x12C;
@@ -650,7 +650,7 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     i = 0;
     switch (this->unk_29E) {
         case 0:
-            if (globalCtx->shootingGalleryStatus != 0) {
+            if (play->shootingGalleryStatus != 0) {
                 i = 1;
             }
             break;
@@ -662,12 +662,12 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if (i != 0) {
         Collider_UpdateCylinder(&this->actor, &this->collider);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-s32 SyatekiNiw_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                 void* thisx) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Vec3f sp0 = { 0.0f, 0.0f, 0.0f };
@@ -691,20 +691,20 @@ s32 SyatekiNiw_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     return false;
 }
 
-void EnSyatekiNiw_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Color_RGBA8 sp30 = { 0, 0, 0, 255 };
 
     if (this->actionFunc != func_80B128F8) {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         if (this->unk_260 != 0) {
-            func_80026230(globalCtx, &sp30, 0, 0x14);
+            func_80026230(play, &sp30, 0, 0x14);
         }
 
-        SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, SyatekiNiw_OverrideLimbDraw, NULL, this);
-        func_80026608(globalCtx);
-        func_80B13464(this, globalCtx);
+        func_80026608(play);
+        func_80B13464(this, play);
     }
 }
 
@@ -728,7 +728,7 @@ void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f3
     }
 }
 
-void func_80B132A8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
+void func_80B132A8(EnSyatekiNiw* this, PlayState* play) {
     s16 i;
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
 
@@ -758,15 +758,15 @@ void func_80B132A8(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s16 i;
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
     u8 flag = 0;
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 1) {
@@ -777,7 +777,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
 
             FrameInterpolation_RecordOpenChild(ptr, ptr->epoch);
             Matrix_Translate(ptr->unk_04.x, ptr->unk_04.y, ptr->unk_04.z, MTXMODE_NEW);
-            Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(ptr->unk_2C, ptr->unk_2C, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);

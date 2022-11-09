@@ -8,11 +8,11 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EndTitle_Init(Actor* thisx, GlobalContext* globalCtx);
-void EndTitle_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EndTitle_Update(Actor* thisx, GlobalContext* globalCtx);
-void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx);
-void EndTitle_DrawNintendoLogo(Actor* thisx, GlobalContext* globalCtx);
+void EndTitle_Init(Actor* thisx, PlayState* play);
+void EndTitle_Destroy(Actor* thisx, PlayState* play);
+void EndTitle_Update(Actor* thisx, PlayState* play);
+void EndTitle_DrawFull(Actor* thisx, PlayState* play);
+void EndTitle_DrawNintendoLogo(Actor* thisx, PlayState* play);
 
 const ActorInit End_Title_InitVars = {
     ACTOR_END_TITLE,
@@ -29,7 +29,7 @@ const ActorInit End_Title_InitVars = {
 
 #include "overlays/ovl_End_Title/ovl_End_Title.h"
 
-void EndTitle_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EndTitle_Init(Actor* thisx, PlayState* play) {
     EndTitle* this = (EndTitle*)thisx;
 
     this->endAlpha = 0;
@@ -40,37 +40,37 @@ void EndTitle_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EndTitle_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EndTitle_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EndTitle_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EndTitle_Update(Actor* thisx, PlayState* play) {
 }
 
 // Used in the castle courtyard
-void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx) {
+void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
     MtxF* mf;
     EndTitle* this = (EndTitle*)thisx;
-    s32 frameCount = globalCtx->csCtx.frames;
-    Player* player = GET_PLAYER(globalCtx);
+    s32 frameCount = play->csCtx.frames;
+    Player* player = GET_PLAYER(play);
 
     mf = &player->mf_9E0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     // Draw the Triforce on Link's left hand
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     Matrix_Mult(mf, MTXMODE_NEW);
     Matrix_Translate(0.0f, 150.0f, 170.0f, MTXMODE_APPLY);
     Matrix_Scale(0.13f, 0.13f, 0.13f, MTXMODE_APPLY);
     Matrix_RotateX(0xBB8 * M_PI / 0x8000, MTXMODE_APPLY);
     Matrix_RotateY(0.0f, MTXMODE_APPLY);
     Matrix_RotateZ(0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sTriforceDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     // Draw title cards on the screen
     if ((frameCount > 890) && (this->endAlpha < 200)) {
@@ -112,24 +112,24 @@ void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx) {
                         1 << 10);
     if (D_801614B0.a > 0)
         gsSPGrayscale(OVERLAY_DISP++, true);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 // Used in the Temple of Time
-void EndTitle_DrawNintendoLogo(Actor* thisx, GlobalContext* globalCtx) {
+void EndTitle_DrawNintendoLogo(Actor* thisx, PlayState* play) {
     EndTitle* this = (EndTitle*)thisx;
     s32 pad;
-    s32 frames = globalCtx->csCtx.frames;
+    s32 frames = play->csCtx.frames;
 
     if ((frames >= 1101) && (this->endAlpha < 255)) {
         this->endAlpha += 3;
     }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     OVERLAY_DISP = func_80093F34(OVERLAY_DISP);
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0x80, 0, 0, 0, this->endAlpha);
     gSPDisplayList(OVERLAY_DISP++, sPresentedByNintendoDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
