@@ -485,8 +485,8 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     // if (seqId == 255)
     //     return NULL;
 
-    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
-    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
 
     if (sDat.numFonts == 0)
         return NULL;
@@ -574,6 +574,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     //numFonts = gAudioContext.sequenceFontTable[index++];
 
     seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
+    gAudioContext.seqToPlay = 0;
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
     for (int i = 0; i < seqData2.numFonts; i++)

@@ -367,13 +367,13 @@ void InitSfxEditor() {
 
 extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     std::vector<std::string> splitName = StringHelper::Split(otrPath, "/");
-    std::string fileName = splitName[splitName.size() - 2] + "/" + splitName[splitName.size() - 1];
+    std::string fileName = splitName[splitName.size() - 1];
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
     SeqType type = SEQ_BGM_WORLD;
     if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
         type = SEQ_FANFARE;
     }
-    auto tuple = std::make_tuple(sequenceName, splitName[splitName.size() - 1], type);
+    auto tuple = std::make_tuple(sequenceName, StringHelper::Replace(sequenceName, " ", "_"), type);
     sequenceMap.emplace(seqNum, tuple);
 }

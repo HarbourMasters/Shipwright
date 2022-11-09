@@ -376,8 +376,9 @@ void Audio_QueueSeqCmd(u32 cmd)
             gAudioContext.seqToPlay = newSeqId;
         } else {
             gAudioContext.seqToPlay = 0;
+            cmd &= 0xFFFFFF00;
+            cmd |= (newSeqId & 0xFF);
         }
-        cmd |= newSeqId;
     }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;

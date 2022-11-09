@@ -135,10 +135,19 @@ static void ExporterProgramEnd()
                     uint8_t fontIdx;
                     std::ifstream metaFile(afterPath + ".meta");
                     std::string metaName;
-                    std::getline(metaFile, metaName);
+                    if (std::getline(metaFile, metaName)) {
+                        auto tmp = StringHelper::Split(afterPath, "/");
+                        StringHelper::ReplaceOriginal(metaName, "/", "|");
+                        tmp[tmp.size() - 1] = metaName;
+                        afterPath = std::accumulate(
+                            tmp.begin(), tmp.end(), std::string(),
+                            [](std::string lhs, const std::string &rhs) {
+                              return lhs.empty() ? rhs : lhs + '/' + rhs;
+                            });
+                    }
                     std::string metaFontIdx;
                     if (std::getline(metaFile, metaFontIdx)) {
-                        fontIdx = stoi(metaFontIdx, nullptr, 0);
+                        fontIdx = stoi(metaFontIdx, nullptr, 16);
                     }
                     std::string type;
                     if (!std::getline(metaFile, type)) {

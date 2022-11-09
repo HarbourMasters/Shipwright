@@ -347,7 +347,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
 }
 
 Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
-    Drum* drum;
+    Drum* drum = NULL;
 
     if (fontId == 0xFF) {
         return NULL;
@@ -360,7 +360,9 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 
     
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-    drum = sf->drums[drumId];
+    if (drumId < sf->numDrums) {
+        drum = sf->drums[drumId];
+    }
     
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
