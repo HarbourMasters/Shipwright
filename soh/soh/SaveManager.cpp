@@ -141,8 +141,8 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
         SaveManager::Instance->LoadData("pauseCount", gSaveContext.gameplayStats.pauseCount);
-        SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.itemGetTime[i]);
+        SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
         });
         SaveManager::Instance->LoadData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
         SaveManager::Instance->LoadData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
@@ -229,8 +229,8 @@ void SaveManager::SaveRandomizer() {
         SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
         SaveManager::Instance->SaveData("pauseCount", gSaveContext.gameplayStats.pauseCount);
-        SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.itemGetTime), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.itemGetTime[i]);
+        SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.timestamp[i]);
         });
         SaveManager::Instance->SaveData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
         SaveManager::Instance->SaveData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);

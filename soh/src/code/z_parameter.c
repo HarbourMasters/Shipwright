@@ -1617,7 +1617,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 // (special cases for some duplicate items)
 void GameplayStats_UpdateItemGetTime(u8 item) {
 
-    if (gSaveContext.gameplayStats.itemGetTime[item] != 0) {
+    if (gSaveContext.gameplayStats.timestamp[item] != 0) {
         return;
     }
 
@@ -1630,20 +1630,20 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.gameplayStats.itemGetTime[ITEM_BOTTLE] == 0) {
-            gSaveContext.gameplayStats.itemGetTime[ITEM_BOTTLE] = time;
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.gameplayStats.itemGetTime[ITEM_BOMBCHU] == 0) {
-            gSaveContext.gameplayStats.itemGetTime[ITEM_BOMBCHU] = time;
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.gameplayStats.itemGetTime[item] = time;
+    gSaveContext.gameplayStats.timestamp[item] = time;
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1659,23 +1659,23 @@ void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.gameplayStats.itemGetTime[ITEM_BOTTLE] == 0) {
-            gSaveContext.gameplayStats.itemGetTime[ITEM_BOTTLE] = time;
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
-        if (gSaveContext.gameplayStats.itemGetTime[ITEM_BOMBCHU] = 0) {
-            gSaveContext.gameplayStats.itemGetTime[ITEM_BOMBCHU] = time;
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.gameplayStats.itemGetTime[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.gameplayStats.timestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.gameplayStats.itemGetTime[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.gameplayStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 

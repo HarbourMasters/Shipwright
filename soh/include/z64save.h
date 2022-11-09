@@ -6,6 +6,7 @@
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
+#include "soh/Enhancements/gameplaystats.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -89,7 +90,7 @@ typedef struct {
     u32 pauseTimer;
     u32 totalTimer;
     bool ganonDefeated;
-    u32 itemGetTime[ITEM_LAST_USED];
+    u32 timestamp[TIMESTAMP_MAX];
     u16 rupeesCollected;
     u16 rupeesSpent;
     u16 damageTaken;
