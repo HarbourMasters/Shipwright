@@ -5,6 +5,7 @@
 #include <cstdio> // std::sprintf
 
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/fmt.h>
 
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
@@ -23,6 +24,19 @@
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 
 extern "C" PlayState* gPlayState;
+
+template <> struct fmt::formatter<RequestType> {
+    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+
+    template <typename FormatContext>
+    auto format(const RequestType& type, FormatContext& ctx) {
+        switch (type) {
+            case RequestType::SAVE: return format_to(ctx.out(), "Save");
+            case RequestType::LOAD: return format_to(ctx.out(), "Load");
+            default: return format_to(ctx.out(), "Unknown");
+        }
+    }
+};
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
@@ -848,11 +862,11 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot]->Load();
                     SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
-//                    SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+                   SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
                 break;
             [[unlikely]] default: 
-//                SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+               SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
                 break;
         }
         this->requests.pop();
@@ -875,12 +889,12 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 requests.push(request);
                 return SaveStateReturn::SUCCESS;
             } else {
-//                SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+               SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 
-//            SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+           SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             return SaveStateReturn::FAIL_BAD_REQUEST;
     }
 }
