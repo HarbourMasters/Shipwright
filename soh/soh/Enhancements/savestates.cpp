@@ -862,11 +862,11 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot]->Load();
                     SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
-                   SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+                    SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
                 break;
             [[unlikely]] default: 
-               SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+                SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
                 break;
         }
         this->requests.pop();
@@ -889,12 +889,12 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 requests.push(request);
                 return SaveStateReturn::SUCCESS;
             } else {
-               SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+                SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 
-           SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+            SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             return SaveStateReturn::FAIL_BAD_REQUEST;
     }
 }
