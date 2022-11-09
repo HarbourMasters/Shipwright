@@ -309,7 +309,6 @@ string_view tokensOverworld           = "This only shuffles the GS locations tha
                                         "outside of dungeons.";                            //
 string_view tokensAllTokens           = "Effectively adds 100 new locations for items to\n"//
                                         "appear.";                                         //
-                                                                                           //
 /*------------------------------                                                           //
 |        SCRUB SHUFFLE         |                                                           //
 ------------------------------*/                                                           //
@@ -412,6 +411,15 @@ string_view chestMinigameDesc         = "The 5 key chests in the Treasure Chest 
                                         "\n"                                               //
                                         "If you choose the \"pack\" option, you will get\n"//
                                         "all the keys at once, in a single item.";         //
+                                                                                           //
+/*------------------------------                                                           //
+|    SHUFFLE 100 GS REWARD     |                                                           //
+------------------------------*/                                                           //
+string_view shuffle100GsDesc          = "The cursed rich man in the House of Skulltula\n"  //
+                                        "will give you a random item for collecting all\n" //
+                                        "100 Golden Skull Tokens, then he will give you\n" //
+                                        "Huge Rupees.";                                    //
+                                                                                           //
 /*------------------------------                                                           //
 |      MAPS AND COMPASSES      |                                                           //
 ------------------------------*/                                                           //

@@ -798,6 +798,12 @@ void GenerateItemPool() {
     AddItemToMainPool(GOLD_SKULLTULA_TOKEN, 100);
   }
 
+  if (Shuffle100GSReward) {
+    AddItemToMainPool(HUGE_RUPEE);
+  } else {
+    PlaceItemInLocation(KAK_100_GOLD_SKULLTULA_REWARD, HUGE_RUPEE, false, true);
+  }
+
   if (BombchusInLogic) {
     AddItemToMainPool(PROGRESSIVE_BOMBCHUS, 5);
   } else {

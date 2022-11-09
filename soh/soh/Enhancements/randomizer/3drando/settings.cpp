@@ -170,6 +170,7 @@ namespace Settings {
   Option ShuffleFrogSongRupees  = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"},                                                    {frogSongRupeesDesc});
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"},                             {chestMinigameDesc});
+  Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"No", "Yes"},                                                     {shuffle100GsDesc},                                                                                                    OptionCategory::Toggle);
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
     &ShuffleRewards,
@@ -188,6 +189,7 @@ namespace Settings {
     &ShuffleFrogSongRupees,
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
+    &Shuffle100GSReward,
   };
 
   //Shuffle Dungeon Items
@@ -1279,6 +1281,7 @@ namespace Settings {
     ctx.shuffleFrogSongRupees= (ShuffleFrogSongRupees) ? 1 : 0;
     ctx.shuffleAdultTradeQuest = (ShuffleAdultTradeQuest) ? 1 : 0;
     ctx.shuffleChestMinigame = ShuffleChestMinigame.Value<uint8_t>();
+    ctx.shuffle100GsReward   = (Shuffle100GSReward) ? 1 : 0;
 
     ctx.mapsAndCompasses     = MapsAndCompasses.Value<uint8_t>();
     ctx.keysanity            = Keysanity.Value<uint8_t>();
@@ -1773,6 +1776,13 @@ namespace Settings {
       Unhide(ChestMinigameLocations);
     } else {
       IncludeAndHide(ChestMinigameLocations);
+    }
+
+    //Force include 100 GS reward if it isn't shuffled
+    if (Shuffle100GSReward) {
+      Unhide({KAK_100_GOLD_SKULLTULA_REWARD});
+    } else {
+      IncludeAndHide({KAK_100_GOLD_SKULLTULA_REWARD});
     }
 
     //Force include Map and Compass Chests when Vanilla
@@ -2305,6 +2315,7 @@ namespace Settings {
     &ShuffleMerchants,
     &ShuffleFrogSongRupees,
     &ShuffleAdultTradeQuest,
+    &Shuffle100GSReward,
     &GossipStoneHints,
   };
 
@@ -2589,6 +2600,8 @@ namespace Settings {
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
     ShuffleMerchants.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MERCHANTS]);
+
+    Shuffle100GSReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);
