@@ -432,6 +432,7 @@ void SkelAnime_DrawFlexOpa(PlayState* play, void** skeleton, Vec3s* jointTable, 
         if (newDList != NULL) {
             MATRIX_TOMTX(mtx);
             gSPMatrix(POLY_OPA_DISP++, mtx, G_MTX_LOAD);
+            //gsSPPushCD(POLY_XLU_DISP++, dlist);
             gSPDisplayList(POLY_OPA_DISP++, newDList);
             mtx++;
         } else if (limbDList != NULL) {
