@@ -33,7 +33,7 @@ template <> struct fmt::formatter<RequestType> {
         switch (type) {
             case RequestType::SAVE: return format_to(ctx.out(), "Save");
             case RequestType::LOAD: return format_to(ctx.out(), "Load");
-            default: return format_to(ctx.out(), "Unknown");
+            default: return fmt::format_to(ctx.out(), "Unknown");
         }
     }
 };
