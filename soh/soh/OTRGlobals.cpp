@@ -965,6 +965,11 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     return (char*)&anim->limbRotData[0];
 }
 
+extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
+{
+    gfx_push_current_dir(path);
+}
+
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
