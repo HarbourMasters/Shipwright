@@ -390,7 +390,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.playerName[i] = 0x3E;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.gameplayStats = { 0 };
+    gSaveContext.gameplayStats = {};
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;

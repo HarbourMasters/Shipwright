@@ -13,10 +13,10 @@ extern "C" {
 #include "variables.h"
 }
 
-char itemDisplayName[ITEM_LAST_USED][23] = { "" };
+char itemDisplayName[ITEM_LAST_USED][21] = { "" };
 
 typedef struct {
-    char name[23];
+    char name[21];
     u32 time;
 }ItemDisplayTimes;
 
