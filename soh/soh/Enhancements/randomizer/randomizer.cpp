@@ -459,6 +459,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
 
+
     //Setup for merchant text boxes
     //Medigoron
     //RANDOTODO: Implement obscure/ambiguous hints
@@ -512,6 +513,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "Squalala! Je vais enfin pouvoir &%rprendre des vacances!%w"
         }
     );
+
     // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
