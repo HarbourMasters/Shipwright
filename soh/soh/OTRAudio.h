@@ -1,4 +1,6 @@
 #pragma once
+#include <thread>
+#include <condition_variable>
 
 static struct {
     std::thread thread;

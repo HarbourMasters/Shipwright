@@ -158,11 +158,15 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPD/
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/spdlog/include
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/Fast3D/U64
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/graphic/Fast3D/U64
 	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
 	.
 )

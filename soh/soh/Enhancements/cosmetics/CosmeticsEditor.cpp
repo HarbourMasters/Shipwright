@@ -1,8 +1,8 @@
 #include "CosmeticsEditor.h"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include <string>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 #include <random>
 #include <algorithm>
 #include <ultra64/types.h>

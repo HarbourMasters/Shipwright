@@ -1,6 +1,6 @@
 #include "ultra64.h"
 #include "global.h"
-#include <libultraship/mixer.h>
+#include <mixer.h>
 
 #define DEFAULT_LEN_1CH 0x1A0
 #define DEFAULT_LEN_2CH 0x340

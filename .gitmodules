@@ -1,0 +1,3 @@
+[submodule "libultraship"]
+	path = libultraship
+	url = https://github.com/briaguya-ai/libultraship.git
