@@ -150,6 +150,7 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
         SaveManager::Instance->LoadData("rollCount", gSaveContext.gameplayStats.rollCount);
         SaveManager::Instance->LoadData("bonkCount", gSaveContext.gameplayStats.bonkCount);
+        SaveManager::Instance->LoadData("stepCount", gSaveContext.gameplayStats.stepCount);
     });
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
@@ -237,6 +238,7 @@ void SaveManager::SaveRandomizer() {
         SaveManager::Instance->SaveData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
         SaveManager::Instance->SaveData("rollCount", gSaveContext.gameplayStats.rollCount);
         SaveManager::Instance->SaveData("bonkCount", gSaveContext.gameplayStats.bonkCount);
+        SaveManager::Instance->SaveData("stepCount", gSaveContext.gameplayStats.stepCount);
     });
 
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {

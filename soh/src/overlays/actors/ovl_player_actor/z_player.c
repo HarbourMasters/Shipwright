@@ -1459,6 +1459,7 @@ void func_808327F8(Player* this, f32 arg1) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, arg1);
+    gSaveContext.gameplayStats.stepCount++;
 }
 
 void func_80832854(Player* this) {

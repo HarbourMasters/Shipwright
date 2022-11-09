@@ -66,13 +66,15 @@ void DisplayStat(const char* text, uint16_t value) {
     ImGui::Text(text);
     ImGui::SameLine();
     // Hack to keep the digits properly aligned in the column
-    if (value < 10) {
-        ImGui::Text("    %u", value);
+           if (value < 10) {
+        ImGui::Text("     %u", value);
     } else if (value < 100) {
-        ImGui::Text("   %u", value);
+        ImGui::Text("    %u", value);
     } else if (value < 1000) {
-        ImGui::Text("  %u", value);
+        ImGui::Text("   %u", value);
     } else if (value < 10000) {
+        ImGui::Text("  %u", value);
+    } else if (value < 100000) {
         ImGui::Text(" %u", value);
     } else {
         ImGui::Text("%u", value);
@@ -85,7 +87,7 @@ void DrawStatsTracker(bool& open) {
         return;
     }
 
-    ImGui::SetNextWindowSize(ImVec2(470, 600), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(470, 550), ImGuiCond_Appearing);
     if (!ImGui::Begin("Gameplay Stats", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -123,13 +125,14 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::TableNextColumn();
 
-    DisplayStat("Rupees Collected:       ", gSaveContext.gameplayStats.rupeesCollected);
-    DisplayStat("Rupees Spent:           ", gSaveContext.gameplayStats.rupeesSpent);
-    DisplayStat("Damage Taken:           ", gSaveContext.gameplayStats.damageTaken);
-    DisplayStat("Rolls:                  ", gSaveContext.gameplayStats.rollCount);
-    DisplayStat("Bonks:                  ", gSaveContext.gameplayStats.bonkCount);
-    DisplayStat("Ice Traps:              ", gSaveContext.gameplayStats.iceTrapCount);
-    DisplayStat("Pauses:                 ", gSaveContext.gameplayStats.pauseCount);
+    DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.rupeesCollected);
+    DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.rupeesSpent);
+    DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.damageTaken);
+    DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.stepCount);
+    DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.rollCount);
+    DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.bonkCount);
+    DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.iceTrapCount);
+    DisplayStat("Pauses:                ", gSaveContext.gameplayStats.pauseCount);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

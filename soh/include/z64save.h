@@ -97,6 +97,7 @@ typedef struct {
     u16 rollCount;
     u16 bonkCount;
     u16 pauseCount;
+    u32 stepCount;
 } GameplayStats;
 
 typedef struct {
