@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/gameplaystats.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -86,6 +87,22 @@ typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
+
+typedef struct {
+    u32 playTimer;
+    u32 pauseTimer;
+    u32 totalTimer;
+    bool ganonDefeated;
+    u32 timestamp[TIMESTAMP_MAX];
+    u16 rupeesCollected;
+    u16 rupeesSpent;
+    u16 damageTaken;
+    u16 iceTrapCount;
+    u16 rollCount;
+    u16 bonkCount;
+    u16 pauseCount;
+    u32 stepCount;
+} GameplayStats;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -199,6 +216,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
+    GameplayStats gameplayStats;
     SohStats sohStats;
 } SaveContext; // size = 0x1428
 

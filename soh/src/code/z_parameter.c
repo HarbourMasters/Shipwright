@@ -1614,6 +1614,72 @@ void func_80084BF4(PlayState* play, u16 flag) {
     }
 }
 
+// Gameplay stat tracking: Update time the item was acquired
+// (special cases for some duplicate items)
+void GameplayStats_UpdateItemGetTime(u8 item) {
+
+    if (gSaveContext.gameplayStats.timestamp[item] != 0) {
+        return;
+    }
+
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (gSaveContext.gameplayStats.totalTimer == 0) {
+        gSaveContext.gameplayStats.totalTimer = 1;
+    }
+
+    u32 time = gSaveContext.gameplayStats.totalTimer;
+
+    // Count any bottled item as a bottle
+    if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
+        }
+        return;
+    }
+    // Count any bombchu pack as bombchus
+    if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
+        }
+        return;
+    }
+
+    gSaveContext.gameplayStats.timestamp[item] = time;
+}
+
+// Gameplay stat tracking: Update time the item was acquired
+// (special cases for rando items)
+void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
+
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (gSaveContext.gameplayStats.totalTimer == 0) {
+        gSaveContext.gameplayStats.totalTimer = 1;
+    }
+
+    u32 time = gSaveContext.gameplayStats.totalTimer;
+
+    // Count any bottled item as a bottle
+    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
+        }
+        return;
+    }
+    // Count any bombchu pack as bombchus
+    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
+        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
+        }
+        return;
+    }
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.gameplayStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+    }
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.gameplayStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+    }
+}
+
 /**
  * @brief Adds the given item to Link's inventory.
  * 
@@ -1630,6 +1696,9 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 i;
     s16 slot;
     s16 temp;
+
+    // Gameplay stats: Update the time the item was obtained
+    GameplayStats_UpdateItemGetTime(item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2294,6 +2363,9 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
+
+    // Gameplay stats: Update the time the item was obtained
+    Randomizer_GameplayStats_UpdateItemGetTime(item);
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {
@@ -2979,6 +3051,10 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     osSyncPrintf("＊＊＊＊＊  増減=%d (now=%d, max=%d)  ＊＊＊", healthChange, gSaveContext.health,
                  gSaveContext.healthCapacity);
 
+    if (healthChange < 0) {
+        gSaveContext.gameplayStats.damageTaken += -healthChange;
+    }
+
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
     if (chaosEffectOneHitKO) {
         if (healthChange < 0) {
@@ -3045,6 +3121,13 @@ void Health_RemoveHearts(s16 hearts) {
 
 void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
+
+    if (rupeeChange > 0) {
+        gSaveContext.gameplayStats.rupeesCollected += rupeeChange;
+    }
+    if (rupeeChange < 0) {
+        gSaveContext.gameplayStats.rupeesSpent += -rupeeChange;
+    }
 }
 
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {

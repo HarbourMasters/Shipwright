@@ -1205,6 +1205,12 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("SFX Editor", CVar_GetS32("gSfxEditor", 0));
             }
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                bool currentValue = CVar_GetS32("gGameplayStatsEnabled", 0);
+                CVar_SetS32("gGameplayStatsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
 

@@ -1461,6 +1461,7 @@ void func_808327F8(Player* this, f32 arg1) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, arg1);
+    gSaveContext.gameplayStats.stepCount++;
 }
 
 void func_80832854(Player* this) {
@@ -5326,6 +5327,7 @@ void func_8083BC04(Player* this, PlayState* play) {
     func_80835C58(play, this, func_80844708, 0);
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80853914[PLAYER_ANIMGROUP_16][this->modelAnimType],
                                    1.25f * D_808535E8);
+    gSaveContext.gameplayStats.rollCount++;
 }
 
 s32 func_8083BC7C(Player* this, PlayState* play) {
@@ -6308,6 +6310,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+        // Gameplay stats: Increment Ice Trap count
+        gSaveContext.gameplayStats.iceTrapCount++;
         return 1;
     }
 
@@ -8760,6 +8764,7 @@ void func_80844708(Player* this, PlayState* play) {
                     func_8002F7DC(&this->actor, NA_SE_PL_BODY_HIT);
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
+                    gSaveContext.gameplayStats.bonkCount++;
                     return;
                 }
             }
@@ -10623,6 +10628,13 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     s32 pad;
 
     sControlInput = input;
+
+    // Gameplay stat tracking
+    if (!gSaveContext.gameplayStats.ganonDefeated) {
+        gSaveContext.gameplayStats.playTimer++;
+        gSaveContext.gameplayStats.totalTimer =
+            gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
+    }
 
     if (this->unk_A86 < 0) {
         this->unk_A86++;
@@ -12992,6 +13004,8 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+                    // Gameplay stats: Increment Ice Trap count
+                    gSaveContext.gameplayStats.iceTrapCount++;
                 }
                 return;
             }
