@@ -799,6 +799,9 @@ void GenerateItemPool() {
   }
 
   if (Shuffle100GSReward) {
+    if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
+      AddItemToPool(PendingJunkPool, GOLD_SKULLTULA_TOKEN, 10);
+    }
     AddItemToMainPool(HUGE_RUPEE);
   } else {
     PlaceItemInLocation(KAK_100_GOLD_SKULLTULA_REWARD, HUGE_RUPEE, false, true);
