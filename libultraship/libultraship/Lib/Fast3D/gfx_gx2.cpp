@@ -807,6 +807,8 @@ ImGui_ImplGX2_Texture* gfx_gx2_texture_for_imgui(uint32_t texture_id) {
     return &tex->imtex;
 }
 
+void gfx_gx2_read_pixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data) {}
+
 struct GfxRenderingAPI gfx_gx2_api = {
     gfx_gx2_get_clip_parameters,
     gfx_gx2_unload_shader,
@@ -819,6 +821,7 @@ struct GfxRenderingAPI gfx_gx2_api = {
     gfx_gx2_upload_texture,
     gfx_gx2_set_sampler_parameters,
     gfx_gx2_set_depth_test_and_mask,
+    gfx_gx2_read_pixels,
     gfx_gx2_set_zmode_decal,
     gfx_gx2_set_viewport,
     gfx_gx2_set_scissor,
