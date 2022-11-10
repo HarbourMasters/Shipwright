@@ -1621,7 +1621,7 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
         return;
     }
 
-    u32 time = gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
@@ -1650,7 +1650,7 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 // (special cases for rando items)
 void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
 
-    u32 time = gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {

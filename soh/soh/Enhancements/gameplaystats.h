@@ -1,5 +1,7 @@
 #pragma once
 
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3)
+
 void InitStatTracker();
 
 typedef enum {

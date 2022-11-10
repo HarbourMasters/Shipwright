@@ -93,7 +93,7 @@ void DrawStatsTracker(bool& open) {
         return;
     }
 
-    u32 totalTimer = gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
+    u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
 
     DisplayTimeHHMMSS(totalTimer,     "Total game Time:     ");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:       ");
