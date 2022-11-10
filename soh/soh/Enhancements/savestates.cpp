@@ -25,7 +25,7 @@
 
 extern "C" PlayState* gPlayState;
 
-#ifdef WINDOWS
+#ifdef _WIN32
 template <> struct fmt::formatter<RequestType> : fmt::formatter<std::string> {
     constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
 
