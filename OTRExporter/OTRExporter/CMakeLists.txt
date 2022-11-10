@@ -238,16 +238,5 @@ add_dependencies(${PROJECT_NAME}
 )
 
 # Link with other targets.
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		set(ADDITIONAL_LIBRARY_DEPENDENCIES
-			"$<$<CONFIG:Debug>:"
-				"ZAPDUtils;"
-				"OTRLib"
-			">"
-		)
-	endif()
-endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
