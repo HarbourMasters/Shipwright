@@ -3047,7 +3047,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.gameplayStats.damageTaken += -healthChange;
+        gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -3118,10 +3118,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 
     if (rupeeChange > 0) {
-        gSaveContext.gameplayStats.rupeesCollected += rupeeChange;
+        gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
     }
     if (rupeeChange < 0) {
-        gSaveContext.gameplayStats.rupeesSpent += -rupeeChange;
+        gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
 

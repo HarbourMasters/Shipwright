@@ -127,14 +127,14 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::TableNextColumn();
 
-    DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.rupeesCollected);
-    DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.rupeesSpent);
-    DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.damageTaken);
-    DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.stepCount);
-    DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.rollCount);
-    DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.bonkCount);
-    DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.iceTrapCount);
-    DisplayStat("Pauses:                ", gSaveContext.gameplayStats.pauseCount);
+    DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED]);
+    DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT]);
+    DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN]);
+    DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.count[COUNT_STEPS]);
+    DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.count[COUNT_ROLLS]);
+    DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.count[COUNT_BONKS]);
+    DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.count[COUNT_ICE_TRAPS]);
+    DisplayStat("Pauses:                ", gSaveContext.gameplayStats.count[COUNT_PAUSES]);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

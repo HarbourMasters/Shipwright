@@ -90,14 +90,7 @@ typedef struct {
     u32 pauseTimer;
     bool ganonDefeated;
     u32 timestamp[TIMESTAMP_MAX];
-    u16 rupeesCollected;
-    u16 rupeesSpent;
-    u16 damageTaken;
-    u16 iceTrapCount;
-    u16 rollCount;
-    u16 bonkCount;
-    u16 pauseCount;
-    u32 stepCount;
+    u32 count[COUNT_MAX];
 } GameplayStats;
 
 typedef struct {
