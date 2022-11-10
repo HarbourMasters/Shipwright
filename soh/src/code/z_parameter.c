@@ -1621,12 +1621,12 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
         return;
     }
 
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (gSaveContext.gameplayStats.totalTimer == 0) {
-        gSaveContext.gameplayStats.totalTimer = 1;
-    }
+    u32 time = gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
 
-    u32 time = gSaveContext.gameplayStats.totalTimer;
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
@@ -1650,12 +1650,12 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 // (special cases for rando items)
 void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
 
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (gSaveContext.gameplayStats.totalTimer == 0) {
-        gSaveContext.gameplayStats.totalTimer = 1;
-    }
+    u32 time = gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
 
-    u32 time = gSaveContext.gameplayStats.totalTimer;
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {

@@ -88,7 +88,6 @@ typedef struct {
 typedef struct {
     u32 playTimer;
     u32 pauseTimer;
-    u32 totalTimer;
     bool ganonDefeated;
     u32 timestamp[TIMESTAMP_MAX];
     u16 rupeesCollected;

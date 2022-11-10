@@ -10524,8 +10524,6 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     // Gameplay stat tracking
     if (!gSaveContext.gameplayStats.ganonDefeated) {
         gSaveContext.gameplayStats.playTimer++;
-        gSaveContext.gameplayStats.totalTimer =
-            gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
     }
 
     if (this->unk_A86 < 0) {

@@ -58,8 +58,6 @@ void KaleidoScopeCall_Update(PlayState* play) {
 
     if (!gSaveContext.gameplayStats.ganonDefeated) {
         gSaveContext.gameplayStats.pauseTimer++;
-        gSaveContext.gameplayStats.totalTimer =
-            gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
     }
 
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {

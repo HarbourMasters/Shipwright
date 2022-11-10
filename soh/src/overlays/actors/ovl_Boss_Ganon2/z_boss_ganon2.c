@@ -1672,7 +1672,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 func_80064520(play, &play->csCtx);
                 gSaveContext.gameplayStats.ganonDefeated = true;
                 gSaveContext.gameplayStats.timestamp[TIMESTAMP_DEFEAT_GANON] =
-                    gSaveContext.gameplayStats.totalTimer;
+                    gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);
