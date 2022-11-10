@@ -55,7 +55,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(KAK_IMPAS_LEDGE, {[]{return true;}}),
+                  Entrance(KAK_IMPAS_ROOFTOP, {[]{return true;}}),
   });
 
   areaTable[DMT_COW_GROTTO] = Area("DMT Cow Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
