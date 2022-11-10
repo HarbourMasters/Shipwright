@@ -1951,7 +1951,7 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
 
         Actor* topVisibleActors[5] = {0};
         for (int i = 0; i < 5; i++) {
-            topVisibleActors[i] = (topItems[0].id > 0) ? gActorIdTable[topItems[i].id - 1] : NULL;
+            topVisibleActors[i] = (topItems[i].id > 0) ? gActorIdTable[topItems[i].id - 1] : NULL;
         }
 
         if (topVisibleActors[0] != NULL && topVisibleActors[0] != prevActorInView) {
