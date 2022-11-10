@@ -22,6 +22,7 @@ class Randomizer {
     std::string adultAltarText;
     std::string ganonHintText;
     std::string ganonText;
+    std::string dampeText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
@@ -41,6 +42,7 @@ class Randomizer {
     static const std::string rupeeMessageTableID;
     static const std::string NaviRandoMessageTableID;
     static const std::string IceTrapRandoMessageTableID;
+    static const std::string randoMiscHintsTableID;
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
     std::unordered_map<RandomizerInf, bool> trialsRequired;
@@ -67,6 +69,7 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
+    std::string GetDampeText() const;
     RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
@@ -77,6 +80,7 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
+    CustomMessageEntry GetSshMessage();
     CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);

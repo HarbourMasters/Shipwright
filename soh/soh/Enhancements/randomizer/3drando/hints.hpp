@@ -225,3 +225,4 @@ Text& GetChildAltarText();
 Text& GetAdultAltarText();
 Text& GetGanonText();
 Text& GetGanonHintText();
+Text& GetDampeHintText();

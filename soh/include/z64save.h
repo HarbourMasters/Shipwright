@@ -189,6 +189,7 @@ typedef struct {
     char adultAltarText[750];
     char ganonHintText[150];
     char ganonText[250];
+    char dampeText[150];
     u8 seedIcons[5];
     u16 randomizerInf[9];
     u8 temporaryWeapon;

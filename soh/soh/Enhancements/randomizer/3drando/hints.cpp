@@ -116,6 +116,7 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text dampesText;
 
 Text& GetChildAltarText() {
   return childAltarText;
@@ -131,6 +132,10 @@ Text& GetGanonText() {
 
 Text& GetGanonHintText() {
   return ganonHintText;
+}
+
+Text& GetDampeHintText() {
+  return dampesText;
 }
 
 static Area* GetHintRegion(const uint32_t area) {
@@ -707,10 +712,27 @@ void CreateMerchantsHints() {
   CreateMessageFromTextObject(0x6078, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextTwo, {QM_RED, QM_YELLOW, QM_RED}));
 }
 
+void CreateDampesDiaryText() {
+  uint32_t item = PROGRESSIVE_HOOKSHOT;
+  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Whoever reads this, please enter %g", "", ""
+  };
+
+  Text temp2 = {
+    "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
+    "", ""
+  };
+  
+  dampesText = temp1 + area + temp2;
+}
+
 void CreateAllHints() {
 
   CreateGanonText();
   CreateAltarText();
+  CreateDampesDiaryText();
 
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];

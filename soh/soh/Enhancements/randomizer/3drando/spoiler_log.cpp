@@ -608,18 +608,21 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
 static void WriteHints(int language) {
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
+    std::string unformattedDampesText;
 
     switch (language) {
         case 0:
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
+            unformattedDampesText = GetDampeHintText().GetEnglish();
             jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
+            unformattedDampesText = GetDampeHintText().GetFrench();
             jsonData["childAltarText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
             break;
@@ -627,9 +630,11 @@ static void WriteHints(int language) {
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
+    std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["dampeText"] = dampesText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

@@ -1908,6 +1908,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessageEntry messageEntry;
+    s16 actorParams = 0;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             Player* player = GET_PLAYER(play);
@@ -1925,7 +1926,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
               Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            s16 actorParams = msgCtx->talkActor->params;
+            Actor* stone = GET_PLAYER(play)->targetActor; 
+            actorParams = stone->params;
 
             // if we're in a generic grotto
             if (play->sceneNum == 62 && actorParams == 14360) {
@@ -1944,7 +1946,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             }
 
             RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, play->sceneNum, actorParams);
+                Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
@@ -1991,6 +1993,10 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
+        } else if (textId == TEXT_SSH) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSshMessage();
+        } else if (textId == TEXT_DAMPES_DIARY) { //Dampe's Diary
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

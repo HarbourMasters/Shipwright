@@ -46,6 +46,7 @@ const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
+const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
 static const char* englishRupeeNames[80] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
@@ -322,6 +323,31 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
+
+    //Extra Hints
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::randoMiscHintsTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID, TEXT_SSH,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
+            "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you &%b{{check}}%w!",
+            "{{check}}",
+            "{{check}}"
+        }
+    );
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
+        {
+            TEXTBOX_TYPE_BLUE,
+            TEXTBOX_POS_TOP,
+            gSaveContext.dampeText,
+            gSaveContext.dampeText,
+            gSaveContext.dampeText
+        }
+    );
+
+
 }
 
 std::vector<RandomizerCheck> shopItemRandomizerChecks = {
@@ -1048,6 +1074,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
         strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
         gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
+
+        std::string dampeJsonText = spoilerFileJson["dampeText"].get<std::string>();
+        std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
+        strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
+        gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -2087,6 +2118,10 @@ std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
 }
 
+std::string Randomizer::GetDampeText() const {
+    return dampeText;
+}
+
 // There has been some talk about potentially just using the RC identifier to store flags rather than randomizer inf, so
 // for now we're not going to store randomzierInf in the randomizer check objects, we're just going to map them 1:1 here
 std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
@@ -2250,6 +2285,17 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 case 15120:
                     specialRc = RC_TOT_RIGHT_GOSSIP_STONE;
                     break;
+            }
+            break;
+        case SCENE_KINSUTA:
+            if (actorId == ACTOR_EN_SSH) {
+                switch (actorParams) { // actor params are used to differentiate between textboxes
+                    case 1: specialRc = RC_KAK_10_GOLD_SKULLTULA_REWARD; break;
+                    case 2: specialRc = RC_KAK_20_GOLD_SKULLTULA_REWARD; break;
+                    case 3: specialRc = RC_KAK_30_GOLD_SKULLTULA_REWARD; break;
+                    case 4: specialRc = RC_KAK_40_GOLD_SKULLTULA_REWARD; break;
+                    case 5: specialRc = RC_KAK_50_GOLD_SKULLTULA_REWARD; break;
+                }
             }
             break;
         case SCENE_SPOT01:
@@ -3874,6 +3920,33 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
 
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", shopItemName[0], shopItemName[1], shopItemName[2]);
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{price}}", std::to_string(shopItemPrice));
+    return messageEntry;
+}
+
+CustomMessageEntry Randomizer::GetSshMessage() {
+    //First, determine who Link is talking to by grabbing the target actor and using params
+    Actor* checkAct = GET_PLAYER(gPlayState)->targetActor;
+    s16 actID = checkAct->id;
+    s16 params = checkAct->params;
+    u16 sceneID = gPlayState->sceneNum;
+    //Next, setup custome message entry using params we just got as a key.
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_SSH);
+    RandomizerCheck rc = GetCheckFromActor(actID, sceneID, params);
+    RandomizerGet itemGet = this->itemLocations[rc].rgID;
+    std::vector<std::string> itemName;
+    if (itemGet == RG_ICE_TRAP) {
+        itemGet = this->itemLocations[rc].fakeRgID;
+        itemName = {
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName)
+        };
+    } else {
+        itemName = EnumToSpoilerfileGetName[itemGet];
+    }
+
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{params}}", std::to_string(params*10));
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{check}}", itemName[0], itemName[1], itemName[2]);
     return messageEntry;
 }
 
