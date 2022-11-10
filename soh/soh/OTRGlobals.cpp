@@ -57,10 +57,12 @@
 #endif
 
 #ifdef __SWITCH__
-#include <libultraship/SwitchImpl.h>
+#include <port/switch/SwitchImpl.h>
 #elif defined(__WIIU__)
-#include <libultraship/WiiUImpl.h>
+#include <port/wiiu/WiiUImpl.h>
 #endif
+
+
 
 #include <Audio.h>
 #include "Enhancements/custom-message/CustomMessageTypes.h"
