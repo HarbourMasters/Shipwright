@@ -4,7 +4,7 @@
 /**
  * Initialises the Vtx buffers used for limb at index `limbIndex`
  */
-void Skin_InitAnimatedLimb(GlobalContext* globalCtx, Skin* skin, s32 limbIndex) {
+void Skin_InitAnimatedLimb(PlayState* play, Skin* skin, s32 limbIndex) {
     s32 i;
     SkinLimb** skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
     SkinAnimatedLimbData* animatedLimbData =
@@ -36,7 +36,7 @@ void Skin_InitAnimatedLimb(GlobalContext* globalCtx, Skin* skin, s32 limbIndex) 
  * Initializes a skin skeleton to looping animation, dynamically allocating the frame tables,
  * and dynamically allocating and initializing the Vtx and SkinLimbVtx buffers for its animated limbs
  */
-void Skin_Init(GlobalContext* globalCtx, Skin* skin, SkeletonHeader* skeletonHeader, AnimationHeader* animationHeader) {
+void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, AnimationHeader* animationHeader) {
     if (ResourceMgr_OTRSigCheck(skeletonHeader))
         skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader);
 
@@ -77,17 +77,17 @@ void Skin_Init(GlobalContext* globalCtx, Skin* skin, SkeletonHeader* skeletonHea
                 ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             ASSERT(vtxEntry->buf[1] != NULL);
 
-            Skin_InitAnimatedLimb(globalCtx, skin, i);
+            Skin_InitAnimatedLimb(play, skin, i);
         }
     }
 
-    SkelAnime_InitSkin(globalCtx, &skin->skelAnime, skeletonHeader, animationHeader);
+    SkelAnime_InitSkin(play, &skin->skelAnime, skeletonHeader, animationHeader);
 }
 
 /**
  * Frees the dynamically allocated Vtx and SkinLimbVtx buffers and tables
  */
-void Skin_Free(GlobalContext* globalCtx, Skin* skin) {
+void Skin_Free(PlayState* play, Skin* skin) {
     if (skin->vtxTable != NULL) {
         s32 i;
 
@@ -106,7 +106,7 @@ void Skin_Free(GlobalContext* globalCtx, Skin* skin) {
             ZELDA_ARENA_FREE_DEBUG(skin->vtxTable);
         }
 
-        SkelAnime_Free(&skin->skelAnime, globalCtx);
+        SkelAnime_Free(&skin->skelAnime, play);
     }
 }
 

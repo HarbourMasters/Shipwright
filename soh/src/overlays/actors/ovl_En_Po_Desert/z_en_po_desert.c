@@ -9,15 +9,15 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_7 | ACTOR_FLAG_12)
 
-void EnPoDesert_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnPoDesert_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnPoDesert_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnPoDesert_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnPoDesert_Init(Actor* thisx, PlayState* play);
+void EnPoDesert_Destroy(Actor* thisx, PlayState* play);
+void EnPoDesert_Update(Actor* thisx, PlayState* play);
+void EnPoDesert_Draw(Actor* thisx, PlayState* play);
 
-void EnPoDesert_SetNextPathPoint(EnPoDesert* this, GlobalContext* globalCtx);
-void EnPoDesert_WaitForPlayer(EnPoDesert* this, GlobalContext* globalCtx);
-void EnPoDesert_MoveToNextPoint(EnPoDesert* this, GlobalContext* globalCtx);
-void EnPoDesert_Disappear(EnPoDesert* this, GlobalContext* globalCtx);
+void EnPoDesert_SetNextPathPoint(EnPoDesert* this, PlayState* play);
+void EnPoDesert_WaitForPlayer(EnPoDesert* this, PlayState* play);
+void EnPoDesert_MoveToNextPoint(EnPoDesert* this, PlayState* play);
+void EnPoDesert_Disappear(EnPoDesert* this, PlayState* play);
 
 const ActorInit En_Po_Desert_InitVars = {
     ACTOR_EN_PO_DESERT,
@@ -58,38 +58,38 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 3200, ICHAIN_STOP),
 };
 
-void EnPoDesert_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoDesert_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnPoDesert* this = (EnPoDesert*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gPoeFieldSkel, &gPoeFieldFloatAnim, this->jointTable, this->morphTable,
+    SkelAnime_Init(play, &this->skelAnime, &gPoeFieldSkel, &gPoeFieldFloatAnim, this->jointTable, this->morphTable,
                    10);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sColliderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sColliderInit);
     this->lightColor.r = 255;
     this->lightColor.g = 255;
     this->lightColor.b = 210;
     this->lightColor.a = 255;
-    this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
+    this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z,
                               255, 255, 255, 200);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 37.0f);
     this->currentPathPoint = 1;
     this->actor.params = (this->actor.params >> 8) & 0xFF;
     this->targetY = this->actor.world.pos.y;
-    EnPoDesert_SetNextPathPoint(this, globalCtx);
+    EnPoDesert_SetNextPathPoint(this, play);
 }
 
-void EnPoDesert_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoDesert_Destroy(Actor* thisx, PlayState* play) {
     EnPoDesert* this = (EnPoDesert*)thisx;
 
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode);
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnPoDesert_SetNextPathPoint(EnPoDesert* this, GlobalContext* globalCtx) {
-    Path* path = &globalCtx->setupPathList[this->actor.params];
+void EnPoDesert_SetNextPathPoint(EnPoDesert* this, PlayState* play) {
+    Path* path = &play->setupPathList[this->actor.params];
     Vec3s* pathPoint;
 
     Animation_MorphToLoop(&this->skelAnime, &gPoeFieldDisappearAnim, -6.0f);
@@ -131,15 +131,15 @@ void EnPoDesert_UpdateSpeedModifier(EnPoDesert* this) {
     this->actor.world.pos.y = Math_SinS(this->speedModifier * 0x800) * 13.0f + this->targetY;
 }
 
-void EnPoDesert_WaitForPlayer(EnPoDesert* this, GlobalContext* globalCtx) {
+void EnPoDesert_WaitForPlayer(EnPoDesert* this, PlayState* play) {
     func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
-    if (this->actor.xzDistToPlayer < 200.0f && (this->currentPathPoint != 2 || globalCtx->actorCtx.lensActive)) {
+    if (this->actor.xzDistToPlayer < 200.0f && (this->currentPathPoint != 2 || play->actorCtx.lensActive)) {
         if (this->currentPathPoint == 2) {
-            if (Gameplay_InCsMode(globalCtx)) {
+            if (Play_InCsMode(play)) {
                 this->actor.shape.rot.y += 0x800;
                 return;
             }
-            Message_StartTextbox(globalCtx, 0x600B, NULL);
+            Message_StartTextbox(play, 0x600B, NULL);
         }
         EnPoDesert_SetupMoveToNextPoint(this);
     } else {
@@ -147,7 +147,7 @@ void EnPoDesert_WaitForPlayer(EnPoDesert* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoDesert_MoveToNextPoint(EnPoDesert* this, GlobalContext* globalCtx) {
+void EnPoDesert_MoveToNextPoint(EnPoDesert* this, PlayState* play) {
     f32 temp_f20;
 
     if (this->actionTimer != 0) {
@@ -167,14 +167,14 @@ void EnPoDesert_MoveToNextPoint(EnPoDesert* this, GlobalContext* globalCtx) {
     this->targetY = this->actor.home.pos.y - ((temp_f20 * this->yDiff) / this->initDistToNextPoint);
     if (temp_f20 < 40.0f) {
         if (this->currentPathPoint != 0) {
-            EnPoDesert_SetNextPathPoint(this, globalCtx);
+            EnPoDesert_SetNextPathPoint(this, play);
         } else {
             EnPoDesert_SetupDisappear(this);
         }
     }
 }
 
-void EnPoDesert_Disappear(EnPoDesert* this, GlobalContext* globalCtx) {
+void EnPoDesert_Disappear(EnPoDesert* this, PlayState* play) {
     if (this->actionTimer != 0) {
         this->actionTimer--;
     }
@@ -186,19 +186,19 @@ void EnPoDesert_Disappear(EnPoDesert* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoDesert_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoDesert_Update(Actor* thisx, PlayState* play) {
     EnPoDesert* this = (EnPoDesert*)thisx;
     s32 pad;
 
     SkelAnime_Update(&this->skelAnime);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
     EnPoDesert_UpdateSpeedModifier(this);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 27.0f, 60.0f, 4);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 27.0f, 60.0f, 4);
     Actor_SetFocus(&this->actor, 42.0f);
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    if (globalCtx->actorCtx.lensActive) {
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
+    if (play->actorCtx.lensActive) {
         this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_7;
         this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
     } else {
@@ -207,7 +207,7 @@ void EnPoDesert_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-s32 EnPoDesert_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnPoDesert_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                 void* thisx, Gfx** gfxP) {
     EnPoDesert* this = (EnPoDesert*)thisx;
     f32 mtxScale;
@@ -222,7 +222,7 @@ s32 EnPoDesert_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     return false;
 }
 
-void EnPoDesert_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
+void EnPoDesert_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
                              Gfx** gfxP) {
     static Vec3f baseLightPos = { 0.0f, 1400.0f, 0.0f };
 
@@ -240,7 +240,7 @@ void EnPoDesert_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
             gDPPipeSync((*gfxP)++);
             gDPSetEnvColor((*gfxP)++, color.r, color.g, color.b, 255);
-            gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternDL);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternTopDL);
@@ -251,21 +251,21 @@ void EnPoDesert_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     }
 }
 
-void EnPoDesert_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoDesert_Draw(Actor* thisx, PlayState* play) {
     EnPoDesert* this = (EnPoDesert*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
-    gSPSegment(POLY_XLU_DISP++, 0x0A, Gfx_EnvColor(globalCtx->state.gfxCtx, 255, 85, 0, 255));
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
+    gSPSegment(POLY_XLU_DISP++, 0x0A, Gfx_EnvColor(play->state.gfxCtx, 255, 85, 0, 255));
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_EnvColor(globalCtx->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
+               Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                             this->lightColor.a));
     if (this->actionFunc == EnPoDesert_Disappear) {
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280 + 2);
     }
-    POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnPoDesert_OverrideLimbDraw, EnPoDesert_PostLimbDraw, &this->actor, POLY_XLU_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

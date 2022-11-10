@@ -6,7 +6,7 @@
 
 struct EnOE2;
 
-typedef void (*EnOE2ActionFunc)(struct EnOE2*, GlobalContext*);
+typedef void (*EnOE2ActionFunc)(struct EnOE2*, PlayState*);
 
 typedef struct EnOE2 {
     /* 0x0000 */ Actor actor;

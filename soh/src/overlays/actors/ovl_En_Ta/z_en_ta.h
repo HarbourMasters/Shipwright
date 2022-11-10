@@ -8,7 +8,7 @@
 
 struct EnTa;
 
-typedef void (*EnTaActionFunc)(struct EnTa*, GlobalContext*);
+typedef void (*EnTaActionFunc)(struct EnTa*, PlayState*);
 typedef void (*EnTaUnkFunc)(struct EnTa*);
 
 typedef struct EnTa {

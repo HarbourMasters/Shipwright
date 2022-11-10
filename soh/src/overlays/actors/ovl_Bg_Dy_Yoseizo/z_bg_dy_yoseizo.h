@@ -8,7 +8,7 @@
 
 struct BgDyYoseizo;
 
-typedef void (*BgDyYoseizoActionFunc)(struct BgDyYoseizo*, GlobalContext*);
+typedef void (*BgDyYoseizoActionFunc)(struct BgDyYoseizo*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8 alive; // drawn if 1, respawn if 0

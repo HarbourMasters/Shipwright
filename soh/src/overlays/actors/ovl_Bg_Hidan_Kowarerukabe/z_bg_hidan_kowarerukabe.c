@@ -17,10 +17,10 @@ typedef enum {
     /* 2 */ LARGE_BOMBABLE_WALL
 } FireTempleBombableObjectsType;
 
-void BgHidanKowarerukabe_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKowarerukabe_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKowarerukabe_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHidanKowarerukabe_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHidanKowarerukabe_Init(Actor* thisx, PlayState* play);
+void BgHidanKowarerukabe_Destroy(Actor* thisx, PlayState* play);
+void BgHidanKowarerukabe_Update(Actor* thisx, PlayState* play);
+void BgHidanKowarerukabe_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Hidan_Kowarerukabe_InitVars = {
     ACTOR_BG_HIDAN_KOWARERUKABE,
@@ -68,7 +68,7 @@ static ColliderJntSphInit sJntSphInit = {
     sJntSphElementsInit,
 };
 
-void BgHidanKowarerukabe_InitDynaPoly(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_InitDynaPoly(BgHidanKowarerukabe* this, PlayState* play) {
     static CollisionHeader* collisionHeaders[] = {
         &gFireTempleCrackedStoneFloorCol,
         &gFireTempleBombableWallCol,
@@ -81,19 +81,19 @@ void BgHidanKowarerukabe_InitDynaPoly(BgHidanKowarerukabe* this, GlobalContext* 
     if (collisionHeaders[this->dyna.actor.params & 0xFF] != NULL) {
         DynaPolyActor_Init(&this->dyna, DPM_UNK);
         CollisionHeader_GetVirtual(collisionHeaders[this->dyna.actor.params & 0xFF], &colHeader);
-        this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+        this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     } else {
         this->dyna.bgId = BGACTOR_NEG_ONE;
     }
 }
 
-void BgHidanKowarerukabe_InitColliderSphere(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_InitColliderSphere(BgHidanKowarerukabe* this, PlayState* play) {
     static s16 sphereRadii[] = { 80, 45, 80 };
     static s16 sphereYPositions[] = { 0, 500, 500 };
     s32 pad;
 
-    Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->dyna.actor, &sJntSphInit, this->colliderItems);
+    Collider_InitJntSph(play, &this->collider);
+    Collider_SetJntSph(play, &this->collider, &this->dyna.actor, &sJntSphInit, this->colliderItems);
 
     this->collider.elements[0].dim.modelSphere.radius = sphereRadii[this->dyna.actor.params & 0xFF];
     this->collider.elements[0].dim.modelSphere.center.y = sphereYPositions[this->dyna.actor.params & 0xFF];
@@ -111,10 +111,10 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void BgHidanKowarerukabe_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_Init(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
 
-    BgHidanKowarerukabe_InitDynaPoly(this, globalCtx);
+    BgHidanKowarerukabe_InitDynaPoly(this, play);
 
     if (((this->dyna.actor.params & 0xFF) < CRACKED_STONE_FLOOR) ||
         ((this->dyna.actor.params & 0xFF) > LARGE_BOMBABLE_WALL)) {
@@ -125,43 +125,43 @@ void BgHidanKowarerukabe_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0x3F)) {
+    if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     Actor_SetScale(&this->dyna.actor, 0.1f);
-    BgHidanKowarerukabe_InitColliderSphere(this, globalCtx);
+    BgHidanKowarerukabe_InitColliderSphere(this, play);
     BgHidanKowarerukabe_OffsetActorYPos(this);
     // "(fire walls, floors, destroyed by bombs)(arg_data 0x%04x)"
     osSyncPrintf("(hidan 爆弾で壊れる 壁 床)(arg_data 0x%04x)\n", this->dyna.actor.params);
 }
 
-void BgHidanKowarerukabe_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_Destroy(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyJntSph(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyJntSph(play, &this->collider);
 }
 
-void BgHidanKowarerukabe_SpawnDust(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_SpawnDust(BgHidanKowarerukabe* this, PlayState* play) {
     s32 pad;
     Vec3f pos;
 
     pos = this->dyna.actor.world.pos;
     pos.y += 10.0f;
 
-    func_80033480(globalCtx, &pos, 0.0f, 0, 600, 300, 1);
+    func_80033480(play, &pos, 0.0f, 0, 600, 300, 1);
 
     pos.x = ((Rand_ZeroOne() - 0.5f) * 80.0f) + this->dyna.actor.world.pos.x;
     pos.y = (Rand_ZeroOne() * 100.0f) + this->dyna.actor.world.pos.y;
     pos.z = ((Rand_ZeroOne() - 0.5f) * 80.0f) + this->dyna.actor.world.pos.z;
 
-    func_80033480(globalCtx, &pos, 100.0f, 4, 200, 250, 1);
+    func_80033480(play, &pos, 100.0f, 4, 200, 250, 1);
 }
 
-void BgHidanKowarerukabe_FloorBreak(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_FloorBreak(BgHidanKowarerukabe* this, PlayState* play) {
     s32 i;
     s32 j;
     Vec3f velocity;
@@ -195,13 +195,13 @@ void BgHidanKowarerukabe_FloorBreak(BgHidanKowarerukabe* this, GlobalContext* gl
 
             arg5 = (((i == 0) || (i == 4)) && ((j == 0) || (j == 4))) ? 65 : 64;
 
-            EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &thisx->world.pos, -550, arg5, 15, 15, 0, arg9, 2, 16, 100,
+            EffectSsKakera_Spawn(play, &pos, &velocity, &thisx->world.pos, -550, arg5, 15, 15, 0, arg9, 2, 16, 100,
                                  KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gBrownFragmentDL);
         }
     }
 }
 
-void func_8088A67C(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void func_8088A67C(BgHidanKowarerukabe* this, PlayState* play) {
     s32 i;
     s32 j;
     Vec3f velocity;
@@ -236,13 +236,13 @@ void func_8088A67C(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
                 arg5 |= 1;
             }
 
-            EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &thisx->world.pos, -540, arg5, 20, 20, 0, arg9, 2, 32, 100,
+            EffectSsKakera_Spawn(play, &pos, &velocity, &thisx->world.pos, -540, arg5, 20, 20, 0, arg9, 2, 32, 100,
                                  KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gBrownFragmentDL);
         }
     }
 }
 
-void BgHidanKowarerukabe_LargeWallBreak(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_LargeWallBreak(BgHidanKowarerukabe* this, PlayState* play) {
     s32 i;
     s32 j;
     Vec3f velocity;
@@ -277,40 +277,40 @@ void BgHidanKowarerukabe_LargeWallBreak(BgHidanKowarerukabe* this, GlobalContext
                 arg5 |= 1;
             }
 
-            EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &thisx->world.pos, -650, arg5, 20, 20, 0, arg9, 2, 32, 100,
+            EffectSsKakera_Spawn(play, &pos, &velocity, &thisx->world.pos, -650, arg5, 20, 20, 0, arg9, 2, 32, 100,
                                  KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gBrownFragmentDL);
         }
     }
 }
 
-void BgHidanKowarerukabe_Break(BgHidanKowarerukabe* this, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_Break(BgHidanKowarerukabe* this, PlayState* play) {
     switch (this->dyna.actor.params & 0xFF) {
         case CRACKED_STONE_FLOOR:
-            BgHidanKowarerukabe_FloorBreak(this, globalCtx);
+            BgHidanKowarerukabe_FloorBreak(this, play);
             break;
         case BOMBABLE_WALL:
-            func_8088A67C(this, globalCtx);
+            func_8088A67C(this, play);
             break;
         case LARGE_BOMBABLE_WALL:
-            BgHidanKowarerukabe_LargeWallBreak(this, globalCtx);
+            BgHidanKowarerukabe_LargeWallBreak(this, play);
             break;
     }
 
-    BgHidanKowarerukabe_SpawnDust(this, globalCtx);
+    BgHidanKowarerukabe_SpawnDust(this, play);
 }
 
-void BgHidanKowarerukabe_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_Update(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
     s32 pad;
 
-    if (Actor_GetCollidedExplosive(globalCtx, &this->collider.base) != NULL) {
-        BgHidanKowarerukabe_Break(this, globalCtx);
-        Flags_SetSwitch(globalCtx, (this->dyna.actor.params >> 8) & 0x3F);
+    if (Actor_GetCollidedExplosive(play, &this->collider.base) != NULL) {
+        BgHidanKowarerukabe_Break(this, play);
+        Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
 
         if ((this->dyna.actor.params & 0xFF) == 0) {
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 40, NA_SE_EV_EXPLOSION);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_EXPLOSION);
         } else {
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
         }
 
         func_80078884(NA_SE_SY_CORRECT_CHIME);
@@ -318,21 +318,21 @@ void BgHidanKowarerukabe_Update(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
 }
 
-void BgHidanKowarerukabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHidanKowarerukabe_Draw(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, sBreakableWallDLists[this->dyna.actor.params & 0xFF]);
 
     Collider_UpdateSpheres(0, &this->collider);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -10,13 +10,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgHakaTubo_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaTubo_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaTubo_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaTubo_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHakaTubo_Init(Actor* thisx, PlayState* play);
+void BgHakaTubo_Destroy(Actor* thisx, PlayState* play);
+void BgHakaTubo_Update(Actor* thisx, PlayState* play);
+void BgHakaTubo_Draw(Actor* thisx, PlayState* play);
 
-void BgHakaTubo_Idle(BgHakaTubo* this, GlobalContext* globalCtx);
-void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx);
+void BgHakaTubo_Idle(BgHakaTubo* this, PlayState* play);
+void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play);
 
 const ActorInit Bg_Haka_Tubo_InitVars = {
     ACTOR_BG_HAKA_TUBO,
@@ -77,7 +77,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaTubo_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaTubo_Init(Actor* thisx, PlayState* play) {
     BgHakaTubo* this = (BgHakaTubo*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -85,25 +85,25 @@ void BgHakaTubo_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK3);
     CollisionHeader_GetVirtual(&object_haka_objects_Col_0108B8, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
-    Collider_InitCylinder(globalCtx, &this->potCollider);
-    Collider_SetCylinder(globalCtx, &this->potCollider, &this->dyna.actor, &sPotColliderInit);
-    Collider_InitCylinder(globalCtx, &this->flamesCollider);
-    Collider_SetCylinder(globalCtx, &this->flamesCollider, &this->dyna.actor, &sFlamesColliderInit);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
+    Collider_InitCylinder(play, &this->potCollider);
+    Collider_SetCylinder(play, &this->potCollider, &this->dyna.actor, &sPotColliderInit);
+    Collider_InitCylinder(play, &this->flamesCollider);
+    Collider_SetCylinder(play, &this->flamesCollider, &this->dyna.actor, &sFlamesColliderInit);
     this->fireScroll = Rand_ZeroOne() * 15.0f;
     sPotsDestroyed = 0;
     this->actionFunc = BgHakaTubo_Idle;
 }
 
-void BgHakaTubo_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaTubo_Destroy(Actor* thisx, PlayState* play) {
     BgHakaTubo* this = (BgHakaTubo*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyCylinder(globalCtx, &this->potCollider);
-    Collider_DestroyCylinder(globalCtx, &this->flamesCollider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyCylinder(play, &this->potCollider);
+    Collider_DestroyCylinder(play, &this->flamesCollider);
 }
 
-void BgHakaTubo_Idle(BgHakaTubo* this, GlobalContext* globalCtx) {
+void BgHakaTubo_Idle(BgHakaTubo* this, PlayState* play) {
     static Vec3f sZeroVector = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
@@ -115,7 +115,7 @@ void BgHakaTubo_Idle(BgHakaTubo* this, GlobalContext* globalCtx) {
     // Colliding with flame circle
     if (this->flamesCollider.base.atFlags & AT_HIT) {
         this->flamesCollider.base.atFlags &= ~AT_HIT;
-        func_8002F71C(globalCtx, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer, 5.0f);
+        func_8002F71C(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer, 5.0f);
     }
     // Colliding with hitbox inside the pot
     if (this->potCollider.base.acFlags & AC_HIT) {
@@ -127,9 +127,9 @@ void BgHakaTubo_Idle(BgHakaTubo* this, GlobalContext* globalCtx) {
             pos.x = this->dyna.actor.world.pos.x;
             pos.z = this->dyna.actor.world.pos.z;
             pos.y = this->dyna.actor.world.pos.y + 80.0f;
-            EffectSsBomb2_SpawnLayered(globalCtx, &pos, &sZeroVector, &sZeroVector, 100, 45);
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 50, NA_SE_EV_BOX_BREAK);
-            EffectSsHahen_SpawnBurst(globalCtx, &pos, 20.0f, 0, 350, 100, 50, OBJECT_HAKA_OBJECTS, 40,
+            EffectSsBomb2_SpawnLayered(play, &pos, &sZeroVector, &sZeroVector, 100, 45);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 50, NA_SE_EV_BOX_BREAK);
+            EffectSsHahen_SpawnBurst(play, &pos, 20.0f, 0, 350, 100, 50, OBJECT_HAKA_OBJECTS, 40,
                                      gEffFragments2DL);
             this->dropTimer = 5;
             this->dyna.actor.draw = NULL;
@@ -139,13 +139,13 @@ void BgHakaTubo_Idle(BgHakaTubo* this, GlobalContext* globalCtx) {
     } else {
         Collider_UpdateCylinder(&this->dyna.actor, &this->flamesCollider);
         Collider_UpdateCylinder(&this->dyna.actor, &this->potCollider);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->potCollider.base);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->flamesCollider.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->flamesCollider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->potCollider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->flamesCollider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->flamesCollider.base);
     }
 }
 
-void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
+void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
     EnItem00* collectible;
     f32 rnd;
     Vec3f spawnPos;
@@ -166,7 +166,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 // Drop rupees
                 for (i = 0; i < 9; i++) {
-                    collectible = Item_DropCollectible(globalCtx, &spawnPos, i % 3);
+                    collectible = Item_DropCollectible(play, &spawnPos, i % 3);
                     if (collectible != NULL) {
                         collectible->actor.velocity.y = 15.0f;
                         collectible->actor.world.rot.y = this->dyna.actor.shape.rot.y + (i * 0x1C71);
@@ -175,7 +175,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
             } else if (rnd < 0.2f) {
                 // Unlucky, no reward and spawn keese
                 collectibleParams = -1;
-                Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_FIREFLY, this->dyna.actor.world.pos.x,
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY, this->dyna.actor.world.pos.x,
                             this->dyna.actor.world.pos.y + 80.0f, this->dyna.actor.world.pos.z, 0,
                             this->dyna.actor.shape.rot.y, 0, 2);
                 func_80078884(NA_SE_SY_ERROR);
@@ -194,7 +194,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
                 }
                 func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             }
-        } else if (Flags_GetCollectible(globalCtx, this->dyna.actor.params) != 0) {
+        } else if (Flags_GetCollectible(play, this->dyna.actor.params) != 0) {
             // If small key already collected, drop recovery heart instead
             if (CVar_GetS32("gNoHeartDrops", 0)) {
                 collectibleParams = -1;
@@ -209,7 +209,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (collectibleParams != -1) {
-            collectible = Item_DropCollectible(globalCtx, &spawnPos, collectibleParams);
+            collectible = Item_DropCollectible(play, &spawnPos, collectibleParams);
             if (collectible != NULL) {
                 collectible->actor.velocity.y = 15.0f;
                 collectible->actor.world.rot.y = this->dyna.actor.shape.rot.y;
@@ -219,19 +219,19 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaTubo_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaTubo_Update(Actor* thisx, PlayState* play) {
     BgHakaTubo* this = (BgHakaTubo*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     this->fireScroll++;
 }
 
-void BgHakaTubo_DrawFlameCircle(BgHakaTubo* this, GlobalContext* globalCtx) {
+void BgHakaTubo_DrawFlameCircle(BgHakaTubo* this, PlayState* play) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     Matrix_Translate(this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 235.0f, this->dyna.actor.world.pos.z,
                      MTXMODE_NEW);
     Matrix_RotateY(this->dyna.actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -239,18 +239,18 @@ void BgHakaTubo_DrawFlameCircle(BgHakaTubo* this, GlobalContext* globalCtx) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 170, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, this->fireScroll & 127, 0, 32, 64, 1, 0,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->fireScroll & 127, 0, 32, 64, 1, 0,
                                 (this->fireScroll * -15) & 0xFF, 32, 64));
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFireCircleDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void BgHakaTubo_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaTubo_Draw(Actor* thisx, PlayState* play) {
     BgHakaTubo* this = (BgHakaTubo*)thisx;
 
-    Gfx_DrawDListOpa(globalCtx, object_haka_objects_DL_00FE40);
-    BgHakaTubo_DrawFlameCircle(this, globalCtx);
+    Gfx_DrawDListOpa(play, object_haka_objects_DL_00FE40);
+    BgHakaTubo_DrawFlameCircle(this, play);
 }

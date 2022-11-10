@@ -12,23 +12,23 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_27)
 
-void EnReeba_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnReeba_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnReeba_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnReeba_Init(Actor* thisx, PlayState* play);
+void EnReeba_Destroy(Actor* thisx, PlayState* play);
+void EnReeba_Update(Actor* thisx, PlayState* play);
+void EnReeba_Draw(Actor* thisx, PlayState* play);
 
-void func_80AE4F40(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5054(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5270(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5688(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE56E0(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE538C(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE53AC(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5E48(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5854(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5C38(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5938(EnReeba* this, GlobalContext* globalCtx);
-void func_80AE5A9C(EnReeba* this, GlobalContext* globalCtx);
+void func_80AE4F40(EnReeba* this, PlayState* play);
+void func_80AE5054(EnReeba* this, PlayState* play);
+void func_80AE5270(EnReeba* this, PlayState* play);
+void func_80AE5688(EnReeba* this, PlayState* play);
+void func_80AE56E0(EnReeba* this, PlayState* play);
+void func_80AE538C(EnReeba* this, PlayState* play);
+void func_80AE53AC(EnReeba* this, PlayState* play);
+void func_80AE5E48(EnReeba* this, PlayState* play);
+void func_80AE5854(EnReeba* this, PlayState* play);
+void func_80AE5C38(EnReeba* this, PlayState* play);
+void func_80AE5938(EnReeba* this, PlayState* play);
+void func_80AE5A9C(EnReeba* this, PlayState* play);
 
 static DamageTable sDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, 0x0),
@@ -98,7 +98,7 @@ static ColliderCylinderInit sCylinderInit = {
     { 20, 40, 0, { 0, 0, 0 } },
 };
 
-void EnReeba_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnReeba_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnReeba* this = (EnReeba*)thisx;
     s32 surfaceType;
@@ -107,12 +107,12 @@ void EnReeba_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 3;
     this->actor.gravity = -3.5f;
     this->actor.focus.pos = this->actor.world.pos;
-    SkelAnime_Init(globalCtx, &this->skelanime, &object_reeba_Skel_001EE8, &object_reeba_Anim_0001E4, this->jointTable,
+    SkelAnime_Init(play, &this->skelanime, &object_reeba_Skel_001EE8, &object_reeba_Anim_0001E4, this->jointTable,
                    this->morphTable, 18);
     this->actor.colChkInfo.mass = MASS_HEAVY;
     this->actor.colChkInfo.health = 4;
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->isBig = this->actor.params;
     this->scale = 0.04f;
 
@@ -124,15 +124,15 @@ void EnReeba_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->actor.colChkInfo.health = 20;
         this->collider.info.toucher.effect = 4;
         this->collider.info.toucher.damage = 16;
-        Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_ENEMY);
+        Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
     }
 
     this->actor.shape.yOffset = this->unk_284 = this->scale * -27500.0f;
     ActorShape_Init(&this->actor.shape, this->actor.shape.yOffset, ActorShadow_DrawCircle, 0.0f);
     this->actor.colChkInfo.damageTable = &sDamageTable;
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
 
-    surfaceType = func_80041D4C(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+    surfaceType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
     if ((surfaceType != 4) && (surfaceType != 7)) {
         Actor_Kill(&this->actor);
@@ -142,11 +142,11 @@ void EnReeba_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE4F40;
 }
 
-void EnReeba_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnReeba_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnReeba* this = (EnReeba*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 
     if (this->actor.parent != NULL) {
         EnEncount1* spawner = (EnEncount1*)this->actor.parent;
@@ -163,9 +163,9 @@ void EnReeba_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE4F40(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE4F40(EnReeba* this, PlayState* play) {
     f32 frames = Animation_GetLastFrame(&object_reeba_Anim_0001E4);
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s16 playerSpeed;
 
     Animation_Change(&this->skelanime, &object_reeba_Anim_0001E4, 2.0f, 0.0f, frames, ANIMMODE_LOOP, -10.0f);
@@ -191,14 +191,14 @@ void func_80AE4F40(EnReeba* this, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE5054;
 }
 
-void func_80AE5054(EnReeba* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AE5054(EnReeba* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 playerLinearVel;
 
     SkelAnime_Update(&this->skelanime);
 
-    if ((globalCtx->gameplayFrames % 4) == 0) {
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
+    if ((play->gameplayFrames % 4) == 0) {
+        Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
                                  8.0f, 500, 10, true);
     }
 
@@ -241,7 +241,7 @@ void func_80AE5054(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE5270(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5270(EnReeba* this, PlayState* play) {
     s32 surfaceType;
 
     SkelAnime_Update(&this->skelanime);
@@ -250,7 +250,7 @@ void func_80AE5270(EnReeba* this, GlobalContext* globalCtx) {
         Math_ApproachF(&this->actor.shape.shadowScale, 12.0f, 3.0f, 1.0f);
     }
 
-    surfaceType = func_80041D4C(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+    surfaceType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
     if ((surfaceType != 4) && (surfaceType != 7)) {
         this->actor.speedXZ = 0.0f;
@@ -264,12 +264,12 @@ void func_80AE5270(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE538C(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE538C(EnReeba* this, PlayState* play) {
     this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2;
     this->actionfunc = func_80AE53AC;
 }
 
-void func_80AE53AC(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE53AC(EnReeba* this, PlayState* play) {
     f32 speed;
     s16 yawDiff;
     s16 yaw;
@@ -281,7 +281,7 @@ void func_80AE53AC(EnReeba* this, GlobalContext* globalCtx) {
         Math_ApproachF(&this->actor.shape.shadowScale, 12.0f, 3.0f, 1.0f);
     }
 
-    surfaceType = func_80041D4C(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+    surfaceType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
     if (((surfaceType != 4) && (surfaceType != 7)) || (this->actor.xzDistToPlayer > 400.0f) ||
         (this->actor.bgCheckFlags & 8)) {
@@ -312,7 +312,7 @@ void func_80AE53AC(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE561C(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE561C(EnReeba* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 1.0f, 0.3f);
 
     if (this->unk_272 == 0) {
@@ -324,7 +324,7 @@ void func_80AE561C(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE5688(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5688(EnReeba* this, PlayState* play) {
     this->unk_27E = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
     this->actor.flags |= ACTOR_FLAG_27;
@@ -332,14 +332,14 @@ void func_80AE5688(EnReeba* this, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE56E0;
 }
 
-void func_80AE56E0(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE56E0(EnReeba* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.shape.shadowScale, 1.0f, 0.3f);
     Math_ApproachZeroF(&this->actor.speedXZ, 0.1f, 0.3f);
     SkelAnime_Update(&this->skelanime);
 
     if ((this->unk_284 + 10.0f) <= this->actor.shape.yOffset) {
-        if ((globalCtx->gameplayFrames % 4) == 0) {
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
+        if ((play->gameplayFrames % 4) == 0) {
+            Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
                                      8.0f, 500, 10, true);
         }
 
@@ -350,7 +350,7 @@ void func_80AE56E0(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE57F0(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE57F0(EnReeba* this, PlayState* play) {
     this->unk_276 = 14;
     this->actor.speedXZ = -8.0f;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
@@ -358,7 +358,7 @@ void func_80AE57F0(EnReeba* this, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE5854;
 }
 
-void func_80AE5854(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5854(EnReeba* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
 
     if (this->actor.speedXZ < 0.0f) {
@@ -375,7 +375,7 @@ void func_80AE5854(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE58EC(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE58EC(EnReeba* this, PlayState* play) {
     this->unk_278 = 14;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     this->actor.speedXZ = -8.0f;
@@ -384,7 +384,7 @@ void func_80AE58EC(EnReeba* this, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE5938;
 }
 
-void func_80AE5938(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5938(EnReeba* this, PlayState* play) {
     Vec3f pos;
     f32 scale;
 
@@ -406,7 +406,7 @@ void func_80AE5938(EnReeba* this, GlobalContext* globalCtx) {
                     scale = 6.0f;
                 }
 
-                EffectSsEnIce_SpawnFlyingVec3f(globalCtx, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255, scale);
+                EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255, scale);
             }
 
             this->unk_278 = 66;
@@ -418,7 +418,7 @@ void func_80AE5938(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE5A9C(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5A9C(EnReeba* this, PlayState* play) {
     Vec3f pos;
     f32 scale;
 
@@ -433,16 +433,16 @@ void func_80AE5A9C(EnReeba* this, GlobalContext* globalCtx) {
                 scale = 6.0f;
             }
 
-            EffectSsEnIce_SpawnFlyingVec3f(globalCtx, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255, scale);
+            EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255, scale);
         }
     } else {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
-        Enemy_StartFinishingBlow(globalCtx, &this->actor);
+        Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = func_80AE5C38;
     }
 }
 
-void func_80AE5BC4(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5BC4(EnReeba* this, PlayState* play) {
     this->actor.speedXZ = -8.0f;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
@@ -451,7 +451,7 @@ void func_80AE5BC4(EnReeba* this, GlobalContext* globalCtx) {
     this->actionfunc = func_80AE5C38;
 }
 
-void func_80AE5C38(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5C38(EnReeba* this, PlayState* play) {
     Vec3f pos;
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -471,12 +471,12 @@ void func_80AE5C38(EnReeba* this, GlobalContext* globalCtx) {
 
             velocity.y = 4.0f;
 
-            EffectSsDeadDb_Spawn(globalCtx, &pos, &velocity, &accel, 120, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
+            EffectSsDeadDb_Spawn(play, &pos, &velocity, &accel, 120, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
 
             if (!this->isBig) {
-                Item_DropCollectibleRandom(globalCtx, &this->actor, &pos, 0xE0);
+                Item_DropCollectibleRandom(play, &this->actor, &pos, 0xE0);
             } else {
-                Item_DropCollectibleRandom(globalCtx, &this->actor, &pos, 0xC0);
+                Item_DropCollectibleRandom(play, &this->actor, &pos, 0xC0);
             }
 
             if (this->actor.parent != NULL) {
@@ -498,7 +498,7 @@ void func_80AE5C38(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE5E48(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5E48(EnReeba* this, PlayState* play) {
     if (this->unk_278 < 37) {
         this->actor.shape.rot.x = Rand_CenteredFloat(3000.0f);
         this->actor.shape.rot.z = Rand_CenteredFloat(3000.0f);
@@ -513,7 +513,7 @@ void func_80AE5E48(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AE5EDC(EnReeba* this, GlobalContext* globalCtx) {
+void func_80AE5EDC(EnReeba* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
 
@@ -544,7 +544,7 @@ void func_80AE5EDC(EnReeba* this, GlobalContext* globalCtx) {
                     Actor_ApplyDamage(&this->actor);
                     if (this->actor.colChkInfo.health == 0) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
-                        Enemy_StartFinishingBlow(globalCtx, &this->actor);
+                        Enemy_StartFinishingBlow(play, &this->actor);
                         this->actionfunc = func_80AE5BC4;
                     } else {
                         if (this->actionfunc == func_80AE5E48) {
@@ -573,13 +573,13 @@ void func_80AE5EDC(EnReeba* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnReeba_Update(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnReeba_Update(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     EnReeba* this = (EnReeba*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
-    func_80AE5EDC(this, globalCtx);
-    this->actionfunc(this, globalCtx);
+    func_80AE5EDC(this, play);
+    this->actionfunc(this, play);
     Actor_SetScale(&this->actor, this->scale);
 
     if (this->unk_270 != 0) {
@@ -603,7 +603,7 @@ void EnReeba_Update(Actor* thisx, GlobalContext* globalCtx2) {
     }
 
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
 
     if (this->collider.base.atFlags & AT_BOUNCED) {
         this->collider.base.atFlags &= ~AT_BOUNCED;
@@ -636,25 +636,25 @@ void EnReeba_Update(Actor* thisx, GlobalContext* globalCtx2) {
 
     if ((this->actor.shape.yOffset >= -700.0f) && (this->actor.colChkInfo.health > 0) &&
         (this->actionfunc != func_80AE56E0)) {
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 
         if (!(this->actor.shape.yOffset < 0.0f)) {
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
 
             if ((this->actionfunc == func_80AE5270) || (this->actionfunc == func_80AE53AC)) {
-                CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+                CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
             }
         }
     }
 }
 
-void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnReeba_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnReeba* this = (EnReeba*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     if (this->isBig) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 155, 55, 255, 255);
@@ -662,9 +662,9 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 255, 255, 255, 255);
     }
 
-    SkelAnime_DrawOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 
     if (BREG(0)) {
         Vec3f debugPos;
@@ -673,6 +673,6 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
         debugPos.y = this->actor.world.pos.y + 20.0f;
         debugPos.z = (Math_CosS(this->actor.world.rot.y) * 30.0f) + this->actor.world.pos.z;
         DebugDisplay_AddObject(debugPos.x, debugPos.y, debugPos.z, this->actor.world.rot.x, this->actor.world.rot.y,
-                               this->actor.world.rot.z, 1.0f, 1.0f, 1.0f, 255, 0, 0, 255, 4, globalCtx->state.gfxCtx);
+                               this->actor.world.rot.z, 1.0f, 1.0f, 1.0f, 255, 0, 0, 255, 4, play->state.gfxCtx);
     }
 }

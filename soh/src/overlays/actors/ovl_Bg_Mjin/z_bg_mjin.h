@@ -6,7 +6,7 @@
 
 struct BgMjin;
 
-typedef void (*BgMjinActionFunc)(struct BgMjin*, GlobalContext*);
+typedef void (*BgMjinActionFunc)(struct BgMjin*, PlayState*);
 
 typedef struct BgMjin {
     /* 0x0000 */ DynaPolyActor dyna;

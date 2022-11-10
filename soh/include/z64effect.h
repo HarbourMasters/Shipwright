@@ -4,7 +4,7 @@
 #include <libultraship/color.h>
 
 struct GraphicsContext;
-struct GlobalContext;
+struct PlayState;
 
 /* Effects */
 
@@ -163,7 +163,7 @@ typedef struct {
 } EffectShieldParticle; // size = 0x1C8
 
 typedef struct {
-    /* 0x0000 */ struct GlobalContext* globalCtx;
+    /* 0x0000 */ struct PlayState* play;
     struct {
         EffectStatus status;
         EffectSpark effect;
@@ -197,9 +197,9 @@ typedef enum {
 
 struct EffectSs;
 
-typedef u32 (*EffectSsInitFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs, void* initParams);
-typedef void (*EffectSsUpdateFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs);
-typedef void (*EffectSsDrawFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs);
+typedef u32 (*EffectSsInitFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs, void* initParams);
+typedef void (*EffectSsUpdateFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs);
+typedef void (*EffectSsDrawFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs);
 
 typedef struct {
     /* 0x00 */ u32 type;

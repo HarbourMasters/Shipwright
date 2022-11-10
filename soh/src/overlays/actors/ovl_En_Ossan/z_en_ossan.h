@@ -8,11 +8,11 @@
 
 struct EnOssan;
 
-typedef void (*EnOssanActionFunc)(struct EnOssan*, GlobalContext*);
-typedef void (*EnOssanTalkOwnerFunc)(GlobalContext*);
-typedef void (*EnOssanInitFunc)(struct EnOssan*, GlobalContext*);
+typedef void (*EnOssanActionFunc)(struct EnOssan*, PlayState*);
+typedef void (*EnOssanTalkOwnerFunc)(PlayState*);
+typedef void (*EnOssanInitFunc)(struct EnOssan*, PlayState*);
 typedef s16 (*EnOssanGetGirlAParamsFunc)(s16);
-typedef void (*EnOssanStateFunc)(struct EnOssan*, GlobalContext*, Player*);
+typedef void (*EnOssanStateFunc)(struct EnOssan*, PlayState*, Player*);
 
 #define ColChanMix(c1, c2, m) (c1 - (s32)(c2 * m)) & 0xFF
 
@@ -20,7 +20,7 @@ typedef struct EnOssan {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnOssanActionFunc actionFunc;
-    /* 0x0194 */ void (*obj3ToSeg6Func)(struct EnOssan*, GlobalContext*);
+    /* 0x0194 */ void (*obj3ToSeg6Func)(struct EnOssan*, PlayState*);
     /* 0x0198 */ ColliderCylinder collider; // unused
     /* 0x01E4 */ s16 timer;
     /* 0x01E6 */ s16 delayTimer;

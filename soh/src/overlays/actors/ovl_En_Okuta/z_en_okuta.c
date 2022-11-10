@@ -4,21 +4,21 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
 
-void EnOkuta_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnOkuta_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnOkuta_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnOkuta_Init(Actor* thisx, PlayState* play);
+void EnOkuta_Destroy(Actor* thisx, PlayState* play);
+void EnOkuta_Update(Actor* thisx, PlayState* play);
+void EnOkuta_Draw(Actor* thisx, PlayState* play);
 
 void EnOkuta_SetupWaitToAppear(EnOkuta* this);
-void EnOkuta_WaitToAppear(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_Appear(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_Hide(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_WaitToShoot(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_Shoot(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_WaitToDie(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_Die(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_Freeze(EnOkuta* this, GlobalContext* globalCtx);
-void EnOkuta_ProjectileFly(EnOkuta* this, GlobalContext* globalCtx);
+void EnOkuta_WaitToAppear(EnOkuta* this, PlayState* play);
+void EnOkuta_Appear(EnOkuta* this, PlayState* play);
+void EnOkuta_Hide(EnOkuta* this, PlayState* play);
+void EnOkuta_WaitToShoot(EnOkuta* this, PlayState* play);
+void EnOkuta_Shoot(EnOkuta* this, PlayState* play);
+void EnOkuta_WaitToDie(EnOkuta* this, PlayState* play);
+void EnOkuta_Die(EnOkuta* this, PlayState* play);
+void EnOkuta_Freeze(EnOkuta* this, PlayState* play);
+void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play);
 
 const ActorInit En_Okuta_InitVars = {
     ACTOR_EN_OKUTA,
@@ -115,7 +115,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 6500, ICHAIN_STOP),
 };
 
-void EnOkuta_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkuta_Init(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
     s32 pad;
     WaterBox* outWaterBox;
@@ -126,18 +126,18 @@ void EnOkuta_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->numShots = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
     if (thisx->params == 0) {
-        SkelAnime_Init(globalCtx, &this->skelAnime, &gOctorokSkel, &gOctorokAppearAnim, this->jointTable,
+        SkelAnime_Init(play, &this->skelAnime, &gOctorokSkel, &gOctorokAppearAnim, this->jointTable,
                        this->morphTable, 38);
-        Collider_InitCylinder(globalCtx, &this->collider);
-        Collider_SetCylinder(globalCtx, &this->collider, thisx, &sOctorockColliderInit);
+        Collider_InitCylinder(play, &this->collider);
+        Collider_SetCylinder(play, &this->collider, thisx, &sOctorockColliderInit);
         CollisionCheck_SetInfo(&thisx->colChkInfo, &sDamageTable, &sColChkInfoInit);
         if ((this->numShots == 0xFF) || (this->numShots == 0)) {
             this->numShots = 1;
         }
         thisx->floorHeight =
-            BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &thisx->floorPoly, &sp30, thisx, &thisx->world.pos);
+            BgCheck_EntityRaycastFloor4(&play->colCtx, &thisx->floorPoly, &sp30, thisx, &thisx->world.pos);
         //! @bug calls WaterBox_GetSurfaceImpl directly
-        if (!WaterBox_GetSurfaceImpl(globalCtx, &globalCtx->colCtx, thisx->world.pos.x, thisx->world.pos.z, &ySurface,
+        if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, thisx->world.pos.x, thisx->world.pos.z, &ySurface,
                                      &outWaterBox) ||
             (ySurface <= thisx->floorHeight)) {
             Actor_Kill(thisx);
@@ -149,9 +149,9 @@ void EnOkuta_Init(Actor* thisx, GlobalContext* globalCtx) {
         ActorShape_Init(&thisx->shape, 1100.0f, ActorShadow_DrawCircle, 18.0f);
         thisx->flags &= ~ACTOR_FLAG_0;
         thisx->flags |= ACTOR_FLAG_4;
-        Collider_InitCylinder(globalCtx, &this->collider);
-        Collider_SetCylinder(globalCtx, &this->collider, thisx, &sProjectileColliderInit);
-        Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, thisx, ACTORCAT_PROP);
+        Collider_InitCylinder(play, &this->collider);
+        Collider_SetCylinder(play, &this->collider, thisx, &sProjectileColliderInit);
+        Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_PROP);
         this->timer = 30;
         thisx->shape.rot.y = 0;
         this->actionFunc = EnOkuta_ProjectileFly;
@@ -159,41 +159,41 @@ void EnOkuta_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnOkuta_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkuta_Destroy(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnOkuta_SpawnBubbles(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_SpawnBubbles(EnOkuta* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, -10.0f, 10.0f, 30.0f, 0.25f);
+        EffectSsBubble_Spawn(play, &this->actor.world.pos, -10.0f, 10.0f, 30.0f, 0.25f);
     }
 }
 
-void EnOkuta_SpawnDust(Vec3f* pos, Vec3f* velocity, s16 scaleStep, GlobalContext* globalCtx) {
+void EnOkuta_SpawnDust(Vec3f* pos, Vec3f* velocity, s16 scaleStep, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 255 };
     static Color_RGBA8 envColor = { 150, 150, 150, 255 };
 
-    func_8002829C(globalCtx, pos, velocity, &accel, &primColor, &envColor, 0x190, scaleStep);
+    func_8002829C(play, pos, velocity, &accel, &primColor, &envColor, 0x190, scaleStep);
 }
 
-void EnOkuta_SpawnSplash(EnOkuta* this, GlobalContext* globalCtx) {
-    EffectSsGSplash_Spawn(globalCtx, &this->actor.home.pos, NULL, NULL, 0, 1300);
+void EnOkuta_SpawnSplash(EnOkuta* this, PlayState* play) {
+    EffectSsGSplash_Spawn(play, &this->actor.home.pos, NULL, NULL, 0, 1300);
 }
 
-void EnOkuta_SpawnRipple(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_SpawnRipple(EnOkuta* this, PlayState* play) {
     Vec3f pos;
 
     pos.x = this->actor.world.pos.x;
     pos.y = this->actor.home.pos.y;
     pos.z = this->actor.world.pos.z;
-    if ((globalCtx->gameplayFrames % 7) == 0 &&
+    if ((play->gameplayFrames % 7) == 0 &&
         ((this->actionFunc != EnOkuta_Shoot) || ((this->actor.world.pos.y - this->actor.home.pos.y) < 50.0f))) {
-        EffectSsGRipple_Spawn(globalCtx, &pos, 250, 650, 0);
+        EffectSsGRipple_Spawn(play, &pos, 250, 650, 0);
     }
 }
 
@@ -204,12 +204,12 @@ void EnOkuta_SetupWaitToAppear(EnOkuta* this) {
     this->actor.world.pos.y = this->actor.home.pos.y;
 }
 
-void EnOkuta_SetupAppear(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_SetupAppear(EnOkuta* this, PlayState* play) {
     this->actor.draw = EnOkuta_Draw;
     this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
     this->actor.flags |= ACTOR_FLAG_0;
     Animation_PlayOnce(&this->skelAnime, &gOctorokAppearAnim);
-    EnOkuta_SpawnBubbles(this, globalCtx);
+    EnOkuta_SpawnBubbles(this, play);
     this->actionFunc = EnOkuta_Appear;
 }
 
@@ -224,7 +224,7 @@ void EnOkuta_SetupWaitToShoot(EnOkuta* this) {
     this->actionFunc = EnOkuta_WaitToShoot;
 }
 
-void EnOkuta_SetupShoot(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_SetupShoot(EnOkuta* this, PlayState* play) {
     Animation_PlayOnce(&this->skelAnime, &gOctorokShootAnim);
     if (this->actionFunc != EnOkuta_Shoot) {
         this->timer = this->numShots;
@@ -232,7 +232,7 @@ void EnOkuta_SetupShoot(EnOkuta* this, GlobalContext* globalCtx) {
     this->jumpHeight = this->actor.yDistToPlayer + 20.0f;
     this->jumpHeight = CLAMP_MIN(this->jumpHeight, 10.0f);
     if (this->jumpHeight > 50.0f) {
-        EnOkuta_SpawnSplash(this, globalCtx);
+        EnOkuta_SpawnSplash(this, play);
     }
     if (this->jumpHeight > 50.0f) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_JUMP);
@@ -261,7 +261,7 @@ void EnOkuta_SetupFreeze(EnOkuta* this) {
     this->actionFunc = EnOkuta_Freeze;
 }
 
-void EnOkuta_SpawnProjectile(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_SpawnProjectile(EnOkuta* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
     f32 sin = Math_SinS(this->actor.shape.rot.y);
@@ -270,7 +270,7 @@ void EnOkuta_SpawnProjectile(EnOkuta* this, GlobalContext* globalCtx) {
     pos.x = this->actor.world.pos.x + (25.0f * sin);
     pos.y = this->actor.world.pos.y - 6.0f;
     pos.z = this->actor.world.pos.z + (25.0f * cos);
-    if (Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_OKUTA, pos.x, pos.y, pos.z, this->actor.shape.rot.x,
+    if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_OKUTA, pos.x, pos.y, pos.z, this->actor.shape.rot.x,
                     this->actor.shape.rot.y, this->actor.shape.rot.z, 0x10) != NULL) {
         pos.x = this->actor.world.pos.x + (40.0f * sin);
         pos.z = this->actor.world.pos.z + (40.0f * cos);
@@ -278,19 +278,19 @@ void EnOkuta_SpawnProjectile(EnOkuta* this, GlobalContext* globalCtx) {
         velocity.x = 1.5f * sin;
         velocity.y = 0.0f;
         velocity.z = 1.5f * cos;
-        EnOkuta_SpawnDust(&pos, &velocity, 20, globalCtx);
+        EnOkuta_SpawnDust(&pos, &velocity, 20, play);
     }
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_THROW);
 }
 
-void EnOkuta_WaitToAppear(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_WaitToAppear(EnOkuta* this, PlayState* play) {
     this->actor.world.pos.y = this->actor.home.pos.y;
     if ((this->actor.xzDistToPlayer < 480.0f) && (this->actor.xzDistToPlayer > 200.0f)) {
-        EnOkuta_SetupAppear(this, globalCtx);
+        EnOkuta_SetupAppear(this, play);
     }
 }
 
-void EnOkuta_Appear(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_Appear(EnOkuta* this, PlayState* play) {
     s32 pad;
 
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -311,17 +311,17 @@ void EnOkuta_Appear(EnOkuta* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_LAND);
     }
     if (Animation_OnFrame(&this->skelAnime, 3.0f) || Animation_OnFrame(&this->skelAnime, 15.0f)) {
-        EnOkuta_SpawnSplash(this, globalCtx);
+        EnOkuta_SpawnSplash(this, play);
     }
 }
 
-void EnOkuta_Hide(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_Hide(EnOkuta* this, PlayState* play) {
     s32 pad;
 
     Math_ApproachF(&this->actor.world.pos.y, this->actor.home.pos.y, 0.5f, 30.0f);
     if (SkelAnime_Update(&this->skelAnime)) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_BUBLE);
-        EnOkuta_SpawnBubbles(this, globalCtx);
+        EnOkuta_SpawnBubbles(this, play);
         EnOkuta_SetupWaitToAppear(this);
     } else if (this->skelAnime.curFrame >= 4.0f) {
         Actor_SetScale(&this->actor, (6.0f - this->skelAnime.curFrame) * 0.5f * 0.01f);
@@ -330,11 +330,11 @@ void EnOkuta_Hide(EnOkuta* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_SINK);
     }
     if (Animation_OnFrame(&this->skelAnime, 4.0f)) {
-        EnOkuta_SpawnSplash(this, globalCtx);
+        EnOkuta_SpawnSplash(this, play);
     }
 }
 
-void EnOkuta_WaitToShoot(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_WaitToShoot(EnOkuta* this, PlayState* play) {
     s16 temp_v0_2;
     s32 phi_v1;
 
@@ -354,12 +354,12 @@ void EnOkuta_WaitToShoot(EnOkuta* this, GlobalContext* globalCtx) {
         temp_v0_2 = Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 0x71C, 0x38E);
         phi_v1 = ABS(temp_v0_2);
         if ((phi_v1 < 0x38E) && (this->timer == 0) && (this->actor.yDistToPlayer < 200.0f)) {
-            EnOkuta_SetupShoot(this, globalCtx);
+            EnOkuta_SetupShoot(this, play);
         }
     }
 }
 
-void EnOkuta_Shoot(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_Shoot(EnOkuta* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 0x71C);
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->timer != 0) {
@@ -368,7 +368,7 @@ void EnOkuta_Shoot(EnOkuta* this, GlobalContext* globalCtx) {
         if (this->timer == 0) {
             EnOkuta_SetupWaitToShoot(this);
         } else {
-            EnOkuta_SetupShoot(this, globalCtx);
+            EnOkuta_SetupShoot(this, play);
         }
     } else {
         f32 curFrame = this->skelAnime.curFrame;
@@ -377,10 +377,10 @@ void EnOkuta_Shoot(EnOkuta* this, GlobalContext* globalCtx) {
             this->actor.world.pos.y = (sinf((0.08333f * M_PI) * curFrame) * this->jumpHeight) + this->actor.home.pos.y;
         }
         if (Animation_OnFrame(&this->skelAnime, 6.0f)) {
-            EnOkuta_SpawnProjectile(this, globalCtx);
+            EnOkuta_SpawnProjectile(this, play);
         }
         if ((this->jumpHeight > 50.0f) && Animation_OnFrame(&this->skelAnime, 13.0f)) {
-            EnOkuta_SpawnSplash(this, globalCtx);
+            EnOkuta_SpawnSplash(this, play);
         }
         if ((this->jumpHeight > 50.0f) && Animation_OnFrame(&this->skelAnime, 13.0f)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_LAND);
@@ -391,14 +391,14 @@ void EnOkuta_Shoot(EnOkuta* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnOkuta_WaitToDie(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_WaitToDie(EnOkuta* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         EnOkuta_SetupDie(this);
     }
     Math_ApproachF(&this->actor.world.pos.y, this->actor.home.pos.y, 0.5f, 5.0f);
 }
 
-void EnOkuta_Die(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_Die(EnOkuta* this, PlayState* play) {
     static Vec3f accel = { 0.0f, -0.5f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 255 };
     static Color_RGBA8 envColor = { 150, 150, 150, 0 };
@@ -417,11 +417,11 @@ void EnOkuta_Die(EnOkuta* this, GlobalContext* globalCtx) {
         velocity.x = 0.0f;
         velocity.y = -0.5f;
         velocity.z = 0.0f;
-        EnOkuta_SpawnDust(&pos, &velocity, -0x14, globalCtx);
+        EnOkuta_SpawnDust(&pos, &velocity, -0x14, play);
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_DEAD2);
     }
     if (Animation_OnFrame(&this->skelAnime, 15.0f)) {
-        EnOkuta_SpawnSplash(this, globalCtx);
+        EnOkuta_SpawnSplash(this, play);
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_LAND);
     }
     if (this->timer < 3) {
@@ -432,13 +432,13 @@ void EnOkuta_Die(EnOkuta* this, GlobalContext* globalCtx) {
         Actor_SetScale(&this->actor, (((this->timer - 5) * 0.04f) + 0.8f) * 0.01f);
     } else {
         if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.0005f)) {
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 30, NA_SE_EN_OCTAROCK_BUBLE);
-            Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x70);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 30, NA_SE_EN_OCTAROCK_BUBLE);
+            Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x70);
             for (i = 0; i < 20; i++) {
                 velocity.x = (Rand_ZeroOne() - 0.5f) * 7.0f;
                 velocity.y = Rand_ZeroOne() * 7.0f;
                 velocity.z = (Rand_ZeroOne() - 0.5f) * 7.0f;
-                EffectSsDtBubble_SpawnCustomColor(globalCtx, &this->actor.world.pos, &velocity, &accel, &primColor,
+                EffectSsDtBubble_SpawnCustomColor(play, &this->actor.world.pos, &velocity, &accel, &primColor,
                                                   &envColor, Rand_S16Offset(100, 50), 25, 0);
             }
             Actor_Kill(&this->actor);
@@ -447,7 +447,7 @@ void EnOkuta_Die(EnOkuta* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnOkuta_Freeze(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_Freeze(EnOkuta* this, PlayState* play) {
     Vec3f pos;
     s16 temp_v1;
 
@@ -462,15 +462,15 @@ void EnOkuta_Freeze(EnOkuta* this, GlobalContext* globalCtx) {
         pos.y = (this->actor.world.pos.y - 32.0f) + (8.0f * (8 - temp_v1));
         pos.x = this->actor.world.pos.x + ((temp_v1 & 2) ? 10.0f : -10.0f);
         pos.z = this->actor.world.pos.z + ((temp_v1 & 1) ? 10.0f : -10.0f);
-        EffectSsEnIce_SpawnFlyingVec3f(globalCtx, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255,
+        EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255,
                                        (Rand_ZeroOne() * 0.2f) + 1.9f);
     }
     Math_ApproachF(&this->actor.world.pos.y, this->actor.home.pos.y, 0.5f, 5.0f);
 }
 
-void EnOkuta_ProjectileFly(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
     Vec3f pos;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     Vec3s sp40;
 
     this->timer--;
@@ -537,14 +537,14 @@ void EnOkuta_ProjectileFly(EnOkuta* this, GlobalContext* globalCtx) {
                         phi_v0 = 69;
                         gravity = -320;
                     }
-                    EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &this->actor.world.pos, gravity, phi_v0, 30, 5, 0,
+                    EffectSsKakera_Spawn(play, &pos, &velocity, &this->actor.world.pos, gravity, phi_v0, 30, 5, 0,
                                         sEffectScales[i]/5, 3, 0, 70, 1, OBJECT_GAMEPLAY_FIELD_KEEP, gSilverRockFragmentsDL);
                 }
             } else {
-                EffectSsHahen_SpawnBurst(globalCtx, &pos, 6.0f, 0, 1, 2, 15, 7, 10, gOctorokProjectileDL);
+                EffectSsHahen_SpawnBurst(play, &pos, 6.0f, 0, 1, 2, 15, 7, 10, gOctorokProjectileDL);
             }
 
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
             Actor_Kill(&this->actor);
         }
     } else if (this->timer == -300) {
@@ -597,12 +597,12 @@ void EnOkuta_UpdateHeadScale(EnOkuta* this) {
     }
 }
 
-void EnOkuta_ColliderCheck(EnOkuta* this, GlobalContext* globalCtx) {
+void EnOkuta_ColliderCheck(EnOkuta* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
         Actor_SetDropFlag(&this->actor, &this->collider.info, 1);
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
-            Enemy_StartFinishingBlow(globalCtx, &this->actor);
+            Enemy_StartFinishingBlow(play, &this->actor);
             this->actor.colChkInfo.health = 0;
             this->actor.flags &= ~ACTOR_FLAG_0;
             if (this->actor.colChkInfo.damageEffect == 3) {
@@ -614,10 +614,10 @@ void EnOkuta_ColliderCheck(EnOkuta* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx2) {
+void EnOkuta_Update(Actor* thisx, PlayState* play2) {
     EnOkuta* this = (EnOkuta*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
-    Player* player = GET_PLAYER(globalCtx);
+    PlayState* play = play2;
+    Player* player = GET_PLAYER(play);
     WaterBox* outWaterBox;
     f32 ySurface;
     Vec3f sp38;
@@ -625,8 +625,8 @@ void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (!(player->stateFlags1 & 0x300000C0)) {
         if (this->actor.params == 0) {
-            EnOkuta_ColliderCheck(this, globalCtx);
-            if (!WaterBox_GetSurfaceImpl(globalCtx, &globalCtx->colCtx, this->actor.world.pos.x,
+            EnOkuta_ColliderCheck(this, play);
+            if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x,
                                          this->actor.world.pos.z, &ySurface, &outWaterBox) ||
                 (ySurface < this->actor.floorHeight)) {
                 if (this->actor.colChkInfo.health != 0) {
@@ -637,7 +637,7 @@ void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx2) {
                 this->actor.home.pos.y = ySurface;
             }
         }
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
         if (this->actor.params == 0) {
             EnOkuta_UpdateHeadScale(this);
             this->collider.dim.height =
@@ -647,14 +647,14 @@ void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx2) {
             sp34 = false;
             Actor_MoveForward(&this->actor);
             Math_Vec3f_Copy(&sp38, &this->actor.world.pos);
-            Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10.0f, 15.0f, 30.0f, 5);
+            Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 15.0f, 30.0f, 5);
             if ((this->actor.bgCheckFlags & 8) &&
-                SurfaceType_IsIgnoredByProjectiles(&globalCtx->colCtx, this->actor.wallPoly, this->actor.wallBgId)) {
+                SurfaceType_IsIgnoredByProjectiles(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId)) {
                 sp34 = true;
                 this->actor.bgCheckFlags &= ~8;
             }
             if ((this->actor.bgCheckFlags & 1) &&
-                SurfaceType_IsIgnoredByProjectiles(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId)) {
+                SurfaceType_IsIgnoredByProjectiles(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId)) {
                 sp34 = true;
                 this->actor.bgCheckFlags &= ~1;
             }
@@ -669,18 +669,18 @@ void EnOkuta_Update(Actor* thisx, GlobalContext* globalCtx2) {
         }
         if (this->actor.params == 0x10) {
             this->actor.flags |= ACTOR_FLAG_24;
-            CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         }
         if (this->actionFunc != EnOkuta_WaitToAppear) {
             if ((this->actionFunc != EnOkuta_Die) && (this->actionFunc != EnOkuta_WaitToDie) &&
                 (this->actionFunc != EnOkuta_Freeze)) {
-                CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+                CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
             }
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
         }
         Actor_SetFocus(&this->actor, 15.0f);
         if ((this->actor.params == 0) && (this->actor.draw != NULL)) {
-            EnOkuta_SpawnRipple(this, globalCtx);
+            EnOkuta_SpawnRipple(this, play);
         }
     }
 }
@@ -721,7 +721,7 @@ s32 EnOkuta_GetSnoutScale(EnOkuta* this, f32 curFrame, Vec3f* scale) {
     return true;
 }
 
-s32 EnOkuta_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnOkuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                              void* thisx) {
     EnOkuta* this = (EnOkuta*)thisx;
     f32 curFrame = this->skelAnime.curFrame;
@@ -745,37 +745,37 @@ s32 EnOkuta_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     return false;
 }
 
-void EnOkuta_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
     s32 pad;
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
-        SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnOkuta_OverrideLimbDraw,
+        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnOkuta_OverrideLimbDraw,
                           NULL, this);
     } else {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
         if (CVar_GetS32("gNewDrops", 0) != 0) {
-            func_80093D18(globalCtx->state.gfxCtx);
+            func_80093D18(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
-                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),
-                                        1 * (globalCtx->state.frames * 6), 32, 32, 1, 1 * (globalCtx->state.frames * 6),
-                                        1 * (globalCtx->state.frames * 6), 32, 32));
+                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                                        1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                        1 * (play->state.frames * 6), 32, 32));
             Matrix_Scale(7.0f,7.0f,7.0f,MTXMODE_APPLY);
             Matrix_RotateX(thisx->home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                     G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
         } else {
-            Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
+            Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(this->actor.home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                     G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gOctorokProjectileDL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

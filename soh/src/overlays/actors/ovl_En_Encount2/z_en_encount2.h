@@ -6,7 +6,7 @@
 
 struct EnEncount2;
 
-typedef void (*EnEncount2ActionFunc)(struct EnEncount2*, GlobalContext*);
+typedef void (*EnEncount2ActionFunc)(struct EnEncount2*, PlayState*);
 
 typedef struct {
     /* 0x0000 */ Vec3f pos;

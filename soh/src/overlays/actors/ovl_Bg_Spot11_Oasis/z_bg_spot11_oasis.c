@@ -10,15 +10,15 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgSpot11Oasis_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot11Oasis_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot11Oasis_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot11Oasis_Init(Actor* thisx, PlayState* play);
+void BgSpot11Oasis_Update(Actor* thisx, PlayState* play);
+void BgSpot11Oasis_Draw(Actor* thisx, PlayState* play);
 void func_808B2970(BgSpot11Oasis* this);
-void func_808B2980(BgSpot11Oasis* this, GlobalContext* globalCtx);
+void func_808B2980(BgSpot11Oasis* this, PlayState* play);
 void func_808B29E0(BgSpot11Oasis* this);
-void func_808B29F0(BgSpot11Oasis* this, GlobalContext* globalCtx);
+void func_808B29F0(BgSpot11Oasis* this, PlayState* play);
 void func_808B2AA8(BgSpot11Oasis* this);
-void func_808B2AB8(BgSpot11Oasis* this, GlobalContext* globalCtx);
+void func_808B2AB8(BgSpot11Oasis* this, PlayState* play);
 
 const ActorInit Bg_Spot11_Oasis_InitVars = {
     ACTOR_BG_SPOT11_OASIS,
@@ -49,14 +49,14 @@ static Vec3f D_808B2E34[] = {
     { -75.0f, -90.0f, 90.0f }, { 30.0f, -100.0f, 40.0f },
 };
 
-void func_808B27F0(GlobalContext* globalCtx, s16 waterSurface) {
-    WaterBox* waterBox = &globalCtx->colCtx.colHeader->waterBoxes[0];
+void func_808B27F0(PlayState* play, s16 waterSurface) {
+    WaterBox* waterBox = &play->colCtx.colHeader->waterBoxes[0];
 
     waterBox->ySurface = waterSurface;
 }
 
-s32 func_808B280C(GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+s32 func_808B280C(PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Vec3f sp58;
     Vec3f sp4C;
     Vec3f sp40;
@@ -81,22 +81,22 @@ s32 func_808B280C(GlobalContext* globalCtx) {
     return 0;
 }
 
-void BgSpot11Oasis_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot11Oasis_Init(Actor* thisx, PlayState* play) {
     BgSpot11Oasis* this = (BgSpot11Oasis*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     func_808B2970(this);
     this->actor.world.pos.y = -100.0f;
-    func_808B27F0(globalCtx, -100);
+    func_808B27F0(play, -100);
 }
 
 void func_808B2970(BgSpot11Oasis* this) {
     this->actionFunc = func_808B2980;
 }
 
-void func_808B2980(BgSpot11Oasis* this, GlobalContext* globalCtx) {
-    if (Flags_GetEnv(globalCtx, 5) && func_808B280C(globalCtx)) {
-        OnePointCutscene_Init(globalCtx, 4150, -99, &this->actor, MAIN_CAM);
+void func_808B2980(BgSpot11Oasis* this, PlayState* play) {
+    if (Flags_GetEnv(play, 5) && func_808B280C(play)) {
+        OnePointCutscene_Init(play, 4150, -99, &this->actor, MAIN_CAM);
         func_808B29E0(this);
     }
 }
@@ -105,40 +105,40 @@ void func_808B29E0(BgSpot11Oasis* this) {
     this->actionFunc = func_808B29F0;
 }
 
-void func_808B29F0(BgSpot11Oasis* this, GlobalContext* globalCtx) {
+void func_808B29F0(BgSpot11Oasis* this, PlayState* play) {
     if (Math_StepToF(&this->actor.world.pos.y, 0.0f, 0.7f)) {
         func_808B2AA8(this);
-        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ELF, this->actor.world.pos.x,
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                     this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_SPAWNER);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
     }
-    func_808B27F0(globalCtx, this->actor.world.pos.y);
+    func_808B27F0(play, this->actor.world.pos.y);
 }
 
 void func_808B2AA8(BgSpot11Oasis* this) {
     this->actionFunc = func_808B2AB8;
 }
 
-void func_808B2AB8(BgSpot11Oasis* this, GlobalContext* globalCtx) {
+void func_808B2AB8(BgSpot11Oasis* this, PlayState* play) {
 }
 
-void BgSpot11Oasis_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot11Oasis_Update(Actor* thisx, PlayState* play) {
     BgSpot11Oasis* this = (BgSpot11Oasis*)thisx;
     s32 pad;
     u32 gameplayFrames;
     Vec3f sp30;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->actionFunc == func_808B2980) {
         this->actor.draw = NULL;
         return;
     }
     this->actor.draw = BgSpot11Oasis_Draw;
     if (this->unk_150 && (this->actor.projectedPos.z < 400.0f) && (this->actor.projectedPos.z > -40.0f)) {
-        gameplayFrames = globalCtx->gameplayFrames;
+        gameplayFrames = play->gameplayFrames;
         if (gameplayFrames & 4) {
             Math_Vec3f_Sum(&this->actor.world.pos, &D_808B2E34[this->unk_151], &sp30);
-            EffectSsBubble_Spawn(globalCtx, &sp30, 0.0f, 15.0f, 50.0f, (Rand_ZeroOne() * 0.12f) + 0.02f);
+            EffectSsBubble_Spawn(play, &sp30, 0.0f, 15.0f, 50.0f, (Rand_ZeroOne() * 0.12f) + 0.02f);
             if (Rand_ZeroOne() < 0.3f) {
                 this->unk_151 = Rand_ZeroOne() * 4.9f;
             }
@@ -148,16 +148,16 @@ void BgSpot11Oasis_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot11Oasis_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    u32 gameplayFrames = globalCtx->gameplayFrames;
+void BgSpot11Oasis_Draw(Actor* thisx, PlayState* play) {
+    u32 gameplayFrames = play->gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128,
                                 32, 32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPDisplayList(POLY_XLU_DISP++, gDesertColossusOasisDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

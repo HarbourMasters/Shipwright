@@ -13,16 +13,16 @@
 #define rYaw regs[10]
 #define rScale regs[11]
 
-u32 EffectSsFcircle_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsFcircle_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsFcircle_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsFcircle_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsFcircle_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Fcircle_InitVars = {
     EFFECT_SS_FCIRCLE,
     EffectSsFcircle_Init,
 };
 
-u32 EffectSsFcircle_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsFcircle_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsFcircleInitParams* initParams = (EffectSsFcircleInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -42,8 +42,8 @@ u32 EffectSsFcircle_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, vo
     return 1;
 }
 
-void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsFcircle_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32 pad;
     f32 yScale;
     f32 xzScale;
@@ -60,10 +60,10 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 128, 0, 32, 64, 1, 0,
-                                ((globalCtx->gameplayFrames) * -0xF) % 256, 32, 64));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, 0, 32, 64, 1, 0,
+                                ((play->gameplayFrames) * -0xF) % 256, 32, 64));
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 220, 0, (this->life * 12.75f));
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
@@ -71,7 +71,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsFcircle_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsFcircle_Update(PlayState* play, u32 index, EffectSs* this) {
     Actor* actor = this->actor;
 
     if (actor != NULL) {
