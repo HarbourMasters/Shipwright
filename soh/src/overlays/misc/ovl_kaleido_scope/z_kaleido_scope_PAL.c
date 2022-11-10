@@ -3345,7 +3345,7 @@ void KaleidoScope_TTS_Update(PlayState* play) {
                     arg[0] = '\0';
             }
             OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                pauseCtx->cursorItem[PAUSE_ITEM], NULL), arg);
+                pauseCtx->cursorItem[PAUSE_ITEM], arg));
             break;
         }
         case PAUSE_MAP:
