@@ -224,6 +224,15 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
     { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
     { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
+    { "World Settings:Owl Drops", RSK_SHUFFLE_OWL_DROPS },
+    { "World Settings:Warp Songs", RSK_SHUFFLE_WARP_SONGS },
+    { "World Settings:Overwold Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
+    { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
+    { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+    { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
+    { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
+    { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
+    { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -717,6 +726,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ENTRANCES:
                     case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                     case RSK_SHUFFLE_GROTTO_ENTRANCES:
+                    case RSK_SHUFFLE_OWL_DROPS:
+                    case RSK_SHUFFLE_WARP_SONGS:
+                    case RSK_SHUFFLE_OVERWORLD_SPAWNS:
+                    case RSK_MIXED_ENTRANCE_POOLS:
+                    case RSK_MIX_DUNGEON_ENTRANCES:
+                    case RSK_MIX_OVERWORLD_ENTRANCES:
+                    case RSK_MIX_INTERIOR_ENTRANCES:
+                    case RSK_MIX_GROTTO_ENTRANCES:
+                    case RSK_DECOUPLED_ENTRANCES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;            
                         } else if(it.value() == "On") {
@@ -2676,12 +2694,24 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
                                           CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleOwlDrops", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleWarpSongs", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleOverworldSpawns", 0);
 
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
     cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
     cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = CVar_GetS32("gRandomizeShuffleOwlDrops", 0);
+    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = CVar_GetS32("gRandomizeShuffleWarpSongs", 0);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVar_GetS32("gRandomizeShuffleOverworldSpawns", 0);
+    cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVar_GetS32("gRandomizeMixedEntrances", 0);
+    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeMixDungeons", 0);
+    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeMixOverworld", 0);
+    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeMixInteriors", 0);
+    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeMixGrottos", 0);
+    cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDecoupledEntrances", 0);
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -3098,6 +3128,86 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Owl Drops
+                UIWidgets::EnhancementCheckbox("Shuffle Owl Drops", "gRandomizeShuffleOwlDrops");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
+                    "to him at Lake Hylia or at the top of Death Mountain Trail."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Warp Songs
+                UIWidgets::EnhancementCheckbox("Shuffle Warp Songs", "gRandomizeShuffleWarpSongs");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where each of the 6 warp songs leads to."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Overworld Spawns
+                UIWidgets::EnhancementCheckbox("Shuffle Overworld Spawns", "gRandomizeShuffleOverworldSpawns");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where you start as Child or Adult when loading a save in the Overworld. This "
+                    "means you may not necessarily spawn inside Link's House or Temple of Time.\n"
+                    "\n"
+                    "This stays consistent after saving and loading the"
+                    "game again."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Decoupled Entrances
+                UIWidgets::EnhancementCheckbox("Shuffle Decoupled Entrances", "gRandomizeShuffleDecoupledEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Decouple entrances when shuffling them. This means you are no longer guaranteed "
+                    "to end up back where you came from when you go back through an entrance.\n"
+                    "\n"
+                    "This also adds the one-way entrance from Gerudo Valley to Lake Hylia in the pool of "
+                    "overworld entrances when they are shuffled."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Mixed Entrance Pools
+                UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle entrances into a mixed pool instead of separate ones.\n"
+                    "\n"
+                    "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
+                    "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
+                    "vice versa, while overworld entrances are shuffled in their own separate pool and indoors stay vanilla."
+                );
+
+                if (CVar_GetS32("gRandomizeMixedEntrances", 0)) {
+                    if (CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
+                        UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Overworld", "gRandomizeMixOverworld");
+                        UIWidgets::InsertHelpHoverText("Overworld entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Interiors", "gRandomizeMixInteriors");
+                        UIWidgets::InsertHelpHoverText("Interior entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Grotts", "gRandomizeMixGrottos");
+                        UIWidgets::InsertHelpHoverText("Grotto entrances will be part of the mixed pool");
+                    }
+                }
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
