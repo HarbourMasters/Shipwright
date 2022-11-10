@@ -167,7 +167,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/graphic/Fast3D/U64
-	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/StormLib/src
 	.
 )
 

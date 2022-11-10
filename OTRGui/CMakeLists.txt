@@ -31,7 +31,7 @@ if (NOT TARGET OTRExporter)
     add_subdirectory(../OTRExporter/OTRExporter ${CMAKE_BINARY_DIR}/OTRExporter)
 endif()
 if (NOT TARGET storm)
-    add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
+    add_subdirectory(../libultraship/extern/StormLib ${CMAKE_BINARY_DIR}/StormLib)
 endif()
 
 file(GLOB_RECURSE HEADERS src/*.h)
