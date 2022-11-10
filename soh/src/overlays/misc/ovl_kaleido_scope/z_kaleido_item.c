@@ -85,10 +85,10 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
 }
 
 // For enhancement "Item Use From Inventory"
-bool ItemUseFromInventory_IsValidItemForUse(GlobalContext* globalCtx) {
-    InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
-    PauseContext* pauseCtx = &globalCtx->pauseCtx;
-    Player* this = GET_PLAYER(globalCtx);
+bool ItemUseFromInventory_IsValidItemForUse(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    PauseContext* pauseCtx = &play->pauseCtx;
+    Player* this = GET_PLAYER(play);
 
     u16 cursorItem;
     u16 cursorSlot;
@@ -445,12 +445,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     // For enhancement "Item Use From Inventory"
-                    if (CVar_GetS32("gItemUseFromInventory", 0) && ItemUseFromInventory_IsValidItemForUse(globalCtx)) {
+                    if (CVar_GetS32("gItemUseFromInventory", 0) && ItemUseFromInventory_IsValidItemForUse(play)) {
                         pauseCtx->cursorColorSet = 8;
                         if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                             ItemUseFromInventory_SetItemAndSlot(cursorItem, cursorSlot); // In z_player.c
                             // Unpause
-                            Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
+                            Interface_SetDoAction(play, DO_ACTION_NONE);
                             pauseCtx->state = 0x12;
                             WREG(2) = -6240;
                             func_800F64E0(0);

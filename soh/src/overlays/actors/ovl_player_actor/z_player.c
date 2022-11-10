@@ -10604,7 +10604,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 gSaveContext.equips.cButtonSlots[0] = inventoryUsedSlot;
             }
         }
-        func_80835F44(globalCtx, this, inventoryUsedItem); // Do action
+        func_80835F44(play, this, inventoryUsedItem); // Do action
     }
 
     // Item use from inventory: If an item was used from inventory, update these bools so that
@@ -10627,7 +10627,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     // then update the inventory and restore the previous C-Left equip
     if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_1)) {
         ItemUseFromInventory_UpdateBottleSlot(ITEM_BOTTLE);
-        func_80835F44(globalCtx, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
+        func_80835F44(play, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
     }
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
