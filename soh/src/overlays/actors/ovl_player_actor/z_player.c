@@ -11160,9 +11160,6 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    // OTRTODO
-    gsSPPushCD(POLY_OPA_DISP++, "objects/object_link_boy/t");
-
     if (!(this->stateFlags2 & PLAYER_STATE2_29)) {
         OverrideLimbDrawOpa overrideLimbDraw = func_80090014;
         s32 lod;
