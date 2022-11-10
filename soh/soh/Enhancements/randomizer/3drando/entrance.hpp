@@ -21,11 +21,15 @@ enum class EntranceType {
     WarpSong,
     Dungeon,
     GanonDungeon,
+    DungeonReverse,
     Interior,
+    InteriorReverse,
     SpecialInterior,
     GrottoGrave,
+    GrottoGraveReverse,
     Overworld,
     Extra,
+    Mixed,
     All,
 };
 
@@ -38,6 +42,11 @@ public:
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
         }
+    }
+
+    // Resets the glitchless condition for the entrance
+    void SetCondition(ConditionFn newCondition) {
+        conditions_met[0] = newCondition;
     }
 
     bool GetConditionsMet() const {

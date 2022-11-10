@@ -23,8 +23,6 @@ void AreaTable_Init_Kakariko() {
                   LocationAccess(KAK_GS_TREE,                     {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)) && AtNight && CanGetNightTimeGS;},
                                                        /*Glitched*/[]{return IsChild && AtNight && CanGetNightTimeGS && (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE) || (Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE)));}}),
-                  LocationAccess(KAK_GS_ABOVE_IMPAS_HOUSE,        {[]{return IsAdult && CanUse(HOOKSHOT) && AtNight && CanGetNightTimeGS;},
-                                                       /*Glitched*/[]{return IsAdult && AtNight && CanGetNightTimeGS && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                 }, {
                   //Exits
                   Entrance(HYRULE_FIELD,                {[]{return true;}}),
@@ -45,6 +43,8 @@ void AreaTable_Init_Kakariko() {
                                              /*Glitched*/[]{return IsAdult && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(KAK_ROOFTOP,                 {[]{return CanUse(HOOKSHOT) || (LogicManOnRoof && (IsAdult || AtDay || Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)));},
                                              /*Glitched*/[]{return LogicManOnRoof && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
+                  Entrance(KAK_IMPAS_ROOFTOP,           {[]{return CanUse(HOOKSHOT);},
+                                             /*Glitched*/[]{return (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE);}}),
                   Entrance(THE_GRAVEYARD,               {[]{return true;}}),
                   Entrance(KAK_BEHIND_GATE,             {[]{return IsAdult || (KakarikoVillageGateOpen);},
                                              /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
@@ -54,6 +54,15 @@ void AreaTable_Init_Kakariko() {
                   //Exits
                   Entrance(KAK_IMPAS_HOUSE_BACK, {[]{return true;}}),
                   Entrance(KAKARIKO_VILLAGE,     {[]{return true;}}),
+  });
+
+  areaTable[KAK_IMPAS_ROOFTOP] = Area("Kak Impas Rooftop", "Kakariko Village", KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(KAK_GS_ABOVE_IMPAS_HOUSE, {[]{return IsAdult && AtNight && CanGetNightTimeGS && (CanJumpslash || CanUseProjectile);}}),
+                }, {
+                  //Exits
+                  Entrance(KAK_IMPAS_LEDGE,  {[]{return true;}}),
+                  Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
   areaTable[KAK_ROOFTOP] = Area("Kak Rooftop", "Kakariko Village", KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {}, {
