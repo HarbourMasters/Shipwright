@@ -4,10 +4,11 @@
 
 #include "../item-tables/ItemTableTypes.h"
 
-typedef struct GlobalContext GlobalContext;
+typedef struct PlayState PlayState;
 
-extern "C" void Randomizer_DrawSmallKey(GlobalContext* globalCtx, GetItemEntry* getItemEntry);
-extern "C" void Randomizer_DrawBossKey(GlobalContext* globalCtx, GetItemEntry* getItemEntry);
-extern "C" void Randomizer_DrawDoubleDefense(GlobalContext* globalCtx, GetItemEntry getItemEntry);
+extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry);
+extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry);
+extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry);
+extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry);
 
 #endif

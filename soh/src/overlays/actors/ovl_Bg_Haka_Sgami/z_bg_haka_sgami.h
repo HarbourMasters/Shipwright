@@ -6,7 +6,7 @@
 
 struct BgHakaSgami;
 
-typedef void (*BgHakaSgamiActionFunc)(struct BgHakaSgami*, GlobalContext*);
+typedef void (*BgHakaSgamiActionFunc)(struct BgHakaSgami*, PlayState*);
 
 typedef struct BgHakaSgami {
     /* 0x0000 */ Actor actor;

@@ -6,7 +6,7 @@
 
 struct EnPoRelay;
 
-typedef void (*EnPoRelayActionFunc)(struct EnPoRelay*, GlobalContext*);
+typedef void (*EnPoRelayActionFunc)(struct EnPoRelay*, PlayState*);
 
 typedef struct EnPoRelay {
     /* 0x0000 */ Actor actor;

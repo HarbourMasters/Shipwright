@@ -33,6 +33,7 @@
 #include <libultraship/AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
+#include "Enhancements/sfx-editor/SfxEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -440,6 +441,7 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -449,12 +451,15 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->InitCrowdControl();
+    CrowdControl::Instance->Init();
 #endif
 }
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Shutdown();
+#endif
 }
 
 #ifdef _WIN32
@@ -650,7 +655,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
             value = 0;
             if (gSaveContext.n64ddFlag) {
                 if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                         value = 1;
                     }
                 }
@@ -661,7 +666,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
 }
 
 uint32_t IsGameMasterQuest() {
-    return gGlobalCtx != NULL ? IsSceneMasterQuest(gGlobalCtx->sceneNum) : 0;
+    return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
 }
 
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
@@ -1896,8 +1901,8 @@ extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player)
     return getItemText;
 }
 
-extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
-    MessageContext* msgCtx = &globalCtx->msgCtx;
+extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
+    MessageContext* msgCtx = &play->msgCtx;
     uint16_t textId = msgCtx->textId;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
@@ -1905,39 +1910,41 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            Player* player = GET_PLAYER(globalCtx);
+            Player* player = GET_PLAYER(play);
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+            } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
-              Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
             s16 actorParams = msgCtx->talkActor->params;
 
             // if we're in a generic grotto
-            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+            if (play->sceneNum == 62 && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
                 int numOfActorLists =
-                    sizeof(globalCtx->actorCtx.actorLists) / sizeof(globalCtx->actorCtx.actorLists[0]);
+                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
                 for (int i = 0; i < numOfActorLists; i++) {
-                    if (globalCtx->actorCtx.actorLists[i].length) {
-                        if (globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                    if (play->actorCtx.actorLists[i].length) {
+                        if (play->actorCtx.actorLists[i].head->id == 10) {
                             // set the params for the hint check to be negative chest params
-                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                            actorParams = 0 - play->actorCtx.actorLists[i].head->params;
                         }
                     }
                 }
             }
 
             RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, globalCtx->sceneNum, actorParams);
+                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
@@ -1954,7 +1961,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
             RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Player_GetMask(globalCtx) != PLAYER_MASK_TRUTH);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Player_GetMask(play) != PLAYER_MASK_TRUTH);
         // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
         // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
         // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
@@ -1976,13 +1983,18 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && (textId == TEXT_MEDIGORON || 
+          (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
+          (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
+            RandomizerInf randoInf = (RandomizerInf)(textId == TEXT_MEDIGORON ? RAND_INF_MERCHANTS_MEDIGORON : RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != 2);            
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+        if (CVar_GetS32("gInjectItemCounts", 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -1999,6 +2011,14 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
             CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
         }
+    }
+    if (textId == TEXT_HEART_CONTAINER && CVar_GetS32("gInjectItemCounts", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
+    }
+    if (textId == TEXT_HEART_PIECE && CVar_GetS32("gInjectItemCounts", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
     if (messageEntry.textBoxType != -1) {
         font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;

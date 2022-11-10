@@ -6,7 +6,7 @@
 
 struct BossMo;
 
-typedef void (*BossMoActionFunc)(struct BossMo*, GlobalContext*);
+typedef void (*BossMoActionFunc)(struct BossMo*, PlayState*);
 
 typedef enum {
     /* 0 */ MO_TENT_ACTION_STATE,

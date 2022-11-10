@@ -173,6 +173,11 @@ set(Header_Files__soh__Enhancements__cosmetics
 )
 source_group("Header Files\\soh\\Enhancements\\cosmetics" FILES ${Header_Files__soh__Enhancements__cosmetics})
 
+set(Header_Files__soh__Enhancements__sfx_editor
+    "soh/Enhancements/sfx-editor/SfxEditor.h"
+)
+source_group("Header Files\\soh\\Enhancements\\sfx-editor" FILES ${Header_Files__soh__Enhancements__sfx_editor})
+
 set(Header_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
@@ -245,7 +250,7 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
 )
@@ -293,6 +298,11 @@ set(Source_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\cosmetics" FILES ${Source_Files__soh__Enhancements__cosmetics})
+
+set(Source_Files__soh__Enhancements__sfx_editor
+    "soh/Enhancements/sfx-editor/SfxEditor.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\sfx-editor" FILES ${Source_Files__soh__Enhancements__sfx_editor})
 
 set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/actorViewer.cpp"
@@ -387,7 +397,7 @@ set(Source_Files__soh__Enhancements__item_tables
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.cpp"
 )
@@ -1599,6 +1609,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements}
     ${Header_Files__soh__Enhancements__controls}
     ${Header_Files__soh__Enhancements__cosmetics}
+    ${Header_Files__soh__Enhancements__sfx_editor}
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
@@ -1609,6 +1620,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
+    ${Source_Files__soh__Enhancements__sfx_editor}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__soh__Enhancements__randomizer}
     ${Source_Files__soh__Enhancements__randomizer__3drando}
@@ -1698,7 +1710,7 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (BUILD_CROWD_CONTROL)
     find_package(SDL2_net)
     set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
 endif()
@@ -1729,6 +1741,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
+            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
             "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
@@ -1775,6 +1788,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
+        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -1972,7 +1986,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "SDL2_net::SDL2_net-static;"
+            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -2024,6 +2038,7 @@ else()
         "libultraship;"
         "ZAPDUtils;"
 		SDL2::SDL2
+        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)

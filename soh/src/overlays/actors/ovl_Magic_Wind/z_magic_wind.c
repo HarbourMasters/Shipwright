@@ -8,16 +8,16 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void MagicWind_Init(Actor* thisx, GlobalContext* globalCtx);
-void MagicWind_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void MagicWind_Update(Actor* thisx, GlobalContext* globalCtx);
-void MagicWind_Draw(Actor* thisx, GlobalContext* globalCtx);
+void MagicWind_Init(Actor* thisx, PlayState* play);
+void MagicWind_Destroy(Actor* thisx, PlayState* play);
+void MagicWind_Update(Actor* thisx, PlayState* play);
+void MagicWind_Draw(Actor* thisx, PlayState* play);
 
-void MagicWind_Shrink(MagicWind* this, GlobalContext* globalCtx);
-void MagicWind_WaitForTimer(MagicWind* this, GlobalContext* globalCtx);
-void MagicWind_FadeOut(MagicWind* this, GlobalContext* globalCtx);
-void MagicWind_WaitAtFullSize(MagicWind* this, GlobalContext* globalCtx);
-void MagicWind_Grow(MagicWind* this, GlobalContext* globalCtx);
+void MagicWind_Shrink(MagicWind* this, PlayState* play);
+void MagicWind_WaitForTimer(MagicWind* this, PlayState* play);
+void MagicWind_FadeOut(MagicWind* this, PlayState* play);
+void MagicWind_WaitAtFullSize(MagicWind* this, PlayState* play);
+void MagicWind_Grow(MagicWind* this, PlayState* play);
 
 const ActorInit Magic_Wind_InitVars = {
     ACTOR_MAGIC_WIND,
@@ -42,11 +42,11 @@ void MagicWind_SetupAction(MagicWind* this, MagicWindFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void MagicWind_Init(Actor* thisx, GlobalContext* globalCtx) {
+void MagicWind_Init(Actor* thisx, PlayState* play) {
     MagicWind* this = (MagicWind*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
-    if (SkelCurve_Init(globalCtx, &this->skelCurve, &sSkel, &sAnim) == 0) {
+    if (SkelCurve_Init(play, &this->skelCurve, &sSkel, &sAnim) == 0) {
         // "Magic_Wind_Actor_ct (): Construct failed"
         osSyncPrintf("Magic_Wind_Actor_ct():コンストラクト失敗\n");
     }
@@ -67,10 +67,10 @@ void MagicWind_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void MagicWind_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void MagicWind_Destroy(Actor* thisx, PlayState* play) {
     MagicWind* this = (MagicWind*)thisx;
-    SkelCurve_Destroy(globalCtx, &this->skelCurve);
-    func_800876C8(globalCtx);
+    SkelCurve_Destroy(play, &this->skelCurve);
+    func_800876C8(play);
     // "wipe out"
     LOG_STRING("消滅");
 }
@@ -85,8 +85,8 @@ void MagicWind_UpdateAlpha(f32 alpha) {
     }
 }
 
-void MagicWind_WaitForTimer(MagicWind* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void MagicWind_WaitForTimer(MagicWind* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->timer > 0) {
         this->timer--;
@@ -98,17 +98,17 @@ void MagicWind_WaitForTimer(MagicWind* this, GlobalContext* globalCtx) {
     func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_NORMAL);
     MagicWind_UpdateAlpha(1.0f);
     MagicWind_SetupAction(this, MagicWind_Grow);
-    SkelCurve_Update(globalCtx, &this->skelCurve);
+    SkelCurve_Update(play, &this->skelCurve);
 }
 
-void MagicWind_Grow(MagicWind* this, GlobalContext* globalCtx) {
-    if (SkelCurve_Update(globalCtx, &this->skelCurve)) {
+void MagicWind_Grow(MagicWind* this, PlayState* play) {
+    if (SkelCurve_Update(play, &this->skelCurve)) {
         MagicWind_SetupAction(this, MagicWind_WaitAtFullSize);
         this->timer = 50;
     }
 }
 
-void MagicWind_WaitAtFullSize(MagicWind* this, GlobalContext* globalCtx) {
+void MagicWind_WaitAtFullSize(MagicWind* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
@@ -117,7 +117,7 @@ void MagicWind_WaitAtFullSize(MagicWind* this, GlobalContext* globalCtx) {
     }
 }
 
-void MagicWind_FadeOut(MagicWind* this, GlobalContext* globalCtx) {
+void MagicWind_FadeOut(MagicWind* this, PlayState* play) {
     if (this->timer > 0) {
         MagicWind_UpdateAlpha((f32)this->timer * (1.0f / 30.0f));
         this->timer--;
@@ -126,57 +126,57 @@ void MagicWind_FadeOut(MagicWind* this, GlobalContext* globalCtx) {
     }
 }
 
-void MagicWind_Shrink(MagicWind* this, GlobalContext* globalCtx) {
-    if (SkelCurve_Update(globalCtx, &this->skelCurve)) {
+void MagicWind_Shrink(MagicWind* this, PlayState* play) {
+    if (SkelCurve_Update(play, &this->skelCurve)) {
         Actor_Kill(&this->actor);
     }
 }
 
-void MagicWind_Update(Actor* thisx, GlobalContext* globalCtx) {
+void MagicWind_Update(Actor* thisx, PlayState* play) {
     MagicWind* this = (MagicWind*)thisx;
-    if (globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
-        globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
+    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
+        play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
         Actor_Kill(thisx);
         return;
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-s32 MagicWind_OverrideLimbDraw(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve, s32 limbIndex, void* thisx) {
+s32 MagicWind_OverrideLimbDraw(PlayState* play, SkelAnimeCurve* skelCurve, s32 limbIndex, void* thisx) {
     MagicWind* this = (MagicWind*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 1) {
         gSPSegment(POLY_XLU_DISP++, 8,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (globalCtx->state.frames * 9) & 0xFF,
-                                    0xFF - ((globalCtx->state.frames * 0xF) & 0xFF), 0x40, 0x40, 1,
-                                    (globalCtx->state.frames * 0xF) & 0xFF,
-                                    0xFF - ((globalCtx->state.frames * 0x1E) & 0xFF), 0x40, 0x40));
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * 9) & 0xFF,
+                                    0xFF - ((play->state.frames * 0xF) & 0xFF), 0x40, 0x40, 1,
+                                    (play->state.frames * 0xF) & 0xFF,
+                                    0xFF - ((play->state.frames * 0x1E) & 0xFF), 0x40, 0x40));
 
     } else if (limbIndex == 2) {
         gSPSegment(POLY_XLU_DISP++, 9,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (globalCtx->state.frames * 3) & 0xFF,
-                                    0xFF - ((globalCtx->state.frames * 5) & 0xFF), 0x40, 0x40, 1,
-                                    (globalCtx->state.frames * 6) & 0xFF,
-                                    0xFF - ((globalCtx->state.frames * 0xA) & 0xFF), 0x40, 0x40));
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * 3) & 0xFF,
+                                    0xFF - ((play->state.frames * 5) & 0xFF), 0x40, 0x40, 1,
+                                    (play->state.frames * 6) & 0xFF,
+                                    0xFF - ((play->state.frames * 0xA) & 0xFF), 0x40, 0x40));
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 
     return true;
 }
 
-void MagicWind_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void MagicWind_Draw(Actor* thisx, PlayState* play) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     MagicWind* this = (MagicWind*)thisx;
 
     OPEN_DISPS(gfxCtx);
 
     if (this->actionFunc != MagicWind_WaitForTimer) {
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 25);
-        SkelCurve_Draw(thisx, globalCtx, &this->skelCurve, MagicWind_OverrideLimbDraw, NULL, 1, NULL);
+        SkelCurve_Draw(thisx, play, &this->skelCurve, MagicWind_OverrideLimbDraw, NULL, 1, NULL);
     }
 
     CLOSE_DISPS(gfxCtx);

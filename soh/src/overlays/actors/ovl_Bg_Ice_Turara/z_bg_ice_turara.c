@@ -9,16 +9,16 @@
 
 #define FLAGS 0
 
-void BgIceTurara_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgIceTurara_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgIceTurara_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgIceTurara_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgIceTurara_Init(Actor* thisx, PlayState* play);
+void BgIceTurara_Destroy(Actor* thisx, PlayState* play);
+void BgIceTurara_Update(Actor* thisx, PlayState* play);
+void BgIceTurara_Draw(Actor* thisx, PlayState* play);
 
-void BgIceTurara_Stalagmite(BgIceTurara* this, GlobalContext* globalCtx);
-void BgIceTurara_Wait(BgIceTurara* this, GlobalContext* globalCtx);
-void BgIceTurara_Shiver(BgIceTurara* this, GlobalContext* globalCtx);
-void BgIceTurara_Fall(BgIceTurara* this, GlobalContext* globalCtx);
-void BgIceTurara_Regrow(BgIceTurara* this, GlobalContext* globalCtx);
+void BgIceTurara_Stalagmite(BgIceTurara* this, PlayState* play);
+void BgIceTurara_Wait(BgIceTurara* this, PlayState* play);
+void BgIceTurara_Shiver(BgIceTurara* this, PlayState* play);
+void BgIceTurara_Fall(BgIceTurara* this, PlayState* play);
+void BgIceTurara_Regrow(BgIceTurara* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -60,7 +60,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgIceTurara_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceTurara_Init(Actor* thisx, PlayState* play) {
     BgIceTurara* this = (BgIceTurara*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -68,10 +68,10 @@ void BgIceTurara_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&object_ice_objects_Col_002594, &colHeader);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->dyna.actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->dyna.actor, &sCylinderInit);
     Collider_UpdateCylinder(&this->dyna.actor, &this->collider);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.actor.params == TURARA_STALAGMITE) {
         this->actionFunc = BgIceTurara_Stalagmite;
     } else {
@@ -81,14 +81,14 @@ void BgIceTurara_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceTurara_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceTurara_Destroy(Actor* thisx, PlayState* play) {
     BgIceTurara* this = (BgIceTurara*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void BgIceTurara_Break(BgIceTurara* this, GlobalContext* globalCtx, f32 arg2) {
+void BgIceTurara_Break(BgIceTurara* this, PlayState* play, f32 arg2) {
     static Vec3f accel = { 0.0f, -1.0f, 0.0f };
     static Color_RGBA8 primColor = { 170, 255, 255, 255 };
     static Color_RGBA8 envColor = { 0, 50, 100, 255 };
@@ -97,7 +97,7 @@ void BgIceTurara_Break(BgIceTurara* this, GlobalContext* globalCtx, f32 arg2) {
     s32 j;
     s32 i;
 
-    SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->dyna.actor.world.pos, 30, NA_SE_EV_ICE_BROKEN);
+    SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30, NA_SE_EV_ICE_BROKEN);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 10; j++) {
             pos.x = this->dyna.actor.world.pos.x + Rand_CenteredFloat(8.0f);
@@ -108,29 +108,29 @@ void BgIceTurara_Break(BgIceTurara* this, GlobalContext* globalCtx, f32 arg2) {
             vel.z = Rand_CenteredFloat(7.0f);
             vel.y = (Rand_ZeroOne() * 4.0f) + 8.0f;
 
-            EffectSsEnIce_Spawn(globalCtx, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor,
+            EffectSsEnIce_Spawn(play, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor,
                                 30);
         }
     }
 }
 
-void BgIceTurara_Stalagmite(BgIceTurara* this, GlobalContext* globalCtx) {
+void BgIceTurara_Stalagmite(BgIceTurara* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
-        BgIceTurara_Break(this, globalCtx, 50.0f);
+        BgIceTurara_Break(this, play, 50.0f);
         Actor_Kill(&this->dyna.actor);
         return;
     }
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
 }
 
-void BgIceTurara_Wait(BgIceTurara* this, GlobalContext* globalCtx) {
+void BgIceTurara_Wait(BgIceTurara* this, PlayState* play) {
     if (this->dyna.actor.xzDistToPlayer < 60.0f) {
         this->shiverTimer = 10;
         this->actionFunc = BgIceTurara_Shiver;
     }
 }
 
-void BgIceTurara_Shiver(BgIceTurara* this, GlobalContext* globalCtx) {
+void BgIceTurara_Shiver(BgIceTurara* this, PlayState* play) {
     s16 phi_v0_3;
     s16 phi_v0_2;
     f32 sp28;
@@ -145,8 +145,8 @@ void BgIceTurara_Shiver(BgIceTurara* this, GlobalContext* globalCtx) {
         this->dyna.actor.world.pos.x = this->dyna.actor.home.pos.x;
         this->dyna.actor.world.pos.z = this->dyna.actor.home.pos.z;
         Collider_UpdateCylinder(&this->dyna.actor, &this->collider);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+        func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->actionFunc = BgIceTurara_Fall;
     } else {
         sp28 = Rand_ZeroOne();
@@ -158,17 +158,17 @@ void BgIceTurara_Shiver(BgIceTurara* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceTurara_Fall(BgIceTurara* this, GlobalContext* globalCtx) {
+void BgIceTurara_Fall(BgIceTurara* this, PlayState* play) {
     if ((this->collider.base.atFlags & AT_HIT) || (this->dyna.actor.bgCheckFlags & 1)) {
         this->collider.base.atFlags &= ~AT_HIT;
         this->dyna.actor.bgCheckFlags &= ~1;
         if (this->dyna.actor.world.pos.y < this->dyna.actor.floorHeight) {
             this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
         }
-        BgIceTurara_Break(this, globalCtx, 40.0f);
+        BgIceTurara_Break(this, play, 40.0f);
         if (this->dyna.actor.params == TURARA_STALACTITE_REGROW) {
             this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + 120.0f;
-            func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
             this->actionFunc = BgIceTurara_Regrow;
         } else {
             Actor_Kill(&this->dyna.actor);
@@ -177,26 +177,26 @@ void BgIceTurara_Fall(BgIceTurara* this, GlobalContext* globalCtx) {
     } else {
         Actor_MoveForward(&this->dyna.actor);
         this->dyna.actor.world.pos.y += 40.0f;
-        Actor_UpdateBgCheckInfo(globalCtx, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
+        Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
         this->dyna.actor.world.pos.y -= 40.0f;
         Collider_UpdateCylinder(&this->dyna.actor, &this->collider);
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void BgIceTurara_Regrow(BgIceTurara* this, GlobalContext* globalCtx) {
+void BgIceTurara_Regrow(BgIceTurara* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 1.0f)) {
         this->actionFunc = BgIceTurara_Wait;
         this->dyna.actor.velocity.y = 0.0f;
     }
 }
 
-void BgIceTurara_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceTurara_Update(Actor* thisx, PlayState* play) {
     BgIceTurara* this = (BgIceTurara*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgIceTurara_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, object_ice_objects_DL_0023D0);
+void BgIceTurara_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, object_ice_objects_DL_0023D0);
 }

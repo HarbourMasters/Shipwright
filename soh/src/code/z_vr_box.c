@@ -592,7 +592,7 @@ SkyboxTableEntry sSkyboxTable[] =
     },
 };
 
-void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skyboxId) {
+void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId) {
     size_t size;
     s16 i;
     u8 sp41; // imageIdx
@@ -613,16 +613,16 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
             if (gSaveContext.skyboxTime >= D_8011FC1C[phi_v1][i].startTime &&
                 (gSaveContext.skyboxTime < D_8011FC1C[phi_v1][i].endTime ||
                     D_8011FC1C[phi_v1][i].endTime == 0xFFFF)) {
-                globalCtx->envCtx.skybox1Index = sp41 = D_8011FC1C[phi_v1][i].skybox1Index;
-                globalCtx->envCtx.skybox2Index = sp40 = D_8011FC1C[phi_v1][i].skybox2Index;
+                play->envCtx.skybox1Index = sp41 = D_8011FC1C[phi_v1][i].skybox1Index;
+                play->envCtx.skybox2Index = sp40 = D_8011FC1C[phi_v1][i].skybox2Index;
                 if (D_8011FC1C[phi_v1][i].blend != 0) {
-                    globalCtx->envCtx.skyboxBlend =
+                    play->envCtx.skyboxBlend =
                         Environment_LerpWeight(D_8011FC1C[phi_v1][i].endTime, D_8011FC1C[phi_v1][i].startTime,
                             ((void)0, gSaveContext.skyboxTime)) *
                         255.0f;
                 }
                 else {
-                    globalCtx->envCtx.skyboxBlend = 0;
+                    play->envCtx.skyboxBlend = 0;
                 }
                 break;
             }
@@ -944,13 +944,13 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
 }
 
 void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
-    GlobalContext* globalCtx = (GlobalContext*)state;
+    PlayState* play = (PlayState*)state;
 
     skyboxCtx->skyboxId = skyboxId;
     skyboxCtx->unk_140 = 0;
     skyboxCtx->rot.x = skyboxCtx->rot.y = skyboxCtx->rot.z = 0.0f;
 
-    Skybox_Setup(globalCtx, skyboxCtx, skyboxId);
+    Skybox_Setup(play, skyboxCtx, skyboxId);
     osSyncPrintf("\n\n\n＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n\n\n"
                  "ＴＹＰＥ＝%d"
                  "\n\n\n＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n\n\n",

@@ -8,13 +8,13 @@
 
 #define FLAGS 0
 
-void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjMure_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjMure_Update(Actor* thisx, GlobalContext* globalCtx);
+void ObjMure_Init(Actor* thisx, PlayState* play);
+void ObjMure_Destroy(Actor* thisx, PlayState* play);
+void ObjMure_Update(Actor* thisx, PlayState* play);
 
-void ObjMure_InitialAction(ObjMure* this, GlobalContext* globalCtx);
-void ObjMure_CulledState(ObjMure* this, GlobalContext* globalCtx);
-void ObjMure_ActiveState(ObjMure* this, GlobalContext* globalCtx);
+void ObjMure_InitialAction(ObjMure* this, PlayState* play);
+void ObjMure_CulledState(ObjMure* this, PlayState* play);
+void ObjMure_ActiveState(ObjMure* this, PlayState* play);
 
 s32 ObjMure_GetMaxChildSpawns(ObjMure* this);
 
@@ -59,7 +59,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1200, ICHAIN_STOP),
 };
 
-s32 ObjMure_SetCullingImpl(Actor* thisx, GlobalContext* globalCtx) {
+s32 ObjMure_SetCullingImpl(Actor* thisx, PlayState* play) {
     ObjMure* this = (ObjMure*)thisx;
     s32 result;
 
@@ -79,14 +79,14 @@ s32 ObjMure_SetCullingImpl(Actor* thisx, GlobalContext* globalCtx) {
     return result;
 }
 
-s32 ObjMure_SetCulling(Actor* thisx, GlobalContext* globalCtx) {
-    if (!ObjMure_SetCullingImpl(thisx, globalCtx)) {
+s32 ObjMure_SetCulling(Actor* thisx, PlayState* play) {
+    if (!ObjMure_SetCullingImpl(thisx, play)) {
         return false;
     }
     return true;
 }
 
-void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMure_Init(Actor* thisx, PlayState* play) {
     ObjMure* this = (ObjMure*)thisx;
 
     this->chNum = (thisx->params >> 0xC) & 0x0F;
@@ -102,7 +102,7 @@ void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf("Error 群れな敵 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, thisx->params);
         Actor_Kill(&this->actor);
         return;
-    } else if (!ObjMure_SetCulling(thisx, globalCtx)) {
+    } else if (!ObjMure_SetCulling(thisx, play)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -115,7 +115,7 @@ void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMure_Destroy(Actor* thisx, PlayState* play) {
 }
 
 s32 ObjMure_GetMaxChildSpawns(ObjMure* this) {
@@ -132,7 +132,7 @@ void ObjMure_GetSpawnPos(Vec3f* outPos, Vec3f* inPos, s32 ptn, s32 idx) {
     *outPos = *inPos;
 }
 
-void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
     ActorContext* ac;
     s32 i;
     Vec3f pos;
@@ -149,10 +149,10 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
             case OBJMURE_CHILD_STATE_1:
                 break;
             case OBJMURE_CHILD_STATE_2:
-                ac = &globalCtx->actorCtx;
+                ac = &play->actorCtx;
                 ObjMure_GetSpawnPos(&pos, &this->actor.world.pos, this->ptn, i);
                 this->children[i] =
-                    Actor_Spawn(ac, globalCtx, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
+                    Actor_Spawn(ac, play, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
                                 this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type]);
                 if (this->children[i] != NULL) {
                     this->children[i]->flags |= ACTOR_FLAG_ENKUSA_CUT;
@@ -162,10 +162,10 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
                 }
                 break;
             default:
-                ac = &globalCtx->actorCtx;
+                ac = &play->actorCtx;
                 ObjMure_GetSpawnPos(&pos, &this->actor.world.pos, this->ptn, i);
                 this->children[i] =
-                    Actor_Spawn(ac, globalCtx, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
+                    Actor_Spawn(ac, play, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
                                 this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type]);
                 if (this->children[i] != NULL) {
                     this->children[i]->room = this->actor.room;
@@ -177,8 +177,8 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure_SpawnActors1(ObjMure* this, GlobalContext* globalCtx) {
-    ActorContext* ac = (ActorContext*)globalCtx; // fake match
+void ObjMure_SpawnActors1(ObjMure* this, PlayState* play) {
+    ActorContext* ac = (ActorContext*)play; // fake match
     Actor* actor = &this->actor;
     Vec3f spawnPos;
     s32 maxChildren = ObjMure_GetMaxChildSpawns(this);
@@ -188,9 +188,9 @@ void ObjMure_SpawnActors1(ObjMure* this, GlobalContext* globalCtx) {
         if (this->children[i] != NULL) {
             osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, actor->params);
         }
-        ac = &globalCtx->actorCtx;
+        ac = &play->actorCtx;
         ObjMure_GetSpawnPos(&spawnPos, &actor->world.pos, this->ptn, i);
-        this->children[i] = Actor_Spawn(ac, globalCtx, sSpawnActorIds[this->type], spawnPos.x, spawnPos.y, spawnPos.z,
+        this->children[i] = Actor_Spawn(ac, play, sSpawnActorIds[this->type], spawnPos.x, spawnPos.y, spawnPos.z,
                                         actor->world.rot.x, actor->world.rot.y, actor->world.rot.z,
                                         (this->type == 4 && i == 0) ? 1 : sSpawnParams[this->type]);
         if (this->children[i] != NULL) {
@@ -203,18 +203,18 @@ void ObjMure_SpawnActors1(ObjMure* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure_SpawnActors(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_SpawnActors(ObjMure* this, PlayState* play) {
     switch (this->svNum) {
         case 0:
-            ObjMure_SpawnActors0(this, globalCtx);
+            ObjMure_SpawnActors0(this, play);
             break;
         case 1:
-            ObjMure_SpawnActors1(this, globalCtx);
+            ObjMure_SpawnActors1(this, play);
             break;
     }
 }
 
-void ObjMure_KillActorsImpl(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_KillActorsImpl(ObjMure* this, PlayState* play) {
     s32 maxChildren = ObjMure_GetMaxChildSpawns(this);
     s32 i;
 
@@ -231,7 +231,7 @@ void ObjMure_KillActorsImpl(ObjMure* this, GlobalContext* globalCtx) {
                 break;
             default:
                 if (this->children[i] != NULL) {
-                    if (Actor_HasParent(this->children[i], globalCtx)) {
+                    if (Actor_HasParent(this->children[i], play)) {
                         this->children[i] = NULL;
                     } else {
                         Actor_Kill(this->children[i]);
@@ -243,11 +243,11 @@ void ObjMure_KillActorsImpl(ObjMure* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure_KillActors(ObjMure* this, GlobalContext* globalCtx) {
-    ObjMure_KillActorsImpl(this, globalCtx);
+void ObjMure_KillActors(ObjMure* this, PlayState* play) {
+    ObjMure_KillActorsImpl(this, play);
 }
 
-void ObjMure_CheckChildren(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_CheckChildren(ObjMure* this, PlayState* play) {
     s32 maxChildren = ObjMure_GetMaxChildSpawns(this);
     s32 i;
 
@@ -270,15 +270,15 @@ void ObjMure_CheckChildren(ObjMure* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure_InitialAction(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_InitialAction(ObjMure* this, PlayState* play) {
     this->actionFunc = ObjMure_CulledState;
 }
 
-void ObjMure_CulledState(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_CulledState(ObjMure* this, PlayState* play) {
     if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] || CVar_GetS32("gDisableDrawDistance", 0) != 0) {
         this->actionFunc = ObjMure_ActiveState;
         this->actor.flags |= ACTOR_FLAG_4;
-        ObjMure_SpawnActors(this, globalCtx);
+        ObjMure_SpawnActors(this, play);
     }
 }
 
@@ -328,7 +328,7 @@ void ObjMure_SetChildToFollowPlayer(ObjMure* this, s32 idx1) {
 }
 
 // Fish, Bugs
-void ObjMure_GroupBehavior0(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_GroupBehavior0(ObjMure* this, PlayState* play) {
     if (this->unk_1A4 <= 0) {
         if (this->unk_1A6) {
             this->unk_1A6 = false;
@@ -362,7 +362,7 @@ void ObjMure_GroupBehavior0(ObjMure* this, GlobalContext* globalCtx) {
 }
 
 // Butterflies
-void ObjMure_GroupBehavior1(ObjMure* this, GlobalContext* globalCtx) {
+void ObjMure_GroupBehavior1(ObjMure* this, PlayState* play) {
     s32 maxChildren;
     s32 i;
 
@@ -396,23 +396,23 @@ static ObjMureActionFunc sTypeGroupBehaviorFunc[] = {
     NULL, NULL, ObjMure_GroupBehavior0, ObjMure_GroupBehavior0, ObjMure_GroupBehavior1,
 };
 
-void ObjMure_ActiveState(ObjMure* this, GlobalContext* globalCtx) {
-    ObjMure_CheckChildren(this, globalCtx);
+void ObjMure_ActiveState(ObjMure* this, PlayState* play) {
+    ObjMure_CheckChildren(this, play);
     if (sZClip[this->type] + 40.0f <= fabsf(this->actor.projectedPos.z) &&
         CVar_GetS32("gDisableDrawDistance", 1) != 0) {
         this->actionFunc = ObjMure_CulledState;
         this->actor.flags &= ~ACTOR_FLAG_4;
-        ObjMure_KillActors(this, globalCtx);
+        ObjMure_KillActors(this, play);
     } else if (sTypeGroupBehaviorFunc[this->type] != NULL) {
-        sTypeGroupBehaviorFunc[this->type](this, globalCtx);
+        sTypeGroupBehaviorFunc[this->type](this, play);
     }
 }
 
-void ObjMure_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMure_Update(Actor* thisx, PlayState* play) {
     ObjMure* this = (ObjMure*)thisx;
 
     if (this->unk_1A4 > 0) {
         this->unk_1A4--;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }

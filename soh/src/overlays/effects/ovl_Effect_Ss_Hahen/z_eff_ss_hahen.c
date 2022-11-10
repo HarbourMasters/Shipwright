@@ -15,25 +15,25 @@
 #define rObjBankIdx regs[5]
 #define rMinLife regs[6]
 
-u32 EffectSsHahen_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsHahen_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsHahen_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsHahen_DrawGray(PlayState* play, u32 index, EffectSs* this);
+void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsHahen_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Hahen_InitVars = {
     EFFECT_SS_HAHEN,
     EffectSsHahen_Init,
 };
 
-void EffectSsHahen_CheckForObject(EffectSs* this, GlobalContext* globalCtx) {
-    if (((this->rObjBankIdx = Object_GetIndex(&globalCtx->objectCtx, this->rObjId)) < 0) ||
-        !Object_IsLoaded(&globalCtx->objectCtx, this->rObjBankIdx)) {
+void EffectSsHahen_CheckForObject(EffectSs* this, PlayState* play) {
+    if (((this->rObjBankIdx = Object_GetIndex(&play->objectCtx, this->rObjId)) < 0) ||
+        !Object_IsLoaded(&play->objectCtx, this->rObjBankIdx)) {
         this->life = -1;
         this->draw = NULL;
     }
 }
 
-u32 EffectSsHahen_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsHahen_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsHahenInitParams* initParams = (EffectSsHahenInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -44,7 +44,7 @@ u32 EffectSsHahen_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     if (initParams->dList != NULL) {
         this->gfx = initParams->dList;
         this->rObjId = initParams->objId;
-        EffectSsHahen_CheckForObject(this, globalCtx);
+        EffectSsHahen_CheckForObject(this, play);
     } else {
         this->gfx = SEGMENTED_TO_VIRTUAL(gEffFragments1DL);
         this->rObjId = -1;
@@ -66,15 +66,15 @@ u32 EffectSsHahen_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     return 1;
 }
 
-void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
     OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
-        gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
+        gSPSegment(POLY_OPA_DISP++, 0x06, play->objectCtx.status[this->rObjBankIdx].segment);
     }
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
@@ -83,22 +83,22 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
     CLOSE_DISPS(gfxCtx);
 }
 
 // in the original game this function is hardcoded to be used only by the skull pots in Shadow Temple
-void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsHahen_DrawGray(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
     OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
-        gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
+        gSPSegment(POLY_OPA_DISP++, 0x06, play->objectCtx.status[this->rObjBankIdx].segment);
     }
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
@@ -107,7 +107,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gDPSetCombineLERP(POLY_OPA_DISP++, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0,
                       PRIMITIVE, 0);
     gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 100, 100, 120, 255);
@@ -116,8 +116,8 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsHahen_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    Player* player = GET_PLAYER(globalCtx);
+void EffectSsHahen_Update(PlayState* play, u32 index, EffectSs* this) {
+    Player* player = GET_PLAYER(play);
 
     this->rPitch += 55;
     this->rYaw += 10;
@@ -127,6 +127,6 @@ void EffectSsHahen_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     }
 
     if (this->rObjId != -1) {
-        EffectSsHahen_CheckForObject(this, globalCtx);
+        EffectSsHahen_CheckForObject(this, play);
     }
 }

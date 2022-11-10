@@ -6,7 +6,7 @@
 
 struct EnPoh;
 
-typedef void (*EnPohActionFunc)(struct EnPoh*, GlobalContext*);
+typedef void (*EnPohActionFunc)(struct EnPoh*, PlayState*);
 
 typedef enum {
     EN_POH_NORMAL,

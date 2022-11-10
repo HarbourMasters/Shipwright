@@ -6,7 +6,7 @@
 
 struct BgRelayObjects;
 
-typedef void (*BgRelayObjectsActionFunc)(struct BgRelayObjects*, GlobalContext*);
+typedef void (*BgRelayObjectsActionFunc)(struct BgRelayObjects*, PlayState*);
 
 typedef struct BgRelayObjects {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -6,7 +6,7 @@
 
 struct EnDntJiji;
 
-typedef void (*EnDntJijiActionFunc)(struct EnDntJiji*, GlobalContext*);
+typedef void (*EnDntJijiActionFunc)(struct EnDntJiji*, PlayState*);
 
 typedef struct EnDntJiji {
     /* 0x0000 */ Actor actor;

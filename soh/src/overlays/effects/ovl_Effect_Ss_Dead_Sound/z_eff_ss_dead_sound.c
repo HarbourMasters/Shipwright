@@ -9,15 +9,15 @@
 #define rSfxId regs[10]
 #define rRepeatMode regs[11] // sound is replayed every update. unused in the original game
 
-u32 EffectSsDeadSound_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsDeadSound_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsDeadSound_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsDeadSound_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Dead_Sound_InitVars = {
     EFFECT_SS_DEAD_SOUND,
     EffectSsDeadSound_Init,
 };
 
-u32 EffectSsDeadSound_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsDeadSound_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDeadSoundInitParams* initParams = (EffectSsDeadSoundInitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -34,7 +34,7 @@ u32 EffectSsDeadSound_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, 
     return 1;
 }
 
-void EffectSsDeadSound_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDeadSound_Update(PlayState* play, u32 index, EffectSs* this) {
     switch (this->rRepeatMode) {
         case DEADSOUND_REPEAT_MODE_OFF:
             this->rRepeatMode--; // decrement to 0 so sound only plays once

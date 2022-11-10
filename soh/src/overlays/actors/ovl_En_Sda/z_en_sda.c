@@ -8,13 +8,13 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnSda_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSda_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSda_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnSda_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnSda_Init(Actor* thisx, PlayState* play);
+void EnSda_Destroy(Actor* thisx, PlayState* play);
+void EnSda_Update(Actor* thisx, PlayState* play);
+void EnSda_Draw(Actor* thisx, PlayState* play);
 
-void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext* globalCtx);
-void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx);
+void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, PlayState* play);
+void func_80AF9C70(u8* shadowTexture, Player* player, PlayState* play);
 void func_80AF8F60(Player* player, u8* shadowTexture, f32 arg2);
 
 const ActorInit En_Sda_InitVars = {
@@ -89,13 +89,13 @@ static u32 D_80AFA390[] = { 0, 0 };
 
 static Vec3f D_80AFA660[16];
 
-void EnSda_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnSda_Init(Actor* thisx, PlayState* play) {
 }
 
-void EnSda_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSda_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnSda_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSda_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSda* this = (EnSda*)thisx;
     Player* player;
@@ -105,7 +105,7 @@ void EnSda_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->actor.params == 1) {
         player = (Player*)this->actor.parent;
     } else {
-        player = GET_PLAYER(globalCtx);
+        player = GET_PLAYER(play);
     }
 
     this->actor.world.pos = player->actor.world.pos;
@@ -113,24 +113,24 @@ void EnSda_Update(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("SDA MOVE END\n");
 }
 
-void EnSda_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnSda_Draw(Actor* thisx, PlayState* play) {
     EnSda* this = (EnSda*)thisx;
     Player* player;
-    u8* shadowTexture = Graph_Alloc(globalCtx->state.gfxCtx, 0x1000);
+    u8* shadowTexture = Graph_Alloc(play->state.gfxCtx, 0x1000);
 
     osSyncPrintf("SDA DRAW \n");
 
     if (this->actor.params == 1) {
         player = (Player*)this->actor.parent;
     } else {
-        player = GET_PLAYER(globalCtx);
+        player = GET_PLAYER(play);
     }
 
     player->actor.shape.shadowAlpha = 0;
-    func_80AF95C4(this, shadowTexture, player, globalCtx);
+    func_80AF95C4(this, shadowTexture, player, play);
 
     if (KREG(0) < 5) {
-        func_80AF9C70(shadowTexture, player, globalCtx);
+        func_80AF9C70(shadowTexture, player, play);
     }
 
     osSyncPrintf("SDA DRAW END\n");
@@ -235,7 +235,7 @@ void func_80AF8F60(Player* player, u8* shadowTexture, f32 arg2) {
     }
 }
 
-void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext* globalCtx) {
+void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, PlayState* play) {
     s16 temp_t0;
     s16 temp_t1;
     s16 temp_v0;
@@ -332,17 +332,17 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
     osSyncPrintf("SDA CONT 4\n");
 }
 
-void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) {
+void func_80AF9C70(u8* shadowTexture, Player* player, PlayState* play) {
     s32 pad;
     f32 tempx;
     f32 tempz;
     s16 phi_s1;
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
 
     osSyncPrintf("SDA D 1\n");
-    func_80094044(globalCtx->state.gfxCtx);
+    func_80094044(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 0, 0, 0, (BREG(52) + 50));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 0);
     Matrix_Translate(player->actor.world.pos.x, player->actor.floorHeight, player->actor.world.pos.z, MTXMODE_NEW);
@@ -353,7 +353,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
             20.0f;
     Matrix_Translate(tempx, 0.0f, tempz, MTXMODE_APPLY);
     Matrix_Scale(((BREG(56) - 250) / 1000.0f) + 0.6f, 1.0f, ((BREG(59) - 250) / 1000.0f) + 0.6f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_80AFA3D8);
     gDPLoadTextureBlock(POLY_XLU_DISP++, shadowTexture, G_IM_FMT_I, G_IM_SIZ_8b, 0x40, 0x40, 0,
@@ -363,7 +363,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
 
     for (phi_s1 = 0; phi_s1 < KREG(78); phi_s1++) {
         Matrix_Scale((KREG(79) / 100.0f) + 1.0f, 1.0f, (KREG(79) / 100.0f) + 1.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
     }

@@ -1532,7 +1532,7 @@ void HintTable_Init() {
     hintTable[JUNK02] = HintText::Junk({
         // obscure text
         Text{ "They say you must read the names of \"Special Deal\" shop items carefully.",
-              /*french*/ "Selon moi, les « Offres spéciales » sont parfois trompeuses... Lisez attentivement!",
+              /*french*/ "Selon moi, les \"Offres spéciales\" sont parfois trompeuses... Lisez les attentivement!",
               /*spanish*/ "Según dicen, se debería prestar atención a los nombres de las ofertas especiales." },
     });
 
@@ -1956,7 +1956,7 @@ void HintTable_Init() {
     hintTable[JUNK65] = HintText::Junk({
         // obscure text
         Text{ "They say that the nightly builds may be unstable.",
-              /*french*/ "Selon moi, les « nightly builds » peuvent être instables.",
+              /*french*/ "Selon moi, les \"nightly builds\" peuvent être instables.",
               /*spanish*/ "Según dicen, las últimas nightlies pueden llegar a ser algo inestables." },
     });
 

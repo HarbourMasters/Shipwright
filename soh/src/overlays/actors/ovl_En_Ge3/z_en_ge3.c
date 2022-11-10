@@ -9,14 +9,14 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
-void EnGe3_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnGe3_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnGe3_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnGe3_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnGe3_Init(Actor* thisx, PlayState* play);
+void EnGe3_Destroy(Actor* thisx, PlayState* play);
+void EnGe3_Update(Actor* thisx, PlayState* play);
+void EnGe3_Draw(Actor* thisx, PlayState* play);
 
-void EnGe3_WaitLookAtPlayer(EnGe3* this, GlobalContext* globalCtx);
-void EnGe3_ForceTalk(EnGe3* this, GlobalContext* globalCtx);
-void EnGe3_UpdateWhenNotTalking(Actor* thisx, GlobalContext* globalCtx);
+void EnGe3_WaitLookAtPlayer(EnGe3* this, PlayState* play);
+void EnGe3_ForceTalk(EnGe3* this, PlayState* play);
+void EnGe3_UpdateWhenNotTalking(Actor* thisx, PlayState* play);
 
 const ActorInit En_Ge3_InitVars = {
     ACTOR_EN_GE3,
@@ -64,16 +64,16 @@ void EnGe3_ChangeAction(EnGe3* this, s32 i) {
     this->unk_30C &= ~2;
 }
 
-void EnGe3_Init(Actor* thisx, GlobalContext* globalCtx2) {
+void EnGe3_Init(Actor* thisx, PlayState* play2) {
     EnGe3* this = (EnGe3*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGerudoRedSkel, NULL, this->jointTable, this->morphTable,
+    SkelAnime_InitFlex(play, &this->skelAnime, &gGerudoRedSkel, NULL, this->jointTable, this->morphTable,
                        GELDB_LIMB_MAX);
     Animation_PlayLoop(&this->skelAnime, &gGerudoRedStandAnim);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.world.rot.z = 0;
@@ -86,20 +86,20 @@ void EnGe3_Init(Actor* thisx, GlobalContext* globalCtx2) {
     this->actor.gravity = -1.0f;
 }
 
-void EnGe3_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnGe3_Destroy(Actor* thisx, PlayState* play) {
     EnGe3* this = (EnGe3*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnGe3_TurnToFacePlayer(EnGe3* this, GlobalContext* globalCtx) {
+void EnGe3_TurnToFacePlayer(EnGe3* this, PlayState* play) {
     s32 pad;
     s16 angleDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if (ABS(angleDiff) <= 0x4000) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 6, 4000, 100);
         this->actor.world.rot.y = this->actor.shape.rot.y;
-        func_80038290(globalCtx, &this->actor, &this->headRot, &this->unk_306, this->actor.focus.pos);
+        func_80038290(play, &this->actor, &this->headRot, &this->unk_306, this->actor.focus.pos);
     } else {
         if (angleDiff < 0) {
             Math_SmoothStepToS(&this->headRot.y, -0x2000, 6, 6200, 0x100);
@@ -112,10 +112,10 @@ void EnGe3_TurnToFacePlayer(EnGe3* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGe3_LookAtPlayer(EnGe3* this, GlobalContext* globalCtx) {
+void EnGe3_LookAtPlayer(EnGe3* this, PlayState* play) {
     if ((ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) <= 0x2300) &&
         (this->actor.xzDistToPlayer < 100.0f)) {
-        func_80038290(globalCtx, &this->actor, &this->headRot, &this->unk_306, this->actor.focus.pos);
+        func_80038290(play, &this->actor, &this->headRot, &this->unk_306, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->headRot.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->headRot.y, 0, 6, 6200, 100);
@@ -124,76 +124,76 @@ void EnGe3_LookAtPlayer(EnGe3* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGe3_Wait(EnGe3* this, GlobalContext* globalCtx) {
-    if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+void EnGe3_Wait(EnGe3* this, PlayState* play) {
+    if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = EnGe3_WaitLookAtPlayer;
         this->actor.update = EnGe3_UpdateWhenNotTalking;
         this->actor.flags &= ~ACTOR_FLAG_16;
     }
-    EnGe3_TurnToFacePlayer(this, globalCtx);
+    EnGe3_TurnToFacePlayer(this, play);
 }
 
-void EnGe3_WaitLookAtPlayer(EnGe3* this, GlobalContext* globalCtx) {
-    EnGe3_LookAtPlayer(this, globalCtx);
+void EnGe3_WaitLookAtPlayer(EnGe3* this, PlayState* play) {
+    EnGe3_LookAtPlayer(this, play);
 }
 
-void EnGe3_WaitTillCardGiven(EnGe3* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe3_Wait;
     } else {
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }
 
-void EnGe3_GiveCard(EnGe3* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        Message_CloseTextbox(globalCtx);
+void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_16;
         this->actionFunc = EnGe3_WaitTillCardGiven;
         if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 10000.0f, 50.0f);
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }
 
-void EnGe3_ForceTalk(EnGe3* this, GlobalContext* globalCtx) {
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+void EnGe3_ForceTalk(EnGe3* this, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnGe3_GiveCard;
     } else {
         if (!(this->unk_30C & 4)) {
-            func_8002DF54(globalCtx, &this->actor, 7);
+            func_8002DF54(play, &this->actor, 7);
             this->unk_30C |= 4;
         }
         this->actor.textId = 0x6004;
         this->actor.flags |= ACTOR_FLAG_16;
-        func_8002F1C4(&this->actor, globalCtx, 300.0f, 300.0f, 0);
+        func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
-    EnGe3_LookAtPlayer(this, globalCtx);
+    EnGe3_LookAtPlayer(this, play);
 }
 
-void EnGe3_UpdateCollision(EnGe3* this, GlobalContext* globalCtx) {
+void EnGe3_UpdateCollision(EnGe3* this, PlayState* play) {
     s32 pad;
     s32 pad2;
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 40.0f, 25.0f, 40.0f, 5);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 40.0f, 25.0f, 40.0f, 5);
 
     if (!(this->unk_30C & 2) && SkelAnime_Update(&this->skelAnime)) {
         this->unk_30C |= 2;
     }
 }
 
-void EnGe3_MoveAndBlink(EnGe3* this, GlobalContext* globalCtx) {
+void EnGe3_MoveAndBlink(EnGe3* this, PlayState* play) {
 
     Actor_MoveForward(&this->actor);
 
@@ -208,34 +208,34 @@ void EnGe3_MoveAndBlink(EnGe3* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnGe3_UpdateWhenNotTalking(Actor* thisx, GlobalContext* globalCtx) {
+void EnGe3_UpdateWhenNotTalking(Actor* thisx, PlayState* play) {
     EnGe3* this = (EnGe3*)thisx;
 
-    EnGe3_UpdateCollision(this, globalCtx);
-    this->actionFunc(this, globalCtx);
+    EnGe3_UpdateCollision(this, play);
+    this->actionFunc(this, play);
 
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnGe3_Wait;
         this->actor.update = EnGe3_Update;
     } else {
         this->actor.textId = 0x6005;
         if (this->actor.xzDistToPlayer < 100.0f) {
-            func_8002F2CC(&this->actor, globalCtx, 100.0f);
+            func_8002F2CC(&this->actor, play, 100.0f);
         }
     }
 
-    EnGe3_MoveAndBlink(this, globalCtx);
+    EnGe3_MoveAndBlink(this, play);
 }
 
-void EnGe3_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnGe3_Update(Actor* thisx, PlayState* play) {
     EnGe3* this = (EnGe3*)thisx;
 
-    EnGe3_UpdateCollision(this, globalCtx);
-    this->actionFunc(this, globalCtx);
-    EnGe3_MoveAndBlink(this, globalCtx);
+    EnGe3_UpdateCollision(this, play);
+    this->actionFunc(this, play);
+    EnGe3_MoveAndBlink(this, play);
 }
 
-s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnGe3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGe3* this = (EnGe3*)thisx;
 
     switch (limbIndex) {
@@ -252,7 +252,7 @@ s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
         default:
             if (CVar_GetS32("gGerudoWarriorClothingFix", 0)) {
                 // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
-                OPEN_DISPS(globalCtx->state.gfxCtx);
+                OPEN_DISPS(play->state.gfxCtx);
                 switch (limbIndex) {
                     case GELDB_LIMB_NECK:
                         break;
@@ -271,14 +271,14 @@ s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
                         gDPSetEnvColor(POLY_OPA_DISP++, 140, 0, 0, 255);
                         break;
                 }
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
+                CLOSE_DISPS(play->state.gfxCtx);
             }
             break;
     }
     return false;
 }
 
-void EnGe3_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnGe3_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     EnGe3* this = (EnGe3*)thisx;
     Vec3f D_80A351C8 = { 600.0f, 700.0f, 0.0f };
 
@@ -287,22 +287,22 @@ void EnGe3_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     }
 }
 
-void EnGe3_Draw(Actor* thisx, GlobalContext* globalCtx2) {
+void EnGe3_Draw(Actor* thisx, PlayState* play2) {
     static void* eyeTextures[] = {
         gGerudoRedEyeOpenTex,
         gGerudoRedEyeHalfTex,
         gGerudoRedEyeShutTex,
     };
     EnGe3* this = (EnGe3*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(globalCtx->state.gfxCtx);
+    func_800943C8(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
-    func_8002EBCC(&this->actor, globalCtx, 0);
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    func_8002EBCC(&this->actor, play, 0);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -3,9 +3,9 @@
 #include "variables.h"
 #include "macros.h"
 
-void Randomizer_ConsumeAdultTradeItem(GlobalContext* globalCtx, u8 itemId) {
+void Randomizer_ConsumeAdultTradeItem(PlayState* play, u8 itemId) {
     gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
-	Inventory_ReplaceItem(globalCtx, itemId, Randomizer_GetNextAdultTradeItem());
+	Inventory_ReplaceItem(play, itemId, Randomizer_GetNextAdultTradeItem());
 }
 
 u8 Randomizer_GetNextAdultTradeItem() {

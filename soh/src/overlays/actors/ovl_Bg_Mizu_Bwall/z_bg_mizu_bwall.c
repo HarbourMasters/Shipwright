@@ -10,14 +10,14 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgMizuBwall_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgMizuBwall_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgMizuBwall_Init(Actor* thisx, PlayState* play);
+void BgMizuBwall_Destroy(Actor* thisx, PlayState* play);
+void BgMizuBwall_Update(Actor* thisx, PlayState* play);
+void BgMizuBwall_Draw(Actor* thisx, PlayState* play);
 
-void BgMizuBwall_Idle(BgMizuBwall* this, GlobalContext* globalCtx);
-void BgMizuBwall_Break(BgMizuBwall* this, GlobalContext* globalCtx);
-void BgMizuBwall_DoNothing(BgMizuBwall* this, GlobalContext* globalCtx);
+void BgMizuBwall_Idle(BgMizuBwall* this, PlayState* play);
+void BgMizuBwall_Break(BgMizuBwall* this, PlayState* play);
+void BgMizuBwall_DoNothing(BgMizuBwall* this, PlayState* play);
 
 const ActorInit Bg_Mizu_Bwall_InitVars = {
     ACTOR_BG_MIZU_BWALL,
@@ -170,7 +170,7 @@ void BgMizuBwall_RotateVec3f(Vec3f* out, Vec3f* in, f32 sin, f32 cos) {
     out->z = (in->z * cos) - (in->x * sin);
 }
 
-void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMizuBwall* this = (BgMizuBwall*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -180,17 +180,17 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->dList = sDLists[(u16)this->dyna.actor.params & 0xF];
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     CollisionHeader_GetVirtual(sColHeaders[(u16)this->dyna.actor.params & 0xF], &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     switch ((u16)this->dyna.actor.params & 0xF) {
         case MIZUBWALL_FLOOR:
-            if (Flags_GetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->dList = NULL;
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
-                Collider_InitTris(globalCtx, &this->collider);
-                if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitFloor, this->elements)) {
+                Collider_InitTris(play, &this->collider);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitFloor, this->elements)) {
                     osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
                                  __LINE__, this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
@@ -219,13 +219,13 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         case MIZUBWALL_RUTO_ROOM:
-            if (Flags_GetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->dList = NULL;
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
-                Collider_InitTris(globalCtx, &this->collider);
-                if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitRutoWall,
+                Collider_InitTris(play, &this->collider);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitRutoWall,
                                       this->elements)) {
                     osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
                                  __LINE__, this->dyna.actor.params);
@@ -255,13 +255,13 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         case MIZUBWALL_UNUSED:
-            if (Flags_GetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->dList = NULL;
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
-                Collider_InitTris(globalCtx, &this->collider);
-                if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitUnusedWall,
+                Collider_InitTris(play, &this->collider);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitUnusedWall,
                                       this->elements)) {
                     osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
                                  __LINE__, this->dyna.actor.params);
@@ -293,13 +293,13 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         case MIZUBWALL_STINGER_ROOM_1:
-            if (Flags_GetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->dList = NULL;
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
-                Collider_InitTris(globalCtx, &this->collider);
-                if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
+                Collider_InitTris(play, &this->collider);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
                     osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
                                  __LINE__, this->dyna.actor.params);
@@ -331,13 +331,13 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         case MIZUBWALL_STINGER_ROOM_2:
-            if (Flags_GetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F)) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->dList = NULL;
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
-                Collider_InitTris(globalCtx, &this->collider);
-                if (!Collider_SetTris(globalCtx, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
+                Collider_InitTris(play, &this->collider);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
                     osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
                                  __LINE__, this->dyna.actor.params);
@@ -371,18 +371,18 @@ void BgMizuBwall_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgMizuBwall_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgMizuBwall_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMizuBwall* this = (BgMizuBwall*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    Collider_DestroyTris(globalCtx, &this->collider);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+    Collider_DestroyTris(play, &this->collider);
 }
 
-void BgMizuBwall_SetAlpha(BgMizuBwall* this, GlobalContext* globalCtx) {
-    f32 waterLevel = globalCtx->colCtx.colHeader->waterBoxes[2].ySurface;
+void BgMizuBwall_SetAlpha(BgMizuBwall* this, PlayState* play) {
+    f32 waterLevel = play->colCtx.colHeader->waterBoxes[2].ySurface;
 
-    if (globalCtx->colCtx.colHeader->waterBoxes) {}
+    if (play->colCtx.colHeader->waterBoxes) {}
 
     if (waterLevel < WATER_TEMPLE_WATER_F1_Y) {
         this->scrollAlpha1 = 255;
@@ -414,7 +414,7 @@ void BgMizuBwall_SetAlpha(BgMizuBwall* this, GlobalContext* globalCtx) {
     this->scrollAlpha4 = this->scrollAlpha3;
 }
 
-void BgMizuBwall_SpawnDebris(BgMizuBwall* this, GlobalContext* globalCtx) {
+void BgMizuBwall_SpawnDebris(BgMizuBwall* this, PlayState* play) {
     s32 i;
     s32 pad;
     s16 rand1;
@@ -459,30 +459,30 @@ void BgMizuBwall_SpawnDebris(BgMizuBwall* this, GlobalContext* globalCtx) {
 
         rand1 = (s16)(Rand_ZeroOne() * 120.0f) + 20;
         rand2 = (s16)(Rand_ZeroOne() * 240.0f) + 20;
-        func_80033480(globalCtx, &debrisPos, 50.0f, 2, rand1, rand2, 0);
-        Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_A_OBJ, debrisPos.x, debrisPos.y, debrisPos.z, 0, 0, 0,
+        func_80033480(play, &debrisPos, 50.0f, 2, rand1, rand2, 0);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, debrisPos.x, debrisPos.y, debrisPos.z, 0, 0, 0,
                     0xB);
     }
 }
 
-void BgMizuBwall_Idle(BgMizuBwall* this, GlobalContext* globalCtx) {
-    BgMizuBwall_SetAlpha(this, globalCtx);
+void BgMizuBwall_Idle(BgMizuBwall* this, PlayState* play) {
+    BgMizuBwall_SetAlpha(this, play);
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
-        Flags_SetSwitch(globalCtx, ((u16)this->dyna.actor.params >> 8) & 0x3F);
+        Flags_SetSwitch(play, ((u16)this->dyna.actor.params >> 8) & 0x3F);
         this->breakTimer = 1;
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+        func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->dList = NULL;
-        BgMizuBwall_SpawnDebris(this, globalCtx);
+        BgMizuBwall_SpawnDebris(this, play);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WALL_BROKEN);
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->actionFunc = BgMizuBwall_Break;
     } else if (this->dyna.actor.xzDistToPlayer < 600.0f) {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void BgMizuBwall_Break(BgMizuBwall* this, GlobalContext* globalCtx) {
+void BgMizuBwall_Break(BgMizuBwall* this, PlayState* play) {
     if (this->breakTimer > 0) {
         this->breakTimer--;
     } else {
@@ -490,41 +490,41 @@ void BgMizuBwall_Break(BgMizuBwall* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgMizuBwall_DoNothing(BgMizuBwall* this, GlobalContext* globalCtx) {
+void BgMizuBwall_DoNothing(BgMizuBwall* this, PlayState* play) {
 }
 
-void BgMizuBwall_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgMizuBwall_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMizuBwall* this = (BgMizuBwall*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
+void BgMizuBwall_Draw(Actor* thisx, PlayState* play2) {
     BgMizuBwall* this = (BgMizuBwall*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    frames = globalCtx->gameplayFrames;
+    OPEN_DISPS(play->state.gfxCtx);
+    frames = play->gameplayFrames;
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha1));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha2));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha3));
     gSPSegment(POLY_OPA_DISP++, 0x0B,
-               Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, 3 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 3 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha4));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), 2);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), 2);
 
     if (this->dList != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->dList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

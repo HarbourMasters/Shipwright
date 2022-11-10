@@ -13,7 +13,7 @@ typedef enum {
 
 struct EnGoma;
 
-typedef void (*EnGomaActionFunc)(struct EnGoma*, GlobalContext*);
+typedef void (*EnGomaActionFunc)(struct EnGoma*, PlayState*);
 
 typedef enum {
     /*  0 */ GOMA_LIMB_NONE,

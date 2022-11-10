@@ -9,12 +9,12 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void OceffSpot_Init(Actor* thisx, GlobalContext* globalCtx);
-void OceffSpot_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void OceffSpot_Update(Actor* thisx, GlobalContext* globalCtx);
-void OceffSpot_Draw(Actor* thisx, GlobalContext* globalCtx);
+void OceffSpot_Init(Actor* thisx, PlayState* play);
+void OceffSpot_Destroy(Actor* thisx, PlayState* play);
+void OceffSpot_Update(Actor* thisx, PlayState* play);
+void OceffSpot_Draw(Actor* thisx, PlayState* play);
 
-void OceffSpot_GrowCylinder(OceffSpot* this, GlobalContext* globalCtx);
+void OceffSpot_GrowCylinder(OceffSpot* this, PlayState* play);
 
 const ActorInit Oceff_Spot_InitVars = {
     ACTOR_OCEFF_SPOT,
@@ -40,7 +40,7 @@ void OceffSpot_SetupAction(OceffSpot* this, OceffSpotActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void OceffSpot_Init(Actor* thisx, GlobalContext* globalCtx) {
+void OceffSpot_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     OceffSpot* this = (OceffSpot*)thisx;
 
@@ -49,11 +49,11 @@ void OceffSpot_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     Lights_PointNoGlowSetInfo(&this->lightInfo1, this->actor.world.pos.x, this->actor.world.pos.y,
                               this->actor.world.pos.z, 0, 0, 0, 0);
-    this->lightNode1 = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo1);
+    this->lightNode1 = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo1);
 
     Lights_PointNoGlowSetInfo(&this->lightInfo2, this->actor.world.pos.x, this->actor.world.pos.y,
                               this->actor.world.pos.z, 0, 0, 0, 0);
-    this->lightNode2 = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo2);
+    this->lightNode2 = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo2);
     if (YREG(15)) {
         this->actor.scale.y = 2.4f;
     } else {
@@ -63,27 +63,27 @@ void OceffSpot_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_174 = 0.0f;
 }
 
-void OceffSpot_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void OceffSpot_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     OceffSpot* this = (OceffSpot*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode1);
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode2);
-    func_800876C8(globalCtx);
-    if ((gSaveContext.nayrusLoveTimer != 0) && (globalCtx->actorCtx.actorLists[ACTORCAT_PLAYER].length != 0)) {
+    LightContext_RemoveLight(play, &play->lightCtx, this->lightNode1);
+    LightContext_RemoveLight(play, &play->lightCtx, this->lightNode2);
+    func_800876C8(play);
+    if ((gSaveContext.nayrusLoveTimer != 0) && (play->actorCtx.actorLists[ACTORCAT_PLAYER].length != 0)) {
         player->stateFlags3 |= 0x40;
     }
 }
 
-void OceffSpot_End(OceffSpot* this, GlobalContext* globalCtx) {
+void OceffSpot_End(OceffSpot* this, PlayState* play) {
     if (this->unk_174 > 0.0f) {
         this->unk_174 -= 0.05f;
     } else {
         Actor_Kill(&this->actor);
-        if (gTimeIncrement != 400 && globalCtx->msgCtx.unk_E40E == 0 && (gSaveContext.eventInf[0] & 0xF) != 1) {
-            if (globalCtx->msgCtx.ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE ||
-                globalCtx->msgCtx.ocarinaMode != OCARINA_MODE_08) {
+        if (gTimeIncrement != 400 && play->msgCtx.unk_E40E == 0 && (gSaveContext.eventInf[0] & 0xF) != 1) {
+            if (play->msgCtx.ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE ||
+                play->msgCtx.ocarinaMode != OCARINA_MODE_08) {
                 gSaveContext.sunsSongState = SUNSSONG_START;
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Sun's Song Flag"
@@ -91,7 +91,7 @@ void OceffSpot_End(OceffSpot* this, GlobalContext* globalCtx) {
                 osSyncPrintf(VT_RST);
             }
         } else {
-            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+            play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             osSyncPrintf(VT_FGCOL(YELLOW));
             // "Ocarina End"
             osSyncPrintf("z_oceff_spot  オカリナ終了\n");
@@ -100,7 +100,7 @@ void OceffSpot_End(OceffSpot* this, GlobalContext* globalCtx) {
     }
 }
 
-void OceffSpot_Wait(OceffSpot* this, GlobalContext* globalCtx) {
+void OceffSpot_Wait(OceffSpot* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
@@ -108,7 +108,7 @@ void OceffSpot_Wait(OceffSpot* this, GlobalContext* globalCtx) {
     }
 }
 
-void OceffSpot_GrowCylinder(OceffSpot* this, GlobalContext* globalCtx) {
+void OceffSpot_GrowCylinder(OceffSpot* this, PlayState* play) {
     if (this->unk_174 < 1.0f) {
         this->unk_174 += 0.05f;
     } else {
@@ -117,14 +117,14 @@ void OceffSpot_GrowCylinder(OceffSpot* this, GlobalContext* globalCtx) {
     }
 }
 
-void OceffSpot_Update(Actor* thisx, GlobalContext* globalCtx) {
+void OceffSpot_Update(Actor* thisx, PlayState* play) {
     OceffSpot* this = (OceffSpot*)thisx;
     s32 pad;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     f32 temp;
 
     temp = (1.0f - cosf(this->unk_174 * M_PI)) * 0.5f;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     this->actor.scale.z = 0.42f * temp;
     this->actor.scale.x = 0.42f * temp;
@@ -133,7 +133,7 @@ void OceffSpot_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.world.pos.y += 5.0f;
 
     temp = (2.0f - this->unk_174) * this->unk_174;
-    Environment_AdjustLights(globalCtx, temp * 0.5F, 880.0f, 0.2f, 0.9f);
+    Environment_AdjustLights(play, temp * 0.5F, 880.0f, 0.2f, 0.9f);
 
     Lights_PointNoGlowSetInfo(&this->lightInfo1, (s16)this->actor.world.pos.x, (s16)this->actor.world.pos.y + 55.0f,
                               (s16)this->actor.world.pos.z, (s32)(255.0f * temp), (s32)(255.0f * temp),
@@ -146,20 +146,20 @@ void OceffSpot_Update(Actor* thisx, GlobalContext* globalCtx) {
                               (s32)(255.0f * temp), (s32)(255.0f * temp), (s32)(200.0f * temp), (s16)(100.0f * temp));
 }
 
-void OceffSpot_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void OceffSpot_Draw(Actor* thisx, PlayState* play) {
     OceffSpot* this = (OceffSpot*)thisx;
-    u32 scroll = globalCtx->state.frames & 0xFFFF;
+    u32 scroll = play->state.frames & 0xFFFF;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, sCylinderMaterialDL);
-    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 32, 1,
+    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 32, 1,
                                                      0, scroll * (-8), 32, 32));
     gSPDisplayList(POLY_XLU_DISP++, sCylinderModelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
