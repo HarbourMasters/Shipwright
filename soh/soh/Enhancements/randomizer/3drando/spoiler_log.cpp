@@ -298,13 +298,19 @@ static void WriteLocation(
 //Writes a shuffled entrance to the specified node
 static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
   int16_t originalIndex = entrance->GetIndex();
-  int16_t destinationIndex = entrance->GetReverse()->GetIndex();
+  int16_t destinationIndex = -1;
   int16_t originalBlueWarp = entrance->GetBlueWarp();
-  int16_t replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+  int16_t replacementBlueWarp = -1;
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
-  int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+  int16_t replacementDestinationIndex = -1;
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    destinationIndex = entrance->GetReverse()->GetIndex();
+    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+  }
 
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
@@ -321,7 +327,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
             jsonData["entrances"].push_back(entranceJson);
 
              // When decoupled entrances is off, handle saving reverse entrances with blue warps
-            if (!false) { // RANDOTODO: add check for decoupled entrances
+            if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
               json reverseEntranceJson = json::object({
                 {"index", replacementDestinationIndex},
                 {"destination", replacementIndex},
