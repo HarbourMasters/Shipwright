@@ -235,7 +235,7 @@ void Title_Main(GameState* thisx) {
     Title_Calc(this);
     Title_Draw(this);
 
-    if (1) {
+    if (!CVar_GetS32("gHideBuildInfo", 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
