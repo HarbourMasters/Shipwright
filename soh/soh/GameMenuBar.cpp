@@ -987,14 +987,18 @@ namespace GameMenuBar {
                     UIWidgets::Spacer(0);
 
                     if (ImGui::BeginMenu("Shooting Gallery")) {
-                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin");
-                        UIWidgets::Tooltip("Skips the shooting gallery minigame");
-                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery");
-                        UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
-                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
-                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
+                        UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
+                        if (CVar_GetS32("gCustomizeShootingGallery", 0)) {
+                            UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin");
+                            UIWidgets::Tooltip("Skips the shooting gallery minigame");
+                            UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery");
+                            UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
+                            UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
+                            UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                            UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false);
+                            UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        }
                         ImGui::EndMenu();
                     }
 
