@@ -25,6 +25,20 @@
 
 extern "C" PlayState* gPlayState;
 
+#ifdef WINDOWS
+template <> struct fmt::formatter<RequestType> : fmt::formatter<std::string> {
+    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+
+    template <typename FormatContext>
+    auto format(const RequestType& type, FormatContext& ctx) -> decltype(ctx.out()) {
+        switch (type) {
+            case RequestType::SAVE: return std::format_to(ctx.out(), "Save");
+            case RequestType::LOAD: return std::format_to(ctx.out(), "Load");
+            default: return std::format_to(ctx.out(), "Unknown");
+        }
+    }
+};
+#else
 template <> struct fmt::formatter<RequestType> {
     constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
 
@@ -37,6 +51,7 @@ template <> struct fmt::formatter<RequestType> {
         }
     }
 };
+#endif
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
