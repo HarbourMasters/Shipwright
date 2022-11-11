@@ -619,9 +619,11 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
     int cvar = CVar_GetS32("gChestSizeAndTextureMatchesContents", 0);
+    int agonyCVar = CVar_GetS32("gChestSizeDependsStoneOfAgony", 0);
+    int stoneCheck = CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY);
     GetItemCategory getItemCategory;
 
-    if (play->sceneNum != SCENE_TAKARAYA && cvar > 0) {
+    if (play->sceneNum != SCENE_TAKARAYA && cvar > 0 && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
         getItemCategory = this->getItemEntry.getItemCategory;
         // If they don't have bombchu's yet consider the bombchu item major
         if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
@@ -637,7 +639,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (play->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 3)) {
+    if (play->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 3) && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
@@ -665,7 +667,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (play->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 2)) {
+    if (play->sceneNum != SCENE_TAKARAYA && (cvar == 1 || cvar == 2) && ((agonyCVar > 0 && stoneCheck) | agonyCVar == 0)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
