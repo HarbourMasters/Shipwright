@@ -62,7 +62,7 @@ void SortChronological(TimestampInfo* arr, size_t len) {
     }
 }
 
-void DisplayStat(const char* text, uint16_t value) {
+void DisplayStat(const char* text, uint32_t value) {
     ImGui::Text(text);
     ImGui::SameLine();
     // Hack to keep the digits properly aligned in the column
