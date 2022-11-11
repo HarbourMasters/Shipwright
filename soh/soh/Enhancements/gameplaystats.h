@@ -31,6 +31,9 @@ typedef enum {
     /* 0x05 */ COUNT_BONKS,
     /* 0x06 */ COUNT_PAUSES,
     /* 0x07 */ COUNT_STEPS,
-    /* 0x08 */ COUNT_MAX
+    /* 0x08 */ COUNT_POTS_BROKEN,
+    /* 0x09 */ COUNT_BUSHES_CUT,
+    /* 0x0A */ COUNT_SWORD_SWINGS,
+    /* 0x0B */ COUNT_MAX
 
 } GameplayStatCount;

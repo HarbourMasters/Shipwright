@@ -1948,6 +1948,10 @@ void func_80833A20(Player* this, s32 newSwordState) {
         if ((this->swordAnimation < 0x10) || (this->swordAnimation >= 0x14)) {
             func_80832698(this, voiceSfx);
         }
+
+        if (this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER && this->heldItemActionParam <= PLAYER_AP_SWORD_BGS) {
+            gSaveContext.gameplayStats.count[COUNT_SWORD_SWINGS]++;
+        }
     }
 
     this->swordState = newSwordState;

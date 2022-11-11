@@ -119,7 +119,7 @@ void DrawStatsTracker(bool& open) {
 
     // Display it
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        // To be shown, the entry must have a time and a non-empty string for its display name
+        // To be shown, the entry must have a time and a string for its display name
         if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 23) > 1) {
             DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name);
         }
@@ -130,11 +130,14 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED]);
     DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT]);
     DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN]);
+    DisplayStat("Sword Swings:          ", gSaveContext.gameplayStats.count[COUNT_SWORD_SWINGS]);
     DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.count[COUNT_STEPS]);
     DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.count[COUNT_ROLLS]);
     DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.count[COUNT_BONKS]);
     DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.count[COUNT_ICE_TRAPS]);
     DisplayStat("Pauses:                ", gSaveContext.gameplayStats.count[COUNT_PAUSES]);
+    DisplayStat("Pots Smashed:          ", gSaveContext.gameplayStats.count[COUNT_POTS_BROKEN]);
+    DisplayStat("Bushes Cut:            ", gSaveContext.gameplayStats.count[COUNT_BUSHES_CUT]);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
