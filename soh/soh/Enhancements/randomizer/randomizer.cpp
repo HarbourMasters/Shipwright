@@ -223,6 +223,14 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Misc Settings:Temple of Time Altar Text", RSK_TOT_ALTAR_HINT },
+    { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
+    { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
+    { "Misc Settings: 10 GS Hint", RSK_KAK_10_SKULLS_HINT },
+    { "Misc Settings: 20 GS Hint", RSK_KAK_20_SKULLS_HINT },
+    { "Misc Settings: 30 GS Hint", RSK_KAK_30_SKULLS_HINT },
+    { "Misc Settings: 40 GS Hint", RSK_KAK_40_SKULLS_HINT },
+    { "Misc Settings: 50 GS Hint", RSK_KAK_50_SKULLS_HINT },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
@@ -329,23 +337,23 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
 
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::randoMiscHintsTableID, TEXT_SSH,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
-            "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you &%b{{check}}%w!",
-            "{{check}}",
-            "{{check}}"
-        }
-    );
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-        {
-            TEXTBOX_TYPE_BLUE,
-            TEXTBOX_POS_TOP,
-            gSaveContext.dampeText,
-            gSaveContext.dampeText,
-            gSaveContext.dampeText
-        }
-    );
+            Randomizer::randoMiscHintsTableID, TEXT_SSH,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
+                "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you &%b{{check}}%w!",
+                "{{check}}",
+                "{{check}}"
+            }
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
+            {
+                TEXTBOX_TYPE_BLUE,
+                TEXTBOX_POS_TOP,
+                gSaveContext.dampeText,
+                gSaveContext.dampeText,
+                gSaveContext.dampeText
+            }
+        );
 
 
 }
@@ -730,6 +738,14 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
+                    case RSK_TOT_ALTAR_HINT:
+                    case RSK_GANONDORF_LIGHT_ARROWS_HINT:
+                    case RSK_DAMPES_DIARY_HINT:
+                    case RSK_KAK_10_SKULLS_HINT:
+                    case RSK_KAK_20_SKULLS_HINT:
+                    case RSK_KAK_30_SKULLS_HINT:
+                    case RSK_KAK_40_SKULLS_HINT:
+                    case RSK_KAK_50_SKULLS_HINT:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
@@ -2551,6 +2567,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
+    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarText", 1); //Altar Text is enabled by default
+    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", 1); //Light arrow hint is enabled by default
+    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", 0);
+    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", 0);
+    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", 0);
+    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVar_GetS32("gRandomize30GSHint", 0);
+    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVar_GetS32("gRandomize40GSHint", 0);
+    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVar_GetS32("gRandomize50GSHint", 0);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
     cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVar_GetS32("gRandomizeBlueFireArrows", 0);
@@ -3582,6 +3606,35 @@ void DrawRandoEditor(bool& open) {
                 }
 
                 UIWidgets::PaddedSeparator();
+                
+                //Extra Hints
+                ImGui::Text("Extra Hints");
+                UIWidgets::InsertHelpHoverText(
+                    "This setting adds some hints at locations other than Gossip Stones.\n\n"
+                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward they will give you for obtaining that many tokens."
+                );
+                
+                ImGui::Indent();
+                //Altar, Light Arrows, and Warp Songs are enabled by default
+                UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false);
+                UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
+                    "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
+                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false);
+                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
+                UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
+                UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
+                //RANDOTODO: Add this when randomized warp songs are implemented
+                //UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, true, "Coming soon");
+                //UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 20", "gRandomize20GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 30", "gRandomize30GSHint", true, false);                
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 40", "gRandomize40GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 50", "gRandomize50GSHint", true, false);
+                ImGui::Unindent();
+
+
+                UIWidgets::PaddedSeparator();
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
@@ -3923,15 +3976,9 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-CustomMessageEntry Randomizer::GetSshMessage() {
-    //First, determine who Link is talking to by grabbing the target actor and using params
-    Actor* checkAct = GET_PLAYER(gPlayState)->targetActor;
-    s16 actID = checkAct->id;
-    s16 params = checkAct->params;
-    u16 sceneID = gPlayState->sceneNum;
-    //Next, setup custome message entry using params we just got as a key.
+CustomMessageEntry Randomizer::GetSshMessage(s16 params) {
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_SSH);
-    RandomizerCheck rc = GetCheckFromActor(actID, sceneID, params);
+    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
     std::vector<std::string> itemName;
     if (itemGet == RG_ICE_TRAP) {

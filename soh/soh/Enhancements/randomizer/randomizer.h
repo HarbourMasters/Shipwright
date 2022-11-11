@@ -80,7 +80,7 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessageEntry GetSshMessage();
+    CustomMessageEntry GetSshMessage(s16 params);
     CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);

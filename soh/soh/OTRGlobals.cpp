@@ -1949,12 +1949,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
-        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
+        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) && Randomizer_GetSettingValue(RSK_TOT_ALTAR_HINT)) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
-        } else if (textId == TEXT_GANONDORF) {
+        } else if (textId == TEXT_GANONDORF && Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
             if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {
@@ -1994,8 +1994,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         } else if (textId == TEXT_SSH) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetSshMessage();
-        } else if (textId == TEXT_DAMPES_DIARY) { //Dampe's Diary
+            actorParams = GET_PLAYER(play)->targetActor->params;
+            RandomizerSettingKey rsk = (RandomizerSettingKey)(RSK_KAK_10_SKULLS_HINT + (actorParams - 1));
+            if (Randomizer_GetSettingValue(rsk)) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetSshMessage(actorParams);
+            }
+        } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) { //Dampe's Diary
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
         }
     }
