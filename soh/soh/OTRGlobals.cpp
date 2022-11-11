@@ -1954,8 +1954,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
-        } else if (textId == TEXT_GANONDORF && Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
-            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+        } else if (textId == TEXT_GANONDORF) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT || !Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
