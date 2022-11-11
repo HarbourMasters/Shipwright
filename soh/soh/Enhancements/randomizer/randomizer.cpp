@@ -223,7 +223,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
-    { "Misc Settings:Temple of Time Altar Text", RSK_TOT_ALTAR_HINT },
+    { "Misc Settings:ToT Altar Text", RSK_TOT_ALTAR_HINT },
     { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
     { "Misc Settings: 10 GS Hint", RSK_KAK_10_SKULLS_HINT },
@@ -2567,7 +2567,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
-    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarText", 1); //Altar Text is enabled by default
+    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarHint", 1); //Altar Text is enabled by default
     cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", 1); //Light arrow hint is enabled by default
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", 0);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", 0);
