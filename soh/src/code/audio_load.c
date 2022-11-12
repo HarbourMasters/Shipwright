@@ -1530,7 +1530,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
 
-    seqId = seqId > 109 ? gAudioContext.seqToPlay : 0;
+    seqId = seqId > 109 ? gAudioContext.seqToPlay : seqId;
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;

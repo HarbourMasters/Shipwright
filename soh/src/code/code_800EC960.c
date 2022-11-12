@@ -134,7 +134,7 @@ u8 sAudioExtraFilter2 = 0;
 Vec3f* sSariaBgmPtr = NULL;
 f32 D_80130650 = 2000.0f;
 u8 sSeqModeInput = 0;
-u8 sSeqFlags[0x6E] = {
+u8 sSeqFlags[0x6F] = {
     0x2,  // NA_BGM_GENERAL_SFX
     0x1,  // NA_BGM_NATURE_BACKGROUND
     0,    // NA_BGM_FIELD_LOGIC
@@ -245,6 +245,7 @@ u8 sSeqFlags[0x6E] = {
     0,    // NA_BGM_FIRE_BOSS
     0x8,  // NA_BGM_TIMED_MINI_GAME
     0,    // NA_BGM_VARIOUS_SFX
+    1,    // NA_BGM_CUSTOM_SEQ
 };
 
 s8 sSpecReverbs[20] = { 0, 0, 0, 0, 0, 0, 0, 40, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
