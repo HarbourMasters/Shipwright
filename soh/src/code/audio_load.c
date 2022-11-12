@@ -573,8 +573,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
     //numFonts = gAudioContext.sequenceFontTable[index++];
 
-    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
-    gAudioContext.seqToPlay = 0;
+    seqId = seqId > 109 ? gAudioContext.seqToPlay : seqId;
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
     for (int i = 0; i < seqData2.numFonts; i++)
@@ -1531,7 +1530,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
 
-    seqId = gAudioContext.seqToPlay != 0 ? gAudioContext.seqToPlay : seqId;
+    seqId = seqId > 109 ? gAudioContext.seqToPlay : 0;
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;
