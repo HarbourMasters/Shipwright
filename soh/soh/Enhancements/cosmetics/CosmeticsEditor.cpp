@@ -269,7 +269,7 @@ void CosmeticsUpdateTick(bool& open) {
     int index = 0;
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVar_GetS32(cosmeticOption.rainbowCvar, 0)) {
-            float frequency = 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.0f));
+            float frequency = 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
             Color_RGBA8 newColor;
             newColor.r = sin(frequency * ((hue + index)) + 0) * 127 + 128;
             newColor.g = sin(frequency * ((hue + index)) + (2 * M_PI / 3)) * 127 + 128;
@@ -284,7 +284,7 @@ void CosmeticsUpdateTick(bool& open) {
             CVar_SetRGBA(cosmeticOption.cvar, newColor);
         }
         if (!CVar_GetS32("gCosmetics.RainbowSync", 0)) {
-            index+= (60 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.0f));
+            index+= (60 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
         }
     }
     ApplyOrResetCustomGfxPatches(true);
