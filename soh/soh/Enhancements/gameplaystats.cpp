@@ -62,7 +62,7 @@ void SortChronological(TimestampInfo* arr, size_t len) {
     }
 }
 
-void DisplayStat(const char* text, uint16_t value) {
+void DisplayStat(const char* text, uint32_t value) {
     ImGui::Text(text);
     ImGui::SameLine();
     // Hack to keep the digits properly aligned in the column
@@ -93,7 +93,9 @@ void DrawStatsTracker(bool& open) {
         return;
     }
 
-    DisplayTimeHHMMSS(gSaveContext.gameplayStats.totalTimer,     "Total game Time:     ");
+    u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
+
+    DisplayTimeHHMMSS(totalTimer,     "Total game Time:     ");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:       ");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:     ");
 
@@ -117,7 +119,7 @@ void DrawStatsTracker(bool& open) {
 
     // Display it
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        // To be shown, the entry must have a time and a non-empty string for its display name
+        // To be shown, the entry must have a time and a string for its display name
         if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 23) > 1) {
             DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name);
         }
@@ -125,14 +127,17 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::TableNextColumn();
 
-    DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.rupeesCollected);
-    DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.rupeesSpent);
-    DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.damageTaken);
-    DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.stepCount);
-    DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.rollCount);
-    DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.bonkCount);
-    DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.iceTrapCount);
-    DisplayStat("Pauses:                ", gSaveContext.gameplayStats.pauseCount);
+    DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED]);
+    DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT]);
+    DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN]);
+    DisplayStat("Sword Swings:          ", gSaveContext.gameplayStats.count[COUNT_SWORD_SWINGS]);
+    DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.count[COUNT_STEPS]);
+    DisplayStat("Rolls:                 ", gSaveContext.gameplayStats.count[COUNT_ROLLS]);
+    DisplayStat("Bonks:                 ", gSaveContext.gameplayStats.count[COUNT_BONKS]);
+    DisplayStat("Ice Traps:             ", gSaveContext.gameplayStats.count[COUNT_ICE_TRAPS]);
+    DisplayStat("Pauses:                ", gSaveContext.gameplayStats.count[COUNT_PAUSES]);
+    DisplayStat("Pots Smashed:          ", gSaveContext.gameplayStats.count[COUNT_POTS_BROKEN]);
+    DisplayStat("Bushes Cut:            ", gSaveContext.gameplayStats.count[COUNT_BUSHES_CUT]);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

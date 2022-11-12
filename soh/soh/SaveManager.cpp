@@ -147,22 +147,6 @@ void SaveManager::LoadRandomizerVersion2() {
             SaveManager::Instance->LoadData("discovered", gSaveContext.entranceOverrides[i].discovered);
         });
     });
-    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
-        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
-        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->LoadData("pauseCount", gSaveContext.gameplayStats.pauseCount);
-        SaveManager::Instance->LoadArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
-        });
-        SaveManager::Instance->LoadData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
-        SaveManager::Instance->LoadData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
-        SaveManager::Instance->LoadData("damageTaken", gSaveContext.gameplayStats.damageTaken);
-        SaveManager::Instance->LoadData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
-        SaveManager::Instance->LoadData("rollCount", gSaveContext.gameplayStats.rollCount);
-        SaveManager::Instance->LoadData("bonkCount", gSaveContext.gameplayStats.bonkCount);
-        SaveManager::Instance->LoadData("stepCount", gSaveContext.gameplayStats.stepCount);
-    });
-
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
     });
@@ -245,22 +229,6 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("discovered", gSaveContext.entranceOverrides[i].discovered);
         });
     });
-    SaveManager::Instance->SaveStruct("gameplayStats", [&]() {
-        SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
-        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->SaveData("pauseCount", gSaveContext.gameplayStats.pauseCount);
-        SaveManager::Instance->SaveArray("getItemTime", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.timestamp[i]);
-        });
-        SaveManager::Instance->SaveData("rupeesCollected", gSaveContext.gameplayStats.rupeesCollected);
-        SaveManager::Instance->SaveData("rupeesSpent", gSaveContext.gameplayStats.rupeesSpent);
-        SaveManager::Instance->SaveData("damageTaken", gSaveContext.gameplayStats.damageTaken);
-        SaveManager::Instance->SaveData("iceTrapCount", gSaveContext.gameplayStats.iceTrapCount);
-        SaveManager::Instance->SaveData("rollCount", gSaveContext.gameplayStats.rollCount);
-        SaveManager::Instance->SaveData("bonkCount", gSaveContext.gameplayStats.bonkCount);
-        SaveManager::Instance->SaveData("stepCount", gSaveContext.gameplayStats.stepCount);
-    });
-
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->SaveData("", gSaveContext.seedIcons[i]);
     });
@@ -943,6 +911,16 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
+    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
+        });
+        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.count[i]);
+        });
+    });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -1110,6 +1088,16 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
+        });
+        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.count[i]);
+        });
+    });
 }
 
 void SaveManager::SaveBase() {
@@ -1273,6 +1261,16 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->SaveData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->SaveStruct("gameplayStats", [&]() {
+        SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
+        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
+        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.timestamp[i]);
+        });
+        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.count[i]);
+        });
+    });
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {

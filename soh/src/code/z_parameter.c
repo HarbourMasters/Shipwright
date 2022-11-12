@@ -1622,12 +1622,12 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
         return;
     }
 
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (gSaveContext.gameplayStats.totalTimer == 0) {
-        gSaveContext.gameplayStats.totalTimer = 1;
-    }
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
-    u32 time = gSaveContext.gameplayStats.totalTimer;
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
@@ -1651,12 +1651,12 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 // (special cases for rando items)
 void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
 
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (gSaveContext.gameplayStats.totalTimer == 0) {
-        gSaveContext.gameplayStats.totalTimer = 1;
-    }
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
-    u32 time = gSaveContext.gameplayStats.totalTimer;
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
@@ -3052,7 +3052,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.gameplayStats.damageTaken += -healthChange;
+        gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -3123,10 +3123,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 
     if (rupeeChange > 0) {
-        gSaveContext.gameplayStats.rupeesCollected += rupeeChange;
+        gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
     }
     if (rupeeChange < 0) {
-        gSaveContext.gameplayStats.rupeesSpent += -rupeeChange;
+        gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
 

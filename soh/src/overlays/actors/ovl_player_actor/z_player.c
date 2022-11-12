@@ -1461,7 +1461,7 @@ void func_808327F8(Player* this, f32 arg1) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, arg1);
-    gSaveContext.gameplayStats.stepCount++;
+    gSaveContext.gameplayStats.count[COUNT_STEPS]++;
 }
 
 void func_80832854(Player* this) {
@@ -1959,6 +1959,10 @@ void func_80833A20(Player* this, s32 newSwordState) {
 
         if ((this->swordAnimation < 0x10) || (this->swordAnimation >= 0x14)) {
             func_80832698(this, voiceSfx);
+        }
+
+        if (this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER && this->heldItemActionParam <= PLAYER_AP_SWORD_BGS) {
+            gSaveContext.gameplayStats.count[COUNT_SWORD_SWINGS]++;
         }
     }
 
@@ -5327,7 +5331,7 @@ void func_8083BC04(Player* this, PlayState* play) {
     func_80835C58(play, this, func_80844708, 0);
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80853914[PLAYER_ANIMGROUP_16][this->modelAnimType],
                                    1.25f * D_808535E8);
-    gSaveContext.gameplayStats.rollCount++;
+    gSaveContext.gameplayStats.count[COUNT_ROLLS]++;
 }
 
 s32 func_8083BC7C(Player* this, PlayState* play) {
@@ -6311,7 +6315,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
         // Gameplay stats: Increment Ice Trap count
-        gSaveContext.gameplayStats.iceTrapCount++;
+        gSaveContext.gameplayStats.count[COUNT_ICE_TRAPS]++;
         return 1;
     }
 
@@ -8764,7 +8768,7 @@ void func_80844708(Player* this, PlayState* play) {
                     func_8002F7DC(&this->actor, NA_SE_PL_BODY_HIT);
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
-                    gSaveContext.gameplayStats.bonkCount++;
+                    gSaveContext.gameplayStats.count[COUNT_BONKS]++;
                     return;
                 }
             }
@@ -10632,8 +10636,6 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     // Gameplay stat tracking
     if (!gSaveContext.gameplayStats.ganonDefeated) {
         gSaveContext.gameplayStats.playTimer++;
-        gSaveContext.gameplayStats.totalTimer =
-            gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3;
     }
 
     if (this->unk_A86 < 0) {
@@ -13005,7 +13007,7 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     // Gameplay stats: Increment Ice Trap count
-                    gSaveContext.gameplayStats.iceTrapCount++;
+                    gSaveContext.gameplayStats.count[COUNT_ICE_TRAPS]++;
                 }
                 return;
             }

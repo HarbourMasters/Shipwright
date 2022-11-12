@@ -1,5 +1,7 @@
 #pragma once
 
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3)
+
 void InitStatTracker();
 
 typedef enum {
@@ -18,4 +20,20 @@ typedef enum {
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,
     /* 0xAA */ TIMESTAMP_MAX
 
-}GameplayStatEvent;
+}GameplayStatTimestamp;
+
+typedef enum {
+    /* 0x00 */ COUNT_RUPEES_COLLECTED,
+    /* 0x01 */ COUNT_RUPEES_SPENT,
+    /* 0x02 */ COUNT_DAMAGE_TAKEN,
+    /* 0x03 */ COUNT_ICE_TRAPS,
+    /* 0x04 */ COUNT_ROLLS,
+    /* 0x05 */ COUNT_BONKS,
+    /* 0x06 */ COUNT_PAUSES,
+    /* 0x07 */ COUNT_STEPS,
+    /* 0x08 */ COUNT_POTS_BROKEN,
+    /* 0x09 */ COUNT_BUSHES_CUT,
+    /* 0x0A */ COUNT_SWORD_SWINGS,
+    /* 0x0B */ COUNT_MAX
+
+} GameplayStatCount;

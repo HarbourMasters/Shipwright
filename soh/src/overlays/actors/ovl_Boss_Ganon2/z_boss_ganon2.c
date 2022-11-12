@@ -1671,8 +1671,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 (player->swordState != 0) && (player->heldItemActionParam == PLAYER_AP_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
                 gSaveContext.gameplayStats.ganonDefeated = true;
-                gSaveContext.gameplayStats.timestamp[TIMESTAMP_DEFEAT_GANON] =
-                    gSaveContext.gameplayStats.totalTimer;
+                gSaveContext.gameplayStats.timestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);
