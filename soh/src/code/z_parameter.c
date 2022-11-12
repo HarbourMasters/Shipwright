@@ -4949,29 +4949,29 @@ void Interface_Draw(PlayState* play) {
             if (CVar_GetS32("gDynamicWalletIcon", 0)) {
                 switch (CUR_UPG_VALUE(UPG_WALLET)) {
                     case 0:
-                        if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
+                        if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
                             rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", rupeeWalletColors[0]);
                         } else {
                             rColor = rupeeWalletColors[0];
                         }
                         break;
                     case 1:
-                        if (CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", rupeeWalletColors)) {
+                        if (CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", 0)) {
                             rColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee", rupeeWalletColors[1]);
                         } else {
                             rColor = rupeeWalletColors[1];
                         }
                         break;
                     case 2:
-                        if (CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", rupeeWalletColors)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee", rupeeWalletColors[1]);
+                        if (CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", 0)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee", rupeeWalletColors[2]);
                         } else {
                             rColor = rupeeWalletColors[2];
                         }
                         break;
                     case 3:
-                        if (CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", rupeeWalletColors)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee", rupeeWalletColors[1]);
+                        if (CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", 0)) {
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee", rupeeWalletColors[3]);
                         } else {
                             rColor = rupeeWalletColors[3];
                         }

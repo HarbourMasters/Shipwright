@@ -192,6 +192,8 @@ void CVar_LoadLegacy() {
 extern "C" void CVar_LoadFromPath(std::string path, nlohmann::detail::iteration_proxy<nlohmann::detail::iter_impl<nlohmann::json>> items) {
     if (!path.empty()) path += ".";
     for (const auto& item : items) {
+        // TODO: Temporary fix for RGB not being loaded/saved correctly
+        if (item.key() == "R" || item.key() == "G" || item.key() == "B" || item.key() == "A") continue;
         std::string itemPath = path + item.key();
         auto value = item.value();
         switch (value.type()) {

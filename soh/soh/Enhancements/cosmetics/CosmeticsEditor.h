@@ -29,16 +29,8 @@ static ImVec4 navi_prop_i_col;        static ImVec4 navi_prop_o_col;
 static ImVec4 swordtrailtop_col;      static ImVec4 swordtrailbottom_col;
 static ImVec4 boomtrailstart_col;     static ImVec4 boomtrailend_col;
 static ImVec4 bombtrail_col;           
-static ImVec4 crtfilter;
-static ImVec4 normalarrow_col;        static ImVec4 firearrow_col;           static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
-static ImVec4 normalarrow_colenv;     static ImVec4 firearrow_colenv;        static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
-static ImVec4 charged1_col;           static ImVec4 charged2_col;
-static ImVec4 charged1_colenv;        static ImVec4 charged2_colenv;
 static ImVec4 Keese1_primcol;         static ImVec4 Keese2_primcol;
 static ImVec4 Keese1_envcol;          static ImVec4 Keese2_envcol;
-static ImVec4 df_col;                 static ImVec4 df_colenv;
-static ImVec4 nl_diam_col;            static ImVec4 nl_diam_colenv;
-static ImVec4 nl_orb_col;             static ImVec4 nl_orb_colenv;
 static ImVec4 tc_ou_colors;           static ImVec4 tc_bu_colors;
 static ImVec4 tc_fire_colors;         static ImVec4 tc_fire_colors_env; 
 
@@ -57,30 +49,6 @@ static CosmeticsColorIndividual Keese1_prim = { "Fire Primary color", "Affects t
 static CosmeticsColorIndividual Keese2_prim = { "Ice Primary color", "Affects the primary color of the Ice itself of the Keese", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255), true, false, false };
 static CosmeticsColorIndividual Keese1_env = { "Fire Secondary color", "Affects the secondary color of the Fire itself of the Keese", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255), true, false, false };
 static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects the secondary color of the Ice itself of the Keese", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255), true, false, false };
-
-//Arrows (Fire -> Ice -> Light)
-static CosmeticsColorIndividual Normal_Arrow_Prim = { "Normal Arrows (primary)", "Affects Primary color", "gNormalArrowCol", normalarrow_col, ImVec4(255, 255, 170, 255), true, false, false };
-static CosmeticsColorIndividual Normal_Arrow_Env = { "Normal Arrows (Secondary)", "Affects Secondary color", "gNormalArrowColEnv", normalarrow_colenv, ImVec4(0, 150, 0, 0), true, false, false };
-static CosmeticsColorIndividual Fire_Arrow_Prim = { "Fire Arrows (primary)", "Affects Primary color", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255), true, false, false };
-static CosmeticsColorIndividual Fire_Arrow_Env = { "Fire Arrows (Secondary)", "Affects Secondary color", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255), true, false, false };
-static CosmeticsColorIndividual Ice_Arrow_Prim = { "Ice Arrows (Primary)", "Affects Primary color", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255), true, false, false };
-static CosmeticsColorIndividual Ice_Arrow_Env = { "Ice Arrows (Secondary)", "Affects Secondary color", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255), true, false, false };
-static CosmeticsColorIndividual Light_Arrow_Prim = { "Light Arrows (Primary)", "Affects Primary color", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255), true, false, false };
-static CosmeticsColorIndividual Light_Arrow_Env = { "Light Arrows (Secondary)", "Affects Secondary color", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255), true, false, false };
-
-//Spells
-static CosmeticsColorIndividual Din_Fire_Prim = { "Din's Fire (primary)", "Affects Primary color", "gDF_Col", df_col, ImVec4(255,200,0,255), true, false, false };
-static CosmeticsColorIndividual Din_Fire_Env = { "Din's Fire (Secondary)", "Affects Secondary color", "gDF_Env", df_colenv, ImVec4(255,0,0,255), true, false, false };
-static CosmeticsColorIndividual Nayru_Diamond_Prim = { "Nayru's Love Diamond (primary)", "Affects Primary color", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255), true, false, false };
-static CosmeticsColorIndividual Nayru_Diamond_Env = { "Nayru's Love Diamond (Secondary)", "Affects Secondary color", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255), true, false, false };
-static CosmeticsColorIndividual Nayru_Orb_Prim = { "Nayru's Love Orb (primary)", "Affects Primary color", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255), true, false, false };
-static CosmeticsColorIndividual Nayru_Orb_Env = { "Nayru's Love Orb (Secondary)", "Affects Secondary color", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255), true, false, false };
-
-//Spin attacks colors
-static CosmeticsColorIndividual Spin_Lv1_Prim = { "Level 1 (primary)", "Affects Primary color", "gCharged1Col", charged1_col, ImVec4(170,255,255,255), true, false, false };
-static CosmeticsColorIndividual Spin_Lv1_Env = { "Level 1 (Secondary)", "Affects Secondary color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255), true, false, false };
-static CosmeticsColorIndividual Spin_Lv2_Prim = { "Level 2 (primary)", "Affects Primary color", "gCharged2Col", charged2_col, ImVec4(255,255,170,255), true, false, false };
-static CosmeticsColorIndividual Spin_Lv2_Env = { "Level 2 (Secondary)", "Affects Secondary color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255), true, false, false };
 
 //Trails
 static CosmeticsColorIndividual Sword_Trails_Top_col = { "Sword Trail Top Color", "Affects top of sword slash", "gSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
