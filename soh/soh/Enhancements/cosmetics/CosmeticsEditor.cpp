@@ -1150,6 +1150,23 @@ void Draw_Placements(){
     }
 }
 
+void CopyMultipliedColor(CosmeticOption& cosmeticOptionSrc, CosmeticOption& cosmeticOptionTarget, float amount = 0.75f) {
+    Color_RGBA8 newColor;
+    newColor.r = MIN((cosmeticOptionSrc.currentColor.x * 255.0) * amount, 255);
+    newColor.g = MIN((cosmeticOptionSrc.currentColor.y * 255.0) * amount, 255);
+    newColor.b = MIN((cosmeticOptionSrc.currentColor.z * 255.0) * amount, 255);
+    newColor.a = 255;
+
+    cosmeticOptionTarget.currentColor.x = newColor.r / 255.0;
+    cosmeticOptionTarget.currentColor.y = newColor.g / 255.0;
+    cosmeticOptionTarget.currentColor.z = newColor.b / 255.0;
+    cosmeticOptionTarget.currentColor.w = newColor.a / 255.0;
+
+    CVar_SetRGBA(cosmeticOptionTarget.cvar, newColor);
+    CVar_SetS32((cosmeticOptionTarget.rainbowCvar), 0);
+    CVar_SetS32((cosmeticOptionTarget.changedCvar), 1);
+}
+
 void RandomizeColor(CosmeticOption& cosmeticOption) {
     Color_RGBA8 newColor;
     newColor.r = Random(0, 255);
@@ -1165,6 +1182,12 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     CVar_SetRGBA(cosmeticOption.cvar, newColor);
     CVar_SetS32((cosmeticOption.rainbowCvar), 0);
     CVar_SetS32((cosmeticOption.changedCvar), 1);
+
+    if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowTips"), 0.5f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
+    }
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
@@ -1176,6 +1199,11 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     CVar_SetRGBA(cosmeticOption.cvar, cosmeticOption.defaultColor);
     CVar_SetS32((cosmeticOption.rainbowCvar), 0);
     CVar_SetS32((cosmeticOption.changedCvar), 0);
+
+    if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
+        ResetColor(cosmeticOptions.at("Equipment_BowTips"));
+        ResetColor(cosmeticOptions.at("Equipment_BowHandle"));
+    }
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
