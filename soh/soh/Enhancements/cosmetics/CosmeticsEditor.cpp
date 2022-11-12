@@ -1266,7 +1266,28 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
 }
 
 void DrawCosmeticBox(CosmeticBox cosmeticBox) {
-    ImGui::Text(boxLabels.at(cosmeticBox));
+    std::string label = boxLabels.at(cosmeticBox);
+    ImGui::Text(label.c_str());
+    ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
+    if (ImGui::Button(("Random##" + label).c_str())) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+                RandomizeColor(cosmeticOption);
+            }
+        }
+        ApplyOrResetCustomGfxPatches();
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(("Reset##" + label).c_str())) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+                ResetColor(cosmeticOption);
+            }
+        }
+        ApplyOrResetCustomGfxPatches();
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
             DrawCosmeticRow(cosmeticOption);
