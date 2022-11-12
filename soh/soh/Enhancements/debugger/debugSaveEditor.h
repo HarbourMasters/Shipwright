@@ -186,6 +186,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x18, "Obtained Farore's Wind" },
         { 0x19, "Obtained Din's Fire" },
         { 0x1A, "Obtained Nayru's Love" },
+        { 0x1B, "Obtained Treasure Chest Game Reward" },
         { 0x1C, "Obtained Grave-Dig Heart Piece" },
         { 0x1D, "Obtained Bullet Bag Upgrade (Woods)" },
         { 0x1E, "Obtained Deku Stick Upgrade (Stage)" },
