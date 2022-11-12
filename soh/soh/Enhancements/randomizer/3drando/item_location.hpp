@@ -83,73 +83,77 @@ enum class ItemLocationType {
 };
 
 class SpoilerCollectionCheck {
-public:
-  SpoilerCollectionCheckType type = SpoilerCollectionCheckType::SPOILER_CHK_NONE;
-  uint8_t scene = 0;
-  uint8_t flag = 0;
+  public:
+    SpoilerCollectionCheckType type = SpoilerCollectionCheckType::SPOILER_CHK_NONE;
+    uint8_t scene = 0;
+    uint8_t flag = 0;
 
-  SpoilerCollectionCheck() {}
-  SpoilerCollectionCheck(SpoilerCollectionCheckType type_, uint8_t scene_, uint8_t flag_) : type(type_), scene(scene_), flag(flag_) {}
+    SpoilerCollectionCheck() {}
+    SpoilerCollectionCheck(SpoilerCollectionCheckType type_, uint8_t scene_, uint8_t flag_) : type(type_), scene(scene_), flag(flag_) {}
 
-  static auto None() {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_NONE, 0x00, 0x00);
-  }
+    static auto None() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_NONE, 0x00, 0x00);
+    }
 
-  static auto AlwaysCollected() {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED, 0x00, 0x00);
-  }
+    static auto AlwaysCollected() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED, 0x00, 0x00);
+    }
 
-  static auto ItemGetInf(uint8_t slot) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF, 0x00, slot);
-  }
+    static auto ItemGetInf(uint8_t slot) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF, 0x00, slot);
+    }
 
-  static auto EventChkInf(uint8_t flag) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF, 0xFF, flag);
-  }
+    static auto EventChkInf(uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF, 0xFF, flag);
+    }
 
-  static auto InfTable(uint8_t offset, uint8_t bit) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE, offset, bit);
-  }
+    static auto InfTable(uint8_t offset, uint8_t bit) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE, offset, bit);
+    }
 
-  static auto Collectable(uint8_t scene, uint8_t flag) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag);
-  }
+    static auto Collectable(uint8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag);
+    }
 
-  static auto Chest(uint8_t scene, uint8_t flag) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag);
-  }
+    static auto Chest(uint8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag);
+    }
 
-  static auto Cow(uint8_t scene, uint8_t flag) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, scene, flag);
-  }
+    static auto Cow(uint8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, scene, flag);
+    }
 
-  static auto Fishing(uint8_t bit) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, bit);
-  }
+    static auto Fishing(uint8_t bit) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, bit);
+    }
 
-  static auto Scrub(uint8_t scene, uint8_t bit) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, scene, bit);
-  }
+    static auto Scrub(uint8_t scene, uint8_t bit) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, scene, bit);
+    }
 
-  static auto Biggoron(uint8_t mask) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON, 0x00, mask);
-  }
+    static auto Biggoron(uint8_t mask) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON, 0x00, mask);
+    }
 
-  static auto GerudoToken() {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD, 0x00, 0x00);
-  }
+    static auto GerudoToken() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD, 0x00, 0x00);
+    }
 
-  static auto BigPoePoints() {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS, 0x00, 0x00);
-  }
+    static auto BigPoePoints() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS, 0x00, 0x00);
+    }
 
-  static auto ShopItem(uint8_t scene, uint8_t itemSlot) {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, scene, itemSlot);
-  }
+    static auto ShopItem(uint8_t scene, uint8_t itemSlot) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, scene, itemSlot);
+    }
 
-  static auto MagicBeans(uint8_t scene, uint8_t flag) {
-      return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, scene, flag);
-  }
+    static auto MagicBeans(uint8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, scene, flag);
+    }
+
+    static auto Merchant(int8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, scene, flag);
+    }
 };
 
 class ItemLocation {
@@ -591,6 +595,9 @@ static std::unordered_map<RandomizerCheck, RandomizerInf> randomizerFlagLookup =
     { RC_MARKET_BOMBCHU_SHOP_ITEM_6, RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_7, RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8, RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
+
+    { RC_WASTELAND_BOMBCHU_SALESMAN, RAND_INF_MERCHANTS_CARPET_SALESMAN },
+    { RC_GC_MEDIGORON, RAND_INF_MERCHANTS_MEDIGORON },
 };
 
 

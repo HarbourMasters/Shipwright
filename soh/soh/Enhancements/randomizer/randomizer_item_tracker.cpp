@@ -663,6 +663,7 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return gSaveContext.sceneFlags[scene].chest & (1 << flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
             return gSaveContext.sceneFlags[scene].collect & (1 << flag);
+        case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
         case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
