@@ -56,7 +56,9 @@ typedef enum {
     BOX_TITLE,
     BOX_NPC,
     BOX_WORLD,
-    BOX_EFFECTS,
+    BOX_MAGIC,
+    BOX_ARROWS,
+    BOX_SPIN_ATTACK,
 } CosmeticBox;
 
 std::map<CosmeticBox, const char*> boxLabels = {
@@ -70,7 +72,9 @@ std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_TITLE, "Title Screen" },
     { BOX_NPC, "NPCs" },
     { BOX_WORLD, "World" },
-    { BOX_EFFECTS, "Effects" },
+    { BOX_MAGIC, "Magic Effects" },
+    { BOX_ARROWS, "Arrow Effects" },
+    { BOX_SPIN_ATTACK, "Spin Attack" },
 };
 
 typedef struct {
@@ -129,8 +133,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_BowString",           "Bow String",           BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowBody",             "Bow Body",             BOX_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
     COSMETIC_OPTION("Equipment_BowHandle",           "Bow Handle",           BOX_EQUIPMENT,    ImVec4( 50, 150, 255, 255), false, true, true),
-    // Todo: Slingshot
-    // Todo: Hookshot
+    // Todo (Cosmetics): Slingshot
+    // Todo (Cosmetics): Hookshot
     COSMETIC_OPTION("Equipment_ChuFace",             "Bombchu Face",         BOX_EQUIPMENT,    ImVec4(  0, 100, 150, 255), false, true, true),
     COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         BOX_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
 
@@ -163,25 +167,33 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // TODO, waiting for title screen change gCCFileChoosePrim, 
+    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // Todo (Cosmetics): waiting for title screen change gCCFileChoosePrim, 
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoRed",              "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoBlue",             "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoGreen",            "N64 Green",            BOX_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoYellow",           "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
 
-    /* Magic/Effects */
+    COSMETIC_OPTION("Arrows_NormalPrimary",          "Normal Primary",       BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gNormalArrowCol
+    COSMETIC_OPTION("Arrows_NormalSecondary",        "Normal Secondary",     BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gNormalArrowColEnv
+    COSMETIC_OPTION("Arrows_FirePrimary",            "Fire Primary",         BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gFireArrowCol
+    COSMETIC_OPTION("Arrows_FireSecondary",          "Fire Secondary",       BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gFireArrowColEnv
+    COSMETIC_OPTION("Arrows_IcePrimary",             "Ice Primary",          BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gIceArrowCol
+    COSMETIC_OPTION("Arrows_IceSecondary",           "Ice Secondary",        BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gIceArrowColEnv
+    COSMETIC_OPTION("Arrows_LightPrimary",           "Light Primary",        BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gLightArrowCol
+    COSMETIC_OPTION("Arrows_LightSecondary",         "Light Secondary",      BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gLightArrowColEnv
 
-    // Fire Arrows
-    // Ice Arrows
-    // Light Arrows
+    COSMETIC_OPTION("Magic_DinsPrimary",             "Din's Primary",        BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // gDF_Col
+    COSMETIC_OPTION("Magic_DinsSecondary",           "Din's Secondary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // gDF_Env
+    // Todo (Cosmetics): Farore's Wind
+    COSMETIC_OPTION("Magic_NayrusPrimary",           "Nayru's Primary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // gNL_Diamond_Col / gNL_Orb_Col
+    COSMETIC_OPTION("Magic_NayrusSecondary",         "Nayru's Secondary",    BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // gNL_Diamond_Env / gNL_Orb_Env
 
-    // Dins Fire
-    // Farore's Wind
-    // Nayru's Love
-
-    // Spin Attack
-    // Sword Trails
+    COSMETIC_OPTION("SpinAttack_Level1Primary",      "Level 1 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // gCharged1Col
+    COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // gCharged1ColEnv
+    COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // gCharged2Col
+    COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // gCharged2ColEnv
+    // Todo (Cosmetics): Sword Trails
 
     /* World */
     COSMETIC_OPTION("World_BlockOfTime",             "Block of Time",        BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
@@ -190,6 +202,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 
     /* NPCs */
     // Navi
+    // Other fairies
     // Keese Fire
     // Keese Ice
     COSMETIC_OPTION("NPC_Dog1",                      "Dog 1",                BOX_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
@@ -1322,14 +1335,13 @@ void DrawCosmeticsEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Effects")) {
-            DrawCosmeticBox(BOX_EFFECTS);
+            DrawCosmeticBox(BOX_MAGIC);
+            DrawCosmeticBox(BOX_ARROWS);
+            DrawCosmeticBox(BOX_SPIN_ATTACK);
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("World")) {
+        if (ImGui::BeginTabItem("World & NPCs")) {
             DrawCosmeticBox(BOX_WORLD);
-            ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("NPCs")) {
             DrawCosmeticBox(BOX_NPC);
             ImGui::EndTabItem();
         }
